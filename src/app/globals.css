@@ -362,11 +362,43 @@ textarea:-webkit-autofill {
     margin: 12mm 14mm 10mm;
   }
 
+  /* Die Farbtoken für den Druck umdefinieren statt nur Hintergrund und
+     Grundfarbe zu überschreiben.
+     Vorher setzte diese Regel den Hintergrund auf Weiß, ließ aber jede
+     Textklasse auf ihrem hellen Wert stehen — gedruckt wäre die Startseite
+     weiß auf weiß und damit leer aus dem Drucker gekommen. Über die Token
+     folgt die gesamte Seite automatisch, ohne dass eine einzelne Klasse
+     angefasst werden muss. */
+  :root {
+    --color-void: #ffffff;
+    --color-base: #ffffff;
+    --color-surface: #ffffff;
+    --color-raised: #f4f4f6;
+    --color-line: #d4d4dc;
+
+    --color-ink: #101014;
+    --color-ink-dim: #3a3a44;
+    --color-ink-faint: #63636e;
+
+    /* Die Akzentfarbe ist auf Papier nicht lesbar — hier ein dunkles Oliv,
+       das die Rolle als Akzent behält und auf Weiß trägt. */
+    --color-acid: #4f6300;
+    --color-violet: #4a3aa8;
+    --color-cyan: #10627d;
+  }
+
   html,
   body {
     background: #fff !important;
     color: #101014 !important;
     color-scheme: light;
+  }
+
+  /* Dekoration kostet nur Toner. */
+  .glow-orb,
+  .dot-grid,
+  .lit::before {
+    display: none !important;
   }
 
   .no-print {
