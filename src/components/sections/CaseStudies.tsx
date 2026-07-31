@@ -7,6 +7,7 @@ import { GithubIcon } from "@/components/ui/BrandIcons";
 import { caseStudies, type CaseStudy } from "@/content/site";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
+import { DeviceFrame } from "@/components/ui/DeviceFrame";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ease, viewportOnce } from "@/lib/motion";
@@ -82,6 +83,31 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </p>
         <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
       </Reveal>
+
+      {/* Live screenshots — visual proof before the prose argument. */}
+      {study.shots?.length ? (
+        <Reveal delay={0.08}>
+          <div
+            className={cn(
+              "mt-10 flex flex-col items-center gap-6",
+              study.shots.length > 1 && "sm:flex-row sm:items-end",
+            )}
+          >
+            {study.shots.map((shot) => (
+              <DeviceFrame
+                key={shot.src}
+                src={shot.src}
+                alt={shot.alt}
+                width={shot.width}
+                height={shot.height}
+                label={shot.label}
+                variant={shot.variant}
+                className={shot.variant === "phone" ? "shrink-0" : "min-w-0 flex-1"}
+              />
+            ))}
+          </div>
+        </Reveal>
+      ) : null}
 
       {/* Problem / solution */}
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">

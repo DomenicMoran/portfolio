@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { hero, site, techTicker } from "@/content/site";
 import { ease } from "@/lib/motion";
@@ -70,28 +70,30 @@ export function Hero() {
         {/* Headline — each word rises out of its own clip mask */}
         <h1 className="text-display max-w-[18ch] text-balance text-ink">
           {hero.headline.map((word, i) => (
-            // Word gaps come from margin, not from whitespace: a trailing space
-            // inside an inline-block with overflow:hidden gets collapsed away.
-            <span
-              key={i}
-              className="mr-[0.22em] inline-block overflow-hidden pb-[0.06em] align-bottom last:mr-0"
-            >
-              <motion.span
-                className={cn(
-                  "inline-block",
-                  word.accent && "font-editorial text-acid",
-                )}
-                initial={{ y: "110%" }}
-                animate={{ y: "0%" }}
-                transition={{
-                  duration: 1.1,
-                  ease: ease.expo,
-                  delay: 0.25 + i * 0.07,
-                }}
-              >
-                {word.text}
-              </motion.span>
-            </span>
+            // The space is a real text node BETWEEN the clip wrappers, not
+            // inside one — inside an overflow:hidden inline-block it collapses
+            // and the words run together. Outside, it spaces them visually and
+            // keeps the heading readable for screen readers and copy-paste.
+            <Fragment key={i}>
+              <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
+                <motion.span
+                  className={cn(
+                    "inline-block",
+                    word.accent && "font-editorial text-acid",
+                  )}
+                  initial={{ y: "110%" }}
+                  animate={{ y: "0%" }}
+                  transition={{
+                    duration: 1.1,
+                    ease: ease.expo,
+                    delay: 0.25 + i * 0.07,
+                  }}
+                >
+                  {word.text}
+                </motion.span>
+              </span>
+              {i < hero.headline.length - 1 ? " " : null}
+            </Fragment>
           ))}
         </h1>
 
