@@ -82,6 +82,24 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Autofill.
+   Chrome und Safari überschreiben ausgefüllte Felder mit einem hellen
+   Systemhintergrund und behalten die dunkle Systemschrift — auf einer dunklen
+   Seite wird daraus Hell auf Hell oder, nach dem Force-Dark eines Browsers,
+   Schwarz auf Schwarz. Der Farbverlauf-Trick ist der einzige zuverlässige Weg:
+   `background-color` ignorieren die Engines bei Autofill, einen inneren
+   Schatten nicht. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-base) inset;
+  box-shadow: 0 0 0 1000px var(--color-base) inset;
+  caret-color: var(--color-ink);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 /* Focus states stay sharp — the whole site is keyboard-navigable. */
 :focus-visible {
   outline: 2px solid var(--color-acid);
