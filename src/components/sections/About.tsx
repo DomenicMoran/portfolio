@@ -1,0 +1,116 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { about } from "@/content/site";
+import { Counter } from "@/components/ui/Counter";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ease, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+
+/**
+ * The biography section.
+ *
+ * Placed after the case studies on purpose: the work earns the right to the
+ * story. A visitor who has just seen four production systems reads "employer
+ * officer" as remarkable; a visitor who reads it first reads it as a
+ * disclaimer.
+ */
+export function About() {
+  return (
+    <section id="about" className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="glow-orb animate-float top-0 right-[10%] size-[30rem] bg-violet/10" />
+      </div>
+
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading eyebrow={about.eyebrow} title={about.title} />
+
+        <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
+          {/* Narrative */}
+          <div className="flex flex-col gap-6">
+            {about.paragraphs.map((paragraph, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <p
+                  className={cn(
+                    "leading-relaxed text-pretty",
+                    i === 0 ? "text-lg text-ink sm:text-xl" : "text-ink-dim",
+                  )}
+                >
+                  {paragraph}
+                </p>
+              </Reveal>
+            ))}
+
+            {/* Stats */}
+            <motion.dl
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              transition={{ staggerChildren: 0.08, delayChildren: 0.15 }}
+              className="mt-6 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
+            >
+              {about.stats.map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.6, ease: ease.expo },
+                    },
+                  }}
+                  className="flex flex-col gap-1"
+                >
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd className="text-2xl font-semibold tracking-tight text-acid tabular-nums sm:text-3xl">
+                    <Counter value={stat.value} />
+                  </dd>
+                  <span className="text-xs leading-snug text-ink">{stat.label}</span>
+                  <span className="text-[11px] leading-snug text-ink-faint">
+                    {stat.note}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.dl>
+          </div>
+
+          {/* Timeline */}
+          <div className="lg:pt-2">
+            <h3 className="text-eyebrow mb-8">Werdegang</h3>
+            <ol className="relative flex flex-col">
+              {/* Spine */}
+              <span
+                aria-hidden
+                className="absolute top-1.5 bottom-2 left-[5px] w-px bg-line"
+              />
+
+              {about.timeline.map((entry, i) => (
+                <Reveal as="li" key={entry.period} delay={i * 0.05} className="relative pb-9 pl-8 last:pb-0">
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute top-1.5 left-0 size-[11px] rounded-full border-2",
+                      entry.current
+                        ? "border-acid bg-acid"
+                        : "border-line bg-base",
+                    )}
+                  />
+                  <span className="font-mono text-[11px] tracking-wide text-ink-faint">
+                    {entry.period}
+                  </span>
+                  <h4 className="mt-1.5 text-sm font-semibold text-ink">{entry.title}</h4>
+                  <p className="text-sm text-ink-dim">{entry.org}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-ink-faint text-pretty">
+                    {entry.body}
+                  </p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
