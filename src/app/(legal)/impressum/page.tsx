@@ -7,17 +7,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * ⚠️ ENTSCHEIDUNG OFFEN — siehe USER-TODO Block E.
- *
- * § 5 DDG verlangt eine ladungsfähige Anschrift, sobald die Seite
- * geschäftsmäßig betrieben wird. Diese Seite akquiriert Aufträge und
- * Anstellungen, ist also geschäftsmäßig. Ein Postfach genügt nicht.
- *
- * ABER: Domenic hat ein berechtigtes Schutzinteresse. Die Privatanschrift öffentlich mit dem
- * Klarnamen zu verknüpfen, ist für Vollzugsbeamte ein reales Sicherheitsrisiko
- * — deshalb existiert die Auskunftssperre nach § 51 BMG überhaupt. Die Adresse
- * bleibt hier bewusst als Platzhalter stehen, bis er zwischen Privatanschrift
- * und angemieteter Geschäftsadresse entschieden hat.
+ * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
+ * Betreibers die Privatanschrift — sie ist damit öffentlich und wird indexiert.
  */
 export default function Impressum() {
   return (
@@ -29,11 +20,11 @@ export default function Impressum() {
           Angaben gemäß § 5 DDG
         </h2>
         <address className="text-sm leading-relaxed text-ink-dim not-italic">
-          {site.name}
+          Domenic Moran
           <br />
-          [Straße und Hausnummer]
+          Heidelberger Straße 36
           <br />
-          [PLZ] [Ort]
+          12059 Berlin
           <br />
           Deutschland
         </address>
@@ -49,20 +40,29 @@ export default function Impressum() {
           >
             {site.email}
           </a>
-          <br />
-          Telefon: [optional]
+        </p>
+        <p className="mt-3 text-xs leading-relaxed text-ink-faint">
+          Eine Telefonnummer wird hier bewusst nicht veröffentlicht. § 5 DDG
+          verlangt eine Angabe, die eine schnelle elektronische Kontaktaufnahme
+          ermöglicht — die E-Mail-Adresse oben erfüllt das. Auf Anfrage nenne
+          ich eine Rufnummer.
         </p>
       </section>
 
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Umsatzsteuer-Identifikationsnummer
-        </h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          [USt-IdNr. gemäß § 27 a UStG — oder streichen, falls Kleinunternehmer
-          nach § 19 UStG]
-        </p>
-      </section>
+      {/*
+        TODO(domenic): Falls eine Umsatzsteuer-Identifikationsnummer existiert,
+        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht — dann diesen
+        Abschnitt wieder einsetzen:
+
+          <section className="mb-10">
+            <h2 …>Umsatzsteuer-Identifikationsnummer</h2>
+            <p …>USt-IdNr. gemäß § 27 a UStG: DE…</p>
+          </section>
+
+        Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
+        Angabe ersatzlos — ein leerer oder erfundener Eintrag wäre schlechter
+        als keiner. Siehe USER-TODO A2.
+      */}
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">

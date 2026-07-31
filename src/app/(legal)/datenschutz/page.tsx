@@ -19,9 +19,9 @@ export default function Datenschutz() {
       <h1 className="text-title mb-10 text-ink">Datenschutzerklärung</h1>
 
       <Section title="Verantwortlicher">
-        {site.name}
+        Domenic Moran
         <br />
-        [Straße und Hausnummer], [PLZ] [Ort], Deutschland
+        Heidelberger Straße 36, 12059 Berlin, Deutschland
         <br />
         E-Mail:{" "}
         <a
