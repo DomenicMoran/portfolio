@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, CalendarClock, FileDown, Mail } from "lucide-react";
+import { ArrowUpRight, FileDown, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { recruiter, site } from "@/content/site";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -91,26 +91,15 @@ export function RecruiterHub() {
                     </a>
                   </Magnetic>
 
-                  {recruiter.cta.call.href ? (
-                    <Magnetic>
-                      <a
-                        href={recruiter.cta.call.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-2 rounded-full border border-line bg-base px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-faint"
-                      >
-                        <CalendarClock className="size-4" aria-hidden />
-                        {recruiter.cta.call.label}
-                      </a>
-                    </Magnetic>
-                  ) : null}
-
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center gap-2 px-2 py-3 text-sm text-ink-dim underline-offset-4 transition-colors hover:text-ink hover:underline"
-                  >
-                    Oder direkt schreiben
-                  </a>
+                  <Magnetic>
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="group inline-flex items-center gap-2 rounded-full border border-line bg-base px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-faint"
+                    >
+                      <Mail className="size-4" aria-hidden />
+                      {recruiter.cta.mail.label}
+                    </a>
+                  </Magnetic>
                 </div>
 
                 <div className="flex flex-wrap gap-2 border-t border-acid/15 pt-6">
