@@ -40,7 +40,25 @@ export function RecruiterHub() {
           lede={recruiter.lede}
         />
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-[minmax(0,20rem)_1fr]">
+        {/* Die drei Stärken zuerst über die volle Breite: neben dem Faktenblatt
+            fiel ihr Zeilenmaß auf ~27 Zeichen, und der Text zerhackte sich in
+            Silbentrennungen. Volle Breite bringt jede Karte auf ~48 Zeichen. */}
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {recruiter.strengths.map((item, i) => (
+            <Reveal key={item.title} delay={0.05 * i}>
+              <div className="lit h-full rounded-2xl border border-line bg-surface/50 p-6">
+                <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">
+                  {item.body}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,20rem)_1fr]">
           {/* Fact sheet */}
           <Reveal>
             <dl className="lit h-full rounded-2xl border border-line bg-surface/50 p-7">
@@ -56,26 +74,8 @@ export function RecruiterHub() {
             </dl>
           </Reveal>
 
-          {/* Strengths + actions */}
+          {/* Aktionen */}
           <div className="flex flex-col gap-5">
-            {/* Erst ab xl dreispaltig: bei drei Spalten in dieser Breite fiel
-                das Zeilenmaß auf ~30 Zeichen, und so kurze Zeilen zerhacken den
-                Lesefluss genauso wie zu lange. */}
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {recruiter.strengths.map((item, i) => (
-                <Reveal key={item.title} delay={0.05 * i}>
-                  <div className="lit h-full rounded-2xl border border-line bg-surface/50 p-6">
-                    <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">
-                      {item.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
             <Reveal delay={0.1}>
               <div className="lit flex flex-col gap-6 rounded-2xl border border-acid/25 bg-acid/[0.06] p-7 sm:p-8">
                 <div className="flex flex-wrap items-center gap-3">
