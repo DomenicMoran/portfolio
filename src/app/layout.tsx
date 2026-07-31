@@ -10,10 +10,17 @@ const geistSans = Geist({
   display: "swap",
 });
 
+/**
+ * Nicht vorgeladen: Geist Mono trägt nur Labels und Eyebrows, kein Element,
+ * das für den Largest Contentful Paint zählt. Gemessen konkurrierten drei
+ * gleichzeitig vorgeladene Schriften (68 KiB) im kritischen Pfad — diese hier
+ * lädt jetzt nach und gibt die Bandbreite an die Headline-Schriften ab.
+ */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 /** Used only for accent words. One weight, one style — nothing else needed. */

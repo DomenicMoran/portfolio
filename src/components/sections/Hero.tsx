@@ -31,13 +31,15 @@ export function Hero() {
       {/* Ambient light. Three blurred orbs, GPU-composited, no canvas. */}
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
-        <div className="glow-orb animate-float -top-40 left-[8%] size-[38rem] bg-violet/18" />
+        <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
+        {/* The two secondary orbs are pure decoration — they only appear once
+            the viewport is wide enough for the cost to be irrelevant. */}
         <div
-          className="glow-orb animate-float top-[10%] right-[2%] size-[30rem] bg-cyan/12"
+          className="glow-orb animate-float top-[10%] right-[2%] hidden size-[30rem] bg-cyan/12 sm:block"
           style={{ animationDelay: "-5s" }}
         />
         <div
-          className="glow-orb animate-float bottom-[6%] left-[38%] size-[26rem] bg-acid/10"
+          className="glow-orb animate-float bottom-[6%] left-[38%] hidden size-[26rem] bg-acid/10 sm:block"
           style={{ animationDelay: "-9s" }}
         />
       </div>
@@ -76,21 +78,15 @@ export function Hero() {
             // keeps the heading readable for screen readers and copy-paste.
             <Fragment key={i}>
               <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
-                <motion.span
+                <span
                   className={cn(
-                    "inline-block",
+                    "animate-word-rise inline-block",
                     word.accent && "font-editorial text-acid",
                   )}
-                  initial={{ y: "110%" }}
-                  animate={{ y: "0%" }}
-                  transition={{
-                    duration: 1.1,
-                    ease: ease.expo,
-                    delay: 0.25 + i * 0.07,
-                  }}
+                  style={{ animationDelay: `${0.1 + i * 0.06}s` }}
                 >
                   {word.text}
-                </motion.span>
+                </span>
               </span>
               {i < hero.headline.length - 1 ? " " : null}
             </Fragment>
@@ -142,12 +138,14 @@ export function Hero() {
           className="mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
         >
           {hero.proof.map((item) => (
-            <div key={item.label} className="flex flex-col gap-1.5">
-              <dt className="sr-only">{item.label}</dt>
+            // flex-col-reverse: DOM order stays dt → dd (the only structure a
+            // <dl> may contain), while the number still renders above its
+            // label. A <span> sibling here is invalid markup and axe flags it.
+            <div key={item.label} className="flex flex-col-reverse gap-1.5">
+              <dt className="text-xs leading-snug text-ink-faint">{item.label}</dt>
               <dd className="text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl">
                 <Counter value={item.value} />
               </dd>
-              <span className="text-xs leading-snug text-ink-faint">{item.label}</span>
             </div>
           ))}
         </motion.dl>
