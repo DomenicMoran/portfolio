@@ -116,7 +116,31 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
 - Kontaktformular: Honeypot, In-Process-Rate-Limit, Längenbegrenzung pro Feld,
   HTML-Escaping, CR/LF-Filter gegen Header-Injection
 - Fehler beim Mailversand liefern einen ehrlichen Status — nie eine falsche Erfolgsmeldung
-- Sicherheits-Header (HSTS, `X-Frame-Options`, `Permissions-Policy`) in [`vercel.json`](vercel.json)
+- Vollständiger Header-Satz in [`vercel.json`](vercel.json): HSTS mit Preload,
+  CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`,
+  `Permissions-Policy`, `X-DNS-Prefetch-Control`
+- [`/.well-known/security.txt`](public/.well-known/security.txt) für Meldungen
+
+### Zur CSP — eine bewusste Abwägung
+
+Die Content-Security-Policy erlaubt `'unsafe-inline'` für `script-src`. Das ist
+keine Nachlässigkeit, sondern die Folge einer Entscheidung:
+
+Next.js schreibt die RSC-Payload als Inline-`<script>` in jede vorgerenderte
+Seite. Um die ohne `'unsafe-inline'` zuzulassen, bräuchte es Nonces — die
+entstehen erst zur Anfragezeit und zwingen damit **jede** Route in dynamisches
+Rendering. Für eine Seite, deren wichtigste Metrik LCP ist, tauscht man damit
+messbare Ladezeit gegen eine Absicherung, die hier wenig bringt: Die Seite hat
+keine Nutzereingaben, die gerendert werden, keine Drittanbieter-Skripte und
+keine Datenbank.
+
+Was die Policy stattdessen tatsächlich absichert und was hier zählt:
+`default-src 'self'`, `connect-src 'self'` (kein Datenabfluss), `object-src
+'none'`, `base-uri 'self'` (kein Base-Tag-Hijacking), `frame-ancestors 'none'`
+(kein Clickjacking) und `form-action 'self'`.
+
+Sobald die Seite je Nutzerinhalte rendert, kippt diese Abwägung — dann kommen
+Nonces und dynamisches Rendering.
 
 ## Deployment
 
