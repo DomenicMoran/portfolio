@@ -41,10 +41,19 @@ export default function OnePager() {
   }));
 
   return (
-    // print:min-h-0 matters: min-h-svh resolves to a full viewport height on
-    // paper too, which alone is taller than the printable area and spills a
-    // blank second page.
-    <div className="min-h-svh bg-white text-[#101014] print:min-h-0 print:bg-white">
+    // `color-scheme: light` ist hier nicht kosmetisch, sondern der Fix gegen
+    // Androids "Force Dark" und Samsung Internets Dunkelmodus: Ohne die Angabe
+    // invertieren die den weissen Hintergrund, lassen den fest gesetzten
+    // dunklen Text aber stehen — Ergebnis ist Schwarz auf Schwarz. Mit der
+    // Angabe erklaert die Seite, dass sie ihr Farbschema selbst kennt, und
+    // wird in Ruhe gelassen.
+    //
+    // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Hoehe
+    // auf und schiebt sonst eine leere zweite Seite an.
+    <div
+      style={{ colorScheme: "light" }}
+      className="min-h-svh bg-white text-[#101014] print:min-h-0 print:bg-white"
+    >
       <PrintButton />
 
       <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">

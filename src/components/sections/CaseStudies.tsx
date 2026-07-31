@@ -161,7 +161,12 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   onClick={() => setTab(item.id)}
                   className={cn(
                     "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
-                    selected ? "text-void" : "text-ink-dim hover:text-ink",
+                    // Die Farbfläche liegt als absolut positioniertes Geschwister
+                    // darüber (für die Schiebe-Animation). Dieselbe Farbe hier
+                    // zusätzlich als Hintergrund des Knopfes: Sollte das
+                    // Motion-Element je nicht rendern, bliebe sonst dunkler Text
+                    // auf dunklem Grund — unsichtbar statt nur unschön.
+                    selected ? cn("text-void", accent.bg) : "text-ink-dim hover:text-ink",
                   )}
                 >
                   {selected ? (
