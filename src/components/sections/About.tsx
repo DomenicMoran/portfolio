@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { about, site } from "@/content/site";
 import { Counter } from "@/components/ui/Counter";
 import { Reveal } from "@/components/ui/Reveal";
@@ -129,6 +130,41 @@ export function About() {
                 </Reveal>
               ))}
             </ol>
+
+            {/* Öffentlicher Code — beantwortet die „wo ist der Code?"-Frage,
+                bevor sie gestellt wird. */}
+            <Reveal delay={0.08} className="mt-10 border-t border-line pt-8">
+              <h3 className="text-eyebrow mb-3">{about.openSource.label}</h3>
+              <p className="mb-5 text-xs leading-relaxed text-ink-faint text-pretty">
+                {about.openSource.lede}
+              </p>
+              <ul className="flex flex-col gap-4">
+                {about.openSource.items.map((item) => (
+                  <li key={item.name}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block rounded-lg border border-line bg-surface/40 p-3.5 transition-colors hover:border-acid/40"
+                    >
+                      <span className="flex items-center gap-1.5 font-mono text-xs text-acid">
+                        {item.name}
+                        <ArrowUpRight
+                          className="size-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          aria-hidden
+                        />
+                      </span>
+                      <span className="mt-1.5 block text-xs leading-relaxed text-ink-dim text-pretty">
+                        {item.body}
+                      </span>
+                      <span className="mt-2 block font-mono text-[10px] text-ink-faint">
+                        {item.meta}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
 
             {/* Zertifikate füllen die Spalte mit Beleg statt mit Weißraum. */}
             <Reveal delay={0.1} className="mt-10 border-t border-line pt-8">

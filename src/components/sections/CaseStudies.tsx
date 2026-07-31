@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowUpRight, Check, Layers, Smartphone, Workflow } from "lucide-react";
+import { ArrowUpRight, Bot, Check, Layers, Smartphone, Workflow } from "lucide-react";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { caseStudies, type CaseStudy } from "@/content/site";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
@@ -21,6 +21,7 @@ const ACCENT = {
 
 const TABS = [
   { id: "highlights", label: "Was drinsteckt", icon: Layers },
+  { id: "automation", label: "Automatisierung", icon: Bot },
   { id: "architecture", label: "Architektur", icon: Workflow },
   { id: "stack", label: "Tech-Stack", icon: Smartphone },
 ] as const;
@@ -148,7 +149,8 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             aria-label={`Details zu ${study.name}`}
             className="flex flex-wrap gap-1.5 border-b border-line pb-3"
           >
-            {TABS.map((item) => {
+            {/* Der Automatisierungs-Tab erscheint nur, wo es etwas zu zeigen gibt. */}
+            {TABS.filter((t) => t.id !== "automation" || study.automation).map((item) => {
               const selected = tab === item.id;
               return (
                 <button
@@ -197,6 +199,42 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                       </li>
                     ))}
                   </ul>
+                ) : null}
+
+                {tab === "automation" && study.automation ? (
+                  <div className="flex flex-col gap-8">
+                    <div>
+                      <h5 className={cn("text-lg font-semibold tracking-tight", accent.text)}>
+                        {study.automation.title}
+                      </h5>
+                      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-dim text-pretty">
+                        {study.automation.lede}
+                      </p>
+                    </div>
+                    <div className="grid gap-x-10 gap-y-7 sm:grid-cols-2">
+                      {study.automation.groups.map((group) => (
+                        <div key={group.title}>
+                          <h6 className="text-eyebrow mb-3">{group.title}</h6>
+                          <ul className="flex flex-col gap-2">
+                            {group.items.map((item) => (
+                              <li key={item} className="flex gap-2.5">
+                                <span
+                                  aria-hidden
+                                  className={cn(
+                                    "mt-1.5 size-1.5 shrink-0 rounded-full",
+                                    accent.bg,
+                                  )}
+                                />
+                                <span className="text-sm leading-relaxed text-ink-dim">
+                                  {item}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 ) : null}
 
                 {tab === "architecture" ? (
