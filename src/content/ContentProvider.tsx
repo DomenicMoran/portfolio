@@ -9,7 +9,7 @@ import { de } from "./de";
  *
  * Warum Kontext und nicht Props durch jede Ebene: Die Sektionen sind ohnehin
  * Client-Komponenten, und eine Sprache ist genau die Art von Wert, den jede
- * Ebene braucht und keine ändert. Der deutsche Inhalt ist die Vorgabe — wer
+ * Ebene braucht und keine ändert. Der deutsche Inhalt ist die Vorgabe. Wer
  * den Provider vergisst, bekommt eine vollständige Seite statt eines Absturzes.
  */
 const ContentContext = createContext<Content>(de);

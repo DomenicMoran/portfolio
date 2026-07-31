@@ -3,13 +3,15 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
-import { workflow } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export function AiWorkflow() {
+  const { workflow } = useContent();
+
   return (
     <section
       id="workflow"
@@ -96,6 +98,7 @@ const LINE_STYLE = {
  * to it argues against.
  */
 function AgentTerminal() {
+  const { workflow, a11y } = useContent();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
   const [shown, setShown] = useState(0);
@@ -103,7 +106,7 @@ function AgentTerminal() {
 
   const lines = workflow.demo.lines;
 
-  // Rewind during render when the replay button bumps runId — same pattern as
+  // Rewind during render when the replay button bumps runId, dasselbe Muster wie
   // the palette: no effect, no cascading render, no flash of the old lines.
   const [playedRun, setPlayedRun] = useState(runId);
   if (runId !== playedRun) {
@@ -141,7 +144,7 @@ function AgentTerminal() {
           type="button"
           onClick={() => setRunId((n) => n + 1)}
           className="-mr-1.5 grid size-8 place-items-center rounded-md text-ink-faint transition-colors hover:bg-raised hover:text-ink"
-          aria-label="Ablauf erneut abspielen"
+          aria-label={a11y.replay}
         >
           <RotateCcw className="size-3.5" aria-hidden />
         </button>
@@ -170,7 +173,7 @@ function AgentTerminal() {
       </div>
 
       <p className="border-t border-line px-4 py-3 text-[11px] leading-relaxed text-ink-faint">
-        {workflow.demo.label} — nachgestellter Ablauf, keine Live-Sitzung.
+        {workflow.demo.label} {workflow.demo.note}
       </p>
     </div>
   );
@@ -180,23 +183,20 @@ function AgentTerminal() {
  * Standalone speed comparison. Sits between the workflow and skills sections.
  */
 export function DeliverySpeed() {
-  const rows = [
-    { label: "Klassisch, allein", weeks: 100, note: "Wochen bis Store-Release" },
-    { label: "Mit Agenten-Setup", weeks: 22, note: "dieselbe Feature-Tiefe" },
-  ];
+  const { workflow } = useContent();
+  const { speed } = workflow;
+  const rows = speed.rows;
 
   return (
     <section className="px-6 pb-28 sm:pb-40">
       <div className="mx-auto max-w-6xl">
         <div className="lit rounded-3xl border border-line bg-surface/40 p-8 sm:p-12">
-          <span className="text-eyebrow">Größenordnung</span>
+          <span className="text-eyebrow">{speed.eyebrow}</span>
           <h3 className="mt-4 max-w-3xl text-title text-ink text-balance">
-            Der Unterschied ist nicht, dass ich schneller tippe.
+            {speed.title}
           </h3>
           <p className="mt-4 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
-            Er ist, dass Recherche, Implementierung, Test und Verifikation
-            parallel statt nacheinander laufen — und dass der Kontext zwischen
-            den Sitzungen nicht verloren geht.
+            {speed.lede}
           </p>
 
           <div className="mt-10 flex flex-col gap-6">
@@ -222,14 +222,10 @@ export function DeliverySpeed() {
             ))}
           </div>
 
-          {/* 112 Zeichen pro Zeile gemessen — bei dieser Schriftgröße kaum noch
-              lesbar. 74ch ist der Wert, ab dem das Auge die Zeile sicher
-              zurückfindet. */}
+          {/* Zeilenmaß in ch: gemessen lief dieser Absatz vorher bei 112
+              Zeichen pro Zeile, deutlich jenseits des Lesbaren. */}
           <p className="mt-8 max-w-[58ch] text-xs leading-relaxed text-ink-faint">
-            Relative Darstellung aus meinen eigenen Projekten — kein
-            Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44
-            ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei
-            weiteren Systemen in Produktion.
+            {speed.note}
           </p>
         </div>
       </div>

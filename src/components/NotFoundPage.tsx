@@ -1,23 +1,26 @@
 import Link from "next/link";
-import { navItems, site } from "@/content/site";
-
-export const metadata = {
-  title: "Seite nicht gefunden",
-  robots: { index: false, follow: true },
-};
+import type { Content } from "@/content/types";
 
 /**
- * Eigene 404-Seite.
+ * Eigene 404-Seite, in beiden Sprachfassungen dieselbe.
  *
- * Next.js liefert sonst eine englische Standardmeldung aus — auf einer
+ * Next.js liefert sonst eine englische Standardmeldung aus, auf einer
  * deutschsprachigen Seite ein sichtbarer Bruch. Und eine Sackgasse ist der
  * schlechteste Ort, um einen Besucher stehen zu lassen: Hier steht deshalb,
  * wohin es weitergeht.
  *
- * Bewusst ohne Animation und ohne Client-Code: Wer hier landet, hat sich
+ * Bewusst ohne Animation und ohne Client-Code. Wer hier landet, hat sich
  * verlaufen und will weiter, nicht unterhalten werden.
  */
-export default function NotFound() {
+export function NotFoundPage({
+  content,
+  base = "",
+}: {
+  content: Content;
+  base?: string;
+}) {
+  const { notFound, nav, site } = content;
+
   return (
     <main className="relative flex min-h-svh items-center overflow-hidden px-6 py-24">
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -26,33 +29,29 @@ export default function NotFound() {
       </div>
 
       <div className="mx-auto w-full max-w-2xl">
-        <p className="text-eyebrow mb-6">Fehler 404</p>
+        <p className="text-eyebrow mb-6">{notFound.eyebrow}</p>
 
-        <h1 className="text-headline text-ink text-balance">
-          Diese Seite gibt es nicht.
-        </h1>
+        <h1 className="text-headline text-ink text-balance">{notFound.title}</h1>
 
         <p className="mt-6 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
-          Entweder hat sich ein Tippfehler in die Adresse geschlichen, oder ich
-          habe die Seite verschoben, ohne eine Weiterleitung zu hinterlassen.
-          Falls Letzteres: Sag mir Bescheid, dann korrigiere ich es.
+          {notFound.body}
         </p>
 
-        <nav aria-label="Weiter zu" className="mt-10 flex flex-col gap-3">
-          <span className="text-eyebrow">Weiter zu</span>
+        <nav aria-label={notFound.onward} className="mt-10 flex flex-col gap-3">
+          <span className="text-eyebrow">{notFound.onward}</span>
           <ul className="flex flex-wrap gap-2">
             <li>
               <Link
-                href="/"
+                href={base === "" ? "/" : base}
                 className="inline-flex rounded-full bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
               >
-                Startseite
+                {notFound.home}
               </Link>
             </li>
-            {navItems.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={`/${item.href}`}
+                  href={`${base}/${item.href}`}
                   className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                 >
                   {item.label}
@@ -63,7 +62,7 @@ export default function NotFound() {
         </nav>
 
         <p className="mt-10 border-t border-line pt-6 text-sm text-ink-faint">
-          Etwas kaputt gefunden?{" "}
+          {notFound.report}{" "}
           <a
             href={`mailto:${site.email}`}
             className="text-acid underline underline-offset-4"

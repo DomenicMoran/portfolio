@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowUpRight, Bot, Check, Layers, Smartphone, Workflow } from "lucide-react";
 import { GithubIcon } from "@/components/ui/BrandIcons";
-import { caseStudies, type CaseStudy } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
+import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
@@ -19,23 +20,21 @@ const ACCENT = {
   cyan: { text: "text-cyan", bg: "bg-cyan", border: "border-cyan/30", soft: "bg-cyan/10" },
 } as const;
 
-const TABS = [
-  { id: "highlights", label: "Was drinsteckt", icon: Layers },
-  { id: "automation", label: "Automatisierung", icon: Bot },
-  { id: "architecture", label: "Architektur", icon: Workflow },
-  { id: "stack", label: "Tech-Stack", icon: Smartphone },
-] as const;
+const TAB_IDS = ["highlights", "automation", "architecture", "stack"] as const;
+const TAB_ICONS = { highlights: Layers, automation: Bot, architecture: Workflow, stack: Smartphone };
 
-type TabId = (typeof TABS)[number]["id"];
+type TabId = (typeof TAB_IDS)[number];
 
 export function CaseStudies() {
+  const { work, caseStudies } = useContent();
+
   return (
     <section id="work" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Ausgewählte Arbeiten"
-          title="Vier Produkte. Alle live. Alle allein gebaut."
-          lede="Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen — und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet."
+          eyebrow={work.eyebrow}
+          title={work.title}
+          lede={work.lede}
         />
 
         <div className="mt-20 flex flex-col gap-24 sm:gap-36">
@@ -49,6 +48,7 @@ export function CaseStudies() {
 }
 
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
+  const { work } = useContent();
   const [tab, setTab] = useState<TabId>("highlights");
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
@@ -85,7 +85,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
       </Reveal>
 
-      {/* Live screenshots — visual proof before the prose argument. */}
+      {/* Live screenshots: visual proof before the prose argument. */}
       {study.shots?.length ? (
         <Reveal delay={0.08}>
           <div
@@ -122,16 +122,16 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       {/* Problem / solution */}
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
         <Reveal>
-          <h4 className="text-eyebrow mb-4">Das Problem</h4>
+          <h4 className="text-eyebrow mb-4">{work.labels.problem}</h4>
           <p className="leading-relaxed text-ink-dim text-pretty">{study.problem}</p>
         </Reveal>
         <Reveal delay={0.08}>
-          <h4 className="text-eyebrow mb-4">Die Lösung</h4>
+          <h4 className="text-eyebrow mb-4">{work.labels.solution}</h4>
           <p className="leading-relaxed text-ink-dim text-pretty">{study.solution}</p>
         </Reveal>
       </div>
 
-      {/* The hard part — the section that separates a portfolio from a résumé */}
+      {/* The hard part: the section that separates a portfolio from a résumé */}
       <Reveal delay={0.05}>
         <div
           className={cn(
@@ -140,13 +140,13 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             accent.soft,
           )}
         >
-          <span className="text-eyebrow">Die harte Stelle</span>
+          <span className="text-eyebrow">{work.labels.hardPart}</span>
           <h4 className={cn("mt-3 text-lg font-semibold tracking-tight sm:text-xl", accent.text)}>
             {study.hardPart.title}
           </h4>
           {/* Zeilenmaß in ch statt rem: 68 Zeichen bleiben 68 Zeichen, egal
               welche Schriftgröße die Klasse gerade setzt. Gemessen lag dieser
-              Absatz vorher bei 96 Zeichen pro Zeile — deutlich über dem, was
+              Absatz vorher bei 96 Zeichen pro Zeile, deutlich über dem, was
               sich noch flüssig liest. */}
           <p className="mt-4 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
             {study.hardPart.body}
@@ -159,26 +159,27 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <div className="mt-12">
           <div
             role="tablist"
-            aria-label={`Details zu ${study.name}`}
+            aria-label={study.name}
             className="flex flex-wrap gap-1.5 border-b border-line pb-3"
           >
             {/* Der Automatisierungs-Tab erscheint nur, wo es etwas zu zeigen gibt. */}
-            {TABS.filter((t) => t.id !== "automation" || study.automation).map((item) => {
-              const selected = tab === item.id;
+            {TAB_IDS.filter((id) => id !== "automation" || study.automation).map((id) => {
+              const Icon = TAB_ICONS[id];
+              const selected = tab === id;
               return (
                 <button
-                  key={item.id}
+                  key={id}
                   role="tab"
                   type="button"
                   aria-selected={selected}
-                  onClick={() => setTab(item.id)}
+                  onClick={() => setTab(id)}
                   className={cn(
                     "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
                     // Die Farbfläche liegt als absolut positioniertes Geschwister
                     // darüber (für die Schiebe-Animation). Dieselbe Farbe hier
                     // zusätzlich als Hintergrund des Knopfes: Sollte das
                     // Motion-Element je nicht rendern, bliebe sonst dunkler Text
-                    // auf dunklem Grund — unsichtbar statt nur unschön.
+                    // auf dunklem Grund, unsichtbar statt nur unschön.
                     selected ? cn("text-void", accent.bg) : "text-ink-dim hover:text-ink",
                   )}
                 >
@@ -189,8 +190,8 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                       transition={{ duration: 0.35, ease: ease.expo }}
                     />
                   ) : null}
-                  <item.icon className="relative size-3.5" aria-hidden />
-                  <span className="relative">{item.label}</span>
+                  <Icon className="relative size-3.5" aria-hidden />
+                  <span className="relative">{work.tabs[id]}</span>
                 </button>
               );
             })}

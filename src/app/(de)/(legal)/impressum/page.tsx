@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 /**
  * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
- * Betreibers die Privatanschrift — sie ist damit öffentlich und wird indexiert.
+ * Betreibers die Privatanschrift, sie ist damit öffentlich und wird indexiert.
  */
 export default function Impressum() {
   return (
@@ -44,14 +44,14 @@ export default function Impressum() {
         <p className="mt-3 text-xs leading-relaxed text-ink-faint">
           Eine Telefonnummer wird hier bewusst nicht veröffentlicht. § 5 DDG
           verlangt eine Angabe, die eine schnelle elektronische Kontaktaufnahme
-          ermöglicht — die E-Mail-Adresse oben erfüllt das. Auf Anfrage nenne
+          ermöglicht. Die E-Mail-Adresse oben erfüllt das. Auf Anfrage nenne
           ich eine Rufnummer.
         </p>
       </section>
 
       {/*
         TODO(domenic): Falls eine Umsatzsteuer-Identifikationsnummer existiert,
-        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht — dann diesen
+        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht. Dann diesen
         Abschnitt wieder einsetzen:
 
           <section className="mb-10">
@@ -60,7 +60,7 @@ export default function Impressum() {
           </section>
 
         Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
-        Angabe ersatzlos — ein leerer oder erfundener Eintrag wäre schlechter
+        Angabe ersatzlos, ein leerer oder erfundener Eintrag wäre schlechter
         als keiner. Siehe USER-TODO A2.
       */}
 

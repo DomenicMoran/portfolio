@@ -3,7 +3,7 @@ import type { Content } from "./types";
 /**
  * English content.
  *
- * Not a literal translation — the German original leans on constructions that
+ * Not a literal translation. The German original leans on constructions that
  * do not survive word-for-word. What is preserved is the argument and the
  * evidence behind every number.
  *
@@ -14,7 +14,10 @@ import type { Content } from "./types";
 export const en: Content = {
   lang: "en",
   site: {
-    url: "https://domenicmoran.de/en",
+    // The origin, not the path: buildMetadata appends "/en" itself. With the
+    // full /en address here, the canonical came out as
+    // "https://domenicmoran.de/en/en".
+    url: "https://domenicmoran.de",
     name: "Domenic Moran",
     role: "AI Product Engineer",
     location: "Berlin, Germany",
@@ -24,9 +27,9 @@ export const en: Content = {
       detail: "Remote (EU) or hybrid in Berlin",
     },
     meta: {
-      title: "Domenic Moran — AI Product Engineer",
+      title: "Domenic Moran – AI Product Engineer",
       description:
-        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. 3,969 commits in four months — alongside a full-time job.",
+        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. 3,969 commits in four months, alongside a full-time job.",
     },
   },
 
@@ -40,6 +43,27 @@ export const en: Content = {
   ],
   navContact: "Contact",
   skipToContent: "Skip to content",
+  a11y: {
+    toTop: "Back to top",
+    mainNav: "Main navigation",
+    footerNav: "Footer navigation",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    commandPalette: "Open command palette",
+    currentSection: "Current section",
+    replay: "Play the sequence again",
+  },
+  palette: {
+    title: "Command palette",
+    searchLabel: "Search",
+    placeholder: "Search or jump …",
+    empty: "Nothing found.",
+    jump: "Jump to",
+    pdf: { label: "One-pager as PDF", hint: "Print-ready summary" },
+    mail: "Write an email",
+    github: "Source code and profile",
+    linkedin: "Professional background",
+  },
 
   hero: {
     eyebrow: "Berlin · available",
@@ -47,18 +71,17 @@ export const en: Content = {
       { text: "I" },
       { text: "ship" },
       { text: "finished", accent: true },
-      { text: "products" },
-      { text: "—" },
+      { text: "products," },
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: "Fullstack product engineer in Berlin. Four systems in production, built in four months alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine — from the migrations to the legal notice.",
+    lede: "Fullstack product engineer in Berlin. Four systems in production, built in four months alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.",
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
       { value: "4", label: "systems in production" },
-      { value: "3.969", label: "commits in 4 months" },
-      { value: "1.276", label: "API routes (MenuCloud)" },
+      { value: "3,969", label: "commits in 4 months" },
+      { value: "1,276", label: "API routes (MenuCloud)" },
       { value: "298", label: "automated tests" },
     ],
   },
@@ -66,7 +89,7 @@ export const en: Content = {
   work: {
     eyebrow: "Selected work",
     title: "Four products. All live. All built alone.",
-    lede: "No practice projects, no tutorial clones. Every system here has real users, real payments or real legal obligations — and I owned each one from the first line to the store review.",
+    lede: "No practice projects, no tutorial clones. Every system here has real users, real payments or real legal obligations, and I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
       automation: "Automation",
@@ -85,26 +108,26 @@ export const en: Content = {
       id: "salati",
       index: "01",
       name: "Salati",
-      tagline: "Prayer and Quran platform for German speakers — with AI that runs offline",
+      tagline: "Prayer and Quran platform for German speakers, with AI that runs offline",
       year: "2026",
       role: "Sole developer · product, code, stores, licensing",
       statusLabel: "Live in both stores",
       accent: "acid",
       problem:
-        "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German — tafsir, translation, transliteration, isolated and connected letters — finds nothing coherent. And all of it breaks the moment the network drops.",
+        "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
-        "An ad-free platform across five device classes: iOS, Android, Android TV, Wear OS and an HDMI stick for mosques. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device — no query ever leaves the phone.",
+        "An ad-free platform across five device classes: iOS, Android, Android TV, Wear OS and an HDMI stick for mosques. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device. No query ever leaves the phone.",
       hardPart: {
         title: "Speech recognition for Quranic recitation",
-        body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route — a larger Whisper model — was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
+        body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route, a larger Whisper model, was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
       },
       highlights: [
         "Five device classes from one monorepo: phone, tablet, Android TV, Wear OS, HDMI stick",
-        "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus — no cloud call",
+        "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus, no cloud call",
         "Whisper-based recitation checking with verse-conditioned prompting",
         "Complete Mushaf reader: four typefaces, tafsir, translation, word-level timestamps",
         "A 15-part German Quranic-Arabic podcast, produced through a two-voice ElevenLabs pipeline",
-        "Over-the-air updates via EAS — content corrections without a store cycle",
+        "Over-the-air updates via EAS: content corrections without a store cycle",
         "iOS Live Activities and Android widgets for the next prayer time",
         "Store presence maintained in 13 languages across four device classes",
         "AI answers cite their source and carry an EU AI Act Art. 50 disclosure",
@@ -119,7 +142,7 @@ export const en: Content = {
         { value: "5", label: "device classes" },
         { value: "13", label: "store languages" },
         { value: "100 %", label: "AI runs on the device" },
-        { value: "1.058", label: "commits" },
+        { value: "1,058", label: "commits" },
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -148,23 +171,23 @@ export const en: Content = {
       id: "menucloud",
       index: "02",
       name: "MenuCloud Berlin",
-      tagline: "Multi-tenant SaaS for restaurants — including statutory fiscal signing",
-      year: "2025 — 2026",
+      tagline: "Multi-tenant SaaS for restaurants, including statutory fiscal signing",
+      year: "2025–2026",
       role: "Founder & sole developer",
       statusLabel: "Live in production",
       accent: "violet",
       problem:
-        "Berlin restaurants hand 15–30 % commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees — and neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
+        "Berlin restaurants hand 15–30 % commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
-        "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management — and underneath it a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
+        "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
       hardPart: {
         title: "Fiscal signing as a tenancy problem",
-        body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue — which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_chain_rows`, and a fail-closed path: no signature, no transaction.",
+        body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue, which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_chain_rows`, and a fail-closed path: no signature, no transaction.",
       },
       highlights: [
         "1,276 API routes across 812 versioned Postgres migrations",
         "Multi-tenant architecture with row level security per restaurant",
-        "Stripe Connect destination charges — restaurants are paid directly, the platform fee is settled automatically",
+        "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
         "298 automated tests (254 unit / 44 end-to-end) running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
@@ -174,7 +197,7 @@ export const en: Content = {
       ],
       automation: {
         title: "46 workflows that keep the business running",
-        lede: "The part of the system that runs without me. Every workflow is versioned and traceable in the repository — not clicked together in a dashboard and then forgotten.",
+        lede: "The part of the system that runs without me. Every workflow is versioned and traceable in the repository, not clicked together in a dashboard and then forgotten.",
         groups: [
           {
             title: "Customer contact",
@@ -190,7 +213,7 @@ export const en: Content = {
             items: [
               "Supervisor every 5 minutes, watchdog every 15, workflow monitor hourly",
               "Global error handler that collects every failure instead of losing it",
-              "Weekly backup — and an hourly check that it can actually be restored",
+              "Weekly backup, plus an hourly check that it can actually be restored",
               "Self-healing always with a cooldown, a cap, and a message per intervention",
             ],
           },
@@ -221,7 +244,7 @@ export const en: Content = {
         { group: "Quality", items: ["Vitest", "Playwright", "Sentry", "Umami", "Lighthouse budgets"] },
       ],
       metrics: [
-        { value: "1.276", label: "API routes" },
+        { value: "1,276", label: "API routes" },
         { value: "812", label: "DB migrations" },
         { value: "298", label: "automated tests" },
         { value: "EU", label: "hosting & data residency" },
@@ -261,18 +284,18 @@ export const en: Content = {
       statusLabel: "In personal use",
       accent: "cyan",
       problem:
-        "A Berlin flat draws applicants in the hundreds. What decides it is not the best application but the first — within minutes of the listing going up. That is a race a human structurally cannot win, because humans sleep.",
+        "A Berlin flat draws applicants in the hundreds. What decides it is not the best application but the first, within minutes of the listing going up. That is a race a human structurally cannot win, because humans sleep.",
       solution:
         "A locally running agent that scans five portals around the clock, checks each new listing against defined criteria, sends borderline cases to an LLM for a full-text assessment, and drafts an individual cover letter. It ships in REVIEW mode: it sends nothing without approval, until you deliberately switch it to automatic.",
       hardPart: {
         title: "An agent that does not act unasked",
-        body: "What makes such a system appealing is also its risk: a bot sending applications with your real personal data can do real damage. So the shipped state is REVIEW — propose, do not send. Automatic mode exists, but as a deliberate user decision rather than the default. The same logic sits in the watchdogs on my other projects: self-healing always with a cooldown, a cap, and a visible alert on every intervention.",
+        body: "What makes such a system appealing is also its risk: a bot sending applications with your real personal data can do real damage. So the shipped state is REVIEW: propose, do not send. Automatic mode exists, but as a deliberate user decision rather than the default. The same logic sits in the watchdogs on my other projects: self-healing always with a cooldown, a cap, and a visible alert on every intervention.",
       },
       highlights: [
-        "Playwright with persistent Chrome profiles per portal — real sessions instead of brittle scrapers",
+        "Playwright with persistent Chrome profiles per portal: real sessions instead of brittle scrapers",
         "LLM full-text assessment with a rule-based fallback when no key is configured",
         "Local SQLite storage; the server binds to 127.0.0.1 by default",
-        "REVIEW mode as the shipped state — nothing is sent without human approval",
+        "REVIEW mode as the shipped state: nothing is sent without human approval",
         "Watchdog with automatic restart after a crash",
         "Multi-instance operation for parallel accounts, distributable package without personal data",
       ],
@@ -289,7 +312,7 @@ export const en: Content = {
       links: [],
       architecture: "wohnungsjaeger",
       keinScreenshot:
-        "There is deliberately no image of this project. The dashboard shows real listings, real addresses and my complete application documents. Staging a screenshot with invented data would have been the obvious fix — and would have put a fabricated image on a page that argues from verifiability. The architecture beside it is real.",
+        "There is deliberately no image of this project. The dashboard shows real listings, real addresses and my complete application documents. Staging a screenshot with invented data would have been the obvious fix, and would have put a fabricated image on a page that argues from verifiability. The architecture beside it is real.",
     },
     {
       id: "nouri",
@@ -303,7 +326,7 @@ export const en: Content = {
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetics: when the server is unreachable they display “saved” and lose the entry.",
       solution:
-        "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes — with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
+        "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
       hardPart: {
         title: "Reporting failure honestly",
         body: "Every write endpoint distinguishes explicitly: secrets missing (dry run, no pretence that data was saved), database unreachable (503), database reachable but rejecting (a real 4xx carrying the Postgres error code). It sounds like a detail, but it is the difference between a system you can believe while debugging and one that lies to you.",
@@ -312,7 +335,7 @@ export const en: Content = {
         "Monorepo with a shared catalogue across web, mobile and API",
         "59 tables across 12 versioned migrations, row level security active",
         "Supabase auth with cross-device profile sync",
-        "Using the app without an account stays entirely local — no forced login",
+        "Using the app without an account stays entirely local, no forced login",
         "Explicit failure states instead of silent 500s",
       ],
       stack: [
@@ -321,7 +344,7 @@ export const en: Content = {
         { group: "Delivery", items: ["Vercel", "pnpm workspaces"] },
       ],
       metrics: [
-        { value: "11.892", label: "recipes in the catalogue" },
+        { value: "11,892", label: "recipes in the catalogue" },
         { value: "59", label: "tables" },
         { value: "12", label: "migrations" },
       ],
@@ -346,12 +369,12 @@ export const en: Content = {
     portrait: "",
     title: "Four years learning. Four months shipping.",
     paragraphs: [
-      "I taught myself software engineering from 2022 — first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in four months, two of them shipping in both app stores, one carrying statutory fiscal signing — all of it built alongside a full-time job.",
-      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release — not a single user ever received anything.",
-      "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system — by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
+      "I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in four months, two of them shipping in both app stores, one carrying statutory fiscal signing, all of it built alongside a full-time job.",
+      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
+      "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
-      { value: "3.969", label: "commits in 4 months", note: "alongside a full-time job" },
+      { value: "3,969", label: "commits in 4 months", note: "alongside a full-time job" },
       { value: "4", label: "systems in production", note: "all built alone" },
       { value: "2", label: "app stores", note: "iOS and Android, live" },
       { value: "2022", label: "self-taught since", note: "Meta & Udemy certificates" },
@@ -363,8 +386,8 @@ export const en: Content = {
       {
         period: "since 04/2026",
         title: "Founder & product engineer",
-        org: "MenuCloud — sole proprietorship, Berlin",
-        body: "Building and running four production systems as the only developer — product, architecture, delivery, operations and compliance in one pair of hands.",
+        org: "MenuCloud, sole proprietorship, Berlin",
+        body: "Building and running four production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
       },
       {
@@ -377,12 +400,12 @@ export const en: Content = {
     ],
     openSource: {
       label: "Open source",
-      lede: "My production systems stay private — they carry customer data and licensed content. What I publish are the tools that came out of building them.",
+      lede: "My production systems stay private, they carry customer data and licensed content. What I publish are the tools that came out of building them.",
       items: [
         {
           name: "arabic-normalize",
           href: "https://github.com/DomenicMoran/arabic-normalize",
-          body: "Normalising Arabic script for comparison. Solves a speech model emitting “علی” where the source has “علي” — identical to the ear, different to ===.",
+          body: "Normalising Arabic script for comparison. Solves a speech model emitting “علی” where the source has “علي”. Identical to the ear, different to ===.",
           meta: "TypeScript · 23 tests · zero dependencies",
         },
         {
@@ -395,23 +418,24 @@ export const en: Content = {
     },
     certificates: {
       label: "Certificates",
+      note: "Linked entries open the issuer's verification page.",
       groups: [
         {
-          issuer: "Meta — via Coursera",
+          issuer: "Meta, via Coursera",
           items: [
-            "Introduction to Front-End Development",
-            "Introduction to Back-End Development",
-            "Introduction to Mobile Development",
-            "Programming in Python",
-            "Version Control",
+            { name: "Introduction to Front-End Development" },
+            { name: "Introduction to Back-End Development" },
+            { name: "Introduction to Mobile Development" },
+            { name: "Programming in Python" },
+            { name: "Version Control" },
           ],
         },
         {
-          issuer: "iOS & Swift",
+          issuer: "iOS and Swift",
           items: [
-            "App development with Swift 5 for iOS 15 (Udemy, 39 h)",
-            "Introduction to Swift 5",
-            "Table Views",
+            { name: "App development with Swift 5 for iOS 15 (Udemy, 39 h)" },
+            { name: "Introduction to Swift 5" },
+            { name: "Table Views" },
           ],
         },
       ],
@@ -421,24 +445,24 @@ export const en: Content = {
   workflow: {
     eyebrow: "How I work",
     title: "AI is a tool, not an excuse",
-    lede: "I have worked agent-assisted for over a year. It compresses delivery from months to days — but only because there is a system around the agents that catches their mistakes. Without it, AI-assisted development is a machine for producing plausible-looking rubbish.",
+    lede: "I have worked agent-assisted for over a year. It compresses delivery from months to days, but only because there is a system around the agents that catches their mistakes. Without it, AI-assisted development is a machine for producing plausible-looking rubbish.",
     principles: [
       {
         n: "01",
         title: "Context as versioned code",
-        body: "Every project carries its conventions as a file in the repository: import rules, test patterns, design tokens, security defaults. Plus a memory that persists across sessions — every lesson becomes an entry with its reasoning, not a note in a chat log that is gone tomorrow. An agent is only as good as the context it reliably finds.",
+        body: "Every project carries its conventions as a file in the repository: import rules, test patterns, design tokens, security defaults. Plus a memory that persists across sessions: every lesson becomes an entry with its reasoning, not a note in a chat log that is gone tomorrow. An agent is only as good as the context it reliably finds.",
         artifacts: ["A conventions file per repo", "Persistent memory", "Append-only project log"],
       },
       {
         n: "02",
         title: "Parallel work instead of waiting",
-        body: "Long runs — builds, test suites, store uploads — go to the background while I keep working. Independent research goes to specialised sub-agents with their own context window. The bottleneck in agent-assisted development is rarely the model; it is the serialised way of working in front of it.",
+        body: "Long runs such as builds, test suites and store uploads go to the background while I keep working. Independent research goes to specialised sub-agents with their own context window. The bottleneck in agent-assisted development is rarely the model; it is the serialised way of working in front of it.",
         artifacts: ["Sub-agents", "Background tasks", "Turborepo caching"],
       },
       {
         n: "03",
         title: "Verification instead of trust",
-        body: "“Should work now” is not a result. Every claim about system state needs evidence: an HTTP response, a database query, a Playwright screenshot, a received email, an actual cron execution. This rule has repeatedly surfaced bugs in my own projects that had slipped through green test suites — because the tests were checking the wrong thing.",
+        body: "“Should work now” is not a result. Every claim about system state needs evidence: an HTTP response, a database query, a Playwright screenshot, a received email, an actual cron execution. This rule has repeatedly surfaced bugs in my own projects that had slipped through green test suites, because the tests were checking the wrong thing.",
         artifacts: ["Playwright against production", "Screenshot diffs", "Live database checks"],
       },
       {
@@ -450,40 +474,40 @@ export const en: Content = {
       {
         n: "05",
         title: "Compliance as definition of done",
-        body: "Every customer-facing feature passes the same gate: is there a lawful basis under GDPR? Does outreach respect German unfair-competition law? EU AI Act Art. 50 — is the AI labelled as such? Does the site promise anything we do not deliver? For consumer products in the EU that is not an extra; it is part of the product.",
+        body: "Every customer-facing feature passes the same gate: is there a lawful basis under GDPR? Does outreach respect German unfair-competition law? EU AI Act Art. 50: is the AI labelled as such? Does the site promise anything we do not deliver? For consumer products in the EU that is not an extra; it is part of the product.",
         artifacts: ["GDPR Art. 30", "Automated processing agreements", "AI Act disclosure"],
       },
     ],
     demo: {
-      label: "What a typical iteration looks like",
-      note: "— a re-enacted sequence, not a live session.",
+      label: "A real bug, re-enacted:",
+      note: "A replay, not a live session. Cause, file and change are in commit bce08f5e.",
       lines: [
-        { kind: "prompt", text: "Feature: prayer-time widget for Android, offline capable" },
-        { kind: "think", text: "Conventions loaded · 3 similar modules found" },
-        { kind: "run", text: "Implementation in react-native-android-widget" },
-        { kind: "run", text: "Tests: 14 new · Typecheck: 0 errors · Lint: 0 errors" },
-        { kind: "warn", text: "Verification: widget renders empty on API 34" },
-        { kind: "think", text: "Cause: widget activity does not survive the RN recreate" },
-        { kind: "run", text: "Fix + regression test · screenshot from a real device" },
-        { kind: "ok", text: "Verified on Pixel 7 · shipped over the air · 0 store cycles" },
+        { kind: "prompt", text: "Widget shows stale prayer times on the phone" },
+        { kind: "think", text: "Tests green, typecheck green, not reproducible in the emulator" },
+        { kind: "run", text: "Instrumented the headless task: WIDGET_UPDATE fires, finds no handler" },
+        { kind: "warn", text: "registerWidgetTaskHandler never runs" },
+        { kind: "think", text: "Android is loading index.js instead of index.android.js" },
+        { kind: "think", text: "Metro skips platform resolution for \"main\" when the extension is spelled out" },
+        { kind: "run", text: "package.json: \"main\": \"index.js\" becomes \"index\"" },
+        { kind: "ok", text: "Widget updates in the background · commit bce08f5e" },
       ],
     },
     speed: {
       eyebrow: "Order of magnitude",
       title: "The difference is not that I type faster.",
-      lede: "It is that research, implementation, testing and verification run in parallel rather than in sequence — and that context does not get lost between sessions.",
+      lede: "It is that research, implementation, testing and verification run in parallel rather than in sequence, and that context does not get lost between sessions.",
       rows: [
         { label: "Conventional, solo", weeks: 100, note: "weeks to a store release" },
         { label: "With the agent setup", weeks: 22, note: "same feature depth" },
       ],
-      note: "A relative illustration from my own projects — not an industry benchmark. The defensible figure next to it: Salati stands at 44 shipped versions across five device types, built alongside three other systems in production.",
+      note: "A relative illustration from my own projects, not an industry benchmark. The defensible figure next to it: Salati stands at 44 shipped versions across five device types, built alongside three other systems in production.",
     },
   },
 
   skills: {
     eyebrow: "Capabilities",
     title: "Broad enough for the whole product, deep enough for the hard parts.",
-    lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent — so next to each capability stands the system it came from.",
+    lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the system it came from.",
     domains: [
       {
         id: "frontend",
@@ -514,7 +538,7 @@ export const en: Content = {
       {
         id: "cloud",
         title: "Cloud, delivery & operations",
-        summary: "I run what I build — including the night shift when something falls over.",
+        summary: "I run what I build, including the night shift when something falls over.",
         skills: [
           { name: "Vercel / edge", evidence: "Static exports, rewrites, ISR" },
           { name: "Docker / Coolify / Hetzner", evidence: "Own VPS stack in production" },
@@ -556,7 +580,7 @@ export const en: Content = {
     strengths: [
       {
         title: "I ship finished, not nearly finished",
-        body: "Four systems in production — including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        body: "Four systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
       },
       {
         title: "I work across the whole stack",
@@ -564,7 +588,7 @@ export const en: Content = {
       },
       {
         title: "Evidence over gut feeling",
-        body: "A green test run proves nothing — I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
+        body: "A green test run proves nothing. I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
       },
     ],
     cta: {
@@ -576,15 +600,15 @@ export const en: Content = {
   contact: {
     eyebrow: "Contact",
     title: "Let's build something",
-    lede: "A concrete role, a project enquiry, or just a technical question — I reply within 24 hours.",
+    lede: "A concrete role, a project enquiry, or just a technical question: I reply within 24 hours.",
     hinweis:
-      "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither — and you keep a copy of your message in your own sent folder.",
+      "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither, and you keep a copy of your message in your own sent folder.",
     copy: "Copy address",
     copied: "Copied",
     checkliste: {
       titel: "What helps me in a first email",
       punkte: [
-        "What it is about — role, project or question",
+        "What it is about: role, project or question",
         "What you are building and with what",
         "How soon you want to start",
         "For roles: the salary range, so we both save time",
@@ -599,9 +623,15 @@ export const en: Content = {
 
   footer: {
     legalNote:
-      "Legal notice and privacy policy are in German — they satisfy German law and are addressed to German authorities.",
+      "Legal notice and privacy policy are in German. They satisfy German law and are addressed to German authorities.",
     impressum: "Legal notice",
     datenschutz: "Privacy",
+    navLabel: "Page",
+    contactLabel: "Contact",
+    legalLabel: "Legal",
+    onepager: "One-pager as PDF",
+    sourceLabel: "Source code of this site",
+    sourceHref: "https://github.com/DomenicMoran/portfolio",
   },
 
   notFound: {

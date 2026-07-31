@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
    */
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+
+    /**
+     * Die Seite hat zwei Wurzel-Layouts, eines je Sprache. Für eine Adresse,
+     * die zu gar keiner Route gehört, kann Next deshalb nicht entscheiden, in
+     * welchem Layout es eine 404 rendern soll, und liefert eine ungestylte
+     * Standardseite ohne Stylesheet aus. `global-not-found.tsx` ist der dafür
+     * vorgesehene Ausweg: eine 404-Seite, die ihr eigenes Dokument mitbringt.
+     */
+    globalNotFound: true,
   },
 
   images: {

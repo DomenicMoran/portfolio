@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 /**
  * TODO(domenic): Anschrift ergänzen (USER-TODO B1). Der Rest beschreibt exakt,
- * was diese Seite technisch tut — das ist bewusst wenig:
+ * was diese Seite technisch tut, und das ist bewusst wenig:
  * keine Cookies, kein Tracking-Pixel, keine Drittanbieter-Schriften,
  * keine Datenbank. Wenn du Vercel Analytics aktivierst (USER-TODO B3), ist der
  * entsprechende Abschnitt unten bereits vorbereitet.
@@ -36,7 +36,7 @@ export default function Datenschutz() {
         Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
         technisch notwendige Server-Logdaten verarbeitet (IP-Adresse,
         Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage
-        ist Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse am sicheren und
+        ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
         stabilen Betrieb. Die Übermittlung in die USA erfolgt auf Grundlage der
         EU-Standardvertragsklauseln.
       </Section>
@@ -44,7 +44,7 @@ export default function Datenschutz() {
       <Section title="Cookies und Tracking">
         Diese Website setzt keine Cookies, weder eigene noch fremde, und bindet
         keine Analyse- oder Werbedienste ein. Es gibt daher auch kein
-        Cookie-Banner — nicht aus Nachlässigkeit, sondern weil es nichts gibt,
+        Cookie-Banner, nicht aus Nachlässigkeit, sondern weil es nichts gibt,
         worin man einwilligen könnte.
       </Section>
 
@@ -57,7 +57,7 @@ export default function Datenschutz() {
       <Section title="Kontaktaufnahme">
         Diese Website hat kein Kontaktformular. Sie nennt lediglich eine
         E-Mail-Adresse. Es wird also nichts erhoben, nichts übertragen und
-        nichts gespeichert, wenn du Kontakt aufnimmst — deine Nachricht geht
+        nichts gespeichert, wenn du Kontakt aufnimmst. Deine Nachricht geht
         direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
         daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
         ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b
@@ -68,7 +68,7 @@ export default function Datenschutz() {
       <Section title="Keine weiteren Datenempfänger">
         Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website
         lädt keine Skripte, Schriften, Karten, Videos oder Analysedienste von
-        fremden Servern nach — weder beim Aufruf noch bei einer Interaktion.
+        fremden Servern nach, weder beim Aufruf noch bei einer Interaktion.
         Sämtliche Seiten werden vorab erzeugt und als fertige Dateien
         ausgeliefert; es gibt keinen Endpunkt, der Eingaben entgegennimmt.
       </Section>

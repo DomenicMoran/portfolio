@@ -3,7 +3,7 @@
 import { Printer } from "lucide-react";
 
 /**
- * "Save as PDF" is literally the browser print dialog — every OS ships a PDF
+ * "Save as PDF" is literally the browser print dialog; every OS ships a PDF
  * writer, and the print stylesheet in globals.css is authored for A4. This
  * avoids shipping a PDF library to the client entirely.
  */

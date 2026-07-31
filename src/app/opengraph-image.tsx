@@ -1,13 +1,13 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/content/site";
 
-export const alt = `${site.name} — ${site.role}`;
+export const alt = `${site.name} – ${site.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
  * Social preview card. Generated at build time so there is no runtime cost and
- * no external font fetch — the OG renderer only supports a subset of CSS, so
+ * no external font fetch: the OG renderer only supports a subset of CSS, so
  * this deliberately mirrors the site's look rather than reusing its components.
  */
 export default async function Image() {
@@ -114,7 +114,7 @@ export default async function Image() {
               maxWidth: 900,
             }}
           >
-            Vier Plattformen in Produktion — Mobile, SaaS, Infrastruktur,
+            Vier Plattformen in Produktion: Mobile, SaaS, Infrastruktur,
             Compliance. Alle allein gebaut.
           </div>
         </div>

@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, FileText, Mail, Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
-import { caseStudies, navItems, site, recruiter } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
+import { SOCIALS } from "@/content/types";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +20,7 @@ type Action = {
 /**
  * ⌘K palette. Two reasons it earns its bundle cost on a portfolio:
  * every action is also reachable by normal navigation (so it is pure
- * enhancement), and the audience — engineers — will actually press ⌘K.
+ * enhancement), and the audience, engineers, will actually press ⌘K.
  */
 export function CommandPalette({
   open,
@@ -28,6 +29,7 @@ export function CommandPalette({
   open: boolean;
   onClose: () => void;
 }) {
+  const { nav: navItems, caseStudies, site, recruiter, palette } = useContent();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,7 +48,7 @@ export function CommandPalette({
       ...navItems.map((item) => ({
         id: `nav-${item.href}`,
         label: item.label,
-        hint: "Springen",
+        hint: palette.jump,
         icon: ArrowRight,
         run: go(item.href),
       })),
@@ -59,8 +61,8 @@ export function CommandPalette({
       })),
       {
         id: "pdf",
-        label: "One-Pager als PDF",
-        hint: "Druckfertige Kurzfassung",
+        label: palette.pdf.label,
+        hint: palette.pdf.hint,
         icon: FileText,
         run: () => {
           onClose();
@@ -69,7 +71,7 @@ export function CommandPalette({
       },
       {
         id: "mail",
-        label: "E-Mail schreiben",
+        label: palette.mail,
         hint: site.email,
         icon: Mail,
         run: () => {
@@ -79,27 +81,27 @@ export function CommandPalette({
       },
     ];
 
-    if (site.socials.github) {
+    if (SOCIALS.github) {
       list.push({
         id: "gh",
         label: "GitHub",
-        hint: "Quellcode & Profil",
+        hint: palette.github,
         icon: GithubIcon,
-        run: open_(site.socials.github),
+        run: open_(SOCIALS.github),
       });
     }
-    if (site.socials.linkedin) {
+    if (SOCIALS.linkedin) {
       list.push({
         id: "li",
         label: "LinkedIn",
-        hint: "Beruflicher Werdegang",
+        hint: palette.linkedin,
         icon: LinkedinIcon,
-        run: open_(site.socials.linkedin),
+        run: open_(SOCIALS.linkedin),
       });
     }
 
     return list;
-  }, [onClose]);
+  }, [onClose, navItems, caseStudies, site, recruiter, palette]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -167,7 +169,7 @@ export function CommandPalette({
           onClick={onClose}
           role="dialog"
           aria-modal="true"
-          aria-label="Befehlspalette"
+          aria-label={palette.title}
         >
           <motion.div
             initial={{ opacity: 0, y: -12, scale: 0.98 }}
@@ -186,9 +188,9 @@ export function CommandPalette({
                   setQuery(e.target.value);
                   setActive(0);
                 }}
-                placeholder="Suchen oder springen …"
+                placeholder={palette.placeholder}
                 className="w-full bg-transparent py-4 text-sm text-ink outline-none placeholder:text-ink-faint"
-                aria-label="Suche"
+                aria-label={palette.searchLabel}
               />
               <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-ink-faint sm:block">
                 ESC
@@ -198,7 +200,7 @@ export function CommandPalette({
             <ul className="max-h-[52vh] overflow-y-auto p-2">
               {results.length === 0 ? (
                 <li className="px-3 py-8 text-center text-sm text-ink-faint">
-                  Nichts gefunden.
+                  {palette.empty}
                 </li>
               ) : (
                 results.map((action, i) => (

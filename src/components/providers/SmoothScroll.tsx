@@ -6,7 +6,7 @@ import Lenis from "lenis";
 /**
  * Lenis smooth scroll, driven by rAF.
  *
- * Deliberately skipped when the user prefers reduced motion — hijacking the
+ * Deliberately skipped when the user prefers reduced motion: hijacking the
  * scroll of someone with vestibular sensitivity is the single most hostile
  * thing a "premium" site does. In that case native scrolling stays untouched.
  */

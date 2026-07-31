@@ -1,35 +1,54 @@
-import Link from "next/link";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
-import { navItems, site } from "@/content/site";
+"use client";
 
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import { useContent } from "@/content/ContentProvider";
+import { SOCIALS } from "@/content/types";
+
+/**
+ * Die Fußzeile als zweiter Wegweiser.
+ *
+ * Vorher lagen hier alle Links in einer Reihe nebeneinander: Navigation,
+ * Profile und Rechtliches sahen gleich aus und standen gleichrangig. Wer unten
+ * ankommt, sucht aber gezielt eines von dreien. Deshalb jetzt drei benannte
+ * Spalten statt einer Sammlung.
+ */
 export function Footer() {
+  const { nav: navItems, site, footer, a11y, recruiter, languageSwitch, lang } =
+    useContent();
   const year = new Date().getFullYear();
+  const otherHref = lang === "de" ? "/en" : "/";
 
   const socials = [
-    site.socials.github
-      ? { label: "GitHub", href: site.socials.github, icon: GithubIcon }
+    SOCIALS.github
+      ? { label: "GitHub", href: SOCIALS.github, icon: GithubIcon }
       : null,
-    site.socials.linkedin
-      ? { label: "LinkedIn", href: site.socials.linkedin, icon: LinkedinIcon }
+    SOCIALS.linkedin
+      ? { label: "LinkedIn", href: SOCIALS.linkedin, icon: LinkedinIcon }
       : null,
   ].filter(Boolean) as { label: string; href: string; icon: typeof GithubIcon }[];
 
   return (
     <footer className="relative overflow-hidden border-t border-line px-6 pt-20 pb-10">
       <div className="mx-auto max-w-6xl">
-        {/* Oversized wordmark — the closing note of the page. */}
+        {/* Der Schriftzug als Schlussakkord.
+            `whitespace-nowrap` plus kleinerer Maximalwert: Bei 15vw brach der
+            Name auf 1440 px in zwei Zeilen um, und weil der Verlauf nach unten
+            ausblendet, sah die zweite Zeile abgeschnitten aus statt
+            ausgeblendet. Einzeilig liest sich derselbe Verlauf als Absicht. */}
         <p
           aria-hidden
-          className="mb-16 bg-gradient-to-b from-ink/12 to-transparent bg-clip-text text-[clamp(3rem,15vw,11rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-transparent select-none"
+          className="mb-14 bg-gradient-to-b from-ink/14 to-transparent bg-clip-text text-[clamp(2rem,9.5vw,8rem)] leading-[0.9] font-semibold tracking-[-0.05em] whitespace-nowrap text-transparent select-none"
         >
           {site.name}
         </p>
 
-        <div className="flex flex-col gap-10 border-t border-line pt-10 md:flex-row md:justify-between">
+        <div className="grid gap-10 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Wer, wo, wie erreichbar */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-ink">
-              {site.role} · {site.location}
-            </p>
+            <p className="text-sm text-ink">{site.role}</p>
+            <p className="text-sm text-ink-dim">{site.location}</p>
             <a
               href={`mailto:${site.email}`}
               className="-my-1 w-fit py-1 text-sm break-all text-ink-dim transition-colors hover:text-acid"
@@ -38,57 +57,109 @@ export function Footer() {
             </a>
           </div>
 
-          {/* Gemessen: ohne die vertikale Polsterung waren diese Links 20 px
-              hoch und lagen damit unter der WCAG-Mindestgröße von 24 px für
-              Zeigeflächen. Der negative Rand hält die optische Ausrichtung. */}
-          <nav aria-label="Fußzeile" className="-my-2 flex flex-wrap gap-x-6">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="py-2 text-sm text-ink-dim transition-colors hover:text-ink"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          {/* Seite */}
+          <div className="flex flex-col gap-3">
+            <h2 className="text-eyebrow">{footer.navLabel}</h2>
+            {/* Gemessen: ohne die vertikale Polsterung waren diese Links 20 px
+                hoch und lagen damit unter der WCAG-Mindestgröße von 24 px für
+                Zeigeflächen. Der negative Rand hält die optische Ausrichtung. */}
+            <nav aria-label={a11y.footerNav} className="-my-2 flex flex-col">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </div>
 
-          {socials.length > 0 ? (
-            <div className="flex gap-2">
+          {/* Kontakt und Profile */}
+          <div className="flex flex-col gap-3">
+            <h2 className="text-eyebrow">{footer.contactLabel}</h2>
+            <div className="-my-2 flex flex-col">
+              <a
+                href={recruiter.cta.pdf.href}
+                className="group flex w-fit items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+              >
+                {footer.onepager}
+                <ArrowUpRight
+                  className="size-3 opacity-0 transition-opacity group-hover:opacity-100"
+                  aria-hidden
+                />
+              </a>
               {socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="grid size-10 place-items-center rounded-full border border-line text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                  className="group flex w-fit items-center gap-2 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
                 >
-                  <social.icon className="size-4" aria-hidden />
+                  <social.icon className="size-3.5" aria-hidden />
+                  {social.label}
+                  <ArrowUpRight
+                    className="size-3 opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-hidden
+                  />
                 </a>
               ))}
+              <Link
+                href={otherHref}
+                hrefLang={languageSwitch.to}
+                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+              >
+                {languageSwitch.label}
+              </Link>
             </div>
-          ) : null}
+          </div>
+
+          {/* Rechtliches und Quellcode */}
+          <div className="flex flex-col gap-3">
+            <h2 className="text-eyebrow">{footer.legalLabel}</h2>
+            <div className="-my-2 flex flex-col">
+              <Link
+                href="/impressum"
+                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+              >
+                {footer.impressum}
+              </Link>
+              <Link
+                href="/datenschutz"
+                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+              >
+                {footer.datenschutz}
+              </Link>
+              <a
+                href={footer.sourceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex w-fit items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+              >
+                {footer.sourceLabel}
+                <ArrowUpRight
+                  className="size-3 opacity-0 transition-opacity group-hover:opacity-100"
+                  aria-hidden
+                />
+              </a>
+            </div>
+            {/* Nur die englische Fassung trägt hier einen Hinweis: Die
+                Rechtstexte bleiben deutsch, und das soll ein englischer Leser
+                erfahren, bevor er klickt. */}
+            {footer.legalNote ? (
+              <p className="mt-1 max-w-[36ch] text-[11px] leading-relaxed text-ink-faint">
+                {footer.legalNote}
+              </p>
+            ) : null}
+          </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 border-t border-line pt-6">
           <p className="font-mono text-[11px] text-ink-faint">
             © {year} {site.name}
           </p>
-          <div className="flex gap-6">
-            <Link
-              href="/impressum"
-              className="-my-2 py-2 font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
-            >
-              Impressum
-            </Link>
-            <Link
-              href="/datenschutz"
-              className="-my-2 py-2 font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
-            >
-              Datenschutz
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

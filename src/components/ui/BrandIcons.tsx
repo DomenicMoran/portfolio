@@ -3,7 +3,7 @@
  *
  * lucide-react v1 dropped brand icons, so these two are inlined. Both are the
  * official marks, used only to label links pointing at the respective profiles
- * — the one use every brand guideline permits. They take the same props shape
+ *: the one use every brand guideline permits. They take the same props shape
  * as lucide icons so they drop into the same slots.
  */
 

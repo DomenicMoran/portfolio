@@ -23,7 +23,7 @@ export function useMediaQuery(query: string) {
 
   const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
 
-  // Nothing matches during server rendering — capabilities are client-only.
+  // Nothing matches during server rendering: capabilities are client-only.
   const getServerSnapshot = useCallback(() => false, []);
 
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

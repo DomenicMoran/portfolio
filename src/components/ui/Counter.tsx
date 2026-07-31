@@ -22,7 +22,7 @@ export function Counter({ value, className }: { value: string; className?: strin
   const target = Number(numericPart.replace(/\./g, "").replace(",", "."));
   const animatable = match !== null && Number.isFinite(target);
 
-  // Tausender nur gruppieren, wenn die Quelle es tat — sonst würde eine
+  // Tausender nur gruppieren, wenn die Quelle es tat, sonst würde eine
   // Jahreszahl wie "2018" als "2.018" erscheinen.
   const useGrouping = numericPart.includes(".");
 
@@ -41,7 +41,7 @@ export function Counter({ value, className }: { value: string; className?: strin
       useGrouping,
     });
 
-    const hochzaehlen = () => {
+    const starten = () => {
       if (done) return;
       done = true;
       controls = animate(0, target, {
@@ -69,8 +69,8 @@ export function Counter({ value, className }: { value: string; className?: strin
      * Der Grund für den zusätzlichen Scroll-Wächter:
      *
      * Ein IntersectionObserver meldet nur, was den Sichtbereich tatsächlich
-     * kreuzt. Springt jemand direkt zu einem Abschnitt — über die
-     * Befehlspalette, einen Anker oder Pos1/Ende — landet dieses Element unter
+     * kreuzt. Springt jemand direkt zu einem Abschnitt (über die
+     * Befehlspalette, einen Anker oder Pos1/Ende) landet dieses Element unter
      * Umständen oberhalb des Sichtbereichs, ohne ihn je berührt zu haben. Der
      * Beobachter schweigt dann für immer, und die Kennzahl bliebe auf "0"
      * stehen. Eine Seite, die mit belegbaren Zahlen argumentiert, darf einem
@@ -84,8 +84,8 @@ export function Counter({ value, className }: { value: string; className?: strin
     };
 
     const io = new IntersectionObserver(
-      (eintraege) => {
-        for (const e of eintraege) if (e.isIntersecting) hochzaehlen();
+      (beobachtungen) => {
+        for (const e of beobachtungen) if (e.isIntersecting) starten();
       },
       { threshold: 0.5 },
     );

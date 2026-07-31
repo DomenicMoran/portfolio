@@ -6,7 +6,7 @@ export const contentType = "image/png";
 /**
  * Icon für „Zum Home-Bildschirm" auf iOS.
  *
- * iOS rundet die Ecken selbst und legt kein eigenes Hintergrundfeld an —
+ * iOS rundet die Ecken selbst und legt kein eigenes Hintergrundfeld an,
  * deshalb hier volle Fläche ohne eigenen Radius, sonst entsteht ein sichtbarer
  * Rahmen um das gerundete Ergebnis.
  */

@@ -1,7 +1,7 @@
 /**
  * Single source of truth for every piece of copy and data on the site.
  *
- * Everything marked `TODO(domenic)` is a value only Domenic can supply — see
+ * Everything marked `TODO(domenic)` is a value only Domenic can supply, see
  * USER-TODO.md, block A. Components are written so that a missing (empty or
  * null) value removes the element rather than rendering a placeholder: an
  * unanswered question must never become a visible "lorem ipsum" on a page whose
@@ -18,14 +18,14 @@ export const site = {
   email: "domenicmoran@gmail.com",
   // Kein Telefon und keine Privatanschrift in dieser Datei: das Repo ist
   // öffentlich, und beides wird aus öffentlichen Repos zuverlässig
-  // abgegriffen. Beides steht im Lebenslauf unter docs/ — außerhalb des Repos.
+  // abgegriffen. Beides steht im Lebenslauf unter docs/, also außerhalb des Repos.
 
   // Typed as plain strings, not literals: components branch on whether these
   // are filled in, and `as const` would narrow "" to a type that makes the
   // populated branch unreachable.
   socials: {
     github: "https://github.com/DomenicMoran" as string,
-    // TODO(domenic): vollständige Profil-URL — USER-TODO A1.
+    // TODO(domenic): vollständige Profil-URL, siehe USER-TODO A1.
     linkedin: "" as string,
 
   },
@@ -37,21 +37,21 @@ export const site = {
   },
 
   meta: {
-    title: "Domenic Moran — AI Product Engineer",
+    title: "Domenic Moran – AI Product Engineer",
     description:
-      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.946 Commits in vier Monaten — neben einem Vollzeitjob.",
+      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.969 Commits in vier Monaten, entstanden neben einem Vollzeitjob.",
   },
 } as const;
 
 /* ========================================================================== */
-/* About — die Story, die dieses Profil von jedem anderen unterscheidet        */
+/* About: die Story, die dieses Profil von jedem anderen unterscheidet         */
 /* ========================================================================== */
 
 export const about = {
   eyebrow: "Wer ich bin",
   /**
    * TODO(domenic): echtes Porträt nach `public/portrait.jpg` legen und den Pfad
-   * hier eintragen — USER-TODO B1. Solange leer, entfällt das Bildelement und
+   * hier eintragen, siehe USER-TODO B1. Solange leer, entfällt das Bildelement und
    * die Textspalte nimmt die volle Breite ein; die Sektion sieht dann
    * vollständig aus statt lückenhaft.
    *
@@ -62,9 +62,9 @@ export const about = {
   portrait: "" as string,
   title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
   paragraphs: [
-    "Softwareentwicklung habe ich mir ab 2022 selbst beigebracht — erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung — entstanden neben einem Vollzeitjob.",
-    "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete — angekommen ist bei keinem Nutzer je etwas.",
-    "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen — durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
+    "Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.",
+    "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
+    "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
@@ -73,7 +73,7 @@ export const about = {
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
   ],
-  /** Macht die Zahlen prüfbar statt bloß behauptet — und erklärt jede Abweichung,
+  /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
   statsHinweis:
     "Alle Zahlen auf dieser Seite sind am 31. Juli 2026 gegen `git log` und die Repositories geprüft. Commit-Stände wachsen weiter; abweichende Werte sind daher höher, nicht niedriger.",
@@ -81,8 +81,8 @@ export const about = {
     {
       period: "seit 04/2026",
       title: "Gründer & Product Engineer",
-      org: "MenuCloud — Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler — Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      org: "MenuCloud, Inh. Domenic Moran, Berlin",
+      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
@@ -94,18 +94,18 @@ export const about = {
     },
   ],
   /**
-   * Öffentlicher Code. Bewusst kein Produktcode — die Produktivsysteme bleiben
+   * Öffentlicher Code. Bewusst kein Produktcode, die Produktivsysteme bleiben
    * privat. Was hier steht, sind eigenständige Bibliotheken aus Problemen, die
    * dabei tatsächlich aufgetreten sind.
    */
   openSource: {
     label: "Open Source",
-    lede: "Meine Produktivsysteme bleiben privat — sie tragen Kundendaten und lizenzierte Inhalte. Was ich veröffentliche, sind die Werkzeuge, die dabei entstanden sind.",
+    lede: "Meine Produktivsysteme bleiben privat, sie tragen Kundendaten und lizenzierte Inhalte. Was ich veröffentliche, sind die Werkzeuge, die dabei entstanden sind.",
     items: [
       {
         name: "arabic-normalize",
         href: "https://github.com/DomenicMoran/arabic-normalize",
-        body: "Normalisierung arabischer Schrift für den Vergleich. Löst, dass ein Spracherkenner „علی“ ausgibt, wo die Vorlage „علي“ enthält — für das Ohr identisch, für === verschieden.",
+        body: "Normalisierung arabischer Schrift für den Vergleich. Löst, dass ein Spracherkenner „علی“ ausgibt, wo die Vorlage „علي“ enthält. Für das Ohr identisch, für === verschieden.",
         meta: "TypeScript · 23 Tests · null Abhängigkeiten",
       },
       {
@@ -116,27 +116,35 @@ export const about = {
       },
     ],
   },
-  /** Belegbar: alle Zertifikate liegen als PDF vor, die Meta-Kurse sind über
-   *  Coursera verifizierbar. */
+  /**
+   * `href` trägt den Prüf-Link des Ausstellers. Coursera und Udemy vergeben
+   * für jedes Zertifikat eine öffentliche Bestätigungsseite; die gehört hier
+   * hinein, nicht eine hochgeladene PDF-Datei. Eine PDF-Datei kann jeder
+   * bauen, die Bestätigungsseite des Ausstellers nicht.
+   *
+   * Solange ein Link fehlt, steht der Eintrag als Text da und sieht bewusst
+   * nicht wie ein Link aus. Siehe USER-TODO, Abschnitt Zertifikate.
+   */
   certificates: {
     label: "Zertifikate",
+    note: "Die verlinkten Einträge führen zur Bestätigungsseite des Ausstellers.",
     groups: [
       {
-        issuer: "Meta — über Coursera",
+        issuer: "Meta, über Coursera",
         items: [
-          "Introduction to Front-End Development",
-          "Introduction to Back-End Development",
-          "Introduction to Mobile Development",
-          "Programming in Python",
-          "Version Control",
+          { name: "Introduction to Front-End Development" },
+          { name: "Introduction to Back-End Development" },
+          { name: "Introduction to Mobile Development" },
+          { name: "Programming in Python" },
+          { name: "Version Control" },
         ],
       },
       {
-        issuer: "iOS & Swift",
+        issuer: "iOS und Swift",
         items: [
-          "App-Entwicklung mit Swift 5 für iOS 15 (Udemy, 39 Std.)",
-          "Introduction to Swift 5",
-          "Table Views",
+          { name: "App-Entwicklung mit Swift 5 für iOS 15 (Udemy, 39 Std.)" },
+          { name: "Introduction to Swift 5" },
+          { name: "Table Views" },
         ],
       },
     ],
@@ -154,16 +162,15 @@ export const hero = {
     { text: "Ich" },
     { text: "liefere" },
     { text: "fertige", accent: true },
-    { text: "Produkte" },
-    { text: "—" },
-    { text: "nicht" },
+    { text: "Produkte," },
+    { text: "keine" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  lede: "Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in vier Monaten neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut — von der Migration bis zum Impressum.",
+  lede: "Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in vier Monaten neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.",
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   // Jede Zahl am 31.07.2026 gegen `git log` und die Repositories geprüft.
-  // Commit-Stände wachsen weiter — deshalb steht das Prüfdatum sichtbar in der
+  // Commit-Stände wachsen weiter, deshalb steht das Prüfdatum sichtbar in der
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
   // falsch wäre.
   proof: [
@@ -209,7 +216,7 @@ export type CaseStudy = {
   };
   /**
    * Live screenshots captured from the running products on 2026-07-31.
-   * Omitted where there is nothing safe to show — WohnungsJäger's dashboard
+   * Omitted where there is nothing safe to show: WohnungsJäger's dashboard
    * carries real listings and applicant data.
    */
   shots?: {
@@ -222,7 +229,7 @@ export type CaseStudy = {
   }[];
   /**
    * Steht anstelle eines Screenshots, wo es einen guten Grund gibt, keinen zu
-   * zeigen. Eine begründete Leerstelle ist besser als ein nachgestelltes Bild —
+   * zeigen. Eine begründete Leerstelle ist besser als ein nachgestelltes Bild,
    * und besser als eine Fallstudie, die neben den anderen unfertig aussieht.
    */
   keinScreenshot?: string;
@@ -233,27 +240,27 @@ export const caseStudies: CaseStudy[] = [
     id: "salati",
     index: "01",
     name: "Salati",
-    tagline: "Gebets- und Koran-App für den DACH-Raum — mit KI, die offline läuft",
+    tagline: "Gebets- und Koran-App für den DACH-Raum mit KI, die offline läuft",
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
     status: "live",
     statusLabel: "Live in beiden Stores",
     accent: "acid",
     problem:
-      "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will — Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben — findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
+      "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
     solution:
-      "Eine werbefreie Plattform über fünf Zielgeräte hinweg: iOS, Android, Android TV, Wear OS und ein HDMI-Stick für Moscheen. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-KI läuft als quantisiertes Modell auf dem Gerät — keine Anfrage verlässt das Telefon.",
+      "Eine werbefreie Plattform über fünf Zielgeräte hinweg: iOS, Android, Android TV, Wear OS und ein HDMI-Stick für Moscheen. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-KI läuft als quantisiertes Modell auf dem Gerät. Keine Anfrage verlässt das Telefon.",
     hardPart: {
       title: "Spracherkennung für Koran-Rezitation",
-      body: "Für den Auswendiglern-Modus muss die App hören, ob ein Vers korrekt rezitiert wurde. Der naheliegende Weg — größeres Whisper-Modell — war der falsche. Der Hebel lag in der Methode: den erwarteten Vers als Prompt ins Modell konditionieren, persische und Urdu-Buchstabenvarianten vor dem Vergleich normalisieren, und milde bewerten statt binär. Ein auf Tarteel feingetuntes Base-Modell schlägt so das dreifach größere Large-Modell — bei einem Bruchteil der Latenz auf dem Gerät.",
+      body: "Für den Auswendiglern-Modus muss die App hören, ob ein Vers korrekt rezitiert wurde. Der naheliegende Weg, ein größeres Whisper-Modell, war der falsche. Der Hebel lag in der Methode: den erwarteten Vers als Prompt ins Modell konditionieren, persische und Urdu-Buchstabenvarianten vor dem Vergleich normalisieren, und milde bewerten statt binär. Ein auf Tarteel feingetuntes Base-Modell schlägt so das dreifach größere Large-Modell, bei einem Bruchteil der Latenz auf dem Gerät.",
     },
     highlights: [
       "Fünf Zielgeräte aus einem Monorepo: Phone, Tablet, Android TV, Wear OS, HDMI-Stick",
-      "On-Device-LLM (GGUF/llama.cpp) mit eigenem RAG über kuratiertem Korpus — ohne Cloud-Call",
+      "On-Device-LLM (GGUF/llama.cpp) mit eigenem RAG über kuratiertem Korpus, ohne Cloud-Call",
       "Whisper-basierte Rezitations-Erkennung mit vers-konditioniertem Prompting",
       "Vollständiger Mushaf-Reader: vier Schriftarten, Tafsir, Übersetzung, Wort-Zeitstempel",
       "15-teiliger deutscher Koran-Arabisch-Podcast, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
-      "OTA-Updates über EAS Update — Inhaltskorrekturen ohne Store-Zyklus",
+      "OTA-Updates über EAS Update: Inhaltskorrekturen ohne Store-Zyklus",
       "iOS Live Activities und Android-Widgets für die nächste Gebetszeit",
       "Store-Auftritt in 13 Sprachen über vier Geräteklassen gepflegt",
       "KI-Antworten mit Quellenangabe und Kennzeichnung nach EU AI Act Art. 50",
@@ -285,14 +292,14 @@ export const caseStudies: CaseStudy[] = [
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
-      // TODO(domenic): Store-Links — USER-TODO.
+      // TODO(domenic): Store-Links, siehe USER-TODO.
       { label: "App Store", href: "", kind: "store" },
       { label: "Google Play", href: "", kind: "store" },
     ],
     architecture: "salati",
     shots: [
       {
-        // Die Fallstudie behauptet fünf Gerätetypen — dieses Bild ist das
+        // Die Fallstudie behauptet fünf Gerätetypen, dieses Bild ist das
         // einzige, das einen davon zeigt, den man sonst nirgends sieht.
         src: "/shots/salati-tv.png",
         alt: "Koran-Reader von Salati auf Android TV: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung, unten die Fernbedienungs-Hinweise.",
@@ -303,7 +310,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         // Store-Aufnahme statt Web-Mitschnitt: höhere Auflösung, und sie belegt
-        // drei Aussagen auf einmal — Ausführung auf dem Gerät, KI-Kennzeichnung
+        // drei Aussagen auf einmal: Ausführung auf dem Gerät, KI-Kennzeichnung
         // nach EU AI Act Art. 50 und Quellenangabe zur Antwort.
         src: "/shots/salati-ki.png",
         alt: "Die Salati-KI auf dem Telefon beantwortet eine Frage aus Koran und Hadithen, weist sich ausdrücklich als KI-gestützt aus und nennt die Quelle der Antwort.",
@@ -317,24 +324,24 @@ export const caseStudies: CaseStudy[] = [
     id: "menucloud",
     index: "02",
     name: "MenuCloud Berlin",
-    tagline: "Multi-Tenant-SaaS für Gastronomie — inklusive gesetzlicher Fiskalisierung",
-    year: "2025 — 2026",
+    tagline: "Multi-Tenant-SaaS für Gastronomie, inklusive gesetzlicher Fiskalisierung",
+    year: "2025–2026",
     role: "Gründer & alleiniger Entwickler",
     status: "live",
     statusLabel: "Live in Produktion",
     accent: "violet",
     problem:
-      "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten — und beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
+      "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
     solution:
-      "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement — und darunter eine mandantenfähige Cloud-TSE, die jede Transaktion nach §146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
+      "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement. Darunter liegt eine mandantenfähige Cloud-TSE, die jede Transaktion nach §146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
     hardPart: {
       title: "Fiskalisierung als Mandanten-Problem",
-      body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen — das wäre für den Gastronom eine Betriebsprüfungs-Katastrophe. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_chain_rows` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
+      body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen. Für den Gastronomen wäre das eine Katastrophe bei der nächsten Betriebsprüfung. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_chain_rows` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
     },
     highlights: [
       "1.276 API-Routen über 812 versionierte Postgres-Migrationen",
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
-      "Stripe Connect Destination-Charge — Restaurants werden direkt ausgezahlt, Plattformgebühr abgeführt",
+      "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV §146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
       "298 automatisierte Tests (254 Unit / 44 E2E) gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
@@ -345,7 +352,7 @@ export const caseStudies: CaseStudy[] = [
     /** Eigener Block, weil 46 Workflows keine Fußnote sind. */
     automation: {
       title: "46 Workflows, die den Betrieb tragen",
-      lede: "Der Teil des Systems, der ohne mich weiterläuft. Alle Workflows sind versioniert und im Repository nachvollziehbar — nicht in einer Oberfläche zusammengeklickt und dann vergessen.",
+      lede: "Der Teil des Systems, der ohne mich weiterläuft. Alle Workflows sind versioniert und im Repository nachvollziehbar, nicht in einer Oberfläche zusammengeklickt und dann vergessen.",
       groups: [
         {
           title: "Kundenkontakt",
@@ -361,7 +368,7 @@ export const caseStudies: CaseStudy[] = [
           items: [
             "Supervisor alle 5 Minuten, Watchdog alle 15, Workflow-Wächter stündlich",
             "Globaler Error-Handler, der jeden Fehlschlag einsammelt statt ihn zu verlieren",
-            "Wöchentliches Backup — und stündliche Prüfung, ob es wiederherstellbar ist",
+            "Wöchentliches Backup, dazu stündliche Prüfung, ob es wiederherstellbar ist",
             "Selbstheilung immer mit Cooldown, Obergrenze und Slack-Meldung je Eingriff",
           ],
         },
@@ -408,7 +415,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "812", label: "DB-Migrationen" },
       { value: "298", label: "Automatisierte Tests" },
       { value: "EU", label: "Hosting & Datenhaltung" },
-      // TODO(domenic): Kunden / MRR / GMV / Uptime — USER-TODO A3.
+      // TODO(domenic): Kunden / MRR / GMV / Uptime, siehe USER-TODO A3.
     ],
     links: [
       { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },
@@ -427,7 +434,7 @@ export const caseStudies: CaseStudy[] = [
         label: "menucloud-berlin.de",
       },
       {
-        // Store-Aufnahme aus dem Projekt selbst — die Fallstudie nennt die
+        // Store-Aufnahme aus dem Projekt selbst, die Fallstudie nennt die
         // Apps, zeigte sie aber vorher nicht.
         src: "/shots/menucloud-app.png",
         alt: "Restaurantseite in der MenuCloud-App auf dem iPhone: Speisekarte, Reservierung, Öffnungszeiten und Beschreibung eines Berliner Restaurants.",
@@ -448,18 +455,18 @@ export const caseStudies: CaseStudy[] = [
     statusLabel: "Im Eigenbetrieb",
     accent: "cyan",
     problem:
-      "Auf eine Berliner Wohnung kommen dreistellige Bewerberzahlen. Entscheidend ist nicht die beste Bewerbung, sondern die erste — und zwar innerhalb von Minuten nach Inseratsschaltung. Das ist ein Wettlauf, den ein Mensch strukturell nicht gewinnen kann, weil er schläft.",
+      "Auf eine Berliner Wohnung kommen dreistellige Bewerberzahlen. Entscheidend ist nicht die beste Bewerbung, sondern die erste, und zwar innerhalb von Minuten nach Inseratsschaltung. Das ist ein Wettlauf, den ein Mensch strukturell nicht gewinnen kann, weil er schläft.",
     solution:
       "Ein lokal laufender Agent, der rund um die Uhr fünf Portale scannt, jedes neue Inserat gegen die eigenen Kriterien prüft, zweifelhafte Fälle per LLM im Volltext bewertet und ein individuelles Anschreiben erzeugt. Standardmäßig im REVIEW-Modus: die App versendet nichts ohne Freigabe, bis man sie bewusst auf Automatik stellt.",
     hardPart: {
       title: "Ein Agent, der nicht ungefragt handelt",
-      body: "Der Reiz eines solchen Systems ist auch sein Risiko: ein Bot, der selbstständig Bewerbungen mit deinen echten Personendaten verschickt, kann realen Schaden anrichten. Deshalb ist der Auslieferungszustand REVIEW — Vorschlag statt Versand. Der Automatikmodus existiert, ist aber eine bewusste Entscheidung des Nutzers, nicht die Voreinstellung. Dieselbe Logik steckt in den Watchdogs meiner anderen Projekte: Selbstheilung immer mit Cooldown, Obergrenze und sichtbarem Alarm bei jedem Eingriff.",
+      body: "Der Reiz eines solchen Systems ist auch sein Risiko: ein Bot, der selbstständig Bewerbungen mit deinen echten Personendaten verschickt, kann realen Schaden anrichten. Deshalb ist der Auslieferungszustand REVIEW: Vorschlag statt Versand. Der Automatikmodus existiert, ist aber eine bewusste Entscheidung des Nutzers, nicht die Voreinstellung. Dieselbe Logik steckt in den Watchdogs meiner anderen Projekte: Selbstheilung immer mit Cooldown, Obergrenze und sichtbarem Alarm bei jedem Eingriff.",
     },
     highlights: [
-      "Playwright mit persistenten Chrome-Profilen je Portal — echte Sessions statt brüchiger Scraper",
+      "Playwright mit persistenten Chrome-Profilen je Portal: echte Sessions statt brüchiger Scraper",
       "LLM-Volltextprüfung mit regelbasiertem Fallback, wenn kein Key hinterlegt ist",
       "Lokale SQLite-Datenhaltung, Server bindet standardmäßig nur auf 127.0.0.1",
-      "REVIEW-Modus als Auslieferungszustand — kein Versand ohne menschliche Freigabe",
+      "REVIEW-Modus als Auslieferungszustand: kein Versand ohne menschliche Freigabe",
       "Watchdog mit automatischem Neustart nach Absturz",
       "Mehrinstanz-Betrieb für parallele Accounts, Weitergabe-Paket ohne persönliche Daten",
     ],
@@ -476,7 +483,7 @@ export const caseStudies: CaseStudy[] = [
     links: [],
     architecture: "wohnungsjaeger",
     keinScreenshot:
-      "Von diesem Projekt gibt es hier bewusst kein Bild. Das Dashboard zeigt echte Inserate, echte Adressen und meine vollständigen Bewerbungsunterlagen. Einen Screenshot mit ausgedachten Daten nachzustellen wäre die naheliegende Lösung — aber dann stünde auf einer Seite, die mit Nachprüfbarkeit argumentiert, ein erfundenes Bild. Die Architektur daneben ist echt.",
+      "Von diesem Projekt gibt es hier bewusst kein Bild. Das Dashboard zeigt echte Inserate, echte Adressen und meine vollständigen Bewerbungsunterlagen. Einen Screenshot mit ausgedachten Daten nachzustellen wäre die naheliegende Lösung. Aber dann stünde auf einer Seite, die mit Nachprüfbarkeit argumentiert, ein erfundenes Bild. Die Architektur daneben ist echt.",
   },
   {
     id: "nouri",
@@ -491,7 +498,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Ernährungs-Apps sind entweder Tracker ohne Planung oder Planer ohne echte Datenbasis. Und fast alle behandeln Fehler als Kosmetik: Wenn der Server nicht erreichbar ist, zeigen sie „gespeichert“ an und verlieren die Eingabe.",
     solution:
-      "Eine Plattform aus Web-App, Expo-App und Fastify-API auf einem gemeinsamen Katalog von fast 12.000 Rezepten — mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung und Trainingsplänen. Und mit einer API, die drei Zustände sauber unterscheidet, statt sie zu verschleiern.",
+      "Eine Plattform aus Web-App, Expo-App und Fastify-API auf einem gemeinsamen Katalog von fast 12.000 Rezepten, mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung und Trainingsplänen. Und mit einer API, die drei Zustände sauber unterscheidet, statt sie zu verschleiern.",
     hardPart: {
       title: "Fehler ehrlich melden",
       body: "Jeder schreibende Endpunkt unterscheidet explizit: Secrets fehlen (Dry-Run, kein Datenverlust vorgetäuscht), Datenbank nicht erreichbar (503), Datenbank erreichbar aber lehnt ab (echter 4xx mit Postgres-Fehlercode). Das klingt nach Kleinkram, ist aber der Unterschied zwischen einem System, dem man beim Debuggen glauben kann, und einem, das lügt. Genau dieselbe Disziplin wende ich auf KI-Output an: eine Behauptung ohne Beleg zählt nicht.",
@@ -500,7 +507,7 @@ export const caseStudies: CaseStudy[] = [
       "Monorepo mit geteiltem Katalog über Web, Mobile und API hinweg",
       "59 Tabellen über 12 versionierte Migrationen, Row Level Security aktiv",
       "Supabase-Auth mit geräteübergreifender Profilsynchronisation",
-      "Nutzung ohne Account bleibt vollständig lokal — kein Login-Zwang",
+      "Nutzung ohne Account bleibt vollständig lokal, kein Login-Zwang",
       "Explizite Fehlerzustände statt stiller 500er",
     ],
     stack: [
@@ -536,24 +543,24 @@ export const caseStudies: CaseStudy[] = [
 export const workflow = {
   eyebrow: "Arbeitsweise",
   title: "KI ist ein Werkzeug, keine Ausrede",
-  lede: "Ich arbeite seit über einem Jahr agentengestützt. Das komprimiert Lieferzeiten von Monaten auf Tage — aber nur, weil um die Agenten herum ein System steht, das ihre Fehler abfängt. Ohne dieses System ist KI-gestützte Entwicklung eine Maschine zur Erzeugung von plausibel aussehendem Schrott.",
+  lede: "Ich arbeite seit über einem Jahr agentengestützt. Das komprimiert Lieferzeiten von Monaten auf Tage, aber nur, weil um die Agenten herum ein System steht, das ihre Fehler abfängt. Ohne dieses System ist KI-gestützte Entwicklung eine Maschine zur Erzeugung von plausibel aussehendem Schrott.",
   principles: [
     {
       n: "01",
       title: "Kontext als versionierter Code",
-      body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg — jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
+      body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
       artifacts: ["CLAUDE.md pro Repo", "Persistentes Memory", "Append-only Projektlog"],
     },
     {
       n: "02",
       title: "Parallelisierung statt Wartezeit",
-      body: "Lange Läufe — Builds, Testsuites, Store-Uploads — laufen im Hintergrund, während ich weiterarbeite. Unabhängige Recherchen gehen an spezialisierte Sub-Agenten mit eigenem Kontextfenster. Der Engpass bei agentengestützter Entwicklung ist selten das Modell, sondern die serialisierte Arbeitsweise davor.",
+      body: "Lange Läufe wie Builds, Testsuites und Store-Uploads laufen im Hintergrund, während ich weiterarbeite. Unabhängige Recherchen gehen an spezialisierte Sub-Agenten mit eigenem Kontextfenster. Der Engpass bei agentengestützter Entwicklung ist selten das Modell, sondern die serialisierte Arbeitsweise davor.",
       artifacts: ["Sub-Agenten", "Hintergrund-Tasks", "Turborepo-Caching"],
     },
     {
       n: "03",
       title: "Verifikation statt Vertrauen",
-      body: "„Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Behauptung über den Systemzustand braucht einen Beleg: HTTP-Response, DB-Query, Playwright-Screenshot, empfangene E-Mail, echte Cron-Execution. Diese Regel hat in meinen eigenen Projekten mehrfach Bugs aufgedeckt, die durch grüne Test-Suites gerutscht waren — weil die Tests das falsche geprüft haben.",
+      body: "„Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Behauptung über den Systemzustand braucht einen Beleg: HTTP-Response, DB-Query, Playwright-Screenshot, empfangene E-Mail, echte Cron-Execution. Diese Regel hat in meinen eigenen Projekten mehrfach Bugs aufgedeckt, die durch grüne Test-Suites gerutscht waren, weil die Tests das Falsche geprüft haben.",
       artifacts: ["Playwright gegen Produktion", "Screenshot-Diffs", "Live-DB-Verifikation"],
     },
     {
@@ -565,22 +572,30 @@ export const workflow = {
     {
       n: "05",
       title: "Recht als Definition of Done",
-      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG §7 bei Outreach beachtet? EU AI Act Art. 50 — ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
+      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG §7 bei Outreach beachtet? EU AI Act Art. 50: Ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
       artifacts: ["DSGVO Art. 30", "AVV automatisiert", "AI-Act-Disclosure"],
     },
   ],
-  // The terminal replays this. Kept short so the whole loop reads in ~25s.
+  /**
+   * Das Terminal spielt diese Zeilen ab.
+   *
+   * Keine erfundene Sitzung: Das ist ein echter Fehler aus dem Salati-Repo,
+   * nachgezeichnet. Die Ursache, die Datei und die Änderung stehen so im
+   * Commit bce08f5e vom 23.07.2026. Vorher stand hier ein ausgedachter Ablauf
+   * mit ausgedachten Zahlen. Auf einer Seite, deren Kernaussage „jede Angabe
+   * ist belegbar“ lautet, war das die falscheste Stelle für Erfundenes.
+   */
   demo: {
-    label: "So sieht eine typische Iteration aus",
+    label: "Ein echter Fehler, nachgezeichnet:",
     lines: [
-      { kind: "prompt", text: "Feature: Gebetszeiten-Widget für Android, offline-fähig" },
-      { kind: "think", text: "Konventionen aus CLAUDE.md geladen · 3 ähnliche Module gefunden" },
-      { kind: "run", text: "Implementierung in react-native-android-widget" },
-      { kind: "run", text: "Tests: 14 neu · Typecheck: 0 Fehler · Lint: 0 Errors" },
-      { kind: "warn", text: "Verifikation: Widget rendert leer auf API 34" },
-      { kind: "think", text: "Ursache: Widget-Activity überlebt RN-Recreate nicht" },
-      { kind: "run", text: "Fix + Regressionstest · Screenshot vom echten Gerät" },
-      { kind: "ok", text: "Verifiziert auf Pixel 7 · OTA ausgeliefert · 0 Store-Zyklen" },
+      { kind: "prompt", text: "Widget zeigt auf dem Telefon veraltete Gebetszeiten" },
+      { kind: "think", text: "Tests grün, Typecheck grün, im Emulator nicht reproduzierbar" },
+      { kind: "run", text: "Headless-Task instrumentiert: WIDGET_UPDATE feuert, findet keinen Handler" },
+      { kind: "warn", text: "registerWidgetTaskHandler läuft nie" },
+      { kind: "think", text: "Android lädt index.js statt index.android.js" },
+      { kind: "think", text: "Metro löst \"main\" nicht plattformspezifisch auf, wenn die Endung dabeisteht" },
+      { kind: "run", text: "package.json: \"main\": \"index.js\" wird zu \"index\"" },
+      { kind: "ok", text: "Widget aktualisiert im Hintergrund · Commit bce08f5e" },
     ],
   },
 } as const;
@@ -593,7 +608,7 @@ export type SkillDomain = {
   id: string;
   title: string;
   summary: string;
-  /** Kein Level mehr: eine Zahl, die niemand pruefen kann, traegt nichts.
+  /** Kein Level mehr: eine Zahl, die niemand prüfen kann, trägt nichts.
    *  Der Beleg ist die Aussage. */
   skills: { name: string; evidence: string }[];
 };
@@ -630,7 +645,7 @@ export const skillDomains: SkillDomain[] = [
   {
     id: "cloud",
     title: "Cloud, Delivery & Betrieb",
-    summary: "Ich betreibe, was ich baue — inklusive der Nachtschicht, wenn etwas ausfällt.",
+    summary: "Ich betreibe, was ich baue, inklusive der Nachtschicht, wenn etwas ausfällt.",
     skills: [
       { name: "Vercel / Edge", evidence: "Statische Exports, Rewrites, ISR" },
       { name: "Docker / Coolify / Hetzner", evidence: "Eigener VPS-Stack in Produktion" },
@@ -672,13 +687,13 @@ export const recruiter = {
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung oder Freelance" },
     // Pre-empts the "where's the code?" question and answers it as a decision
-    // rather than a gap — see USER-TODO block D.
+    // rather than a gap, see USER-TODO block D.
     { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
   ],
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Vier Systeme in Produktion — inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Vier Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
     },
     {
       title: "Ich arbeite über den ganzen Stack",
@@ -686,7 +701,7 @@ export const recruiter = {
     },
     {
       title: "Belegpflicht statt Bauchgefühl",
-      body: "Ein grüner Testlauf beweist nichts — das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
+      body: "Ein grüner Testlauf beweist nichts. Das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
     },
   ],
   cta: {
@@ -702,13 +717,13 @@ export const recruiter = {
 export const contact = {
   eyebrow: "Kontakt",
   title: "Lass uns etwas bauen",
-  lede: "Ob konkrete Rolle, Projektanfrage oder einfach eine technische Frage — ich antworte innerhalb von 24 Stunden.",
+  lede: "Ob konkrete Rolle, Projektanfrage oder einfach eine technische Frage: Ich antworte innerhalb von 24 Stunden.",
   hinweis:
-    "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht — und du behältst deine Nachricht im eigenen Postausgang.",
+    "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht. Und du behältst deine Nachricht im eigenen Postausgang.",
   checkliste: {
     titel: "Das hilft mir in der ersten Mail",
     punkte: [
-      "Worum es geht — Rolle, Projekt oder Frage",
+      "Worum es geht: Rolle, Projekt oder Frage",
       "Was ihr baut und womit",
       "Wie schnell es losgehen soll",
       "Bei Rollen: Gehaltsrahmen, damit wir beide Zeit sparen",

@@ -61,7 +61,7 @@ const NODE_H = 62;
 
 export const ARCHITECTURES: Record<string, Diagram> = {
   salati: {
-    title: "Salati — ein Monorepo, fünf Zielgeräte",
+    title: "Salati: ein Monorepo, fünf Zielgeräte",
     caption:
       "Die Geräte teilen sich Domänenlogik und Inhalte. Der KI-Pfad endet bewusst auf dem Gerät: Modell und Korpus werden ausgeliefert, nicht angefragt.",
     height: 470,
@@ -106,7 +106,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
   },
 
   menucloud: {
-    title: "MenuCloud — mandantenfähig bis in die Fiskalisierung",
+    title: "MenuCloud: mandantenfähig bis in die Fiskalisierung",
     caption:
       "Jeder Mandant bekommt eine eigene, rechtlich zurechenbare Signatureinheit. Der Bestellpfad ist fail-closed: ohne TSE-Signatur wird nicht gebucht.",
     height: 480,
@@ -149,7 +149,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
   },
 
   wohnungsjaeger: {
-    title: "WohnungsJäger — Scan, Bewertung, menschliche Freigabe",
+    title: "WohnungsJäger: Scan, Bewertung, menschliche Freigabe",
     caption:
       "Der Agent läuft vollständig lokal. Die Freigabestufe zwischen Bewertung und Versand ist der Auslieferungszustand, nicht eine optionale Einstellung.",
     height: 400,
@@ -170,7 +170,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { id: "llm", label: "LLM-Volltextprüfung", sub: "Anthropic · Fallback: Regeln", x: 616, y: 190, w: 284, tone: "cyan" },
 
       { id: "db", label: "SQLite", sub: "lokal · 127.0.0.1", x: 20, y: 302, w: 220, tone: "neutral" },
-      { id: "review", label: "REVIEW-Queue", sub: "Mensch entscheidet — Standard", x: 254, y: 302, w: 330, tone: "acid" },
+      { id: "review", label: "REVIEW-Queue", sub: "Mensch entscheidet (Standard)", x: 254, y: 302, w: 330, tone: "acid" },
       { id: "send", label: "Versand", sub: "nur nach Freigabe", x: 598, y: 302, w: 302, tone: "neutral" },
     ],
     edges: [
@@ -186,7 +186,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
   },
 
   nouri: {
-    title: "NOURI — geteilter Katalog über drei Oberflächen",
+    title: "NOURI: geteilter Katalog über drei Oberflächen",
     caption:
       "Web, Mobile und API greifen auf denselben typisierten Katalog zu. Schreibpfade unterscheiden drei Fehlerzustände statt sie zu 500ern zu bündeln.",
     height: 400,

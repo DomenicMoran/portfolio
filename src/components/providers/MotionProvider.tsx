@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
  *
  * The `@media (prefers-reduced-motion)` block in globals.css only reaches CSS
  * animations and transitions. Framer Motion drives inline styles from
- * requestAnimationFrame, so it ignores that rule entirely — without this
+ * requestAnimationFrame, so it ignores that rule entirely. Without this
  * provider the site would claim to respect the setting while still animating
  * every reveal.
  *
