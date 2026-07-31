@@ -1,48 +1,56 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { ArrowUpRight, Copy, Check } from "lucide-react";
 import { useState } from "react";
-import { ArrowRight, Check, TriangleAlert } from "lucide-react";
 import { contact, site } from "@/content/site";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ease } from "@/lib/motion";
-import { cn } from "@/lib/utils";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 
-type Status = "idle" | "sending" | "sent" | "error";
-
+/**
+ * Kontakt ohne Formular.
+ *
+ * Ein Formular hätte einen Mailversand-Dienst als Drittanbieter gebraucht, den
+ * die Datenschutzerklärung ausweisen muss, plus einen Endpunkt, der ausfallen
+ * kann. Eine Mailadresse kann beides nicht. Sie hat außerdem einen Vorteil, den
+ * kein Formular hat: Der Absender behält seine Nachricht im eigenen Postausgang.
+ *
+ * Damit lädt diese Seite nichts von Dritten nach — auch nicht beim Absenden.
+ */
 export function Contact() {
-  const [status, setStatus] = useState<Status>("idle");
+  const [kopiert, setKopiert] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (status === "sending") return;
-
-    setStatus("sending");
-    const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
-
+  const kopieren = async () => {
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      setStatus("sent");
-      form.reset();
+      await navigator.clipboard.writeText(site.email);
+      setKopiert(true);
+      window.setTimeout(() => setKopiert(false), 2000);
     } catch {
-      // Never swallow this into a fake success — the fallback below gives the
-      // visitor a working path instead of a dead end.
-      setStatus("error");
+      // Zwischenablage verweigert (unsicherer Kontext, Berechtigung) — der
+      // Mailto-Link daneben funktioniert weiterhin, also kein Fehlerzustand.
     }
-  }
+  };
+
+  const kanaele = [
+    site.socials.linkedin
+      ? { label: "LinkedIn", href: site.socials.linkedin, icon: LinkedinIcon }
+      : null,
+    site.socials.github
+      ? { label: "GitHub", href: site.socials.github, icon: GithubIcon }
+      : null,
+  ].filter(Boolean) as {
+    label: string;
+    href: string;
+    icon: (p: { className?: string }) => React.ReactElement;
+  }[];
 
   return (
-    <section id="contact" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
+    <section id="contact" className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="glow-orb bottom-0 left-1/2 size-[30rem] -translate-x-1/2 bg-acid/8" />
+      </div>
+
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow={contact.eyebrow}
@@ -50,180 +58,95 @@ export function Contact() {
           lede={contact.lede}
         />
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_minmax(0,32rem)] lg:gap-20">
-          {/* Direct route — always available, no JS required */}
+        <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_minmax(0,22rem)] lg:gap-20">
           <Reveal>
             <div className="flex flex-col gap-8">
-              <a
-                href={`mailto:${site.email}`}
-                className="group inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all text-ink transition-colors hover:text-acid sm:text-3xl"
-              >
-                {site.email}
-                <ArrowRight
-                  className="hidden size-6 shrink-0 transition-transform duration-300 group-hover:translate-x-1 sm:block"
-                  aria-hidden
-                />
-              </a>
+              {/* Die Mailadresse ist hier das Hauptelement, nicht eine Fußnote. */}
+              <div className="flex flex-wrap items-center gap-3">
+                <Magnetic strength={0.15}>
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="group inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all text-ink transition-colors hover:text-acid sm:text-4xl"
+                  >
+                    {site.email}
+                    <ArrowUpRight
+                      className="hidden size-7 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:block"
+                      aria-hidden
+                    />
+                  </a>
+                </Magnetic>
 
-              <dl className="flex flex-col gap-4 border-t border-line pt-8">
-                <div className="flex flex-col gap-1">
-                  <dt className="text-eyebrow">Standort</dt>
-                  <dd className="text-sm text-ink-dim">{site.location}</dd>
+                <button
+                  type="button"
+                  onClick={kopieren}
+                  className="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                >
+                  {kopiert ? (
+                    <>
+                      <Check className="size-3.5 text-acid" aria-hidden />
+                      Kopiert
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="size-3.5" aria-hidden />
+                      Adresse kopieren
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <p className="max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
+                {contact.hinweis}
+              </p>
+
+              {kanaele.length > 0 ? (
+                <div className="flex flex-wrap gap-2 border-t border-line pt-8">
+                  {kanaele.map((k) => (
+                    <a
+                      key={k.label}
+                      href={k.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                    >
+                      <k.icon className="size-3.5" />
+                      {k.label}
+                      <ArrowUpRight
+                        className="size-3 opacity-0 transition-opacity group-hover:opacity-100"
+                        aria-hidden
+                      />
+                    </a>
+                  ))}
                 </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-eyebrow">Verfügbarkeit</dt>
-                  <dd className="text-sm text-ink-dim">
-                    {site.availability.label} · {site.availability.detail}
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-eyebrow">Antwortzeit</dt>
-                  <dd className="text-sm text-ink-dim">In der Regel unter 24 Stunden</dd>
-                </div>
-              </dl>
+              ) : null}
             </div>
           </Reveal>
 
-          {/* Form */}
+          {/* Was in eine erste Mail gehört — spart beiden Seiten eine Runde. */}
           <Reveal delay={0.08}>
-            <form
-              onSubmit={handleSubmit}
-              className="lit flex flex-col gap-5 rounded-2xl border border-line bg-surface/50 p-7 sm:p-8"
-            >
-              {/* Honeypot: bots fill it, humans never see it. */}
-              <div className="absolute -left-[9999px]" aria-hidden>
-                <label htmlFor="website">Website</label>
-                <input id="website" name="website" tabIndex={-1} autoComplete="off" />
-              </div>
+            <div className="lit rounded-2xl border border-line bg-surface/50 p-7">
+              <h3 className="text-eyebrow mb-5">{contact.checkliste.titel}</h3>
+              <ul className="flex flex-col gap-3">
+                {contact.checkliste.punkte.map((p) => (
+                  <li key={p} className="flex gap-2.5 text-sm leading-relaxed text-ink-dim">
+                    <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-acid" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field
-                  id="name"
-                  name="name"
-                  label={contact.formLabels.name}
-                  required
-                  autoComplete="name"
-                />
-                <Field
-                  id="email"
-                  name="email"
-                  type="email"
-                  label={contact.formLabels.email}
-                  required
-                  autoComplete="email"
-                />
-              </div>
-
-              <Field
-                id="company"
-                name="company"
-                label={contact.formLabels.company}
-                autoComplete="organization"
-              />
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="message" className="text-eyebrow">
-                  {contact.formLabels.message}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  className="resize-y rounded-xl border border-line bg-base px-4 py-3 text-sm text-ink transition-colors outline-none placeholder:text-ink-faint focus:border-acid/60"
-                  placeholder="Worum geht es?"
-                />
-              </div>
-
-              <Magnetic className="self-start" strength={0.2}>
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className={cn(
-                    "group inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-medium transition-colors",
-                    status === "sending"
-                      ? "cursor-wait bg-raised text-ink-faint"
-                      : "bg-acid text-void hover:bg-ink",
-                  )}
-                >
-                  {status === "sending"
-                    ? contact.formLabels.sending
-                    : contact.formLabels.submit}
-                  <ArrowRight
-                    className="size-4 transition-transform duration-300 group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </button>
-              </Magnetic>
-
-              <div aria-live="polite" className="min-h-6">
-                {status === "sent" ? (
-                  <motion.p
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: ease.expo }}
-                    className="flex items-center gap-2 text-sm text-acid"
-                  >
-                    <Check className="size-4" aria-hidden />
-                    {contact.formLabels.success}
-                  </motion.p>
-                ) : null}
-
-                {status === "error" ? (
-                  <motion.p
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: ease.expo }}
-                    className="flex flex-wrap items-center gap-2 text-sm text-ink-dim"
-                  >
-                    <TriangleAlert className="size-4 shrink-0 text-acid" aria-hidden />
-                    {contact.formLabels.error}{" "}
-                    <a
-                      href={`mailto:${site.email}`}
-                      className="text-acid underline underline-offset-4"
-                    >
-                      {site.email}
-                    </a>
-                  </motion.p>
-                ) : null}
-              </div>
-            </form>
+              <dl className="mt-7 flex flex-col gap-3.5 border-t border-line pt-6">
+                {contact.fakten.map((f) => (
+                  <div key={f.label} className="flex flex-col gap-0.5">
+                    <dt className="text-eyebrow">{f.label}</dt>
+                    <dd className="text-sm text-ink-dim">{f.wert}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </Reveal>
         </div>
       </div>
     </section>
-  );
-}
-
-function Field({
-  id,
-  name,
-  label,
-  type = "text",
-  required,
-  autoComplete,
-}: {
-  id: string;
-  name: string;
-  label: string;
-  type?: string;
-  required?: boolean;
-  autoComplete?: string;
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-eyebrow">
-        {label}
-        {required ? <span className="ml-1 text-acid">*</span> : null}
-      </label>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        required={required}
-        autoComplete={autoComplete}
-        className="rounded-xl border border-line bg-base px-4 py-3 text-sm text-ink transition-colors outline-none placeholder:text-ink-faint focus:border-acid/60"
-      />
-    </div>
   );
 }

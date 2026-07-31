@@ -594,8 +594,9 @@ export type SkillDomain = {
   id: string;
   title: string;
   summary: string;
-  /** Level drives the meter; evidence is what makes it credible. */
-  skills: { name: string; level: number; evidence: string }[];
+  /** Kein Level mehr: eine Zahl, die niemand pruefen kann, traegt nichts.
+   *  Der Beleg ist die Aussage. */
+  skills: { name: string; evidence: string }[];
 };
 
 export const skillDomains: SkillDomain[] = [
@@ -605,12 +606,12 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Interfaces, die auf einem Fünf-Jahre-alten Android genauso funktionieren wie auf einem Studio-Display.",
     skills: [
-      { name: "React / Next.js App Router", level: 95, evidence: "Next.js 16 RSC in Produktion" },
-      { name: "React Native / Expo", level: 92, evidence: "Expo SDK 57, RN 0.86, fünf Gerätetypen" },
-      { name: "TypeScript", level: 93, evidence: "Strict überall, 0 Fehler als Merge-Gate" },
-      { name: "Motion & Interaction", level: 85, evidence: "Reanimated 4, Framer Motion" },
-      { name: "Core Web Vitals", level: 88, evidence: "LCP/CLS/INP-Budgets im CI" },
-      { name: "Barrierefreiheit", level: 78, evidence: "TV-Fokus-Navigation, Reduced-Motion" },
+      { name: "React / Next.js App Router", evidence: "Next.js 16 RSC in Produktion" },
+      { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, fünf Gerätetypen" },
+      { name: "TypeScript", evidence: "Strict überall, 0 Fehler als Merge-Gate" },
+      { name: "Motion & Interaction", evidence: "Reanimated 4, Framer Motion" },
+      { name: "Core Web Vitals", evidence: "LCP/CLS/INP-Budgets im CI" },
+      { name: "Barrierefreiheit", evidence: "TV-Fokus-Navigation, Reduced-Motion" },
     ],
   },
   {
@@ -619,12 +620,12 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Mandantenfähige Systeme mit echtem Geld, echten Steuern und echten Konsequenzen bei Fehlern.",
     skills: [
-      { name: "Postgres / Supabase", level: 90, evidence: "59-Tabellen-Schema, RLS, Migrationen" },
-      { name: "API-Design", level: 88, evidence: "Fastify, Route Handlers, Zod-Validierung" },
-      { name: "Zahlungen", level: 85, evidence: "Stripe Connect Destination-Charge" },
-      { name: "Multi-Tenancy", level: 87, evidence: "RLS + per-Tenant-Provisionierung" },
-      { name: "E-Mail-Infrastruktur", level: 80, evidence: "Self-hosted Mailcow + Fallback-Kette" },
-      { name: "Compliance-Systeme", level: 82, evidence: "KassenSichV-TSE, DSGVO Art. 30" },
+      { name: "Postgres / Supabase", evidence: "59-Tabellen-Schema, RLS, Migrationen" },
+      { name: "API-Design", evidence: "Fastify, Route Handlers, Zod-Validierung" },
+      { name: "Zahlungen", evidence: "Stripe Connect Destination-Charge" },
+      { name: "Multi-Tenancy", evidence: "RLS + per-Tenant-Provisionierung" },
+      { name: "E-Mail-Infrastruktur", evidence: "Self-hosted Mailcow + Fallback-Kette" },
+      { name: "Compliance-Systeme", evidence: "KassenSichV-TSE, DSGVO Art. 30" },
     ],
   },
   {
@@ -632,12 +633,12 @@ export const skillDomains: SkillDomain[] = [
     title: "Cloud, Delivery & Betrieb",
     summary: "Ich betreibe, was ich baue — inklusive der Nachtschicht, wenn etwas ausfällt.",
     skills: [
-      { name: "Vercel / Edge", level: 88, evidence: "Statische Exports, Rewrites, ISR" },
-      { name: "Docker / Coolify / Hetzner", level: 82, evidence: "Eigener VPS-Stack in Produktion" },
-      { name: "CI/CD", level: 85, evidence: "GitHub Actions, Turborepo, EAS Build" },
-      { name: "Store-Auslieferung", level: 90, evidence: "App Store & Play, inkl. OTA-Updates" },
-      { name: "Observability", level: 80, evidence: "Sentry, Uptime-Kuma, Slack-Alerts" },
-      { name: "Automatisierung", level: 88, evidence: "75+ n8n-Workflows, Self-Healing" },
+      { name: "Vercel / Edge", evidence: "Statische Exports, Rewrites, ISR" },
+      { name: "Docker / Coolify / Hetzner", evidence: "Eigener VPS-Stack in Produktion" },
+      { name: "CI/CD", evidence: "GitHub Actions, Turborepo, EAS Build" },
+      { name: "Store-Auslieferung", evidence: "App Store & Play, inkl. OTA-Updates" },
+      { name: "Observability", evidence: "Sentry, Uptime-Kuma, Slack-Alerts" },
+      { name: "Automatisierung", evidence: "75+ n8n-Workflows, Self-Healing" },
     ],
   },
   {
@@ -646,12 +647,12 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Von der Agenten-Pipeline in meinem Editor bis zum quantisierten Modell auf dem Telefon des Nutzers.",
     skills: [
-      { name: "Agenten-Orchestrierung", level: 93, evidence: "Sub-Agenten, Tool-Pipelines, Loops" },
-      { name: "On-Device-Inferenz", level: 85, evidence: "llama.cpp/GGUF, whisper.rn" },
-      { name: "RAG & Retrieval", level: 82, evidence: "Eigener Korpus, Granularität gemessen" },
-      { name: "Prompt-Engineering", level: 88, evidence: "Vers-Konditionierung schlägt Modellgröße" },
-      { name: "Evaluation", level: 78, evidence: "Lokale Iteration gegen dieselbe GGUF" },
-      { name: "KI-Recht (EU AI Act)", level: 80, evidence: "Art.-50-Disclosure als Gate" },
+      { name: "Agenten-Orchestrierung", evidence: "Sub-Agenten, Tool-Pipelines, Loops" },
+      { name: "On-Device-Inferenz", evidence: "llama.cpp/GGUF, whisper.rn" },
+      { name: "RAG & Retrieval", evidence: "Eigener Korpus, Granularität gemessen" },
+      { name: "Prompt-Engineering", evidence: "Vers-Konditionierung schlägt Modellgröße" },
+      { name: "Evaluation", evidence: "Lokale Iteration gegen dieselbe GGUF" },
+      { name: "KI-Recht (EU AI Act)", evidence: "Art.-50-Disclosure als Gate" },
     ],
   },
 ];
@@ -704,16 +705,22 @@ export const contact = {
   eyebrow: "Kontakt",
   title: "Lass uns etwas bauen",
   lede: "Ob konkrete Rolle, Projektanfrage oder einfach eine technische Frage — ich antworte innerhalb von 24 Stunden.",
-  formLabels: {
-    name: "Name",
-    email: "E-Mail",
-    company: "Unternehmen",
-    message: "Nachricht",
-    submit: "Nachricht senden",
-    sending: "Wird gesendet …",
-    success: "Angekommen. Ich melde mich innerhalb von 24 Stunden.",
-    error: "Das hat nicht geklappt. Schreib mir bitte direkt:",
+  hinweis:
+    "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht — und du behältst deine Nachricht im eigenen Postausgang.",
+  checkliste: {
+    titel: "Das hilft mir in der ersten Mail",
+    punkte: [
+      "Worum es geht — Rolle, Projekt oder Frage",
+      "Was ihr baut und womit",
+      "Wie schnell es losgehen soll",
+      "Bei Rollen: Gehaltsrahmen, damit wir beide Zeit sparen",
+    ],
   },
+  fakten: [
+    { label: "Antwortzeit", wert: "In der Regel unter 24 Stunden" },
+    { label: "Sprachen", wert: "Deutsch · Englisch" },
+    { label: "Standort", wert: "Berlin · Remote EU" },
+  ],
 } as const;
 
 /* ========================================================================== */

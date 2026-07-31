@@ -42,9 +42,10 @@ export default function Datenschutz() {
       </Section>
 
       <Section title="Cookies und Tracking">
-        Diese Website setzt keine Cookies und bindet keine Analyse- oder
-        Werbedienste Dritter ein. Es gibt daher auch kein Cookie-Banner — nicht
-        aus Nachlässigkeit, sondern weil nichts einzuwilligen ist.
+        Diese Website setzt keine Cookies, weder eigene noch fremde, und bindet
+        keine Analyse- oder Werbedienste ein. Es gibt daher auch kein
+        Cookie-Banner — nicht aus Nachlässigkeit, sondern weil es nichts gibt,
+        worin man einwilligen könnte.
       </Section>
 
       <Section title="Schriftarten">
@@ -53,17 +54,23 @@ export default function Datenschutz() {
         Schriftanbieter aufgebaut.
       </Section>
 
-      <Section title="Kontaktformular">
-        Wenn du das Kontaktformular nutzt, werden die eingegebenen Daten (Name,
-        E-Mail-Adresse, optional Unternehmen, Nachricht) ausschließlich zur
-        Bearbeitung deiner Anfrage verarbeitet. Der Versand erfolgt über die
-        Resend Inc. als Auftragsverarbeiter. Rechtsgrundlage ist Art. 6 Abs. 1
-        lit. b bzw. lit. f DSGVO. Es findet keine Speicherung in einer Datenbank
-        statt; die Anfrage existiert nur als E-Mail in meinem Postfach und wird
-        gelöscht, sobald sie erledigt und keine gesetzliche Aufbewahrungsfrist
-        einschlägig ist. Zur Missbrauchsabwehr wird die IP-Adresse kurzzeitig im
-        Arbeitsspeicher vorgehalten (Rate-Limit, maximal 60 Sekunden) und nicht
-        persistiert.
+      <Section title="Kontaktaufnahme">
+        Diese Website hat kein Kontaktformular. Sie nennt lediglich eine
+        E-Mail-Adresse. Es wird also nichts erhoben, nichts übertragen und
+        nichts gespeichert, wenn du Kontakt aufnimmst — deine Nachricht geht
+        direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
+        daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
+        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b
+        bzw. lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
+        gesetzliche Aufbewahrungsfrist entgegensteht.
+      </Section>
+
+      <Section title="Keine weiteren Datenempfänger">
+        Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website
+        lädt keine Skripte, Schriften, Karten, Videos oder Analysedienste von
+        fremden Servern nach — weder beim Aufruf noch bei einer Interaktion.
+        Sämtliche Seiten werden vorab erzeugt und als fertige Dateien
+        ausgeliefert; es gibt keinen Endpunkt, der Eingaben entgegennimmt.
       </Section>
 
       <Section title="Deine Rechte">
