@@ -1,0 +1,384 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ease, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+
+/* ==========================================================================
+   A tiny declarative diagram format.
+
+   Hand-drawing four SVGs would have been faster to write once and miserable to
+   change. Nodes are placed on a 1000x-wide grid; edges reference node ids and
+   are routed as orthogonal paths. Everything animates in on scroll: boxes fade
+   up in row order, connectors draw themselves.
+   ========================================================================== */
+
+type Tone = "neutral" | "acid" | "violet" | "cyan" | "muted";
+
+type Node = {
+  id: string;
+  label: string;
+  sub?: string;
+  x: number;
+  y: number;
+  w: number;
+  h?: number;
+  tone?: Tone;
+  /** Dashed border = external service / third party. */
+  external?: boolean;
+};
+
+type Edge = {
+  from: string;
+  to: string;
+  label?: string;
+  /** "v" routes down, "h" routes sideways, "vh" bends. */
+  dashed?: boolean;
+};
+
+type Diagram = {
+  title: string;
+  caption: string;
+  height: number;
+  lanes: { label: string; y: number }[];
+  nodes: Node[];
+  edges: Edge[];
+};
+
+const TONE: Record<Tone, { fill: string; stroke: string; text: string }> = {
+  neutral: { fill: "#16161d", stroke: "#2c2c38", text: "#e8e8ec" },
+  acid: { fill: "#1b2007", stroke: "#5c7010", text: "#d4ff45" },
+  violet: { fill: "#171130", stroke: "#3d2f7a", text: "#b9a8ff" },
+  cyan: { fill: "#07222c", stroke: "#1d5c72", text: "#7fdcff" },
+  muted: { fill: "#101014", stroke: "#22222a", text: "#8b8b96" },
+};
+
+const NODE_H = 62;
+
+/* ==========================================================================
+   Diagram definitions
+   ========================================================================== */
+
+export const ARCHITECTURES: Record<string, Diagram> = {
+  salati: {
+    title: "Salati — ein Monorepo, fünf Zielgeräte",
+    caption:
+      "Die Geräte teilen sich Domänenlogik und Inhalte. Der KI-Pfad endet bewusst auf dem Gerät: Modell und Korpus werden ausgeliefert, nicht angefragt.",
+    height: 470,
+    lanes: [
+      { label: "Clients", y: 40 },
+      { label: "Geteilte Logik", y: 176 },
+      { label: "On-Device-KI", y: 288 },
+      { label: "Delivery & Daten", y: 396 },
+    ],
+    nodes: [
+      { id: "ios", label: "iOS", sub: "Expo · Live Activities", x: 20, y: 62, w: 168, tone: "acid" },
+      { id: "android", label: "Android", sub: "Expo · Widgets", x: 202, y: 62, w: 168, tone: "acid" },
+      { id: "tv", label: "Android TV", sub: "Leanback-Fokus", x: 384, y: 62, w: 168, tone: "acid" },
+      { id: "wear", label: "Wear OS", sub: "Natives Modul", x: 566, y: 62, w: 150, tone: "acid" },
+      { id: "stick", label: "HDMI-Stick", sub: "PWA für Moscheen", x: 730, y: 62, w: 170, tone: "acid" },
+
+      { id: "core", label: "packages/core", sub: "Gebetszeiten · Qibla · Hijri · Mushaf-Modell", x: 20, y: 198, w: 520, tone: "neutral" },
+      { id: "ui", label: "packages/ui", sub: "Design-Tokens · Komponenten", x: 554, y: 198, w: 346, tone: "neutral" },
+
+      { id: "llm", label: "llama.cpp / GGUF", sub: "Quantisiertes LLM + RAG-Korpus", x: 20, y: 310, w: 300, tone: "violet" },
+      { id: "whisper", label: "whisper.rn", sub: "Vers-konditionierte Erkennung", x: 334, y: 310, w: 300, tone: "violet" },
+      { id: "cache", label: "Offline-Cache", sub: "Audio · Übersetzungen", x: 648, y: 310, w: 252, tone: "violet" },
+
+      { id: "eas", label: "EAS Build + Update", sub: "OTA ohne Store-Zyklus", x: 20, y: 418, w: 268, tone: "cyan", external: true },
+      { id: "supabase", label: "Supabase", sub: "Konten · Inhalte", x: 302, y: 418, w: 224, tone: "cyan", external: true },
+      { id: "r2", label: "Cloudflare R2", sub: "Audio · Podcast · Handouts", x: 540, y: 418, w: 268, tone: "cyan", external: true },
+      { id: "stores", label: "Stores", sub: "", x: 822, y: 418, w: 78, tone: "muted", external: true },
+    ],
+    edges: [
+      { from: "ios", to: "core" },
+      { from: "android", to: "core" },
+      { from: "tv", to: "core" },
+      { from: "wear", to: "ui" },
+      { from: "stick", to: "ui" },
+      { from: "core", to: "llm" },
+      { from: "core", to: "whisper" },
+      { from: "ui", to: "cache" },
+      { from: "llm", to: "eas" },
+      { from: "whisper", to: "supabase" },
+      { from: "cache", to: "r2" },
+    ],
+  },
+
+  menucloud: {
+    title: "MenuCloud — mandantenfähig bis in die Fiskalisierung",
+    caption:
+      "Jeder Mandant bekommt eine eigene, rechtlich zurechenbare Signatureinheit. Der Bestellpfad ist fail-closed: ohne TSE-Signatur wird nicht gebucht.",
+    height: 480,
+    lanes: [
+      { label: "Zugänge", y: 40 },
+      { label: "Anwendung", y: 176 },
+      { label: "Daten & Geld", y: 288 },
+      { label: "Betrieb", y: 396 },
+    ],
+    nodes: [
+      { id: "guest", label: "Gast", sub: "QR-Bestellung", x: 20, y: 62, w: 200, tone: "violet" },
+      { id: "owner", label: "Betreiber", sub: "Self-Service-Admin", x: 234, y: 62, w: 220, tone: "violet" },
+      { id: "crew", label: "Personal-App", sub: "iOS · Android", x: 468, y: 62, w: 200, tone: "violet" },
+      { id: "public", label: "Restaurant-Site", sub: "pro Mandant", x: 682, y: 62, w: 218, tone: "violet" },
+
+      { id: "next", label: "Next.js 16 · App Router", sub: "RSC · Route Handlers · Magic-Link-Auth", x: 20, y: 198, w: 560, tone: "neutral" },
+      { id: "n8n", label: "n8n", sub: "75+ Workflows · Watchdogs", x: 594, y: 198, w: 306, tone: "neutral" },
+
+      { id: "pg", label: "Postgres / Supabase", sub: "Row Level Security pro Mandant", x: 20, y: 310, w: 320, tone: "acid" },
+      { id: "stripe", label: "Stripe Connect", sub: "Destination-Charge", x: 354, y: 310, w: 246, tone: "acid", external: true },
+      { id: "tse", label: "Fiskaly Cloud-TSE", sub: "§146a AO · Hash-Kette", x: 614, y: 310, w: 286, tone: "acid", external: true },
+
+      { id: "coolify", label: "Coolify / Hetzner", sub: "Docker · EU", x: 20, y: 418, w: 240, tone: "cyan" },
+      { id: "cf", label: "Cloudflare", sub: "DNS · Edge · WAF", x: 274, y: 418, w: 216, tone: "cyan", external: true },
+      { id: "mail", label: "Mailcow", sub: "+ SES-Fallback", x: 504, y: 418, w: 196, tone: "cyan" },
+      { id: "obs", label: "Sentry · Umami", sub: "Alerts nach Slack", x: 714, y: 418, w: 186, tone: "cyan", external: true },
+    ],
+    edges: [
+      { from: "guest", to: "next" },
+      { from: "owner", to: "next" },
+      { from: "crew", to: "next" },
+      { from: "public", to: "n8n" },
+      { from: "next", to: "pg" },
+      { from: "next", to: "stripe" },
+      { from: "n8n", to: "tse" },
+      { from: "pg", to: "coolify" },
+      { from: "stripe", to: "mail" },
+      { from: "tse", to: "obs" },
+    ],
+  },
+
+  wohnungsjaeger: {
+    title: "WohnungsJäger — Scan, Bewertung, menschliche Freigabe",
+    caption:
+      "Der Agent läuft vollständig lokal. Die Freigabestufe zwischen Bewertung und Versand ist der Auslieferungszustand, nicht eine optionale Einstellung.",
+    height: 400,
+    lanes: [
+      { label: "Quellen", y: 40 },
+      { label: "Agent", y: 168 },
+      { label: "Freigabe", y: 280 },
+    ],
+    nodes: [
+      { id: "is24", label: "ImmoScout24", x: 20, y: 62, w: 168, tone: "muted", external: true },
+      { id: "iw", label: "Immowelt", x: 202, y: 62, w: 152, tone: "muted", external: true },
+      { id: "ka", label: "Kleinanzeigen", x: 368, y: 62, w: 176, tone: "muted", external: true },
+      { id: "wg", label: "WG-Gesucht", x: 558, y: 62, w: 162, tone: "muted", external: true },
+      { id: "direct", label: "Vermieter-Sites", x: 734, y: 62, w: 166, tone: "muted", external: true },
+
+      { id: "pw", label: "Playwright-Runner", sub: "Persistente Profile je Portal", x: 20, y: 190, w: 300, tone: "cyan" },
+      { id: "filter", label: "Kriterien-Filter", sub: "Regeln zuerst, deterministisch", x: 334, y: 190, w: 268, tone: "cyan" },
+      { id: "llm", label: "LLM-Volltextprüfung", sub: "Anthropic · Fallback: Regeln", x: 616, y: 190, w: 284, tone: "cyan" },
+
+      { id: "db", label: "SQLite", sub: "lokal · 127.0.0.1", x: 20, y: 302, w: 220, tone: "neutral" },
+      { id: "review", label: "REVIEW-Queue", sub: "Mensch entscheidet — Standard", x: 254, y: 302, w: 330, tone: "acid" },
+      { id: "send", label: "Versand", sub: "nur nach Freigabe", x: 598, y: 302, w: 302, tone: "neutral" },
+    ],
+    edges: [
+      { from: "is24", to: "pw" },
+      { from: "iw", to: "pw" },
+      { from: "ka", to: "filter" },
+      { from: "wg", to: "llm" },
+      { from: "direct", to: "llm" },
+      { from: "pw", to: "db" },
+      { from: "filter", to: "review" },
+      { from: "llm", to: "send", dashed: true },
+    ],
+  },
+
+  nouri: {
+    title: "NOURI — geteilter Katalog über drei Oberflächen",
+    caption:
+      "Web, Mobile und API greifen auf denselben typisierten Katalog zu. Schreibpfade unterscheiden drei Fehlerzustände statt sie zu 500ern zu bündeln.",
+    height: 400,
+    lanes: [
+      { label: "Oberflächen", y: 40 },
+      { label: "Service", y: 168 },
+      { label: "Persistenz", y: 280 },
+    ],
+    nodes: [
+      { id: "web", label: "Next.js Web-App", sub: "Planer · Tracking", x: 20, y: 62, w: 290, tone: "violet" },
+      { id: "mobile", label: "Expo App", sub: "iOS · Android", x: 324, y: 62, w: 262, tone: "violet" },
+      { id: "site", label: "Public Website", sub: "Marketing", x: 600, y: 62, w: 300, tone: "violet" },
+
+      { id: "api", label: "Fastify API", sub: "Typisierte Verträge · Zod", x: 20, y: 190, w: 400, tone: "neutral" },
+      { id: "catalog", label: "Geteilter Katalog", sub: "11.892 Rezepte · Trainingspläne", x: 434, y: 190, w: 466, tone: "neutral" },
+
+      { id: "sb", label: "Supabase / Postgres", sub: "59 Tabellen · 12 Migrationen · RLS", x: 20, y: 302, w: 430, tone: "acid" },
+      { id: "states", label: "Dry-Run · 503 · echter 4xx", sub: "explizite Fehlerzustände", x: 464, y: 302, w: 436, tone: "cyan" },
+    ],
+    edges: [
+      { from: "web", to: "api" },
+      { from: "mobile", to: "api" },
+      { from: "site", to: "catalog" },
+      { from: "api", to: "sb" },
+      { from: "catalog", to: "states" },
+    ],
+  },
+};
+
+/* ==========================================================================
+   Renderer
+   ========================================================================== */
+
+function edgePath(from: Node, to: Node) {
+  const x1 = from.x + from.w / 2;
+  const y1 = from.y + (from.h ?? NODE_H);
+  const x2 = to.x + to.w / 2;
+  const y2 = to.y;
+  const mid = y1 + (y2 - y1) / 2;
+
+  // Orthogonal route with a rounded elbow, so lines read as wiring rather than
+  // as arbitrary curves.
+  if (Math.abs(x1 - x2) < 2) return `M ${x1} ${y1} L ${x2} ${y2}`;
+
+  const r = Math.min(10, Math.abs(x2 - x1) / 2, Math.abs(mid - y1));
+  const dir = x2 > x1 ? 1 : -1;
+
+  return [
+    `M ${x1} ${y1}`,
+    `L ${x1} ${mid - r}`,
+    `Q ${x1} ${mid} ${x1 + r * dir} ${mid}`,
+    `L ${x2 - r * dir} ${mid}`,
+    `Q ${x2} ${mid} ${x2} ${mid + r}`,
+    `L ${x2} ${y2}`,
+  ].join(" ");
+}
+
+export function ArchitectureDiagram({
+  name,
+  className,
+}: {
+  name: string;
+  className?: string;
+}) {
+  const diagram = ARCHITECTURES[name];
+  if (!diagram) return null;
+
+  const byId = new Map(diagram.nodes.map((n) => [n.id, n]));
+
+  return (
+    <figure className={cn("w-full", className)}>
+      <div className="overflow-x-auto">
+        <motion.svg
+          viewBox={`0 0 920 ${diagram.height}`}
+          className="h-auto w-full min-w-[720px]"
+          role="img"
+          aria-label={`${diagram.title}. ${diagram.caption}`}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          {/* Lane labels + rules */}
+          {diagram.lanes.map((lane) => (
+            <g key={lane.label}>
+              <text
+                x={20}
+                y={lane.y}
+                className="fill-[#5b5b66] font-mono text-[11px] tracking-[0.18em] uppercase"
+              >
+                {lane.label}
+              </text>
+              <line
+                x1={20}
+                x2={900}
+                y1={lane.y + 10}
+                y2={lane.y + 10}
+                stroke="#1c1c24"
+                strokeWidth={1}
+              />
+            </g>
+          ))}
+
+          {/* Connectors draw themselves */}
+          {diagram.edges.map((edge, i) => {
+            const from = byId.get(edge.from);
+            const to = byId.get(edge.to);
+            if (!from || !to) return null;
+
+            return (
+              <motion.path
+                key={`${edge.from}-${edge.to}`}
+                d={edgePath(from, to)}
+                fill="none"
+                stroke="#33333f"
+                strokeWidth={1.25}
+                strokeDasharray={edge.dashed ? "4 4" : undefined}
+                variants={{
+                  hidden: { pathLength: 0, opacity: 0 },
+                  visible: {
+                    pathLength: 1,
+                    opacity: 1,
+                    transition: {
+                      duration: 0.7,
+                      ease: ease.expo,
+                      delay: 0.35 + i * 0.04,
+                    },
+                  },
+                }}
+              />
+            );
+          })}
+
+          {/* Nodes */}
+          {diagram.nodes.map((node, i) => {
+            const tone = TONE[node.tone ?? "neutral"];
+            const h = node.h ?? NODE_H;
+
+            return (
+              <motion.g
+                key={node.id}
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: ease.expo, delay: i * 0.03 },
+                  },
+                }}
+              >
+                <rect
+                  x={node.x}
+                  y={node.y}
+                  width={node.w}
+                  height={h}
+                  rx={10}
+                  fill={tone.fill}
+                  stroke={tone.stroke}
+                  strokeWidth={1}
+                  strokeDasharray={node.external ? "3 3" : undefined}
+                />
+                <text
+                  x={node.x + 14}
+                  y={node.y + (node.sub ? 26 : h / 2 + 4)}
+                  fill={tone.text}
+                  className="text-[13px] font-medium"
+                >
+                  {node.label}
+                </text>
+                {node.sub ? (
+                  <text
+                    x={node.x + 14}
+                    y={node.y + 44}
+                    fill="#75757f"
+                    className="font-mono text-[10px]"
+                  >
+                    {node.sub}
+                  </text>
+                ) : null}
+              </motion.g>
+            );
+          })}
+        </motion.svg>
+      </div>
+
+      <figcaption className="mt-5 flex flex-col gap-2 border-t border-line pt-4">
+        <span className="font-mono text-[11px] tracking-[0.16em] text-ink-faint uppercase">
+          {diagram.title}
+        </span>
+        <span className="max-w-3xl text-sm leading-relaxed text-ink-dim">
+          {diagram.caption}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}

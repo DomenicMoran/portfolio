@@ -1,0 +1,260 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { ArrowUpRight, Check, Layers, Smartphone, Workflow } from "lucide-react";
+import { GithubIcon } from "@/components/ui/BrandIcons";
+import { caseStudies, type CaseStudy } from "@/content/site";
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+import { Counter } from "@/components/ui/Counter";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ease, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+
+const ACCENT = {
+  acid: { text: "text-acid", bg: "bg-acid", border: "border-acid/30", soft: "bg-acid/10" },
+  violet: { text: "text-violet", bg: "bg-violet", border: "border-violet/30", soft: "bg-violet/10" },
+  cyan: { text: "text-cyan", bg: "bg-cyan", border: "border-cyan/30", soft: "bg-cyan/10" },
+} as const;
+
+const TABS = [
+  { id: "highlights", label: "Was drinsteckt", icon: Layers },
+  { id: "architecture", label: "Architektur", icon: Workflow },
+  { id: "stack", label: "Tech-Stack", icon: Smartphone },
+] as const;
+
+type TabId = (typeof TABS)[number]["id"];
+
+export function CaseStudies() {
+  return (
+    <section id="work" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading
+          eyebrow="Ausgewählte Arbeiten"
+          title="Vier Produkte. Alle live. Alle allein gebaut."
+          lede="Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen — und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet."
+        />
+
+        <div className="mt-20 flex flex-col gap-24 sm:gap-36">
+          {caseStudies.map((study) => (
+            <CaseStudyPanel key={study.id} study={study} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyPanel({ study }: { study: CaseStudy }) {
+  const [tab, setTab] = useState<TabId>("highlights");
+  const accent = ACCENT[study.accent];
+  const visibleLinks = study.links.filter((link) => link.href);
+
+  return (
+    <article id={`case-${study.id}`} className="scroll-mt-28">
+      {/* Header */}
+      <Reveal>
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">
+          <div className="flex items-baseline gap-5">
+            <span className={cn("font-mono text-sm", accent.text)}>{study.index}</span>
+            <h3 className="text-title text-ink">{study.name}</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <span
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.14em] uppercase",
+                accent.border,
+                accent.text,
+              )}
+            >
+              <span className={cn("size-1.5 rounded-full", accent.bg)} />
+              {study.statusLabel}
+            </span>
+            <span className="font-mono text-[11px] text-ink-faint">{study.year}</span>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={0.05}>
+        <p className="mt-6 max-w-3xl text-xl leading-snug text-ink text-pretty sm:text-2xl">
+          {study.tagline}
+        </p>
+        <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
+      </Reveal>
+
+      {/* Problem / solution */}
+      <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
+        <Reveal>
+          <h4 className="text-eyebrow mb-4">Das Problem</h4>
+          <p className="leading-relaxed text-ink-dim text-pretty">{study.problem}</p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h4 className="text-eyebrow mb-4">Die Lösung</h4>
+          <p className="leading-relaxed text-ink-dim text-pretty">{study.solution}</p>
+        </Reveal>
+      </div>
+
+      {/* The hard part — the section that separates a portfolio from a résumé */}
+      <Reveal delay={0.05}>
+        <div
+          className={cn(
+            "lit relative mt-12 overflow-hidden rounded-2xl border p-7 sm:p-9",
+            accent.border,
+            accent.soft,
+          )}
+        >
+          <span className="text-eyebrow">Die harte Stelle</span>
+          <h4 className={cn("mt-3 text-lg font-semibold tracking-tight sm:text-xl", accent.text)}>
+            {study.hardPart.title}
+          </h4>
+          <p className="mt-4 max-w-3xl leading-relaxed text-ink-dim text-pretty">
+            {study.hardPart.body}
+          </p>
+        </div>
+      </Reveal>
+
+      {/* Tabs */}
+      <Reveal delay={0.05}>
+        <div className="mt-12">
+          <div
+            role="tablist"
+            aria-label={`Details zu ${study.name}`}
+            className="flex flex-wrap gap-1.5 border-b border-line pb-3"
+          >
+            {TABS.map((item) => {
+              const selected = tab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  role="tab"
+                  type="button"
+                  aria-selected={selected}
+                  onClick={() => setTab(item.id)}
+                  className={cn(
+                    "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
+                    selected ? "text-void" : "text-ink-dim hover:text-ink",
+                  )}
+                >
+                  {selected ? (
+                    <motion.span
+                      layoutId={`tab-${study.id}`}
+                      className={cn("absolute inset-0 rounded-full", accent.bg)}
+                      transition={{ duration: 0.35, ease: ease.expo }}
+                    />
+                  ) : null}
+                  <item.icon className="relative size-3.5" aria-hidden />
+                  <span className="relative">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="pt-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35, ease: ease.expo }}
+              >
+                {tab === "highlights" ? (
+                  <ul className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
+                    {study.highlights.map((item) => (
+                      <li key={item} className="flex gap-3">
+                        <Check
+                          className={cn("mt-1 size-4 shrink-0", accent.text)}
+                          aria-hidden
+                        />
+                        <span className="text-sm leading-relaxed text-ink-dim">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+
+                {tab === "architecture" ? (
+                  <ArchitectureDiagram name={study.architecture} />
+                ) : null}
+
+                {tab === "stack" ? (
+                  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    {study.stack.map((group) => (
+                      <div key={group.group}>
+                        <h5 className="text-eyebrow mb-3">{group.group}</h5>
+                        <ul className="flex flex-wrap gap-1.5">
+                          {group.items.map((item) => (
+                            <li
+                              key={item}
+                              className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-ink-dim"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Metrics + links */}
+      <div className="mt-12 flex flex-wrap items-end justify-between gap-8 border-t border-line pt-8">
+        <motion.dl
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          transition={{ staggerChildren: 0.08 }}
+          className="flex flex-wrap gap-x-12 gap-y-6"
+        >
+          {study.metrics.map((metric) => (
+            <motion.div
+              key={metric.label}
+              variants={{
+                hidden: { opacity: 0, y: 14 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.expo } },
+              }}
+              className="flex flex-col gap-1"
+            >
+              <dt className="sr-only">{metric.label}</dt>
+              <dd
+                className={cn(
+                  "text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl",
+                  accent.text,
+                )}
+              >
+                <Counter value={metric.value} />
+              </dd>
+              <span className="text-xs text-ink-faint">{metric.label}</span>
+            </motion.div>
+          ))}
+        </motion.dl>
+
+        {visibleLinks.length > 0 ? (
+          <Reveal className="flex flex-wrap gap-2">
+            {visibleLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+              >
+                {link.kind === "code" ? <GithubIcon className="size-3.5" /> : null}
+                {link.label}
+                <ArrowUpRight
+                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden
+                />
+              </a>
+            ))}
+          </Reveal>
+        ) : null}
+      </div>
+    </article>
+  );
+}

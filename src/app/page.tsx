@@ -1,65 +1,87 @@
-import Image from "next/image";
+import { SiteShell } from "@/components/SiteShell";
+import { Footer } from "@/components/Footer";
+import { Hero } from "@/components/sections/Hero";
+import { CaseStudies } from "@/components/sections/CaseStudies";
+import { AiWorkflow, DeliverySpeed } from "@/components/sections/AiWorkflow";
+import { Skills } from "@/components/sections/Skills";
+import { RecruiterHub } from "@/components/sections/RecruiterHub";
+import { Contact } from "@/components/sections/Contact";
+import { caseStudies, site } from "@/content/site";
+
+/**
+ * Structured data. Recruiters increasingly arrive via search and via LLM
+ * answers — both read JSON-LD before they read the design.
+ */
+function StructuredData() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: site.name,
+    jobTitle: site.role,
+    description: site.meta.description,
+    url: site.url,
+    email: `mailto:${site.email}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Berlin",
+      addressCountry: "DE",
+    },
+    sameAs: [site.socials.github, site.socials.linkedin].filter(Boolean),
+    knowsAbout: [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "React Native",
+      "PostgreSQL",
+      "AI Engineering",
+      "Stripe Connect",
+      "KassenSichV",
+    ],
+    subjectOf: caseStudies.map((study) => ({
+      "@type": "SoftwareApplication",
+      name: study.name,
+      description: study.tagline,
+      applicationCategory: "WebApplication",
+    })),
+  };
+
+  // The object above is built entirely from local constants — no user input
+  // reaches it. `<` is still escaped so a future content edit containing
+  // "</script>" cannot break out of the tag.
+  const json = JSON.stringify(schema).replace(/</g, "\\u003c");
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: json }}
+    />
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <StructuredData />
+      <SiteShell />
+
+      <a
+        href="#work"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10001] focus:rounded-full focus:bg-acid focus:px-4 focus:py-2 focus:text-sm focus:text-void"
+      >
+        Zum Inhalt springen
+      </a>
+
+      <main className="flex-1">
+        <Hero />
+        <CaseStudies />
+        <AiWorkflow />
+        <DeliverySpeed />
+        <Skills />
+        <RecruiterHub />
+        <Contact />
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }

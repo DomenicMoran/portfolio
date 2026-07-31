@@ -1,26 +1,341 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================================
+   Design tokens
+   Dark-first. Light mode is a deliberate second citizen: the palette below is
+   authored for the dark surface and only inverted where it stays legible.
+   ========================================================================= */
+
+@theme {
+  --color-void: #08080a;
+  --color-base: #0b0b0e;
+  --color-surface: #111116;
+  --color-raised: #16161d;
+  --color-line: #23232c;
+
+  --color-ink: #f2f2f4;
+  --color-ink-dim: #a5a5b0;
+  --color-ink-faint: #6b6b78;
+
+  --color-acid: #d4ff45;
+  --color-acid-dim: #a8cc2e;
+  --color-violet: #7c5cff;
+  --color-cyan: #3fd0ff;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --text-display: clamp(2.75rem, 9vw, 8.5rem);
+  --text-headline: clamp(2rem, 5.5vw, 4.5rem);
+  --text-title: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================================
+   Base
+   ========================================================================= */
+
+* {
+  border-color: var(--color-line);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--color-void);
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+  /* `clip` rather than `hidden`: it stops sideways scrolling without turning
+     the element into a scroll container, so `position: sticky` keeps working
+     (the skills meters and the workflow terminal rely on it). */
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01", "cv11";
+  overflow-x: clip;
+}
+
+::selection {
+  background-color: var(--color-acid);
+  color: var(--color-void);
+}
+
+/* Lenis drives scrolling; without this the wrapper collapses. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Focus states stay sharp — the whole site is keyboard-navigable. */
+:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Scrollbar — thin, unobtrusive, still visible enough to orient. */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 99px;
+  border: 3px solid var(--color-void);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-faint);
+}
+
+/* ============================================================================
+   Typography utilities
+   ========================================================================= */
+
+@utility text-display {
+  font-size: var(--text-display);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+@utility text-headline {
+  font-size: var(--text-headline);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+@utility text-title {
+  font-size: var(--text-title);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+@utility font-editorial {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+@utility text-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* ============================================================================
+   Surface utilities
+   ========================================================================= */
+
+@utility panel {
+  background-color: color-mix(in oklab, var(--color-surface) 70%, transparent);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+@utility hairline {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Subtle inner top-edge highlight — the detail that separates a "card" from a
+   surface that looks lit. Cheap: one gradient, no extra element. */
+@utility lit {
+  position: relative;
+}
+.lit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-ink) 14%, transparent),
+    transparent 40%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   Effects
+   ========================================================================= */
+
+/* Film grain. A single tiled SVG turbulence — no image request, no canvas. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 8s steps(6) infinite;
+}
+
+@keyframes grain-shift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  16% {
+    transform: translate(-2%, -3%);
+  }
+  33% {
+    transform: translate(2%, 1%);
+  }
+  50% {
+    transform: translate(-1%, 3%);
+  }
+  66% {
+    transform: translate(3%, -1%);
+  }
+  83% {
+    transform: translate(-3%, 2%);
+  }
+}
+
+@utility glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.08);
+  }
+}
+
+@utility animate-float {
+  animation: float-slow 14s var(--ease-in-out-quint) infinite;
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee-x var(--marquee-duration, 40s) linear infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@utility animate-caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* Dot grid backdrop — masked to fade out so it never fights with content. */
+@utility dot-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--color-ink) 10%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 32px 32px;
+}
+
+/* ============================================================================
+   Motion preferences — hard opt-out, not a soft reduction.
+   Every scroll-driven effect below degrades to "already visible".
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain::after {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   Print — the one-pager route renders straight to PDF from here.
+   ========================================================================= */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 14mm 10mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #101014 !important;
+    color-scheme: light;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .grain::after {
+    display: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  /* The one-pager has to be one page.
+     `zoom` rather than `font-size`: this page sets its type in absolute px
+     (text-[14px] and friends), which a relative font-size on the container
+     cannot touch. zoom scales the whole box — text, spacing and rules alike —
+     and still reflows, unlike `transform: scale()`.
+     If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
+  .onepager {
+    zoom: 0.9;
+  }
 }

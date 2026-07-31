@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# domenicmoran.dev
 
-First, run the development server:
+**Portfolio eines AI-Native Product Engineers — gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
+
+Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
+Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-000?logo=nextdotjs)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19.2-087ea4?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript)](https://typescriptlang.org)
+[![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
+
+</div>
+
+---
+
+## Worum es geht
+
+Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
+versucht etwas anderes: für jedes der vier Systeme in Produktion beantwortet es
+drei Fragen, die ein CTO tatsächlich stellt — *Welches Problem?*, *Welche
+Architektur?*, *Was war der schwierige Teil?*
+
+Der Abschnitt **„Die harte Stelle"** ist der Kern jeder Fallstudie. Nicht die
+Feature-Liste unterscheidet Entwickler voneinander, sondern das eine Problem,
+an dem man nicht drumherum kam.
+
+## Stack
+
+| Bereich | Wahl | Warum |
+|---|---|---|
+| Framework | Next.js 16, App Router | Statische Auslieferung ohne Server-Kosten; Route Handler nur für das Formular |
+| Sprache | TypeScript, strict | 0 Fehler ist Merge-Gate, nicht Zielvorgabe |
+| Styling | Tailwind v4 | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config |
+| Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
+| Scrolling | Lenis | Wird bei Reduced-Motion **gar nicht erst geladen** |
+| Icons | lucide-react | Brand-Marken als eigenes Inline-SVG (v1 hat sie entfernt) |
+| Mail | Resend | Der einzige Drittanbieter — und nur, wenn das Formular benutzt wird |
+
+## Architektur-Entscheidungen
+
+**Alles ist statisch außer einer Route.** Alle Seiten werden zur Build-Zeit
+gerendert. Der einzige dynamische Endpunkt ist `/api/contact`. Das ist kein
+Zufall: eine Seite, die keine Laufzeit braucht, kann auch nicht zur Laufzeit
+ausfallen.
+
+**Inhalte liegen an einer Stelle.** [`src/content/site.ts`](src/content/site.ts)
+ist die einzige Quelle für jeden Text und jede Zahl. Komponenten enthalten
+keinerlei Copy. Ein leerer Wert lässt das jeweilige Element verschwinden statt
+einen Platzhalter zu rendern — auf einer Seite, deren Zweck Glaubwürdigkeit ist,
+darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum" enden.
+
+**Architekturdiagramme sind Daten, kein Bild.** Die vier Diagramme in
+[`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx) sind als
+Knoten- und Kantenliste beschrieben und werden zu SVG gerendert — auflösungsfrei,
+im DOM durchsuchbar, mit `aria-label` beschrieben und ohne einen einzigen
+Bild-Request.
+
+**Bewegung ist optional, nicht dekorativ erzwungen.** Bei
+`prefers-reduced-motion: reduce` wird Lenis nicht initialisiert, der Custom-Cursor
+nicht gemountet und jede Animation auf 0,01 ms verkürzt. Den Scroll von jemandem
+mit vestibulärer Empfindlichkeit zu kapern, ist das Feindseligste, was eine
+„Premium"-Seite tun kann.
+
+**Der PDF-Download ist der Druckdialog.** `/onepager` ist eine A4-optimierte
+Route mit eigenem Print-Stylesheet. Kein Headless-Chrome, keine PDF-Bibliothek —
+dafür auswählbarer Text und funktionierende Links.
+
+## Lokal starten
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # optional: nur fürs Kontaktformular
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm run build      # Produktions-Build (Turbopack)
+npx tsc --noEmit   # Typecheck
+npx eslint .       # Lint
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Voraussetzung: Node.js ≥ 20.9.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Projektstruktur
 
-## Learn More
+```
+src/
+├─ app/
+│  ├─ (legal)/          Impressum + Datenschutz (geteiltes Layout)
+│  ├─ api/contact/      Der einzige dynamische Endpunkt
+│  ├─ onepager/         A4-Route, wird zum PDF
+│  ├─ opengraph-image   Social-Card, zur Build-Zeit erzeugt
+│  ├─ icon.tsx          Favicon als Monogramm
+│  └─ page.tsx          Startseite (Server Component)
+├─ components/
+│  ├─ sections/         Hero · CaseStudies · AiWorkflow · Skills · Hire · Contact
+│  ├─ ui/               Reveal · Magnetic · Counter · Marquee · Cursor · …
+│  ├─ ArchitectureDiagram.tsx
+│  ├─ CommandPalette.tsx
+│  └─ SiteShell.tsx     Client-Insel: hält den Palette-State
+├─ content/site.ts      Alle Inhalte
+└─ lib/                 cn() + geteilte Motion-Tokens
+```
 
-To learn more about Next.js, take a look at the following resources:
+Die Startseite bleibt eine Server Component. `SiteShell` ist die einzige
+Client-Insel auf oberster Ebene, damit das Sektions-Markup als statisches HTML
+ausgeliefert wird und nicht erst nach der Hydration erscheint.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Sicherheit & Datenschutz
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Keine Cookies, kein Analytics, kein Consent-Banner — es gibt nichts einzuwilligen
+- Schriften werden selbst gehostet; beim Seitenaufruf entsteht keine Verbindung zu Google
+- Kontaktformular: Honeypot, In-Process-Rate-Limit, Längenbegrenzung pro Feld,
+  HTML-Escaping, CR/LF-Filter gegen Header-Injection
+- Fehler beim Mailversand liefern einen ehrlichen Status — nie eine falsche Erfolgsmeldung
+- Sicherheits-Header (HSTS, `X-Frame-Options`, `Permissions-Policy`) in [`vercel.json`](vercel.json)
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Auf Vercel importieren, `RESEND_API_KEY` / `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`
+setzen, deployen. Serverfunktionen laufen in `fra1` (Frankfurt) — die Zielgruppe
+sitzt in der EU, und der Rechtsweg damit auch.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Lizenz
+
+Code steht unter der MIT-Lizenz — nimm dir Muster, die dir nützen.
+Inhalte, Texte und Fallstudien in `src/content/` sind © Domenic Moran und nicht
+Teil der Lizenz.
