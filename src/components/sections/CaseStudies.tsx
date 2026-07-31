@@ -135,7 +135,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           <h4 className={cn("mt-3 text-lg font-semibold tracking-tight sm:text-xl", accent.text)}>
             {study.hardPart.title}
           </h4>
-          <p className="mt-4 max-w-3xl leading-relaxed text-ink-dim text-pretty">
+          {/* Zeilenmaß in ch statt rem: 68 Zeichen bleiben 68 Zeichen, egal
+              welche Schriftgröße die Klasse gerade setzt. Gemessen lag dieser
+              Absatz vorher bei 96 Zeichen pro Zeile — deutlich über dem, was
+              sich noch flüssig liest. */}
+          <p className="mt-4 max-w-[68ch] leading-relaxed text-ink-dim text-pretty">
             {study.hardPart.body}
           </p>
         </div>

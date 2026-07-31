@@ -135,13 +135,15 @@ function AgentTerminal() {
         <span className="font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
           agent-session
         </span>
+        {/* 32px statt 24: 24×24 ist exakt die WCAG-Untergrenze und selbst mit
+            Maus fummelig. Das Symbol bleibt klein, die Trefferfläche wächst. */}
         <button
           type="button"
           onClick={() => setRunId((n) => n + 1)}
-          className="grid size-6 place-items-center rounded text-ink-faint transition-colors hover:text-ink"
+          className="-mr-1.5 grid size-8 place-items-center rounded-md text-ink-faint transition-colors hover:bg-raised hover:text-ink"
           aria-label="Ablauf erneut abspielen"
         >
-          <RotateCcw className="size-3" aria-hidden />
+          <RotateCcw className="size-3.5" aria-hidden />
         </button>
       </div>
 
@@ -191,7 +193,7 @@ export function DeliverySpeed() {
           <h3 className="mt-4 max-w-3xl text-title text-ink text-balance">
             Der Unterschied ist nicht, dass ich schneller tippe.
           </h3>
-          <p className="mt-4 max-w-2xl leading-relaxed text-ink-dim text-pretty">
+          <p className="mt-4 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
             Er ist, dass Recherche, Implementierung, Test und Verifikation
             parallel statt nacheinander laufen — und dass der Kontext zwischen
             den Sitzungen nicht verloren geht.
@@ -220,7 +222,10 @@ export function DeliverySpeed() {
             ))}
           </div>
 
-          <p className="mt-8 max-w-2xl text-xs leading-relaxed text-ink-faint">
+          {/* 112 Zeichen pro Zeile gemessen — bei dieser Schriftgröße kaum noch
+              lesbar. 74ch ist der Wert, ab dem das Auge die Zeile sicher
+              zurückfindet. */}
+          <p className="mt-8 max-w-[74ch] text-xs leading-relaxed text-ink-faint">
             Relative Darstellung aus meinen eigenen Projekten — kein
             Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44
             ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei
