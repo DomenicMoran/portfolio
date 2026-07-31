@@ -225,7 +225,7 @@ export function DeliverySpeed() {
           {/* 112 Zeichen pro Zeile gemessen — bei dieser Schriftgröße kaum noch
               lesbar. 74ch ist der Wert, ab dem das Auge die Zeile sicher
               zurückfindet. */}
-          <p className="mt-8 max-w-[74ch] text-xs leading-relaxed text-ink-faint">
+          <p className="mt-8 max-w-[58ch] text-xs leading-relaxed text-ink-faint">
             Relative Darstellung aus meinen eigenen Projekten — kein
             Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44
             ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei

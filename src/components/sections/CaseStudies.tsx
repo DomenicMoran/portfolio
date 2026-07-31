@@ -139,7 +139,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               welche Schriftgröße die Klasse gerade setzt. Gemessen lag dieser
               Absatz vorher bei 96 Zeichen pro Zeile — deutlich über dem, was
               sich noch flüssig liest. */}
-          <p className="mt-4 max-w-[68ch] leading-relaxed text-ink-dim text-pretty">
+          <p className="mt-4 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
             {study.hardPart.body}
           </p>
         </div>
