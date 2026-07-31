@@ -24,7 +24,10 @@ export const site = {
   // are filled in, and `as const` would narrow "" to a type that makes the
   // populated branch unreachable.
   socials: {
-    github: "https://github.com/DomenicMoran" as string,
+    // TODO(domenic): the existing account is `MenuCloud-Berlin` (a company
+    // account) — a personal one has to be created first. Left empty on purpose:
+    // a dead profile link costs more than a missing button. USER-TODO B2.
+    github: "" as string,
     // TODO(domenic): full profile URL — USER-TODO A1.
     linkedin: "" as string,
     // TODO(domenic): cal.com link — USER-TODO B5.
@@ -154,8 +157,9 @@ export const caseStudies: CaseStudy[] = [
       // TODO(domenic): Downloads / Rating / MAU — USER-TODO A3.
     ],
     links: [
-      // TODO(domenic): echte Store- und Web-Links — USER-TODO A4.
-      { label: "salati.pro", href: "", kind: "live" },
+      // Confirmed live in the project's own licence audit (2026-07-30).
+      { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
+      // TODO(domenic): Store-Links — USER-TODO A4.
       { label: "App Store", href: "", kind: "store" },
       { label: "Google Play", href: "", kind: "store" },
     ],
@@ -443,6 +447,9 @@ export const recruiter = {
     { label: "Verfügbar", value: "Ab sofort" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung oder Freelance" },
+    // Pre-empts the "where's the code?" question and answers it as a decision
+    // rather than a gap — see USER-TODO block D.
+    { label: "Quellcode", value: "Repos privat — Lese-Zugriff auf Anfrage" },
   ],
   strengths: [
     {
