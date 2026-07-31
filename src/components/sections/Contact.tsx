@@ -2,7 +2,8 @@
 
 import { ArrowUpRight, Copy, Check } from "lucide-react";
 import { useState } from "react";
-import { contact, site } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
+import { SOCIALS } from "@/content/types";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -16,9 +17,10 @@ import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
  * kann. Eine Mailadresse kann beides nicht. Sie hat außerdem einen Vorteil, den
  * kein Formular hat: Der Absender behält seine Nachricht im eigenen Postausgang.
  *
- * Damit lädt diese Seite nichts von Dritten nach — auch nicht beim Absenden.
+ * Damit lädt diese Seite nichts von Dritten nach, auch nicht beim Absenden.
  */
 export function Contact() {
+  const { contact, site } = useContent();
   const [kopiert, setKopiert] = useState(false);
 
   const kopieren = async () => {
@@ -27,17 +29,17 @@ export function Contact() {
       setKopiert(true);
       window.setTimeout(() => setKopiert(false), 2000);
     } catch {
-      // Zwischenablage verweigert (unsicherer Kontext, Berechtigung) — der
+      // Zwischenablage verweigert (unsicherer Kontext, Berechtigung), der
       // Mailto-Link daneben funktioniert weiterhin, also kein Fehlerzustand.
     }
   };
 
-  const kanaele = [
-    site.socials.linkedin
-      ? { label: "LinkedIn", href: site.socials.linkedin, icon: LinkedinIcon }
+  const profile = [
+    SOCIALS.linkedin
+      ? { label: "LinkedIn", href: SOCIALS.linkedin, icon: LinkedinIcon }
       : null,
-    site.socials.github
-      ? { label: "GitHub", href: site.socials.github, icon: GithubIcon }
+    SOCIALS.github
+      ? { label: "GitHub", href: SOCIALS.github, icon: GithubIcon }
       : null,
   ].filter(Boolean) as {
     label: string;
@@ -84,12 +86,12 @@ export function Contact() {
                   {kopiert ? (
                     <>
                       <Check className="size-3.5 text-acid" aria-hidden />
-                      Kopiert
+                      {contact.copied}
                     </>
                   ) : (
                     <>
                       <Copy className="size-3.5" aria-hidden />
-                      Adresse kopieren
+                      {contact.copy}
                     </>
                   )}
                 </button>
@@ -99,9 +101,9 @@ export function Contact() {
                 {contact.hinweis}
               </p>
 
-              {kanaele.length > 0 ? (
+              {profile.length > 0 ? (
                 <div className="flex flex-wrap gap-2 border-t border-line pt-8">
-                  {kanaele.map((k) => (
+                  {profile.map((k) => (
                     <a
                       key={k.label}
                       href={k.href}
@@ -122,7 +124,7 @@ export function Contact() {
             </div>
           </Reveal>
 
-          {/* Was in eine erste Mail gehört — spart beiden Seiten eine Runde. */}
+          {/* Was in eine erste Mail gehört, spart beiden Seiten eine Runde. */}
           <Reveal delay={0.08}>
             <div className="lit rounded-2xl border border-line bg-surface/50 p-7">
               <h3 className="text-eyebrow mb-5">{contact.checkliste.titel}</h3>

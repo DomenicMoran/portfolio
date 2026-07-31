@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
  * Infinite horizontal ticker. The list is rendered twice and translated by
  * exactly -50%, so the seam lands on an identical frame.
  *
- * Pure CSS — no rAF loop, no JS on the main thread while it runs.
+ * Pure CSS, no rAF loop, no JS on the main thread while it runs.
  */
 export function Marquee({
   items,

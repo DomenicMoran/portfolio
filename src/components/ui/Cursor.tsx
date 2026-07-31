@@ -9,7 +9,7 @@ import { useMediaQuery } from "@/lib/useMediaQuery";
  * grows over interactive elements.
  *
  * Rendered only for fine pointers and only when motion is allowed. The native
- * cursor is never hidden globally via CSS — if this component does not mount,
+ * cursor is never hidden globally via CSS; if this component does not mount,
  * the user still has a working pointer.
  */
 export function Cursor() {

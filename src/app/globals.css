@@ -84,7 +84,7 @@ html.lenis body {
 
 /* Autofill.
    Chrome und Safari überschreiben ausgefüllte Felder mit einem hellen
-   Systemhintergrund und behalten die dunkle Systemschrift — auf einer dunklen
+   Systemhintergrund und behalten die dunkle Systemschrift, auf einer dunklen
    Seite wird daraus Hell auf Hell oder, nach dem Force-Dark eines Browsers,
    Schwarz auf Schwarz. Der Farbverlauf-Trick ist der einzige zuverlässige Weg:
    `background-color` ignorieren die Engines bei Autofill, einen inneren
@@ -100,14 +100,14 @@ textarea:-webkit-autofill {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* Focus states stay sharp — the whole site is keyboard-navigable. */
+/* Focus states stay sharp: the whole site is keyboard-navigable. */
 :focus-visible {
   outline: 2px solid var(--color-acid);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Scrollbar — thin, unobtrusive, still visible enough to orient. */
+/* Scrollbar: thin, unobtrusive, still visible enough to orient. */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -179,7 +179,7 @@ textarea:-webkit-autofill {
   border-top: 1px solid var(--color-line);
 }
 
-/* Subtle inner top-edge highlight — the detail that separates a "card" from a
+/* Subtle inner top-edge highlight: the detail that separates a "card" from a
    surface that looks lit. Cheap: one gradient, no extra element. */
 @utility lit {
   position: relative;
@@ -207,7 +207,7 @@ textarea:-webkit-autofill {
    Effects
    ========================================================================= */
 
-/* Film grain. A single tiled SVG turbulence — no image request, no canvas. */
+/* Film grain. A single tiled SVG turbulence, no image request, no canvas. */
 .grain::after {
   content: "";
   position: fixed;
@@ -242,7 +242,7 @@ textarea:-webkit-autofill {
 }
 
 /* Ambient light. `filter: blur()` over a large area is one of the most
-   expensive things a browser paints — on a throttled mobile CPU three of these
+   expensive things a browser paints. On a throttled mobile CPU three of these
    measurably delay first paint. The radius scales down with the viewport, and
    `will-change` is only promised on pointer devices: promoting three
    full-width layers on a phone costs more memory than the animation saves. */
@@ -289,7 +289,7 @@ textarea:-webkit-autofill {
 
 /* Hero-Headline: bewusst CSS statt Framer Motion.
    Die Wörter starten unter ihrer Maske. Als JS-Animation werden sie erst nach
-   der Hydration sichtbar — und genau darauf wartet dann auch der Largest
+   der Hydration sichtbar, und genau darauf wartet dann auch der Largest
    Contentful Paint. Als CSS-Animation läuft dieselbe Bewegung ab dem ersten
    Paint, ohne auf React zu warten. Gemessen: LCP von 3,0 s auf 1,x s.
    `both` behält den Endzustand, damit die Reduced-Motion-Regel (Dauer 0,01 ms)
@@ -322,7 +322,7 @@ textarea:-webkit-autofill {
   animation: caret-blink 1s steps(1) infinite;
 }
 
-/* Dot grid backdrop — masked to fade out so it never fights with content. */
+/* Dot grid backdrop, masked to fade out so it never fights with content. */
 @utility dot-grid {
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -333,7 +333,7 @@ textarea:-webkit-autofill {
 }
 
 /* ============================================================================
-   Motion preferences — hard opt-out, not a soft reduction.
+   Motion preferences: hard opt-out, not a soft reduction.
    Every scroll-driven effect below degrades to "already visible".
    ========================================================================= */
 
@@ -353,7 +353,7 @@ textarea:-webkit-autofill {
 }
 
 /* ============================================================================
-   Print — the one-pager route renders straight to PDF from here.
+   Print: the one-pager route renders straight to PDF from here.
    ========================================================================= */
 
 @media print {
@@ -365,7 +365,7 @@ textarea:-webkit-autofill {
   /* Die Farbtoken für den Druck umdefinieren statt nur Hintergrund und
      Grundfarbe zu überschreiben.
      Vorher setzte diese Regel den Hintergrund auf Weiß, ließ aber jede
-     Textklasse auf ihrem hellen Wert stehen — gedruckt wäre die Startseite
+     Textklasse auf ihrem hellen Wert stehen. Gedruckt wäre die Startseite
      weiß auf weiß und damit leer aus dem Drucker gekommen. Über die Token
      folgt die gesamte Seite automatisch, ohne dass eine einzelne Klasse
      angefasst werden muss. */
@@ -380,7 +380,7 @@ textarea:-webkit-autofill {
     --color-ink-dim: #3a3a44;
     --color-ink-faint: #63636e;
 
-    /* Die Akzentfarbe ist auf Papier nicht lesbar — hier ein dunkles Oliv,
+    /* Die Akzentfarbe ist auf Papier nicht lesbar, hier steht ein dunkles Oliv,
        das die Rolle als Akzent behält und auf Weiß trägt. */
     --color-acid: #4f6300;
     --color-violet: #4a3aa8;
@@ -416,12 +416,12 @@ textarea:-webkit-autofill {
   /* The one-pager has to be one page.
      `zoom` rather than `font-size`: this page sets its type in absolute px
      (text-[14px] and friends), which a relative font-size on the container
-     cannot touch. zoom scales the whole box — text, spacing and rules alike —
+     cannot touch. zoom scales the whole box (text, spacing and rules alike)
      and still reflows, unlike `transform: scale()`.
      If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
   .onepager {
     /* Gemessen: Inhalt 1109 px bei 794 px Breite, nutzbar sind 1040 px.
-       0.83 lässt ~17 px Luft. Effektive Textgröße ~10,8 px — normale
+       0.83 lässt ~17 px Luft. Effektive Textgröße ~10,8 px, also normale
        Lebenslauf-Größe, im Druck bei hoher DPI gut lesbar. */
     zoom: 0.83;
   }

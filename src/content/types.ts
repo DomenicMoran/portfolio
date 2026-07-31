@@ -62,6 +62,36 @@ export type Content = {
   navContact: string;
   skipToContent: string;
 
+  /**
+   * Beschriftungen, die nur Screenreader und Tastaturnutzer erreichen.
+   *
+   * Sie standen vorher fest verdrahtet auf Deutsch in den Komponenten. Auf
+   * der englischen Fassung las ein Screenreader damit deutsche Ansagen vor.
+   */
+  a11y: {
+    toTop: string;
+    mainNav: string;
+    footerNav: string;
+    openMenu: string;
+    closeMenu: string;
+    commandPalette: string;
+    currentSection: string;
+    replay: string;
+  };
+
+  /** Beschriftungen der Befehlspalette. */
+  palette: {
+    title: string;
+    searchLabel: string;
+    placeholder: string;
+    empty: string;
+    jump: string;
+    pdf: { label: string; hint: string };
+    mail: string;
+    github: string;
+    linkedin: string;
+  };
+
   hero: {
     eyebrow: string;
     headline: readonly { text: string; accent?: boolean }[];
@@ -108,7 +138,17 @@ export type Content = {
     };
     certificates: {
       label: string;
-      groups: readonly { issuer: string; items: readonly string[] }[];
+      /**
+       * `href` ist der Prüf-Link des Ausstellers, sofern vorhanden. Ist er
+       * leer, erscheint der Eintrag als reiner Text. Ein Zertifikat, das man
+       * nicht nachschlagen kann, wird hier bewusst nicht wie ein Link
+       * aussehen.
+       */
+      note?: string;
+      groups: readonly {
+        issuer: string;
+        items: readonly { name: string; href?: string }[];
+      }[];
     };
   };
 
@@ -168,7 +208,18 @@ export type Content = {
     fakten: readonly { label: string; wert: string }[];
   };
 
-  footer: { legalNote: string; impressum: string; datenschutz: string };
+  footer: {
+    legalNote: string;
+    impressum: string;
+    datenschutz: string;
+    /** Spaltenüberschriften. Ohne sie ist die Fußzeile eine Linksammlung. */
+    navLabel: string;
+    contactLabel: string;
+    legalLabel: string;
+    onepager: string;
+    sourceLabel: string;
+    sourceHref: string;
+  };
 
   notFound: {
     eyebrow: string;
@@ -186,7 +237,7 @@ export type Content = {
 /** Links, die in beiden Fassungen identisch sind. */
 export const SOCIALS = {
   github: "https://github.com/DomenicMoran" as string,
-  // TODO(domenic): vollständige Profil-URL — siehe USER-TODO.
+  // TODO(domenic): vollständige Profil-URL, siehe USER-TODO.
   linkedin: "" as string,
 };
 

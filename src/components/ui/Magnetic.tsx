@@ -5,7 +5,7 @@ import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Pulls its child toward the cursor. Pointer-precision only — on touch there is
+ * Pulls its child toward the cursor. Pointer-precision only. On touch there is
  * no hover state to react to, and the transform would just add jank.
  */
 export function Magnetic({

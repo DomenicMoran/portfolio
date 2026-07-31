@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  *
  * The frame does real work: a raw screenshot of a website pasted onto another
  * website reads as a stray image, while the same shot inside a browser bar
- * reads immediately as "this is a running product". The frame is pure CSS —
+ * reads immediately as "this is a running product". The frame is pure CSS:
  * no image assets beyond the screenshot itself.
  */
 

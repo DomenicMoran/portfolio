@@ -1,7 +1,8 @@
 "use client";
 
 import { Cloud, Cpu, Database, Layout } from "lucide-react";
-import { skillDomains } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
+import type { Content } from "@/content/types";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -13,7 +14,7 @@ const ICONS = {
 } as const;
 
 /**
- * Fähigkeiten als Fähigkeit plus Beleg — ohne Prozentbalken.
+ * Fähigkeiten als Fähigkeit plus Beleg, ohne Prozentbalken.
  *
  * Selbstvergebene Prozentwerte ("TypeScript 93 %") sind ein bekannt schwaches
  * Signal: Niemand kann sie prüfen, und der Unterschied zwischen 88 und 93 ist
@@ -21,17 +22,19 @@ const ICONS = {
  * entstanden ist. Genau das steht jetzt an der Stelle, wo vorher der Balken war.
  */
 export function Skills() {
+  const { skills } = useContent();
+
   return (
     <section id="skills" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Fähigkeiten"
-          title="Breit genug für das ganze Produkt, tief genug für die harten Stellen."
-          lede="Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht — deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist."
+          eyebrow={skills.eyebrow}
+          title={skills.title}
+          lede={skills.lede}
         />
 
         <div className="mt-16 grid gap-5 lg:grid-cols-2">
-          {skillDomains.map((domain, i) => (
+          {skills.domains.map((domain, i) => (
             <Reveal key={domain.id} delay={i * 0.06}>
               <DomainCard domain={domain} />
             </Reveal>
@@ -42,7 +45,7 @@ export function Skills() {
   );
 }
 
-function DomainCard({ domain }: { domain: (typeof skillDomains)[number] }) {
+function DomainCard({ domain }: { domain: Content["skills"]["domains"][number] }) {
   const Icon = ICONS[domain.id as keyof typeof ICONS] ?? Layout;
 
   return (

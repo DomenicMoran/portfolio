@@ -42,7 +42,7 @@ export function Reveal({
 
 /**
  * Splits a string into words and reveals each from behind its own clip mask.
- * Used for section headlines — the effect only reads well at large sizes.
+ * Used for section headlines: the effect only reads well at large sizes.
  */
 export function RevealWords({
   text,
@@ -67,7 +67,7 @@ export function RevealWords({
     >
       {words.map((word, i) => (
         // The space is a real text node BETWEEN the clip wrappers, not inside
-        // one — inside an overflow:hidden inline-block it collapses and the
+        // one; innerhalb eines overflow:hidden inline-block it collapses and the
         // words run together. Outside, it spaces them visually and keeps the
         // heading readable for screen readers and copy-paste.
         <Fragment key={`${word}-${i}`}>

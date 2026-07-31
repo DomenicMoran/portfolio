@@ -15,7 +15,7 @@ import {
  *
  * Bewusst ein Adapter und keine zweite Textdatei: Der deutsche Text bleibt in
  * `site.ts`, hier kommen nur die Felder dazu, die erst durch die
- * Zweisprachigkeit entstehen — Beschriftungen für Tabs, Fußzeile, 404 und
+ * Zweisprachigkeit entstehen: Beschriftungen für Tabs, Fußzeile, 404 und
  * Sprachumschalter. So gibt es weiterhin genau eine Stelle je Sprache.
  */
 export const de: Content = {
@@ -44,13 +44,34 @@ export const de: Content = {
   ],
   navContact: "Kontakt",
   skipToContent: "Zum Inhalt springen",
+  a11y: {
+    toTop: "Zum Seitenanfang",
+    mainNav: "Hauptnavigation",
+    footerNav: "Navigation in der Fußzeile",
+    openMenu: "Menü öffnen",
+    closeMenu: "Menü schließen",
+    commandPalette: "Befehlspalette öffnen",
+    currentSection: "Aktueller Abschnitt",
+    replay: "Ablauf erneut abspielen",
+  },
+  palette: {
+    title: "Befehlspalette",
+    searchLabel: "Suche",
+    placeholder: "Suchen oder springen …",
+    empty: "Nichts gefunden.",
+    jump: "Springen",
+    pdf: { label: "One-Pager als PDF", hint: "Druckfertige Kurzfassung" },
+    mail: "E-Mail schreiben",
+    github: "Quellcode und Profil",
+    linkedin: "Beruflicher Werdegang",
+  },
 
   hero: heroDe,
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
     title: "Vier Produkte. Alle live. Alle allein gebaut.",
-    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen — und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet.",
+    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen, und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet.",
     tabs: {
       highlights: "Was drinsteckt",
       automation: "Automatisierung",
@@ -78,25 +99,25 @@ export const de: Content = {
     principles: workflowDe.principles,
     demo: {
       label: workflowDe.demo.label,
-      note: "— nachgestellter Ablauf, keine Live-Sitzung.",
+      note: "Nachgestellter Ablauf, keine Live-Sitzung. Ursache, Datei und Änderung stehen in Commit bce08f5e.",
       lines: workflowDe.demo.lines,
     },
     speed: {
       eyebrow: "Größenordnung",
       title: "Der Unterschied ist nicht, dass ich schneller tippe.",
-      lede: "Er ist, dass Recherche, Implementierung, Test und Verifikation parallel statt nacheinander laufen — und dass der Kontext zwischen den Sitzungen nicht verloren geht.",
+      lede: "Er ist, dass Recherche, Implementierung, Test und Verifikation parallel statt nacheinander laufen, und dass der Kontext zwischen den Sitzungen nicht verloren geht.",
       rows: [
         { label: "Klassisch, allein", weeks: 100, note: "Wochen bis Store-Release" },
         { label: "Mit Agenten-Setup", weeks: 22, note: "dieselbe Feature-Tiefe" },
       ],
-      note: "Relative Darstellung aus meinen eigenen Projekten — kein Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44 ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei weiteren Systemen in Produktion.",
+      note: "Relative Darstellung aus meinen eigenen Projekten, kein Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44 ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei weiteren Systemen in Produktion.",
     },
   },
 
   skills: {
     eyebrow: "Fähigkeiten",
     title: "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
-    lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht — deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist.",
+    lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist.",
     domains: skillDomains,
   },
 
@@ -111,6 +132,12 @@ export const de: Content = {
     legalNote: "",
     impressum: "Impressum",
     datenschutz: "Datenschutz",
+    navLabel: "Seite",
+    contactLabel: "Kontakt",
+    legalLabel: "Rechtliches",
+    onepager: "Kurzprofil als PDF",
+    sourceLabel: "Quellcode dieser Seite",
+    sourceHref: "https://github.com/DomenicMoran/portfolio",
   },
 
   notFound: {

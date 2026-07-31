@@ -38,7 +38,7 @@ export const stagger = (delay = 0, gap = 0.07): Variants => ({
 
 /**
  * Mask reveal for headline words. The parent needs `overflow: hidden` on each
- * word wrapper — the child slides out from under its own clip rectangle.
+ * word wrapper: the child slides out from under its own clip rectangle.
  */
 export const maskWord: Variants = {
   hidden: { y: "110%", opacity: 0 },

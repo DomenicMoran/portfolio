@@ -10,7 +10,7 @@ export const contentType = "image/png";
  * verkleinertes Zeichen bleibt bei 2x-Displays scharf, während ein natives
  * 32er dort weich wird.
  *
- * Das Zeichen ist ein „D" mit abgeschnittener rechter Kante — dieselbe Geste
+ * Das Zeichen ist ein „D" mit abgeschnittener rechter Kante, dieselbe Geste
  * wie die Akzentfarbe der Seite: reduziert, aber nicht beliebig.
  */
 export default function Icon() {

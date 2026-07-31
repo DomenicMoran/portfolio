@@ -3,7 +3,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Fragment, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { hero, site, techTicker } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
+import { TECH_TICKER as techTicker } from "@/content/types";
 import { ease } from "@/lib/motion";
 import { Counter } from "@/components/ui/Counter";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -11,13 +12,14 @@ import { Marquee } from "@/components/ui/Marquee";
 import { cn } from "@/lib/utils";
 
 export function Hero() {
+  const { hero, site } = useContent();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  // Gentle parallax on exit. Kept small — big values make the section feel
+  // Gentle parallax on exit. Kept small. Big values make the section feel
   // detached from the scroll and hurt perceived smoothness on low-end devices.
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
@@ -32,7 +34,7 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
         <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
-        {/* The two secondary orbs are pure decoration — they only appear once
+        {/* The two secondary orbs are pure decoration; they only appear once
             the viewport is wide enough for the cost to be irrelevant. */}
         <div
           className="glow-orb animate-float top-[10%] right-[2%] hidden size-[30rem] bg-cyan/12 sm:block"
@@ -69,11 +71,11 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* Headline — each word rises out of its own clip mask */}
+        {/* Headline: each word rises out of its own clip mask */}
         <h1 className="text-display max-w-[18ch] text-balance text-ink">
           {hero.headline.map((word, i) => (
             // The space is a real text node BETWEEN the clip wrappers, not
-            // inside one — inside an overflow:hidden inline-block it collapses
+            // inside one; innerhalb eines overflow:hidden inline-block it collapses
             // and the words run together. Outside, it spaces them visually and
             // keeps the heading readable for screen readers and copy-paste.
             <Fragment key={i}>

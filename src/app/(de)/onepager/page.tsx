@@ -5,7 +5,7 @@ import { PrintButton } from "./PrintButton";
 
 export const metadata: Metadata = {
   title: "One-Pager",
-  description: `Kurzprofil von ${site.name} — ${site.role}.`,
+  description: `Kurzprofil von ${site.name}, ${site.role}.`,
   robots: { index: false, follow: true },
 };
 
@@ -31,7 +31,7 @@ function firstSentence(text: string) {
 }
 
 export default function OnePager() {
-  // Die ersten vier je Bereich — die Reihenfolge in der Inhaltsdatei ist
+  // Die ersten vier je Bereich. Die Reihenfolge in der Inhaltsdatei ist
   // bewusst gewählt, es gibt keine Rangzahl mehr, nach der sortiert würde.
   const topSkills = skillDomains.map((domain) => ({
     title: domain.title,
@@ -42,8 +42,8 @@ export default function OnePager() {
     // `color-scheme: light` ist hier nicht kosmetisch, sondern der Fix gegen
     // Androids "Force Dark" und Samsung Internets Dunkelmodus: Ohne die Angabe
     // invertieren die den weissen Hintergrund, lassen den fest gesetzten
-    // dunklen Text aber stehen — Ergebnis ist Schwarz auf Schwarz. Mit der
-    // Angabe erklaert die Seite, dass sie ihr Farbschema selbst kennt, und
+    // dunklen Text aber stehen. Ergebnis ist Schwarz auf Schwarz. Mit der
+    // Angabe erklärt die Seite, dass sie ihr Farbschema selbst kennt, und
     // wird in Ruhe gelassen.
     //
     // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Hoehe
@@ -84,7 +84,7 @@ export default function OnePager() {
             gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent.
             3.946 Commits in vier Monaten, neben einem Vollzeitjob.
             Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt:
-            agentengestützte Entwicklung mit strikter Verifikationsdisziplin —
+            agentengestützte Entwicklung mit strikter Verifikationsdisziplin,
             ein grüner Testlauf ist kein Beweis.
           </p>
         </section>
@@ -146,7 +146,7 @@ export default function OnePager() {
               Werdegang
             </h2>
             <dl className="flex flex-col gap-1.5">
-              {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten —
+              {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten,
                   auf einer Seite zählt, was die Projekte erklärt. */}
               {about.timeline.slice(0, 3).map((entry) => (
                 <div key={entry.period} className="text-[12.5px] leading-snug">
@@ -155,13 +155,13 @@ export default function OnePager() {
                   </dt>
                   <dd>
                     <span className="font-semibold">{entry.title}</span>
-                    <span className="text-[#3a3a44]"> — {entry.org}</span>
+                    <span className="text-[#3a3a44]"> · {entry.org}</span>
                   </dd>
                 </div>
               ))}
             </dl>
             <p className="mt-2 text-[11.5px] leading-snug text-[#3a3a44]">
-              Softwareentwicklung autodidaktisch — kein Studium, kein Bootcamp.
+              Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp.
               Der Nachweis sind vier Systeme in Produktion.
             </p>
           </section>

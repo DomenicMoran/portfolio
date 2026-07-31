@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { about, site } from "@/content/site";
+import { useContent } from "@/content/ContentProvider";
 import { Counter } from "@/components/ui/Counter";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -14,11 +14,13 @@ import { cn } from "@/lib/utils";
  * The biography section.
  *
  * Placed after the case studies on purpose: the work earns the right to the
- * story. A visitor who has just seen four production systems reads "employer
- * officer" as remarkable; a visitor who reads it first reads it as a
- * disclaimer.
+ * story. Someone who has just seen four production systems reads "taught
+ * himself, alongside a full-time job" as remarkable. Read first, the same
+ * sentence sounds like an excuse.
  */
 export function About() {
+  const { about, site } = useContent();
+
   return (
     <section id="about" className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40">
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -31,13 +33,13 @@ export function About() {
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
           {/* Narrative */}
           <div className="flex flex-col gap-6">
-            {/* Porträt nur, wenn ein echtes hinterlegt ist — siehe site.ts */}
+            {/* Porträt nur, wenn ein echtes hinterlegt ist, siehe site.ts */}
             {about.portrait ? (
               <Reveal>
                 <div className="lit relative mb-2 w-fit overflow-hidden rounded-2xl border border-line">
                   <Image
                     src={about.portrait}
-                    alt={`Porträtfoto von ${site.name}`}
+                    alt={site.name}
                     width={220}
                     height={220}
                     sizes="220px"
@@ -79,7 +81,7 @@ export function About() {
                       transition: { duration: 0.6, ease: ease.expo },
                     },
                   }}
-                  // A <dl> may only contain dt/dd groups — label and note both
+                  // A <dl> may only contain dt/dd groups: label and note both
                   // live inside <dt>, the number in <dd>, and flex-col-reverse
                   // puts the number back on top visually.
                   className="flex flex-col-reverse gap-1"
@@ -108,7 +110,7 @@ export function About() {
 
           {/* Timeline */}
           <div className="lg:pt-2">
-            <h3 className="text-eyebrow mb-8">Werdegang</h3>
+            <h3 className="text-eyebrow mb-8">{about.timelineLabel}</h3>
             <ol className="relative flex flex-col">
               {/* Spine */}
               <span
@@ -139,7 +141,7 @@ export function About() {
               ))}
             </ol>
 
-            {/* Öffentlicher Code — beantwortet die „wo ist der Code?"-Frage,
+            {/* Öffentlicher Code, beantwortet die „wo ist der Code?“-Frage,
                 bevor sie gestellt wird. */}
             <Reveal delay={0.08} className="mt-10 border-t border-line pt-8">
               <h3 className="text-eyebrow mb-3">{about.openSource.label}</h3>
@@ -174,7 +176,9 @@ export function About() {
               </ul>
             </Reveal>
 
-            {/* Zertifikate füllen die Spalte mit Beleg statt mit Weißraum. */}
+            {/* Zertifikate füllen die Spalte mit Beleg statt mit Weißraum.
+                Einträge mit Prüf-Link werden zum Link, alle anderen bleiben
+                Text. So ist auf einen Blick sichtbar, was nachschlagbar ist. */}
             <Reveal delay={0.1} className="mt-10 border-t border-line pt-8">
               <h3 className="text-eyebrow mb-5">{about.certificates.label}</h3>
               <div className="flex flex-col gap-5">
@@ -186,17 +190,39 @@ export function About() {
                     <ul className="flex flex-col gap-1">
                       {group.items.map((item) => (
                         <li
-                          key={item}
+                          key={item.name}
                           className="flex gap-2 text-xs leading-snug text-ink-faint"
                         >
-                          <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-acid/60" />
-                          {item}
+                          <span
+                            aria-hidden
+                            className="mt-1.5 size-1 shrink-0 rounded-full bg-acid/60"
+                          />
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                            >
+                              {item.name}
+                            </a>
+                          ) : (
+                            item.name
+                          )}
                         </li>
                       ))}
                     </ul>
                   </div>
                 ))}
               </div>
+
+              {about.certificates.groups.some((g) =>
+                g.items.some((i) => i.href),
+              ) && about.certificates.note ? (
+                <p className="mt-5 text-[11px] leading-relaxed text-ink-faint">
+                  {about.certificates.note}
+                </p>
+              ) : null}
             </Reveal>
           </div>
         </div>
