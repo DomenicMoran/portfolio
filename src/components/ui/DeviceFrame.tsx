@@ -16,9 +16,9 @@ type Props = {
   /** Intrinsic size of the screenshot, for correct aspect ratio and no CLS. */
   width: number;
   height: number;
-  /** Shown in the fake address bar. */
+  /** Shown in the fake address bar (browser) or as a caption (screen). */
   label?: string;
-  variant?: "browser" | "phone";
+  variant?: "browser" | "phone" | "screen";
   priority?: boolean;
   className?: string;
 };
@@ -58,6 +58,31 @@ export function DeviceFrame({
           />
         </div>
       </div>
+    );
+  }
+
+  // Ein Bildschirm ohne Browser-Chrome: Fernseher und Kioskgeräte haben keine
+  // Adressleiste, und eine dazuzuerfinden wäre schlicht falsch.
+  if (variant === "screen") {
+    return (
+      <figure className={cn("flex flex-col gap-2.5", className)}>
+        <div className="overflow-hidden rounded-lg border border-line bg-void shadow-2xl shadow-black/50">
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            priority={priority}
+            sizes="(max-width: 1024px) 100vw, 700px"
+            className="h-auto w-full"
+          />
+        </div>
+        {label ? (
+          <figcaption className="text-center font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+            {label}
+          </figcaption>
+        ) : null}
+      </figure>
     );
   }
 
