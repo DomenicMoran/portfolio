@@ -244,9 +244,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 hidden: { opacity: 0, y: 14 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.expo } },
               }}
-              className="flex flex-col gap-1"
+              // See Hero: a <dl> may only contain dt/dd groups, so the label
+              // lives in <dt> and the visual order comes from flex-col-reverse.
+              className="flex flex-col-reverse gap-1"
             >
-              <dt className="sr-only">{metric.label}</dt>
+              <dt className="text-xs text-ink-faint">{metric.label}</dt>
               <dd
                 className={cn(
                   "text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl",
@@ -255,7 +257,6 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               >
                 <Counter value={metric.value} />
               </dd>
-              <span className="text-xs text-ink-faint">{metric.label}</span>
             </motion.div>
           ))}
         </motion.dl>

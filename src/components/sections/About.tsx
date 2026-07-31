@@ -61,16 +61,20 @@ export function About() {
                       transition: { duration: 0.6, ease: ease.expo },
                     },
                   }}
-                  className="flex flex-col gap-1"
+                  // A <dl> may only contain dt/dd groups — label and note both
+                  // live inside <dt>, the number in <dd>, and flex-col-reverse
+                  // puts the number back on top visually.
+                  className="flex flex-col-reverse gap-1"
                 >
-                  <dt className="sr-only">{stat.label}</dt>
+                  <dt className="flex flex-col gap-0.5">
+                    <span className="text-xs leading-snug text-ink">{stat.label}</span>
+                    <span className="text-[11px] leading-snug text-ink-faint">
+                      {stat.note}
+                    </span>
+                  </dt>
                   <dd className="text-2xl font-semibold tracking-tight text-acid tabular-nums sm:text-3xl">
                     <Counter value={stat.value} />
                   </dd>
-                  <span className="text-xs leading-snug text-ink">{stat.label}</span>
-                  <span className="text-[11px] leading-snug text-ink-faint">
-                    {stat.note}
-                  </span>
                 </motion.div>
               ))}
             </motion.dl>

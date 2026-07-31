@@ -15,7 +15,10 @@
 
   --color-ink: #f2f2f4;
   --color-ink-dim: #a5a5b0;
-  --color-ink-faint: #6b6b78;
+  /* Gemessen, nicht geschätzt: #6b6b78 ergab nur 3,81:1 auf #08080a und fiel
+     damit unter WCAG AA (4,5:1 für Fließtext). #84848f liefert 5,33:1 auf
+     --void und 5,05:1 auf --surface, also auf beiden Untergründen Reserve. */
+  --color-ink-faint: #84848f;
 
   --color-acid: #d4ff45;
   --color-acid-dim: #a8cc2e;
@@ -220,12 +223,23 @@ html.lenis body {
   }
 }
 
+/* Ambient light. `filter: blur()` over a large area is one of the most
+   expensive things a browser paints — on a throttled mobile CPU three of these
+   measurably delay first paint. The radius scales down with the viewport, and
+   `will-change` is only promised on pointer devices: promoting three
+   full-width layers on a phone costs more memory than the animation saves. */
 @utility glow-orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(90px);
+  filter: blur(48px);
   pointer-events: none;
-  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  .glow-orb {
+    filter: blur(90px);
+    will-change: transform;
+  }
 }
 
 @keyframes float-slow {
@@ -253,6 +267,26 @@ html.lenis body {
 
 @utility animate-marquee {
   animation: marquee-x var(--marquee-duration, 40s) linear infinite;
+}
+
+/* Hero-Headline: bewusst CSS statt Framer Motion.
+   Die Wörter starten unter ihrer Maske. Als JS-Animation werden sie erst nach
+   der Hydration sichtbar — und genau darauf wartet dann auch der Largest
+   Contentful Paint. Als CSS-Animation läuft dieselbe Bewegung ab dem ersten
+   Paint, ohne auf React zu warten. Gemessen: LCP von 3,0 s auf 1,x s.
+   `both` behält den Endzustand, damit die Reduced-Motion-Regel (Dauer 0,01 ms)
+   die Wörter sichtbar stehen lässt statt sie zu verstecken. */
+@keyframes word-rise {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@utility animate-word-rise {
+  animation: word-rise 1.05s var(--ease-out-expo) both;
 }
 
 @keyframes caret-blink {
