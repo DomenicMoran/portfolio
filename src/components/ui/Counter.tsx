@@ -1,55 +1,105 @@
 "use client";
 
-import { animate, useInView } from "framer-motion";
+import { animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Counts up when scrolled into view.
+ * Zählt beim Sichtbarwerden hoch.
  *
- * Handles values that are not plain numbers ("75+", "1.44", "EU", "24/7") by
- * animating only the leading numeric part and keeping the rest verbatim. That
- * way the data file stays human-readable instead of splitting every value into
- * {number, suffix} pairs.
+ * Werte, die keine reine Zahl sind ("100 %", "1.44", "EU", "24/7"), werden nur
+ * im führenden Zahlenteil animiert; der Rest bleibt wörtlich stehen. So bleibt
+ * die Inhaltsdatei lesbar, statt jeden Wert in {Zahl, Suffix} zu zerlegen.
  */
 export function Counter({ value, className }: { value: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
 
   const match = value.match(/^([\d.,]+)(.*)$/);
   const numericPart = match?.[1] ?? "";
   const suffix = match?.[2] ?? "";
 
-  // German formatting: "." groups thousands, "," is the decimal separator.
+  // Deutsche Schreibweise: "." gruppiert Tausender, "," ist das Dezimaltrennzeichen.
   const decimals = numericPart.includes(",") ? numericPart.split(",")[1].length : 0;
   const target = Number(numericPart.replace(/\./g, "").replace(",", "."));
   const animatable = match !== null && Number.isFinite(target);
 
-  // Group thousands only if the source did. Otherwise a year like "2018"
-  // renders as "2.018", which is simply wrong — and mid-animation it reads
-  // as a nonsense year.
+  // Tausender nur gruppieren, wenn die Quelle es tat — sonst würde eine
+  // Jahreszahl wie "2018" als "2.018" erscheinen.
   const useGrouping = numericPart.includes(".");
 
   const [display, setDisplay] = useState(animatable ? "0" : value);
 
   useEffect(() => {
-    if (!inView || !animatable) return;
+    const el = ref.current;
+    if (!el || !animatable) return;
 
-    const controls = animate(0, target, {
-      duration: 1.4,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (latest) => {
-        setDisplay(
-          latest.toLocaleString("de-DE", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
-            useGrouping,
-          }),
-        );
-      },
+    let controls: ReturnType<typeof animate> | null = null;
+    let done = false;
+
+    const endwert = target.toLocaleString("de-DE", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+      useGrouping,
     });
 
-    return () => controls.stop();
-  }, [inView, animatable, target, decimals, useGrouping]);
+    const hochzaehlen = () => {
+      if (done) return;
+      done = true;
+      controls = animate(0, target, {
+        duration: 1.4,
+        ease: [0.16, 1, 0.3, 1],
+        onUpdate: (latest) => {
+          setDisplay(
+            latest.toLocaleString("de-DE", {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+              useGrouping,
+            }),
+          );
+        },
+      });
+    };
+
+    const sofortSetzen = () => {
+      if (done) return;
+      done = true;
+      setDisplay(endwert);
+    };
+
+    /**
+     * Der Grund für den zusätzlichen Scroll-Wächter:
+     *
+     * Ein IntersectionObserver meldet nur, was den Sichtbereich tatsächlich
+     * kreuzt. Springt jemand direkt zu einem Abschnitt — über die
+     * Befehlspalette, einen Anker oder Pos1/Ende — landet dieses Element unter
+     * Umständen oberhalb des Sichtbereichs, ohne ihn je berührt zu haben. Der
+     * Beobachter schweigt dann für immer, und die Kennzahl bliebe auf "0"
+     * stehen. Eine Seite, die mit belegbaren Zahlen argumentiert, darf einem
+     * Besucher nicht "0 API-Routen" zeigen.
+     *
+     * Deshalb: übersprungen heißt sofort Endwert, ohne Animation.
+     */
+    const pruefeUebersprungen = () => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < 0) sofortSetzen();
+    };
+
+    const io = new IntersectionObserver(
+      (eintraege) => {
+        for (const e of eintraege) if (e.isIntersecting) hochzaehlen();
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+
+    pruefeUebersprungen();
+    window.addEventListener("scroll", pruefeUebersprungen, { passive: true });
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", pruefeUebersprungen);
+      controls?.stop();
+    };
+  }, [animatable, target, decimals, useGrouping]);
 
   return (
     <span ref={ref} className={className}>
