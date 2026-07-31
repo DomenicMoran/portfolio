@@ -90,6 +90,29 @@ export const about = {
       current: true,
     },
   ],
+  /**
+   * Öffentlicher Code. Bewusst kein Produktcode — die Produktivsysteme bleiben
+   * privat. Was hier steht, sind eigenständige Bibliotheken aus Problemen, die
+   * dabei tatsächlich aufgetreten sind.
+   */
+  openSource: {
+    label: "Open Source",
+    lede: "Meine Produktivsysteme bleiben privat — sie tragen Kundendaten und lizenzierte Inhalte. Was ich veröffentliche, sind die Werkzeuge, die dabei entstanden sind.",
+    items: [
+      {
+        name: "arabic-normalize",
+        href: "https://github.com/DomenicMoran/arabic-normalize",
+        body: "Normalisierung arabischer Schrift für den Vergleich. Löst, dass ein Spracherkenner „علی“ ausgibt, wo die Vorlage „علي“ enthält — für das Ohr identisch, für === verschieden.",
+        meta: "TypeScript · 23 Tests · null Abhängigkeiten",
+      },
+      {
+        name: "portfolio",
+        href: "https://github.com/DomenicMoran/portfolio",
+        body: "Diese Seite. Next.js 16 mit React Server Components, dokumentierten Architektur-Entscheidungen und der Begründung, warum die CSP aussieht, wie sie aussieht.",
+        meta: "TypeScript · Lighthouse 100 Barrierefreiheit",
+      },
+    ],
+  },
   /** Belegbar: alle Zertifikate liegen als PDF vor, die Meta-Kurse sind über
    *  Coursera verifizierbar. */
   certificates: {
@@ -169,9 +192,15 @@ export type CaseStudy = {
   highlights: string[];
   stack: StackGroup[];
   metrics: Metric[];
-  links: { label: string; href: string; kind: "live" | "store" | "code" }[];
+  links: { label: string; href: string; kind: "live" | "store" | "code" | "social" }[];
   /** Keys into ARCHITECTURES in components/ArchitectureDiagram.tsx */
   architecture: string;
+  /** Optional: eigener Abschnitt, wenn ein Aspekt eine Aufzählung sprengt. */
+  automation?: {
+    title: string;
+    lede: string;
+    groups: { title: string; items: string[] }[];
+  };
   /**
    * Live screenshots captured from the running products on 2026-07-31.
    * Omitted where there is nothing safe to show — WohnungsJäger's dashboard
@@ -234,15 +263,15 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "1.44", label: "Aktuelle Version" },
       { value: "5", label: "Zielgeräte-Klassen" },
-      { value: "0", label: "Cloud-Calls für KI-Antworten" },
-      // TODO(domenic): Downloads / Rating / MAU — USER-TODO A3.
+      { value: "1.046", label: "Commits" },
+      { value: "100 %", label: "KI läuft auf dem Gerät" },
+      { value: "15", label: "Podcast-Folgen produziert" },
     ],
     links: [
-      // Confirmed live in the project's own licence audit (2026-07-30).
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-      // TODO(domenic): Store-Links — USER-TODO A4.
+      { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
+      // TODO(domenic): Store-Links — USER-TODO.
       { label: "App Store", href: "", kind: "store" },
       { label: "Google Play", href: "", kind: "store" },
     ],
@@ -288,11 +317,54 @@ export const caseStudies: CaseStudy[] = [
       "Stripe Connect Destination-Charge — Restaurants werden direkt ausgezahlt, Plattformgebühr abgeführt",
       "KassenSichV §146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
       "298 automatisierte Tests (254 Unit / 44 E2E) gegen Produktion",
+      "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
-      "47 versionierte n8n-Workflows für Onboarding, Abrechnung, Reporting und Watchdogs",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
+    /** Eigener Block, weil 46 Workflows keine Fußnote sind. */
+    automation: {
+      title: "46 Workflows, die den Betrieb tragen",
+      lede: "Der Teil des Systems, der ohne mich weiterläuft. Alle Workflows sind versioniert und im Repository nachvollziehbar — nicht in einer Oberfläche zusammengeklickt und dann vergessen.",
+      groups: [
+        {
+          title: "Kundenkontakt",
+          items: [
+            "Instagram-DM-Bot beantwortet Anfragen und qualifiziert Leads",
+            "WhatsApp-Business-Bot für Bestell- und Supportfragen",
+            "KI-Support-Agent mit Eskalation an den Menschen bei Unsicherheit",
+            "Reputation-Manager: Google-Rezensionen je Mandant, KI-Antwortentwurf, Auto-Post",
+          ],
+        },
+        {
+          title: "Betrieb & Selbstheilung",
+          items: [
+            "Supervisor alle 5 Minuten, Watchdog alle 15, Workflow-Wächter stündlich",
+            "Globaler Error-Handler, der jeden Fehlschlag einsammelt statt ihn zu verlieren",
+            "Wöchentliches Backup — und stündliche Prüfung, ob es wiederherstellbar ist",
+            "Selbstheilung immer mit Cooldown, Obergrenze und Slack-Meldung je Eingriff",
+          ],
+        },
+        {
+          title: "Geld & Recht",
+          items: [
+            "Fiskaly-Abgleich täglich, Mail-Polling alle 30 Minuten",
+            "Rechnungs- und Ausgabenverwaltung, Monatsabschluss vorbereitet",
+            "Bounce-Handler für Resend und SES getrennt",
+            "Legal-Watcher: täglicher Abgleich rechtlicher Pflichtangaben",
+          ],
+        },
+        {
+          title: "Marketing",
+          items: [
+            "Täglicher LinkedIn-Post, wöchentlicher Blog-Artikel",
+            "TikTok-Crossposting, tägliche Social-Analytics-Auswertung",
+            "Lead-Scraper mit anschließender E-Mail-Ermittlung",
+            "Abend-Briefing und wöchentlicher Marketing-Digest nach Slack",
+          ],
+        },
+      ],
+    },
     stack: [
       {
         group: "Frontend",
@@ -321,6 +393,9 @@ export const caseStudies: CaseStudy[] = [
     links: [
       { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
+      { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
+      { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
+      { label: "TikTok", href: "https://tiktok.com/@menucloudberlin", kind: "social" },
     ],
     architecture: "menucloud",
     shots: [
@@ -367,8 +442,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: "5", label: "Überwachte Portale" },
       { value: "24/7", label: "Scan-Betrieb" },
-      { value: "REVIEW", label: "Sicherer Auslieferungszustand" },
-      // TODO(domenic): gescannte Anzeigen / versendete Bewerbungen — USER-TODO A3.
+      { value: "2", label: "Bewertungsstufen vor dem Versand" },
     ],
     links: [],
     architecture: "wohnungsjaeger",
@@ -409,8 +483,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "12", label: "Migrationen" },
     ],
     links: [
-      // TODO(domenic): Live-URL bestätigen — USER-TODO A4.
-      { label: "Live-Demo", href: "", kind: "live" },
+      { label: "nouri-fitness.vercel.app", href: "https://nouri-fitness.vercel.app", kind: "live" },
     ],
     architecture: "nouri",
     shots: [
@@ -568,7 +641,7 @@ export const recruiter = {
     { label: "Modell", value: "Festanstellung oder Freelance" },
     // Pre-empts the "where's the code?" question and answers it as a decision
     // rather than a gap — see USER-TODO block D.
-    { label: "Quellcode", value: "Repos privat — Lese-Zugriff auf Anfrage" },
+    { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
   ],
   strengths: [
     {
