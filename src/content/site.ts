@@ -40,7 +40,7 @@ export const site = {
   meta: {
     title: "Domenic Moran — AI Product Engineer",
     description:
-      "Entwickler, der neben einem Vollzeitjob vier Produktionssysteme gebaut hat: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.946 Commits in vier Monaten — alles selbst, alles live.",
+      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.946 Commits in vier Monaten — neben einem Vollzeitjob.",
   },
 } as const;
 
@@ -50,46 +50,43 @@ export const site = {
 
 export const about = {
   eyebrow: "Wer ich bin",
-  title: "Seit acht Jahren im Streifendienst. Seit vier Monaten Software in Produktion.",
+  /**
+   * TODO(domenic): echtes Porträt nach `public/portrait.jpg` legen und den Pfad
+   * hier eintragen — USER-TODO B1. Solange leer, entfällt das Bildelement und
+   * die Textspalte nimmt die volle Breite ein; die Sektion sieht dann
+   * vollständig aus statt lückenhaft.
+   *
+   * Bewusst KEIN generiertes Bild: Auf einer Seite, die mit Belegbarkeit
+   * argumentiert, ist ein erfundenes Porträt der eine Fehler, der alles andere
+   * infrage stellt.
+   */
+  portrait: "" as string,
+  title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
   paragraphs: [
-    "Ich arbeite seit 2018 in einem Vollzeitjob in Berlin. Softwareentwicklung habe ich mir ab 2022 selbst beigebracht — erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung.",
-    "Der Dienst hat mich zwei Dinge gelehrt, die im Engineering mehr wert sind als jedes Framework. Erstens: Unter Zeitdruck entscheiden, ohne die Sorgfalt zu verlieren. Zweitens — und das ist das Wichtigere: Eine Behauptung ohne Beleg zählt nicht. In einem Bericht steht nicht, was vermutlich passiert ist.",
-    "Genau diese Regel steht heute in der Konventionsdatei jedes meiner Repositories: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen, bevor sie als fertig gilt. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
+    "Softwareentwicklung habe ich mir ab 2022 selbst beigebracht — erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung — entstanden neben einem Vollzeitjob.",
+    "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete — angekommen ist bei keinem Nutzer je etwas.",
+    "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen — durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
-  // Verified against `git log` on 2026-07-31 — not estimates.
+  // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "3.946", label: "Commits in 4 Monaten", note: "neben dem Vollzeitdienst" },
+    { value: "3.946", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
-    { value: "8", label: "Jahre Vollzeitjob", note: "Berlin, seit 03/2018" },
+    { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
   ],
   timeline: [
     {
       period: "seit 04/2026",
-      title: "Gründer & Einzelunternehmer",
-      org: "MenuCloud, Berlin",
-      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler — Produkt, Architektur, Auslieferung, Recht.",
+      title: "Gründer & Product Engineer",
+      org: "MenuCloud — Inh. Domenic Moran, Berlin",
+      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler — Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
-    },
-    {
-      period: "seit 03/2018",
-      title: "Vollzeitbeschäftigter",
-      org: "Arbeitgeber in Berlin",
-      body: "Entscheidungen unter Zeitdruck, lückenlose Dokumentation, Verantwortung für Ergebnisse mit realen Konsequenzen.",
-      current: true,
-    },
-    {
-      period: "09/2015 — 03/2018",
-      title: "Berufsausbildung",
-      org: "Arbeitgeber in Berlin",
-      body: "Abgeschlossene Laufbahnausbildung inklusive Rechts-, Einsatz- und Verwaltungslehre.",
-      current: false,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Front-End, Back-End, Mobile Development, Programming in Python, Version Control — plus iOS/Swift und SwiftUI. Kein Studium, kein Bootcamp.",
+      body: "Front-End, Back-End, Mobile Development, Programming in Python, Version Control — dazu iOS, Swift und SwiftUI. Kein Studium, kein Bootcamp.",
       current: true,
     },
   ],
@@ -111,7 +108,7 @@ export const hero = {
     { text: "nicht" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  lede: "Fullstack Product Engineer aus Berlin — und hauptberuflich in einem Vollzeitjob. In vier Monaten sind daneben vier Produktionssysteme entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.",
+  lede: "Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in vier Monaten neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut — von der Migration bis zum Impressum.",
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   // Every number verified against git and the repos on 2026-07-31.
@@ -559,7 +556,7 @@ export const recruiter = {
     },
     {
       title: "Belegpflicht statt Bauchgefühl",
-      body: "Aus acht Jahren Berufstätigkeit: Eine Behauptung ohne Beleg zählt nicht. Übertragen aufs Engineering heißt das — jede Änderung wird am Live-System nachgewiesen, bevor sie als fertig gilt. Das macht agentengestützte Entwicklung erst belastbar.",
+      body: "Ein grüner Testlauf beweist nichts — das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
     },
   ],
   cta: {

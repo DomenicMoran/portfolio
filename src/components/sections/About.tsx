@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { about } from "@/content/site";
+import Image from "next/image";
+import { about, site } from "@/content/site";
 import { Counter } from "@/components/ui/Counter";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -29,6 +30,22 @@ export function About() {
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
           {/* Narrative */}
           <div className="flex flex-col gap-6">
+            {/* Porträt nur, wenn ein echtes hinterlegt ist — siehe site.ts */}
+            {about.portrait ? (
+              <Reveal>
+                <div className="lit relative mb-2 w-fit overflow-hidden rounded-2xl border border-line">
+                  <Image
+                    src={about.portrait}
+                    alt={`Porträtfoto von ${site.name}`}
+                    width={220}
+                    height={220}
+                    sizes="220px"
+                    className="h-auto w-[13.75rem] object-cover"
+                  />
+                </div>
+              </Reveal>
+            ) : null}
+
             {about.paragraphs.map((paragraph, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <p
