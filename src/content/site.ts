@@ -52,7 +52,7 @@ export const about = {
   eyebrow: "Wer ich bin",
   title: "Seit acht Jahren im Streifendienst. Seit vier Monaten Software in Produktion.",
   paragraphs: [
-    "Ich arbeite seit 2018 in einem Vollzeitjob in Berlin. Softwareentwicklung habe ich mir vollständig selbst beigebracht — und zwar nicht als Hobby am Wochenende, sondern konsequent: In vier Monaten sind vier Produktionssysteme entstanden, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung.",
+    "Ich arbeite seit 2018 in einem Vollzeitjob in Berlin. Softwareentwicklung habe ich mir ab 2022 selbst beigebracht — erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung.",
     "Der Dienst hat mich zwei Dinge gelehrt, die im Engineering mehr wert sind als jedes Framework. Erstens: Unter Zeitdruck entscheiden, ohne die Sorgfalt zu verlieren. Zweitens — und das ist das Wichtigere: Eine Behauptung ohne Beleg zählt nicht. In einem Einsatzbericht steht nicht, was vermutlich passiert ist.",
     "Genau diese Regel steht heute in der Konventionsdatei jedes meiner Repositories: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen, bevor sie als fertig gilt. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -61,7 +61,7 @@ export const about = {
     { value: "3.946", label: "Commits in 4 Monaten", note: "neben dem Vollzeitdienst" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "8", label: "Jahre Vollzeitjob", note: "Berlin, seit 03/2018" },
-    { value: "100 %", label: "Autodidakt", note: "kein Studium, kein Bootcamp" },
+    { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
   ],
   timeline: [
     {
@@ -86,11 +86,11 @@ export const about = {
       current: false,
     },
     {
-      period: "2013 — 2015",
-      title: "Schulabschluss",
-      org: "Otfried-Preußler-Schule, Großbeeren",
-      body: "Zuvor: 9. Integrierte Sekundarschule Berlin (2011–2013), Paul-Schneider-Grundschule Berlin-Steglitz (2005–2011).",
-      current: false,
+      period: "seit 2022",
+      title: "Softwareentwicklung, autodidaktisch",
+      org: "Meta (Coursera) · Udemy · eigene Projekte",
+      body: "Front-End, Back-End, Mobile Development, Programming in Python, Version Control — plus iOS/Swift und SwiftUI. Kein Studium, kein Bootcamp.",
+      current: true,
     },
   ],
 } as const;
