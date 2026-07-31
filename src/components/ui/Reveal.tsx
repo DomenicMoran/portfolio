@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -66,23 +66,27 @@ export function RevealWords({
       transition={{ delayChildren: delay, staggerChildren: 0.05 }}
     >
       {words.map((word, i) => (
-        <span
-          key={`${word}-${i}`}
-          className="mr-[0.24em] inline-block overflow-hidden pb-[0.05em] align-bottom last:mr-0"
-        >
-          <motion.span
-            className={cn("inline-block", wordClassName)}
-            variants={{
-              hidden: { y: "110%" },
-              visible: {
-                y: "0%",
-                transition: { duration: 0.9, ease: ease.expo },
-              },
-            }}
-          >
-            {word}
-          </motion.span>
-        </span>
+        // The space is a real text node BETWEEN the clip wrappers, not inside
+        // one — inside an overflow:hidden inline-block it collapses and the
+        // words run together. Outside, it spaces them visually and keeps the
+        // heading readable for screen readers and copy-paste.
+        <Fragment key={`${word}-${i}`}>
+          <span className="inline-block overflow-hidden pb-[0.05em] align-bottom">
+            <motion.span
+              className={cn("inline-block", wordClassName)}
+              variants={{
+                hidden: { y: "110%" },
+                visible: {
+                  y: "0%",
+                  transition: { duration: 0.9, ease: ease.expo },
+                },
+              }}
+            >
+              {word}
+            </motion.span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
       ))}
     </motion.span>
   );

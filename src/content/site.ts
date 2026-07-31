@@ -150,6 +150,19 @@ export type CaseStudy = {
   links: { label: string; href: string; kind: "live" | "store" | "code" }[];
   /** Keys into ARCHITECTURES in components/ArchitectureDiagram.tsx */
   architecture: string;
+  /**
+   * Live screenshots captured from the running products on 2026-07-31.
+   * Omitted where there is nothing safe to show — WohnungsJäger's dashboard
+   * carries real listings and applicant data.
+   */
+  shots?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    label?: string;
+    variant?: "browser" | "phone";
+  }[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -212,6 +225,22 @@ export const caseStudies: CaseStudy[] = [
       { label: "Google Play", href: "", kind: "store" },
     ],
     architecture: "salati",
+    shots: [
+      {
+        src: "/shots/salati-desktop.png",
+        alt: "Startseite von salati.pro mit Download-Buttons und den vier Kernversprechen: kostenlos, kein Tracking, KI läuft lokal, offline nutzbar.",
+        width: 1440,
+        height: 900,
+        label: "salati.pro",
+      },
+      {
+        src: "/shots/salati-quran.png",
+        alt: "Koran-Reader von Salati auf dem Telefon mit Surenliste, arabischem Originaltext und deutscher Übersetzung.",
+        width: 430,
+        height: 932,
+        variant: "phone",
+      },
+    ],
   },
   {
     id: "menucloud",
@@ -272,6 +301,15 @@ export const caseStudies: CaseStudy[] = [
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
     ],
     architecture: "menucloud",
+    shots: [
+      {
+        src: "/shots/menucloud-desktop.png",
+        alt: "Startseite von menucloud-berlin.de mit dem Versprechen null Provision, DSGVO und KassenSichV sowie einer Vorschau des Self-Service-Admins.",
+        width: 1440,
+        height: 900,
+        label: "menucloud-berlin.de",
+      },
+    ],
   },
   {
     id: "wohnungsjaeger",
@@ -353,6 +391,15 @@ export const caseStudies: CaseStudy[] = [
       { label: "Live-Demo", href: "", kind: "live" },
     ],
     architecture: "nouri",
+    shots: [
+      {
+        src: "/shots/nouri-desktop.png",
+        alt: "Startseite der NOURI-Plattform mit Rezeptkatalog, Wochenplanung und Trainingsbereich.",
+        width: 1440,
+        height: 900,
+        label: "nouri-fitness.vercel.app",
+      },
+    ],
   },
 ];
 
