@@ -221,6 +221,12 @@ export type CaseStudy = {
     label?: string;
     variant?: "browser" | "phone" | "screen";
   }[];
+  /**
+   * Steht anstelle eines Screenshots, wo es einen guten Grund gibt, keinen zu
+   * zeigen. Eine begründete Leerstelle ist besser als ein nachgestelltes Bild —
+   * und besser als eine Fallstudie, die neben den anderen unfertig aussieht.
+   */
+  keinScreenshot?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -470,6 +476,8 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [],
     architecture: "wohnungsjaeger",
+    keinScreenshot:
+      "Von diesem Projekt gibt es hier bewusst kein Bild. Das Dashboard zeigt echte Inserate, echte Adressen und meine vollständigen Bewerbungsunterlagen. Einen Screenshot mit ausgedachten Daten nachzustellen wäre die naheliegende Lösung — aber dann stünde auf einer Seite, die mit Nachprüfbarkeit argumentiert, ein erfundenes Bild. Die Architektur daneben ist echt.",
   },
   {
     id: "nouri",

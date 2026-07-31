@@ -110,6 +110,15 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </Reveal>
       ) : null}
 
+      {/* Begründete Leerstelle statt nachgestelltem Bild */}
+      {study.keinScreenshot ? (
+        <Reveal delay={0.08}>
+          <p className="mt-10 max-w-[62ch] border-l-2 border-line pl-5 text-sm leading-relaxed text-ink-faint text-pretty">
+            {study.keinScreenshot}
+          </p>
+        </Reveal>
+      ) : null}
+
       {/* Problem / solution */}
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
         <Reveal>
