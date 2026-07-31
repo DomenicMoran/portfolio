@@ -86,10 +86,35 @@ export const about = {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Front-End, Back-End, Mobile Development, Programming in Python, Version Control — dazu iOS, Swift und SwiftUI. Kein Studium, kein Bootcamp.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind vier Systeme in Produktion und eine prüfbare Git-Historie.",
       current: true,
     },
   ],
+  /** Belegbar: alle Zertifikate liegen als PDF vor, die Meta-Kurse sind über
+   *  Coursera verifizierbar. */
+  certificates: {
+    label: "Zertifikate",
+    groups: [
+      {
+        issuer: "Meta — über Coursera",
+        items: [
+          "Introduction to Front-End Development",
+          "Introduction to Back-End Development",
+          "Introduction to Mobile Development",
+          "Programming in Python",
+          "Version Control",
+        ],
+      },
+      {
+        issuer: "iOS & Swift",
+        items: [
+          "App-Entwicklung mit Swift 5 für iOS 15 (Udemy, 39 Std.)",
+          "Introduction to Swift 5",
+          "Table Views",
+        ],
+      },
+    ],
+  },
 } as const;
 
 /* ========================================================================== */
