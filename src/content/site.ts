@@ -69,11 +69,15 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "3.946", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
+    { value: "3.969", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
   ],
+  /** Macht die Zahlen prüfbar statt bloß behauptet — und erklärt jede Abweichung,
+   *  die durch weiteres Arbeiten entsteht. */
+  statsHinweis:
+    "Alle Zahlen auf dieser Seite sind am 31. Juli 2026 gegen `git log` und die Repositories geprüft. Commit-Stände wachsen weiter; abweichende Werte sind daher höher, nicht niedriger.",
   timeline: [
     {
       period: "seit 04/2026",
@@ -159,10 +163,13 @@ export const hero = {
   lede: "Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in vier Monaten neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut — von der Migration bis zum Impressum.",
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
-  // Every number verified against git and the repos on 2026-07-31.
+  // Jede Zahl am 31.07.2026 gegen `git log` und die Repositories geprüft.
+  // Commit-Stände wachsen weiter — deshalb steht das Prüfdatum sichtbar in der
+  // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
+  // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: "3.946", label: "Commits in 4 Monaten" },
+    { value: "3.969", label: "Commits in 4 Monaten" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
     { value: "298", label: "automatisierte Tests" },
   ],
@@ -268,7 +275,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "5", label: "Zielgeräte-Klassen" },
       { value: "13", label: "Store-Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
-      { value: "1.046", label: "Commits" },
+      { value: "1.058", label: "Commits" },
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },

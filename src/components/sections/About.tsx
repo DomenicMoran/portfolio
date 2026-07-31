@@ -96,6 +96,14 @@ export function About() {
                 </motion.div>
               ))}
             </motion.dl>
+
+            {/* Prüfdatum sichtbar: macht die Zahlen nachvollziehbar und erklärt
+                jede Abweichung, die durch Weiterarbeiten entsteht. */}
+            <Reveal delay={0.1}>
+              <p className="max-w-[62ch] text-xs leading-relaxed text-ink-faint text-pretty">
+                {about.statsHinweis}
+              </p>
+            </Reveal>
           </div>
 
           {/* Timeline */}
