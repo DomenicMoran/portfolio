@@ -27,8 +27,7 @@ export const site = {
     github: "https://github.com/DomenicMoran" as string,
     // TODO(domenic): vollständige Profil-URL — USER-TODO A1.
     linkedin: "" as string,
-    // TODO(domenic): cal.com-Link — USER-TODO B5.
-    calendar: "" as string,
+
   },
 
   availability: {
@@ -371,7 +370,7 @@ export const caseStudies: CaseStudy[] = [
           items: [
             "Fiskaly-Abgleich täglich, Mail-Polling alle 30 Minuten",
             "Rechnungs- und Ausgabenverwaltung, Monatsabschluss vorbereitet",
-            "Bounce-Handler für Resend und SES getrennt",
+            "Bounce-Handler für beide Mailwege getrennt",
             "Legal-Watcher: täglicher Abgleich rechtlicher Pflichtangaben",
           ],
         },
@@ -692,8 +691,7 @@ export const recruiter = {
   ],
   cta: {
     pdf: { label: "One-Pager als PDF", href: "/onepager" },
-    // TODO(domenic): cal.com-Link — USER-TODO B5.
-    call: { label: "30 Min. sprechen", href: "" },
+    mail: { label: "Direkt schreiben" },
   },
 } as const;
 

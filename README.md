@@ -1,6 +1,6 @@
 <div align="center">
 
-# domenicmoran.dev
+# domenicmoran.de
 
 **Portfolio eines AI-Native Product Engineers — gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
 
@@ -31,7 +31,7 @@ an dem man nicht drumherum kam.
 
 | Bereich | Wahl | Warum |
 |---|---|---|
-| Framework | Next.js 16, App Router | Statische Auslieferung ohne Server-Kosten; Route Handler nur für das Formular |
+| Framework | Next.js 16, App Router | Jede Route wird vorab erzeugt; kein Serverprozess, kein Endpunkt |
 | Sprache | TypeScript, strict | 0 Fehler ist Merge-Gate, nicht Zielvorgabe |
 | Styling | Tailwind v4 | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config |
 | Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
@@ -78,8 +78,7 @@ dafür auswählbarer Text und funktionierende Links.
 
 ```bash
 npm install
-cp .env.example .env.local   # optional: nur fürs Kontaktformular
-npm run dev                  # http://localhost:3000
+npm run dev   # http://localhost:3000
 ```
 
 ```bash
@@ -96,7 +95,7 @@ Voraussetzung: Node.js ≥ 20.9.
 src/
 ├─ app/
 │  ├─ (legal)/          Impressum + Datenschutz (geteiltes Layout)
-│  ├─ api/contact/      Der einzige dynamische Endpunkt
+│  ├─ not-found.tsx     Eigene 404-Seite
 │  ├─ onepager/         A4-Route, wird zum PDF
 │  ├─ opengraph-image   Social-Card, zur Build-Zeit erzeugt
 │  ├─ icon.tsx          Favicon als Monogramm
@@ -148,9 +147,9 @@ Nonces und dynamisches Rendering.
 
 ## Deployment
 
-Auf Vercel importieren, `RESEND_API_KEY` / `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`
-setzen, deployen. Serverfunktionen laufen in `fra1` (Frankfurt) — die Zielgruppe
-sitzt in der EU, und der Rechtsweg damit auch.
+Auf Vercel importieren und deployen. Es gibt keine Umgebungsvariablen zu setzen:
+Die Seite hat keine Secrets, weil sie keinen Dienst anspricht. Jede Route wird
+vorab erzeugt und vom CDN-Rand ausgeliefert.
 
 ## Lizenz
 

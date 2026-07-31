@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, FileText, Mail, Search, CalendarClock } from "lucide-react";
+import { ArrowRight, FileText, Mail, Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { caseStudies, navItems, site, recruiter } from "@/content/site";
 import { ease } from "@/lib/motion";
@@ -95,15 +95,6 @@ export function CommandPalette({
         hint: "Beruflicher Werdegang",
         icon: LinkedinIcon,
         run: open_(site.socials.linkedin),
-      });
-    }
-    if (site.socials.calendar) {
-      list.push({
-        id: "cal",
-        label: "Termin buchen",
-        hint: "30 Minuten",
-        icon: CalendarClock,
-        run: open_(site.socials.calendar),
       });
     }
 
