@@ -74,10 +74,12 @@ export function RecruiterHub() {
             </dl>
           </Reveal>
 
-          {/* Aktionen */}
-          <div className="flex flex-col gap-5">
-            <Reveal delay={0.1}>
-              <div className="lit flex flex-col gap-6 rounded-2xl border border-acid/25 bg-acid/[0.06] p-7 sm:p-8">
+          {/* Aktionen. h-full + justify-center: Der Block ist kürzer als das
+              Faktenblatt daneben — ohne das stünde er oben und darunter klaffte
+              Leerraum. So wird der Platz zu Innenabstand statt zu einer Lücke. */}
+          <div className="flex h-full flex-col gap-5">
+            <Reveal delay={0.1} className="h-full">
+              <div className="lit flex h-full flex-col justify-center gap-6 rounded-2xl border border-acid/25 bg-acid/[0.06] p-7 sm:p-8">
                 <div className="flex flex-wrap items-center gap-3">
                   <Magnetic>
                     <a
