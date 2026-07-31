@@ -406,6 +406,15 @@ export const caseStudies: CaseStudy[] = [
         height: 900,
         label: "menucloud-berlin.de",
       },
+      {
+        // Store-Aufnahme aus dem Projekt selbst — die Fallstudie nennt die
+        // Apps, zeigte sie aber vorher nicht.
+        src: "/shots/menucloud-app.png",
+        alt: "Restaurantseite in der MenuCloud-App auf dem iPhone: Speisekarte, Reservierung, Öffnungszeiten und Beschreibung eines Berliner Restaurants.",
+        width: 1242,
+        height: 2688,
+        variant: "phone",
+      },
     ],
   },
   {
