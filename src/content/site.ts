@@ -212,7 +212,7 @@ export type CaseStudy = {
     width: number;
     height: number;
     label?: string;
-    variant?: "browser" | "phone";
+    variant?: "browser" | "phone" | "screen";
   }[];
 };
 
@@ -278,11 +278,14 @@ export const caseStudies: CaseStudy[] = [
     architecture: "salati",
     shots: [
       {
-        src: "/shots/salati-desktop.png",
-        alt: "Startseite von salati.pro mit Download-Buttons und den vier Kernversprechen: kostenlos, kein Tracking, KI läuft lokal, offline nutzbar.",
-        width: 1440,
-        height: 900,
-        label: "salati.pro",
+        // Die Fallstudie behauptet fünf Gerätetypen — dieses Bild ist das
+        // einzige, das einen davon zeigt, den man sonst nirgends sieht.
+        src: "/shots/salati-tv.png",
+        alt: "Koran-Reader von Salati auf Android TV: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung, unten die Fernbedienungs-Hinweise.",
+        width: 1920,
+        height: 1080,
+        label: "Android TV · Leanback",
+        variant: "screen",
       },
       {
         src: "/shots/salati-quran.png",
