@@ -129,6 +129,31 @@ export function About() {
                 </Reveal>
               ))}
             </ol>
+
+            {/* Zertifikate füllen die Spalte mit Beleg statt mit Weißraum. */}
+            <Reveal delay={0.1} className="mt-10 border-t border-line pt-8">
+              <h3 className="text-eyebrow mb-5">{about.certificates.label}</h3>
+              <div className="flex flex-col gap-5">
+                {about.certificates.groups.map((group) => (
+                  <div key={group.issuer}>
+                    <h4 className="mb-2 font-mono text-[11px] tracking-wide text-ink-dim">
+                      {group.issuer}
+                    </h4>
+                    <ul className="flex flex-col gap-1">
+                      {group.items.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-2 text-xs leading-snug text-ink-faint"
+                        >
+                          <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-acid/60" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
