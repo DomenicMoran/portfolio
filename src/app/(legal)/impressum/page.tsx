@@ -7,11 +7,17 @@ export const metadata: Metadata = {
 };
 
 /**
- * TODO(domenic): Die mit [...] markierten Felder ausfüllen — siehe USER-TODO B1.
+ * ⚠️ ENTSCHEIDUNG OFFEN — siehe USER-TODO Block E.
  *
  * § 5 DDG verlangt eine ladungsfähige Anschrift, sobald die Seite
- * geschäftsmäßig betrieben wird. Eine Seite, die Aufträge oder Anstellungen
- * akquiriert, ist geschäftsmäßig. Ein Postfach genügt nicht.
+ * geschäftsmäßig betrieben wird. Diese Seite akquiriert Aufträge und
+ * Anstellungen, ist also geschäftsmäßig. Ein Postfach genügt nicht.
+ *
+ * ABER: Domenic hat ein berechtigtes Schutzinteresse. Die Privatanschrift öffentlich mit dem
+ * Klarnamen zu verknüpfen, ist für Vollzugsbeamte ein reales Sicherheitsrisiko
+ * — deshalb existiert die Auskunftssperre nach § 51 BMG überhaupt. Die Adresse
+ * bleibt hier bewusst als Platzhalter stehen, bis er zwischen Privatanschrift
+ * und angemieteter Geschäftsadresse entschieden hat.
  */
 export default function Impressum() {
   return (

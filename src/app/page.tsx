@@ -2,6 +2,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { CaseStudies } from "@/components/sections/CaseStudies";
+import { About } from "@/components/sections/About";
 import { AiWorkflow, DeliverySpeed } from "@/components/sections/AiWorkflow";
 import { Skills } from "@/components/sections/Skills";
 import { RecruiterHub } from "@/components/sections/RecruiterHub";
@@ -74,6 +75,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <CaseStudies />
+        <About />
         <AiWorkflow />
         <DeliverySpeed />
         <Skills />

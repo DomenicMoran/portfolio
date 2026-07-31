@@ -9,28 +9,25 @@
  */
 
 export const site = {
-  // TODO(domenic): replace once the domain is registered — USER-TODO B1.
-  url: "https://domenicmoran.dev",
+  url: "https://domenicmoran.de",
   name: "Domenic Moran",
-  role: "AI-Native Product Engineer",
+  role: "AI Product Engineer",
   location: "Berlin, Deutschland",
   locale: "de-DE",
 
-  // TODO(domenic): a dedicated address on the new domain reads better than a
-  // gmail one — USER-TODO A1.
-  email: "menucloudberlin@gmail.com",
+  email: "domenicmoran@gmail.com",
+  // Kein Telefon und keine Privatanschrift in dieser Datei: das Repo ist
+  // öffentlich, und beides wird aus öffentlichen Repos zuverlässig
+  // abgegriffen. Beides steht im Lebenslauf unter docs/ — außerhalb des Repos.
 
   // Typed as plain strings, not literals: components branch on whether these
   // are filled in, and `as const` would narrow "" to a type that makes the
   // populated branch unreachable.
   socials: {
-    // TODO(domenic): the existing account is `MenuCloud-Berlin` (a company
-    // account) — a personal one has to be created first. Left empty on purpose:
-    // a dead profile link costs more than a missing button. USER-TODO B2.
-    github: "" as string,
-    // TODO(domenic): full profile URL — USER-TODO A1.
+    github: "https://github.com/DomenicMoran" as string,
+    // TODO(domenic): vollständige Profil-URL — USER-TODO A1.
     linkedin: "" as string,
-    // TODO(domenic): cal.com link — USER-TODO B5.
+    // TODO(domenic): cal.com-Link — USER-TODO B5.
     calendar: "" as string,
   },
 
@@ -41,10 +38,61 @@ export const site = {
   },
 
   meta: {
-    title: "Domenic Moran — AI-Native Product Engineer",
+    title: "Domenic Moran — AI Product Engineer",
     description:
-      "Ich baue Produkte end-to-end: vier Plattformen live in Stores und Produktion — Mobile, Web, Infrastruktur, Compliance. Mit KI-Agenten als Werkzeug, nicht als Ausrede.",
+      "Entwickler, der neben einem Vollzeitjob vier Produktionssysteme gebaut hat: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.946 Commits in vier Monaten — alles selbst, alles live.",
   },
+} as const;
+
+/* ========================================================================== */
+/* About — die Story, die dieses Profil von jedem anderen unterscheidet        */
+/* ========================================================================== */
+
+export const about = {
+  eyebrow: "Wer ich bin",
+  title: "Seit acht Jahren im Streifendienst. Seit vier Monaten Software in Produktion.",
+  paragraphs: [
+    "Ich arbeite seit 2018 in einem Vollzeitjob in Berlin. Softwareentwicklung habe ich mir vollständig selbst beigebracht — und zwar nicht als Hobby am Wochenende, sondern konsequent: In vier Monaten sind vier Produktionssysteme entstanden, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung.",
+    "Der Dienst hat mich zwei Dinge gelehrt, die im Engineering mehr wert sind als jedes Framework. Erstens: Unter Zeitdruck entscheiden, ohne die Sorgfalt zu verlieren. Zweitens — und das ist das Wichtigere: Eine Behauptung ohne Beleg zählt nicht. In einem Einsatzbericht steht nicht, was vermutlich passiert ist.",
+    "Genau diese Regel steht heute in der Konventionsdatei jedes meiner Repositories: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen, bevor sie als fertig gilt. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
+  ],
+  // Verified against `git log` on 2026-07-31 — not estimates.
+  stats: [
+    { value: "3.946", label: "Commits in 4 Monaten", note: "neben dem Vollzeitdienst" },
+    { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
+    { value: "8", label: "Jahre Vollzeitjob", note: "Berlin, seit 03/2018" },
+    { value: "100 %", label: "Autodidakt", note: "kein Studium, kein Bootcamp" },
+  ],
+  timeline: [
+    {
+      period: "seit 04/2026",
+      title: "Gründer & Einzelunternehmer",
+      org: "MenuCloud, Berlin",
+      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler — Produkt, Architektur, Auslieferung, Recht.",
+      current: true,
+    },
+    {
+      period: "seit 03/2018",
+      title: "Vollzeitbeschäftigter",
+      org: "Arbeitgeber in Berlin",
+      body: "Entscheidungen unter Zeitdruck, lückenlose Dokumentation, Verantwortung für Ergebnisse mit realen Konsequenzen.",
+      current: true,
+    },
+    {
+      period: "09/2015 — 03/2018",
+      title: "Berufsausbildung",
+      org: "Arbeitgeber in Berlin",
+      body: "Abgeschlossene Laufbahnausbildung inklusive Rechts-, Einsatz- und Verwaltungslehre.",
+      current: false,
+    },
+    {
+      period: "2013 — 2015",
+      title: "Schulabschluss",
+      org: "Otfried-Preußler-Schule, Großbeeren",
+      body: "Zuvor: 9. Integrierte Sekundarschule Berlin (2011–2013), Paul-Schneider-Grundschule Berlin-Steglitz (2005–2011).",
+      current: false,
+    },
+  ],
 } as const;
 
 /* ========================================================================== */
@@ -63,15 +111,15 @@ export const hero = {
     { text: "nicht" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  lede: "Fullstack Product Engineer aus Berlin. Vier Plattformen in Produktion: iOS- und Android-Apps in den Stores, eine Multi-Tenant-SaaS mit KassenSichV-konformer Fiskalisierung, ein autonomer Such-Agent. Alles selbst gebaut — von der Migration bis zum Impressum.",
+  lede: "Fullstack Product Engineer aus Berlin — und hauptberuflich in einem Vollzeitjob. In vier Monaten sind daneben vier Produktionssysteme entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.",
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
-  // Facts that survive scrutiny. Everything here is derivable from the repos.
+  // Every number verified against git and the repos on 2026-07-31.
   proof: [
-    { value: "4", label: "Plattformen in Produktion" },
-    { value: "44", label: "Releases allein bei Salati" },
-    { value: "261", label: "automatisierte Tests (MenuCloud)" },
-    { value: "75+", label: "aktive n8n-Workflows" },
+    { value: "4", label: "Systeme in Produktion" },
+    { value: "3.946", label: "Commits in 4 Monaten" },
+    { value: "1.276", label: "API-Routen (MenuCloud)" },
+    { value: "298", label: "automatisierte Tests" },
   ],
 } as const;
 
@@ -184,12 +232,13 @@ export const caseStudies: CaseStudy[] = [
       body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen — das wäre für den Gastronom eine Betriebsprüfungs-Katastrophe. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_chain_rows` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
     },
     highlights: [
-      "Mandantenfähige Postgres-Architektur mit Row Level Security",
+      "1.276 API-Routen über 812 versionierte Postgres-Migrationen",
+      "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge — Restaurants werden direkt ausgezahlt, Plattformgebühr abgeführt",
       "KassenSichV §146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "261 automatisierte Tests (119 Unit / 142 E2E) gegen Produktion",
+      "298 automatisierte Tests (254 Unit / 44 E2E) gegen Produktion",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
-      "75+ n8n-Workflows für Onboarding, Abrechnung, Reporting und Watchdogs",
+      "47 versionierte n8n-Workflows für Onboarding, Abrechnung, Reporting und Watchdogs",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
@@ -212,8 +261,9 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "261", label: "Automatisierte Tests" },
-      { value: "75+", label: "Aktive Workflows" },
+      { value: "1.276", label: "API-Routen" },
+      { value: "812", label: "DB-Migrationen" },
+      { value: "298", label: "Automatisierte Tests" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // TODO(domenic): Kunden / MRR / GMV / Uptime — USER-TODO A3.
     ],
@@ -441,10 +491,10 @@ export const recruiter = {
   title: "Das Wichtigste in 60 Sekunden",
   lede: "Kein Anschreiben nötig. Hier steht, was ich kann, was ich suche und wie du mich erreichst.",
   facts: [
-    { label: "Rolle", value: "Senior Product Engineer / Fullstack" },
+    { label: "Rolle", value: "AI Product Engineer / Fullstack" },
     { label: "Schwerpunkt", value: "Produkt end-to-end, KI-gestützte Lieferung" },
     { label: "Standort", value: "Berlin · Remote EU" },
-    { label: "Verfügbar", value: "Ab sofort" },
+    { label: "Verfügbar", value: "Nach Absprache" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung oder Freelance" },
     // Pre-empts the "where's the code?" question and answers it as a decision
@@ -454,15 +504,15 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Vier Plattformen in Produktion — inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Vier Systeme in Produktion — inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
     },
     {
       title: "Ich arbeite über den ganzen Stack",
       body: "React-Native-Widget, Postgres-Migration, Docker-Compose auf dem eigenen VPS, Fiskal-Compliance. Kein Ticket-Ping-Pong, weil etwas „nicht mein Bereich“ ist.",
     },
     {
-      title: "Ich bin schnell — und kann es belegen",
-      body: "Agentengestützte Entwicklung mit Verifikationsdisziplin. Nicht „KI hat's geschrieben“, sondern ein System, in dem jede Änderung am Live-System nachgewiesen wird, bevor sie als fertig gilt.",
+      title: "Belegpflicht statt Bauchgefühl",
+      body: "Aus acht Jahren Berufstätigkeit: Eine Behauptung ohne Beleg zählt nicht. Übertragen aufs Engineering heißt das — jede Änderung wird am Live-System nachgewiesen, bevor sie als fertig gilt. Das macht agentengestützte Entwicklung erst belastbar.",
     },
   ],
   cta: {
@@ -498,6 +548,7 @@ export const contact = {
 
 export const navItems = [
   { label: "Projekte", href: "#work" },
+  { label: "Über mich", href: "#about" },
   { label: "Arbeitsweise", href: "#workflow" },
   { label: "Skills", href: "#skills" },
   { label: "Für Recruiter", href: "#hire" },

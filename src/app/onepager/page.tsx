@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { caseStudies, recruiter, site, skillDomains } from "@/content/site";
+import { about, caseStudies, recruiter, site, skillDomains } from "@/content/site";
 import { PrintButton } from "./PrintButton";
 
 export const metadata: Metadata = {
@@ -72,12 +72,13 @@ export default function OnePager() {
         {/* Positioning */}
         <section className="mt-7 print:mt-5">
           <p className="text-[14px] leading-snug text-[#25252e]">
-            Fullstack Product Engineer mit vier eigenständig gebauten Systemen in
-            Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit
-            gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Such-Agent.
+            Seit 2018 Vollzeitbeschäftigter in Berlin, seit 2026 hauptverantwortlich für
+            vier eigenständig gebaute Systeme in Produktion: Apps in beiden Stores,
+            eine mandantenfähige Gastro-SaaS mit gesetzlich vorgeschriebener
+            Fiskalisierung, ein autonomer Agent. 3.946 Commits in vier Monaten,
+            neben dem Vollzeitdienst. Softwareentwicklung autodidaktisch.
             Schwerpunkt: agentengestützte Entwicklung mit strikter
-            Verifikationsdisziplin — Lieferzeiten von Tagen statt Monaten, ohne dass
-            Qualität, Recht oder Betrieb hinten runterfallen.
+            Verifikationsdisziplin — eine Behauptung ohne Beleg zählt nicht.
           </p>
         </section>
 
@@ -114,26 +115,53 @@ export default function OnePager() {
           </div>
         </section>
 
-        {/* Skills */}
-        <section className="mt-8 break-inside-avoid print:mt-6">
-          <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
-            Schwerpunkte
-          </h2>
-          {/* One line per domain rather than a 2×2 grid: same information,
-              roughly half the vertical space, which is what keeps this to a
-              single sheet. */}
-          <dl className="flex flex-col gap-1">
-            {topSkills.map((group) => (
-              <div key={group.title} className="flex gap-2 text-[13px] leading-snug">
-                <dt className="w-[9.5rem] shrink-0 font-semibold">{group.title}</dt>
-                <dd className="text-[#3a3a44]">{group.items.join(" · ")}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
+            untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
+        <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-6">
+          <section>
+            <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+              Schwerpunkte
+            </h2>
+            <dl className="flex flex-col gap-1.5">
+              {topSkills.map((group) => (
+                <div key={group.title}>
+                  <dt className="text-[12.5px] font-semibold">{group.title}</dt>
+                  <dd className="text-[12.5px] leading-snug text-[#3a3a44]">
+                    {group.items.join(" · ")}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section>
+            <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+              Werdegang
+            </h2>
+            <dl className="flex flex-col gap-1.5">
+              {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten —
+                  auf einer Seite zählt, was die Projekte erklärt. */}
+              {about.timeline.slice(0, 3).map((entry) => (
+                <div key={entry.period} className="text-[12.5px] leading-snug">
+                  <dt className="font-mono text-[10.5px] text-[#5a5a66]">
+                    {entry.period}
+                  </dt>
+                  <dd>
+                    <span className="font-semibold">{entry.title}</span>
+                    <span className="text-[#3a3a44]"> — {entry.org}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-2 text-[11.5px] leading-snug text-[#3a3a44]">
+              Softwareentwicklung autodidaktisch — kein Studium, kein Bootcamp.
+              Der Nachweis sind vier Systeme in Produktion.
+            </p>
+          </section>
+        </div>
 
         {/* Way of working */}
-        <section className="mt-8 break-inside-avoid print:mt-6">
+        <section className="mt-7 break-inside-avoid print:mt-5">
           <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
             Arbeitsweise
           </h2>
@@ -146,12 +174,6 @@ export default function OnePager() {
             ))}
           </ul>
         </section>
-
-        {/*
-          TODO(domenic): Ausbildung und Berufsstationen ergänzen, sobald geliefert
-          (USER-TODO A2). Bis dahin bleibt der One-Pager projektzentriert — für
-          dieses Profil ist das ohnehin die stärkere Reihenfolge.
-        */}
 
         <footer className="mt-9 flex flex-wrap print:mt-6 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
           <span>

@@ -24,6 +24,11 @@ export function Counter({ value, className }: { value: string; className?: strin
   const target = Number(numericPart.replace(/\./g, "").replace(",", "."));
   const animatable = match !== null && Number.isFinite(target);
 
+  // Group thousands only if the source did. Otherwise a year like "2018"
+  // renders as "2.018", which is simply wrong — and mid-animation it reads
+  // as a nonsense year.
+  const useGrouping = numericPart.includes(".");
+
   const [display, setDisplay] = useState(animatable ? "0" : value);
 
   useEffect(() => {
@@ -37,13 +42,14 @@ export function Counter({ value, className }: { value: string; className?: strin
           latest.toLocaleString("de-DE", {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals,
+            useGrouping,
           }),
         );
       },
     });
 
     return () => controls.stop();
-  }, [inView, animatable, target, decimals]);
+  }, [inView, animatable, target, decimals, useGrouping]);
 
   return (
     <span ref={ref} className={className}>

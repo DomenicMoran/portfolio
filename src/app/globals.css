@@ -336,6 +336,9 @@ html.lenis body {
      and still reflows, unlike `transform: scale()`.
      If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
   .onepager {
-    zoom: 0.9;
+    /* Gemessen: Inhalt 1109 px bei 794 px Breite, nutzbar sind 1040 px.
+       0.83 lässt ~17 px Luft. Effektive Textgröße ~10,8 px — normale
+       Lebenslauf-Größe, im Druck bei hoher DPI gut lesbar. */
+    zoom: 0.83;
   }
 }
