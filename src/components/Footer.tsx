@@ -32,18 +32,21 @@ export function Footer() {
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="text-sm break-all text-ink-dim transition-colors hover:text-acid"
+              className="-my-1 w-fit py-1 text-sm break-all text-ink-dim transition-colors hover:text-acid"
             >
               {site.email}
             </a>
           </div>
 
-          <nav aria-label="Fußzeile" className="flex flex-wrap gap-x-6 gap-y-2">
+          {/* Gemessen: ohne die vertikale Polsterung waren diese Links 20 px
+              hoch und lagen damit unter der WCAG-Mindestgröße von 24 px für
+              Zeigeflächen. Der negative Rand hält die optische Ausrichtung. */}
+          <nav aria-label="Fußzeile" className="-my-2 flex flex-wrap gap-x-6">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm text-ink-dim transition-colors hover:text-ink"
+                className="py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {item.label}
               </a>
@@ -75,13 +78,13 @@ export function Footer() {
           <div className="flex gap-6">
             <Link
               href="/impressum"
-              className="font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
+              className="-my-2 py-2 font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
             >
               Impressum
             </Link>
             <Link
               href="/datenschutz"
-              className="font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
+              className="-my-2 py-2 font-mono text-[11px] text-ink-faint transition-colors hover:text-ink-dim"
             >
               Datenschutz
             </Link>

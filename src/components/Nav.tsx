@@ -34,7 +34,9 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
         >
           <a
             href="#top"
-            className="group flex items-center gap-2.5"
+            // -my-1/py-1: die Trefferfläche wächst auf über 32 px, ohne dass
+            // sich die Leiste optisch verändert.
+            className="group -my-1 flex items-center gap-2.5 py-1"
             aria-label="Zum Seitenanfang"
           >
             <span className="relative grid size-7 shrink-0 place-items-center rounded-md bg-acid font-mono text-[13px] font-bold text-void">

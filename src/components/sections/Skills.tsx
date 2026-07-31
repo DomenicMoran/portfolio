@@ -72,7 +72,7 @@ function DomainCard({ domain }: { domain: (typeof skillDomains)[number] }) {
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
               <span className="text-sm text-ink-dim">{skill.name}</span>
               <motion.span
-                className="font-mono text-[10.5px] text-ink-faint sm:shrink-0 sm:text-right"
+                className="font-mono text-[11px] text-ink-faint sm:shrink-0 sm:text-right"
                 animate={{ opacity: hovered === skill.name ? 1 : 0.8 }}
                 transition={{ duration: 0.2 }}
               >

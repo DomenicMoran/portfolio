@@ -58,7 +58,10 @@ export function RecruiterHub() {
 
           {/* Strengths + actions */}
           <div className="flex flex-col gap-5">
-            <div className="grid gap-5 sm:grid-cols-3">
+            {/* Erst ab xl dreispaltig: bei drei Spalten in dieser Breite fiel
+                das Zeilenmaß auf ~30 Zeichen, und so kurze Zeilen zerhacken den
+                Lesefluss genauso wie zu lange. */}
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {recruiter.strengths.map((item, i) => (
                 <Reveal key={item.title} delay={0.05 * i}>
                   <div className="lit h-full rounded-2xl border border-line bg-surface/50 p-6">
