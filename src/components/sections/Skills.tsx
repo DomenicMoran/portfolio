@@ -1,13 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
 import { Cloud, Cpu, Database, Layout } from "lucide-react";
 import { skillDomains } from "@/content/site";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ease, viewportOnce } from "@/lib/motion";
-import { cn } from "@/lib/utils";
 
 const ICONS = {
   frontend: Layout,
@@ -16,6 +12,14 @@ const ICONS = {
   ai: Cpu,
 } as const;
 
+/**
+ * Fähigkeiten als Fähigkeit plus Beleg — ohne Prozentbalken.
+ *
+ * Selbstvergebene Prozentwerte ("TypeScript 93 %") sind ein bekannt schwaches
+ * Signal: Niemand kann sie prüfen, und der Unterschied zwischen 88 und 93 ist
+ * frei erfunden. Was tatsächlich trägt, ist das System, an dem die Fähigkeit
+ * entstanden ist. Genau das steht jetzt an der Stelle, wo vorher der Balken war.
+ */
 export function Skills() {
   return (
     <section id="skills" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
@@ -23,7 +27,7 @@ export function Skills() {
         <SectionHeading
           eyebrow="Fähigkeiten"
           title="Breit genug für das ganze Produkt, tief genug für die harten Stellen."
-          lede="Jede Einschätzung unten steht neben dem System, an dem sie entstanden ist. Selbsteinschätzungen ohne Beleg sind wertlos — deshalb steht hier keine ohne."
+          lede="Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht — deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist."
         />
 
         <div className="mt-16 grid gap-5 lg:grid-cols-2">
@@ -39,7 +43,6 @@ export function Skills() {
 }
 
 function DomainCard({ domain }: { domain: (typeof skillDomains)[number] }) {
-  const [hovered, setHovered] = useState<string | null>(null);
   const Icon = ICONS[domain.id as keyof typeof ICONS] ?? Layout;
 
   return (
@@ -56,45 +59,19 @@ function DomainCard({ domain }: { domain: (typeof skillDomains)[number] }) {
         </div>
       </div>
 
-      <ul className="mt-8 flex flex-col gap-4">
-        {domain.skills.map((skill, i) => (
-          <li
+      <dl className="mt-8 flex flex-col">
+        {domain.skills.map((skill) => (
+          <div
             key={skill.name}
-            onMouseEnter={() => setHovered(skill.name)}
-            onMouseLeave={() => setHovered(null)}
-            onFocus={() => setHovered(skill.name)}
-            onBlur={() => setHovered(null)}
-            tabIndex={0}
-            className="flex flex-col gap-1.5 rounded-md outline-offset-4"
+            className="flex flex-col gap-0.5 border-t border-line py-3 first:border-t-0 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
           >
-            {/* Stacked on phones, side by side from sm up. The evidence is the
-                point of this list, so it never gets hidden — only reflowed. */}
-            <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-              <span className="text-sm text-ink-dim">{skill.name}</span>
-              <motion.span
-                className="font-mono text-[11px] text-ink-faint sm:shrink-0 sm:text-right"
-                animate={{ opacity: hovered === skill.name ? 1 : 0.8 }}
-                transition={{ duration: 0.2 }}
-              >
-                {skill.evidence}
-              </motion.span>
-            </div>
-
-            <div className="h-[3px] overflow-hidden rounded-full bg-raised">
-              <motion.div
-                className={cn(
-                  "h-full rounded-full transition-colors duration-300",
-                  hovered === skill.name ? "bg-acid" : "bg-ink-faint/60",
-                )}
-                initial={{ width: 0 }}
-                whileInView={{ width: `${skill.level}%` }}
-                viewport={viewportOnce}
-                transition={{ duration: 1, ease: ease.expo, delay: 0.05 * i }}
-              />
-            </div>
-          </li>
+            <dt className="text-sm text-ink">{skill.name}</dt>
+            <dd className="font-mono text-[11px] leading-snug text-ink-faint sm:max-w-[55%] sm:text-right">
+              {skill.evidence}
+            </dd>
+          </div>
         ))}
-      </ul>
+      </dl>
     </div>
   );
 }

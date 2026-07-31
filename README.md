@@ -37,14 +37,20 @@ an dem man nicht drumherum kam.
 | Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
 | Scrolling | Lenis | Wird bei Reduced-Motion **gar nicht erst geladen** |
 | Icons | lucide-react | Brand-Marken als eigenes Inline-SVG (v1 hat sie entfernt) |
-| Mail | Resend | Der einzige Drittanbieter — und nur, wenn das Formular benutzt wird |
+| Drittanbieter | keine | Außer dem Hosting lädt diese Seite nichts von fremden Servern |
 
 ## Architektur-Entscheidungen
 
-**Alles ist statisch außer einer Route.** Alle Seiten werden zur Build-Zeit
-gerendert. Der einzige dynamische Endpunkt ist `/api/contact`. Das ist kein
-Zufall: eine Seite, die keine Laufzeit braucht, kann auch nicht zur Laufzeit
-ausfallen.
+**Jede Route ist statisch.** Alle Seiten entstehen zur Build-Zeit und liegen
+danach als fertige Dateien am CDN-Rand. Es gibt keinen Endpunkt, der Eingaben
+entgegennimmt, keine Datenbank und keinen Serverprozess. Eine Seite, die keine
+Laufzeit braucht, kann auch nicht zur Laufzeit ausfallen.
+
+Der Kontakt läuft deshalb über eine Mailadresse statt über ein Formular. Ein
+Formular hätte einen Versanddienst als Auftragsverarbeiter gebraucht, den die
+Datenschutzerklärung ausweisen muss, plus einen Endpunkt mit Rate-Limit und
+Fehlerpfad. Der Gegenwert wäre gewesen, dass der Absender ein Feld weniger
+ausfüllt — und dabei die Kopie seiner eigenen Nachricht verliert.
 
 **Inhalte liegen an einer Stelle.** [`src/content/site.ts`](src/content/site.ts)
 ist die einzige Quelle für jeden Text und jede Zahl. Komponenten enthalten
@@ -113,9 +119,7 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
 
 - Keine Cookies, kein Analytics, kein Consent-Banner — es gibt nichts einzuwilligen
 - Schriften werden selbst gehostet; beim Seitenaufruf entsteht keine Verbindung zu Google
-- Kontaktformular: Honeypot, In-Process-Rate-Limit, Längenbegrenzung pro Feld,
-  HTML-Escaping, CR/LF-Filter gegen Header-Injection
-- Fehler beim Mailversand liefern einen ehrlichen Status — nie eine falsche Erfolgsmeldung
+- Keine Eingabeverarbeitung: Es existiert kein Endpunkt, an den etwas gesendet wird
 - Vollständiger Header-Satz in [`vercel.json`](vercel.json): HSTS mit Preload,
   CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`,
   `Permissions-Policy`, `X-DNS-Prefetch-Control`

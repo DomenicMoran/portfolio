@@ -31,13 +31,11 @@ function firstSentence(text: string) {
 }
 
 export default function OnePager() {
+  // Die ersten vier je Bereich — die Reihenfolge in der Inhaltsdatei ist
+  // bewusst gewählt, es gibt keine Rangzahl mehr, nach der sortiert würde.
   const topSkills = skillDomains.map((domain) => ({
     title: domain.title,
-    items: domain.skills
-      .slice()
-      .sort((a, b) => b.level - a.level)
-      .slice(0, 4)
-      .map((s) => s.name),
+    items: domain.skills.slice(0, 4).map((s) => s.name),
   }));
 
   return (
