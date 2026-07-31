@@ -243,6 +243,8 @@ export const caseStudies: CaseStudy[] = [
       "15-teiliger deutscher Koran-Arabisch-Podcast, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
       "OTA-Updates über EAS Update — Inhaltskorrekturen ohne Store-Zyklus",
       "iOS Live Activities und Android-Widgets für die nächste Gebetszeit",
+      "Store-Auftritt in 13 Sprachen über vier Geräteklassen gepflegt",
+      "KI-Antworten mit Quellenangabe und Kennzeichnung nach EU AI Act Art. 50",
     ],
     stack: [
       {
@@ -264,9 +266,9 @@ export const caseStudies: CaseStudy[] = [
     ],
     metrics: [
       { value: "5", label: "Zielgeräte-Klassen" },
-      { value: "1.046", label: "Commits" },
+      { value: "13", label: "Store-Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
-      { value: "15", label: "Podcast-Folgen produziert" },
+      { value: "1.046", label: "Commits" },
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -288,10 +290,13 @@ export const caseStudies: CaseStudy[] = [
         variant: "screen",
       },
       {
-        src: "/shots/salati-quran.png",
-        alt: "Koran-Reader von Salati auf dem Telefon mit Surenliste, arabischem Originaltext und deutscher Übersetzung.",
-        width: 430,
-        height: 932,
+        // Store-Aufnahme statt Web-Mitschnitt: höhere Auflösung, und sie belegt
+        // drei Aussagen auf einmal — Ausführung auf dem Gerät, KI-Kennzeichnung
+        // nach EU AI Act Art. 50 und Quellenangabe zur Antwort.
+        src: "/shots/salati-ki.png",
+        alt: "Die Salati-KI auf dem Telefon beantwortet eine Frage aus Koran und Hadithen, weist sich ausdrücklich als KI-gestützt aus und nennt die Quelle der Antwort.",
+        width: 1080,
+        height: 2400,
         variant: "phone",
       },
     ],
