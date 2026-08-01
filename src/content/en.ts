@@ -657,7 +657,7 @@ export const en: Content = {
       },
     ],
     cta: {
-      pdf: { label: "One-pager as PDF", href: "/onepager" },
+      pdf: { label: "One-pager as PDF", href: "/domenic-moran-kurzprofil.pdf" },
       mail: { label: "Email me" },
     },
   },

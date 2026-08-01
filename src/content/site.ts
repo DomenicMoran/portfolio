@@ -769,7 +769,7 @@ export const recruiter = {
     },
   ],
   cta: {
-    pdf: { label: "One-Pager als PDF", href: "/onepager" },
+    pdf: { label: "Kurzprofil als PDF", href: "/domenic-moran-kurzprofil.pdf" },
     mail: { label: "Direkt schreiben" },
   },
 } as const;
