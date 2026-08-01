@@ -253,8 +253,7 @@ export type Content = {
 /** Links, die in beiden Fassungen identisch sind. */
 export const SOCIALS = {
   github: "https://github.com/DomenicMoran" as string,
-  // TODO(domenic): vollständige Profil-URL, siehe USER-TODO.
-  linkedin: "" as string,
+  linkedin: "https://www.linkedin.com/in/domenicmoran" as string,
 };
 
 export const TECH_TICKER = [
