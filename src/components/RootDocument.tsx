@@ -53,6 +53,24 @@ export function RootDocument({
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
+        {/*
+          humans.txt und llms.txt gab es schon, erreichbar waren sie aber nur,
+          wenn man die Adresse errät. Zwei Zeilen machen sie auffindbar:
+          `rel="author"` ist die überlieferte Angabe für humans.txt, und für
+          llms.txt gibt es keine eigene, deshalb `alternate` mit Medientyp und
+          einem Titel, den ein Werkzeug lesen kann.
+
+          Ohne eigenes `<head>`: React hebt `<link>` von selbst dorthin, und ein
+          handgeschriebenes head-Element ist im App Router die Pages-Router-
+          Gewohnheit, vor der auch der Linter warnt.
+        */}
+        <link rel="author" href="/humans.txt" type="text/plain" />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms.txt"
+          title="Facts for language models"
+        />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
