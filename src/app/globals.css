@@ -447,9 +447,14 @@ textarea:-webkit-autofill {
      and still reflows, unlike `transform: scale()`.
      If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
   .onepager {
-    /* Gemessen: Inhalt 1109 px bei 794 px Breite, nutzbar sind 1040 px.
-       0.83 lässt ~17 px Luft. Effektive Textgröße ~10,8 px, also normale
-       Lebenslauf-Größe, im Druck bei hoher DPI gut lesbar. */
-    zoom: 0.83;
+    /* Gemessen am 01.08.2026: Inhalt 1.302 px bei 794 px Breite, nutzbar
+       sind 1.040 px. 0,78 ergibt 1.016 px und lässt 24 px Luft.
+
+       Vorher stand hier 0,83 zu einem Inhalt von 1.109 px. Die Seite ist
+       seitdem gewachsen, die Zahl blieb stehen, und das eingecheckte PDF war
+       einseitig, während die Seite zwei erzeugte. Wer den Inhalt ändert, muss
+       `npm run onepager:pdf` laufen lassen: Das Skript sagt die Seitenzahl
+       und ist der einzige verlässliche Prüfer. */
+    zoom: 0.78;
   }
 }

@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { about, caseStudies, recruiter, site, skillDomains } from "@/content/site";
+import { about, caseStudies, site, skillDomains } from "@/content/site";
 import { PrintButton } from "./PrintButton";
+
+/**
+ * Eine Kennzahl aus dem Inhalt holen, statt sie hier hinzuschreiben.
+ *
+ * `about.stats` ist dieselbe Quelle, aus der die Startseite ihre Kacheln
+ * baut. Damit kann der One-Pager nicht mehr eine andere Zahl zeigen als die
+ * Seite, und genau das war er: 3.971 gegen 4.053.
+ */
+function kennzahl(anfang: string): string {
+  const treffer = about.stats.find((s) => s.label.startsWith(anfang));
+  if (!treffer) throw new Error(`Kennzahl "${anfang}" fehlt in about.stats.`);
+  return treffer.value;
+}
 
 export const metadata: Metadata = {
   title: "One-Pager",
@@ -77,12 +90,20 @@ export default function OnePager() {
         </header>
 
         {/* Positioning */}
-        <section className="mt-7 print:mt-5">
+        <section className="mt-7 print:mt-4">
           <p className="text-[14px] leading-snug text-[#25252e]">
             Fullstack Product Engineer mit vier eigenständig gebauten Systemen in
             Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit
             gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent.
-            3.971 Commits in vier Monaten, neben einem Vollzeitjob.
+{" "}
+            {/* Die Zahl kommt aus dem Inhalt und steht nicht hier: Fest
+                geschrieben blieb sie beim Nachzaehlen als einzige stehen und
+                sagte 3.971, waehrend die Seite daneben 4.053 zeigte. Das
+                {" "} davor ist noetig, weil ein JSX-Kommentar zwischen zwei
+                Textknoten den Umbruch verschluckt: sonst steht dort
+                "Agent.4.053". */}
+            {kennzahl("Commits")} Commits seit März 2026, neben einem
+            Vollzeitjob.
             Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt:
             agentengestützte Entwicklung mit strikter Verifikationsdisziplin,
             ein grüner Testlauf ist kein Beweis.
@@ -90,16 +111,29 @@ export default function OnePager() {
         </section>
 
         {/* Projects */}
-        <section className="mt-8 print:mt-6">
+        <section className="mt-8 print:mt-4">
           <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
             Projekte
           </h2>
 
-          <div className="flex flex-col gap-5 print:gap-4">
+          <div className="flex flex-col gap-5 print:gap-3">
             {caseStudies.map((study) => (
               <div key={study.id} className="break-inside-avoid">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-base font-semibold">
+                  {/* Zwei Fallen auf einmal, beide gemessen.
+
+                      `text-base` ist hier keine Schriftgroesse. Das Theme
+                      definiert eine Farbe namens "base", und Tailwind macht
+                      daraus eine Farbklasse, die die eingebaute
+                      Groessenklasse gleichen Namens verdraengt. Sie setzte
+                      also color auf #0b0b0e und die Groesse gar nicht.
+
+                      Und weil auf dieser gedruckten Seite sonst nichts die
+                      Farbe setzte, erbte die Ueberschrift das helle Weiss des
+                      dunklen Themas: Die vier Projektnamen standen weiss auf
+                      weiss auf dem Blatt, das er verschickt. Deshalb beides
+                      ausdruecklich. */}
+                  <h3 className="text-[16px] font-semibold text-[#101014]">
                     {study.name}
                     <span className="ml-2 text-[13px] font-normal text-[#5a5a66]">
                       {study.statusLabel} · {study.year}
@@ -124,7 +158,7 @@ export default function OnePager() {
 
         {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
             untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
-        <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-6">
+        <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-4">
           <section>
             <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
               Schwerpunkte
@@ -167,26 +201,20 @@ export default function OnePager() {
           </section>
         </div>
 
-        {/* Way of working */}
-        <section className="mt-7 break-inside-avoid print:mt-5">
-          <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
-            Arbeitsweise
-          </h2>
-          <ul className="flex flex-col gap-1.5">
-            {/* Nur die ersten drei: Der One-Pager muss eine Seite bleiben, und
-                die Liste wächst mit der Webseite mit. Gemessen bei 794 px
-                Druckbreite: drei Punkte ergeben 1.035 px, vier schon 1.072 px,
-                und alles über 1.040 px rutscht auf Seite zwei. */}
-            {recruiter.strengths.slice(0, 3).map((item) => (
-              <li key={item.title} className="text-[13px] leading-snug">
-                <strong className="font-semibold">{item.title}.</strong>{" "}
-                <span className="text-[#25252e]">{firstSentence(item.body)}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* Der Abschnitt "Arbeitsweise" stand hier und ist raus.
 
-        <footer className="mt-9 flex flex-wrap print:mt-6 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
+            Grund: Das eingecheckte PDF war einseitig, die Seite erzeugt aber
+            seit einer Weile zwei. Gemessen 1.495 px roh, mit zoom 0,83 also
+            1.241 px gegen 1.040 px nutzbare Hoehe. Das PDF war schlicht
+            veraltet und passte nicht mehr zu der Seite, aus der es entsteht.
+
+            Von allem, was auf dieser Seite steht, war dieser Block der
+            entbehrlichste: Seine drei Punkte sagen dasselbe wie der letzte
+            Satz des Einleitungsabsatzes, und vollstaendig stehen sie auf der
+            Webseite. Die vier Projekte sind die eigentliche Aussage und
+            bleiben. */}
+
+        <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
           <span>
             Vollständige Fallstudien mit Architekturdiagrammen: {site.url.replace("https://", "")}
           </span>
