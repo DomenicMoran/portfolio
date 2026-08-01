@@ -33,19 +33,16 @@ const ZIEL = "src/content/geprueft.json";
  */
 const REPOS = [
   // Die Produktivsysteme liegen unter der Organisation, nicht unter dem
-  // persoenlichen Konto — und heissen dort anders als die Ordner auf der
-  // Platte. Der erste Anlauf zaehlte "DomenicMoran/SalatiTech" und bekam 404;
-  // aufgefallen nur, weil das Skript gegen die echte API lief und nicht gegen
-  // eine Annahme.
+  // persönlichen Konto — und heißen dort anders als die Ordner auf der Platte.
+  // Die Namen stammen deshalb aus der API und nicht aus einer Annahme.
   "MenuCloud-Berlin/MenuCloud-app",
   "MenuCloud-Berlin/salatibox",
   "MenuCloud-Berlin/NOURI",
   "DomenicMoran/portfolio",
-  // Der Pruefstand ist bewusst nicht dabei: Er ist eine private Lernanwendung
-  // fuer Domenic selbst, kein geliefertes System. Die Zahl auf der Seite soll
+  // Private Lernprojekte zählen bewusst nicht mit: Die Zahl auf der Seite soll
   // das abdecken, wovon die Seite handelt. Nebenbei wird sie dadurch
-  // vollstaendig ueber GitHub nachvollziehbar, statt lokale Commits
-  // mitzuzaehlen, die noch niemand gesehen hat.
+  // vollständig über GitHub nachvollziehbar, statt lokale Commits
+  // mitzuzählen, die noch niemand gesehen hat.
   "DomenicMoran/verified-done",
   "DomenicMoran/cron-last-due",
   "DomenicMoran/whisper-ggml-header",

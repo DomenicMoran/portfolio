@@ -2,20 +2,13 @@
 /**
  * Lässt den Bau scheitern, wenn etwas Privates im öffentlichen Ordner liegt.
  *
- * Anlass ist ein Beinahe-Unfall: Beim Aufräumen wurde
- * `docs/MASTER_CAREER_GUIDE.pdf` nach `public/` kopiert, um zu sehen, ob dort
- * eine Fassung liegt. Die Datei enthält Gehaltsformulierungen, die
- * Bewerbungsstrategie und den Beruf, der bewusst aus allem Öffentlichen
- * herausgehalten wird. Sie lag vierzig Sekunden dort und wurde weder
- * eingecheckt noch ausgeliefert.
+ * Dieses Repository liegt neben einem Ordner mit Arbeitsunterlagen, die nicht
+ * ins Netz gehören. Alles in `public/` geht beim nächsten Bau dorthin, ohne
+ * dass jemand zustimmt, und ist danach in Zwischenspeichern und Suchmaschinen.
+ * Eine Datei, die einmal versehentlich hier landet, bekommt man nicht zurück.
+ * Eine Regel, die nur im Kopf steht, hält genau bis zum nächsten Mal.
  *
- * Vierzig Sekunden sind kein Argument. Alles in `public/` geht beim nächsten
- * Bau ins Netz, ohne dass jemand zustimmt, und ist danach in Zwischenspeichern
- * und Suchmaschinen. Eine Regel, die nur im Kopf steht, hält genau bis zum
- * nächsten Mal.
- *
- * Der erste Entwurf dieses Wächters hatte selbst drei Lücken, gefunden von der
- * Durchsicht nach dem Einchecken:
+ * Die Prüfung deckt drei Wege ab, die ein erster Entwurf offen ließ:
  *
  * 1. Er verbot Namen und ließ alles andere durch. Die private Datei
  *    `notizen.pdf` zu nennen hätte gereicht. Jetzt eine Erlaubnisliste:
@@ -83,20 +76,18 @@ const VERBOTENE_INHALTE = [/Gehaltsvorstellung/i, /Untergrenze/i];
 /**
  * Und die, die nicht im Klartext stehen dürfen.
  *
- * Hier stand bis eben der Beruf, den Domenic aus allem Öffentlichen
- * heraushält — als Suchmuster, in einem öffentlichen Repository, das er von
- * seinem GitHub-Profil aus verlinkt. Wer die Prüfung liest, erfährt damit
- * genau das, was sie verbergen soll. Ein Wächter, der sein Geheimnis auf die
- * Tür schreibt.
+ * Eine Prüfung, die bestimmte Begriffe aus dem öffentlichen Ordner
+ * heraushalten soll, darf sie nicht selbst als Suchmuster veröffentlichen —
+ * dieses Repository ist öffentlich. Wer sie läse, bekäme genau das, was sie
+ * zurückhält.
  *
- * Deshalb nur noch Hashes. Geprüft wird nicht der Text gegen ein Muster,
- * sondern jedes Wort und jedes Wortpaar des Textes gegen diese Liste: bei
- * einzelnen Wörtern die ersten zwölf Zeichen, damit Beugungen mitgehen, bei
- * Wortpaaren das ganze Paar. Die Klartextfassung liegt in
- * `docs/verbotene-marker.json`, außerhalb aller Repos.
+ * Deshalb nur Hashes. Geprüft wird nicht der Text gegen ein Muster, sondern
+ * jedes Wort und jedes Wortpaar des Textes gegen diese Liste: bei einzelnen
+ * Wörtern die ersten zwölf Zeichen, damit Beugungen mitgehen, bei Wortpaaren
+ * das ganze Paar. Die Klartextfassung liegt außerhalb aller Repositories.
  *
- * Das ist keine Verschlüsselung und soll keine sein. Es verhindert nur, dass
- * ein Leser die Wörter beim Überfliegen mitnimmt — und genau darum geht es.
+ * Das ist keine Verschlüsselung und soll keine sein. Es verhindert, dass ein
+ * Leser die Wörter beim Überfliegen mitnimmt — und genau darum geht es.
  */
 const VERBOTENE_HASHES = new Set(["1ea8b03c92f6d22f", "c5088451e38012e0"]);
 
