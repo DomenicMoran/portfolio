@@ -39,6 +39,7 @@ export const de: Content = {
     { label: "Über mich", href: "#about" },
     { label: "Arbeitsweise", href: "#workflow" },
     { label: "Skills", href: "#skills" },
+    { label: "Artikel", href: "#writing" },
     { label: "Für Recruiter", href: "#hire" },
     { label: "Kontakt", href: "#contact" },
   ],

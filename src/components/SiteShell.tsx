@@ -12,7 +12,10 @@ import { SmoothScroll } from "@/components/providers/SmoothScroll";
  * mounts the global interaction layers. Keeping this here means `page.tsx` can
  * stay a server component and ship the section markup as static HTML.
  */
-export function SiteShell() {
+export function SiteShell({
+  otherHref,
+  hashBase,
+}: { otherHref?: string; hashBase?: string } = {}) {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +35,11 @@ export function SiteShell() {
       <SmoothScroll />
       <ScrollProgress />
       <Cursor />
-      <Nav onOpenPalette={() => setPaletteOpen(true)} />
+      <Nav
+        onOpenPalette={() => setPaletteOpen(true)}
+        otherHref={otherHref}
+        hashBase={hashBase}
+      />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </>
   );

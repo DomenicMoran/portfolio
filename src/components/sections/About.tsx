@@ -18,6 +18,15 @@ import { cn } from "@/lib/utils";
  * himself, alongside a full-time job" as remarkable. Read first, the same
  * sentence sounds like an excuse.
  */
+/**
+ * Aus "2022-07-25" wird "07/2022". Der Tag trägt bei einem Zertifikat keine
+ * Information, und Monat/Jahr ist in beiden Sprachen gleich lesbar.
+ */
+function jahrMonat(iso: string) {
+  const [jahr, monat] = iso.split("-");
+  return `${monat}/${jahr}`;
+}
+
 export function About() {
   const { about, site } = useContent();
 
@@ -141,41 +150,6 @@ export function About() {
               ))}
             </ol>
 
-            {/* Öffentlicher Code, beantwortet die „wo ist der Code?“-Frage,
-                bevor sie gestellt wird. */}
-            <Reveal delay={0.08} className="mt-10 border-t border-line pt-8">
-              <h3 className="text-eyebrow mb-3">{about.openSource.label}</h3>
-              <p className="mb-5 text-xs leading-relaxed text-ink-faint text-pretty">
-                {about.openSource.lede}
-              </p>
-              <ul className="flex flex-col gap-4">
-                {about.openSource.items.map((item) => (
-                  <li key={item.name}>
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group block rounded-lg border border-line bg-surface/40 p-3.5 transition-colors hover:border-acid/40"
-                    >
-                      <span className="flex items-center gap-1.5 font-mono text-xs text-acid">
-                        {item.name}
-                        <ArrowUpRight
-                          className="size-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                          aria-hidden
-                        />
-                      </span>
-                      <span className="mt-1.5 block text-xs leading-relaxed text-ink-dim text-pretty">
-                        {item.body}
-                      </span>
-                      <span className="mt-2 block font-mono text-[10px] text-ink-faint">
-                        {item.meta}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-
             {/* Zertifikate füllen die Spalte mit Beleg statt mit Weißraum.
                 Einträge mit Prüf-Link werden zum Link, alle anderen bleiben
                 Text. So ist auf einen Blick sichtbar, was nachschlagbar ist. */}
@@ -187,7 +161,7 @@ export function About() {
                     <h4 className="mb-2 font-mono text-[11px] tracking-wide text-ink-dim">
                       {group.issuer}
                     </h4>
-                    <ul className="flex flex-col gap-1">
+                    <ul className="flex flex-col gap-1.5">
                       {group.items.map((item) => (
                         <li
                           key={item.name}
@@ -197,18 +171,31 @@ export function About() {
                             aria-hidden
                             className="mt-1.5 size-1 shrink-0 rounded-full bg-acid/60"
                           />
-                          {item.href ? (
-                            <a
-                              href={item.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
-                            >
-                              {item.name}
-                            </a>
-                          ) : (
-                            item.name
-                          )}
+                          <span>
+                            {item.href ? (
+                              <a
+                                href={item.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                              >
+                                {item.name}
+                              </a>
+                            ) : (
+                              item.name
+                            )}
+                            {/* Das Datum steht in derselben Zeile und bricht
+                                mit um. Eine eigene Zeile je Datum hätte die
+                                Liste auf die doppelte Höhe gebracht. */}
+                            {item.date ? (
+                              <time
+                                dateTime={item.date}
+                                className="ml-1.5 font-mono text-[10px] whitespace-nowrap text-ink-faint/70"
+                              >
+                                {jahrMonat(item.date)}
+                              </time>
+                            ) : null}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -225,6 +212,48 @@ export function About() {
               ) : null}
             </Reveal>
           </div>
+        </div>
+
+        {/* Öffentlicher Code über die volle Breite.
+            Vorher stand die Liste in der schmalen Seitenspalte. Mit fünf
+            Einträgen war sie dort länger als der Lebenslauf daneben, und jede
+            Karte hatte ein Zeilenmaß von rund 30 Zeichen. Über die volle
+            Breite passen drei Karten nebeneinander, und die Beschreibungen
+            kommen auf ein lesbares Maß. */}
+        <div className="mt-20 border-t border-line pt-14">
+          <h3 className="text-eyebrow mb-3">{about.openSource.label}</h3>
+          <p className="mb-8 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            {about.openSource.lede}
+          </p>
+
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {about.openSource.items.map((item, i) => (
+              <Reveal as="li" key={item.name} delay={i * 0.05}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
+                >
+                  <span className="flex items-center gap-1.5 font-mono text-sm text-acid">
+                    {item.name}
+                    <ArrowUpRight
+                      className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      aria-hidden
+                    />
+                  </span>
+                  <span className="mt-2.5 block text-sm leading-relaxed text-ink-dim text-pretty">
+                    {item.body}
+                  </span>
+                  {/* mt-auto hält die Kennzeilen auf einer Linie, auch wenn die
+                      Beschreibungen unterschiedlich lang sind. */}
+                  <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
+                    {item.meta}
+                  </span>
+                </a>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

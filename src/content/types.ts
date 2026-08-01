@@ -139,15 +139,19 @@ export type Content = {
     certificates: {
       label: string;
       /**
-       * `href` ist der Prüf-Link des Ausstellers, sofern vorhanden. Ist er
-       * leer, erscheint der Eintrag als reiner Text. Ein Zertifikat, das man
-       * nicht nachschlagen kann, wird hier bewusst nicht wie ein Link
-       * aussehen.
+       * `href` ist der Prüf-Link des Ausstellers. Coursera und Udemy vergeben
+       * je Zertifikat eine öffentliche Bestätigungsseite; die gehört hierhin,
+       * nicht eine hochgeladene Datei. Eine Datei kann jeder bauen, die
+       * Bestätigungsseite des Ausstellers nicht.
+       *
+       * `date` ist das Ausstellungsdatum als ISO-Wert und wird lokalisiert
+       * ausgegeben. Fehlt ein `href`, bleibt der Eintrag reiner Text und sieht
+       * bewusst nicht wie ein Link aus.
        */
       note?: string;
       groups: readonly {
         issuer: string;
-        items: readonly { name: string; href?: string }[];
+        items: readonly { name: string; href?: string; date?: string }[];
       }[];
     };
   };
