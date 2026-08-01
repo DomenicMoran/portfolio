@@ -374,6 +374,72 @@ if (fehlendeRepos.length) {
    */
 }
 
+/* ---------------------------------------------------------------------------
+   Die Zahlen der Lernplattform in USER-TODO.md
+   ---------------------------------------------------------------------------
+
+   USER-TODO.md beschreibt, was der Prüfstand enthält: Folgen, Minuten,
+   Kapitel, Fachwörter, Fragen. Diese Datei wird gelesen, wenn jemand wissen
+   will, was ihn erwartet — und sie wuchs, während der Prüfstand wuchs. Bei
+   einer Stichprobe standen dort 240 Fragen, gezählt waren es 280, und 125
+   Minuten gegen gemessene 127.
+
+   Kein Beinbruch, aber dieselbe Sorte Fehler, gegen die dieses Skript für die
+   Webseite gebaut wurde: eine Zahl, die einmal richtig war. Also zählt es sie
+   mit. Der Prüfstand liegt ausserhalb dieses Projekts; fehlt er, wird der
+   Block übersprungen statt zu scheitern. */
+
+const PRUEFSTAND = resolve("../pruefstand");
+const TODO = "../USER-TODO.md";
+
+if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
+  const todo = readFileSync(TODO, "utf8");
+  const lies = (p) => {
+    try {
+      return JSON.parse(readFileSync(join(PRUEFSTAND, p), "utf8"));
+    } catch {
+      return null;
+    }
+  };
+
+  const folgen = lies("podcast/index.json");
+  const karten = lies("inhalte/karten.json");
+  const woerter = lies("inhalte/woerterbuch.json");
+  const lektionen = lies("inhalte/lektionen.json");
+
+  const ausTodo = (muster) => {
+    const m = todo.match(muster);
+    return m ? Number(m[1].replace(/\./g, "")) : null;
+  };
+
+  const pruefe = (was, gemessen, muster) => {
+    if (gemessen == null) return;
+    const behauptet = ausTodo(muster);
+    if (behauptet === null) {
+      zeilen.push(`  --  USER-TODO: "${was}" nicht gefunden, übersprungen`);
+      return;
+    }
+    const gleich = behauptet === gemessen;
+    if (!gleich) abweichungen++;
+    zeilen.push(
+      `${gleich ? "  ok " : "  != "} USER-TODO: ${was.padEnd(22)} gemessen ${String(gemessen).padStart(5)}` +
+        (gleich ? "" : `   dort ${behauptet}`),
+    );
+  };
+
+  pruefe("Podcast-Folgen", folgen?.length, /(\d+) Podcast-Folgen/);
+  pruefe(
+    "Podcast-Minuten",
+    folgen ? Math.round(folgen.reduce((n, f) => n + (f.minuten ?? 0), 0)) : null,
+    /Podcast-Folgen mit ([\d.]+) Minuten/,
+  );
+  pruefe("Buchkapitel", lektionen?.length, /([\d.]+) Buchkapitel/);
+  pruefe("Fachwörter", woerter?.length, /([\d.]+) Fachwörter/);
+  pruefe("Fragen", karten?.length, /([\d.]+) Fragen mit Antwortauswahl/);
+} else {
+  zeilen.push("  --  Prüfstand oder USER-TODO.md nicht gefunden, übersprungen");
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
