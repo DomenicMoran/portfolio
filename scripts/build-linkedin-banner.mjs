@@ -64,7 +64,29 @@ function kennzahl(anfangDerBeschriftung) {
   return verschieden[0];
 }
 
-const commits = kennzahl("Commits seit");
+/**
+ * Auf den nächsten runden Tausender abrunden.
+ *
+ * Auf dem Titelbild steht bewusst "4.000+" und nicht "4.053". Das Bild liegt
+ * bei LinkedIn und lässt sich nur von Hand austauschen: Jede exakte Zahl dort
+ * ist ab dem nächsten Commit falsch, und niemand merkt es, weil ein Titelbild
+ * niemand ein zweites Mal liest. Eine Untergrenze bleibt wahr, solange die
+ * Zahl wächst.
+ *
+ * Auf der Webseite steht weiterhin die exakte Zahl. Der Unterschied ist nicht
+ * Genauigkeit, sondern Erreichbarkeit: Was der stündliche Prüflauf nachzählen
+ * und neu ausliefern kann, darf exakt sein. Was einmal hochgeladen wird und
+ * dann dort liegt, bekommt eine Grenze, die hält.
+ */
+function untergrenze(zahl) {
+  const roh = Number(String(zahl).replace(/\./g, ""));
+  if (!Number.isFinite(roh) || roh < 1000) {
+    throw new Error(`"${zahl}" laesst sich nicht abrunden.`);
+  }
+  return `${Math.floor(roh / 1000)}.000+`;
+}
+
+const commits = untergrenze(kennzahl("Commits seit"));
 
 const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8">
