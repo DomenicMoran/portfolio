@@ -29,10 +29,35 @@ Nur so stimmt `<html lang>` je Fassung, ohne die deutschen URLs unter ein
 globale 404 kann Next dadurch nicht komponieren. Dafür ist
 `app/global-not-found.tsx` da, das sein eigenes Dokument mitbringt.
 
+## Benennung: englisch außen, deutsch innen
+
+**Dateinamen, Ordner, Bezeichner und JSON-Schlüssel sind englisch. Fließtext,
+Kommentare und alles Sichtbare sind deutsch.**
+
+Das ist keine Geschmacksfrage, sondern folgt aus zwei harten Punkten: Umlaute
+in Dateinamen brechen über Betriebssysteme hinweg, und die Ersatzschreibung
+`ue/ae/oe` ist die Krücke, die man sich dafür einhandelt — sie stand einmal in
+sechs Dateinamen neben sechzig englischen. Wer diese Datei liest, sieht sonst
+zwei Sprachen und zwei Konventionen in einem Verzeichnis.
+
+Ausgenommen sind **URL-Segmente**: `/artikel`, `/impressum`, `/datenschutz`
+sind deutsch, weil sie der Leser sieht und weil sie stabil bleiben müssen.
+
+```
+scripts/check-figures.mjs        nicht  scripts/zaehle-belege.mjs
+src/content/verified.json        nicht  src/content/geprueft.json
+{ "date": …, "source": … }       nicht  { "datum": …, "quelle": … }
+```
+
 ## Inhalte
 
 **Copy gehört nie in eine Komponente.** Jeder Text und jede Zahl steht in
 `src/content/`. Komponenten lesen daraus, sie definieren nichts.
+
+`verified.json` ist der Prüfstempel und hat **genau einen Schreiber**: den
+Workflow `refresh-figures.yml`. Kachel, Konsolenmeldung, humans.txt und das
+LinkedIn-Titelbild lesen daraus. Wer eine zweite Schreibstelle einbaut, baut
+zwei Zahlen für dieselbe Sache.
 
 - `site.ts` ist die deutsche Quelle
 - `de.ts` ist ein Adapter darauf plus die Beschriftungen, die erst durch die

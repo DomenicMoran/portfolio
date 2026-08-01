@@ -1,4 +1,4 @@
-name: check
+name: Prüfen
 
 # Warum es diesen Workflow gibt: Das Repository verkauft Prüfdisziplin. Ohne
 # ein Tor, das dieselben Befehle ausführt, die in AGENTS.md als Definition of

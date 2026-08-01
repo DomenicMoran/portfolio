@@ -17,18 +17,18 @@
  * Link-Kopf die Nummer der letzten Seite, und die ist die Anzahl. Das ist ein
  * Aufruf je Repository statt einer vollständigen Historie.
  *
- *   GITHUB_TOKEN=… node scripts/zahlen-von-github.mjs
+ *   GITHUB_TOKEN=… node scripts/fetch-figures-from-github.mjs
  */
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 
 const TOKEN = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
-const ZIEL = "src/content/geprueft.json";
+const ZIEL = "src/content/verified.json";
 
 /**
  * Die Repositories, über die gezählt wird.
  *
- * Dieselbe Liste wie in `zaehle-belege.mjs`, dort über das Dateisystem. Hier
+ * Dieselbe Liste wie in `check-figures.mjs`, dort über das Dateisystem. Hier
  * über die API, damit es auch läuft, wenn niemand am Rechner sitzt.
  */
 const REPOS = [
@@ -117,10 +117,10 @@ console.log(`  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repo
 const vorher = existsSync(ZIEL) ? JSON.parse(readFileSync(ZIEL, "utf8")) : {};
 const neu = {
   ...vorher,
-  datum: heute,
+  date: heute,
   commitsHead: summe.toLocaleString("de-DE"),
   repos: REPOS.length,
-  quelle: "GitHub-API",
+  source: "GitHub-API",
 };
 
 const alt = existsSync(ZIEL) ? readFileSync(ZIEL, "utf8") : "";

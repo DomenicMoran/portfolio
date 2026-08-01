@@ -19,7 +19,7 @@
  * ein Prüfschritt, der dort immer scheitert, wird abgeschaltet und prüft dann
  * nie wieder etwas. Er gehört in den stündlichen Prüflauf.
  *
- *   node scripts/zaehle-belege.mjs
+ *   node scripts/check-figures.mjs
  */
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -327,8 +327,8 @@ if (fehlendeRepos.length) {
    */
   // Die Zahl steht nicht mehr als Text in site.ts, sondern kommt von dort aus
   // dem Pruefstempel. Gelesen wird deshalb der Stempel selbst.
-  const stempelJetzt = existsSync("src/content/geprueft.json")
-    ? JSON.parse(readFileSync("src/content/geprueft.json", "utf8"))
+  const stempelJetzt = existsSync("src/content/verified.json")
+    ? JSON.parse(readFileSync("src/content/verified.json", "utf8"))
     : {};
   const aufDerSeite = Number(String(stempelJetzt.commitsHead ?? "").replace(/\./g, ""));
   const rueckstand = head - aufDerSeite;
@@ -358,7 +358,7 @@ if (fehlendeRepos.length) {
   /**
    * Dieser Lauf schreibt den Prüfstempel nicht.
    *
-   * `src/content/geprueft.json` hat genau einen Schreiber: den Automaten unter
+   * `src/content/verified.json` hat genau einen Schreiber: den Automaten unter
    * .github/workflows, der über die GitHub-API zählt. Das ist kein Formalismus,
    * sondern der Unterschied zwischen zwei Zahlen. Hier wird lokal gezählt, also
    * einschliesslich Commits, die auf keinem Server liegen; die Seite lädt

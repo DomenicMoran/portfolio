@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import geprueft from "@/content/geprueft.json";
+import verified from "@/content/verified.json";
 
 /**
  * Eine Nachricht für den, der die Entwicklerkonsole öffnet.
@@ -18,7 +18,7 @@ import geprueft from "@/content/geprueft.json";
  * suchen, und eine Konsole, die bei jeder Navigation vollläuft, ist der
  * Gegenbeweis zur Aussage.
  */
-export function KonsolenGruss() {
+export function ConsoleGreeting() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const w = window as Window & { __gruss?: boolean };
@@ -32,7 +32,7 @@ export function KonsolenGruss() {
       `%cHallo.%c Wenn du hier bist, prüfst du gerade nach. Gut.
 
   Quelltext dieser Seite   github.com/DomenicMoran/portfolio
-  Zahlen zuletzt geprüft   ${geprueft.datum} · ${geprueft.commitsHead} Commits über ${geprueft.repos} Repos
+  Zahlen zuletzt geprüft   ${verified.date} · ${verified.commitsHead} Commits über ${verified.repos} Repos
   Selbst nachzählen        git rev-list --count HEAD
 
   Die Zahlen auf dieser Seite werden stündlich gegen die Repos

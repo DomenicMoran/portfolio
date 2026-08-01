@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
 import { andereSprache, type Article, type ArticleChrome } from "@/content/articles";
-import { KonsolenGruss } from "@/components/KonsolenGruss";
+import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
 import { Prose } from "@/components/article/Prose";
@@ -67,7 +67,7 @@ export function ArticlePage({
   return (
     <ContentProvider content={content}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
-      <KonsolenGruss />
+      <ConsoleGreeting />
 
       <SiteShell otherHref={otherHref} hashBase={heim} />
 

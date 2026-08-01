@@ -14,7 +14,7 @@ export const shaperDe: Article = {
   evidence: [
     "Salati-Repo, Commit 427cd6c6 vom 31.07.2026",
     "Neu: apps/mobile/src/lib/arabicText.ts (Normalisierung, splitArabicWords, arabicClusters)",
-    "Prüfskript: scripts/pruefe-koran-fonts.mjs, liest jede Schriftdatei byteweise",
+    "Prüfskript: apps/mobile/scripts/pruefe-koran-fonts.mjs, liest jede Schriftdatei byteweise",
     "Gegenprobe live gegen die Textquelle quran.com, Verse 2:2 und 2:5",
   ],
   blocks: [
