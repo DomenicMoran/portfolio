@@ -2,8 +2,9 @@ import verified from "./verified.json";
 /**
  * Single source of truth for every piece of copy and data on the site.
  *
- * Everything marked `TODO(domenic)` is a value only Domenic can supply, see
- * USER-TODO.md, block A. Components are written so that a missing (empty or
+ * Everything marked `TODO(domenic)` is a value only the owner can supply; the
+ * open ones are collected in USER-TODO.md. Components are written so that a
+ * missing (empty or
  * null) value removes the element rather than rendering a placeholder: an
  * unanswered question must never become a visible "lorem ipsum" on a page whose
  * whole point is credibility.
@@ -53,7 +54,7 @@ export const about = {
   eyebrow: "Wer ich bin",
   /**
    * TODO(domenic): echtes Porträt nach `public/portrait.jpg` legen und den Pfad
-   * hier eintragen, siehe USER-TODO B1. Solange leer, entfällt das Bildelement und
+   * hier eintragen, siehe USER-TODO 0.1. Solange leer, entfällt das Bildelement und
    * die Textspalte nimmt die volle Breite ein; die Sektion sieht dann
    * vollständig aus statt lückenhaft.
    *
@@ -519,7 +520,9 @@ export const caseStudies: CaseStudy[] = [
       { value: "812", label: "DB-Migrationen" },
       { value: "7.437", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
-      // TODO(domenic): Kunden / MRR / GMV / Uptime, siehe USER-TODO A3.
+      // TODO(domenic): Kunden, MRR, GMV oder Uptime — jede dieser Zahlen
+      // ersetzt eine Behauptung durch einen Beleg. Steht in USER-TODO unter
+      // "Optional", weil sie niemand erfinden kann.
     ],
     links: [
       { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },

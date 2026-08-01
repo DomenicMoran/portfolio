@@ -6,14 +6,23 @@ export const metadata: Metadata = {
   description:
     "Was diese Seite technisch tut und welche Daten dabei anfallen. Keine Cookies, keine Analyse, keine Einbindung von Dritten.",
   robots: { index: false, follow: false },
+  // Ohne eigenen Eintrag erbt diese Seite den Canonical des
+  // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
+  // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.
+  alternates: { canonical: `${site.url}/datenschutz` },
 };
 
 /**
- * TODO(domenic): Anschrift ergänzen (USER-TODO B1). Der Rest beschreibt exakt,
- * was diese Seite technisch tut, und das ist bewusst wenig:
- * keine Cookies, kein Tracking-Pixel, keine Drittanbieter-Schriften,
- * keine Datenbank. Wenn du Vercel Analytics aktivierst (USER-TODO B3), ist der
- * entsprechende Abschnitt unten bereits vorbereitet.
+ * Beschreibt exakt, was diese Seite technisch tut, und das ist bewusst wenig:
+ * keine Cookies, kein Zählpixel, keine Schriften von fremden Servern, keine
+ * Datenbank, kein Endpunkt, der Eingaben entgegennimmt.
+ *
+ * Käme je ein Dienst dazu, der Daten verarbeitet — eine Analyse, ein
+ * Formular, eine Einbindung —, gehört ein eigener Abschnitt hierher und der
+ * Stand unten muss mitwandern. Der Stand nennt bewusst das Datum der letzten
+ * inhaltlichen Änderung und nicht den heutigen Tag: Eine Erklärung, die sich
+ * jeden Morgen selbst neu datiert, sagt nichts darüber aus, was sich geändert
+ * hat.
  */
 export default function Datenschutz() {
   return (

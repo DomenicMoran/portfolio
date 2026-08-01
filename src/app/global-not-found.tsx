@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
+import { en } from "@/content/en";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,13 @@ export const metadata: Metadata = {
  * Nur zwei Schriften statt drei, und keine Bewegungs-Provider: Wer hier
  * landet, hat sich verlaufen und soll schnell weiterkommen. Die Kursivschrift
  * für Akzentwörter kommt auf dieser Seite nicht vor.
+ *
+ * Zweisprachig, und zwar notgedrungen: Next beantwortet damit jede Adresse,
+ * die auf gar keine Route passt — auch `/en/irgendwas`. Diese Seite ist die
+ * einzige, die nicht wissen kann, welche Sprache gemeint war. Gemessen bekam
+ * ein englischer Besucher bisher „Diese Seite gibt es nicht." samt `lang="de"`.
+ * Ein Auffang unter /en hilft nicht: Die Dokumentation ist deutlich, dass
+ * global-not-found das Rendern überspringt und direkt ausgeliefert wird.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +48,7 @@ export default function GlobalNotFound() {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
-        <NotFoundPage content={de} />
+        <NotFoundPage content={de} zweitsprache={en} />
       </body>
     </html>
   );
