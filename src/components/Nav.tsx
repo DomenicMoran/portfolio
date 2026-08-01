@@ -124,7 +124,7 @@ export function Nav({
                     // dekorativ.
                     aria-current={istAktiv ? "true" : undefined}
                     className={cn(
-                      "relative rounded-full px-3.5 py-1.5 text-sm transition-colors",
+                      "relative rounded-full px-3 py-1.5 text-sm transition-colors xl:px-3.5",
                       istAktiv ? "text-ink" : "text-ink-dim hover:text-ink",
                     )}
                   >
@@ -156,7 +156,12 @@ export function Nav({
             <button
               type="button"
               onClick={onOpenPalette}
-              className="hidden items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim sm:flex"
+              // Erst ab xl sichtbar, gemessen: Bei genau 1024 px erscheint die
+              // volle Leiste und braucht 76 px mehr, als da sind. Zwei
+              // Menuepunkte brechen dann auf zwei Zeilen und die Leiste wird
+              // 70 statt 56 px hoch. Der Tastaturhinweis ist der Teil, der am
+              // wenigsten fehlt: Die Tastenkombination funktioniert weiterhin.
+              className="hidden items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim xl:flex"
               aria-label={a11y.commandPalette}
             >
               <Command className="size-3" aria-hidden />
