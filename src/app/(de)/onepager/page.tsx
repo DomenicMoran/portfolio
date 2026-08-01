@@ -173,7 +173,11 @@ export default function OnePager() {
             Arbeitsweise
           </h2>
           <ul className="flex flex-col gap-1.5">
-            {recruiter.strengths.map((item) => (
+            {/* Nur die ersten drei: Der One-Pager muss eine Seite bleiben, und
+                die Liste wächst mit der Webseite mit. Gemessen bei 794 px
+                Druckbreite: drei Punkte ergeben 1.035 px, vier schon 1.072 px,
+                und alles über 1.040 px rutscht auf Seite zwei. */}
+            {recruiter.strengths.slice(0, 3).map((item) => (
               <li key={item.title} className="text-[13px] leading-snug">
                 <strong className="font-semibold">{item.title}.</strong>{" "}
                 <span className="text-[#25252e]">{firstSentence(item.body)}</span>

@@ -18,19 +18,40 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Gentle parallax on exit. Kept small. Big values make the section feel
-  // detached from the scroll and hurt perceived smoothness on low-end devices.
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // Sanfte Parallaxe beim Verlassen, bewusst klein: Große Werte lösen den
+  // Abschnitt gefühlt vom Scrollen und kosten auf schwachen Geräten Glätte.
+  //
+  // Die Zahlen hängen zusammen und dürfen nicht einzeln verstellt werden.
+  // Der Inhalt wandert beim Wegscrollen nach unten, also in Richtung des
+  // folgenden Abschnitts. Er muss unsichtbar sein, bevor er dort ankommt,
+  // sonst liegen die Kennzahlen über dessen Überschrift. Gemessen bei 320 px,
+  // der schmalsten und damit höchsten Fassung: Die Rechtecke berühren sich ab
+  // etwa 90 Prozent des Scrollwegs, das Verblassen ist bei 55 Prozent fertig.
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
+  // Der Abschnitt beschneidet nur waagerecht. Beide Achsen zu beschneiden
+  // wäre falsch, und beide offen zu lassen ebenfalls:
+  //
+  // - Waagerecht muss er beschneiden, sonst schiebt die Laufschrift das
+  //   Dokument bei 320 px um gemessene 1168 px in die Breite.
+  // - Senkrecht darf er nicht beschneiden, sonst trennt die Unterkante die
+  //   untere Kennzahlenreihe mitten durch die Ziffern, sobald die Parallaxe
+  //   den Inhalt nach unten schiebt.
+  //
+  // `overflow-x: clip` kann genau das. `hidden` kann es nicht: Steht es auf
+  // einer Achse, wird die andere automatisch zu `auto`.
   return (
     <section
       ref={ref}
       id="top"
-      className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-10"
+      className="relative flex min-h-svh flex-col justify-end overflow-x-clip pb-10"
     >
-      {/* Ambient light. Three blurred orbs, GPU-composited, no canvas. */}
-      <div aria-hidden className="absolute inset-0 -z-10">
+      {/* Ambient light. Three blurred orbs, GPU-composited, no canvas.
+          Diese Hülle beschneidet zusätzlich senkrecht, damit die Kreise nicht
+          in den nächsten Abschnitt hängen. Sie enthält nur Deko, hier schneidet
+          der Beschnitt also nie Text. */}
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
         <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
         {/* The two secondary orbs are pure decoration; they only appear once

@@ -33,7 +33,7 @@ export const shaperDe: Article = {
     },
     {
       kind: "p",
-      text: "Also habe ich die Zeichentabelle der Schrift geprüft. Alle koranischen Zeichen waren enthalten. Die Erklärung stimmte nicht.",
+      text: "Also habe ich die Zeichentabelle der Schrift geprüft. Alle arabischen Schriftzeichen der Uthmani-Schreibweise waren enthalten, auch die Pausenzeichen. Die Erklärung stimmte nicht.",
     },
     {
       kind: "note",
@@ -83,7 +83,7 @@ export const shaperDe: Article = {
       kind: "code",
       lang: "ts",
       caption: "arabicText.ts: Zeichen-Token hängen sich an das vorherige Wort, statt eines zu werden.",
-      code: `// Ein allein stehendes koranisches Zeichen ist kein eigenes Wort.
+      code: `// Ein allein stehendes Pausenzeichen ist kein eigenes Wort.
 // Es gehört an das Wort davor: dorthin, wo auch die Quelle es zählt.
 export function splitArabicWords(text: string): string[] {
   const woerter: string[] = [];
@@ -112,7 +112,7 @@ export function splitArabicWords(text: string): string[] {
     { kind: "h2", text: "Was ich bei den Schriften daraus gemacht habe" },
     {
       kind: "p",
-      text: "Weil die Schrift zuerst der Hauptverdächtige war, habe ich für die Aufnahme neuer Schriften ein hartes Kriterium gebaut: Ein Skript liest jede Schriftdatei byteweise und prüft, ob sie den vollständigen koranischen Zeichenvorrat abdeckt.",
+      text: "Weil die Schrift zuerst der Hauptverdächtige war, habe ich für die Aufnahme neuer Schriften ein hartes Kriterium gebaut: Ein Skript liest jede Schriftdatei byteweise und prüft, ob sie den vollständigen Zeichenvorrat der Uthmani-Schreibweise abdeckt.",
     },
     {
       kind: "p",
@@ -120,7 +120,7 @@ export function splitArabicWords(text: string): string[] {
     },
     {
       kind: "p",
-      text: "Auch die Zeilenmaße sind gemessen statt geschätzt: Die Zeilenhöhe kommt aus den Werten, die Android für seinen Innenabstand heranzieht, nicht aus den naheliegenden anderen. Bei mehreren Schriften liegen gestapelte koranische Zeichen außerhalb der zweiten Box, und eine zu enge Zeile schneidet sie oben ab.",
+      text: "Auch die Zeilenmaße sind gemessen statt geschätzt: Die Zeilenhöhe kommt aus den Werten, die Android für seinen Innenabstand heranzieht, nicht aus den naheliegenden anderen. Bei mehreren Schriften liegen übereinander gesetzte arabische Zeichen außerhalb der zweiten Box, und eine zu enge Zeile schneidet sie oben ab.",
     },
     { kind: "h2", text: "Was ich mitnehme" },
     {

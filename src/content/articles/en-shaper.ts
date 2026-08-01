@@ -29,7 +29,7 @@ export const shaperEn: Article = {
     },
     {
       kind: "p",
-      text: "So I checked the font's character table. Every Quranic mark was present. The explanation did not hold.",
+      text: "So I checked the font's character table. Every Arabic character of the Uthmani spelling was present, pause marks included. The explanation did not hold.",
     },
     {
       kind: "note",
@@ -79,7 +79,7 @@ export const shaperEn: Article = {
       kind: "code",
       lang: "ts",
       caption: "arabicText.ts: mark tokens attach to the preceding word instead of becoming one.",
-      code: `// A standalone Quranic mark is not a word of its own.
+      code: `// A standalone pause mark is not a word of its own.
 // It belongs to the word before it: where the source counts it too.
 export function splitArabicWords(text: string): string[] {
   const words: string[] = [];
@@ -108,7 +108,7 @@ export function splitArabicWords(text: string): string[] {
     { kind: "h2", text: "What I did about fonts as a result" },
     {
       kind: "p",
-      text: "Because the font was the prime suspect first, I built a hard criterion for admitting new ones: a script reads every font file byte by byte and checks whether it covers the complete Quranic character set.",
+      text: "Because the font was the prime suspect first, I built a hard criterion for admitting new ones: a script reads every font file byte by byte and checks whether it covers the complete character set of the Uthmani spelling.",
     },
     {
       kind: "p",
@@ -116,7 +116,7 @@ export function splitArabicWords(text: string): string[] {
     },
     {
       kind: "p",
-      text: "The line metrics are measured rather than assumed too: line height comes from the values Android uses for its own padding, not from the other obvious pair. In several fonts, stacked Quranic marks sit outside that second box, and a line set too tight clips them at the top.",
+      text: "The line metrics are measured rather than assumed too: line height comes from the values Android uses for its own padding, not from the other obvious pair. In several fonts, stacked Arabic marks sit outside that second box, and a line set too tight clips them at the top.",
     },
     { kind: "h2", text: "What I take from this" },
     {

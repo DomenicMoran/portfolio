@@ -89,10 +89,13 @@ Leerzeichen am Ende eines `inline-block` mit `overflow: hidden` wird
 zusammengefaltet. Die Wörter kleben dann aneinander. Betrifft `Hero` und
 `RevealWords`.
 
-**Dekorative Glüh-Kreise brauchen einen Clip am Sektions-Container.** Ein
-`glow-orb` ist breiter als das Viewport und erzeugt sonst horizontales Scrollen
-auf Telefonen. `overflow-hidden` an die Sektion, zusätzlich `overflow-x: clip`
-an `html`/`body` als Netz.
+**Dekorative Glüh-Kreise brauchen einen Clip, aber nicht am Sektions-Container.**
+Ein `glow-orb` ist breiter als das Viewport und erzeugt sonst horizontales
+Scrollen auf Telefonen. Der Clip gehört an die `absolute inset-0`-Hülle der
+Deko, nicht an die Sektion: Am Sektions-Container schneidet er auch den Inhalt
+ab, sobald eine Parallaxe ihn verschiebt. Im Hero hat das bei 320 px die untere
+Kennzahlenreihe waagerecht mitten durch die Ziffern getrennt. Zusätzlich
+`overflow-x: clip` an `html`/`body` als Netz.
 
 ## Server/Client-Grenze
 
