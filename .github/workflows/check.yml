@@ -1,0 +1,39 @@
+name: check
+
+# Warum es diesen Workflow gibt: Das Repository verkauft Prüfdisziplin. Ohne
+# ein Tor, das dieselben Befehle ausführt, die in AGENTS.md als Definition of
+# Done stehen, wäre das eine Behauptung. Der Audit hat genau das angemerkt.
+#
+# Bewusst kein Test-Schritt: Es gibt hier keine Testsuite. Ein Schritt, der
+# nichts prüft und trotzdem grün meldet, ist schlimmer als kein Schritt.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typen
+        run: npx tsc --noEmit
+
+      - name: Linter
+        run: npx eslint .
+
+      # Der Bau ist der eigentliche Beleg: Er erzeugt jede Route statisch und
+      # scheitert, sobald eine Übersetzung fehlt, weil en.ts gegen denselben
+      # Typ deklariert ist wie die deutsche Fassung.
+      - name: Bau
+        run: npm run build
