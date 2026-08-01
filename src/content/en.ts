@@ -38,6 +38,7 @@ export const en: Content = {
     { label: "About", href: "#about" },
     { label: "How I work", href: "#workflow" },
     { label: "Skills", href: "#skills" },
+    { label: "Writing", href: "#writing" },
     { label: "For recruiters", href: "#hire" },
     { label: "Contact", href: "#contact" },
   ],
@@ -182,7 +183,7 @@ export const en: Content = {
         "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
       hardPart: {
         title: "Fiscal signing as a tenancy problem",
-        body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue, which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_chain_rows`, and a fail-closed path: no signature, no transaction.",
+        body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue, which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_transactions`, and a fail-closed path: no signature, no transaction.",
       },
       highlights: [
         "1,276 API routes across 812 versioned Postgres migrations",
@@ -400,8 +401,26 @@ export const en: Content = {
     ],
     openSource: {
       label: "Open source",
-      lede: "My production systems stay private, they carry customer data and licensed content. What I publish are the tools that came out of building them.",
+      lede: "My production systems stay private, they carry customer data and licensed content. What is published is what could be lifted out of them: the tools built along the way, and the rules that followed from the mistakes.",
       items: [
+        {
+          name: "verified-done",
+          href: "https://github.com/DomenicMoran/verified-done",
+          body: "Four Claude Code skills against the claim with nothing behind it. Each comes from a bug that shipped, and says which one.",
+          meta: "Claude Code · 4 skills · frontmatter validated in CI",
+        },
+        {
+          name: "cron-last-due",
+          href: "https://github.com/DomenicMoran/cron-last-due",
+          body: "When was this cron job last due? Timezone-aware, built for watchdogs. Came out of a blanket rule that false-alarmed every weekend.",
+          meta: "TypeScript · 21 tests · zero dependencies",
+        },
+        {
+          name: "whisper-ggml-header",
+          href: "https://github.com/DomenicMoran/whisper-ggml-header",
+          body: "Reads a Whisper model header and says whether whisper.cpp will load it. Catches the common mis-conversion that is refused without a message.",
+          meta: "TypeScript · CLI · 17 tests",
+        },
         {
           name: "arabic-normalize",
           href: "https://github.com/DomenicMoran/arabic-normalize",
@@ -418,24 +437,71 @@ export const en: Content = {
     },
     certificates: {
       label: "Certificates",
-      note: "Linked entries open the issuer's verification page.",
+      note: "Every entry opens the issuer's verification page. All ten are also kept as PDFs in the Zertifikate repository.",
       groups: [
         {
           issuer: "Meta, via Coursera",
           items: [
-            { name: "Introduction to Front-End Development" },
-            { name: "Introduction to Back-End Development" },
-            { name: "Introduction to Mobile Development" },
-            { name: "Programming in Python" },
-            { name: "Version Control" },
+            {
+              name: "Introduction to Front-End Development",
+              href: "https://coursera.org/verify/YH8W2JKAX4GM",
+              date: "2022-07-25",
+            },
+            {
+              name: "Introduction to Back-End Development",
+              href: "https://coursera.org/verify/HUA7X3W4GE4V",
+              date: "2022-07-17",
+            },
+            {
+              name: "Introduction to Mobile Development",
+              href: "https://coursera.org/verify/YZGD5294DA5F",
+              date: "2022-07-26",
+            },
+            {
+              name: "Programming with JavaScript",
+              href: "https://coursera.org/verify/MKUUWNEUF5VK",
+              date: "2022-07-30",
+            },
+            {
+              name: "Programming in Python",
+              href: "https://coursera.org/verify/VKLJNXHMD9B7",
+              date: "2022-07-24",
+            },
+            {
+              name: "Version Control",
+              href: "https://coursera.org/verify/LFCXZZBK4JTB",
+              date: "2022-07-25",
+            },
           ],
         },
         {
-          issuer: "iOS and Swift",
+          issuer: "LearnQuest, via Coursera",
           items: [
-            { name: "App development with Swift 5 for iOS 15 (Udemy, 39 h)" },
-            { name: "Introduction to Swift 5" },
-            { name: "Table Views" },
+            {
+              name: "Introduction to Programming in Swift 5",
+              href: "https://coursera.org/verify/KH7JB895Z5D8",
+              date: "2022-08-01",
+            },
+            {
+              name: "Introduction to iOS App Development with Swift 5",
+              href: "https://coursera.org/verify/TEMFV7CXDBSK",
+              date: "2022-08-02",
+            },
+            {
+              name: "Tables, Data & Networking in iOS",
+              href: "https://coursera.org/verify/VHUCVNLX2PSJ",
+              date: "2022-08-06",
+            },
+          ],
+        },
+        {
+          issuer: "Udemy",
+          items: [
+            {
+              name: "App development with Swift 5 for iOS 15, incl. SwiftUI 2 (39 h)",
+              href: "https://ude.my/UC-0f3b4b66-20ef-4b2b-8bfc-a7da7a1290fc",
+              date: "2022-08-17",
+            },
           ],
         },
       ],

@@ -9,11 +9,30 @@ import { useActiveSection } from "@/lib/useActiveSection";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
+export function Nav({
+  onOpenPalette,
+  otherHref,
+  hashBase = "",
+}: {
+  onOpenPalette: () => void;
+  /**
+   * Wohin der Sprachwechsel führt. Ohne Angabe die Startseite der anderen
+   * Sprache. Ein Artikel reicht hier den Pfad seines Gegenstücks herein,
+   * damit der Wechsel nicht auf der Startseite landet und den Leser aus dem
+   * Text wirft.
+   */
+  otherHref?: string;
+  /**
+   * Vorsatz für die Sprungmarken. Auf der Startseite leer, weil "#work" dort
+   * ein Ziel im Dokument ist. Auf einer Unterseite gibt es dieses Ziel nicht,
+   * und der Link führte ins Leere; dort steht deshalb "/" oder "/en" davor.
+   */
+  hashBase?: string;
+}) {
   const c = useContent();
   const { nav: navItems, site, a11y } = c;
-  // Die jeweils andere Sprachfassung liegt unter /en bzw. auf der Wurzel.
-  const otherHref = c.lang === "de" ? "/en" : "/";
+  const sprachZiel = otherHref ?? (c.lang === "de" ? "/en" : "/");
+  const zuAnker = (href: string) => `${hashBase}${href}`;
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -46,9 +65,9 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
         aria-hidden
         className={cn(
           // Deckend bis 66 % der Höhe, das sind 84 px. Die Leiste endet
-          // gemessen bei 81 px (16 px Abstand + 56 px Kapsel + 9 px
-          // Fortschrittslinie). Erst darunter beginnt der Auslauf, sonst
-          // scheint der Text auf Höhe der Kapsel hindurch.
+          // gemessen bei 72 px (16 px Abstand + 56 px Kapsel). Erst
+          // darunter beginnt der Auslauf, sonst scheint der Text auf Höhe
+          // der Kapsel hindurch.
           "pointer-events-none fixed inset-x-0 top-0 z-[9989] h-32 bg-[linear-gradient(to_bottom,var(--color-void)_0%,var(--color-void)_66%,transparent_100%)] transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0",
         )}
@@ -70,7 +89,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
           )}
         >
           <a
-            href="#top"
+            href={hashBase || "#top"}
             // -my-1/py-1: die Trefferfläche wächst auf über 32 px, ohne dass
             // sich die Leiste optisch verändert.
             className="group -my-1 flex items-center gap-2.5 py-1"
@@ -91,7 +110,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
               return (
                 <li key={item.href}>
                   <a
-                    href={item.href}
+                    href={zuAnker(item.href)}
                     // aria-current sagt der Vorlesesoftware dasselbe, was die
                     // Pille dem Auge sagt. Ohne das wäre die Markierung rein
                     // dekorativ.
@@ -118,7 +137,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
 
           <div className="flex items-center gap-2">
             <Link
-              href={otherHref}
+              href={sprachZiel}
               hrefLang={c.languageSwitch.to}
               aria-label={c.languageSwitch.aria}
               className="rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
@@ -137,7 +156,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
             </button>
 
             <a
-              href="#contact"
+              href={zuAnker("#contact")}
               className="hidden rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-void transition-colors hover:bg-acid sm:block"
             >
               {c.navContact}
@@ -153,11 +172,6 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
             </button>
           </div>
         </nav>
-
-        {/* Fortschritt als Haarlinie unter der Leiste. Sie beantwortet die
-            Frage „wie viel kommt noch?“, die auf einer langen Einzelseite
-            sonst offen bleibt. Rein dekorativ, daher aria-hidden. */}
-        <ScrollFortschritt />
       </motion.header>
 
       {/* Mobile sheet */}
@@ -172,7 +186,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
             <div className="flex h-full flex-col p-6">
               <div className="flex items-center justify-between">
                 <Link
-                  href={otherHref}
+                  href={sprachZiel}
                   hrefLang={c.languageSwitch.to}
                   aria-label={c.languageSwitch.aria}
                   className="rounded-full border border-line px-3.5 py-2 font-mono text-[11px] text-ink-faint"
@@ -201,7 +215,7 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
                       transition={{ delay: 0.06 * i, duration: 0.5, ease: ease.expo }}
                     >
                       <a
-                        href={item.href}
+                        href={zuAnker(item.href)}
                         onClick={() => setMenuOpen(false)}
                         aria-current={istAktiv ? "true" : undefined}
                         className="flex items-center gap-3 border-b border-line py-4 text-3xl font-semibold tracking-tight text-ink"
@@ -234,29 +248,5 @@ export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
         ) : null}
       </AnimatePresence>
     </>
-  );
-}
-
-/**
- * Der Lesefortschritt als 2 px hohe Linie.
- *
- * `scaleX` statt `width`: Breite anzufassen löst bei jedem Scroll-Schritt ein
- * Layout aus, `transform` läuft im Compositor. Auf einer Seite, die bei jedem
- * Pixel Scroll neu gezeichnet wird, ist das der Unterschied zwischen flüssig
- * und ruckelig.
- */
-function ScrollFortschritt() {
-  const { scrollYProgress } = useScroll();
-
-  return (
-    <div
-      aria-hidden
-      className="mx-auto mt-2 h-px max-w-6xl overflow-hidden rounded-full"
-    >
-      <motion.div
-        style={{ scaleX: scrollYProgress, transformOrigin: "0% 50%" }}
-        className="h-full w-full bg-gradient-to-r from-acid to-cyan"
-      />
-    </div>
   );
 }

@@ -2,9 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, FileText, Mail, Search } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Mail, Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
+import { artikelFuer, chromeFuer } from "@/content/articles";
 import { SOCIALS } from "@/content/types";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -29,15 +30,30 @@ export function CommandPalette({
   open: boolean;
   onClose: () => void;
 }) {
-  const { nav: navItems, caseStudies, site, recruiter, palette } = useContent();
+  const { nav: navItems, caseStudies, site, recruiter, palette, lang } = useContent();
+  const artikel = artikelFuer(lang);
+  const chrome = chromeFuer(lang);
+  const heim = lang === "de" ? "/" : "/en";
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const actions = useMemo<Action[]>(() => {
+    // Auf der Startseite gibt es das Ziel im Dokument, dann wird gescrollt.
+    // Auf einer Unterseite gibt es es nicht, und ohne diesen Zweig passierte
+    // beim Auswählen schlicht nichts.
     const go = (hash: string) => () => {
       onClose();
-      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      const ziel = document.querySelector(hash);
+      if (ziel) {
+        ziel.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      window.location.href = `${heim}${hash}`;
+    };
+    const goto = (pfad: string) => () => {
+      onClose();
+      window.location.href = pfad;
     };
     const open_ = (href: string) => () => {
       onClose();
@@ -58,6 +74,13 @@ export function CommandPalette({
         hint: study.tagline,
         icon: ArrowRight,
         run: go(`#case-${study.id}`),
+      })),
+      ...artikel.map((a) => ({
+        id: `artikel-${a.slug}`,
+        label: a.title,
+        hint: chrome.eyebrow,
+        icon: BookOpen,
+        run: goto(`${chrome.base}/${a.slug}`),
       })),
       {
         id: "pdf",
@@ -101,7 +124,7 @@ export function CommandPalette({
     }
 
     return list;
-  }, [onClose, navItems, caseStudies, site, recruiter, palette]);
+  }, [onClose, navItems, caseStudies, site, recruiter, palette, artikel, chrome, heim]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();

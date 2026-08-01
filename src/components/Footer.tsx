@@ -14,11 +14,14 @@ import { SOCIALS } from "@/content/types";
  * ankommt, sucht aber gezielt eines von dreien. Deshalb jetzt drei benannte
  * Spalten statt einer Sammlung.
  */
-export function Footer() {
+export function Footer({
+  otherHref,
+  hashBase = "",
+}: { otherHref?: string; hashBase?: string } = {}) {
   const { nav: navItems, site, footer, a11y, recruiter, languageSwitch, lang } =
     useContent();
   const year = new Date().getFullYear();
-  const otherHref = lang === "de" ? "/en" : "/";
+  const sprachZiel = otherHref ?? (lang === "de" ? "/en" : "/");
 
   const socials = [
     SOCIALS.github
@@ -67,7 +70,7 @@ export function Footer() {
               {navItems.map((item) => (
                 <a
                   key={item.href}
-                  href={item.href}
+                  href={`${hashBase}${item.href}`}
                   className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
                 >
                   {item.label}
@@ -107,7 +110,7 @@ export function Footer() {
                 </a>
               ))}
               <Link
-                href={otherHref}
+                href={sprachZiel}
                 hrefLang={languageSwitch.to}
                 className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >

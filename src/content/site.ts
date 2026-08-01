@@ -100,8 +100,26 @@ export const about = {
    */
   openSource: {
     label: "Open Source",
-    lede: "Meine Produktivsysteme bleiben privat, sie tragen Kundendaten und lizenzierte Inhalte. Was ich veröffentliche, sind die Werkzeuge, die dabei entstanden sind.",
+    lede: "Meine Produktivsysteme bleiben privat, sie tragen Kundendaten und lizenzierte Inhalte. Veröffentlicht ist, was sich daraus herauslösen ließ: die Werkzeuge, die beim Bauen entstanden sind, und die Regeln, die aus den Fehlern folgten.",
     items: [
+      {
+        name: "verified-done",
+        href: "https://github.com/DomenicMoran/verified-done",
+        body: "Vier Claude-Code-Skills gegen die Behauptung ohne Beleg. Jeder stammt aus einem Fehler, der ausgeliefert wurde, und nennt ihn.",
+        meta: "Claude Code · 4 Skills · Frontmatter-Prüfung in der CI",
+      },
+      {
+        name: "cron-last-due",
+        href: "https://github.com/DomenicMoran/cron-last-due",
+        body: "Wann war dieser Cron zuletzt fällig? Zeitzonenbewusst, für Watchdogs. Entstanden aus einer pauschalen Regel, die jedes Wochenende Fehlalarm schlug.",
+        meta: "TypeScript · 21 Tests · null Abhängigkeiten",
+      },
+      {
+        name: "whisper-ggml-header",
+        href: "https://github.com/DomenicMoran/whisper-ggml-header",
+        body: "Liest den Header eines Whisper-Modells und sagt, ob whisper.cpp ihn lädt. Fängt die verbreitete Fehlkonvertierung ab, die kommentarlos abgelehnt wird.",
+        meta: "TypeScript · CLI · 17 Tests",
+      },
       {
         name: "arabic-normalize",
         href: "https://github.com/DomenicMoran/arabic-normalize",
@@ -117,34 +135,81 @@ export const about = {
     ],
   },
   /**
-   * `href` trägt den Prüf-Link des Ausstellers. Coursera und Udemy vergeben
-   * für jedes Zertifikat eine öffentliche Bestätigungsseite; die gehört hier
-   * hinein, nicht eine hochgeladene PDF-Datei. Eine PDF-Datei kann jeder
-   * bauen, die Bestätigungsseite des Ausstellers nicht.
+   * Titel, Aussteller und Datum stammen aus den Zertifikatsdateien selbst
+   * (Repository Zertifikate), nicht aus dem Gedächtnis. Dabei kamen drei
+   * Fehler heraus, die vorher hier standen: „Introduction to Swift 5“ heißt
+   * tatsächlich „Introduction to Programming in Swift 5“, „Table Views“ heißt
+   * „Tables, Data & Networking in iOS“, und zwei Zertifikate fehlten ganz.
    *
-   * Solange ein Link fehlt, steht der Eintrag als Text da und sieht bewusst
-   * nicht wie ein Link aus. Siehe USER-TODO, Abschnitt Zertifikate.
+   * Jeder `href` wurde am 01.08.2026 abgerufen und antwortete mit 200.
    */
   certificates: {
     label: "Zertifikate",
-    note: "Die verlinkten Einträge führen zur Bestätigungsseite des Ausstellers.",
+    note: "Jeder Eintrag führt zur Bestätigungsseite des Ausstellers. Alle zehn liegen zusätzlich als PDF im Repository Zertifikate.",
     groups: [
       {
         issuer: "Meta, über Coursera",
         items: [
-          { name: "Introduction to Front-End Development" },
-          { name: "Introduction to Back-End Development" },
-          { name: "Introduction to Mobile Development" },
-          { name: "Programming in Python" },
-          { name: "Version Control" },
+          {
+            name: "Introduction to Front-End Development",
+            href: "https://coursera.org/verify/YH8W2JKAX4GM",
+            date: "2022-07-25",
+          },
+          {
+            name: "Introduction to Back-End Development",
+            href: "https://coursera.org/verify/HUA7X3W4GE4V",
+            date: "2022-07-17",
+          },
+          {
+            name: "Introduction to Mobile Development",
+            href: "https://coursera.org/verify/YZGD5294DA5F",
+            date: "2022-07-26",
+          },
+          {
+            name: "Programming with JavaScript",
+            href: "https://coursera.org/verify/MKUUWNEUF5VK",
+            date: "2022-07-30",
+          },
+          {
+            name: "Programming in Python",
+            href: "https://coursera.org/verify/VKLJNXHMD9B7",
+            date: "2022-07-24",
+          },
+          {
+            name: "Version Control",
+            href: "https://coursera.org/verify/LFCXZZBK4JTB",
+            date: "2022-07-25",
+          },
         ],
       },
       {
-        issuer: "iOS und Swift",
+        issuer: "LearnQuest, über Coursera",
         items: [
-          { name: "App-Entwicklung mit Swift 5 für iOS 15 (Udemy, 39 Std.)" },
-          { name: "Introduction to Swift 5" },
-          { name: "Table Views" },
+          {
+            name: "Introduction to Programming in Swift 5",
+            href: "https://coursera.org/verify/KH7JB895Z5D8",
+            date: "2022-08-01",
+          },
+          {
+            name: "Introduction to iOS App Development with Swift 5",
+            href: "https://coursera.org/verify/TEMFV7CXDBSK",
+            date: "2022-08-02",
+          },
+          {
+            name: "Tables, Data & Networking in iOS",
+            href: "https://coursera.org/verify/VHUCVNLX2PSJ",
+            date: "2022-08-06",
+          },
+        ],
+      },
+      {
+        issuer: "Udemy",
+        items: [
+          {
+            name: "App-Entwicklung mit Swift 5 für iOS 15, inkl. SwiftUI 2 (39 Std.)",
+            href: "https://ude.my/UC-0f3b4b66-20ef-4b2b-8bfc-a7da7a1290fc",
+            date: "2022-08-17",
+          },
         ],
       },
     ],
@@ -336,7 +401,7 @@ export const caseStudies: CaseStudy[] = [
       "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement. Darunter liegt eine mandantenfähige Cloud-TSE, die jede Transaktion nach §146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
     hardPart: {
       title: "Fiskalisierung als Mandanten-Problem",
-      body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen. Für den Gastronomen wäre das eine Katastrophe bei der nächsten Betriebsprüfung. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_chain_rows` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
+      body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen. Für den Gastronomen wäre das eine Katastrophe bei der nächsten Betriebsprüfung. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_transactions` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
     },
     highlights: [
       "1.276 API-Routen über 812 versionierte Postgres-Migrationen",
