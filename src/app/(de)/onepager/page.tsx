@@ -16,6 +16,25 @@ function kennzahl(anfang: string): string {
   return treffer.value;
 }
 
+/**
+ * Auf den nächsten runden Tausender abrunden.
+ *
+ * Das Kurzprofil geht als PDF an Firmen und liegt danach in einem Postfach,
+ * das niemand mehr aktualisiert. Eine exakte Zahl darin ist ab dem nächsten
+ * Commit überholt; eine Untergrenze bleibt wahr, solange die Zahl wächst.
+ *
+ * Auf der Webseite steht weiterhin der genaue Wert. Der Unterschied ist nicht
+ * Genauigkeit, sondern Erreichbarkeit: Was der stündliche Prüflauf nachzählen
+ * und neu ausliefern kann, darf exakt sein.
+ */
+function untergrenze(zahl: string): string {
+  const roh = Number(zahl.replace(/\./g, ""));
+  if (!Number.isFinite(roh) || roh < 1000) {
+    throw new Error(`Kennzahl "${zahl}" lässt sich nicht auf Tausender abrunden.`);
+  }
+  return `${Math.floor(roh / 1000)}.000`;
+}
+
 export const metadata: Metadata = {
   title: "One-Pager",
   description: `Kurzprofil von ${site.name}, ${site.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
@@ -102,8 +121,8 @@ export default function OnePager() {
                 {" "} davor ist noetig, weil ein JSX-Kommentar zwischen zwei
                 Textknoten den Umbruch verschluckt: sonst steht dort
                 "Agent.4.053". */}
-            {kennzahl("Commits")} Commits seit März 2026, neben einem
-            Vollzeitjob.
+            Über {untergrenze(kennzahl("Commits"))} Commits seit März 2026,
+            neben einem Vollzeitjob.
             Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt:
             agentengestützte Entwicklung mit strikter Verifikationsdisziplin,
             ein grüner Testlauf ist kein Beweis.

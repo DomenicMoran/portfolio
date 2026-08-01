@@ -160,6 +160,86 @@ for (const [paket, muster] of PAKETE) {
   vergleiche(paket, j.numTotalTests, ausSeite(muster));
 }
 
+/* ---------------------------------------------------------------------------
+   Untergrenzen in dem, was verschickt wird
+   ---------------------------------------------------------------------------
+
+   Lebenslauf, Kurzprofil, Bewerbungstexte und das LinkedIn-Titelbild nennen
+   keine exakten Zahlen, sondern Untergrenzen: "über 4.000 Commits". Der Grund
+   ist Erreichbarkeit — ein verschicktes PDF liegt danach in einem Postfach,
+   das niemand mehr aktualisiert, und eine exakte Zahl darin ist ab dem
+   nächsten Commit überholt.
+
+   Geprüft wird beides: Die Grenze muss halten, sonst ist die Aussage falsch.
+   Und sie darf nicht zu weit darunter liegen — wer "über 4.000" schreibt,
+   wenn es längst 6.000 sind, wirkt nicht bescheiden, sondern als kenne er
+   seine eigenen Zahlen nicht. */
+
+function zahlAusSeite(muster) {
+  const m = quelle.match(muster);
+  return m ? Number(m[1].replace(/\./g, "")) : null;
+}
+
+/**
+ * Jede Untergrenze mit ihrem Zusammenhang.
+ *
+ * Ohne den Zusammenhang wird die Prüfung falsch: Im Lebenslauf steht "über
+ * 1.000 Commits" im Salati-Block und meint Salati, nicht die Summe über alle
+ * Repos. Ein Muster, das nur nach "über N Commits" sucht, vergleicht das mit
+ * 4.053 und meldet einen Fehler, der keiner ist. Genau so ein Fehlalarm sorgt
+ * dafür, dass die Prüfung nach zwei Tagen ignoriert wird.
+ */
+const UNTERGRENZEN = [
+  {
+    was: "Commits gesamt",
+    imText: /über ([\d.]+) Commits\*\* über drei Monorepos/g,
+    gemessen: () => zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+  },
+  {
+    was: "Commits in Salati",
+    imText: /Android in Vorbereitung · über ([\d.]+) Commits/g,
+    gemessen: () => zahlAusSeite(/\{ value: "([\d.]+)", label: "Commits" \}/),
+  },
+  {
+    was: "Commits seit März",
+    imText: /[Üü]ber ([\d.]+) Commits seit März 2026/g,
+    gemessen: () => zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+  },
+  {
+    was: "Testfälle",
+    imText: /über ([\d.]+) Testfäll/g,
+    gemessen: () => zahlAusSeite(/"([\d.]+) Testfälle \(/),
+  },
+];
+
+for (const datei of ["../docs/LEBENSLAUF.md", "../docs/CAREER-LAUNCHPAD.md"]) {
+  if (!existsSync(datei)) {
+    zeilen.push(`  --  ${datei} nicht vorhanden, übersprungen`);
+    continue;
+  }
+  const inhalt = readFileSync(datei, "utf8");
+  const kurz = datei.split("/").pop();
+
+  for (const { was, imText, gemessen } of UNTERGRENZEN) {
+    const wirklich = gemessen();
+    if (wirklich === null) continue;
+
+    for (const treffer of inhalt.matchAll(imText)) {
+      const grenze = Number(treffer[1].replace(/\./g, ""));
+      const name = `${kurz}: über ${treffer[1]} ${was}`;
+      if (grenze > wirklich) {
+        zeilen.push(`  !!  ${name} — gemessen nur ${wirklich}. Die Aussage stimmt nicht.`);
+        abweichungen++;
+      } else if (wirklich > grenze * 1.25) {
+        zeilen.push(`  ~   ${name} — gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`);
+        abweichungen++;
+      } else {
+        zeilen.push(`  ok  ${name.padEnd(42)} gemessen ${wirklich}`);
+      }
+    }
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
