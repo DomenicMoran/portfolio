@@ -435,7 +435,8 @@ export const en: Content = {
     },
     certificates: {
       label: "Certificates",
-      note: "Every entry opens the issuer's verification page. All ten are also kept as PDFs in the Zertifikate repository.",
+      note: "Every entry opens the issuer's verification page.",
+      noteHref: { label: "All ten also kept as PDFs", href: "https://github.com/DomenicMoran/Zertifikate" },
       groups: [
         {
           issuer: "Meta, via Coursera",

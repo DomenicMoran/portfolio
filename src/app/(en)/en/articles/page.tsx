@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/en/articles",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },
+    types: { "application/atom+xml": "/en/articles/feed.xml" },
   },
 };
 

@@ -149,6 +149,8 @@ export type Content = {
        * bewusst nicht wie ein Link aus.
        */
       note?: string;
+      /** Verweis auf die hinterlegten Dateien, wenn es welche gibt. */
+      noteHref?: { label: string; href: string };
       groups: readonly {
         issuer: string;
         items: readonly { name: string; href?: string; date?: string }[];

@@ -21,7 +21,7 @@ export const chromeDe: ArticleChrome = {
   base: "/artikel",
   eyebrow: "Geschrieben",
   title: "Fünf Fehler, die mich etwas gelehrt haben",
-  lede: "Keine Tutorials und keine Meinungsstücke. Fünf Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und dem Commit, an dem sich beides nachlesen lässt. Zwei davon hatten monatelang niemand bemerkt.",
+  lede: "Keine Tutorials und keine Meinungsstücke. Fünf Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und dem Commit, an dem sich beides nachlesen lässt. Zwei davon hatte monatelang niemand bemerkt.",
   readingTime: (m) => `${m} Min. Lesezeit`,
   backToIndex: "Alle Artikel",
   evidenceLabel: "Belege",
