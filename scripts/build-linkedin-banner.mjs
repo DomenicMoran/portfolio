@@ -23,21 +23,48 @@ const ZIEL = "../assets/linkedin-banner.png";
 // Aus der Inhaltsquelle lesen statt hier zu wiederholen.
 const quelle = readFileSync("src/content/site.ts", "utf8");
 
-function kennzahl(label) {
-  // Die Kennzahlen stehen als { value: "3.971", label: "Commits in 4 Monaten" }.
-  const treffer = new RegExp(
-    `\\{\\s*value:\\s*"([^"]+)",\\s*label:\\s*"${label}"`,
-  ).exec(quelle);
-  if (!treffer) {
+/**
+ * Eine Kennzahl aus site.ts holen, gesucht über den Anfang ihrer Beschriftung.
+ *
+ * Vorher stand hier der ganze Text "Commits in 4 Monaten". Als die Beschriftung
+ * auf "Commits seit März 2026" wechselte — weil ein wanderndes Vier-Monats-
+ * Fenster eine Zahl ergibt, die von selbst sinkt — brach dieses Skript. Das war
+ * richtig so: lieber gar kein Titelbild als eines mit einer Zahl, die niemand
+ * mehr nachrechnen kann.
+ *
+ * Gesucht wird jetzt über den Anfang. Die Kennzahl steht absichtlich mehrfach
+ * in site.ts — einmal im Kopfbereich, einmal im Projektblock —, deshalb ist
+ * "genau ein Treffer" die falsche Bedingung. Verlangt wird, dass alle Treffer
+ * **dieselbe** Zahl tragen: Das ist die Eigenschaft, die das Titelbild braucht.
+ * Fehlt die Kennzahl ganz oder stehen dort zwei verschiedene Zahlen, bricht es.
+ */
+function kennzahl(anfangDerBeschriftung) {
+  // Die Kennzahlen stehen als { value: "4.053", label: "Commits seit März 2026" }.
+  const werte = [
+    ...quelle.matchAll(
+      new RegExp(
+        `\\{\\s*value:\\s*"([^"]+)",\\s*label:\\s*"${anfangDerBeschriftung}[^"]*"`,
+        "g",
+      ),
+    ),
+  ].map((t) => t[1]);
+
+  const verschieden = [...new Set(werte)];
+  if (verschieden.length !== 1) {
     throw new Error(
-      `Kennzahl "${label}" steht nicht mehr in site.ts. Das Titelbild wird ` +
-        `nicht gebaut, bevor klar ist, welche Zahl stimmt.`,
+      werte.length === 0
+        ? `Keine Kennzahl mit Beschriftung "${anfangDerBeschriftung}…" in ` +
+          `site.ts. Das Titelbild wird nicht gebaut, bevor klar ist, welche ` +
+          `Zahl stimmt.`
+        : `Die Kennzahl "${anfangDerBeschriftung}…" steht mit verschiedenen ` +
+          `Werten in site.ts: ${verschieden.join(", ")}. Erst klären, welcher ` +
+          `stimmt, dann das Titelbild bauen.`,
     );
   }
-  return treffer[1];
+  return verschieden[0];
 }
 
-const commits = kennzahl("Commits in 4 Monaten");
+const commits = kennzahl("Commits seit");
 
 const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8">
@@ -91,7 +118,7 @@ const html = `<!doctype html>
       <div class="zahlen">
         <div class="zahl"><div class="wert">4</div><div class="bez">Systeme live</div></div>
         <div class="zahl"><div class="wert">2</div><div class="bez">App Stores</div></div>
-        <div class="zahl"><div class="wert">${commits}</div><div class="bez">Commits / 4 Mon.</div></div>
+        <div class="zahl"><div class="wert">${commits}</div><div class="bez">Commits seit 03/2026</div></div>
       </div>
       <div class="domain">domenicmoran.de</div>
     </div>
