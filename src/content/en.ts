@@ -40,7 +40,6 @@ export const en: Content = {
     { label: "Skills", href: "#skills" },
     { label: "Writing", href: "#writing" },
     { label: "For recruiters", href: "#hire" },
-    { label: "Contact", href: "#contact" },
   ],
   navContact: "Contact",
   skipToContent: "Skip to content",
@@ -83,7 +82,7 @@ export const en: Content = {
       { value: "4", label: "systems in production" },
       { value: "3,971", label: "commits in 4 months" },
       { value: "1,276", label: "API routes (MenuCloud)" },
-      { value: "298", label: "automated tests" },
+      { value: "7,568", label: "test cases" },
     ],
   },
 
@@ -130,7 +129,7 @@ export const en: Content = {
         "A 15-part German Quranic-Arabic podcast, produced through a two-voice ElevenLabs pipeline",
         "Over-the-air updates via EAS: content corrections without a store cycle",
         "iOS Live Activities and Android widgets for the next prayer time",
-        "Store presence maintained in 13 languages across four device classes",
+        "App and store copy maintained in 14 languages, across four device classes",
         "AI answers cite their source and carry an EU AI Act Art. 50 disclosure",
       ],
       stack: [
@@ -141,7 +140,7 @@ export const en: Content = {
       ],
       metrics: [
         { value: "5", label: "device classes" },
-        { value: "13", label: "store languages" },
+        { value: "14", label: "languages" },
         { value: "100 %", label: "AI runs on the device" },
         { value: "1,058", label: "commits" },
       ],
@@ -180,7 +179,7 @@ export const en: Content = {
       problem:
         "Berlin restaurants hand 15–30 % commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
-        "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
+        "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
       hardPart: {
         title: "Fiscal signing as a tenancy problem",
         body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue, which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_transactions`, and a fail-closed path: no signature, no transaction.",
@@ -189,8 +188,8 @@ export const en: Content = {
         "1,276 API routes across 812 versioned Postgres migrations",
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
-        "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
-        "298 automated tests (254 unit / 44 end-to-end) running against production",
+        "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
+        "5,340 test cases (5,163 unit, 177 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         "Self-hosted mail stack with a three-stage fallback chain",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
@@ -247,7 +246,7 @@ export const en: Content = {
       metrics: [
         { value: "1,276", label: "API routes" },
         { value: "812", label: "DB migrations" },
-        { value: "298", label: "automated tests" },
+        { value: "5,340", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
@@ -558,14 +557,15 @@ export const en: Content = {
       ],
     },
     speed: {
-      eyebrow: "Order of magnitude",
+      eyebrow: "Delivery pace",
       title: "The difference is not that I type faster.",
-      lede: "It is that research, implementation, testing and verification run in parallel rather than in sequence, and that context does not get lost between sessions.",
-      rows: [
-        { label: "Conventional, solo", weeks: 100, note: "weeks to a store release" },
-        { label: "With the agent setup", weeks: 22, note: "same feature depth" },
+      lede: "It is that research, implementation, testing and verification run in parallel rather than in sequence, and that context does not get lost between sessions. What that produces can be counted.",
+      facts: [
+        { value: "107", label: "days", note: "first commit on 16 April 2026 until today" },
+        { value: "63", label: "versions shipped", note: "1.0.0 to 1.45.0, listed in the app's own changelog" },
+        { value: "40 h", label: "per version on average", note: "107 days divided by 63 versions" },
       ],
-      note: "A relative illustration from my own projects, not an industry benchmark. The defensible figure next to it: Salati stands at 44 shipped versions across five device types, built alongside three other systems in production.",
+      note: "Figures for Salati, counted on 1 August 2026 in the app's changelog file. Three further systems were in production alongside it.",
     },
   },
 
@@ -597,7 +597,7 @@ export const en: Content = {
           { name: "Payments", evidence: "Stripe Connect destination charges" },
           { name: "Multi-tenancy", evidence: "RLS plus per-tenant provisioning" },
           { name: "Mail infrastructure", evidence: "Self-hosted stack with a fallback chain" },
-          { name: "Compliance systems", evidence: "§ 146a AO signing, GDPR Art. 30" },
+          { name: "Compliance systems", evidence: "§ 146a AO signing, GDPR Art. 30" },
         ],
       },
       {

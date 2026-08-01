@@ -11,7 +11,7 @@ export const kassensichvDe: Article = {
   dek: "Jede Kasse in Deutschland muss ihre Umsätze technisch signieren. Die Anbieter-Dokumentation erklärt den API-Aufruf. Die drei Dinge, die einen wirklich treffen, stehen dort nicht.",
   date: "2026-07-29",
   minutes: 11,
-  tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-Tenant"],
+  tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-Tenant"],
   evidence: [
     "src/lib/tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql (Sperre, Hash-Kette)",
     "src/lib/food-order-tse.ts (Signatur, Token-Zwischenspeicher)",
@@ -21,7 +21,7 @@ export const kassensichvDe: Article = {
   blocks: [
     {
       kind: "p",
-      text: "Wer in Deutschland ein Kassensystem baut, kommt an § 146a AO und der Kassensicherungsverordnung nicht vorbei. Jeder Geschäftsvorfall muss von einer zertifizierten technischen Sicherheitseinrichtung signiert werden, die Signaturen müssen lückenlos und unveränderbar aufbewahrt werden, und bei einer Kassennachschau muss das alles exportierbar sein.",
+      text: "Wer in Deutschland ein Kassensystem baut, kommt an § 146a AO und der Kassensicherungsverordnung nicht vorbei. Jeder Geschäftsvorfall muss von einer zertifizierten technischen Sicherheitseinrichtung signiert werden, die Signaturen müssen lückenlos und unveränderbar aufbewahrt werden, und bei einer Kassennachschau muss das alles exportierbar sein.",
     },
     {
       kind: "p",

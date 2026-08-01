@@ -175,7 +175,15 @@ export type Content = {
       eyebrow: string;
       title: string;
       lede: string;
-      rows: readonly { label: string; weeks: number; note: string }[];
+      /**
+       * Drei gezählte Werte, keine Balken.
+       *
+       * Vorher standen hier zwei Balken ohne Skala und ohne Zahl, überschrieben
+       * mit „relative Darstellung, kein Benchmark". Auf einer Seite, deren
+       * Kernaussage Belegbarkeit ist, war das der schwächste Punkt: ein
+       * Diagramm, das aussieht wie Daten und keine sind.
+       */
+      facts: readonly { value: string; label: string; note: string }[];
       note: string;
     };
   };

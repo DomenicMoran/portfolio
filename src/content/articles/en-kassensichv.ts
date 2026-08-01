@@ -6,7 +6,7 @@ export const kassensichvEn: Article = {
   dek: "Every point of sale in Germany has to sign its transactions in hardware-backed form. The vendor documentation explains the API call. The three things that actually bite are not in it.",
   date: "2026-07-29",
   minutes: 11,
-  tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-tenant"],
+  tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-tenant"],
   evidence: [
     "src/lib/tse-chain.ts and supabase/migrations/20260413_tse_chain_atomic_append.sql (lock, hash chain)",
     "src/lib/food-order-tse.ts (signing, token cache)",
@@ -16,7 +16,7 @@ export const kassensichvEn: Article = {
   blocks: [
     {
       kind: "p",
-      text: "Build a point-of-sale system in Germany and you will meet § 146a of the tax code and the cash-register security regulation. Every transaction has to be signed by a certified technical security element, the signatures have to be kept unbroken and tamper-evident, and during an inspection all of it has to be exportable.",
+      text: "Build a point-of-sale system in Germany and you will meet § 146a of the tax code and the cash-register security regulation. Every transaction has to be signed by a certified technical security element, the signatures have to be kept unbroken and tamper-evident, and during an inspection all of it has to be exportable.",
     },
     {
       kind: "p",

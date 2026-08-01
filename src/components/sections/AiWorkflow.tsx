@@ -185,7 +185,6 @@ function AgentTerminal() {
 export function DeliverySpeed() {
   const { workflow } = useContent();
   const { speed } = workflow;
-  const rows = speed.rows;
 
   return (
     <section className="px-6 pb-28 sm:pb-40">
@@ -199,28 +198,35 @@ export function DeliverySpeed() {
             {speed.lede}
           </p>
 
-          <div className="mt-10 flex flex-col gap-6">
-            {rows.map((row, i) => (
-              <div key={row.label} className="flex flex-col gap-2">
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="text-sm text-ink">{row.label}</span>
-                  <span className="font-mono text-[11px] text-ink-faint">{row.note}</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-raised">
-                  <motion.div
-                    className={cn(
-                      "h-full rounded-full",
-                      i === 0 ? "bg-line" : "bg-gradient-to-r from-acid to-cyan",
-                    )}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${row.weeks}%` }}
-                    viewport={viewportOnce}
-                    transition={{ duration: 1.2, ease: ease.expo, delay: 0.15 * i }}
-                  />
-                </div>
-              </div>
+          {/* Drei gezählte Werte statt zweier Balken ohne Skala.
+              Balken brauchen eine gemeinsame Einheit; Tage, Versionen und
+              Stunden je Version haben keine. Als Zahlen tragen dieselben
+              Angaben mehr und behaupten weniger. */}
+          <dl className="mt-10 grid gap-x-8 gap-y-9 sm:grid-cols-3">
+            {speed.facts.map((fakt, i) => (
+              <motion.div
+                key={fakt.label}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewportOnce}
+                transition={{ duration: 0.6, ease: ease.expo, delay: 0.08 * i }}
+                // flex-col-reverse: In der DOM-Reihenfolge steht dt vor dd,
+                // wie ein <dl> es verlangt. Optisch steht die Zahl trotzdem
+                // oben.
+                className="flex flex-col-reverse gap-1.5"
+              >
+                <dt className="flex flex-col gap-1">
+                  <span className="text-sm leading-snug text-ink">{fakt.label}</span>
+                  <span className="text-xs leading-relaxed text-ink-faint text-pretty">
+                    {fakt.note}
+                  </span>
+                </dt>
+                <dd className="text-3xl font-semibold tracking-tight text-acid tabular-nums sm:text-4xl">
+                  {fakt.value}
+                </dd>
+              </motion.div>
             ))}
-          </div>
+          </dl>
 
           {/* Zeilenmaß in ch: gemessen lief dieser Absatz vorher bei 112
               Zeichen pro Zeile, deutlich jenseits des Lesbaren. */}

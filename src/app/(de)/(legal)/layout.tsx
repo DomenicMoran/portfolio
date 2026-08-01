@@ -3,7 +3,7 @@ import { site } from "@/content/site";
 
 /**
  * Shared chrome for the legal pages. Deliberately plain: these pages exist to
- * be read and to satisfy § 5 DDG, not to impress anyone.
+ * be read and to satisfy § 5 DDG, not to impress anyone.
  */
 export default function LegalLayout({
   children,

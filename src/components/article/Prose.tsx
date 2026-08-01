@@ -1,12 +1,11 @@
 import type { Block } from "@/content/articles";
+import { RichText } from "@/components/ui/InlineCode";
 
 /**
  * Setzt die Artikel-Bausteine.
  *
- * Kein `dangerouslySetInnerHTML` und keine Markdown-Bibliothek: Der einzige
- * Auszeichnungsbedarf im Fließtext ist `Code im Satz`, und den löst ein
- * Split am Backtick. Damit gibt es keinen Weg, über den Inhalt HTML in die
- * Seite käme.
+ * Die Auszeichnung von `Code im Satz` liegt in `RichText`, damit die
+ * Fallstudien sie mitbenutzen können.
  *
  * Die Spaltenbreite setzt die Artikelseite, nicht diese Datei. Vorher stand
  * hier `max-w-[68ch]`, und das war eine Falle: `ch` ist die Breite der Ziffer
@@ -15,26 +14,6 @@ import type { Block } from "@/content/articles";
  * 99. Lesbar sind 65 bis 75. Die Breite steht deshalb jetzt in rem und ist
  * an gezählten Zeichen ausgerichtet.
  */
-
-function Satz({ text }: { text: string }) {
-  const teile = text.split("`");
-  return (
-    <>
-      {teile.map((teil, i) =>
-        i % 2 === 1 ? (
-          <code
-            key={i}
-            className="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[0.85em] text-acid"
-          >
-            {teil}
-          </code>
-        ) : (
-          <span key={i}>{teil}</span>
-        ),
-      )}
-    </>
-  );
-}
 
 export function Prose({ blocks }: { blocks: readonly Block[] }) {
   return (
@@ -67,7 +46,7 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
                 key={i}
                 className="mb-5 text-[1.0625rem] leading-[1.75] text-ink-dim text-pretty"
               >
-                <Satz text={block.text} />
+                <RichText text={block.text} />
               </p>
             );
 
@@ -94,7 +73,7 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
                       {block.ordered ? String(j + 1).padStart(2, "0") : null}
                     </span>
                     <span>
-                      <Satz text={item} />
+                      <RichText text={item} />
                     </span>
                   </li>
                 ))}
@@ -128,7 +107,7 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
               >
                 <p className="text-eyebrow mb-2.5">{block.title}</p>
                 <p className="text-[0.95rem] leading-[1.7] text-ink-dim text-pretty">
-                  <Satz text={block.text} />
+                  <RichText text={block.text} />
                 </p>
               </aside>
             );
@@ -163,7 +142,7 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
                                   : "px-4 py-3 text-ink-dim"
                               }
                             >
-                              <Satz text={cell} />
+                              <RichText text={cell} />
                             </td>
                           ))}
                         </tr>

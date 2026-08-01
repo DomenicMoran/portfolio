@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
+ * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
  * Betreibers die Privatanschrift, sie ist damit öffentlich und wird indexiert.
  */
 export default function Impressum() {
@@ -17,7 +17,7 @@ export default function Impressum() {
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">
-          Angaben gemäß § 5 DDG
+          Angaben gemäß § 5 DDG
         </h2>
         <address className="text-sm leading-relaxed text-ink-dim not-italic">
           Domenic Moran
@@ -42,7 +42,7 @@ export default function Impressum() {
           </a>
         </p>
         <p className="mt-3 text-xs leading-relaxed text-ink-faint">
-          Eine Telefonnummer wird hier bewusst nicht veröffentlicht. § 5 DDG
+          Eine Telefonnummer wird hier bewusst nicht veröffentlicht. § 5 DDG
           verlangt eine Angabe, die eine schnelle elektronische Kontaktaufnahme
           ermöglicht. Die E-Mail-Adresse oben erfüllt das. Auf Anfrage nenne
           ich eine Rufnummer.
@@ -51,22 +51,22 @@ export default function Impressum() {
 
       {/*
         TODO(domenic): Falls eine Umsatzsteuer-Identifikationsnummer existiert,
-        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht. Dann diesen
+        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht. Dann diesen
         Abschnitt wieder einsetzen:
 
           <section className="mb-10">
             <h2 …>Umsatzsteuer-Identifikationsnummer</h2>
-            <p …>USt-IdNr. gemäß § 27 a UStG: DE…</p>
+            <p …>USt-IdNr. gemäß § 27 a UStG: DE…</p>
           </section>
 
-        Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
+        Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
         Angabe ersatzlos, ein leerer oder erfundener Eintrag wäre schlechter
         als keiner. Siehe USER-TODO A2.
       */}
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">
-          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
         </h2>
         <p className="text-sm leading-relaxed text-ink-dim">
           {site.name}, Anschrift wie oben.
