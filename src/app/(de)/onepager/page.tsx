@@ -36,7 +36,7 @@ function untergrenze(zahl: string): string {
 }
 
 export const metadata: Metadata = {
-  title: "One-Pager",
+  title: "Kurzprofil",
   description: `Kurzprofil von ${site.name}, ${site.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
   robots: { index: false, follow: true },
 };
@@ -60,6 +60,26 @@ export const metadata: Metadata = {
 function firstSentence(text: string) {
   const match = text.match(/^.*?[.!?](?=\s+[A-ZÄÖÜ])/);
   return match ? match[0] : text;
+}
+
+/**
+ * Commit-Zahlen auf dem gedruckten Blatt als Untergrenze, alles andere exakt.
+ *
+ * Dieselbe Regel wie beim LinkedIn-Titelbild und im Lebenslauf: Was der
+ * stündliche Prüflauf nachzählen und neu ausliefern kann, bleibt exakt — die
+ * Webseite. Was einmal verschickt wird und danach in einem Postfach liegt,
+ * bekommt eine Grenze, die hält.
+ *
+ * Betroffen sind nur die Commits. Sie wachsen täglich, ohne dass jemand den
+ * Inhalt anfasst. API-Routen, Migrationen, Testfälle oder Rezepte ändern sich
+ * nur mit dem Code, und dann meldet es der Prüflauf und beide Stellen werden
+ * zusammen nachgezogen.
+ */
+function gedruckt(metrik: { value: string; label: string }) {
+  if (!/commits/i.test(metrik.label)) return metrik.value;
+  const roh = Number(metrik.value.replace(/\./g, ""));
+  if (!Number.isFinite(roh) || roh < 1000) return metrik.value;
+  return `über ${Math.floor(roh / 1000).toLocaleString("de-DE")}.000`;
 }
 
 export default function OnePager() {
@@ -139,19 +159,18 @@ export default function OnePager() {
             {caseStudies.map((study) => (
               <div key={study.id} className="break-inside-avoid">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  {/* Zwei Fallen auf einmal, beide gemessen.
+                  {/* Größe und Farbe stehen hier beide ausdrücklich, und das
+                      hat einen gemessenen Grund.
 
-                      `text-base` ist hier keine Schriftgroesse. Das Theme
-                      definiert eine Farbe namens "base", und Tailwind macht
-                      daraus eine Farbklasse, die die eingebaute
-                      Groessenklasse gleichen Namens verdraengt. Sie setzte
-                      also color auf #0b0b0e und die Groesse gar nicht.
+                      `text-base` ist auf dieser Seite keine Schriftgröße. Das
+                      Theme definiert eine Farbe namens "base", und Tailwind
+                      macht daraus eine Farbklasse, die die eingebaute
+                      Größenklasse gleichen Namens verdrängt: gesetzt wurde
+                      color, nicht font-size.
 
-                      Und weil auf dieser gedruckten Seite sonst nichts die
-                      Farbe setzte, erbte die Ueberschrift das helle Weiss des
-                      dunklen Themas: Die vier Projektnamen standen weiss auf
-                      weiss auf dem Blatt, das er verschickt. Deshalb beides
-                      ausdruecklich. */}
+                      Auf der hellen Druckseite setzte sonst nichts die Farbe,
+                      also erbte die Überschrift das Weiß des dunklen Themas —
+                      die vier Projektnamen standen weiß auf weiß. */}
                   <h3 className="text-[16px] font-semibold text-[#101014]">
                     {study.name}
                     <span className="ml-2 text-[13px] font-normal text-[#5a5a66]">
@@ -159,7 +178,7 @@ export default function OnePager() {
                     </span>
                   </h3>
                   <span className="font-mono text-[10px] text-[#6a6a76]">
-                    {study.metrics.map((m) => `${m.value} ${m.label}`).join("  ·  ")}
+                    {study.metrics.map((m) => `${gedruckt(m)} ${m.label}`).join("  ·  ")}
                   </span>
                 </div>
                 <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
