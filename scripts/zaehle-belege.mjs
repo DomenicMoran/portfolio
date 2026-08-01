@@ -41,14 +41,30 @@ const INHALT = "src/content/site.ts";
 function vitestLauf(repo) {
   const einstieg = join(repo, "node_modules", "vitest", "vitest.mjs");
   if (!existsSync(einstieg)) return null;
-  return JSON.parse(
-    execFileSync(process.execPath, [einstieg, "run", "--reporter=json"], {
-      cwd: repo,
-      encoding: "utf8",
-      maxBuffer: 64 * 1024 * 1024,
-      stdio: ["ignore", "pipe", "ignore"],
-    }),
-  );
+
+  const optionen = {
+    cwd: repo,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+    stdio: ["ignore", "pipe", "ignore"],
+  };
+
+  // vitest endet mit Rueckgabewert 1, sobald ein Test rot ist — und
+  // execFileSync wirft dann. Genau der Fall ist aber der interessante: Der
+  // Bericht unten hat einen Zweig fuer rote Tests, der ohne dieses catch nie
+  // erreicht wurde. Statt einer Meldung ueber gescheiterte Tests brach der
+  // Lauf mit einem Stapelabzug ab, in dem die Zahlen als 2 MB JSON steckten.
+  //
+  // Der Bericht liegt in beiden Faellen auf stdout, also wird er in beiden
+  // Faellen gelesen.
+  try {
+    return JSON.parse(execFileSync(process.execPath, [einstieg, "run", "--reporter=json"], optionen));
+  } catch (fehler) {
+    if (typeof fehler?.stdout === "string" && fehler.stdout.trim().startsWith("{")) {
+      return JSON.parse(fehler.stdout);
+    }
+    throw fehler;
+  }
 }
 
 const quelle = readFileSync(INHALT, "utf8");
@@ -342,33 +358,22 @@ if (fehlendeRepos.length) {
   }
 
   /**
-   * Der Prüfstempel wird nur zusammen mit der Zahl auf der Seite aufgefrischt.
+   * Dieser Lauf schreibt den Prüfstempel nicht.
    *
-   * Er speist die Konsolennachricht und humans.txt. Schriebe ihn jeder Lauf
-   * neu, stünde dort nach einer Stunde 4.066, während die Seite daneben 4.065
-   * zeigt — ein Widerspruch, den ausgerechnet der aufmerksame Leser findet,
-   * für den die Konsolennachricht gedacht ist.
+   * `src/content/geprueft.json` hat genau einen Schreiber: den Automaten unter
+   * .github/workflows, der über die GitHub-API zählt. Das ist kein Formalismus,
+   * sondern der Unterschied zwischen zwei Zahlen. Hier wird lokal gezählt, also
+   * einschliesslich Commits, die auf keinem Server liegen; die Seite lädt
+   * ausdrücklich zum Nachrechnen ein, und nachrechnen kann ein Aussenstehender
+   * nur, was bei GitHub liegt.
    *
-   * Deshalb: nur anfassen, wenn ohnehin aufgefrischt werden muss, also wenn
-   * der Rückstand die Schwelle reisst oder die Datei fehlt. Dazwischen bleiben
-   * Seite, Stempel und Konsole derselbe Stand.
+   * Schriebe dieser Lauf mit, stünde im Stempel eine Zahl, die niemand
+   * nachvollziehen kann — und zwei Schreiber für dieselbe Datei sind genau der
+   * Widerspruch, gegen den sie eingeführt wurde.
+   *
+   * Aufgabe hier ist deshalb nur der Vergleich: Weicht die Seite ab, steht das
+   * oben im Bericht und der Lauf endet mit einem Fehler.
    */
-  const auffrischen = !existsSync("src/content/geprueft.json") || rueckstand > head * 0.02;
-  const stempel =
-    JSON.stringify(
-      {
-        datum: new Date().toISOString().slice(0, 10),
-        commitsHead: deutsch(head),
-        commitsAlleReferenzen: deutsch(alleRefs),
-        repos: REPOS.length,
-      },
-      null,
-      2,
-    ) + "\n";
-  if (auffrischen) {
-    writeFileSync("src/content/geprueft.json", stempel, "utf8");
-    zeilen.push(`  ok  Prüfstempel aufgefrischt: ${deutsch(head)}`);
-  }
 }
 
 console.log(zeilen.join("\n"));
