@@ -66,7 +66,7 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "3.971", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
+    { value: "4.053", label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
@@ -110,7 +110,7 @@ export const about = {
         name: "cron-last-due",
         href: "https://github.com/DomenicMoran/cron-last-due",
         body: "Wann war dieser Cron zuletzt fällig? Zeitzonenbewusst, für Watchdogs. Entstanden aus einer pauschalen Regel, die jedes Wochenende Fehlalarm schlug.",
-        meta: "TypeScript · 21 Tests · null Abhängigkeiten",
+        meta: "TypeScript · 23 Tests · null Abhängigkeiten",
       },
       {
         name: "whisper-ggml-header",
@@ -239,9 +239,9 @@ export const hero = {
   // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: "3.971", label: "Commits in 4 Monaten" },
+    { value: "4.053", label: "Commits seit März 2026" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
-    { value: "7.568", label: "Testfälle" },
+    { value: "7.437", label: "Testfälle (MenuCloud)" },
   ],
 } as const;
 
@@ -351,7 +351,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "4", label: "Zielgeräte-Klassen" },
       { value: "14", label: "Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
-      { value: "1.058", label: "Commits" },
+      { value: "1.062", label: "Commits" },
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -435,15 +435,15 @@ export const caseStudies: CaseStudy[] = [
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "5.340 Testfälle (5.163 Unit, 177 End-to-End), die End-to-End-Tests gegen Produktion",
+      "7.437 Testfälle (7.263 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
-    /** Eigener Block, weil 46 Workflows keine Fußnote sind. */
+    /** Eigener Block, weil 63 Workflows keine Fußnote sind. */
     automation: {
-      title: "46 Workflows, die den Betrieb tragen",
+      title: "63 Workflows, die den Betrieb tragen",
       lede: "Der Teil des Systems, der ohne mich weiterläuft. Alle Workflows sind versioniert und im Repository nachvollziehbar, nicht in einer Oberfläche zusammengeklickt und dann vergessen.",
       groups: [
         {
@@ -505,7 +505,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: "1.276", label: "API-Routen" },
       { value: "812", label: "DB-Migrationen" },
-      { value: "5.340", label: "Testfälle" },
+      { value: "7.437", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // TODO(domenic): Kunden / MRR / GMV / Uptime, siehe USER-TODO A3.
     ],
