@@ -8,9 +8,9 @@
  * für dieselbe Zahl laufen immer auseinander, und beim Titelbild fällt es
  * niemandem auf, weil es niemand noch einmal liest.
  *
- * Deshalb liest dieses Skript die Kennzahlen aus src/content/site.ts und
- * scheitert, wenn es sie dort nicht findet. Ein Bild mit einer falschen Zahl
- * ist schlimmer als kein Bild.
+ * Deshalb liest dieses Skript die Zahl aus derselben Quelle wie die Webseite
+ * und scheitert, wenn dort etwas anderes steht. Ein Bild mit einer falschen
+ * Zahl ist schlimmer als kein Bild.
  *
  *   node scripts/build-linkedin-banner.mjs
  */
@@ -24,44 +24,55 @@ const ZIEL = "../assets/linkedin-banner.png";
 const quelle = readFileSync("src/content/site.ts", "utf8");
 
 /**
- * Eine Kennzahl aus site.ts holen, gesucht über den Anfang ihrer Beschriftung.
+ * Die Kennzahl aus dem Prüfstempel holen — und prüfen, dass die Seite sie
+ * auch von dort bezieht.
  *
- * Vorher stand hier der ganze Text "Commits in 4 Monaten". Als die Beschriftung
- * auf "Commits seit März 2026" wechselte — weil ein wanderndes Vier-Monats-
- * Fenster eine Zahl ergibt, die von selbst sinkt — brach dieses Skript. Das war
- * richtig so: lieber gar kein Titelbild als eines mit einer Zahl, die niemand
- * mehr nachrechnen kann.
+ * Zwei Umbauten haben dieses Skript schon zu Recht anhalten lassen. Erst
+ * wechselte die Beschriftung von "Commits in 4 Monaten" auf "Commits seit
+ * März 2026", weil ein wanderndes Fenster eine Zahl ergibt, die von selbst
+ * sinkt. Dann wanderte der Wert selbst aus site.ts nach geprueft.json, wo ihn
+ * der Zahlen-Automat täglich fortschreibt. Beide Male war der Abbruch richtig:
+ * lieber gar kein Titelbild als eines mit einer Zahl, die niemand nachrechnen
+ * kann.
  *
- * Gesucht wird jetzt über den Anfang. Die Kennzahl steht absichtlich mehrfach
- * in site.ts — einmal im Kopfbereich, einmal im Projektblock —, deshalb ist
- * "genau ein Treffer" die falsche Bedingung. Verlangt wird, dass alle Treffer
- * **dieselbe** Zahl tragen: Das ist die Eigenschaft, die das Titelbild braucht.
- * Fehlt die Kennzahl ganz oder stehen dort zwei verschiedene Zahlen, bricht es.
+ * Der Wert kommt jetzt aus `geprueft.json`, also aus genau der Datei, aus der
+ * auch Kachel, Konsolenmeldung und humans.txt lesen. Der Wächter bleibt
+ * trotzdem: Er verlangt, dass site.ts die Kennzahl mit dieser Beschriftung
+ * ebenfalls aus dem Stempel bezieht. Stünde dort wieder eine feste Zahl,
+ * könnten Bild und Seite auseinanderlaufen — und genau davor schützt er.
  */
 function kennzahl(anfangDerBeschriftung) {
-  // Die Kennzahlen stehen als { value: "4.053", label: "Commits seit März 2026" }.
-  const werte = [
+  const stempel = JSON.parse(readFileSync("src/content/geprueft.json", "utf8"));
+
+  // Die Kennzahlen stehen als
+  // { value: geprueft.commitsHead, label: "Commits seit März 2026" }.
+  const bezuege = [
     ...quelle.matchAll(
       new RegExp(
-        `\\{\\s*value:\\s*"([^"]+)",\\s*label:\\s*"${anfangDerBeschriftung}[^"]*"`,
+        `\\{\\s*value:\\s*([A-Za-z_.]+|"[^"]+"),\\s*label:\\s*"${anfangDerBeschriftung}[^"]*"`,
         "g",
       ),
     ),
   ].map((t) => t[1]);
 
-  const verschieden = [...new Set(werte)];
-  if (verschieden.length !== 1) {
+  const verschieden = [...new Set(bezuege)];
+  if (verschieden.length !== 1 || verschieden[0] !== "geprueft.commitsHead") {
     throw new Error(
-      werte.length === 0
+      bezuege.length === 0
         ? `Keine Kennzahl mit Beschriftung "${anfangDerBeschriftung}…" in ` +
           `site.ts. Das Titelbild wird nicht gebaut, bevor klar ist, welche ` +
           `Zahl stimmt.`
-        : `Die Kennzahl "${anfangDerBeschriftung}…" steht mit verschiedenen ` +
-          `Werten in site.ts: ${verschieden.join(", ")}. Erst klären, welcher ` +
-          `stimmt, dann das Titelbild bauen.`,
+        : `Die Kennzahl "${anfangDerBeschriftung}…" bezieht sich in site.ts ` +
+          `auf ${verschieden.join(", ")} statt ausschliesslich auf ` +
+          `geprueft.commitsHead. Damit könnten Titelbild und Seite ` +
+          `auseinanderlaufen. Erst klären, welche Zahl gilt, dann bauen.`,
     );
   }
-  return verschieden[0];
+
+  if (!stempel.commitsHead) {
+    throw new Error("geprueft.json trägt kein Feld commitsHead. Nichts gebaut.");
+  }
+  return stempel.commitsHead;
 }
 
 /**
