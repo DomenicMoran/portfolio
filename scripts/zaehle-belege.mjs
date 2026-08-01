@@ -259,7 +259,6 @@ const REPOS = [
   ["Salati", resolve("../../SalatiTech")],
   ["NOURI", resolve("../../NOURI")],
   ["Portfolio", resolve(".")],
-  ["Prüfstand", resolve("../pruefstand")],
   ["verified-done", join(OSS, "verified-done")],
   ["cron-last-due", join(OSS, "cron-last-due")],
   ["whisper-ggml-header", join(OSS, "whisper-ggml-header")],

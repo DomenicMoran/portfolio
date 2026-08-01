@@ -41,7 +41,11 @@ const REPOS = [
   "MenuCloud-Berlin/salatibox",
   "MenuCloud-Berlin/NOURI",
   "DomenicMoran/portfolio",
-  "DomenicMoran/pruefstand",
+  // Der Pruefstand ist bewusst nicht dabei: Er ist eine private Lernanwendung
+  // fuer Domenic selbst, kein geliefertes System. Die Zahl auf der Seite soll
+  // das abdecken, wovon die Seite handelt. Nebenbei wird sie dadurch
+  // vollstaendig ueber GitHub nachvollziehbar, statt lokale Commits
+  // mitzuzaehlen, die noch niemand gesehen hat.
   "DomenicMoran/verified-done",
   "DomenicMoran/cron-last-due",
   "DomenicMoran/whisper-ggml-header",
