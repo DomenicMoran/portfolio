@@ -31,20 +31,20 @@ export function GET() {
 /* WIE */
   Zwei Wurzel-Layouts, eines je Sprache, damit <html lang> stimmt.
   Jeder Text und jede Zahl steht in src/content, nie in einer Komponente.
-  Ueber der Falz nur CSS-Animationen: Eine JS-Animation mit opacity 0 waere
-  bis zur Hydration unsichtbar und damit das spaete LCP-Element.
+  Über der Falz nur CSS-Animationen: Eine JS-Animation mit opacity 0 wäre
+  bis zur Hydration unsichtbar und damit das späte LCP-Element.
   prefers-reduced-motion schaltet Lenis und den Cursor gar nicht erst ein.
 
 /* BELEGE */
-  Ein Automat bei GitHub zaehlt taeglich die Commits ueber alle
+  Ein Automat bei GitHub zählt täglich die Commits über alle
   ${geprueft.repos} Repositories, schreibt sie in diese Seite und liefert aus.
-  Stand ${stand}: ${geprueft.commitsHead} Commits, ueber die GitHub-API gezaehlt.
-  Nur was auch bei GitHub liegt, zaehlt mit — lokale Staende nicht.
+  Stand ${stand}: ${geprueft.commitsHead} Commits, über die GitHub-API gezählt.
+  Nur was auch bei GitHub liegt, zählt mit — lokale Stände nicht.
   Der Bau scheitert, wenn eine private Datei in public/ liegt.
 
 /* DANKE */
-  An alle, die ihre Fehler oeffentlich aufgeschrieben haben.
-  Die Haelfte dieser Seite waere ohne sie nicht entstanden.
+  An alle, die ihre Fehler öffentlich aufgeschrieben haben.
+  Die Hälfte dieser Seite wäre ohne sie nicht entstanden.
 `;
 
   return new Response(text, {
