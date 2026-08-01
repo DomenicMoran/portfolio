@@ -49,8 +49,8 @@ export function ArticleIndex({
 
           <ul className="mt-16 flex flex-col gap-4">
             {articles.map((article, i) => {
-              // Die ersten beiden Karten stehen auf einem Telefon ueber der
-              // Falz. Als JS-Animation waeren sie bis zur Hydration
+              // Die ersten beiden Karten stehen auf einem Telefon über der
+              // Falz. Als JS-Animation wären sie bis zur Hydration
               // unsichtbar; gemessen war die erste damit das LCP-Element und
               // erschien nach 3,4 s. Weiter unten bleibt die Bewegung an den
               // Sichtbarkeitsbeobachter gebunden, damit sie nicht schon

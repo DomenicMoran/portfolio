@@ -46,10 +46,10 @@ export function Reveal({
  *
  * `css` schaltet dieselbe Bewegung auf eine reine CSS-Animation um. Der
  * Unterschied ist der Startzeitpunkt: Die JS-Variante beginnt, wenn der
- * Abschnitt ins Bild kommt, und ist bis zur Hydration unsichtbar. Fuer eine
- * Ueberschrift ueber der Falz ist genau das teuer, weil sie damit das
+ * Abschnitt ins Bild kommt, und ist bis zur Hydration unsichtbar. Für eine
+ * Überschrift über der Falz ist genau das teuer, weil sie damit das
  * LCP-Element ist und erst nach der Hydration erscheint. Gemessen auf der
- * Artikeluebersicht: 4,1 s als JS-Animation.
+ * Artikelübersicht: 4,1 s als JS-Animation.
  *
  * Unterhalb der Falz bleibt die JS-Variante richtig, weil die Bewegung dort
  * erst beim Hineinscrollen laufen soll und nicht schon vorher abgelaufen sein

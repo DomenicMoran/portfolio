@@ -49,16 +49,16 @@ export const chromeEn: ArticleChrome = {
   },
 };
 
-export function artikelFuer(lang: "de" | "en") {
+export function artikelIn(lang: "de" | "en") {
   return lang === "de" ? artikelDe : artikelEn;
 }
 
-export function chromeFuer(lang: "de" | "en") {
+export function chromeIn(lang: "de" | "en") {
   return lang === "de" ? chromeDe : chromeEn;
 }
 
 export function artikelNach(lang: "de" | "en", slug: string) {
-  return artikelFuer(lang).find((a) => a.slug === slug) ?? null;
+  return artikelIn(lang).find((a) => a.slug === slug) ?? null;
 }
 
 /**
@@ -76,7 +76,7 @@ export const slugPaare = [
 ] as const;
 
 /** Liefert den Slug derselben Sache in der anderen Sprache. */
-export function gegenstueck(lang: "de" | "en", slug: string): string | null {
+export function andereSprache(lang: "de" | "en", slug: string): string | null {
   const paar = slugPaare.find((p) => p[lang] === slug);
   if (!paar) return null;
   return lang === "de" ? paar.en : paar.de;

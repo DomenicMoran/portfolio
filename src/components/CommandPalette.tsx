@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpen, FileText, Mail, Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
-import { artikelFuer, chromeFuer } from "@/content/articles";
+import { artikelIn, chromeIn } from "@/content/articles";
 import { SOCIALS } from "@/content/types";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -31,8 +31,8 @@ export function CommandPalette({
   onClose: () => void;
 }) {
   const { nav: navItems, caseStudies, site, recruiter, palette, lang } = useContent();
-  const artikel = artikelFuer(lang);
-  const chrome = chromeFuer(lang);
+  const artikel = artikelIn(lang);
+  const chrome = chromeIn(lang);
   const heim = lang === "de" ? "/" : "/en";
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);

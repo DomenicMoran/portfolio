@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/content/site";
-import { artikelDe, artikelEn, gegenstueck } from "@/content/articles";
+import { artikelDe, artikelEn, andereSprache } from "@/content/articles";
 
 /**
  * Beide Sprachfassungen, mit gegenseitigen Verweisen.
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     languages: { de: `${basis}${de}`, en: `${basis}${en}` },
   });
 
-  const eintraege: MetadataRoute.Sitemap = [
+  const urls: MetadataRoute.Sitemap = [
     {
       url: basis,
       lastModified: now,
@@ -57,8 +57,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   for (const a of artikelDe) {
-    const en = gegenstueck("de", a.slug);
-    eintraege.push({
+    const en = andereSprache("de", a.slug);
+    urls.push({
       url: `${basis}/artikel/${a.slug}`,
       lastModified: new Date(a.date),
       changeFrequency: "yearly",
@@ -68,8 +68,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   for (const a of artikelEn) {
-    const de = gegenstueck("en", a.slug);
-    eintraege.push({
+    const de = andereSprache("en", a.slug);
+    urls.push({
       url: `${basis}/en/articles/${a.slug}`,
       lastModified: new Date(a.date),
       changeFrequency: "yearly",
@@ -78,5 +78,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  return eintraege;
+  return urls;
 }
