@@ -1,5 +1,6 @@
 import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
+import { KonsolenGruss } from "@/components/KonsolenGruss";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/sections/Hero";
@@ -60,6 +61,7 @@ export function SitePage({ content }: { content: Content }) {
   return (
     <ContentProvider content={content}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
+      <KonsolenGruss />
 
       {/* Vor der Kopfleiste, nicht danach.
           Ein Sprunglink ist nur etwas wert, wenn er die erste Station der
