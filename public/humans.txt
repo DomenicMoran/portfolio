@@ -19,8 +19,9 @@
   prefers-reduced-motion schaltet Lenis und den Cursor gar nicht erst ein.
 
 /* BELEGE */
-  Jede Zahl auf dieser Seite wird stuendlich gegen die Repos nachgezaehlt.
-  Zuletzt am 2026-08-01: 4.065 Commits ueber 9 Repositories.
+  Ein Automat bei GitHub zaehlt taeglich die Commits ueber alle
+  8 Repositories und frischt die Zahl auf dieser Seite auf.
+  Stand 2026-08-01: 4.042 Commits, gezaehlt ueber die GitHub-API.
   Der Bau scheitert, wenn eine private Datei in public/ liegt.
 
 /* DANKE */
