@@ -84,7 +84,7 @@ export function RecruiterHub() {
                 <Magnetic>
                   <a
                     href={recruiter.cta.pdf.href}
-                    className="group inline-flex items-center gap-2 rounded-full bg-acid px-5 py-3 text-sm font-medium text-void transition-colors hover:bg-ink"
+                    className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-5 py-3 text-sm font-medium text-void transition-colors hover:bg-ink"
                   >
                     <FileDown className="size-4" aria-hidden />
                     {recruiter.cta.pdf.label}

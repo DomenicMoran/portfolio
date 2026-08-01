@@ -157,7 +157,7 @@ export function Nav({
 
             <a
               href={zuAnker("#contact")}
-              className="hidden rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-void transition-colors hover:bg-acid sm:block"
+              className="hidden rounded-full border border-transparent bg-ink px-4 py-1.5 text-sm font-medium text-void transition-colors hover:bg-acid sm:block"
             >
               {c.navContact}
             </a>
@@ -239,7 +239,7 @@ export function Nav({
 
               <a
                 href={`mailto:${site.email}`}
-                className="mt-auto rounded-full bg-acid py-4 text-center font-medium text-void"
+                className="mt-auto rounded-full border border-transparent bg-acid py-4 text-center font-medium text-void"
               >
                 {site.email}
               </a>
