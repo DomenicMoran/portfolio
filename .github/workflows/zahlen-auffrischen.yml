@@ -1,0 +1,98 @@
+# Frischt die Commit-Zahlen auf der Webseite auf.
+#
+# Die Zahl auf domenicmoran.de kam bisher von einem Lauf auf dem Rechner: Sie
+# stimmte im Moment der Messung und wurde mit jedem weiteren Commit älter. Das
+# war kein Fehler, weil sie ihr Messdatum mitträgt — aber "immer aktuell" ist
+# besser als "damals richtig".
+#
+# Warum hier und nicht im Browser des Besuchers: Drei der neun Repositories
+# sind privat, sie tragen Kundendaten. Sie öffentlich lesbar zu machen, nur
+# damit eine Zahl live ist, wäre der falsche Tausch. Ein Token im
+# ausgelieferten JavaScript wäre ein veröffentlichtes Token. Also liest ein
+# Automat mit einem Token, das GitHub verwahrt, und liefert das Ergebnis aus.
+#
+# Zwei Geheimnisse sind nötig, beide in den Repository-Einstellungen:
+#   ZAHLEN_TOKEN        ein Personal Access Token mit Leserecht (repo)
+#   VERCEL_DEPLOY_HOOK  die Hook-Adresse aus den Vercel-Projekteinstellungen
+#
+# Fehlt eines, bricht der Lauf nicht ab, sondern sagt was fehlt und lässt die
+# Seite in Ruhe. Eine halbe Zahl wäre schlimmer als eine alte.
+
+name: Zahlen auffrischen
+
+on:
+  schedule:
+    # Täglich um 04:12 UTC. Eine krumme Minute, weil zur vollen Stunde die
+    # halbe Welt gleichzeitig plant.
+    - cron: "12 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auffrischen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Token vorhanden?
+        id: pruefung
+        env:
+          TOKEN: ${{ secrets.ZAHLEN_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "ZAHLEN_TOKEN fehlt. Ohne Token sind die privaten Repositories"
+            echo "nicht lesbar, und eine Teilsumme saehe aus wie die ganze Zahl."
+            echo "Der Lauf endet ohne Aenderung."
+            echo "weiter=nein" >> "$GITHUB_OUTPUT"
+          else
+            echo "weiter=ja" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Zahlen holen
+        if: steps.pruefung.outputs.weiter == 'ja'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ZAHLEN_TOKEN }}
+        run: node scripts/zahlen-von-github.mjs
+
+      - name: Aenderung feststellen
+        if: steps.pruefung.outputs.weiter == 'ja'
+        id: aenderung
+        run: |
+          if git diff --quiet src/content/geprueft.json; then
+            echo "geaendert=nein" >> "$GITHUB_OUTPUT"
+          else
+            echo "geaendert=ja" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Einchecken
+        if: steps.aenderung.outputs.geaendert == 'ja'
+        run: |
+          git config user.name "Zahlen-Automat"
+          git config user.email "noreply@domenicmoran.de"
+          git add src/content/geprueft.json
+          git commit -m "Commit-Zahlen aufgefrischt
+
+          Automatisch gezaehlt ueber die GitHub-API. Die Zahl auf der Seite
+          traegt ihr Messdatum, damit sie auch zwischen zwei Laeufen nicht
+          falsch ist, sondern nur aelter."
+          git push
+
+      - name: Ausliefern
+        if: steps.aenderung.outputs.geaendert == 'ja'
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "VERCEL_DEPLOY_HOOK fehlt. Die Zahl steht im Repository, ist"
+            echo "aber noch nicht ausgeliefert. Naechster Deploy nimmt sie mit."
+            exit 0
+          fi
+          antwort=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$HOOK")
+          echo "Deploy-Hook antwortete mit $antwort"
+          [ "$antwort" -lt 400 ]

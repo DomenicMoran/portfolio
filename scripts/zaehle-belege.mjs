@@ -296,13 +296,61 @@ const deutsch = (n) => n.toLocaleString("de-DE");
 if (fehlendeRepos.length) {
   zeilen.push(`  --  Nicht gefunden: ${fehlendeRepos.join(", ")}. Prüfstempel übersprungen.`);
 } else {
-  vergleiche(
-    "Commits über alle Repos",
-    head,
-    ausSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
-  );
-  writeFileSync(
-    "src/content/geprueft.json",
+  /**
+   * Die Commit-Zahl wird mit Nachsicht verglichen, alle anderen nicht.
+   *
+   * Sie steht auf der Seite mit ihrem Messdatum: "4.065, gemessen am 1. August
+   * 2026". Ein datierter Wert wird nicht falsch, wenn danach weitergearbeitet
+   * wird — er wird nur älter. Und weitergearbeitet wird laufend, unter anderem
+   * von diesem Prüflauf selbst: Sein eigener Commit hebt die Zahl um eins.
+   *
+   * Ohne Nachsicht meldet dieser Schritt deshalb in jedem einzelnen Lauf eine
+   * Abweichung. Eine Prüfung, die immer rot ist, liest nach zwei Tagen niemand
+   * mehr, und dann fällt auch die echte Abweichung nicht mehr auf.
+   *
+   * Gemeldet wird nur, was wirklich schiefliegt: eine Zahl auf der Seite, die
+   * höher ist als die gemessene (dann behauptet sie mehr, als da ist), oder ein
+   * Rückstand von mehr als zwei Prozent (dann ist das Datum daneben wertlos).
+   */
+  const aufDerSeite = Number(ausSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/));
+  const rueckstand = head - aufDerSeite;
+
+  if (!Number.isFinite(aufDerSeite)) {
+    zeilen.push("  !!  Commits über alle Repos: keine Zahl in site.ts gefunden.");
+    abweichungen++;
+  } else if (rueckstand < 0) {
+    zeilen.push(
+      `  !!  Commits über alle Repos: auf der Seite ${deutsch(aufDerSeite)}, ` +
+        `gemessen nur ${deutsch(head)}. Die Seite behauptet mehr, als da ist.`,
+    );
+    abweichungen++;
+  } else if (rueckstand > head * 0.02) {
+    zeilen.push(
+      `  ~   Commits über alle Repos: ${deutsch(rueckstand)} hinterher ` +
+        `(Seite ${deutsch(aufDerSeite)}, gemessen ${deutsch(head)}). Auffrischen.`,
+    );
+    abweichungen++;
+  } else {
+    zeilen.push(
+      `  ok  Commits über alle Repos      gemessen ${String(head).padStart(6)}` +
+        (rueckstand ? `   Seite ${deutsch(aufDerSeite)}, ${rueckstand} hinterher` : ""),
+    );
+  }
+
+  /**
+   * Der Prüfstempel wird nur zusammen mit der Zahl auf der Seite aufgefrischt.
+   *
+   * Er speist die Konsolennachricht und humans.txt. Schriebe ihn jeder Lauf
+   * neu, stünde dort nach einer Stunde 4.066, während die Seite daneben 4.065
+   * zeigt — ein Widerspruch, den ausgerechnet der aufmerksame Leser findet,
+   * für den die Konsolennachricht gedacht ist.
+   *
+   * Deshalb: nur anfassen, wenn ohnehin aufgefrischt werden muss, also wenn
+   * der Rückstand die Schwelle reisst oder die Datei fehlt. Dazwischen bleiben
+   * Seite, Stempel und Konsole derselbe Stand.
+   */
+  const auffrischen = !existsSync("src/content/geprueft.json") || rueckstand > head * 0.02;
+  const stempel =
     JSON.stringify(
       {
         datum: new Date().toISOString().slice(0, 10),
@@ -312,10 +360,11 @@ if (fehlendeRepos.length) {
       },
       null,
       2,
-    ) + "\n",
-    "utf8",
-  );
-  zeilen.push(`  ok  Prüfstempel: ${deutsch(head)} über ${REPOS.length} Repos geschrieben`);
+    ) + "\n";
+  if (auffrischen) {
+    writeFileSync("src/content/geprueft.json", stempel, "utf8");
+    zeilen.push(`  ok  Prüfstempel aufgefrischt: ${deutsch(head)}`);
+  }
 }
 
 console.log(zeilen.join("\n"));
