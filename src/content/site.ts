@@ -1,3 +1,4 @@
+import geprueft from "./geprueft.json";
 /**
  * Single source of truth for every piece of copy and data on the site.
  *
@@ -66,15 +67,23 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "4.042", label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
+    { value: geprueft.commitsHead, label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
   ],
   /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
-  statsHinweis:
-    "Gemessen am 1. August 2026 über die GitHub-API, mit git rev-list --count über alle 8 Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt — lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.",
+  /**
+   * Aus dem Prüfstempel gespeist, nicht daneben gepflegt.
+   *
+   * Zahl, Datum und Anzahl der Repositories stehen in `geprueft.json`, das ein
+   * Automat bei GitHub täglich schreibt. Vorher standen sie hier als Text und
+   * gingen mit jedem Lauf ein Stück auseinander: die Kachel sagte 4.042, der
+   * Stempel 4.046, die Konsolenmeldung wieder etwas anderes. Eine Seite, die
+   * zum Nachrechnen einlädt, darf sich nicht selbst widersprechen.
+   */
+  statsHinweis: `Gemessen am ${geprueft.datum.split("-").reverse().join(".")} über die GitHub-API, mit git rev-list --count über alle ${geprueft.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt — lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
   timeline: [
     {
       period: "seit 04/2026",
@@ -239,7 +248,7 @@ export const hero = {
   // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: "4.042", label: "Commits seit März 2026" },
+    { value: geprueft.commitsHead, label: "Commits seit März 2026" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
     { value: "7.437", label: "Testfälle (MenuCloud)" },
   ],

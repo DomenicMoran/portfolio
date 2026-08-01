@@ -1,3 +1,4 @@
+import geprueft from "./geprueft.json";
 import type { Content } from "./types";
 
 /**
@@ -86,7 +87,7 @@ export const en: Content = {
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
       { value: "4", label: "systems in production" },
-      { value: "4,042", label: "commits since March 2026" },
+      { value: geprueft.commitsHead.replace(".", ","), label: "commits since March 2026" },
       { value: "1,276", label: "API routes (MenuCloud)" },
       { value: "7,437", label: "test cases (MenuCloud)" },
     ],
@@ -404,13 +405,12 @@ export const en: Content = {
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
-      { value: "4,042", label: "commits since March 2026", note: "alongside a full-time job" },
+      { value: geprueft.commitsHead.replace(".", ","), label: "commits since March 2026", note: "alongside a full-time job" },
       { value: "4", label: "systems in production", note: "all built alone" },
       { value: "2", label: "app stores", note: "iOS and Android, live" },
       { value: "2022", label: "self-taught since", note: "Meta & Udemy certificates" },
     ],
-    statsHinweis:
-      "Measured on August 1, 2026 through the GitHub API, with git rev-list --count across all 8 repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub — local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.",
+    statsHinweis: `Measured on ${geprueft.datum} through the GitHub API, with git rev-list --count across all ${geprueft.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub — local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [
       {
