@@ -33,6 +33,7 @@
  */
 
 import { readdirSync, readFileSync, lstatSync, realpathSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, extname, resolve, sep } from "node:path";
 
 const OEFFENTLICH = "public";
@@ -74,16 +75,53 @@ const VERBOTENE_NAMEN = [
 /**
  * Wörter, die in einer ausgelieferten Textdatei nichts zu suchen haben.
  *
- * Der Beruf steht hier ausdrücklich: Er ist der eine Punkt, der aus allem
- * Öffentlichen herausbleibt, und ein Suchlauf findet ihn zuverlässiger als
- * jede Erinnerung.
+ * Diese hier dürfen im Klartext stehen: Dass eine Gehaltsvorstellung nicht auf
+ * die Webseite gehört, verrät nichts über den, der sie nicht dort haben will.
  */
-const VERBOTENE_INHALTE = [
-  /[entfernt]/i,
-  /[entfernt]/i,
-  /Gehaltsvorstellung/i,
-  /Untergrenze/i,
-];
+const VERBOTENE_INHALTE = [/Gehaltsvorstellung/i, /Untergrenze/i];
+
+/**
+ * Und die, die nicht im Klartext stehen dürfen.
+ *
+ * Hier stand bis eben der Beruf, den Domenic aus allem Öffentlichen
+ * heraushält — als Suchmuster, in einem öffentlichen Repository, das er von
+ * seinem GitHub-Profil aus verlinkt. Wer die Prüfung liest, erfährt damit
+ * genau das, was sie verbergen soll. Ein Wächter, der sein Geheimnis auf die
+ * Tür schreibt.
+ *
+ * Deshalb nur noch Hashes. Geprüft wird nicht der Text gegen ein Muster,
+ * sondern jedes Wort und jedes Wortpaar des Textes gegen diese Liste: bei
+ * einzelnen Wörtern die ersten zwölf Zeichen, damit Beugungen mitgehen, bei
+ * Wortpaaren das ganze Paar. Die Klartextfassung liegt in
+ * `docs/verbotene-marker.json`, außerhalb aller Repos.
+ *
+ * Das ist keine Verschlüsselung und soll keine sein. Es verhindert nur, dass
+ * ein Leser die Wörter beim Überfliegen mitnimmt — und genau darum geht es.
+ */
+const VERBOTENE_HASHES = new Set(["1ea8b03c92f6d22f", "c5088451e38012e0"]);
+
+const PRAEFIX = 12;
+
+function kurzHash(text) {
+  return createHash("sha256").update(text).digest("hex").slice(0, 16);
+}
+
+/** Findet ein verbotenes Wort oder Wortpaar, ohne es zu benennen. */
+function verbotenerBegriff(inhalt) {
+  const woerter = inhalt
+    .toLowerCase()
+    .replace(/[^a-zäöüß\s]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  for (let i = 0; i < woerter.length; i++) {
+    if (VERBOTENE_HASHES.has(kurzHash(woerter[i].slice(0, PRAEFIX)))) return true;
+    if (i + 1 < woerter.length) {
+      if (VERBOTENE_HASHES.has(kurzHash(`${woerter[i]} ${woerter[i + 1]}`))) return true;
+    }
+  }
+  return false;
+}
 
 
 const befunde = [];
@@ -147,6 +185,11 @@ function durchgehen(ordner) {
       if (muster.test(inhalt)) {
         befunde.push(`${relativ}: Inhalt passt auf ${muster}`);
       }
+    }
+    // Der Befund nennt das Wort nicht. Wer die Meldung sieht, weiss ohnehin,
+    // was gemeint ist; wer sie in einem Protokoll findet, nicht.
+    if (verbotenerBegriff(inhalt)) {
+      befunde.push(`${relativ}: enthält einen Begriff, der nicht öffentlich werden darf`);
     }
   }
 }
