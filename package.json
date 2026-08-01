@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "onepager:pdf": "node scripts/build-onepager-pdf.mjs"
+    "onepager:pdf": "node scripts/build-onepager-pdf.mjs",
+    "prebuild": "node scripts/pruefe-oeffentlich.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
