@@ -22,7 +22,7 @@
  *   node scripts/zaehle-belege.mjs
  */
 
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
@@ -281,10 +281,10 @@ const REPOS = [
   ["arabic-normalize", join(OSS, "arabic-normalize")],
 ];
 
-function commits(repo, alleReferenzen) {
+function commits(repo) {
   try {
     return Number(
-      execFileSync("git", ["rev-list", "--count", alleReferenzen ? "--all" : "HEAD"], {
+      execFileSync("git", ["rev-list", "--count", "HEAD"], {
         cwd: repo,
         encoding: "utf8",
       }).trim(),
@@ -295,15 +295,13 @@ function commits(repo, alleReferenzen) {
 }
 
 let head = 0;
-let alleRefs = 0;
 const fehlendeRepos = [];
 for (const [name, pfad] of REPOS) {
   if (!existsSync(join(pfad, ".git"))) {
     fehlendeRepos.push(name);
     continue;
   }
-  head += commits(pfad, false);
-  alleRefs += commits(pfad, true);
+  head += commits(pfad);
 }
 
 const deutsch = (n) => n.toLocaleString("de-DE");
