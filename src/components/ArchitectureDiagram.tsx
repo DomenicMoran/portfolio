@@ -127,7 +127,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
 
       { id: "pg", label: "Postgres / Supabase", sub: "Row Level Security pro Mandant", x: 20, y: 310, w: 320, tone: "acid" },
       { id: "stripe", label: "Stripe Connect", sub: "Destination-Charge", x: 354, y: 310, w: 246, tone: "acid", external: true },
-      { id: "tse", label: "Fiskaly Cloud-TSE", sub: "§146a AO · Hash-Kette", x: 614, y: 310, w: 286, tone: "acid", external: true },
+      { id: "tse", label: "Fiskaly Cloud-TSE", sub: "§ 146a AO · Hash-Kette", x: 614, y: 310, w: 286, tone: "acid", external: true },
 
       { id: "coolify", label: "Coolify / Hetzner", sub: "Docker · EU", x: 20, y: 418, w: 240, tone: "cyan" },
       { id: "cf", label: "Cloudflare", sub: "DNS · Edge · WAF", x: 274, y: 418, w: 216, tone: "cyan", external: true },

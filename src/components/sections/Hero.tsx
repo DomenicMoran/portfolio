@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Fragment, useRef } from "react";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import { TECH_TICKER as techTicker } from "@/content/types";
 import { Counter } from "@/components/ui/Counter";
@@ -126,7 +126,11 @@ export function Hero() {
               className="group inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 font-medium text-ink transition-colors hover:border-ink-faint hover:bg-surface"
             >
               {hero.ctaSecondary.label}
-              <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+              {/* Derselbe Pfeil nach unten wie beim ersten Knopf: Beide führen
+                  zu einem Abschnitt weiter unten im Dokument. Der Pfeil nach
+                  schräg oben steht überall sonst auf dieser Seite für ein
+                  Ziel außerhalb. */}
+              <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden />
             </a>
           </Magnetic>
         </div>

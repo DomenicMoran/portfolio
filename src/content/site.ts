@@ -242,7 +242,7 @@ export const hero = {
     { value: "4", label: "Systeme in Produktion" },
     { value: "3.971", label: "Commits in 4 Monaten" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
-    { value: "298", label: "automatisierte Tests" },
+    { value: "7.568", label: "Testfälle" },
   ],
 } as const;
 
@@ -327,7 +327,7 @@ export const caseStudies: CaseStudy[] = [
       "15-teiliger deutscher Koran-Arabisch-Podcast, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
       "OTA-Updates über EAS Update: Inhaltskorrekturen ohne Store-Zyklus",
       "iOS Live Activities und Android-Widgets für die nächste Gebetszeit",
-      "Store-Auftritt in 13 Sprachen über vier Geräteklassen gepflegt",
+      "App und Store-Texte in 14 Sprachen gepflegt, über vier Geräteklassen",
       "KI-Antworten mit Quellenangabe und Kennzeichnung nach EU AI Act Art. 50",
     ],
     stack: [
@@ -350,7 +350,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     metrics: [
       { value: "5", label: "Zielgeräte-Klassen" },
-      { value: "13", label: "Store-Sprachen" },
+      { value: "14", label: "Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
       { value: "1.058", label: "Commits" },
     ],
@@ -398,7 +398,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
     solution:
-      "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement. Darunter liegt eine mandantenfähige Cloud-TSE, die jede Transaktion nach §146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
+      "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement. Darunter liegt eine mandantenfähige Cloud-TSE, die jede Transaktion nach § 146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
     hardPart: {
       title: "Fiskalisierung als Mandanten-Problem",
       body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen. Für den Gastronomen wäre das eine Katastrophe bei der nächsten Betriebsprüfung. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_transactions` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
@@ -407,8 +407,8 @@ export const caseStudies: CaseStudy[] = [
       "1.276 API-Routen über 812 versionierte Postgres-Migrationen",
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
-      "KassenSichV §146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "298 automatisierte Tests (254 Unit / 44 E2E) gegen Produktion",
+      "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
+      "5.340 Testfälle (5.163 Unit, 177 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
@@ -478,7 +478,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: "1.276", label: "API-Routen" },
       { value: "812", label: "DB-Migrationen" },
-      { value: "298", label: "Automatisierte Tests" },
+      { value: "5.340", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // TODO(domenic): Kunden / MRR / GMV / Uptime, siehe USER-TODO A3.
     ],
@@ -636,7 +636,7 @@ export const workflow = {
     {
       n: "05",
       title: "Recht als Definition of Done",
-      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG §7 bei Outreach beachtet? EU AI Act Art. 50: Ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
+      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG § 7 bei Outreach beachtet? EU AI Act Art. 50: Ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
       artifacts: ["DSGVO Art. 30", "AVV automatisiert", "AI-Act-Disclosure"],
     },
   ],
@@ -730,7 +730,7 @@ export const skillDomains: SkillDomain[] = [
       { name: "RAG & Retrieval", evidence: "Eigener Korpus, Granularität gemessen" },
       { name: "Prompt-Engineering", evidence: "Vers-Konditionierung schlägt Modellgröße" },
       { name: "Evaluation", evidence: "Lokale Iteration gegen dieselbe GGUF" },
-      { name: "KI-Recht (EU AI Act)", evidence: "Art.-50-Disclosure als Gate" },
+      { name: "KI-Recht (EU AI Act)", evidence: "Kennzeichnung nach Art. 50 als Gate" },
     ],
   },
 ];

@@ -9,6 +9,7 @@ import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
+import { RichText } from "@/components/ui/InlineCode";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ease, viewportOnce } from "@/lib/motion";
@@ -149,7 +150,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               Absatz vorher bei 96 Zeichen pro Zeile, deutlich über dem, was
               sich noch flüssig liest. */}
           <p className="mt-4 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
-            {study.hardPart.body}
+            <RichText text={study.hardPart.body} />
           </p>
         </div>
       </Reveal>

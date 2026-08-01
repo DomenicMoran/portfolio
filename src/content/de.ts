@@ -41,7 +41,6 @@ export const de: Content = {
     { label: "Skills", href: "#skills" },
     { label: "Artikel", href: "#writing" },
     { label: "Für Recruiter", href: "#hire" },
-    { label: "Kontakt", href: "#contact" },
   ],
   navContact: "Kontakt",
   skipToContent: "Zum Inhalt springen",
@@ -104,14 +103,15 @@ export const de: Content = {
       lines: workflowDe.demo.lines,
     },
     speed: {
-      eyebrow: "Größenordnung",
+      eyebrow: "Liefertempo",
       title: "Der Unterschied ist nicht, dass ich schneller tippe.",
-      lede: "Er ist, dass Recherche, Implementierung, Test und Verifikation parallel statt nacheinander laufen, und dass der Kontext zwischen den Sitzungen nicht verloren geht.",
-      rows: [
-        { label: "Klassisch, allein", weeks: 100, note: "Wochen bis Store-Release" },
-        { label: "Mit Agenten-Setup", weeks: 22, note: "dieselbe Feature-Tiefe" },
+      lede: "Er ist, dass Recherche, Implementierung, Test und Verifikation parallel statt nacheinander laufen, und dass der Kontext zwischen den Sitzungen nicht verloren geht. Wie sich das auswirkt, lässt sich zählen.",
+      facts: [
+        { value: "107", label: "Tage", note: "erster Commit am 16.04.2026 bis heute" },
+        { value: "63", label: "ausgelieferte Versionen", note: "1.0.0 bis 1.45.0, im Changelog der App nachlesbar" },
+        { value: "40 h", label: "im Schnitt je Version", note: "107 Tage geteilt durch 63 Versionen" },
       ],
-      note: "Relative Darstellung aus meinen eigenen Projekten, kein Branchen-Benchmark. Die belastbare Zahl daneben: Salati steht bei 44 ausgelieferten Versionen über fünf Gerätetypen, gebaut neben drei weiteren Systemen in Produktion.",
+      note: "Zahlen für Salati, gezählt am 01.08.2026 in der Changelog-Datei der App. Parallel dazu liefen drei weitere Systeme in Produktion.",
     },
   },
 

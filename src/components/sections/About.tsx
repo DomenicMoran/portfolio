@@ -188,12 +188,19 @@ export function About() {
                                 mit um. Eine eigene Zeile je Datum hätte die
                                 Liste auf die doppelte Höhe gebracht. */}
                             {item.date ? (
-                              <time
-                                dateTime={item.date}
-                                className="ml-1.5 font-mono text-[10px] whitespace-nowrap text-ink-faint/70"
-                              >
-                                {jahrMonat(item.date)}
-                              </time>
+                              <>
+                                {/* Ein echtes Leerzeichen im Text, nicht nur
+                                    ein Rand: Ohne das steht im kopierten Text
+                                    und in der Vorlesereihenfolge
+                                    "Version Control07/2022". */}
+                                {" "}
+                                <time
+                                  dateTime={item.date}
+                                  className="font-mono text-[10px] whitespace-nowrap text-ink-faint/70"
+                                >
+                                  {jahrMonat(item.date)}
+                                </time>
+                              </>
                             ) : null}
                           </span>
                         </li>

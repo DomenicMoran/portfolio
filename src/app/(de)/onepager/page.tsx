@@ -23,7 +23,7 @@ export const metadata: Metadata = {
  * only the opening claim of each "hard part" is needed.
  *
  * Splits on sentence-ending punctuation followed by a space and a capital, so
- * abbreviations and decimals ("§146a AO", "1.44") do not cut the sentence short.
+ * abbreviations and decimals ("§ 146a AO", "1.44") do not cut the sentence short.
  */
 function firstSentence(text: string) {
   const match = text.match(/^.*?[.!?](?=\s+[A-ZÄÖÜ])/);
