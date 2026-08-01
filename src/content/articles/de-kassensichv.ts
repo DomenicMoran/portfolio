@@ -10,7 +10,7 @@ export const kassensichvDe: Article = {
   title: "KassenSichV in der Praxis: was die Dokumentation auslässt",
   dek: "Jede Kasse in Deutschland muss ihre Umsätze technisch signieren. Die Anbieter-Dokumentation erklärt den API-Aufruf. Die drei Dinge, die einen wirklich treffen, stehen dort nicht.",
   date: "2026-07-29",
-  minutes: 11,
+  minutes: 5,
   tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-Tenant"],
   evidence: [
     "src/lib/tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql (Sperre, Hash-Kette)",

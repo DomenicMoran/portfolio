@@ -5,7 +5,7 @@ export const shaperEn: Article = {
   title: "The dotted circle was not the font's fault",
   dek: "Roughly every third verse carried a dot inside a dashed circle where none belongs. I suspected the typeface first. It was innocent.",
   date: "2026-07-31",
-  minutes: 10,
+  minutes: 5,
   tags: ["Typography", "HarfBuzz", "Unicode", "React Native"],
   evidence: [
     "Salati repository, commit 427cd6c6, 31 July 2026",

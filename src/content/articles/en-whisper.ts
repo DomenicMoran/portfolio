@@ -5,7 +5,7 @@ export const whisperEn: Article = {
   title: "Why a smaller Whisper model beat my bigger one",
   dek: "Shipping a gigabyte of model inside a phone app was the obvious route to better speech recognition. It was the wrong one. The real lever was somewhere else, and it was free.",
   date: "2026-07-27",
-  minutes: 9,
+  minutes: 5,
   tags: ["Whisper", "On-device AI", "React Native", "Arabic"],
   evidence: [
     "apps/mobile/src/features/hifz/whisperModel.ts (model choice, conversion, measurements)",

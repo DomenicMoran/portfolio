@@ -5,7 +5,7 @@ export const otaEn: Article = {
   title: "“Published” is not proof. My updates never arrived.",
   dek: "For months I believed I could ship content fixes without a store cycle. The tool reported success every time. Not a single user ever received anything.",
   date: "2026-07-30",
-  minutes: 9,
+  minutes: 5,
   tags: ["Expo", "EAS Update", "React Native", "Verification"],
   evidence: [
     "Salati repository, commit 71bd8d2b, 30 July 2026",

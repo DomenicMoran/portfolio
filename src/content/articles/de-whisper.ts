@@ -9,7 +9,7 @@ export const whisperDe: Article = {
   title: "Warum ein kleineres Whisper-Modell mein größeres schlug",
   dek: "Ein Gigabyte Modell in einer Handy-App zu verteilen, war der offensichtliche Weg zu besserer Spracherkennung. Er war falsch. Der Hebel lag woanders, und er war kostenlos.",
   date: "2026-07-27",
-  minutes: 9,
+  minutes: 5,
   tags: ["Whisper", "On-Device-KI", "React Native", "Arabisch"],
   evidence: [
     "apps/mobile/src/features/hifz/whisperModel.ts (Modellwahl, Konvertierung, Messwerte)",
