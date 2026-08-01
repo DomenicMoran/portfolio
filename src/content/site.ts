@@ -66,7 +66,7 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "4.053", label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
+    { value: "4.065", label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
@@ -74,7 +74,7 @@ export const about = {
   /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
   statsHinweis:
-    "Alle Zahlen sind am 1. August 2026 gemessen, mit git rev-list HEAD --count über die drei Monorepos hinter Salati, MenuCloud und NOURI. Gezählt wird nur der Hauptzweig; über alle Referenzen wären es 4.162. Commit-Stände wachsen weiter, abweichende Werte sind daher höher, nicht niedriger.",
+    "Gemessen am 1. August 2026 mit git rev-list --count über alle 9 Repos: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite, der Prüfstand und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig; über alle Referenzen wären es 4.256. Der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.",
   timeline: [
     {
       period: "seit 04/2026",
@@ -239,7 +239,7 @@ export const hero = {
   // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: "4.053", label: "Commits seit März 2026" },
+    { value: "4.065", label: "Commits seit März 2026" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
     { value: "7.437", label: "Testfälle (MenuCloud)" },
   ],

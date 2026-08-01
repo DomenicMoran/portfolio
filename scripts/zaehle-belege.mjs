@@ -22,7 +22,7 @@
  *   node scripts/zaehle-belege.mjs
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
@@ -238,6 +238,84 @@ for (const datei of ["../docs/LEBENSLAUF.md", "../docs/CAREER-LAUNCHPAD.md"]) {
       }
     }
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Commits über alle Repos, und der Prüfstempel
+   ---------------------------------------------------------------------------
+
+   Auf der Seite stand: "gemessen mit git rev-list HEAD --count über die drei
+   Monorepos hinter Salati, MenuCloud und NOURI". Über diese drei sind es aber
+   3.975; die 4.053 daneben enthalten zusätzlich Portfolio, Prüfstand und die
+   vier OSS-Pakete. Der Hinweis, der die Zahl prüfbar machen sollte, widerlegte
+   sie also. Genau das findet jemand, der nachrechnet — und nachzurechnen ist
+   ausdrücklich die Einladung.
+
+   Deshalb schreibt dieser Lauf den Hinweis jetzt selbst. Was auf der Seite
+   steht, ist damit das Ergebnis einer Messung und keine Erinnerung daran. */
+
+const REPOS = [
+  ["MenuCloud", resolve("../../MenuCloud")],
+  ["Salati", resolve("../../SalatiTech")],
+  ["NOURI", resolve("../../NOURI")],
+  ["Portfolio", resolve(".")],
+  ["Prüfstand", resolve("../pruefstand")],
+  ["verified-done", join(OSS, "verified-done")],
+  ["cron-last-due", join(OSS, "cron-last-due")],
+  ["whisper-ggml-header", join(OSS, "whisper-ggml-header")],
+  ["arabic-normalize", join(OSS, "arabic-normalize")],
+];
+
+function commits(repo, alleReferenzen) {
+  try {
+    return Number(
+      execFileSync("git", ["rev-list", "--count", alleReferenzen ? "--all" : "HEAD"], {
+        cwd: repo,
+        encoding: "utf8",
+      }).trim(),
+    );
+  } catch {
+    return 0;
+  }
+}
+
+let head = 0;
+let alleRefs = 0;
+const fehlendeRepos = [];
+for (const [name, pfad] of REPOS) {
+  if (!existsSync(join(pfad, ".git"))) {
+    fehlendeRepos.push(name);
+    continue;
+  }
+  head += commits(pfad, false);
+  alleRefs += commits(pfad, true);
+}
+
+const deutsch = (n) => n.toLocaleString("de-DE");
+
+if (fehlendeRepos.length) {
+  zeilen.push(`  --  Nicht gefunden: ${fehlendeRepos.join(", ")}. Prüfstempel übersprungen.`);
+} else {
+  vergleiche(
+    "Commits über alle Repos",
+    head,
+    ausSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+  );
+  writeFileSync(
+    "src/content/geprueft.json",
+    JSON.stringify(
+      {
+        datum: new Date().toISOString().slice(0, 10),
+        commitsHead: deutsch(head),
+        commitsAlleReferenzen: deutsch(alleRefs),
+        repos: REPOS.length,
+      },
+      null,
+      2,
+    ) + "\n",
+    "utf8",
+  );
+  zeilen.push(`  ok  Prüfstempel: ${deutsch(head)} über ${REPOS.length} Repos geschrieben`);
 }
 
 console.log(zeilen.join("\n"));
