@@ -21,10 +21,30 @@ sonst in einem Chatverlauf verloren geht.
 - Ohne `data-scroll-behavior="smooth"` am `<html>` überschreibt Next das
   Scroll-Verhalten bei Navigation nicht mehr
 
+## Aufbau
+
+Zwei Wurzel-Layouts, eines je Sprache, unter `src/app/(de)` und `src/app/(en)`.
+Nur so stimmt `<html lang>` je Fassung, ohne die deutschen URLs unter ein
+`/de`-Präfix zu schieben. Der Preis: `app/layout.tsx` gibt es nicht, und eine
+globale 404 kann Next dadurch nicht komponieren. Dafür ist
+`app/global-not-found.tsx` da, das sein eigenes Dokument mitbringt.
+
 ## Inhalte
 
 **Copy gehört nie in eine Komponente.** Jeder Text und jede Zahl steht in
-`src/content/site.ts`. Komponenten lesen daraus, sie definieren nichts.
+`src/content/`. Komponenten lesen daraus, sie definieren nichts.
+
+- `site.ts` ist die deutsche Quelle
+- `de.ts` ist ein Adapter darauf plus die Beschriftungen, die erst durch die
+  Zweisprachigkeit entstehen
+- `en.ts` ist die englische Fassung, deklariert als `Content`
+- `types.ts` ist die gemeinsame Form. Fehlt in `en.ts` ein Feld, schlägt der
+  Typecheck fehl; eine Übersetzung kann nicht stillschweigend unvollständig
+  werden
+- `articles/` trägt die Fachartikel als getippte Blöcke, je Sprache eine Datei
+
+Nichts wird fest in eine Komponente geschrieben, auch keine `aria-label`. Auf
+der englischen Fassung las ein Screenreader sonst deutsche Ansagen vor.
 
 Ein leerer Wert muss das zugehörige Element **entfernen**, nicht einen
 Platzhalter rendern. Muster:
@@ -49,7 +69,16 @@ Drei Regeln, alle nicht verhandelbar:
    Animationsbibliothek einführt, muss denselben Ausstieg bauen.
 2. **Lenis und der Custom-Cursor werden bei Reduced-Motion nicht gemountet.**
    Nicht „deaktiviert": gar nicht erst geladen.
-3. **Performance schlägt Effekt.** Kein Canvas, kein WebGL, keine
+3. **Über der Falz nur CSS-Animationen.** Eine JS-Animation mit
+   `initial opacity 0` ist bis zur Hydration unsichtbar. Steht das Element
+   über der Falz, ist es damit das LCP-Element und erscheint erst nach der
+   Hydration: gemessen 4,6 s auf einem gedrosselten Telefon, während die
+   Überschrift daneben schon seit 1,35 s stand. `animate-fade-rise` und
+   `animate-word-rise` sind die CSS-Entsprechungen; `SectionHeading` und
+   `RevealWords` nehmen dafür ein `css`-Flag. Unterhalb der Falz bleibt die
+   JS-Variante richtig, weil die Bewegung dort erst beim Hineinscrollen
+   laufen soll.
+4. **Performance schlägt Effekt.** Kein Canvas, kein WebGL, keine
    Scroll-Handler ohne `passive`. Glüh-Effekte sind geblurrte Divs, Grain ist
    ein Inline-SVG, der Marquee läuft als CSS-Animation ohne rAF-Schleife.
 

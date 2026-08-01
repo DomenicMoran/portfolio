@@ -92,11 +92,11 @@ export function Hero() {
           ))}
         </h1>
 
-        {/* Alles im Hero laeuft als CSS-Animation, nicht ueber Framer Motion.
+        {/* Alles im Hero läuft als CSS-Animation, nicht über Framer Motion.
             Als `motion.p` mit `initial opacity 0` war dieser Absatz bis zur
             Hydration unsichtbar; auf einem gedrosselten Telefon war er damit
             das LCP-Element und erschien erst nach 4,6 Sekunden. Die
-            Ueberschrift daneben stand zu dem Zeitpunkt schon seit 1,35
+            Überschrift daneben stand zu dem Zeitpunkt schon seit 1,35
             Sekunden da. */}
         <p
           style={{ animationDelay: "0.42s" }}

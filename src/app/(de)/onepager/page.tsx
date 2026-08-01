@@ -46,7 +46,7 @@ export default function OnePager() {
     // Angabe erklärt die Seite, dass sie ihr Farbschema selbst kennt, und
     // wird in Ruhe gelassen.
     //
-    // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Hoehe
+    // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Höhe
     // auf und schiebt sonst eine leere zweite Seite an.
     <div
       style={{ colorScheme: "light" }}

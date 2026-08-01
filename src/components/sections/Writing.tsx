@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
-import { artikelFuer, chromeFuer } from "@/content/articles";
+import { artikelIn, chromeIn } from "@/content/articles";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -18,8 +18,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
  */
 export function Writing() {
   const { lang } = useContent();
-  const artikel = artikelFuer(lang);
-  const chrome = chromeFuer(lang);
+  const artikel = artikelIn(lang);
+  const chrome = chromeIn(lang);
 
   return (
     <section

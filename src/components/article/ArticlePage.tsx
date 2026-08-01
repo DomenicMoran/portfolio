@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
-import { gegenstueck, type Article, type ArticleChrome } from "@/content/articles";
+import { andereSprache, type Article, type ArticleChrome } from "@/content/articles";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
 import { Prose } from "@/components/article/Prose";
@@ -36,7 +36,7 @@ export function ArticlePage({
 
   // Der Sprachwechsel soll denselben Artikel in der anderen Sprache öffnen,
   // nicht die Startseite. Gibt es kein Gegenstück, bleibt der Standard.
-  const anderer = gegenstueck(lang, article.slug);
+  const anderer = andereSprache(lang, article.slug);
   const otherHref = anderer
     ? lang === "de"
       ? `/en/articles/${anderer}`
@@ -73,9 +73,9 @@ export function ArticlePage({
         {/* 38,5 rem sind 616 px. Gemessen ergibt das im Fließtext 73 Zeichen
               pro Zeile; bei den vorherigen 768 px waren es 91. */}
           <article className="mx-auto w-full max-w-[38.5rem]">
-          {/* Der Kopf laeuft als CSS-Animation, nicht ueber Reveal: Er steht
-              ueber der Falz, und als JS-Animation waere die Ueberschrift bis
-              zur Hydration unsichtbar und damit das spaete LCP-Element. */}
+          {/* Der Kopf läuft als CSS-Animation, nicht über Reveal: Er steht
+              über der Falz, und als JS-Animation wäre die Überschrift bis
+              zur Hydration unsichtbar und damit das späte LCP-Element. */}
           <div className="animate-fade-rise">
             <Link
               href={chrome.base}

@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
  * Consistent section opener: mono eyebrow, masked headline, optional lede.
  * Every section uses this so vertical rhythm stays identical throughout.
  *
- * `as` waehlt die Ueberschriftenebene. Auf der Startseite sind alle Sektionen
- * gleichrangig unter der Hero-Ueberschrift, also h2. Auf einer eigenen Seite
- * ist dieselbe Ueberschrift die Hauptueberschrift: Die Artikeluebersicht hatte
- * dadurch gar keine h1, gemessen ueber alle sechs Breiten in beiden Engines.
+ * `as` waehlt die Überschriftenebene. Auf der Startseite sind alle Sektionen
+ * gleichrangig unter der Hero-Überschrift, also h2. Auf einer eigenen Seite
+ * ist dieselbe Überschrift die Hauptüberschrift: Die Artikelübersicht hatte
+ * dadurch gar keine h1, gemessen über alle sechs Breiten in beiden Engines.
  */
 export function SectionHeading({
   eyebrow,
@@ -18,7 +18,7 @@ export function SectionHeading({
   align = "left",
   className,
   children,
-  as: Ueberschrift = "h2",
+  as: Überschrift = "h2",
   css = false,
 }: {
   eyebrow: string;
@@ -54,9 +54,9 @@ export function SectionHeading({
         </Reveal>
       )}
 
-      <Ueberschrift className="text-headline max-w-4xl text-balance text-ink">
+      <Überschrift className="text-headline max-w-4xl text-balance text-ink">
         <RevealWords text={title} css={css} />
-      </Ueberschrift>
+      </Überschrift>
 
       {lede ? (
         css ? (

@@ -316,9 +316,9 @@ textarea:-webkit-autofill {
    Hero-Absatz war mit `motion.p` und `initial opacity 0` bis zur Hydration
    unsichtbar. Gemessen auf einem gedrosselten Telefon war er damit das
    LCP-Element und paintete bei 4,6 s, waehrend die Ueberschrift schon bei
-   1,35 s stand. Als CSS-Animation laeuft die Bewegung ab dem ersten Paint.
-   `both` haelt den Endzustand, damit die Reduced-Motion-Regel oben (Dauer
-   0,01 ms) die Elemente sichtbar stehen laesst statt sie zu verstecken. */
+   1,35 s stand. Als CSS-Animation läuft die Bewegung ab dem ersten Paint.
+   `both` hält den Endzustand, damit die Reduced-Motion-Regel oben (Dauer
+   0,01 ms) die Elemente sichtbar stehen lässt statt sie zu verstecken. */
 @keyframes fade-rise {
   from {
     opacity: 0;

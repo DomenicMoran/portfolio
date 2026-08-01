@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/article/ArticlePage";
-import { artikelDe, artikelNach, chromeDe, gegenstueck } from "@/content/articles";
+import { artikelDe, artikelNach, chromeDe, andereSprache } from "@/content/articles";
 import { de } from "@/content/de";
 
 /**
@@ -24,7 +24,7 @@ export async function generateMetadata({
   const artikel = artikelNach("de", slug);
   if (!artikel) return {};
 
-  const anderer = gegenstueck("de", slug);
+  const anderer = andereSprache("de", slug);
 
   return {
     title: artikel.title,
