@@ -74,11 +74,22 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       siteName: site.name,
       title: site.meta.title,
       description: kurzbeschreibung(site.meta.description),
+      // Das Bild muss hier stehen, obwohl app/opengraph-image.tsx existiert.
+      //
+      // Next setzt das Bild aus der Dateikonvention nur, solange man kein
+      // eigenes openGraph-Objekt liefert. Sobald man eines liefert, gilt es
+      // vollständig, und ein fehlendes images-Feld heißt dann: kein Bild.
+      // Die Route /opengraph-image wurde trotzdem gebaut und lieferte brav
+      // ein PNG, nur verwiesen hat niemand darauf. Beim Teilen auf LinkedIn,
+      // WhatsApp oder Slack erschien deshalb eine Vorschau ohne Bild, und
+      // LinkedIn hat den Link in der Auswahl-Sektion ganz abgelehnt.
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${site.name} – ${site.role}` }],
     },
     twitter: {
       card: "summary_large_image",
       title: site.meta.title,
       description: kurzbeschreibung(site.meta.description),
+      images: ["/opengraph-image"],
     },
     robots: {
       index: true,
