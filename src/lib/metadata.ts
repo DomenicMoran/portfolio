@@ -108,6 +108,17 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
         en: `${base}/en`,
         "x-default": `${base}/`,
       },
+      // Der Feed gehört auf jede Seite, nicht nur auf die Artikelübersicht.
+      //
+      // Ein Feed-Leser prüft die Seite, auf der man gerade steht — und das ist
+      // der Artikel, denn der wird geteilt. Gemessen trug ihn nur /artikel und
+      // /en/articles: Wer von einem Artikel aus abonnieren wollte, fand nichts.
+      // Je Sprache der eigene, sonst bekommt ein englischer Leser deutsche
+      // Einträge ins Lesegerät.
+      types: {
+        "application/atom+xml":
+          lang === "de" ? `${base}/artikel/feed.xml` : `${base}/en/articles/feed.xml`,
+      },
     },
   };
 }
