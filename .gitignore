@@ -52,3 +52,4 @@ _*.json
 _about.txt
 _deploy.log
 _srv.log
+_dep.log
