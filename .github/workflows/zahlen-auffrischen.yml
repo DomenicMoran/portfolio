@@ -12,11 +12,16 @@
 # Automat mit einem Token, das GitHub verwahrt, und liefert das Ergebnis aus.
 #
 # Zwei Geheimnisse sind nötig, beide in den Repository-Einstellungen:
-#   ZAHLEN_TOKEN        ein Personal Access Token mit Leserecht (repo)
-#   VERCEL_DEPLOY_HOOK  die Hook-Adresse aus den Vercel-Projekteinstellungen
+#   ZAHLEN_TOKEN   ein Token mit Leserecht auf die acht gezählten Repositories
+#   VERCEL_TOKEN   ein Vercel-Token, damit die neue Zahl auch ausgeliefert wird
 #
-# Fehlt eines, bricht der Lauf nicht ab, sondern sagt was fehlt und lässt die
-# Seite in Ruhe. Eine halbe Zahl wäre schlimmer als eine alte.
+# Kein Deploy-Hook, obwohl das der einfachere Weg wäre: Ein Hook setzt eine
+# Git-Anbindung des Vercel-Projekts voraus, und die gibt es hier bewusst nicht.
+# Mit ihr lehnte Vercel Bauten ab, deren Commit-Autor nicht im Team ist — und
+# der Autor wäre hier ein Automat. Also derselbe Weg wie von Hand: die CLI.
+#
+# Fehlt ein Geheimnis, bricht der Lauf nicht ab, sondern sagt was fehlt und
+# lässt die Seite in Ruhe. Eine halbe Zahl wäre schlimmer als eine alte.
 
 name: Zahlen auffrischen
 
@@ -86,13 +91,17 @@ jobs:
       - name: Ausliefern
         if: steps.aenderung.outputs.geaendert == 'ja'
         env:
-          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Kennungen statt Geheimnisse: `.vercel/project.json` steht in der
+          # .gitignore, die CLI wüsste hier sonst nicht, welches Projekt
+          # gemeint ist. Die beiden Kennungen sind keine Zugangsdaten — ohne
+          # Token nützen sie niemandem — und liegen deshalb als Variablen da.
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
         run: |
-          if [ -z "$HOOK" ]; then
-            echo "VERCEL_DEPLOY_HOOK fehlt. Die Zahl steht im Repository, ist"
-            echo "aber noch nicht ausgeliefert. Naechster Deploy nimmt sie mit."
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN fehlt. Die Zahl steht im Repository, ist aber"
+            echo "noch nicht ausgeliefert. Der naechste Deploy nimmt sie mit."
             exit 0
           fi
-          antwort=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$HOOK")
-          echo "Deploy-Hook antwortete mit $antwort"
-          [ "$antwort" -lt 400 ]
+          npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
