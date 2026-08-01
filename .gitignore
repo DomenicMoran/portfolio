@@ -48,3 +48,7 @@ next-env.d.ts
 _*.mjs
 _*.png
 _*.json
+
+_about.txt
+_deploy.log
+_srv.log
