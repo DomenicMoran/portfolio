@@ -12,9 +12,11 @@ export default function LegalLayout({
 }) {
   return (
     <div className="mx-auto flex min-h-svh w-full max-w-3xl flex-col px-6 py-16">
+      {/* Gemessen 11 px hoch. Die Trefferflaeche waechst auf 27 px, die
+          optische Position bleibt. */}
       <Link
         href="/"
-        className="text-eyebrow transition-colors hover:text-ink-dim"
+        className="text-eyebrow -my-2 w-fit py-2 transition-colors hover:text-ink-dim"
       >
         ← {site.name}
       </Link>

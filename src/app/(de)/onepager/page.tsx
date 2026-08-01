@@ -197,9 +197,12 @@ export default function OnePager() {
       </article>
 
       <div className="no-print mx-auto max-w-[820px] px-8 pb-16">
+        {/* -my-2/py-2 bringt die Trefferflaeche von gemessenen 18 px auf
+            34 px, ohne die Zeile optisch zu verschieben. Ein eigenstaendiger
+            Link faellt nicht unter die Inline-Ausnahme von WCAG 2.5.8. */}
         <Link
           href="/"
-          className="text-sm text-[#4a4a55] underline underline-offset-4"
+          className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
         >
           ← Zurück zur Seite
         </Link>

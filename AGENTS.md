@@ -1,7 +1,7 @@
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version has breaking changes: APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
 ---
@@ -11,10 +11,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 Gilt für Menschen und Agenten gleichermaßen. Diese Datei ist der Kontext, der
 sonst in einem Chatverlauf verloren geht.
 
-## Next.js 16 — was hier konkret greift
+## Next.js 16: was hier konkret greift
 
 - Turbopack ist Standard für `dev` **und** `build`
-- `next lint` existiert nicht mehr — ESLint direkt aufrufen (`npx eslint .`)
+- `next lint` existiert nicht mehr: ESLint direkt aufrufen (`npx eslint .`)
 - ESLint nutzt Flat Config
 - `middleware` heißt jetzt `proxy`
 - `params`/`searchParams` sind ausschließlich asynchron
@@ -44,11 +44,11 @@ Abschnitt in `USER-TODO.md`, der sie liefert.
 Drei Regeln, alle nicht verhandelbar:
 
 1. **`prefers-reduced-motion` gilt für JS-Animationen genauso.** Die CSS-Regel
-   in `globals.css` erreicht Framer Motion nicht — dafür ist `MotionProvider`
+   in `globals.css` erreicht Framer Motion nicht: dafür ist `MotionProvider`
    (`MotionConfig reducedMotion="user"`) zuständig. Wer eine neue
    Animationsbibliothek einführt, muss denselben Ausstieg bauen.
 2. **Lenis und der Custom-Cursor werden bei Reduced-Motion nicht gemountet.**
-   Nicht „deaktiviert" — gar nicht erst geladen.
+   Nicht „deaktiviert": gar nicht erst geladen.
 3. **Performance schlägt Effekt.** Kein Canvas, kein WebGL, keine
    Scroll-Handler ohne `passive`. Glüh-Effekte sind geblurrte Divs, Grain ist
    ein Inline-SVG, der Marquee läuft als CSS-Animation ohne rAF-Schleife.
@@ -57,7 +57,7 @@ Drei Regeln, alle nicht verhandelbar:
 
 **Wort-Abstände in Masken-Reveals brauchen `margin`, kein Leerzeichen.** Ein
 Leerzeichen am Ende eines `inline-block` mit `overflow: hidden` wird
-zusammengefaltet — die Wörter kleben dann aneinander. Betrifft `Hero` und
+zusammengefaltet. Die Wörter kleben dann aneinander. Betrifft `Hero` und
 `RevealWords`.
 
 **Dekorative Glüh-Kreise brauchen einen Clip am Sektions-Container.** Ein
@@ -69,7 +69,7 @@ an `html`/`body` als Netz.
 
 `page.tsx` bleibt Server Component. Seitenweiter Client-State lebt in
 `SiteShell`. Wer eine neue interaktive Sektion baut, markiert die Sektion selbst
-mit `"use client"` — nicht die Seite.
+mit `"use client"`, nicht die Seite.
 
 Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 (`if (open !== wasOpen) { … }`), nicht in einem `useEffect`. Die

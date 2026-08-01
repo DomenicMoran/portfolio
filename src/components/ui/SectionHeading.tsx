@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils";
 /**
  * Consistent section opener: mono eyebrow, masked headline, optional lede.
  * Every section uses this so vertical rhythm stays identical throughout.
+ *
+ * `as` waehlt die Ueberschriftenebene. Auf der Startseite sind alle Sektionen
+ * gleichrangig unter der Hero-Ueberschrift, also h2. Auf einer eigenen Seite
+ * ist dieselbe Ueberschrift die Hauptueberschrift: Die Artikeluebersicht hatte
+ * dadurch gar keine h1, gemessen ueber alle sechs Breiten in beiden Engines.
  */
 export function SectionHeading({
   eyebrow,
@@ -13,6 +18,8 @@ export function SectionHeading({
   align = "left",
   className,
   children,
+  as: Ueberschrift = "h2",
+  css = false,
 }: {
   eyebrow: string;
   title: string;
@@ -20,6 +27,9 @@ export function SectionHeading({
   align?: "left" | "center";
   className?: string;
   children?: ReactNode;
+  as?: "h1" | "h2";
+  /** Ueber der Falz: Bewegung als CSS statt als JS-Animation. */
+  css?: boolean;
 }) {
   return (
     <div
@@ -29,26 +39,48 @@ export function SectionHeading({
         className,
       )}
     >
-      <Reveal className="flex items-center gap-3" y={12}>
-        <span className="size-1.5 rounded-full bg-acid" />
-        <span className="text-eyebrow">{eyebrow}</span>
-      </Reveal>
+      {css ? (
+        <div
+          style={{ animationDelay: "0.02s" }}
+          className="animate-fade-rise flex items-center gap-3"
+        >
+          <span className="size-1.5 rounded-full bg-acid" />
+          <span className="text-eyebrow">{eyebrow}</span>
+        </div>
+      ) : (
+        <Reveal className="flex items-center gap-3" y={12}>
+          <span className="size-1.5 rounded-full bg-acid" />
+          <span className="text-eyebrow">{eyebrow}</span>
+        </Reveal>
+      )}
 
-      <h2 className="text-headline max-w-4xl text-balance text-ink">
-        <RevealWords text={title} />
-      </h2>
+      <Ueberschrift className="text-headline max-w-4xl text-balance text-ink">
+        <RevealWords text={title} css={css} />
+      </Ueberschrift>
 
       {lede ? (
-        <Reveal delay={0.1}>
+        css ? (
           <p
+            style={{ animationDelay: "0.4s" }}
             className={cn(
-              "max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty",
+              "animate-fade-rise max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty",
               align === "center" && "mx-auto",
             )}
           >
             {lede}
           </p>
-        </Reveal>
+        ) : (
+          <Reveal delay={0.1}>
+            <p
+              className={cn(
+                "max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty",
+                align === "center" && "mx-auto",
+              )}
+            >
+              {lede}
+            </p>
+          </Reveal>
+        )
       ) : null}
 
       {children}

@@ -177,7 +177,7 @@ export function About() {
                                 href={item.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                                className="-my-1 py-1 underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
                               >
                                 {item.name}
                               </a>

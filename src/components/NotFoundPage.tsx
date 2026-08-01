@@ -65,7 +65,7 @@ export function NotFoundPage({
           {notFound.report}{" "}
           <a
             href={`mailto:${site.email}`}
-            className="text-acid underline underline-offset-4"
+            className="-my-1 py-1 text-acid underline underline-offset-4"
           >
             {site.email}
           </a>

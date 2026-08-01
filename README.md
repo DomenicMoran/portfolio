@@ -2,7 +2,7 @@
 
 # domenicmoran.de
 
-**Portfolio eines AI-Native Product Engineers — gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
+**Portfolio eines AI-Native Product Engineers: gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
 
 Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
 Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
@@ -20,7 +20,7 @@ Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalett
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
 versucht etwas anderes: für jedes der vier Systeme in Produktion beantwortet es
-drei Fragen, die ein CTO tatsächlich stellt — *Welches Problem?*, *Welche
+drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
 Architektur?*, *Was war der schwierige Teil?*
 
 Der Abschnitt **„Die harte Stelle"** ist der Kern jeder Fallstudie. Nicht die
@@ -50,17 +50,17 @@ Der Kontakt läuft deshalb über eine Mailadresse statt über ein Formular. Ein
 Formular hätte einen Versanddienst als Auftragsverarbeiter gebraucht, den die
 Datenschutzerklärung ausweisen muss, plus einen Endpunkt mit Rate-Limit und
 Fehlerpfad. Der Gegenwert wäre gewesen, dass der Absender ein Feld weniger
-ausfüllt — und dabei die Kopie seiner eigenen Nachricht verliert.
+ausfüllt, und dabei die Kopie seiner eigenen Nachricht verliert.
 
 **Inhalte liegen an einer Stelle.** [`src/content/site.ts`](src/content/site.ts)
 ist die einzige Quelle für jeden Text und jede Zahl. Komponenten enthalten
 keinerlei Copy. Ein leerer Wert lässt das jeweilige Element verschwinden statt
-einen Platzhalter zu rendern — auf einer Seite, deren Zweck Glaubwürdigkeit ist,
+einen Platzhalter zu rendern: auf einer Seite, deren Zweck Glaubwürdigkeit ist,
 darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum" enden.
 
 **Architekturdiagramme sind Daten, kein Bild.** Die vier Diagramme in
 [`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx) sind als
-Knoten- und Kantenliste beschrieben und werden zu SVG gerendert — auflösungsfrei,
+Knoten- und Kantenliste beschrieben und werden zu SVG gerendert: auflösungsfrei,
 im DOM durchsuchbar, mit `aria-label` beschrieben und ohne einen einzigen
 Bild-Request.
 
@@ -71,7 +71,7 @@ mit vestibulärer Empfindlichkeit zu kapern, ist das Feindseligste, was eine
 „Premium"-Seite tun kann.
 
 **Der PDF-Download ist der Druckdialog.** `/onepager` ist eine A4-optimierte
-Route mit eigenem Print-Stylesheet. Kein Headless-Chrome, keine PDF-Bibliothek —
+Route mit eigenem Print-Stylesheet. Kein Headless-Chrome, keine PDF-Bibliothek –
 dafür auswählbarer Text und funktionierende Links.
 
 ## Lokal starten
@@ -116,7 +116,7 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
 
 ## Sicherheit & Datenschutz
 
-- Keine Cookies, kein Analytics, kein Consent-Banner — es gibt nichts einzuwilligen
+- Keine Cookies, kein Analytics, kein Consent-Banner: es gibt nichts einzuwilligen
 - Schriften werden selbst gehostet; beim Seitenaufruf entsteht keine Verbindung zu Google
 - Keine Eingabeverarbeitung: Es existiert kein Endpunkt, an den etwas gesendet wird
 - Vollständiger Header-Satz in [`vercel.json`](vercel.json): HSTS mit Preload,
@@ -124,13 +124,13 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
   `Permissions-Policy`, `X-DNS-Prefetch-Control`
 - [`/.well-known/security.txt`](public/.well-known/security.txt) für Meldungen
 
-### Zur CSP — eine bewusste Abwägung
+### Zur CSP: eine bewusste Abwägung
 
 Die Content-Security-Policy erlaubt `'unsafe-inline'` für `script-src`. Das ist
 keine Nachlässigkeit, sondern die Folge einer Entscheidung:
 
 Next.js schreibt die RSC-Payload als Inline-`<script>` in jede vorgerenderte
-Seite. Um die ohne `'unsafe-inline'` zuzulassen, bräuchte es Nonces — die
+Seite. Um die ohne `'unsafe-inline'` zuzulassen, bräuchte es Nonces: die
 entstehen erst zur Anfragezeit und zwingen damit **jede** Route in dynamisches
 Rendering. Für eine Seite, deren wichtigste Metrik LCP ist, tauscht man damit
 messbare Ladezeit gegen eine Absicherung, die hier wenig bringt: Die Seite hat
@@ -142,7 +142,7 @@ Was die Policy stattdessen tatsächlich absichert und was hier zählt:
 'none'`, `base-uri 'self'` (kein Base-Tag-Hijacking), `frame-ancestors 'none'`
 (kein Clickjacking) und `form-action 'self'`.
 
-Sobald die Seite je Nutzerinhalte rendert, kippt diese Abwägung — dann kommen
+Sobald die Seite je Nutzerinhalte rendert, kippt diese Abwägung. Dann kommen
 Nonces und dynamisches Rendering.
 
 ## Deployment
@@ -153,6 +153,6 @@ vorab erzeugt und vom CDN-Rand ausgeliefert.
 
 ## Lizenz
 
-Code steht unter der MIT-Lizenz — nimm dir Muster, die dir nützen.
+Code steht unter der MIT-Lizenz: nimm dir Muster, die dir nützen.
 Inhalte, Texte und Fallstudien in `src/content/` sind © Domenic Moran und nicht
 Teil der Lizenz.
