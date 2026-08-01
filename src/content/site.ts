@@ -747,6 +747,13 @@ export const recruiter = {
   facts: [
     { label: "Rolle", value: "AI Product Engineer / Fullstack" },
     { label: "Schwerpunkt", value: "Produkt end-to-end, KI-gestützte Lieferung" },
+    // Der Anriss darüber verspricht "was ich suche". Ohne diese Zeile blieb
+    // das Versprechen offen: Rolle und Modell sagen, was ich bin, nicht was
+    // ich will.
+    {
+      label: "Suche",
+      value: "Produktteam, in dem eine Person ein Feature bis in Produktion besitzt",
+    },
     { label: "Standort", value: "Berlin · Remote EU" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
