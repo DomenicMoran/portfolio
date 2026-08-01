@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   description:
     "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
   robots: { index: false, follow: false },
+  // Ohne eigenen Eintrag erbt diese Seite den Canonical des
+  // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
+  // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.
+  alternates: { canonical: `${site.url}/impressum` },
 };
 
 /**
@@ -66,7 +70,6 @@ export default function Impressum() {
 
         Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
         Angabe ersatzlos, ein leerer oder erfundener Eintrag wäre schlechter
-        als keiner. Siehe USER-TODO A2.
       */}
 
       <section className="mb-10">

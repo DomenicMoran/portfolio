@@ -15,9 +15,20 @@ import type { Content } from "@/content/types";
 export function NotFoundPage({
   content,
   base = "",
+  zweitsprache,
 }: {
   content: Content;
   base?: string;
+  /**
+   * Ein kurzer Hinweis in der jeweils anderen Sprache.
+   *
+   * Nur die globale 404 setzt ihn. Sie beantwortet Adressen, die auf gar keine
+   * Route passen, und weiß deshalb als einzige Seite nicht, welche Sprache
+   * gemeint war: Gemessen bekam ein Besucher von `/en/irgendwas` die deutsche
+   * Fassung samt `lang="de"`. Die Sprachfassungen selbst brauchen das nicht,
+   * sie wissen es.
+   */
+  zweitsprache?: Content;
 }) {
   const { notFound, nav, site } = content;
 
@@ -60,6 +71,18 @@ export function NotFoundPage({
             ))}
           </ul>
         </nav>
+
+        {zweitsprache ? (
+          <p lang={zweitsprache.lang} className="mt-8 text-sm text-ink-faint">
+            {zweitsprache.notFound.title}{" "}
+            <Link
+              href={zweitsprache.lang === "en" ? "/en" : "/"}
+              className="-my-1 py-1 text-acid underline underline-offset-4"
+            >
+              {zweitsprache.notFound.home}
+            </Link>
+          </p>
+        ) : null}
 
         <p className="mt-10 border-t border-line pt-6 text-sm text-ink-faint">
           {notFound.report}{" "}
