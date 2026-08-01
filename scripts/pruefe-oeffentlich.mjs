@@ -14,20 +14,50 @@
  * und Suchmaschinen. Eine Regel, die nur im Kopf steht, hält genau bis zum
  * nächsten Mal.
  *
- * Geprüft wird auf drei Arten, weil eine Dateinamenliste zu leicht zu umgehen
- * ist: verbotene Namen, verbotene Inhalte in Textdateien, und eine Warnung bei
- * jeder neuen PDF, die nicht ausdrücklich freigegeben ist.
+ * Der erste Entwurf dieses Wächters hatte selbst drei Lücken, gefunden von der
+ * Durchsicht nach dem Einchecken:
+ *
+ * 1. Er verbot Namen und ließ alles andere durch. Die private Datei
+ *    `notizen.pdf` zu nennen hätte gereicht. Jetzt eine Erlaubnisliste:
+ *    unbedenkliche Endungen und ausdrücklich freigegebene Dateien, sonst nichts.
+ * 2. Er las nur Dateien mit bekannter Textendung. Eine Notiz als `daten.bin`
+ *    rutschte durch. Jetzt wird jede Datei gelesen.
+ * 3. Er benutzte `stat`, das einer Verknüpfung folgt. `public/bilder` als
+ *    Verknüpfung auf `../docs` sah damit aus wie ein gewöhnlicher Ordner mit
+ *    harmlosen Namen, ausgeliefert würde aber der Inhalt des Ziels. Jetzt
+ *    `lstat`, und jede Verknüpfung ist ein Befund.
+ *
+ * Alle drei mit Gegenprobe nachgestellt und behoben.
  *
  *   node scripts/pruefe-oeffentlich.mjs
  */
 
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, extname } from "node:path";
+import { readdirSync, readFileSync, lstatSync, realpathSync } from "node:fs";
+import { join, extname, resolve, sep } from "node:path";
 
 const OEFFENTLICH = "public";
+const WURZEL = resolve(OEFFENTLICH);
 
-/** Dateien, die dort liegen dürfen. Alles andere fällt auf. */
+/**
+ * Was dort liegen darf. Der Rest fällt auf.
+ *
+ * Bewusst eine Erlaubnisliste und keine Verbotsliste. Der erste Entwurf
+ * verbot bestimmte Namen und ließ alles andere durch — dann genügt es, die
+ * private Datei `notizen.pdf` zu nennen, und der Wächter schweigt. Eine
+ * Verbotsliste schützt nur vor dem Fehler, den man schon einmal gemacht hat.
+ */
 const FREIGEGEBEN = new Set(["domenic-moran-kurzprofil.pdf"]);
+
+/**
+ * Endungen, die von sich aus unbedenklich sind: Bilder, Schriften, Symbole und
+ * die Dateien, die eine Seite zum Betrieb braucht. Alles andere muss
+ * ausdrücklich in FREIGEGEBEN stehen.
+ */
+const UNBEDENKLICH = new Set([
+  ".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif", ".svg", ".ico",
+  ".woff", ".woff2", ".ttf", ".otf",
+  ".webmanifest", ".xml", ".txt",
+]);
 
 /** Namensteile, die nie im öffentlichen Ordner auftauchen dürfen. */
 const VERBOTENE_NAMEN = [
@@ -55,19 +85,39 @@ const VERBOTENE_INHALTE = [
   /Untergrenze/i,
 ];
 
-const TEXTARTIG = new Set([".txt", ".md", ".json", ".xml", ".svg", ".html", ".csv"]);
 
 const befunde = [];
 
 function durchgehen(ordner) {
   for (const eintrag of readdirSync(ordner)) {
     const pfad = join(ordner, eintrag);
-    if (statSync(pfad).isDirectory()) {
-      durchgehen(pfad);
+    const relativ = pfad.replace(/\\/g, "/").replace(`${OEFFENTLICH}/`, "");
+
+    // lstat statt stat: stat folgt einer Verknüpfung und meldet, was am Ziel
+    // liegt. Eine Verknüpfung `public/bilder` auf `../docs` sähe damit aus wie
+    // ein gewöhnlicher Ordner, und die Prüfung liefe über harmlose Namen.
+    // Ausgeliefert würde trotzdem der Inhalt des Ziels.
+    const angabe = lstatSync(pfad);
+
+    if (angabe.isSymbolicLink()) {
+      let ziel = "unauflösbar";
+      try {
+        ziel = realpathSync(pfad);
+      } catch {
+        // Zeigt ins Leere. Trotzdem ein Befund: Verknüpfungen haben hier
+        // nichts zu suchen.
+      }
+      const drinnen = ziel !== "unauflösbar" && (ziel + sep).startsWith(WURZEL + sep);
+      befunde.push(
+        `${relativ}: Verknüpfung auf ${ziel}${drinnen ? "" : ", also aus dem öffentlichen Ordner hinaus"}`,
+      );
       continue;
     }
 
-    const relativ = pfad.replace(/\\/g, "/").replace(`${OEFFENTLICH}/`, "");
+    if (angabe.isDirectory()) {
+      durchgehen(pfad);
+      continue;
+    }
 
     for (const muster of VERBOTENE_NAMEN) {
       if (muster.test(eintrag)) {
@@ -75,19 +125,27 @@ function durchgehen(ordner) {
       }
     }
 
-    if (extname(eintrag).toLowerCase() === ".pdf" && !FREIGEGEBEN.has(relativ)) {
+    const endung = extname(eintrag).toLowerCase();
+    if (!UNBEDENKLICH.has(endung) && !FREIGEGEBEN.has(relativ)) {
       befunde.push(
-        `${relativ}: PDF ohne Freigabe. Wenn sie öffentlich sein soll, in ` +
+        `${relativ}: keine Freigabe. Wenn die Datei öffentlich sein soll, in ` +
           `FREIGEGEBEN eintragen — das ist die Stelle, an der jemand hinsieht.`,
       );
     }
 
-    if (TEXTARTIG.has(extname(eintrag).toLowerCase())) {
-      const inhalt = readFileSync(pfad, "utf8");
-      for (const muster of VERBOTENE_INHALTE) {
-        if (muster.test(inhalt)) {
-          befunde.push(`${relativ}: Inhalt passt auf ${muster}`);
-        }
+    // Der Inhalt wird bei jeder Datei geprüft, nicht nur bei bekannten
+    // Textendungen. Eine private Notiz heißt sonst `daten.bin` und rutscht
+    // durch. Binärdateien ergeben dabei Unsinn, aber der trifft die Muster
+    // nicht, und die Kosten sind ein Lesevorgang.
+    let inhalt = "";
+    try {
+      inhalt = readFileSync(pfad, "utf8");
+    } catch {
+      continue;
+    }
+    for (const muster of VERBOTENE_INHALTE) {
+      if (muster.test(inhalt)) {
+        befunde.push(`${relativ}: Inhalt passt auf ${muster}`);
       }
     }
   }
