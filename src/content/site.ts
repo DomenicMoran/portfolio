@@ -25,9 +25,7 @@ export const site = {
   // populated branch unreachable.
   socials: {
     github: "https://github.com/DomenicMoran" as string,
-    // TODO(domenic): vollständige Profil-URL, siehe USER-TODO A1.
-    linkedin: "" as string,
-
+    linkedin: "https://www.linkedin.com/in/domenicmoran" as string,
   },
 
   availability: {
