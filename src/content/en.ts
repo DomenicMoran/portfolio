@@ -637,6 +637,10 @@ export const en: Content = {
     facts: [
       { label: "Role", value: "AI product engineer / fullstack" },
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
+      {
+        label: "Looking for",
+        value: "A product team where one person owns a feature all the way to production",
+      },
       { label: "Location", value: "Berlin · remote EU" },
       { label: "Available", value: "Open to talk now · start after notice period" },
       { label: "Languages", value: "German (native) · English" },
