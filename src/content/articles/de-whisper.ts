@@ -6,7 +6,7 @@ import type { Article } from "./types";
  */
 export const whisperDe: Article = {
   slug: "kleineres-whisper-modell",
-  title: "Warum ein kleineres Whisper-Modell mein größeres geschlagen hat",
+  title: "Warum ein kleineres Whisper-Modell mein größeres schlug",
   dek: "Ein Gigabyte Modell in einer Handy-App zu verteilen, war der offensichtliche Weg zu besserer Spracherkennung. Er war falsch. Der Hebel lag woanders, und er war kostenlos.",
   date: "2026-07-27",
   minutes: 9,
@@ -24,7 +24,7 @@ export const whisperDe: Article = {
     },
     {
       kind: "p",
-      text: "Der naheliegende Schluss war, dass das Modell zu klein sei. Also habe ich ein größeres eingebaut. Whisper large-v3, quantisiert, knapp ein Gigabyte. Das Ergebnis war nicht besser. Es war langsamer, der Erst-Download wurde für Nutzer mit schlechtem Netz unzumutbar, und die Erkennungsqualität bei koranischem Arabisch blieb ungefähr gleich.",
+      text: "Der naheliegende Schluss war, dass das Modell zu klein sei. Also habe ich ein größeres eingebaut. Whisper large-v3, quantisiert, knapp ein Gigabyte. Das Ergebnis war nicht besser. Es war langsamer, der Erst-Download wurde für Nutzer mit schlechtem Netz unzumutbar, und die Erkennungsqualität beim Arabisch des Korans blieb ungefähr gleich.",
     },
     {
       kind: "h2",
@@ -32,7 +32,7 @@ export const whisperDe: Article = {
     },
     {
       kind: "p",
-      text: "Whisper ist auf allgemeine Sprache trainiert, über viele Sprachen hinweg. Koranisches Arabisch ist etwas anderes als das Arabisch, das in Nachrichten oder Podcasts gesprochen wird: klassische Grammatik, ein eng begrenztes Vokabular, und eine Rezitationsweise mit gedehnten Vokalen, deren Länge bedeutungstragend ist. Ein größeres generisches Modell ist in genau dem besser, was hier nicht gebraucht wird, nämlich Breite. Es ist nicht besser in dem, was gebraucht wird, nämlich Tiefe in einem sehr schmalen Ausschnitt.",
+      text: "Whisper ist auf allgemeine Sprache trainiert, über viele Sprachen hinweg. Das Arabisch des Korans ist etwas anderes als das Arabisch, das in Nachrichten oder Podcasts gesprochen wird: klassische Grammatik, ein eng begrenztes Vokabular, und eine Rezitationsweise mit gedehnten Vokalen, deren Länge bedeutungstragend ist. Ein größeres generisches Modell ist in genau dem besser, was hier nicht gebraucht wird, nämlich Breite. Es ist nicht besser in dem, was gebraucht wird, nämlich Tiefe in einem sehr schmalen Ausschnitt.",
     },
     {
       kind: "p",
@@ -133,7 +133,7 @@ export const whisperDe: Article = {
     {
       kind: "note",
       title: "Vor dem Einsatz den Header lesen",
-      text: "Viele frei verfügbare Konvertierungen koranischer Whisper-Modelle tragen n_text_ctx = 1024 und sind damit unbrauchbar. Der Wert steht im GGML-Header und ist in Sekunden geprüft. Richtig ist max_target_positions = 448, nicht max_length.",
+      text: "Viele frei verfügbare Konvertierungen der auf den Koran abgestimmten Whisper-Modelle tragen n_text_ctx = 1024 und sind damit unbrauchbar. Der Wert steht im GGML-Header und ist in Sekunden geprüft. Richtig ist max_target_positions = 448, nicht max_length.",
     },
     {
       kind: "h2",

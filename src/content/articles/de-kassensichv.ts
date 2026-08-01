@@ -7,7 +7,7 @@ import type { Article } from "./types";
  */
 export const kassensichvDe: Article = {
   slug: "kassensichv-in-der-praxis",
-  title: "KassenSichV in der Praxis: was in der Dokumentation nicht steht",
+  title: "KassenSichV in der Praxis: was die Dokumentation auslässt",
   dek: "Jede Kasse in Deutschland muss ihre Umsätze technisch signieren. Die Anbieter-Dokumentation erklärt den API-Aufruf. Die drei Dinge, die einen wirklich treffen, stehen dort nicht.",
   date: "2026-07-29",
   minutes: 11,

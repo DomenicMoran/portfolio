@@ -17,7 +17,7 @@
  *   node scripts/build-onepager-pdf.mjs http://localhost:3131
  */
 
-import { mkdirSync, statSync } from "node:fs";
+import { mkdirSync, readFileSync, statSync } from "node:fs";
 import { chromium } from "playwright";
 
 const basis = process.argv[2] ?? "http://localhost:3131";
@@ -33,6 +33,24 @@ const antwort = await seite.goto(`${basis}/onepager`, {
 });
 if (!antwort || antwort.status() !== 200) {
   throw new Error(`/onepager antwortete mit ${antwort?.status()}`);
+}
+
+// Prüfen, dass dort auch der eben gebaute Stand läuft.
+//
+// Ohne diese Prüfung ist der Fehler stumm und teuer: Auf dem Standard-Port
+// lag noch ein Server aus einer früheren Sitzung. Das Skript hat brav
+// gedruckt, gemeldet und die Seitenzahl geprüft, nur eben von einem Build von
+// vorgestern. Zwei Änderungsrunden gingen dabei ins Leere, weil die Datei nach
+// jeder Korrektur weiter dasselbe zeigte. HTTP 200 belegt, dass jemand
+// antwortet, nicht dass der Richtige antwortet.
+const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
+const html = await seite.content();
+if (!html.includes(gebauteId)) {
+  throw new Error(
+    `Auf ${basis} läuft ein anderer Build als der zuletzt gebaute ` +
+      `(${gebauteId}). Server dort beenden und mit dem aktuellen Stand neu ` +
+      `starten, sonst druckt dieses Skript einen alten Stand.`,
+  );
 }
 
 // Die Route bringt ihr eigenes Druck-Stylesheet mit, inklusive der
@@ -53,7 +71,6 @@ await browser.close();
 // Eine Seite ist die Vorgabe des One-Pagers. Mehr wäre ein Fehler im
 // Inhalt, nicht im Druck, und soll den Build scheitern lassen.
 const { PDFDocument } = await import("pdf-lib");
-const { readFileSync } = await import("node:fs");
 const doc = await PDFDocument.load(readFileSync(ziel));
 const seitenzahl = doc.getPageCount();
 

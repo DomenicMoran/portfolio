@@ -25,7 +25,7 @@ export const whisperEn: Article = {
     { kind: "h2", text: "Why a bigger model buys you nothing here" },
     {
       kind: "p",
-      text: "Whisper is trained on general speech across many languages. Quranic Arabic is not the Arabic of news broadcasts or podcasts: classical grammar, a tightly bounded vocabulary, and a recitation style in which vowel length carries meaning. A larger general model is better at exactly what this task does not need, which is breadth. It is no better at what the task does need, which is depth in a very narrow slice.",
+      text: "Whisper is trained on general speech across many languages. The Arabic of the Quran is not the Arabic of news broadcasts or podcasts: classical grammar, a tightly bounded vocabulary, and a recitation style in which vowel length carries meaning. A larger general model is better at exactly what this task does not need, which is breadth. It is no better at what the task does need, which is depth in a very narrow slice.",
     },
     {
       kind: "p",
@@ -114,7 +114,7 @@ export const whisperEn: Article = {
     {
       kind: "note",
       title: "Read the header before you ship it",
-      text: "Many freely available conversions of Quranic Whisper models carry n_text_ctx = 1024 and are therefore unusable. The value sits in the GGML header and takes seconds to check. The right source field is max_target_positions = 448, not max_length.",
+      text: "Many freely available conversions of Whisper models tuned for the Quran carry n_text_ctx = 1024 and are therefore unusable. The value sits in the GGML header and takes seconds to check. The right source field is max_target_positions = 448, not max_length.",
     },
     { kind: "h2", text: "Where the weights come from, and why that is provable" },
     {

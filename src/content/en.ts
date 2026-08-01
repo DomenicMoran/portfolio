@@ -23,7 +23,7 @@ export const en: Content = {
     location: "Berlin, Germany",
     email: "domenicmoran@gmail.com",
     availability: {
-      label: "Open to employment & freelance",
+      label: "Open to a permanent role",
       detail: "Remote (EU) or hybrid in Berlin",
     },
     meta: {
@@ -124,7 +124,7 @@ export const en: Content = {
       solution:
         "An ad-free platform across four device classes: iOS, Android, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device. No query ever leaves the phone.",
       hardPart: {
-        title: "Speech recognition for Quranic recitation",
+        title: "Speech recognition for Quran recitation",
         body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route, a larger Whisper model, was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
       },
       highlights: [
@@ -132,7 +132,7 @@ export const en: Content = {
         "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus, no cloud call",
         "Whisper-based recitation checking with verse-conditioned prompting",
         "Complete Mushaf reader: four typefaces, tafsir, translation, word-level timestamps",
-        "A 15-part German Quranic-Arabic podcast, produced through a two-voice ElevenLabs pipeline",
+        "A 15-part German podcast on the Arabic of the Quran, produced through a two-voice ElevenLabs pipeline",
         "Over-the-air updates via EAS: content corrections without a store cycle",
         "iOS Live Activities and Android widgets for the next prayer time",
         "App and store copy maintained in 14 languages, across four device classes",
@@ -675,7 +675,7 @@ export const en: Content = {
       { label: "Location", value: "Berlin · remote EU" },
       { label: "Available", value: "Open to talk now · start after notice period" },
       { label: "Languages", value: "German (native) · English" },
-      { label: "Model", value: "Employment or freelance" },
+      { label: "Model", value: "Permanent employment, not freelance" },
       { label: "Source code", value: "Open source on GitHub · production repos on request" },
     ],
     strengths: [
@@ -691,6 +691,18 @@ export const en: Content = {
         title: "Evidence over gut feeling",
         body: "A green test run proves nothing. I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
       },
+      {
+        title: "I know the way through the app stores",
+        body: "63 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejected reviews, age ratings, privacy forms and signing chains are routine here, not new ground.",
+      },
+      {
+        title: "I treat regulation as part of the product",
+        body: "German fiscal requirements under § 146a AO, GDPR processing agreements, disclosure duties for AI features. I know these from shipping them with customers, not from a summary. Handle them after launch and you build the thing twice.",
+      },
+      {
+        title: "I work with agents without handing over control",
+        body: "The leverage is not typing speed. It is context, written-down conventions and review loops a model cannot talk its way past. I let agents draft. The architecture, the boundaries and the sign-off stay with me.",
+      },
     ],
     cta: {
       pdf: { label: "One-pager as PDF", href: "/domenic-moran-kurzprofil.pdf" },
@@ -701,7 +713,7 @@ export const en: Content = {
   contact: {
     eyebrow: "Contact",
     title: "Let's build something",
-    lede: "A concrete role, a project enquiry, or just a technical question: I reply within 24 hours.",
+    lede: "A concrete role, a question about one of the projects, or just a technical question: I reply within 24 hours.",
     hinweis:
       "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither, and you keep a copy of your message in your own sent folder.",
     copy: "Copy address",

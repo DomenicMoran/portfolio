@@ -32,7 +32,7 @@ export const site = {
 
   availability: {
     open: true,
-    label: "Offen für Festanstellung & Freelance",
+    label: "Offen für eine Festanstellung",
     detail: "Remote (EU) oder Berlin hybrid",
   },
 
@@ -779,7 +779,7 @@ export const recruiter = {
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
     { label: "Verfügbar", value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
-    { label: "Modell", value: "Festanstellung oder Freelance" },
+    { label: "Modell", value: "Festanstellung, keine Freiberuflichkeit" },
     // Pre-empts the "where's the code?" question and answers it as a decision
     // rather than a gap, see USER-TODO block D.
     { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
@@ -797,6 +797,18 @@ export const recruiter = {
       title: "Belegpflicht statt Bauchgefühl",
       body: "Ein grüner Testlauf beweist nichts. Das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
     },
+    {
+      title: "Ich kenne den Weg durch die Stores",
+      body: "63 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Abgelehnte Reviews, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
+    },
+    {
+      title: "Regulierung behandle ich als Teil des Produkts",
+      body: "Fiskalanforderungen nach § 146a AO, Auftragsverarbeitung nach DSGVO, Hinweispflichten für KI-Funktionen. Das kenne ich aus der Umsetzung mit Kunden, nicht aus einer Zusammenfassung. Wer das erst nach dem Launch anfasst, baut es zweimal.",
+    },
+    {
+      title: "Ich arbeite mit Agenten, ohne die Kontrolle abzugeben",
+      body: "Der Hebel ist nicht Tippgeschwindigkeit, sondern Kontext, festgeschriebene Konventionen und Prüfschleifen, die ein Modell nicht überreden kann. Ich lasse mir Entwürfe schreiben. Die Architektur, die Grenzen und die Freigabe bleiben bei mir.",
+    },
   ],
   cta: {
     pdf: { label: "Kurzprofil als PDF", href: "/domenic-moran-kurzprofil.pdf" },
@@ -811,7 +823,7 @@ export const recruiter = {
 export const contact = {
   eyebrow: "Kontakt",
   title: "Lass uns etwas bauen",
-  lede: "Ob konkrete Rolle, Projektanfrage oder einfach eine technische Frage: Ich antworte innerhalb von 24 Stunden.",
+  lede: "Ob konkrete Rolle, Rückfrage zu einem der Projekte oder einfach eine technische Frage: Ich antworte innerhalb von 24 Stunden.",
   hinweis:
     "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht. Und du behältst deine Nachricht im eigenen Postausgang.",
   checkliste: {
