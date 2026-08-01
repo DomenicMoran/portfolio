@@ -14,6 +14,9 @@ export const site = {
   name: "Domenic Moran",
   role: "AI Product Engineer",
   location: "Berlin, Deutschland",
+  // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
+  ogTagline:
+    "Vier Systeme in Produktion: Mobile, SaaS, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "domenicmoran@gmail.com",
