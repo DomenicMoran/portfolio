@@ -22,6 +22,8 @@ export const en: Content = {
     name: "Domenic Moran",
     role: "AI Product Engineer",
     location: "Berlin, Germany",
+    ogTagline:
+      "Four systems in production: mobile, SaaS, infrastructure, compliance. All built solo.",
     email: "domenicmoran@gmail.com",
     availability: {
       label: "Open to a permanent role",

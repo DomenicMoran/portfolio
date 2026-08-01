@@ -26,6 +26,7 @@ export const de: Content = {
     name: siteDe.name,
     role: siteDe.role,
     location: siteDe.location,
+    ogTagline: siteDe.ogTagline,
     email: siteDe.email,
     availability: {
       label: siteDe.availability.label,

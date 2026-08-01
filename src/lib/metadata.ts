@@ -35,6 +35,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
   const { site } = content;
   const base = site.url.replace(/\/$/, "");
   const path = lang === "de" ? "/" : "/en";
+  const ogBild = lang === "de" ? "/opengraph-image" : "/en/opengraph-image";
 
   return {
     metadataBase: new URL(base),
@@ -83,13 +84,17 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       // ein PNG, nur verwiesen hat niemand darauf. Beim Teilen auf LinkedIn,
       // WhatsApp oder Slack erschien deshalb eine Vorschau ohne Bild, und
       // LinkedIn hat den Link in der Auswahl-Sektion ganz abgelehnt.
-      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${site.name} – ${site.role}` }],
+      //
+      // Und die Karte hat eine Sprache: Beide Fassungen zeigten auf dieselbe
+      // deutsche, wer /en teilte bekam eine Vorschau mit "BERLIN,
+      // DEUTSCHLAND". Jede Sprache hat jetzt ihre eigene Route.
+      images: [{ url: ogBild, width: 1200, height: 630, alt: `${site.name} – ${site.role}` }],
     },
     twitter: {
       card: "summary_large_image",
       title: site.meta.title,
       description: kurzbeschreibung(site.meta.description),
-      images: ["/opengraph-image"],
+      images: [ogBild],
     },
     robots: {
       index: true,

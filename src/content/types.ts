@@ -56,6 +56,8 @@ export type Content = {
     email: string;
     availability: { label: string; detail: string };
     meta: { title: string; description: string };
+    /** Ein Satz auf der Social-Vorschaukarte, je Sprache eigener Text. */
+    ogTagline: string;
   };
 
   nav: readonly { label: string; href: string }[];
