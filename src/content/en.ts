@@ -637,7 +637,7 @@ export const en: Content = {
       { label: "Role", value: "AI product engineer / fullstack" },
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       { label: "Location", value: "Berlin · remote EU" },
-      { label: "Available", value: "By arrangement" },
+      { label: "Available", value: "Open to talk now · start after notice period" },
       { label: "Languages", value: "German (native) · English" },
       { label: "Model", value: "Employment or freelance" },
       { label: "Source code", value: "Open source on GitHub · production repos on request" },

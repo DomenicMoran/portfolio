@@ -747,7 +747,9 @@ export const recruiter = {
     { label: "Rolle", value: "AI Product Engineer / Fullstack" },
     { label: "Schwerpunkt", value: "Produkt end-to-end, KI-gestützte Lieferung" },
     { label: "Standort", value: "Berlin · Remote EU" },
-    { label: "Verfügbar", value: "Nach Absprache" },
+    // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
+    // Diese Fassung schon: reden sofort, anfangen nach der Frist.
+    { label: "Verfügbar", value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung oder Freelance" },
     // Pre-empts the "where's the code?" question and answers it as a decision
