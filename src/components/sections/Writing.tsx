@@ -18,7 +18,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
  */
 export function Writing() {
   const { lang } = useContent();
-  const artikel = artikelIn(lang);
+  // Nur die drei neuesten auf der Startseite. Bei fuenf Karten bricht das
+  // Dreierraster in 3+2 um, und die zweite Reihe sieht aus wie ein Rest.
+  // Die vollstaendige Liste liegt eine Ebene tiefer.
+  const artikel = artikelIn(lang).slice(0, 3);
   const chrome = chromeIn(lang);
 
   return (
