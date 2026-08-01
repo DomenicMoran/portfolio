@@ -116,6 +116,20 @@ Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 - Fehler beim Mailversand liefern einen echten Statuscode. Eine falsche
   Erfolgsmeldung ist schlimmer als ein sichtbarer Fehler
 
+## Commits
+
+Deutsch, durchgängig. Der Betreff bleibt unter 72 Zeichen und beschreibt den
+Stand **nach** der Änderung, nicht den Fehler davor: „Kopfleiste bleibt bei
+1024 px einzeilig", nicht „Leiste war zweizeilig". Kein Präfix, keine
+Fehlernummer.
+
+Der Rumpf nennt den Grund und die Messung, auf die sich die Änderung stützt.
+Eine Zahl ohne Messmethode gehört nicht hinein. Was geprüft wurde und
+unverändert blieb, darf mit — das ist der Teil, den man später sucht.
+
+Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
+„Commit-Zahlen aufgefrischt".
+
 ## Definition of Done
 
 ```bash

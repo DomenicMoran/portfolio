@@ -5,7 +5,7 @@
 # war kein Fehler, weil sie ihr Messdatum mitträgt — aber "immer aktuell" ist
 # besser als "damals richtig".
 #
-# Warum hier und nicht im Browser des Besuchers: Drei der neun Repositories
+# Warum hier und nicht im Browser des Besuchers: Drei der acht Repositories
 # sind privat, sie tragen Kundendaten. Sie öffentlich lesbar zu machen, nur
 # damit eine Zahl live ist, wäre der falsche Tausch. Ein Token im
 # ausgelieferten JavaScript wäre ein veröffentlichtes Token. Also liest ein
@@ -52,8 +52,8 @@ jobs:
         run: |
           if [ -z "$TOKEN" ]; then
             echo "ZAHLEN_TOKEN fehlt. Ohne Token sind die privaten Repositories"
-            echo "nicht lesbar, und eine Teilsumme saehe aus wie die ganze Zahl."
-            echo "Der Lauf endet ohne Aenderung."
+            echo "nicht lesbar, und eine Teilsumme sähe aus wie die ganze Zahl."
+            echo "Der Lauf endet ohne Änderung."
             echo "weiter=nein" >> "$GITHUB_OUTPUT"
           else
             echo "weiter=ja" >> "$GITHUB_OUTPUT"
@@ -83,9 +83,9 @@ jobs:
           git add src/content/geprueft.json
           git commit -m "Commit-Zahlen aufgefrischt
 
-          Automatisch gezaehlt ueber die GitHub-API. Die Zahl auf der Seite
-          traegt ihr Messdatum, damit sie auch zwischen zwei Laeufen nicht
-          falsch ist, sondern nur aelter."
+          Automatisch gezählt über die GitHub-API. Die Zahl auf der Seite trägt ihr
+          Messdatum, damit sie auch zwischen zwei Läufen nicht falsch ist, sondern nur
+          älter."
           git push
 
       - name: Ausliefern
@@ -101,7 +101,7 @@ jobs:
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
             echo "VERCEL_TOKEN fehlt. Die Zahl steht im Repository, ist aber"
-            echo "noch nicht ausgeliefert. Der naechste Deploy nimmt sie mit."
+            echo "noch nicht ausgeliefert. Der nächste Deploy nimmt sie mit."
             exit 0
           fi
           npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
