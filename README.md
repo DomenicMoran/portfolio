@@ -153,6 +153,9 @@ vorab erzeugt und vom CDN-Rand ausgeliefert.
 
 ## Lizenz
 
-Code steht unter der MIT-Lizenz: nimm dir Muster, die dir nützen.
-Inhalte, Texte und Fallstudien in `src/content/` sind © Domenic Moran und nicht
-Teil der Lizenz.
+Der Code steht unter der MIT-Lizenz — nimm dir Muster, die dir nützen.
+
+Nicht Teil der Lizenz sind die Inhalte: Texte, Fallstudien und Fachartikel
+unter `src/content/` sowie die Bilder unter `public/` sind © Domenic Moran,
+alle Rechte vorbehalten. Die MIT-Lizenz bezieht sich auf „the Software", also
+auf den Quellcode; diese Zeile stellt nur klar, wo dessen Grenze verläuft.

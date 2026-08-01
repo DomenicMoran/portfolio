@@ -2,6 +2,14 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Quellcode von domenicmoran.de: Next.js 16 mit React Server Components, zweisprachig, statisch erzeugt.",
+  "license": "MIT",
+  "author": "Domenic Moran",
+  "homepage": "https://domenicmoran.de",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DomenicMoran/portfolio.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
