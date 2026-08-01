@@ -39,7 +39,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.971 Commits in vier Monaten, entstanden neben einem Vollzeitjob.",
+      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent.",
   },
 } as const;
 
@@ -315,13 +315,13 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
     solution:
-      "Eine werbefreie Plattform über fünf Zielgeräte hinweg: iOS, Android, Android TV, Wear OS und ein HDMI-Stick für Moscheen. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-KI läuft als quantisiertes Modell auf dem Gerät. Keine Anfrage verlässt das Telefon.",
+      "Eine werbefreie Plattform über vier Zielgeräte hinweg: iOS, Android, Android TV und Wear OS. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-KI läuft als quantisiertes Modell auf dem Gerät. Keine Anfrage verlässt das Telefon.",
     hardPart: {
       title: "Spracherkennung für Koran-Rezitation",
       body: "Für den Auswendiglern-Modus muss die App hören, ob ein Vers korrekt rezitiert wurde. Der naheliegende Weg, ein größeres Whisper-Modell, war der falsche. Der Hebel lag in der Methode: den erwarteten Vers als Prompt ins Modell konditionieren, persische und Urdu-Buchstabenvarianten vor dem Vergleich normalisieren, und milde bewerten statt binär. Ein auf Tarteel feingetuntes Base-Modell schlägt so das dreifach größere Large-Modell, bei einem Bruchteil der Latenz auf dem Gerät.",
     },
     highlights: [
-      "Fünf Zielgeräte aus einem Monorepo: Phone, Tablet, Android TV, Wear OS, HDMI-Stick",
+      "Vier Zielgeräte aus einem Monorepo: Phone, Tablet, Android TV, Wear OS",
       "On-Device-LLM (GGUF/llama.cpp) mit eigenem RAG über kuratiertem Korpus, ohne Cloud-Call",
       "Whisper-basierte Rezitations-Erkennung mit vers-konditioniertem Prompting",
       "Vollständiger Mushaf-Reader: vier Schriftarten, Tafsir, Übersetzung, Wort-Zeitstempel",
@@ -350,7 +350,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "5", label: "Zielgeräte-Klassen" },
+      { value: "4", label: "Zielgeräte-Klassen" },
       { value: "14", label: "Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
       { value: "1.058", label: "Commits" },
@@ -365,24 +365,44 @@ export const caseStudies: CaseStudy[] = [
     architecture: "salati",
     shots: [
       {
-        // Die Fallstudie behauptet fünf Gerätetypen, dieses Bild ist das
-        // einzige, das einen davon zeigt, den man sonst nirgends sieht.
-        src: "/shots/salati-tv.png",
-        alt: "Koran-Reader von Salati auf Android TV: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung, unten die Fernbedienungs-Hinweise.",
-        width: 1920,
-        height: 1080,
-        label: "Android TV · Leanback",
-        variant: "screen",
+        src: "/shots/salati/shot-prayer.png",
+        alt: "Die Gebetszeiten-Ansicht: über der Liste ein Bild der Kaaba mit der aktuellen Uhrzeit und dem Countdown bis zum nächsten Gebet, darunter die fünf Zeiten des Tages mit hervorgehobenem nächsten Gebet und dem Hijri-Datum.",
+        width: 720, height: 1600, label: "Gebetszeiten · lokal berechnet", variant: "phone",
       },
       {
-        // Store-Aufnahme statt Web-Mitschnitt: höhere Auflösung, und sie belegt
-        // drei Aussagen auf einmal: Ausführung auf dem Gerät, KI-Kennzeichnung
-        // nach EU AI Act Art. 50 und Quellenangabe zur Antwort.
-        src: "/shots/salati-ki.png",
-        alt: "Die Salati-KI auf dem Telefon beantwortet eine Frage aus Koran und Hadithen, weist sich ausdrücklich als KI-gestützt aus und nennt die Quelle der Antwort.",
-        width: 1080,
-        height: 2400,
-        variant: "phone",
+        src: "/shots/salati/shot-quran.png",
+        alt: "Der Koran-Reader auf dem Telefon: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung.",
+        width: 720, height: 1600, label: "Mushaf-Reader · offline", variant: "phone",
+      },
+      {
+        src: "/shots/salati/shot-ki.png",
+        alt: "Die Fragen-Antwort-KI beantwortet eine Frage mit Quellenangabe und einem Hinweis, dass die Antwort KI-gestützt ist.",
+        width: 720, height: 1600, label: "KI auf dem Gerät · mit Quelle", variant: "phone",
+      },
+      {
+        src: "/shots/salati/shot-qibla.png",
+        alt: "Der Qibla-Kompass zeigt die Gebetsrichtung mit Gradzahl und Entfernung nach Mekka.",
+        width: 720, height: 1600, label: "Qibla · Sensor und Standort", variant: "phone",
+      },
+      {
+        src: "/shots/salati/shot-study.png",
+        alt: "Der Lernbereich mit Kursen und Fortschrittsanzeige je Lektion.",
+        width: 720, height: 1477, label: "Lernbereich", variant: "phone",
+      },
+      {
+        src: "/shots/salati/shot-tracker.png",
+        alt: "Die Gebetsverfolgung: je Tag und Gebet ein Häkchen, darüber die Strähne aufeinanderfolgender Tage.",
+        width: 720, height: 1600, label: "Verfolgung · Strähne", variant: "phone",
+      },
+      {
+        src: "/shots/salati/tv-quran.png",
+        alt: "Der Koran-Reader auf dem Fernseher: der arabische Vers groß gesetzt, darunter Umschrift und Übersetzung, unten die Hinweise für die Fernbedienung.",
+        width: 1280, height: 720, label: "Android TV · Leanback", variant: "screen",
+      },
+      {
+        src: "/shots/salati/tv-home.png",
+        alt: "Die Startseite auf dem Fernseher mit den Kacheln für Gebetszeiten, Koran und Lernbereich, eine davon im Fokusrahmen.",
+        width: 1280, height: 720, label: "Android TV · Fokus-Navigation", variant: "screen",
       },
     ],
   },
@@ -686,7 +706,7 @@ export const skillDomains: SkillDomain[] = [
       "Interfaces, die auf einem Fünf-Jahre-alten Android genauso funktionieren wie auf einem Studio-Display.",
     skills: [
       { name: "React / Next.js App Router", evidence: "Next.js 16 RSC in Produktion" },
-      { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, fünf Gerätetypen" },
+      { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, vier Gerätetypen" },
       { name: "TypeScript", evidence: "Strict überall, 0 Fehler als Merge-Gate" },
       { name: "Motion & Interaction", evidence: "Reanimated 4, Framer Motion" },
       { name: "Core Web Vitals", evidence: "LCP/CLS/INP-Budgets im CI" },
@@ -752,7 +772,7 @@ export const recruiter = {
     // ich will.
     {
       label: "Suche",
-      value: "Produktteam, in dem eine Person ein Feature bis in Produktion besitzt",
+      value: "Remote-Produktteam, in dem eine Person ein Feature bis in Produktion besitzt",
     },
     { label: "Standort", value: "Berlin · Remote EU" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.

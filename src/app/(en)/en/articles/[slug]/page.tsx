@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/article/ArticlePage";
 import { artikelEn, artikelNach, chromeEn, andereSprache } from "@/content/articles";
 import { en } from "@/content/en";
+import { kurzbeschreibung } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -22,13 +23,16 @@ export async function generateMetadata({
   const other = andereSprache("en", slug);
 
   return {
-    title: article.title,
-    description: article.dek,
+    // absolute: ohne das haengt das Layout " – Domenic Moran" an, und die
+    // Titel liegen dann bei 64 bis 79 Zeichen. Suchmaschinen schneiden ab 60
+    // ab, und der Name steht ohnehin separat daneben.
+    title: { absolute: article.title },
+    description: kurzbeschreibung(article.dek),
     keywords: [...article.tags],
     openGraph: {
       type: "article",
       title: article.title,
-      description: article.dek,
+      description: kurzbeschreibung(article.dek),
       publishedTime: article.date,
       locale: "en_US",
     },

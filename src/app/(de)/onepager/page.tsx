@@ -5,7 +5,7 @@ import { PrintButton } from "./PrintButton";
 
 export const metadata: Metadata = {
   title: "One-Pager",
-  description: `Kurzprofil von ${site.name}, ${site.role}.`,
+  description: `Kurzprofil von ${site.name}, ${site.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
   robots: { index: false, follow: true },
 };
 

@@ -61,7 +61,7 @@ const NODE_H = 62;
 
 export const ARCHITECTURES: Record<string, Diagram> = {
   salati: {
-    title: "Salati: ein Monorepo, fünf Zielgeräte",
+    title: "Salati: ein Monorepo, vier Zielgeräte",
     caption:
       "Die Geräte teilen sich Domänenlogik und Inhalte. Der KI-Pfad endet bewusst auf dem Gerät: Modell und Korpus werden ausgeliefert, nicht angefragt.",
     height: 470,
@@ -72,11 +72,13 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { label: "Delivery & Daten", y: 396 },
     ],
     nodes: [
-      { id: "ios", label: "iOS", sub: "Expo · Live Activities", x: 20, y: 62, w: 168, tone: "acid" },
-      { id: "android", label: "Android", sub: "Expo · Widgets", x: 202, y: 62, w: 168, tone: "acid" },
-      { id: "tv", label: "Android TV", sub: "Leanback-Fokus", x: 384, y: 62, w: 168, tone: "acid" },
-      { id: "wear", label: "Wear OS", sub: "Natives Modul", x: 566, y: 62, w: 150, tone: "acid" },
-      { id: "stick", label: "HDMI-Stick", sub: "PWA für Moscheen", x: 730, y: 62, w: 170, tone: "acid" },
+      // Vier Zielgeräte, gleichmäßig über die Breite. Hier stand einmal ein
+      // fünfter Knoten für einen HDMI-Stick; den gibt es in diesem Projekt
+      // nicht.
+      { id: "ios", label: "iOS", sub: "Expo · Live Activities", x: 20, y: 62, w: 208, tone: "acid" },
+      { id: "android", label: "Android", sub: "Expo · Widgets", x: 244, y: 62, w: 208, tone: "acid" },
+      { id: "tv", label: "Android TV", sub: "Leanback-Fokus", x: 468, y: 62, w: 208, tone: "acid" },
+      { id: "wear", label: "Wear OS", sub: "Natives Modul", x: 692, y: 62, w: 208, tone: "acid" },
 
       { id: "core", label: "packages/core", sub: "Gebetszeiten · Qibla · Hijri · Mushaf-Modell", x: 20, y: 198, w: 520, tone: "neutral" },
       { id: "ui", label: "packages/ui", sub: "Design-Tokens · Komponenten", x: 554, y: 198, w: 346, tone: "neutral" },
@@ -95,7 +97,6 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { from: "android", to: "core" },
       { from: "tv", to: "core" },
       { from: "wear", to: "ui" },
-      { from: "stick", to: "ui" },
       { from: "core", to: "llm" },
       { from: "core", to: "whisper" },
       { from: "ui", to: "cache" },

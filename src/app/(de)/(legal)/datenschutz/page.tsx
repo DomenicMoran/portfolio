@@ -3,6 +3,8 @@ import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Datenschutz",
+  description:
+    "Was diese Seite technisch tut und welche Daten dabei anfallen. Keine Cookies, keine Analyse, keine Einbindung von Dritten.",
   robots: { index: false, follow: false },
 };
 

@@ -29,7 +29,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. 3,971 commits in four months, alongside a full-time job.",
+        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent.",
     },
   },
 
@@ -52,6 +52,12 @@ export const en: Content = {
     commandPalette: "Open command palette",
     currentSection: "Current section",
     replay: "Play the sequence again",
+    shots: {
+      label: "Screenshots, scroll horizontally",
+      vor: "Next image",
+      zurueck: "Previous image",
+      von: "of",
+    },
   },
   palette: {
     title: "Command palette",
@@ -116,13 +122,13 @@ export const en: Content = {
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
-        "An ad-free platform across five device classes: iOS, Android, Android TV, Wear OS and an HDMI stick for mosques. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device. No query ever leaves the phone.",
+        "An ad-free platform across four device classes: iOS, Android, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device. No query ever leaves the phone.",
       hardPart: {
         title: "Speech recognition for Quranic recitation",
         body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route, a larger Whisper model, was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
       },
       highlights: [
-        "Five device classes from one monorepo: phone, tablet, Android TV, Wear OS, HDMI stick",
+        "Four device classes from one monorepo: phone, tablet, Android TV, Wear OS",
         "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus, no cloud call",
         "Whisper-based recitation checking with verse-conditioned prompting",
         "Complete Mushaf reader: four typefaces, tafsir, translation, word-level timestamps",
@@ -139,7 +145,7 @@ export const en: Content = {
         { group: "Native", items: ["Android TV (Leanback)", "Wear OS", "Live Activities", "App Widgets"] },
       ],
       metrics: [
-        { value: "5", label: "device classes" },
+        { value: "4", label: "device classes" },
         { value: "14", label: "languages" },
         { value: "100 %", label: "AI runs on the device" },
         { value: "1,058", label: "commits" },
@@ -151,19 +157,44 @@ export const en: Content = {
       architecture: "salati",
       shots: [
         {
-          src: "/shots/salati-tv.png",
-          alt: "Salati's Quran reader on Android TV: the Arabic verse set large, transliteration and German translation below, remote-control hints at the bottom.",
-          width: 1920,
-          height: 1080,
-          label: "Android TV · Leanback",
-          variant: "screen",
+          src: "/shots/salati/shot-prayer.png",
+          alt: "The prayer-times view: above the list an image of the Kaaba with the current time and a countdown to the next prayer, below it the five daily times with the next one highlighted and the Hijri date.",
+          width: 720, height: 1600, label: "Prayer times · computed locally", variant: "phone",
         },
         {
-          src: "/shots/salati-ki.png",
-          alt: "Salati's AI answering a question from Quran and hadith on a phone, explicitly marked as AI-assisted and naming the source of the answer.",
-          width: 1080,
-          height: 2400,
-          variant: "phone",
+          src: "/shots/salati/shot-quran.png",
+          alt: "The Quran reader on the phone: the Arabic verse set large, transliteration and German translation below it.",
+          width: 720, height: 1600, label: "Mushaf reader · offline", variant: "phone",
+        },
+        {
+          src: "/shots/salati/shot-ki.png",
+          alt: "The question-answering model replies with its source named and a note that the answer is AI-assisted.",
+          width: 720, height: 1600, label: "AI on the device · with source", variant: "phone",
+        },
+        {
+          src: "/shots/salati/shot-qibla.png",
+          alt: "The Qibla compass shows the prayer direction with the bearing in degrees and the distance to Mecca.",
+          width: 720, height: 1600, label: "Qibla · sensor and location", variant: "phone",
+        },
+        {
+          src: "/shots/salati/shot-study.png",
+          alt: "The study area with courses and a progress indicator per lesson.",
+          width: 720, height: 1477, label: "Study area", variant: "phone",
+        },
+        {
+          src: "/shots/salati/shot-tracker.png",
+          alt: "Prayer tracking: a tick per day and prayer, with the streak of consecutive days above.",
+          width: 720, height: 1600, label: "Tracking · streak", variant: "phone",
+        },
+        {
+          src: "/shots/salati/tv-quran.png",
+          alt: "The Quran reader on a television: the Arabic verse set large, transliteration and translation below, remote-control hints at the bottom.",
+          width: 1280, height: 720, label: "Android TV · Leanback", variant: "screen",
+        },
+        {
+          src: "/shots/salati/tv-home.png",
+          alt: "The television home screen with tiles for prayer times, Quran and the study area, one of them showing the focus ring.",
+          width: 1280, height: 720, label: "Android TV · focus navigation", variant: "screen",
         },
       ],
     },
@@ -581,7 +612,7 @@ export const en: Content = {
         summary: "Interfaces that work as well on a five-year-old Android as on a studio display.",
         skills: [
           { name: "React / Next.js App Router", evidence: "Next.js 16 RSC in production" },
-          { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, five device types" },
+          { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, four device types" },
           { name: "TypeScript", evidence: "Strict everywhere, 0 errors as a merge gate" },
           { name: "Motion & interaction", evidence: "Reanimated 4, Framer Motion" },
           { name: "Core Web Vitals", evidence: "LCP/CLS/INP budgets in CI" },
@@ -639,7 +670,7 @@ export const en: Content = {
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       {
         label: "Looking for",
-        value: "A product team where one person owns a feature all the way to production",
+        value: "A remote product team where one person owns a feature all the way to production",
       },
       { label: "Location", value: "Berlin · remote EU" },
       { label: "Available", value: "Open to talk now · start after notice period" },
