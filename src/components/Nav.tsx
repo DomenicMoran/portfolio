@@ -103,7 +103,15 @@ export function Nav({
             </span>
           </a>
 
-          <ul className="hidden items-center gap-1 md:flex">
+          {/* Umschaltpunkt lg statt md, gemessen.
+              Bei md (768 px) erschien die volle Leiste und das Burger-Menue
+              verschwand gleichzeitig, aber der Platz reichte nicht: Der
+              Kontakt-Knopf lag bei x 772 bis 857 und damit vollstaendig
+              ausserhalb der nutzbaren 768 px, waehrend zwei Menuepunkte auf
+              zwei Zeilen umbrachen. Es gab keinen Querlauf, also schlug auch
+              kein automatischer Test an. Betroffen war der ganze Bereich bis
+              etwa 880 px, also Tablets im Hochformat. */}
+          <ul className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => {
               const id = item.href.replace(/^#/, "");
               const istAktiv = active === id;
@@ -165,7 +173,7 @@ export function Nav({
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="grid size-9 place-items-center rounded-full border border-line text-ink-dim md:hidden"
+              className="grid size-9 place-items-center rounded-full border border-line text-ink-dim lg:hidden"
               aria-label={a11y.openMenu}
             >
               <Menu className="size-4" aria-hidden />
@@ -181,7 +189,7 @@ export function Nav({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9995] bg-void/95 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-[9995] bg-void/95 backdrop-blur-xl lg:hidden"
           >
             <div className="flex h-full flex-col p-6">
               <div className="flex items-center justify-between">

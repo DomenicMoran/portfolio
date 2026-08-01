@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 import { ArrowDown } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import { TECH_TICKER as techTicker } from "@/content/types";
@@ -12,24 +11,19 @@ import { cn } from "@/lib/utils";
 
 export function Hero() {
   const { hero, site } = useContent();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  // Sanfte Parallaxe beim Verlassen, bewusst klein: Große Werte lösen den
-  // Abschnitt gefühlt vom Scrollen und kosten auf schwachen Geräten Glätte.
+  // Kein scrollgebundenes Verblassen und keine Parallaxe mehr.
   //
-  // Die Zahlen hängen zusammen und dürfen nicht einzeln verstellt werden.
-  // Der Inhalt wandert beim Wegscrollen nach unten, also in Richtung des
-  // folgenden Abschnitts. Er muss unsichtbar sein, bevor er dort ankommt,
-  // sonst liegen die Kennzahlen über dessen Überschrift. Gemessen bei 320 px,
-  // der schmalsten und damit höchsten Fassung: Die Rechtecke berühren sich ab
-  // etwa 90 Prozent des Scrollwegs, das Verblassen ist bei 55 Prozent fertig.
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-
+  // Beides stand hier und war ein Fehler, gemessen: Die vier Kennzahlen sind
+  // der staerkste Inhalt der Seite, und sie standen bei scrollY 500 mitten im
+  // Bild mit 10 Prozent Deckkraft. Der Verlauf war ausserdem nicht monoton
+  // (1 -> 0,51 -> 0,10 -> 0,37 -> 0,86), was beim Scrollen flackert.
+  //
+  // Dazu kam, dass der Verlauf an scrollYProgress haengt und damit auch unter
+  // prefers-reduced-motion lief. MotionConfig erreicht ihn nicht, weil er
+  // keine Animation ist, sondern eine Abbildung der Scrollposition.
+  //
+  // Der Hero steht jetzt still. Bewegung liefern die geblurrten Kreise in der
+  // Deko-Huelle, und die sind aria-hidden und rein dekorativ.
   // Der Abschnitt beschneidet nur waagerecht. Beide Achsen zu beschneiden
   // wäre falsch, und beide offen zu lassen ebenfalls:
   //
@@ -43,7 +37,6 @@ export function Hero() {
   // einer Achse, wird die andere automatisch zu `auto`.
   return (
     <section
-      ref={ref}
       id="top"
       className="relative flex min-h-svh flex-col justify-end overflow-x-clip pb-10"
     >
@@ -66,16 +59,7 @@ export function Hero() {
         />
       </div>
 
-      {/* Die Parallaxe umschliesst Inhalt UND Laufschrift.
-          Vorher lag sie nur um den Inhalt, und die Laufschrift blieb stehen,
-          während der Block mit den Zahlen nach oben wanderte: ab etwa 600 px
-          Scrollhöhe lief sie quer durch die Kennzahlen.
-
-          Sie beiden dasselbe `y` zu geben reichte nicht, weil ein Wert in
-          Prozent sich auf die eigene Höhe bezieht. Der Inhaltsblock ist rund
-          900 px hoch, die Laufschrift 16: 18 Prozent sind dort 162 px, hier
-          drei. */}
-      <motion.div style={{ y, opacity }} className="w-full">
+      <div className="w-full">
         <div className="mx-auto w-full max-w-6xl px-6 pt-32">
         {/* Availability pill */}
         <div
@@ -190,7 +174,7 @@ export function Hero() {
         <div style={{ animationDelay: "0.85s" }} className="animate-fade-rise mt-14">
           <Marquee items={techTicker} duration={60} />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

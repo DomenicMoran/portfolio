@@ -5,7 +5,7 @@ export const widgetEn: Article = {
   title: "All tests green. Widget still empty on a real device.",
   dek: "The prayer times in the Android widget had stopped moving. Typecheck green, tests green, not reproducible in the emulator. The cause was one word in package.json.",
   date: "2026-07-30",
-  minutes: 8,
+  minutes: 4,
   tags: ["React Native", "Android", "Metro", "Debugging"],
   evidence: [
     "Salati repository, commit bce08f5e, 23 July 2026",

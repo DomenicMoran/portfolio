@@ -9,7 +9,7 @@ export const shaperDe: Article = {
   title: "Der gestrichelte Kreis kam nicht aus der Schrift",
   dek: "In etwa jedem dritten Vers stand ein Punkt in einem gestrichelten Kreis, wo keiner hingehört. Ich habe zuerst die Schriftart verdächtigt. Sie war unschuldig.",
   date: "2026-07-31",
-  minutes: 10,
+  minutes: 4,
   tags: ["Typografie", "HarfBuzz", "Unicode", "React Native"],
   evidence: [
     "Salati-Repo, Commit 427cd6c6 vom 31.07.2026",

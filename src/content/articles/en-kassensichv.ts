@@ -5,7 +5,7 @@ export const kassensichvEn: Article = {
   title: "German till law in practice: what the documentation leaves out",
   dek: "Every point of sale in Germany has to sign its transactions in hardware-backed form. The vendor documentation explains the API call. The three things that actually bite are not in it.",
   date: "2026-07-29",
-  minutes: 11,
+  minutes: 5,
   tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-tenant"],
   evidence: [
     "src/lib/tse-chain.ts and supabase/migrations/20260413_tse_chain_atomic_append.sql (lock, hash chain)",

@@ -9,7 +9,7 @@ export const widgetDe: Article = {
   title: "Alle Tests grün. Widget trotzdem leer auf dem echten Gerät.",
   dek: "Die Gebetszeiten im Android-Widget standen still. Typecheck grün, Tests grün, im Emulator nicht reproduzierbar. Die Ursache war ein Wort in der package.json.",
   date: "2026-07-30",
-  minutes: 8,
+  minutes: 4,
   tags: ["React Native", "Android", "Metro", "Debugging"],
   evidence: [
     "Salati-Repo, Commit bce08f5e vom 23.07.2026",

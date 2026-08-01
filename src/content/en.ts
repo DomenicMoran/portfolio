@@ -117,7 +117,7 @@ export const en: Content = {
       tagline: "Prayer and Quran platform for German speakers, with AI that runs offline",
       year: "2026",
       role: "Sole developer · product, code, stores, licensing",
-      statusLabel: "Live in both stores",
+      statusLabel: "Live on the App Store",
       accent: "acid",
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
@@ -565,7 +565,7 @@ export const en: Content = {
         n: "04",
         title: "Recurring fixes become automation",
         body: "When I do the same thing a third time, it becomes a workflow. Cron-aware watchdogs monitor services, heal known failures themselves, and report to Slack. Always with guardrails: a cooldown, a cap, an alert on every intervention. A watchdog that repairs blindly does more damage than it prevents.",
-        artifacts: ["46 n8n workflows", "Self-healing with a cap", "Slack ops alerts"],
+        artifacts: ["n8n workflows with self-healing", "Cooldown and cap", "Slack ops alerts"],
       },
       {
         n: "05",
@@ -642,7 +642,7 @@ export const en: Content = {
           { name: "CI/CD", evidence: "GitHub Actions, Turborepo, EAS Build" },
           { name: "Store delivery", evidence: "App Store & Play, including OTA updates" },
           { name: "Observability", evidence: "Sentry, Uptime Kuma, Slack alerts" },
-          { name: "Automation", evidence: "46 n8n workflows, self-healing" },
+          { name: "Automation", evidence: "n8n workflows with self-healing" },
         ],
       },
       {

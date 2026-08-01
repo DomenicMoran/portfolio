@@ -308,7 +308,7 @@ export const caseStudies: CaseStudy[] = [
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
     status: "live",
-    statusLabel: "Live in beiden Stores",
+    statusLabel: "Live im App Store",
     accent: "acid",
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
@@ -356,9 +356,17 @@ export const caseStudies: CaseStudy[] = [
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
-      // TODO(domenic): Store-Links, siehe USER-TODO.
-      { label: "App Store", href: "", kind: "store" },
-      { label: "Google Play", href: "", kind: "store" },
+      // Nachgeprueft am 01.08.2026: Der App-Store-Eintrag existiert unter
+      // id6791867298 in Version 1.45.0. Auf Google Play gibt es unter dem
+      // Paketnamen de.salatibox.de keinen oeffentlichen Eintrag, und eine
+      // Suche nach "Salatibox" liefert nichts. Deshalb steht hier nur der
+      // Store, der wirklich erreichbar ist. Sobald Android oeffentlich ist,
+      // kommt die Zeile dazu und das Statuswort wieder auf beide Stores.
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
+        kind: "store",
+      },
     ],
     architecture: "salati",
     shots: [
@@ -506,6 +514,19 @@ export const caseStudies: CaseStudy[] = [
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
       { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
+      // Beide Apps am 01.08.2026 in beiden Stores nachgeprueft. Sie standen
+      // bisher nirgends auf der Seite, obwohl sie der greifbarste Beleg sind:
+      // Ein Recruiter kann sie in dreissig Sekunden selbst oeffnen.
+      {
+        label: "Restaurant-App (Play)",
+        href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
+        kind: "store",
+      },
+      {
+        label: "Discovery (Play)",
+        href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
+        kind: "store",
+      },
     ],
     architecture: "menucloud",
     shots: [
@@ -650,7 +671,7 @@ export const workflow = {
       n: "04",
       title: "Wiederkehrende Fixes werden Automatisierung",
       body: "Wenn ich denselben Handgriff zum dritten Mal mache, wird er ein Workflow. Cron-bewusste Watchdogs überwachen Dienste, heilen bekannte Ausfälle selbst und melden nach Slack. Immer mit Schutzgeländer: Cooldown, Obergrenze, Alarm bei jedem Eingriff. Ein Watchdog, der blind repariert, richtet mehr Schaden an als er verhindert.",
-      artifacts: ["75+ n8n-Workflows", "Self-Healing mit Cap", "Slack-Ops-Alerts"],
+      artifacts: ["n8n-Workflows mit Self-Healing", "Cooldown und Obergrenze", "Slack-Ops-Alerts"],
     },
     {
       n: "05",
@@ -735,7 +756,7 @@ export const skillDomains: SkillDomain[] = [
       { name: "CI/CD", evidence: "GitHub Actions, Turborepo, EAS Build" },
       { name: "Store-Auslieferung", evidence: "App Store & Play, inkl. OTA-Updates" },
       { name: "Observability", evidence: "Sentry, Uptime-Kuma, Slack-Alerts" },
-      { name: "Automatisierung", evidence: "75+ n8n-Workflows, Self-Healing" },
+      { name: "Automatisierung", evidence: "n8n-Workflows mit Self-Healing" },
     ],
   },
   {

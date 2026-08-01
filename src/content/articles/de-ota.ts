@@ -9,7 +9,7 @@ export const otaDe: Article = {
   title: "„Published“ ist kein Beleg. Meine Updates kamen nie an.",
   dek: "Monatelang habe ich geglaubt, ich könne Inhaltskorrekturen ohne Store-Zyklus ausliefern. Das Werkzeug meldete nach jedem Versuch Erfolg. Angekommen ist bei keinem einzigen Nutzer je etwas.",
   date: "2026-07-30",
-  minutes: 9,
+  minutes: 4,
   tags: ["Expo", "EAS Update", "React Native", "Verifikation"],
   evidence: [
     "Salati-Repo, Commit 71bd8d2b vom 30.07.2026",
