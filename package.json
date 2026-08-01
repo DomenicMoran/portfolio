@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "onepager:pdf": "node scripts/build-onepager-pdf.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -25,6 +26,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
+    "marked": "^18.0.7",
+    "pdf-lib": "^1.17.1",
     "playwright": "^1.62.1",
     "tailwindcss": "^4",
     "typescript": "^5"

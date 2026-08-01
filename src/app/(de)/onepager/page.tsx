@@ -82,7 +82,7 @@ export default function OnePager() {
             Fullstack Product Engineer mit vier eigenständig gebauten Systemen in
             Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit
             gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent.
-            3.946 Commits in vier Monaten, neben einem Vollzeitjob.
+            3.971 Commits in vier Monaten, neben einem Vollzeitjob.
             Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt:
             agentengestützte Entwicklung mit strikter Verifikationsdisziplin,
             ein grüner Testlauf ist kein Beweis.
