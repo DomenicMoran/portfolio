@@ -311,7 +311,12 @@ if (fehlendeRepos.length) {
    * höher ist als die gemessene (dann behauptet sie mehr, als da ist), oder ein
    * Rückstand von mehr als zwei Prozent (dann ist das Datum daneben wertlos).
    */
-  const aufDerSeite = Number(ausSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/));
+  // Die Zahl steht nicht mehr als Text in site.ts, sondern kommt von dort aus
+  // dem Pruefstempel. Gelesen wird deshalb der Stempel selbst.
+  const stempelJetzt = existsSync("src/content/geprueft.json")
+    ? JSON.parse(readFileSync("src/content/geprueft.json", "utf8"))
+    : {};
+  const aufDerSeite = Number(String(stempelJetzt.commitsHead ?? "").replace(/\./g, ""));
   const rueckstand = head - aufDerSeite;
 
   if (!Number.isFinite(aufDerSeite)) {
