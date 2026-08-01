@@ -73,7 +73,10 @@ export function ArticlePage({
         {/* 38,5 rem sind 616 px. Gemessen ergibt das im Fließtext 73 Zeichen
               pro Zeile; bei den vorherigen 768 px waren es 91. */}
           <article className="mx-auto w-full max-w-[38.5rem]">
-          <Reveal>
+          {/* Der Kopf laeuft als CSS-Animation, nicht ueber Reveal: Er steht
+              ueber der Falz, und als JS-Animation waere die Ueberschrift bis
+              zur Hydration unsichtbar und damit das spaete LCP-Element. */}
+          <div className="animate-fade-rise">
             <Link
               href={chrome.base}
               className="group -my-2 mb-8 inline-flex items-center gap-2 py-2 font-mono text-[11px] tracking-wide text-ink-faint transition-colors hover:text-ink-dim"
@@ -104,7 +107,7 @@ export function ArticlePage({
                 ))}
               </ul>
             </div>
-          </Reveal>
+          </div>
 
           <div className="mt-12">
             <Prose blocks={article.blocks} />

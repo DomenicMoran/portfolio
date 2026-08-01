@@ -5,7 +5,6 @@ import { Fragment, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import { TECH_TICKER as techTicker } from "@/content/types";
-import { ease } from "@/lib/motion";
 import { Counter } from "@/components/ui/Counter";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Marquee } from "@/components/ui/Marquee";
@@ -51,11 +50,9 @@ export function Hero() {
         className="mx-auto w-full max-w-6xl px-6 pt-32"
       >
         {/* Availability pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: ease.expo, delay: 0.15 }}
-          className="mb-10 flex flex-wrap items-center gap-3"
+        <div
+          style={{ animationDelay: "0.1s" }}
+          className="animate-fade-rise mb-10 flex flex-wrap items-center gap-3"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 backdrop-blur">
             <span className="relative flex size-1.5">
@@ -69,7 +66,7 @@ export function Hero() {
           <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
             {site.role}
           </span>
-        </motion.div>
+        </div>
 
         {/* Headline: each word rises out of its own clip mask */}
         <h1 className="text-display max-w-[18ch] text-balance text-ink">
@@ -85,7 +82,7 @@ export function Hero() {
                     "animate-word-rise inline-block",
                     word.accent && "font-editorial text-acid",
                   )}
-                  style={{ animationDelay: `${0.1 + i * 0.06}s` }}
+                  style={{ animationDelay: `${0.06 + i * 0.045}s` }}
                 >
                   {word.text}
                 </span>
@@ -95,21 +92,23 @@ export function Hero() {
           ))}
         </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: ease.expo, delay: 0.8 }}
-          className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
+        {/* Alles im Hero laeuft als CSS-Animation, nicht ueber Framer Motion.
+            Als `motion.p` mit `initial opacity 0` war dieser Absatz bis zur
+            Hydration unsichtbar; auf einem gedrosselten Telefon war er damit
+            das LCP-Element und erschien erst nach 4,6 Sekunden. Die
+            Ueberschrift daneben stand zu dem Zeitpunkt schon seit 1,35
+            Sekunden da. */}
+        <p
+          style={{ animationDelay: "0.42s" }}
+          className="animate-fade-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
         >
           {hero.lede}
-        </motion.p>
+        </p>
 
         {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: ease.expo, delay: 0.95 }}
-          className="mt-10 flex flex-wrap items-center gap-3"
+        <div
+          style={{ animationDelay: "0.55s" }}
+          className="animate-fade-rise mt-10 flex flex-wrap items-center gap-3"
         >
           <Magnetic>
             <a
@@ -130,14 +129,12 @@ export function Hero() {
               <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
             </a>
           </Magnetic>
-        </motion.div>
+        </div>
 
         {/* Proof strip */}
-        <motion.dl
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, ease: ease.expo, delay: 1.1 }}
-          className="mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
+        <dl
+          style={{ animationDelay: "0.68s" }}
+          className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
         >
           {hero.proof.map((item) => (
             // flex-col-reverse: DOM order stays dt → dd (the only structure a
@@ -150,17 +147,12 @@ export function Hero() {
               </dd>
             </div>
           ))}
-        </motion.dl>
+        </dl>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.4 }}
-        className="mt-14"
-      >
+      <div style={{ animationDelay: "0.85s" }} className="animate-fade-rise mt-14">
         <Marquee items={techTicker} duration={60} />
-      </motion.div>
+      </div>
     </section>
   );
 }

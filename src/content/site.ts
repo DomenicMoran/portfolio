@@ -39,7 +39,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.969 Commits in vier Monaten, entstanden neben einem Vollzeitjob.",
+      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent. 3.971 Commits in vier Monaten, entstanden neben einem Vollzeitjob.",
   },
 } as const;
 
@@ -68,7 +68,7 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: "3.969", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
+    { value: "3.971", label: "Commits in 4 Monaten", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
@@ -76,7 +76,7 @@ export const about = {
   /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
   statsHinweis:
-    "Alle Zahlen auf dieser Seite sind am 31. Juli 2026 gegen `git log` und die Repositories geprüft. Commit-Stände wachsen weiter; abweichende Werte sind daher höher, nicht niedriger.",
+    "Alle Zahlen sind am 1. August 2026 gemessen, mit git rev-list HEAD --count über die drei Monorepos hinter Salati, MenuCloud und NOURI. Gezählt wird nur der Hauptzweig; über alle Referenzen wären es 4.162. Commit-Stände wachsen weiter, abweichende Werte sind daher höher, nicht niedriger.",
   timeline: [
     {
       period: "seit 04/2026",
@@ -240,7 +240,7 @@ export const hero = {
   // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: "3.969", label: "Commits in 4 Monaten" },
+    { value: "3.971", label: "Commits in 4 Monaten" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
     { value: "298", label: "automatisierte Tests" },
   ],
@@ -487,7 +487,6 @@ export const caseStudies: CaseStudy[] = [
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
       { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
-      { label: "TikTok", href: "https://tiktok.com/@menucloudberlin", kind: "social" },
     ],
     architecture: "menucloud",
     shots: [

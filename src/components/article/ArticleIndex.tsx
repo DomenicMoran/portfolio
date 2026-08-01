@@ -37,15 +37,41 @@ export function ArticleIndex({
 
       <main className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
         <div className="mx-auto w-full max-w-5xl">
+          {/* Die Uebersicht ist eine eigene Seite, ihre Ueberschrift ist
+              deshalb die h1 und nicht wie in einer Sektion eine h2. */}
           <SectionHeading
+            as="h1"
+            css
             eyebrow={chrome.eyebrow}
             title={chrome.title}
             lede={chrome.lede}
           />
 
           <ul className="mt-16 flex flex-col gap-4">
-            {articles.map((article, i) => (
-              <Reveal as="li" key={article.slug} delay={i * 0.06}>
+            {articles.map((article, i) => {
+              // Die ersten beiden Karten stehen auf einem Telefon ueber der
+              // Falz. Als JS-Animation waeren sie bis zur Hydration
+              // unsichtbar; gemessen war die erste damit das LCP-Element und
+              // erschien nach 3,4 s. Weiter unten bleibt die Bewegung an den
+              // Sichtbarkeitsbeobachter gebunden, damit sie nicht schon
+              // abgelaufen ist, bevor jemand hinsieht.
+              const ueberDerFalz = i < 2;
+              const Karte = ({ children }: { children: React.ReactNode }) =>
+                ueberDerFalz ? (
+                  <li
+                    style={{ animationDelay: `${0.45 + i * 0.08}s` }}
+                    className="animate-fade-rise"
+                  >
+                    {children}
+                  </li>
+                ) : (
+                  <Reveal as="li" delay={i * 0.06}>
+                    {children}
+                  </Reveal>
+                );
+
+              return (
+              <Karte key={article.slug}>
                 <Link
                   href={`${chrome.base}/${article.slug}`}
                   className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9"
@@ -79,8 +105,9 @@ export function ArticleIndex({
                     ))}
                   </ul>
                 </Link>
-              </Reveal>
-            ))}
+              </Karte>
+              );
+            })}
           </ul>
         </div>
       </main>

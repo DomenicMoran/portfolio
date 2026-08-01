@@ -29,7 +29,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. 3,969 commits in four months, alongside a full-time job.",
+        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. 3,971 commits in four months, alongside a full-time job.",
     },
   },
 
@@ -81,7 +81,7 @@ export const en: Content = {
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
       { value: "4", label: "systems in production" },
-      { value: "3,969", label: "commits in 4 months" },
+      { value: "3,971", label: "commits in 4 months" },
       { value: "1,276", label: "API routes (MenuCloud)" },
       { value: "298", label: "automated tests" },
     ],
@@ -255,8 +255,7 @@ export const en: Content = {
         { label: "Status page", href: "https://menucloud-berlin.de/status", kind: "live" },
         { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
         { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
-        { label: "TikTok", href: "https://tiktok.com/@menucloudberlin", kind: "social" },
-      ],
+        ],
       architecture: "menucloud",
       shots: [
         {
@@ -375,13 +374,13 @@ export const en: Content = {
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
-      { value: "3,969", label: "commits in 4 months", note: "alongside a full-time job" },
+      { value: "3,971", label: "commits in 4 months", note: "alongside a full-time job" },
       { value: "4", label: "systems in production", note: "all built alone" },
       { value: "2", label: "app stores", note: "iOS and Android, live" },
       { value: "2022", label: "self-taught since", note: "Meta & Udemy certificates" },
     ],
     statsHinweis:
-      "Every figure on this page was verified against `git log` and the repositories on 31 July 2026. Commit counts keep growing; any deviation will therefore be upward, not downward.",
+      "All figures were measured on 1 August 2026 using git rev-list HEAD --count across the three monorepos behind Salati, MenuCloud and NOURI. Only the main branch is counted; across all refs it would be 4,162. Commit counts keep growing, so any deviation is upward, not downward.",
     timelineLabel: "Path",
     timeline: [
       {
