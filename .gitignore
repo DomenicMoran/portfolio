@@ -43,3 +43,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Arbeitsdateien einer Sitzung, nie versionieren
+_*.mjs
+_*.png
+_*.json
