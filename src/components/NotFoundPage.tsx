@@ -43,7 +43,7 @@ export function NotFoundPage({
             <li>
               <Link
                 href={base === "" ? "/" : base}
-                className="inline-flex rounded-full bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
+                className="inline-flex rounded-full border border-transparent bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
               >
                 {notFound.home}
               </Link>

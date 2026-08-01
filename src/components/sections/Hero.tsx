@@ -113,7 +113,12 @@ export function Hero() {
           <Magnetic>
             <a
               href={hero.ctaPrimary.href}
-              className="group inline-flex items-center gap-2 rounded-full bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
+              // Der durchsichtige Rahmen ist normal unsichtbar. Im
+              // Kontrastmodus von Windows ersetzt das System jede Farbe, auch
+              // "transparent", und der Rahmen wird sichtbar. Ohne ihn verliert
+              // der gefüllte Knopf dort seine Form und liest sich wie
+              // gewöhnlicher Text.
+              className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
             >
               {hero.ctaPrimary.label}
               <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden />

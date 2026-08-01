@@ -61,9 +61,13 @@ export function SitePage({ content }: { content: Content }) {
     <ContentProvider content={content}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
 
-      <SiteShell />
+      {/* Vor der Kopfleiste, nicht danach.
+          Ein Sprunglink ist nur etwas wert, wenn er die erste Station der
+          Tabulator-Reihenfolge ist. Weil er im Markup hinter <SiteShell>
+          stand, war er gemessen die elfte: erst die gesamte Navigation, dann
+          der Link, mit dem man sie hätte überspringen können.
 
-      {/* Der Header ist fixiert und 70 px hoch. Bei `top-4` legte sich dieser
+          Der Header ist fixiert und 70 px hoch. Bei `top-4` legte sich dieser
           Link beim ersten Tabben quer über den Namen im Header. Er sitzt
           deshalb darunter: gemessen 84 px, das sind 14 px Luft. */}
       <a
@@ -72,6 +76,8 @@ export function SitePage({ content }: { content: Content }) {
       >
         {content.skipToContent}
       </a>
+
+      <SiteShell />
 
       <main className="flex-1">
         <Hero />
