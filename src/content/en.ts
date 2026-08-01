@@ -86,9 +86,9 @@ export const en: Content = {
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
       { value: "4", label: "systems in production" },
-      { value: "3,971", label: "commits in 4 months" },
+      { value: "4,053", label: "commits since March 2026" },
       { value: "1,276", label: "API routes (MenuCloud)" },
-      { value: "7,568", label: "test cases" },
+      { value: "7,437", label: "test cases (MenuCloud)" },
     ],
   },
 
@@ -148,7 +148,7 @@ export const en: Content = {
         { value: "4", label: "device classes" },
         { value: "14", label: "languages" },
         { value: "100 %", label: "AI runs on the device" },
-        { value: "1,058", label: "commits" },
+        { value: "1,062", label: "commits" },
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -220,14 +220,14 @@ export const en: Content = {
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
-        "5,340 test cases (5,163 unit, 177 end-to-end), the end-to-end suite running against production",
+        "7,437 test cases (7,263 unit, 174 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         "Self-hosted mail stack with a three-stage fallback chain",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
         "iOS and Android apps for owners and service staff",
       ],
       automation: {
-        title: "46 workflows that keep the business running",
+        title: "63 workflows that keep the business running",
         lede: "The part of the system that runs without me. Every workflow is versioned and traceable in the repository, not clicked together in a dashboard and then forgotten.",
         groups: [
           {
@@ -277,7 +277,7 @@ export const en: Content = {
       metrics: [
         { value: "1,276", label: "API routes" },
         { value: "812", label: "DB migrations" },
-        { value: "5,340", label: "test cases" },
+        { value: "7,437", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
@@ -404,7 +404,7 @@ export const en: Content = {
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
-      { value: "3,971", label: "commits in 4 months", note: "alongside a full-time job" },
+      { value: "4,053", label: "commits since March 2026", note: "alongside a full-time job" },
       { value: "4", label: "systems in production", note: "all built alone" },
       { value: "2", label: "app stores", note: "iOS and Android, live" },
       { value: "2022", label: "self-taught since", note: "Meta & Udemy certificates" },
@@ -442,7 +442,7 @@ export const en: Content = {
           name: "cron-last-due",
           href: "https://github.com/DomenicMoran/cron-last-due",
           body: "When was this cron job last due? Timezone-aware, built for watchdogs. Came out of a blanket rule that false-alarmed every weekend.",
-          meta: "TypeScript · 21 tests · zero dependencies",
+          meta: "TypeScript · 23 tests · zero dependencies",
         },
         {
           name: "whisper-ggml-header",
