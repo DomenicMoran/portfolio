@@ -214,7 +214,17 @@ export function About() {
                 g.items.some((i) => i.href),
               ) && about.certificates.note ? (
                 <p className="mt-5 text-[11px] leading-relaxed text-ink-faint">
-                  {about.certificates.note}
+                  {about.certificates.note}{" "}
+                  {about.certificates.noteHref ? (
+                    <a
+                      href={about.certificates.noteHref.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="-my-1 py-1 underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                    >
+                      {about.certificates.noteHref.label}
+                    </a>
+                  ) : null}
                 </p>
               ) : null}
             </Reveal>

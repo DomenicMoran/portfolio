@@ -145,7 +145,8 @@ export const about = {
    */
   certificates: {
     label: "Zertifikate",
-    note: "Jeder Eintrag führt zur Bestätigungsseite des Ausstellers. Alle zehn liegen zusätzlich als PDF im Repository Zertifikate.",
+    note: "Jeder Eintrag führt zur Bestätigungsseite des Ausstellers.",
+    noteHref: { label: "Alle zehn zusätzlich als PDF", href: "https://github.com/DomenicMoran/Zertifikate" },
     groups: [
       {
         issuer: "Meta, über Coursera",

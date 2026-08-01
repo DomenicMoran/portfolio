@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/artikel",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },
+    // Ohne diesen Eintrag findet kein Feed-Leser den Feed von allein.
+    types: { "application/atom+xml": "/artikel/feed.xml" },
   },
 };
 
