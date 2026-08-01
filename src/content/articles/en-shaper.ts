@@ -10,7 +10,7 @@ export const shaperEn: Article = {
   evidence: [
     "Salati repository, commit 427cd6c6, 31 July 2026",
     "New: apps/mobile/src/lib/arabicText.ts (normalisation, splitArabicWords, arabicClusters)",
-    "Checker: scripts/pruefe-koran-fonts.mjs, reads every font file byte by byte",
+    "Checker: apps/mobile/scripts/pruefe-koran-fonts.mjs, reads every font file byte by byte",
     "Cross-checked live against the source text on quran.com, verses 2:2 and 2:5",
   ],
   blocks: [

@@ -22,7 +22,7 @@
  *
  * Alle drei mit Gegenprobe nachgestellt und behoben.
  *
- *   node scripts/pruefe-oeffentlich.mjs
+ *   node scripts/check-public-dir.mjs
  */
 
 import { readdirSync, readFileSync, lstatSync, realpathSync } from "node:fs";

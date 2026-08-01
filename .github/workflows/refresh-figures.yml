@@ -46,7 +46,7 @@ jobs:
           node-version: 22
 
       - name: Token vorhanden?
-        id: pruefung
+        id: token
         env:
           TOKEN: ${{ secrets.ZAHLEN_TOKEN }}
         run: |
@@ -54,33 +54,33 @@ jobs:
             echo "ZAHLEN_TOKEN fehlt. Ohne Token sind die privaten Repositories"
             echo "nicht lesbar, und eine Teilsumme sähe aus wie die ganze Zahl."
             echo "Der Lauf endet ohne Änderung."
-            echo "weiter=nein" >> "$GITHUB_OUTPUT"
+            echo "proceed=no" >> "$GITHUB_OUTPUT"
           else
-            echo "weiter=ja" >> "$GITHUB_OUTPUT"
+            echo "proceed=yes" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Zahlen holen
-        if: steps.pruefung.outputs.weiter == 'ja'
+        if: steps.token.outputs.proceed == 'yes'
         env:
           GITHUB_TOKEN: ${{ secrets.ZAHLEN_TOKEN }}
-        run: node scripts/zahlen-von-github.mjs
+        run: node scripts/fetch-figures-from-github.mjs
 
-      - name: Aenderung feststellen
-        if: steps.pruefung.outputs.weiter == 'ja'
-        id: aenderung
+      - name: Änderung feststellen
+        if: steps.token.outputs.proceed == 'yes'
+        id: diff
         run: |
-          if git diff --quiet src/content/geprueft.json; then
-            echo "geaendert=nein" >> "$GITHUB_OUTPUT"
+          if git diff --quiet src/content/verified.json; then
+            echo "changed=no" >> "$GITHUB_OUTPUT"
           else
-            echo "geaendert=ja" >> "$GITHUB_OUTPUT"
+            echo "changed=yes" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Einchecken
-        if: steps.aenderung.outputs.geaendert == 'ja'
+        if: steps.diff.outputs.changed == 'yes'
         run: |
           git config user.name "Zahlen-Automat"
           git config user.email "noreply@domenicmoran.de"
-          git add src/content/geprueft.json
+          git add src/content/verified.json
           git commit -m "Commit-Zahlen aufgefrischt
 
           Automatisch gezählt über die GitHub-API. Die Zahl auf der Seite trägt ihr
@@ -89,7 +89,7 @@ jobs:
           git push
 
       - name: Ausliefern
-        if: steps.aenderung.outputs.geaendert == 'ja'
+        if: steps.diff.outputs.changed == 'yes'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           # Kennungen statt Geheimnisse: `.vercel/project.json` steht in der

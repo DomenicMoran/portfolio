@@ -30,22 +30,22 @@ const quelle = readFileSync("src/content/site.ts", "utf8");
  * Zwei Umbauten haben dieses Skript schon zu Recht anhalten lassen. Erst
  * wechselte die Beschriftung von "Commits in 4 Monaten" auf "Commits seit
  * März 2026", weil ein wanderndes Fenster eine Zahl ergibt, die von selbst
- * sinkt. Dann wanderte der Wert selbst aus site.ts nach geprueft.json, wo ihn
+ * sinkt. Dann wanderte der Wert selbst aus site.ts nach verified.json, wo ihn
  * der Zahlen-Automat täglich fortschreibt. Beide Male war der Abbruch richtig:
  * lieber gar kein Titelbild als eines mit einer Zahl, die niemand nachrechnen
  * kann.
  *
- * Der Wert kommt jetzt aus `geprueft.json`, also aus genau der Datei, aus der
+ * Der Wert kommt jetzt aus `verified.json`, also aus genau der Datei, aus der
  * auch Kachel, Konsolenmeldung und humans.txt lesen. Der Wächter bleibt
  * trotzdem: Er verlangt, dass site.ts die Kennzahl mit dieser Beschriftung
  * ebenfalls aus dem Stempel bezieht. Stünde dort wieder eine feste Zahl,
  * könnten Bild und Seite auseinanderlaufen — und genau davor schützt er.
  */
 function kennzahl(anfangDerBeschriftung) {
-  const stempel = JSON.parse(readFileSync("src/content/geprueft.json", "utf8"));
+  const stempel = JSON.parse(readFileSync("src/content/verified.json", "utf8"));
 
   // Die Kennzahlen stehen als
-  // { value: geprueft.commitsHead, label: "Commits seit März 2026" }.
+  // { value: verified.commitsHead, label: "Commits seit März 2026" }.
   const bezuege = [
     ...quelle.matchAll(
       new RegExp(
@@ -56,7 +56,7 @@ function kennzahl(anfangDerBeschriftung) {
   ].map((t) => t[1]);
 
   const verschieden = [...new Set(bezuege)];
-  if (verschieden.length !== 1 || verschieden[0] !== "geprueft.commitsHead") {
+  if (verschieden.length !== 1 || verschieden[0] !== "verified.commitsHead") {
     throw new Error(
       bezuege.length === 0
         ? `Keine Kennzahl mit Beschriftung "${anfangDerBeschriftung}…" in ` +
@@ -64,13 +64,13 @@ function kennzahl(anfangDerBeschriftung) {
           `Zahl stimmt.`
         : `Die Kennzahl "${anfangDerBeschriftung}…" bezieht sich in site.ts ` +
           `auf ${verschieden.join(", ")} statt ausschliesslich auf ` +
-          `geprueft.commitsHead. Damit könnten Titelbild und Seite ` +
+          `verified.commitsHead. Damit könnten Titelbild und Seite ` +
           `auseinanderlaufen. Erst klären, welche Zahl gilt, dann bauen.`,
     );
   }
 
   if (!stempel.commitsHead) {
-    throw new Error("geprueft.json trägt kein Feld commitsHead. Nichts gebaut.");
+    throw new Error("verified.json trägt kein Feld commitsHead. Nichts gebaut.");
   }
   return stempel.commitsHead;
 }

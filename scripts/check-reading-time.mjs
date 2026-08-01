@@ -12,8 +12,8 @@
  * hier nicht als Wörter mit, kosten beim Lesen aber Zeit. Der niedrigere Wert
  * gleicht beides aus.
  *
- *   node scripts/pruefe-lesezeit.mjs          nur prüfen
- *   node scripts/pruefe-lesezeit.mjs --setzen  Werte korrigieren
+ *   node scripts/check-reading-time.mjs          nur prüfen
+ *   node scripts/check-reading-time.mjs --setzen  Werte korrigieren
  */
 
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";

@@ -94,20 +94,49 @@ Voraussetzung: Node.js ≥ 20.9.
 ```
 src/
 ├─ app/
-│  ├─ (legal)/          Impressum + Datenschutz (geteiltes Layout)
-│  ├─ not-found.tsx     Eigene 404-Seite
-│  ├─ onepager/         A4-Route, wird zum PDF
-│  ├─ opengraph-image   Social-Card, zur Build-Zeit erzeugt
-│  ├─ icon.tsx          Favicon als Monogramm
-│  └─ page.tsx          Startseite (Server Component)
+│  ├─ (de)/                  deutsche Fassung, eigenes Wurzel-Layout
+│  │  ├─ (legal)/            Impressum + Datenschutz (geteiltes Layout)
+│  │  ├─ artikel/            Übersicht, Einzelseiten, Atom-Feed, OG-Bilder
+│  │  ├─ onepager/           A4-Route, wird zum PDF
+│  │  ├─ not-found.tsx       404 innerhalb des Layouts
+│  │  └─ page.tsx            Startseite (Server Component)
+│  ├─ (en)/en/               englische Fassung, zweites Wurzel-Layout
+│  ├─ global-not-found.tsx   404 ohne Layout — bei zwei Wurzel-Layouts nötig
+│  ├─ humans.txt/route.ts    liest denselben Prüfstempel wie die Seite
+│  ├─ icon.tsx               Favicon als Monogramm
+│  ├─ opengraph-image.tsx    Social-Card, zur Bauzeit erzeugt
+│  ├─ robots.ts · sitemap.ts
+│  └─ globals.css
 ├─ components/
-│  ├─ sections/         Hero · CaseStudies · AiWorkflow · Skills · Hire · Contact
-│  ├─ ui/               Reveal · Magnetic · Counter · Marquee · Cursor · …
+│  ├─ sections/              Hero · CaseStudies · AiWorkflow · Skills ·
+│  │                         RecruiterHub · About · Writing · Contact
+│  ├─ ui/                    Reveal · Magnetic · Counter · Marquee · Cursor ·
+│  │                         DeviceFrame · ShotCarousel · SectionHeading · …
+│  ├─ article/               ArticleIndex · ArticlePage · Prose
+│  ├─ providers/             MotionProvider · SmoothScroll
 │  ├─ ArchitectureDiagram.tsx
 │  ├─ CommandPalette.tsx
-│  └─ SiteShell.tsx     Client-Insel: hält den Palette-State
-├─ content/site.ts      Alle Inhalte
-└─ lib/                 cn() + geteilte Motion-Tokens
+│  ├─ ConsoleGreeting.tsx    Nachricht für die Entwicklerkonsole
+│  └─ SiteShell.tsx          Client-Insel: hält den Palette-State
+├─ content/
+│  ├─ site.ts                deutsche Quelle: jeder Text, jede Zahl
+│  ├─ de.ts · en.ts          Adapter je Sprache, gegen types.ts deklariert
+│  ├─ types.ts               gemeinsame Form — fehlt ein Feld, bricht der Bau
+│  ├─ articles/              fünf Fachartikel je Sprache, getippte Blöcke
+│  └─ verified.json          Prüfstempel, nur vom Workflow geschrieben
+└─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks
+
+scripts/
+├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
+├─ check-figures.mjs              zählt die Zahlen der Seite gegen die Repos nach
+├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
+├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
+├─ build-onepager-pdf.mjs         druckt /onepager auf genau eine A4-Seite
+└─ build-linkedin-banner.mjs      Titelbild aus derselben Zahl wie die Seite
+
+.github/workflows/
+├─ check.yml                      Typen, Linter und Bau bei jedem Push
+└─ refresh-figures.yml            zählt täglich nach und liefert aus
 ```
 
 Die Startseite bleibt eine Server Component. `SiteShell` ist die einzige

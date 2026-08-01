@@ -1,4 +1,4 @@
-import geprueft from "@/content/geprueft.json";
+import verified from "@/content/verified.json";
 
 /**
  * humans.txt als Route statt als Datei.
@@ -13,7 +13,7 @@ import geprueft from "@/content/geprueft.json";
 export const dynamic = "force-static";
 
 export function GET() {
-  const stand = geprueft.datum.split("-").reverse().join(".");
+  const stand = verified.date.split("-").reverse().join(".");
 
   const text = `/* WER */
   Name:     Domenic Moran
@@ -37,8 +37,8 @@ export function GET() {
 
 /* BELEGE */
   Ein Automat bei GitHub zählt täglich die Commits über alle
-  ${geprueft.repos} Repositories, schreibt sie in diese Seite und liefert aus.
-  Stand ${stand}: ${geprueft.commitsHead} Commits, über die GitHub-API gezählt.
+  ${verified.repos} Repositories, schreibt sie in diese Seite und liefert aus.
+  Stand ${stand}: ${verified.commitsHead} Commits, über die GitHub-API gezählt.
   Nur was auch bei GitHub liegt, zählt mit — lokale Stände nicht.
   Der Bau scheitert, wenn eine private Datei in public/ liegt.
 

@@ -1,4 +1,4 @@
-import geprueft from "./geprueft.json";
+import verified from "./verified.json";
 /**
  * Single source of truth for every piece of copy and data on the site.
  *
@@ -67,7 +67,7 @@ export const about = {
   ],
   // Verified against `git log` and the repositories on 2026-07-31.
   stats: [
-    { value: geprueft.commitsHead, label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
+    { value: verified.commitsHead, label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
     { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
@@ -77,13 +77,13 @@ export const about = {
   /**
    * Aus dem Prüfstempel gespeist, nicht daneben gepflegt.
    *
-   * Zahl, Datum und Anzahl der Repositories stehen in `geprueft.json`, das ein
+   * Zahl, Datum und Anzahl der Repositories stehen in `verified.json`, das ein
    * Automat bei GitHub täglich schreibt. Vorher standen sie hier als Text und
    * gingen mit jedem Lauf ein Stück auseinander: die Kachel sagte 4.042, der
    * Stempel 4.046, die Konsolenmeldung wieder etwas anderes. Eine Seite, die
    * zum Nachrechnen einlädt, darf sich nicht selbst widersprechen.
    */
-  statsHinweis: `Gemessen am ${geprueft.datum.split("-").reverse().join(".")} über die GitHub-API, mit git rev-list --count über alle ${geprueft.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt — lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
+  statsHinweis: `Gemessen am ${verified.date.split("-").reverse().join(".")} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt — lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
   timeline: [
     {
       period: "seit 04/2026",
@@ -248,7 +248,7 @@ export const hero = {
   // falsch wäre.
   proof: [
     { value: "4", label: "Systeme in Produktion" },
-    { value: geprueft.commitsHead, label: "Commits seit März 2026" },
+    { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
     { value: "7.437", label: "Testfälle (MenuCloud)" },
   ],
@@ -365,7 +365,7 @@ export const caseStudies: CaseStudy[] = [
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
-      // Nachgeprueft am 01.08.2026: Der App-Store-Eintrag existiert unter
+      // Nachgeprüft am 01.08.2026: Der App-Store-Eintrag existiert unter
       // id6791867298 in Version 1.45.0. Auf Google Play gibt es unter dem
       // Paketnamen de.salatibox.de keinen oeffentlichen Eintrag, und eine
       // Suche nach "Salatibox" liefert nichts. Deshalb steht hier nur der
@@ -523,7 +523,7 @@ export const caseStudies: CaseStudy[] = [
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
       { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
-      // Beide Apps am 01.08.2026 in beiden Stores nachgeprueft. Sie standen
+      // Beide Apps am 01.08.2026 in beiden Stores nachgeprüft. Sie standen
       // bisher nirgends auf der Seite, obwohl sie der greifbarste Beleg sind:
       // Ein Recruiter kann sie in dreissig Sekunden selbst oeffnen.
       {
