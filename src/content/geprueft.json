@@ -1,6 +1,7 @@
 {
   "datum": "2026-08-01",
-  "commitsHead": "4.065",
+  "commitsHead": "4.042",
   "commitsAlleReferenzen": "4.256",
-  "repos": 9
+  "repos": 8,
+  "quelle": "GitHub-API"
 }
