@@ -53,6 +53,12 @@ export const de: Content = {
     commandPalette: "Befehlspalette öffnen",
     currentSection: "Aktueller Abschnitt",
     replay: "Ablauf erneut abspielen",
+    shots: {
+      label: "Bildschirmfotos, waagerecht blätterbar",
+      vor: "Nächstes Bild",
+      zurueck: "Vorheriges Bild",
+      von: "von",
+    },
   },
   palette: {
     title: "Befehlspalette",

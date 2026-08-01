@@ -45,10 +45,17 @@ export function Hero() {
         />
       </div>
 
-      <motion.div
-        style={{ y, opacity }}
-        className="mx-auto w-full max-w-6xl px-6 pt-32"
-      >
+      {/* Die Parallaxe umschliesst Inhalt UND Laufschrift.
+          Vorher lag sie nur um den Inhalt, und die Laufschrift blieb stehen,
+          während der Block mit den Zahlen nach oben wanderte: ab etwa 600 px
+          Scrollhöhe lief sie quer durch die Kennzahlen.
+
+          Sie beiden dasselbe `y` zu geben reichte nicht, weil ein Wert in
+          Prozent sich auf die eigene Höhe bezieht. Der Inhaltsblock ist rund
+          900 px hoch, die Laufschrift 16: 18 Prozent sind dort 162 px, hier
+          drei. */}
+      <motion.div style={{ y, opacity }} className="w-full">
+        <div className="mx-auto w-full max-w-6xl px-6 pt-32">
         {/* Availability pill */}
         <div
           style={{ animationDelay: "0.1s" }}
@@ -155,13 +162,14 @@ export function Hero() {
                 <Counter value={item.value} />
               </dd>
             </div>
-          ))}
-        </dl>
-      </motion.div>
+            ))}
+          </dl>
+        </div>
 
-      <div style={{ animationDelay: "0.85s" }} className="animate-fade-rise mt-14">
-        <Marquee items={techTicker} duration={60} />
-      </div>
+        <div style={{ animationDelay: "0.85s" }} className="animate-fade-rise mt-14">
+          <Marquee items={techTicker} duration={60} />
+        </div>
+      </motion.div>
     </section>
   );
 }

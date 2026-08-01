@@ -77,6 +77,8 @@ export type Content = {
     commandPalette: string;
     currentSection: string;
     replay: string;
+    /** Bedienung der Bildstrecke in den Fallstudien. */
+    shots: { label: string; vor: string; zurueck: string; von: string };
   };
 
   /** Beschriftungen der Befehlspalette. */

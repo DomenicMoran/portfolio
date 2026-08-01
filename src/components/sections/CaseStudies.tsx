@@ -10,6 +10,7 @@ import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
 import { RichText } from "@/components/ui/InlineCode";
+import { ShotCarousel } from "@/components/ui/ShotCarousel";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ease, viewportOnce } from "@/lib/motion";
@@ -49,7 +50,7 @@ export function CaseStudies() {
 }
 
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
-  const { work } = useContent();
+  const { work, a11y } = useContent();
   const [tab, setTab] = useState<TabId>("highlights");
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
@@ -86,28 +87,35 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
       </Reveal>
 
-      {/* Live screenshots: visual proof before the prose argument. */}
+      {/* Live screenshots: visual proof before the prose argument.
+          Ab drei Bildern wird daraus eine blätterbare Strecke. Nebeneinander
+          gelegt schrumpft bei acht Bildern jedes auf eine Breite, auf der man
+          nichts mehr erkennt, und die Fallstudie wird doppelt so lang. */}
       {study.shots?.length ? (
         <Reveal delay={0.08}>
-          <div
-            className={cn(
-              "mt-10 flex flex-col items-center gap-6",
-              study.shots.length > 1 && "sm:flex-row sm:items-end",
-            )}
-          >
-            {study.shots.map((shot) => (
-              <DeviceFrame
-                key={shot.src}
-                src={shot.src}
-                alt={shot.alt}
-                width={shot.width}
-                height={shot.height}
-                label={shot.label}
-                variant={shot.variant}
-                className={shot.variant === "phone" ? "shrink-0" : "min-w-0 flex-1"}
-              />
-            ))}
-          </div>
+          {study.shots.length > 2 ? (
+            <ShotCarousel shots={study.shots} label={a11y.shots.label} hinweis={a11y.shots} />
+          ) : (
+            <div
+              className={cn(
+                "mt-10 flex flex-col items-center gap-6",
+                study.shots.length > 1 && "sm:flex-row sm:items-end",
+              )}
+            >
+              {study.shots.map((shot) => (
+                <DeviceFrame
+                  key={shot.src}
+                  src={shot.src}
+                  alt={shot.alt}
+                  width={shot.width}
+                  height={shot.height}
+                  label={shot.label}
+                  variant={shot.variant}
+                  className={shot.variant === "phone" ? "shrink-0" : "min-w-0 flex-1"}
+                />
+              ))}
+            </div>
+          )}
         </Reveal>
       ) : null}
 

@@ -3,6 +3,11 @@ import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Impressum",
+  // Ohne eigene Beschreibung erbt diese Seite die der Startseite. Zwei
+  // Seiten mit derselben Beschreibung sind ein bekannter Mangel; hier ist
+  // sie ausserdem inhaltlich falsch.
+  description:
+    "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
   robots: { index: false, follow: false },
 };
 

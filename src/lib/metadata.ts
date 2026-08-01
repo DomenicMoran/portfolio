@@ -2,6 +2,29 @@ import type { Metadata } from "next";
 import type { Content } from "@/content/types";
 
 /**
+ * Kürzt eine Beschreibung auf die Länge, die Suchmaschinen anzeigen.
+ *
+ * Alles über etwa 160 Zeichen wird in der Trefferliste abgeschnitten, und
+ * abgeschnitten wird ohne Rücksicht auf den Satz. Deshalb hier am Satzende
+ * kürzen: Lieber ein vollständiger Satz weniger als ein halber mehr.
+ */
+export function kurzbeschreibung(text: string, grenze = 158): string {
+  if (text.length <= grenze) return text;
+
+  const bisGrenze = text.slice(0, grenze);
+  const satzende = Math.max(
+    bisGrenze.lastIndexOf(". "),
+    bisGrenze.lastIndexOf("? "),
+    bisGrenze.lastIndexOf("! "),
+  );
+  if (satzende > grenze * 0.4) return bisGrenze.slice(0, satzende + 1).trim();
+
+  const wortende = bisGrenze.lastIndexOf(" ");
+  return bisGrenze.slice(0, wortende > 0 ? wortende : grenze).trimEnd() + " …";
+}
+
+
+/**
  * Metadaten für eine Sprachfassung.
  *
  * `alternates.languages` ist der Teil, den Suchmaschinen tatsächlich auswerten:
@@ -19,7 +42,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       default: site.meta.title,
       template: `%s – ${site.name}`,
     },
-    description: site.meta.description,
+    description: kurzbeschreibung(site.meta.description),
     applicationName: site.name,
     authors: [{ name: site.name, url: base }],
     creator: site.name,
@@ -50,12 +73,12 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       url: `${base}${path}`,
       siteName: site.name,
       title: site.meta.title,
-      description: site.meta.description,
+      description: kurzbeschreibung(site.meta.description),
     },
     twitter: {
       card: "summary_large_image",
       title: site.meta.title,
-      description: site.meta.description,
+      description: kurzbeschreibung(site.meta.description),
     },
     robots: {
       index: true,

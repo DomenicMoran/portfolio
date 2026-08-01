@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelEn, chromeEn } from "@/content/articles";
 import { en } from "@/content/en";
+import { kurzbeschreibung } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: chromeEn.title,
-  description: chromeEn.lede,
+  description: kurzbeschreibung(chromeEn.lede),
   alternates: {
     canonical: "/en/articles",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },

@@ -95,7 +95,7 @@ export function Nav({
             className="group -my-1 flex items-center gap-2.5 py-1"
             aria-label={a11y.toTop}
           >
-            <span className="relative grid size-7 shrink-0 place-items-center rounded-md bg-acid font-mono text-[13px] font-bold text-void">
+            <span className="relative grid size-7 shrink-0 place-items-center rounded-md border border-acid/30 bg-acid font-mono text-[13px] font-bold text-void">
               D
             </span>
             <span className="hidden text-sm font-medium tracking-tight text-ink sm:block">
