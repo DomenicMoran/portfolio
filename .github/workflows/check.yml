@@ -60,6 +60,12 @@ jobs:
       - name: Datenschutz
         run: npm run check:privacy
 
+      # vercel.json wird vom Bau nicht gelesen: Ein Tippfehler im Schluessel
+      # oder eine Aenderung ueber die Weboberflaeche faellt nirgends auf.
+      # Gemessen wird deshalb die Antwort der Live-Adresse.
+      - name: Schutz-Kopfzeilen
+        run: npm run check:headers
+
       # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand
       # ansieht: Die Startseite kam einmal als 15 fast leere Seiten aus dem
       # Drucker, weil die Einblendungen auf ein Hineinscrollen warten, das
