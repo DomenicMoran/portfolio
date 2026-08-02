@@ -1,5 +1,3 @@
-import type { Transition, Variants } from "framer-motion";
-
 /**
  * Gemeinsame Beschleunigungskurven. `expo` ist die Handschrift dieser Seite:
  * schneller Start, langes Ausgleiten. Jeder Übergang nimmt eine dieser drei,
@@ -12,44 +10,13 @@ export const ease = {
   soft: [0.25, 0.4, 0.25, 1],
 } as const;
 
-export const springSoft: Transition = {
-  type: "spring",
-  stiffness: 120,
-  damping: 20,
-  mass: 0.6,
-};
-
-/** Aufblenden und Aufsteigen. Der Regelauftritt für Fließtext und Karten. */
-export const riseIn: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: ease.expo },
-  },
-};
-
-/** Elternteil, das `riseIn` seiner Kinder zeitlich versetzt. */
-export const stagger = (delay = 0, gap = 0.07): Variants => ({
-  hidden: {},
-  visible: {
-    transition: { delayChildren: delay, staggerChildren: gap },
-  },
-});
-
-/**
- * Maskierter Auftritt für Wörter einer Überschrift. Die Hülle jedes Wortes
- * braucht `overflow: hidden`: Das Kind schiebt sich unter dem eigenen
- * Beschnittrechteck hervor.
- */
-export const maskWord: Variants = {
-  hidden: { y: "110%", opacity: 0 },
-  visible: {
-    y: "0%",
-    opacity: 1,
-    transition: { duration: 1, ease: ease.expo },
-  },
-};
+/*
+   Hier standen einmal vier weitere Werte: `springSoft`, `riseIn`, `stagger`
+   und `maskWord`. Keiner davon wurde je benutzt — die Bauteile setzen ihre
+   Übergänge selbst und nehmen von hier nur die Kurve. Vier dokumentierte
+   Varianten, die nichts tun, sind für den, der die Datei liest, vier Fragen
+   ohne Antwort.
+*/
 
 /** Überall dieselbe Sichtbereichs-Einstellung, damit die Einblendungen im Takt bleiben. */
 export const viewportOnce = { once: true, amount: 0.25 } as const;
