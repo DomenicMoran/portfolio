@@ -800,7 +800,15 @@ export const skillDomains: SkillDomain[] = [
       { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, vier Gerätetypen" },
       { name: "TypeScript", evidence: "Strict überall, 0 Fehler als Merge-Gate" },
       { name: "Motion & Interaction", evidence: "Reanimated 4, Framer Motion" },
-      { name: "Core Web Vitals", evidence: "LCP/CLS/INP-Budgets im CI" },
+      // Der Beleg nennt jetzt, was es wirklich gibt. "LCP/CLS/INP-Budgets im
+      // CI" stand hier und trug keine Entsprechung: Der Workflow von MenuCloud
+      // ruft weder Lighthouse noch das Bundle-Budget auf. Gemessen wird
+      // stattdessen taeglich per Cron gegen Produktion, ueber die
+      // PageSpeed-API, und das Bundle-Budget liegt als eigenes Skript vor.
+      {
+        name: "Core Web Vitals",
+        evidence: "Lighthouse-Cron gegen Produktion, Bundle-Budget je Route",
+      },
       { name: "Barrierefreiheit", evidence: "TV-Fokus-Navigation, Reduced-Motion" },
     ],
   },
