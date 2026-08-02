@@ -780,7 +780,7 @@ export const en: Content = {
       },
     ],
     cta: {
-      pdf: { label: "One-pager as PDF", href: "/domenic-moran-kurzprofil.pdf" },
+      pdf: { label: "One-pager as PDF", href: "/domenic-moran-one-pager.pdf" },
       mail: { label: "Email me" },
     },
   },
@@ -821,6 +821,31 @@ export const en: Content = {
     sourceLabel: "Source code of this site",
     sourceHref: "https://github.com/DomenicMoran/portfolio",
     printNote: `Printed from domenicmoran.de — Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
+  },
+
+  onepager: {
+    title: "One-pager",
+    description:
+      "One-page profile of Domenic Moran, AI-native product engineer in Berlin: four systems in production, path and contact on a single page.",
+    positioning:
+      "Fullstack product engineer with four systems in production, each built " +
+      "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
+      "fiscal signing, an autonomous agent. {commits} commits since March 2026, " +
+      "alongside a full-time job. Self-taught in software development since 2022. " +
+      "Focus: agent-assisted development with strict verification discipline — " +
+      "a green test run is not proof.",
+    projects: "Projects",
+    focus: "Focus areas",
+    path: "Path",
+    pathNote:
+      "Self-taught in software development: no degree, no bootcamp. " +
+      "The evidence is four systems in production.",
+    fullCaseStudies: "Full case studies with architecture diagrams:",
+    asOf: "As of",
+    back: "← Back to the site",
+    printHint: "Save as PDF: choose “Save as PDF” in the print dialog.",
+    printButton: "Print / PDF",
+    atLeast: "Over",
   },
 
   notFound: {
