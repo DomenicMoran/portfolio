@@ -1120,6 +1120,59 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Jede Bestaetigungsseite eines Zertifikats antwortet und traegt den Namen
+   ---------------------------------------------------------------------------
+
+   Die Seite sagt, alle zehn Zertifikate seien beim Aussteller pruefbar, und
+   das Zertifikate-Repository schreibt dazu: "Die PDF daneben ist nur die
+   Kopie — massgeblich ist der Link, weil eine PDF sich faelschen laesst und
+   eine Bestaetigungsseite nicht." Genau dieser Satz macht den Link zum
+   staerksten Beleg der Seite und zum teuersten Verlust, wenn er stirbt.
+
+   Geprueft wird nicht nur der Statuscode: Eine Bestaetigungsseite, die 200
+   antwortet, aber den Namen nicht mehr enthaelt, ist kein Nachweis. Der
+   Udemy-Kurznachweis bleibt aussen vor, er steht hinter einer Bot-Pruefung
+   und antwortet einer Maschine grundsaetzlich mit 403.
+
+   Ohne Netz wird uebersprungen und das gesagt, nicht stillschweigend
+   bestanden. */
+{
+  const ids = [...quelle.matchAll(/coursera\.org\/verify\/([A-Z0-9]+)/g)].map((m) => m[1]);
+  const einmalig = [...new Set(ids)];
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const id of einmalig) {
+    try {
+      const antwort = await fetch(`https://coursera.org/verify/${id}`, {
+        redirect: "follow",
+        headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
+        signal: AbortSignal.timeout(20000),
+      });
+      const text = await antwort.text();
+      geprueft++;
+      if (antwort.status !== 200) funde.push(`${id}: Status ${antwort.status}`);
+      else if (!/Domenic|Moran/i.test(text)) funde.push(`${id}: Seite ohne den Namen`);
+    } catch {
+      uebersprungen++;
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Zertifikatsnachweis(e) auffaellig:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (uebersprungen) {
+    zeilen.push(`  --  Zertifikatsnachweise: ${uebersprungen} nicht erreichbar, uebersprungen`);
+  } else {
+    zeilen.push(
+      `  ok  Zertifikatsnachweise   ${String(geprueft).padStart(6)} Seiten antworten mit dem Namen`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Impressum und Datenschutz stehen auf jeder Seite
    ---------------------------------------------------------------------------
 
