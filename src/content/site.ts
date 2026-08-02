@@ -971,26 +971,38 @@ export const recruiter = {
     {
       title: "Ich liefere fertig, nicht fast fertig",
       body: "Vier Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      proof: "#work",
+      proofLabel: "Die vier Fallstudien",
     },
     {
       title: "Ich arbeite über den ganzen Stack",
       body: "React-Native-Widget, Postgres-Migration, Docker-Compose auf dem eigenen VPS, Fiskal-Compliance. Kein Ticket-Ping-Pong, weil etwas „nicht mein Bereich“ ist.",
+      proof: "#case-menucloud",
+      proofLabel: "MenuCloud im Detail",
     },
     {
       title: "Ich weise nach, statt zu behaupten",
       body: "Ein grüner Testlauf beweist nichts. Das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
+      proof: "/artikel/published-ist-kein-beleg",
+      proofLabel: "„Published“ ist kein Beleg",
     },
     {
       title: "Ich kenne den Weg durch die Stores",
       body: "64 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Abgelehnte Reviews, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
+      proof: "#case-salati",
+      proofLabel: "Salati im Detail",
     },
     {
       title: "Ich behandle Regulierung als Teil des Produkts",
       body: "Fiskalanforderungen nach § 146a AO, Auftragsverarbeitung nach DSGVO, Hinweispflichten für KI-Funktionen. Das kenne ich aus der Umsetzung mit Kunden, nicht aus einer Zusammenfassung. Wer das erst nach dem Launch anfasst, baut es zweimal.",
+      proof: "/artikel/kassensichv-in-der-praxis",
+      proofLabel: "KassenSichV in der Praxis",
     },
     {
       title: "Ich arbeite mit Agenten, ohne die Kontrolle abzugeben",
       body: "Der Hebel ist nicht Tippgeschwindigkeit, sondern Kontext, festgeschriebene Konventionen und Prüfschleifen, die ein Modell nicht überreden kann. Ich lasse mir Entwürfe schreiben. Die Architektur, die Grenzen und die Freigabe bleiben bei mir.",
+      proof: "https://github.com/DomenicMoran/verified-done",
+      proofLabel: "verified-done auf GitHub",
     },
   ],
   cta: {

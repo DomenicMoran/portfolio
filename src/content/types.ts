@@ -230,7 +230,24 @@ export type Content = {
     title: string;
     lede: string;
     facts: readonly { label: string; value: string }[];
-    strengths: readonly { title: string; body: string }[];
+    /**
+     * Je Behauptung ein Beleg, den man anklicken kann.
+     *
+     * Der Abschnitt ist eine Landeadresse: Die Kopfleiste, die 404-Seite und
+     * jeder geteilte Verweis auf `#hire` setzen jemanden mitten hinein. Von
+     * dort führte kein Weg in die Fallstudien oder Artikel — gezählt an der
+     * ausgelieferten Seite: vier Verweise, alle nach draußen (PDF, Mail,
+     * LinkedIn, GitHub). Wer die Behauptung prüfen wollte, musste hochscrollen
+     * und raten.
+     *
+     * `proof` ist die Adresse, `proofLabel` das, was dort steht.
+     */
+    strengths: readonly {
+      title: string;
+      body: string;
+      proof?: string;
+      proofLabel?: string;
+    }[];
     cta: {
       pdf: { label: string; href: string };
       mail: { label: string };

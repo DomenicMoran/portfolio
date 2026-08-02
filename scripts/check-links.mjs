@@ -1,0 +1,118 @@
+#!/usr/bin/env node
+/**
+ * Prüft, dass kein Verweis der Seite ins Leere zeigt.
+ *
+ * Zwei Sorten von totem Verweis, beide unsichtbar:
+ *
+ * 1. **Ein Anker ohne Ziel.** `href="#hire"` auf einer Seite ohne `id="hire"`
+ *    springt nirgendwohin — der Browser meldet nichts, die Adresse ändert
+ *    sich, und der Leser bleibt stehen. Das trifft die Kopfleiste, die
+ *    Fußzeile, die 404-Seite und seit heute die sechs Belegverweise im
+ *    Recruiter-Bereich.
+ * 2. **Eine interne Adresse ohne Route.** `/artikel/falscher-slug` beantwortet
+ *    Next mit der 404-Seite, und die sieht niemand, der den Verweis nur
+ *    einbaut.
+ *
+ * Gemessen wird an der ausgelieferten Seite, nicht am Quelltext: Ein Verweis,
+ * der aus einer Inhaltsdatei zusammengesetzt wird, existiert erst dort.
+ *
+ * Äußere Adressen bleiben draußen. Die prüft `check-figures.mjs` dort, wo sie
+ * herkommen, und ein Lauf, der bei jedem Netzwackler rot wird, wird ignoriert.
+ *
+ * Aufruf nach `npm run build`:
+ *
+ *   npm run check:links
+ */
+
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+import { chromium } from "playwright";
+import { starteServer } from "./lib/local-server.mjs";
+
+const vorgegebeneBasis = process.argv[2];
+let beenden = () => {};
+let basis = vorgegebeneBasis;
+
+if (!basis) {
+  ({ basis, beenden } = await starteServer());
+}
+
+/** Jede gebaute Seite, ohne die Bau-Interna. */
+const bauOrdner = join(".next", "server", "app");
+const pfade = [];
+{
+  const suchen = (ordner) => {
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) suchen(pfad);
+      else if (eintrag.name.endsWith(".html")) {
+        const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/").replace(/\.html$/, "");
+        if (!route.split("/").pop().startsWith("_")) pfade.push(route === "/index" ? "/" : route);
+      }
+    }
+  };
+  suchen(bauOrdner);
+  pfade.sort();
+}
+
+const browser = await chromium.launch();
+const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+
+const funde = [];
+let anker = 0;
+let adressen = 0;
+const gesehen = new Map();
+
+for (const pfad of pfade) {
+  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  if (!antwort || antwort.status() >= 500) continue;
+
+  /*
+     Erst durchscrollen: Abschnitte, die auf das Hineinscrollen warten, hängen
+     ihre Verweise sonst gar nicht ein, und der Lauf prüfte die halbe Seite.
+  */
+  await seite.evaluate(async () => {
+    const hoehe = document.documentElement.scrollHeight;
+    for (let y = 0; y < hoehe; y += 700) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 30));
+    }
+    window.scrollTo(0, 0);
+  });
+
+  const ergebnis = await seite.evaluate(() => {
+    const ziele = [...document.querySelectorAll("a[href]")].map((a) => a.getAttribute("href"));
+    const ohneZiel = [
+      ...new Set(ziele.filter((h) => h.startsWith("#") && h.length > 1).map((h) => h.slice(1))),
+    ].filter((id) => !document.getElementById(id));
+    const intern = [...new Set(ziele.filter((h) => h.startsWith("/") && !h.startsWith("//")))];
+    return { ohneZiel, intern, gesamt: ziele.length };
+  });
+
+  anker += ergebnis.gesamt;
+  for (const id of ergebnis.ohneZiel) funde.push(`${pfad}: Anker #${id} hat kein Ziel`);
+
+  for (const adresse of ergebnis.intern) {
+    /* Dateien mit Endung (PDF, Feed, Bilder) beantwortet der Server direkt. */
+    const ohneAnker = adresse.split("#")[0] || "/";
+    if (gesehen.has(ohneAnker)) continue;
+    const status = (await seite.request.get(`${basis}${ohneAnker}`)).status();
+    gesehen.set(ohneAnker, status);
+    adressen++;
+    if (status >= 400) funde.push(`${pfad}: ${ohneAnker} antwortet mit ${status}`);
+  }
+}
+
+await browser.close();
+beenden();
+
+if (funde.length > 0) {
+  console.error(`${funde.length} toter Verweis${funde.length === 1 ? "" : "e"}:\n`);
+  for (const f of funde) console.error(`  ${f}`);
+  process.exit(1);
+}
+
+console.log(
+  `Kein toter Verweis: ${anker} Verweise auf ${pfade.length} Seiten, ` +
+    `${adressen} interne Adressen abgerufen.`,
+);

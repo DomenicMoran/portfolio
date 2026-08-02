@@ -24,7 +24,8 @@
     "check:privacy": "node scripts/check-privacy.mjs",
     "check:headers": "node scripts/check-headers.mjs",
     "build:favicon": "node scripts/build-favicon.mjs",
-    "build:portrait": "node scripts/build-portrait.mjs"
+    "build:portrait": "node scripts/build-portrait.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

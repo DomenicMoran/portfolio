@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowUpRight, FileDown, Mail } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, FileDown, Mail } from "lucide-react";
 import { CopyEmail } from "@/components/ui/CopyEmail";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
@@ -63,6 +64,45 @@ export function RecruiterHub() {
                 <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">
                   {item.body}
                 </p>
+
+                {/* Der Beleg zur Behauptung, einen Klick entfernt.
+
+                    Dieser Abschnitt ist eine Landeadresse: Kopfleiste,
+                    404-Seite und jeder geteilte Verweis auf `#hire` setzen
+                    jemanden mitten hinein. Von dort führten vier Verweise
+                    nach draußen — PDF, Mail, LinkedIn, GitHub — und keiner in
+                    die Fallstudien oder Artikel, die genau diese Sätze
+                    belegen. Wer prüfen wollte, musste hochscrollen und raten.
+
+                    Interne Ziele über `Link`, äußere als `a` mit `rel`: Ein
+                    Anker im selben Dokument braucht keinen neuen Reiter. */}
+                {item.proof && item.proofLabel ? (
+                  item.proof.startsWith("http") ? (
+                    <a
+                      href={item.proof}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/beleg mt-4 -mb-1 inline-flex items-center gap-1.5 py-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                    >
+                      {item.proofLabel}
+                      <ArrowUpRight
+                        className="size-3 transition-transform duration-300 group-hover/beleg:translate-x-0.5 group-hover/beleg:-translate-y-0.5"
+                        aria-hidden
+                      />
+                    </a>
+                  ) : (
+                    <Link
+                      href={item.proof}
+                      className="group/beleg mt-4 -mb-1 inline-flex items-center gap-1.5 py-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                    >
+                      {item.proofLabel}
+                      <ArrowRight
+                        className="size-3 transition-transform duration-300 group-hover/beleg:translate-x-0.5"
+                        aria-hidden
+                      />
+                    </Link>
+                  )
+                ) : null}
               </div>
             </Reveal>
           ))}
