@@ -56,7 +56,7 @@ if (!basis) {
 
 const browser = await chromium.launch();
 const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
-const { PDFDocument } = await import("pdf-lib");
+const { PDFDocument, PDFName } = await import("pdf-lib");
 let fehler = 0;
 
 for (const blatt of BLAETTER) {
@@ -120,8 +120,42 @@ for (const blatt of BLAETTER) {
   doc.setCreator("domenicmoran.de");
   writeFileSync(blatt.ziel, await doc.save());
 
+  /*
+    Die Verweise müssen im fertigen Blatt anklickbar sein.
+
+    Die Begründung für den Druckweg nennt „funktionierende Links" als einen
+    seiner beiden Vorteile. Bis zum 02.08.2026 stimmte das nicht: Im Blatt
+    standen E-Mail-Adresse, GitHub und LinkedIn als Text ohne `a`-Element, und
+    beide PDFs enthielten null Anmerkungen. Wer das Blatt weitergereicht
+    bekam, musste abtippen.
+
+    Geprüft wird die Struktur und nicht der Bytestrom: `pdf-lib` legt die
+    Anmerkungen beim Speichern in Objektströme, und eine Suche nach
+    "/Subtype /Link" im Rohtext findet dort nichts. Genau daran wäre diese
+    Prüfung fast gescheitert, mit dem falschen Ergebnis „null Verweise".
+  */
+  const verweise = [];
+  for (const pdfSeite of doc.getPages()) {
+    const annots = pdfSeite.node.get(PDFName.of("Annots"));
+    for (const ref of annots?.asArray?.() ?? []) {
+      const eintrag = doc.context.lookup(ref);
+      if (eintrag?.get?.(PDFName.of("Subtype"))?.toString?.() !== "/Link") continue;
+      const aktion = doc.context.lookup(eintrag.get(PDFName.of("A")));
+      const ziel = aktion?.get?.(PDFName.of("URI"));
+      if (ziel) verweise.push(String(ziel).replace(/^\(|\)$/g, ""));
+    }
+  }
+
   const kb = Math.round(statSync(blatt.ziel).size / 1024);
-  console.log(`${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n)`);
+  console.log(`${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n), ${verweise.length} Verweis(e)`);
+
+  if (verweise.length < 4) {
+    console.error(
+      `${blatt.route}: nur ${verweise.length} anklickbare Verweise. Erwartet sind ` +
+        `mindestens vier — E-Mail, GitHub, LinkedIn und die Seite selbst.`,
+    );
+    fehler++;
+  }
 
   // Eine Seite ist die Vorgabe des One-Pagers. Mehr wäre ein Fehler im
   // Inhalt, nicht im Druck, und soll den Build scheitern lassen.

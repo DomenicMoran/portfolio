@@ -132,11 +132,33 @@ export function OnePager({
             <h1 className="text-4xl font-semibold tracking-tight">{site.name}</h1>
             <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
           </div>
-          <div className="text-right text-sm leading-relaxed text-[#4a4a55]">
+          {/* Die Adressen sind Verweise, keine abgetippten Zeichenketten.
+
+              Die Begründung über dieser Datei nennt „funktionierende Links"
+              als Grund, die PDF über den Druckweg zu erzeugen statt über eine
+              Bibliothek. Gemessen enthielten beide Blätter null
+              Link-Anmerkungen: Wer das Blatt bekommt, musste die Adresse
+              abtippen. Chromium macht aus jedem `a href` beim Drucken eine
+              Anmerkung, also braucht es nur ein echtes Element.
+
+              `text-inherit` und keine Unterstreichung: Am Bildschirm und auf
+              Papier sieht die Zeile aus wie vorher, sie lässt sich nur
+              zusätzlich anklicken. */}
+          <div className="text-right text-sm leading-relaxed text-[#4a4a55] [&_a]:text-inherit [&_a]:no-underline">
             <p>{site.location}</p>
-            <p>{site.email}</p>
-            {SOCIALS.github ? <p>{SOCIALS.github.replace("https://", "")}</p> : null}
-            {SOCIALS.linkedin ? <p>{SOCIALS.linkedin.replace("https://", "")}</p> : null}
+            <p>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+            {SOCIALS.github ? (
+              <p>
+                <a href={SOCIALS.github}>{SOCIALS.github.replace("https://", "")}</a>
+              </p>
+            ) : null}
+            {SOCIALS.linkedin ? (
+              <p>
+                <a href={SOCIALS.linkedin}>{SOCIALS.linkedin.replace("https://", "")}</a>
+              </p>
+            ) : null}
             <p className="mt-1 font-medium text-[#101014]">
               {site.availability.label}
             </p>
@@ -254,7 +276,10 @@ export function OnePager({
 
         <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
           <span>
-            {onepager.fullCaseStudies} {site.url.replace("https://", "")}
+            {onepager.fullCaseStudies}{" "}
+            <a href={site.url} className="text-inherit no-underline">
+              {site.url.replace("https://", "")}
+            </a>
           </span>
           <span>
             {onepager.asOf}{" "}
