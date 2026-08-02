@@ -90,6 +90,31 @@ npx tsc --noEmit   # Typecheck
 npx eslint .       # Lint
 ```
 
+Nach dem Bau laufen drei Prüfungen, die den Bau nicht ersetzt. Sie messen an
+der gebauten Seite und nicht am Quelltext, und derselbe Workflow führt sie bei
+jedem Push aus:
+
+```bash
+npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
+npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
+npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand
+```
+
+Der Druckpfad ist ein eigener Auslieferungsweg, den sonst niemand ansieht: Die
+Startseite kam einmal als 15 fast leere Blätter aus dem Drucker, weil die
+Einblendungen auf ein Hineinscrollen warten, das beim Drucken nie stattfindet.
+
+Das Kurzprofil als PDF entsteht über den Druckweg des Browsers aus derselben
+Seite, die unter `/onepager` liegt — keine zweite Quelle, kein zweites Layout:
+
+```bash
+npm run onepager:pdf    # beide Sprachfassungen nach public/
+```
+
+`scripts/check-figures.mjs` prüft zusätzlich jede Zahl auf der Seite gegen die
+Repositories, aus denen sie stammt. Der Lauf braucht die Nachbar-Repos und
+läuft deshalb nicht in der CI, sondern beim Zahlen-Automaten.
+
 Voraussetzung: Node.js ≥ 20.9.
 
 ## Projektstruktur
