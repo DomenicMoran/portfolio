@@ -397,6 +397,15 @@ export type CaseStudy = {
    * und besser als eine Fallstudie, die neben den anderen unfertig aussieht.
    */
   keinScreenshot?: string;
+  /**
+   * Die Fachartikel, die aus genau diesem System stammen, als Adressteil.
+   *
+   * Vier der fünf Artikel handeln von einem Fehler in einem dieser Systeme,
+   * und die Fallstudie verwies auf keinen davon: Gezählt an der ausgelieferten
+   * Seite gab es aus dem Fallstudien-Bereich null Verweise in den
+   * Artikelbereich.
+   */
+  articles?: string[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -469,6 +478,12 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     architecture: "salati",
+    articles: [
+      "gestrichelter-kreis-kam-nicht-aus-der-schrift",
+      "published-ist-kein-beleg",
+      "widget-leer-trotz-gruener-tests",
+      "kleineres-whisper-modell",
+    ],
     shots: [
       {
         src: "/shots/salati/shot-prayer.png",
@@ -657,6 +672,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     architecture: "menucloud",
+    articles: ["kassensichv-in-der-praxis"],
     shots: [
       {
         src: "/shots/menucloud-desktop.png",

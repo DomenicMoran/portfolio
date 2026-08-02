@@ -192,6 +192,7 @@ export const en: Content = {
       problem: "The problem",
       solution: "The solution",
       hardPart: "The hard part",
+      readOn: "Written up in full",
     },
   },
 
@@ -248,6 +249,12 @@ export const en: Content = {
         },
       ],
       architecture: "salati",
+      articles: [
+        "the-dotted-circle-was-not-the-font",
+        "published-is-not-proof",
+        "green-tests-empty-widget",
+        "a-smaller-whisper-model",
+      ],
       shots: [
         {
           src: "/shots/salati/shot-prayer.png",
@@ -413,6 +420,7 @@ export const en: Content = {
         },
       ],
       architecture: "menucloud",
+      articles: ["german-till-law-in-practice"],
       shots: [
         {
           src: "/shots/menucloud-desktop.png",
