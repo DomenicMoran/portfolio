@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Erzeugt das LinkedIn-Titelbild aus den Zahlen der Webseite.
+ * Erzeugt die LinkedIn-Bilder aus den Zahlen der Webseite.
  *
  * Warum als Skript und nicht als Bilddatei, die man einmal baut: Die erste
  * Fassung lag als PNG im Repo und trug 3.946 Commits. Die Zahl auf der
@@ -12,13 +12,19 @@
  * und scheitert, wenn dort etwas anderes steht. Ein Bild mit einer falschen
  * Zahl ist schlimmer als kein Bild.
  *
- *   node scripts/build-linkedin-banner.mjs
+ * Gebaut werden das Titelbild und die Kachel der Im-Fokus-Karte zu MenuCloud.
+ * Die Kachel lag als handgemachte Datei vom 31.07.2026 im Repo und trug
+ * "298 TESTS" — gemessen sind es 7.437. Genau der Fehler, den dieses Skript
+ * für die Commit-Zahl schon verhindert, nur an einer zweiten Stelle.
+ *
+ *   node scripts/build-linkedin-images.mjs
  */
 
 import { readFileSync, mkdirSync } from "node:fs";
 import { chromium } from "playwright";
 
 const ZIEL = "../assets/linkedin-banner.png";
+const KACHEL = "../assets/linkedin-menucloud.png";
 
 // Aus der Inhaltsquelle lesen statt hier zu wiederholen.
 const quelle = readFileSync("src/content/site.ts", "utf8");
@@ -158,9 +164,87 @@ const html = `<!doctype html>
   </div>
 </body></html>`;
 
+/**
+ * Eine Kennzahl der MenuCloud-Fallstudie aus site.ts holen.
+ *
+ * Dieselben Werte prüft der Zahlenlauf täglich gegen das Repo. Steht die
+ * Beschriftung nicht mehr da, bricht der Bau ab, statt eine alte Zahl
+ * weiterzureichen.
+ */
+function menucloudWert(beschriftung) {
+  const muster = new RegExp(
+    `\{ value: "([^"]+)", label: "${beschriftung}" \}`,
+  );
+  const treffer = muster.exec(quelle);
+  if (!treffer) {
+    throw new Error(
+      `Keine Kennzahl "${beschriftung}" in site.ts. Die Kachel wird nicht ` +
+        `gebaut, bevor klar ist, welche Zahl gilt.`,
+    );
+  }
+  return treffer[1];
+}
+
+const kachelHtml = `<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #08080a; color: #f2f2f4;
+    font-family: Outfit, system-ui, sans-serif; position: relative;
+  }
+  .glow { position: absolute; border-radius: 50%; filter: blur(110px); }
+  .g1 { width: 700px; height: 700px; left: 620px; top: -260px; background: rgba(124,92,255,0.30); }
+  .g2 { width: 620px; height: 620px; left: -180px; top: 300px; background: rgba(63,208,255,0.12); }
+  .raster {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse at 70% 20%, black, transparent 70%);
+  }
+  .inhalt { position: relative; height: 100%; padding: 62px 64px; display: flex; flex-direction: column; }
+  .marke {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(124,92,255,0.45); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b9a6ff;
+  }
+  .punkt { width: 7px; height: 7px; border-radius: 50%; background: #7c5cff; }
+  h1 { margin-top: 40px; font-size: 66px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .satz { margin-top: 24px; font-size: 27px; line-height: 1.4; color: #a5a5b0; max-width: 900px; }
+  .fuss { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between;
+          border-top: 1px solid rgba(255,255,255,0.10); padding-top: 26px; }
+  .zahlen { display: flex; gap: 56px; }
+  .wert { font-size: 38px; font-weight: 700; line-height: 1; color: #b9a6ff; font-variant-numeric: tabular-nums; }
+  .bez { margin-top: 8px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #84848f; }
+  .domain { font-size: 17px; color: #84848f; }
+</style></head>
+<body>
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="raster"></div>
+  <div class="inhalt">
+    <div class="marke"><span class="punkt"></span>Live in Produktion</div>
+    <h1>MenuCloud Berlin</h1>
+    <div class="satz">
+      Multi-Tenant-SaaS für Gastronomie &mdash; inklusive KassenSichV-konformer
+      Fiskalisierung nach &sect;&nbsp;146a AO. Der Teil, den fast alle auslagern.
+    </div>
+    <div class="fuss">
+      <div class="zahlen">
+        <div><div class="wert">${menucloudWert("API-Routen")}</div><div class="bez">API-Routen</div></div>
+        <div><div class="wert">${menucloudWert("DB-Migrationen")}</div><div class="bez">DB-Migrationen</div></div>
+        <div><div class="wert">${menucloudWert("Testfälle")}</div><div class="bez">Testfälle</div></div>
+      </div>
+      <div class="domain">domenicmoran.de</div>
+    </div>
+  </div>
+</body></html>`;
+
 mkdirSync("../assets", { recursive: true });
 
 const browser = await chromium.launch();
+
 const seite = await browser.newPage({
   viewport: { width: 1584, height: 396 },
   deviceScaleFactor: 2,
@@ -168,6 +252,20 @@ const seite = await browser.newPage({
 await seite.setContent(html, { waitUntil: "networkidle" });
 await seite.waitForTimeout(700);
 await seite.screenshot({ path: ZIEL });
+
+const kachelSeite = await browser.newPage({
+  viewport: { width: 1200, height: 630 },
+  deviceScaleFactor: 2,
+});
+await kachelSeite.setContent(kachelHtml, { waitUntil: "networkidle" });
+await kachelSeite.waitForTimeout(700);
+await kachelSeite.screenshot({ path: KACHEL });
+
 await browser.close();
 
 console.log(`${ZIEL} gebaut, Commits: ${commits}`);
+console.log(
+  `${KACHEL} gebaut: ${menucloudWert("API-Routen")} API-Routen, ` +
+    `${menucloudWert("DB-Migrationen")} Migrationen, ` +
+    `${menucloudWert("Testfälle")} Testfälle`,
+);
