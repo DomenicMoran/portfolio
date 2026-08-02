@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, Bot, Check, Layers, Smartphone, Workflow } from "lucide-react";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
@@ -54,6 +54,55 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
   const [tab, setTab] = useState<TabId>("highlights");
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
+  /** Der Automatisierungs-Reiter erscheint nur, wo es etwas zu zeigen gibt. */
+  const sichtbareTabs = TAB_IDS.filter((id) => id !== "automation" || study.automation);
+
+  /**
+   * Pfeiltasten in der Reiterleiste, und nur ein Tabstopp je Fallstudie.
+   *
+   * Gemessen an der ausgelieferten Seite am 02.08.2026: Alle dreizehn Reiter
+   * hatten `tabIndex` 0, und Pfeil rechts bewegte weder Fokus noch Auswahl.
+   * Wer mit der Tastatur zum Inhalt einer Fallstudie will, musste sich durch
+   * jeden einzelnen Reiter tabben — die Reiterleiste kostete mehr Stationen
+   * als die Fallstudie Inhalte hat.
+   *
+   * Das ist das Muster, das eine Reiterleiste ausmacht: Tab springt in die
+   * Leiste hinein und beim nächsten Druck wieder heraus, gewechselt wird mit
+   * den Pfeilen. Deshalb bekommt nur der gewählte Reiter `tabIndex` 0.
+   *
+   * Auswahl folgt dem Fokus, weil die Tafel sofort daneben steht und nichts
+   * nachlädt: Ein zusätzlicher Druck auf Enter wäre hier eine Station ohne
+   * Gewinn. Pos1 und Ende gehören dazu, weil vier Reiter zwar wenige sind,
+   * die Tasten aber nichts kosten.
+   */
+  const beiTaste = (event: KeyboardEvent<HTMLDivElement>) => {
+    const richtung =
+      event.key === "ArrowRight" || event.key === "ArrowDown"
+        ? 1
+        : event.key === "ArrowLeft" || event.key === "ArrowUp"
+          ? -1
+          : 0;
+
+    let ziel: TabId | undefined;
+    if (richtung !== 0) {
+      const jetzt = sichtbareTabs.indexOf(tab);
+      // Umlaufend: Vom letzten Reiter geht es auf den ersten. Eine Leiste, die
+      // am Rand stumm bleibt, wirkt wie eine kaputte Taste.
+      ziel = sichtbareTabs[(jetzt + richtung + sichtbareTabs.length) % sichtbareTabs.length];
+    } else if (event.key === "Home") {
+      ziel = sichtbareTabs[0];
+    } else if (event.key === "End") {
+      ziel = sichtbareTabs[sichtbareTabs.length - 1];
+    }
+    if (!ziel) return;
+
+    event.preventDefault();
+    setTab(ziel);
+    // Der Fokus muss mitgehen, sonst zeigt die Leiste etwas anderes an als die
+    // Tastatur bedient. Alle Reiter stehen im Dokument, nur der `tabIndex`
+    // wechselt — ein Element mit `tabIndex` -1 lässt sich so fokussieren.
+    document.getElementById(`${study.id}-tab-${ziel}`)?.focus();
+  };
 
   return (
     <article id={`case-${study.id}`} className="scroll-mt-28">
@@ -169,10 +218,10 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           <div
             role="tablist"
             aria-label={study.name}
+            onKeyDown={beiTaste}
             className="flex flex-wrap gap-1.5 border-b border-line pb-3"
           >
-            {/* Der Automatisierungs-Tab erscheint nur, wo es etwas zu zeigen gibt. */}
-            {TAB_IDS.filter((id) => id !== "automation" || study.automation).map((id) => {
+            {sichtbareTabs.map((id) => {
               const Icon = TAB_ICONS[id];
               const selected = tab === id;
               return (
@@ -207,6 +256,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   // Dann gibt es den Zustand nicht mehr.
                   aria-controls={selected ? `${study.id}-panel` : undefined}
                   aria-selected={selected}
+                  tabIndex={selected ? 0 : -1}
                   onClick={() => setTab(id)}
                   className={cn(
                     "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
