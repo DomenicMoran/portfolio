@@ -270,10 +270,14 @@ textarea:-webkit-autofill {
  * zu; sobald Inhalt hinausläuft, wandert der Deckel weg und der Schatten wird
  * sichtbar. Der Hinweis erscheint also genau dann, wenn er stimmt.
  */
-.code-scroll {
+.scroll-hint {
+  /* Die Deckfarbe ist einstellbar, weil die Klasse auf zwei Untergründen
+     sitzt: im Codeblock auf `--color-base`, unter einem Architekturdiagramm
+     auf der Kartenfläche. Ein fest verdrahteter Wert ergäbe dort einen
+     sichtbaren Streifen statt eines Deckels. */
   background-image:
-    linear-gradient(to right, var(--color-base) 30%, transparent),
-    linear-gradient(to left, var(--color-base) 30%, transparent),
+    linear-gradient(to right, var(--deckfarbe, var(--color-base)) 30%, transparent),
+    linear-gradient(to left, var(--deckfarbe, var(--color-base)) 30%, transparent),
     /* Der Hinweis ist hell, nicht dunkel.
      *
      * Erster Anlauf mischte ihn aus `--color-void` (#08080a) auf einer Fläche
@@ -602,7 +606,7 @@ textarea:-webkit-autofill {
 
   /* Auf Papier gibt es nichts zu scrollen, also auch keinen Hinweis darauf.
      Der Schatten wäre dort nur ein grauer Balken am Rand. */
-  .code-scroll {
+  .scroll-hint {
     background-image: none !important;
   }
 
