@@ -25,12 +25,12 @@ const monate = monateZwischen(new Date(ERSTER_COMMIT), new Date(verified.date));
 /** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
 export const bauzeit = `${alsWort(monate)} Monat${monate === 1 ? "" : "en"}`;
 
-export const bauzeitNominativ = grossErstes(
+const bauzeitNominativ = grossErstes(
   `${alsWort(monate, "nominativ")} Monat${monate === 1 ? "" : "e"}`,
 );
 
 /** Wie lange der Lernweg dauert, ebenfalls gerechnet. */
-export const lernzeit = grossErstes(
+const lernzeit = grossErstes(
   `${alsWort(jahreZwischen(new Date(LERNBEGINN), new Date(verified.date)), "nominativ")} Jahre`,
 );
 /**
@@ -307,13 +307,6 @@ export const hero = {
 /* ========================================================================== */
 /* Case studies                                                               */
 /* ========================================================================== */
-
-/*
-   Metric und StackGroup bleiben hier: Sie stehen in `types.ts` nur inline
-   innerhalb von `CaseStudy` und haben dort keinen eigenen Namen.
-*/
-export type Metric = { value: string; label: string };
-export type StackGroup = { group: string; items: string[] };
 
 /*
    `CaseStudy` kam aus `types.ts` und stand hier ein zweites Mal.
@@ -772,7 +765,7 @@ export const workflow = {
 /* Skills                                                                     */
 /* ========================================================================== */
 
-export type SkillDomain = {
+type SkillDomain = {
   id: string;
   title: string;
   summary: string;
