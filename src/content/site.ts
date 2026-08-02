@@ -1,4 +1,6 @@
 import verified from "./verified.json";
+import type { CaseStudy } from "./types";
+import { alsWort, grossErstes, jahreZwischen, monateZwischen } from "@/lib/zeitspanne";
 
 /**
  * Wie lange die vier Systeme in Produktion entstehen — gerechnet, nicht getippt.
@@ -14,65 +16,22 @@ import verified from "./verified.json";
  * `new Date()` hier fröre dagegen auf den Bauzeitpunkt ein.
  */
 const ERSTER_COMMIT = "2026-03-26";
-
-function monateSeitBeginn() {
-  const start = new Date(ERSTER_COMMIT);
-  const stand = new Date(verified.date);
-  let m =
-    (stand.getFullYear() - start.getFullYear()) * 12 +
-    (stand.getMonth() - start.getMonth());
-  if (stand.getDate() < start.getDate()) m -= 1;
-  return Math.max(1, m);
-}
-
-/** Kleine Zahlen als Wort, wie es im Fließtext üblich ist. */
-function alsWort(n: number) {
-  const woerter = [
-    "einem", "zwei", "drei", "vier", "fünf", "sechs",
-    "sieben", "acht", "neun", "zehn", "elf", "zwölf",
-  ];
-  return woerter[n - 1] ?? String(n);
-}
-
-/** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
-export const bauzeit = `${alsWort(monateSeitBeginn())} Monat${monateSeitBeginn() === 1 ? "" : "en"}`;
-
-/**
- * Dieselbe Spanne ohne vorangestelltes „in", groß geschrieben.
- *
- * Die Überschrift der Über-mich-Sektion sagte „Vier Monate ausgeliefert" und
- * stand als Zeichenkette da, zwei Zeilen über einem Absatz, der dieselbe
- * Spanne rechnet. Ab dem 26. des übernächsten Monats hätte die Überschrift
- * „Vier Monate" behauptet, während der Absatz darunter „fünf Monaten" sagt —
- * genau die Falle, die der Kommentar über `ERSTER_COMMIT` als abgeschafft
- * beschreibt.
- */
-function grossErstes(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-export const bauzeitNominativ = grossErstes(
-  `${alsWort(monateSeitBeginn()).replace(/^einem$/, "ein")} Monat${
-    monateSeitBeginn() === 1 ? "" : "e"
-  }`,
-);
-
-/**
- * Wie lange der Lernweg dauert, ebenfalls gerechnet.
- *
- * Die Kurszertifikate sind von Juli und August 2022; seitdem läuft der
- * autodidaktische Weg weiter. „Vier Jahre" war am Tag des Schreibens richtig
- * und wäre 2027 eine zu niedrige Angabe.
- */
+/* Die Kurszertifikate sind von Juli 2022; seitdem läuft der autodidaktische
+   Weg weiter. „Vier Jahre" war beim Schreiben richtig und wäre 2027 zu wenig. */
 const LERNBEGINN = "2022-07-01";
 
+const monate = monateZwischen(new Date(ERSTER_COMMIT), new Date(verified.date));
+
+/** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
+export const bauzeit = `${alsWort(monate)} Monat${monate === 1 ? "" : "en"}`;
+
+export const bauzeitNominativ = grossErstes(
+  `${alsWort(monate, "nominativ")} Monat${monate === 1 ? "" : "e"}`,
+);
+
+/** Wie lange der Lernweg dauert, ebenfalls gerechnet. */
 export const lernzeit = grossErstes(
-  alsWort(
-    Math.max(
-      1,
-      new Date(verified.date).getFullYear() - new Date(LERNBEGINN).getFullYear(),
-    ),
-  ) + " Jahre",
+  `${alsWort(jahreZwischen(new Date(LERNBEGINN), new Date(verified.date)), "nominativ")} Jahre`,
 );
 /**
  * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
@@ -349,64 +308,23 @@ export const hero = {
 /* Case studies                                                               */
 /* ========================================================================== */
 
+/*
+   Metric und StackGroup bleiben hier: Sie stehen in `types.ts` nur inline
+   innerhalb von `CaseStudy` und haben dort keinen eigenen Namen.
+*/
 export type Metric = { value: string; label: string };
 export type StackGroup = { group: string; items: string[] };
 
-export type CaseStudy = {
-  id: string;
-  index: string;
-  name: string;
-  tagline: string;
-  year: string;
-  role: string;
-  status: "live" | "beta" | "tool";
-  statusLabel: string;
-  accent: "acid" | "violet" | "cyan";
-  problem: string;
-  solution: string;
-  /** Das eine Detail, das Tiefe belegt statt Breite. */
-  hardPart: { title: string; body: string };
-  highlights: string[];
-  stack: StackGroup[];
-  metrics: Metric[];
-  links: { label: string; href: string; kind: "live" | "store" | "code" | "social" }[];
-  /** Keys into ARCHITECTURES in components/ArchitectureDiagram.tsx */
-  architecture: string;
-  /** Optional: eigener Abschnitt, wenn ein Aspekt eine Aufzählung sprengt. */
-  automation?: {
-    title: string;
-    lede: string;
-    groups: { title: string; items: string[] }[];
-  };
-  /**
-   * Aufnahmen aus den laufenden Produkten, gemacht am 31.07.2026.
-   * Ausgelassen, wo sich nichts unbedenklich zeigen lässt: Die Übersicht von
-   * WohnungsJäger führt echte Angebote und Bewerberdaten.
-   */
-  shots?: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-    label?: string;
-    variant?: "browser" | "phone" | "screen";
-  }[];
-  /**
-   * Steht anstelle eines Screenshots, wo es einen guten Grund gibt, keinen zu
-   * zeigen. Eine begründete Leerstelle ist besser als ein nachgestelltes Bild,
-   * und besser als eine Fallstudie, die neben den anderen unfertig aussieht.
-   */
-  keinScreenshot?: string;
-  /**
-   * Die Fachartikel, die aus genau diesem System stammen, als Adressteil.
-   *
-   * Vier der fünf Artikel handeln von einem Fehler in einem dieser Systeme,
-   * und die Fallstudie verwies auf keinen davon: Gezählt an der ausgelieferten
-   * Seite gab es aus dem Fallstudien-Bereich null Verweise in den
-   * Artikelbereich.
-   */
-  articles?: string[];
-};
+/*
+   `CaseStudy` kam aus `types.ts` und stand hier ein zweites Mal.
+
+   Zwei Erklärungen für dieselbe Sache: Die hiesige trug zusätzlich ein Feld
+   `status` mit den Werten "live", "beta" und "tool" — gesetzt an allen vier
+   Fallstudien, gelesen an keiner Stelle. Gerendert wird `statusLabel`. Der
+   Preis der Doppelung war sichtbar: Ein Feld, das in der einen Erklärung
+   ergänzt wird, fehlt in der anderen, und der Typecheck meldet es erst beim
+   nächsten Zugriff. Genau das ist beim Verweisfeld `articles` passiert.
+*/
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -416,7 +334,6 @@ export const caseStudies: CaseStudy[] = [
     tagline: "Gebets- und Koran-App für den DACH-Raum mit KI, die offline läuft",
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
-    status: "live",
     statusLabel: "Live im App Store",
     accent: "acid",
     problem:
@@ -534,7 +451,6 @@ export const caseStudies: CaseStudy[] = [
     tagline: "Multi-Tenant-SaaS für Gastronomie, inklusive gesetzlicher Fiskalisierung",
     year: "2026",
     role: "Gründer & alleiniger Entwickler",
-    status: "live",
     statusLabel: "Live in Produktion",
     accent: "violet",
     problem:
@@ -703,7 +619,6 @@ export const caseStudies: CaseStudy[] = [
     tagline: "Autonomer Agent, der den Berliner Wohnungsmarkt schneller liest als ein Mensch",
     year: "2026",
     role: "Alleiniger Entwickler",
-    status: "tool",
     statusLabel: "Im Eigenbetrieb",
     accent: "cyan",
     problem:
@@ -744,7 +659,6 @@ export const caseStudies: CaseStudy[] = [
     tagline: "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und eigener API",
     year: "2026",
     role: "Alleiniger Entwickler",
-    status: "beta",
     statusLabel: "Beta",
     accent: "violet",
     problem:

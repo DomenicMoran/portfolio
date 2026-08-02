@@ -25,7 +25,8 @@
     "check:headers": "node scripts/check-headers.mjs",
     "build:favicon": "node scripts/build-favicon.mjs",
     "build:portrait": "node scripts/build-portrait.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -50,7 +51,8 @@
     "playwright": "^1.62.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   },
   "overrides": {
     "sharp": "^0.35.3",

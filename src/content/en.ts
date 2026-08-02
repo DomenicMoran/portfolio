@@ -1,4 +1,5 @@
 import verified from "./verified.json";
+import { asWord, grossErstes, jahreZwischen, monateZwischen } from "@/lib/zeitspanne";
 import type { Content } from "./types";
 
 /**
@@ -52,47 +53,15 @@ function dateLong(iso: string) {
  * beide bereits abgelegt.
  */
 const FIRST_COMMIT = "2026-03-26";
+const LEARNING_START = "2022-07-01";
 
-function monthsSinceStart() {
-  const start = new Date(FIRST_COMMIT);
-  const stamp = new Date(verified.date);
-  let m =
-    (stamp.getFullYear() - start.getFullYear()) * 12 + (stamp.getMonth() - start.getMonth());
-  if (stamp.getDate() < start.getDate()) m -= 1;
-  return Math.max(1, m);
-}
-
-function asWord(n: number) {
-  const words = [
-    "one", "two", "three", "four", "five", "six",
-    "seven", "eight", "nine", "ten", "eleven", "twelve",
-  ];
-  return words[n - 1] ?? String(n);
-}
+const months = monateZwischen(new Date(FIRST_COMMIT), new Date(verified.date));
 
 /** "four months", "five months", … — never a frozen value. */
-const buildTime = `${asWord(monthsSinceStart())} month${monthsSinceStart() === 1 ? "" : "s"}`;
-
-/* Dieselbe Spanne für die Überschrift, groß geschrieben. Sie stand als
-   Zeichenkette da („Four months shipping"), zwei Zeilen über einem Absatz, der
-   dieselbe Spanne rechnet — ab dem 26. des übernächsten Monats hätten beide
-   verschiedene Zahlen gesagt. */
-function capitalise(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-const buildTimeTitle = capitalise(buildTime);
-
-/* Der Lernweg beginnt mit den Kurszertifikaten von Juli 2022. „Four years"
-   war beim Schreiben richtig und wäre 2027 zu niedrig. */
-const LEARNING_START = "2022-07-01";
-const learningYears = capitalise(
-  asWord(
-    Math.max(
-      1,
-      new Date(verified.date).getFullYear() - new Date(LEARNING_START).getFullYear(),
-    ),
-  ) + " years",
+const buildTime = `${asWord(months)} month${months === 1 ? "" : "s"}`;
+const buildTimeTitle = grossErstes(buildTime);
+const learningYears = grossErstes(
+  `${asWord(jahreZwischen(new Date(LEARNING_START), new Date(verified.date)))} years`,
 );
 
 export const en: Content = {

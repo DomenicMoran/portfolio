@@ -57,6 +57,11 @@ jobs:
       # Die Datenschutzerklärung sagt als Tatsache, dass keine Verbindung nach
       # außen aufgebaut wird. Diese Aussage bricht leise — eine Schrift von
       # einem CDN, ein Video, ein Zählpixel.
+      # Reine Rechenlogik ohne Browser: die Zeitspanne, aus der „vier Monate"
+      # wird. Ein Fehler um eins sieht auf der Seite normal aus.
+      - name: Tests
+        run: npm test
+
       - name: Datenschutz
         run: npm run check:privacy
 
