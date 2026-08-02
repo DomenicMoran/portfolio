@@ -1120,6 +1120,63 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Impressum und Datenschutz stehen auf jeder Seite
+   ---------------------------------------------------------------------------
+
+   § 5 DDG verlangt das Impressum leicht erkennbar, unmittelbar erreichbar und
+   ständig verfügbar — von jeder Seite des Angebots. Gemessen am 02.08.2026
+   fehlte der Verweis auf fünf von elf ausgelieferten Adressen: beide
+   One-Pager, beide Rechtsseiten und die 404. Am schwersten wogen die
+   One-Pager, weil genau diese Adresse an Recruiter geht.
+
+   Geprüft wird die gebaute Datei, nicht das Bauteil: Der Verweis kann in
+   einem Layout hängen, das eine Route nicht benutzt, und genau so ist es
+   entstanden. */
+{
+  const bauOrdner = join(".next", "server", "app");
+  const funde = [];
+  let geprueft = 0;
+
+  const suchen = (ordner) => {
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) {
+        suchen(pfad);
+        continue;
+      }
+      if (!eintrag.name.endsWith(".html")) continue;
+      if (eintrag.name.startsWith("_")) continue;
+
+      const html = readFileSync(pfad, "utf8");
+      geprueft++;
+      const fehlt = [
+        /href="\/impressum"/.test(html) ? null : "Impressum",
+        /href="\/datenschutz"/.test(html) ? null : "Datenschutz",
+      ].filter(Boolean);
+      if (fehlt.length) {
+        const route = pfad.slice(bauOrdner.length).split("\\").join("/");
+        funde.push(`${route}: ohne ${fehlt.join(" und ")}`);
+      }
+    }
+  };
+
+  if (!existsSync(bauOrdner)) {
+    zeilen.push("  --  Rechtsverweise nicht gebaut, übersprungen (npm run build)");
+  } else {
+    suchen(bauOrdner);
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Seite(n) ohne Rechtsverweise:`);
+      for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Rechtsverweise         ${String(geprueft).padStart(6)} Seiten mit Impressum und Datenschutz`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Sicherheitskontaktdatei läuft nicht ab
    ---------------------------------------------------------------------------
 
