@@ -36,10 +36,20 @@ export default function LegalLayout({
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        <Link href="/impressum" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+        {/* Unterstrichen: Die Verweise stehen in derselben Zeile wie die
+            Copyright-Angabe und trugen gemessen deren Farbe. In einem
+            Textblock muss ein Verweis mehr als Farbe zur Unterscheidung
+            tragen — hier trug er nicht einmal die. */}
+        <Link
+          href="/impressum"
+          className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+        >
           {de.footer.impressum}
         </Link>
-        <Link href="/datenschutz" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+        <Link
+          href="/datenschutz"
+          className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+        >
           {de.footer.datenschutz}
         </Link>
       </p>
