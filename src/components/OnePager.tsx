@@ -272,10 +272,17 @@ export function OnePager({
                       "Ein Agent, der nicht ungefragt handelt: Der Reiz eines
                       solchen Systems ist auch sein Risiko: ein Bot, der …".
                       Auf dem gedruckten Blatt betraf das zwei der vier
-                      Projekte. */}
+                      Projekte.
+
+                      Der Ausweg war zuerst ein Gedankenstrich, und der war
+                      falsch: Nach ihm folgte ein großgeschriebenes Wort, weil
+                      dahinter ein vollständiger Satz steht — auf Papier las
+                      sich das wie ein Tippfehler. Ein Punkt trennt dasselbe,
+                      ohne etwas zu behaupten, das die Zeichensetzung nicht
+                      hergibt. */}
                   <strong className="font-semibold">
                     {study.hardPart.title}
-                    {firstSentence(study.hardPart.body).includes(":") ? " —" : ":"}
+                    {firstSentence(study.hardPart.body).includes(":") ? "." : ":"}
                   </strong>{" "}
                   {firstSentence(study.hardPart.body)}
                 </p>
