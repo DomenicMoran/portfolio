@@ -42,6 +42,37 @@ function dateLong(iso: string) {
   });
 }
 
+/**
+ * How long the four production systems have been in the making — computed.
+ *
+ * The lede said "built in four months". Exactly right on the day it was
+ * written, understated from the 26th of the month after next, and nobody
+ * notices: the claim does not become false, it becomes quietly modest. Same
+ * drifting figure as "3,971 commits in 4 months" and "107 days until today",
+ * both already dropped.
+ */
+const FIRST_COMMIT = "2026-03-26";
+
+function monthsSinceStart() {
+  const start = new Date(FIRST_COMMIT);
+  const stamp = new Date(verified.date);
+  let m =
+    (stamp.getFullYear() - start.getFullYear()) * 12 + (stamp.getMonth() - start.getMonth());
+  if (stamp.getDate() < start.getDate()) m -= 1;
+  return Math.max(1, m);
+}
+
+function asWord(n: number) {
+  const words = [
+    "one", "two", "three", "four", "five", "six",
+    "seven", "eight", "nine", "ten", "eleven", "twelve",
+  ];
+  return words[n - 1] ?? String(n);
+}
+
+/** "four months", "five months", … — never a frozen value. */
+const buildTime = `${asWord(monthsSinceStart())} month${monthsSinceStart() === 1 ? "" : "s"}`;
+
 export const en: Content = {
   lang: "en",
   site: {
@@ -114,7 +145,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: "Fullstack product engineer in Berlin. Four systems in production, built in four months alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.",
+    lede: `Fullstack product engineer in Berlin. Four systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
@@ -432,7 +463,7 @@ export const en: Content = {
     portrait: "",
     title: "Four years learning. Four months shipping.",
     paragraphs: [
-      "I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in four months, two of them shipping in both app stores, one carrying statutory fiscal signing, all of it built alongside a full-time job.",
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, two of them shipping in both app stores, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
