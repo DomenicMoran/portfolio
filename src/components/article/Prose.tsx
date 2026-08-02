@@ -15,7 +15,7 @@ import { RichText } from "@/components/ui/InlineCode";
  * an gezählten Zeichen ausgerichtet.
  */
 
-export function Prose({ blocks }: { blocks: readonly Block[] }) {
+export function Prose({ blocks, codeLabel }: { blocks: readonly Block[]; codeLabel: string }) {
   return (
     <div className="flex flex-col">
       {blocks.map((block, i) => {
@@ -85,8 +85,23 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
             return (
               <figure key={i} className="mt-2 mb-7">
                 {/* Der Kasten scrollt für sich. Ohne das schiebt eine lange
-                    Zeile das ganze Dokument in die Breite. */}
-                <pre className="lit scroll-hint overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed">
+                    Zeile das ganze Dokument in die Breite.
+
+                    Und er ist fokussierbar, weil ein Bereich, der scrollt, mit
+                    der Tastatur erreichbar sein muss. Gemessen bei 390 px an
+                    der ausgelieferten Seite: zwei der drei Kästen liefen
+                    seitlich über, keiner war anspringbar — wer keine Maus
+                    benutzt, kam an die rechte Hälfte des Codes nicht heran.
+
+                    Der Rahmen trägt einen Namen, weil ein anspringbarer
+                    Bereich ohne Namen nur als "Bereich" angesagt wird. Die
+                    Bildunterschrift ist der bessere Name, wo es eine gibt. */}
+                <pre
+                  tabIndex={0}
+                  role="region"
+                  aria-label={block.caption ?? codeLabel}
+                  className="lit scroll-hint overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
+                >
                   <code className={`language-${block.lang} font-mono text-ink-dim`}>
                     {block.code}
                   </code>

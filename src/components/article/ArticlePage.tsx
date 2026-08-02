@@ -114,7 +114,7 @@ export function ArticlePage({
           </div>
 
           <div className="mt-12">
-            <Prose blocks={article.blocks} />
+            <Prose blocks={article.blocks} codeLabel={chrome.codeLabel} />
           </div>
 
           {/* Die Belege stehen im Artikel, nicht in einer Fußnote irgendwo

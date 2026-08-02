@@ -25,6 +25,7 @@ export const chromeDe: ArticleChrome = {
   readingTime: (m) => `${m} Min. Lesezeit`,
   backToIndex: "Alle Artikel",
   evidenceLabel: "Belege",
+  codeLabel: "Codebeispiel",
   publishedLabel: "Veröffentlicht",
   allArticles: "Artikel",
   home: {
@@ -43,6 +44,7 @@ export const chromeEn: ArticleChrome = {
   readingTime: (m) => `${m} min read`,
   backToIndex: "All articles",
   evidenceLabel: "Evidence",
+  codeLabel: "Code sample",
   publishedLabel: "Published",
   allArticles: "Articles",
   home: {
