@@ -212,7 +212,12 @@ export type Content = {
     lede: string;
     facts: readonly { label: string; value: string }[];
     strengths: readonly { title: string; body: string }[];
-    cta: { pdf: { label: string; href: string }; mail: { label: string } };
+    cta: {
+      pdf: { label: string; href: string };
+      mail: { label: string };
+      /** Der Knopf, der die Adresse in die Zwischenablage legt. */
+      copy: { label: string; done: string; failed: string };
+    };
   };
 
   contact: {

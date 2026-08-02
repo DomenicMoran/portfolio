@@ -782,6 +782,11 @@ export const en: Content = {
     cta: {
       pdf: { label: "One-pager as PDF", href: "/domenic-moran-one-pager.pdf" },
       mail: { label: "Email me" },
+      copy: {
+        label: "Copy address",
+        done: "Address copied",
+        failed: "Copying failed — the address is right there",
+      },
     },
   },
 
