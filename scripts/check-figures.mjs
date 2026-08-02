@@ -931,6 +931,82 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Commits, die die Artikel als Beleg nennen
+   ---------------------------------------------------------------------------
+
+   Jeder Artikel nennt den Commit, an dem sich der Fix nachlesen lässt:
+   „Salati-Repo, Commit 427cd6c6 vom 31.07.2026". Das ist die konkreteste
+   Angabe der ganzen Seite. Sie steht in einem privaten Repo, also kann sie
+   niemand von außen prüfen — hier liegt es daneben, und damit lässt sie sich
+   prüfen.
+
+   Geprüft wird beides: dass es die Kennung gibt und dass das Datum daneben
+   stimmt. Eine Kennung, die nach einem Umschreiben ins Leere zeigt, oder ein
+   Datum, das um einen Tag danebenliegt, macht aus einem Beleg eine Behauptung
+   — und das fiele sonst erst auf, wenn jemand danach fragt.
+
+   Fehlt ein Repo, wird übersprungen statt zu scheitern. */
+{
+  const REPOS = {
+    kassensichv: "../../MenuCloud",
+    ota: "../../SalatiTech",
+    shaper: "../../SalatiTech",
+    whisper: "../../SalatiTech",
+    widget: "../../SalatiTech",
+  };
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const datei of readdirSync("src/content/articles")) {
+    const treffer = datei.match(/^de-(.+)\.ts$/);
+    if (!treffer) continue;
+    const repo = REPOS[treffer[1]];
+    if (!repo || !existsSync(repo)) {
+      if (repo) uebersprungen++;
+      continue;
+    }
+
+    const inhalt = readFileSync(join("src/content/articles", datei), "utf8");
+    /* Die Kennung, und wenn ein Datum dabeisteht, auch das. */
+    for (const stelle of inhalt.matchAll(
+      /\bCommit\s+([0-9a-f]{7,40})\b(?:[^\n]{0,20}?vom\s+(\d{2})\.(\d{2})\.(\d{4}))?/g,
+    )) {
+      const [, kennung, tag, monat, jahr] = stelle;
+      geprueft++;
+      let zeile;
+      try {
+        zeile = execFileSync("git", ["-C", repo, "log", "-1", "--format=%h %ad", "--date=short", kennung], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+      } catch {
+        funde.push(`${datei}: Commit ${kennung} gibt es in ${repo.split("/").pop()} nicht`);
+        continue;
+      }
+      const datum = zeile.split(" ")[1];
+      if (tag && datum !== `${jahr}-${monat}-${tag}`) {
+        funde.push(`${datei}: Commit ${kennung} ist vom ${datum}, im Artikel steht ${tag}.${monat}.${jahr}`);
+      }
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Commit-Beleg(e) stimmen nicht:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft > 0) {
+    zeilen.push(
+      `  ok  Belegte Commits         ${String(geprueft).padStart(6)} aus Artikeln vorhanden` +
+        (uebersprungen ? `, ${uebersprungen} Repo(s) nicht da` : ""),
+    );
+  } else {
+    zeilen.push("  --  Produktivrepos nicht gefunden, Commits übersprungen");
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Dateipfade, die die Artikel nennen
    ---------------------------------------------------------------------------
 
