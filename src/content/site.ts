@@ -72,7 +72,10 @@ export const site = {
   availability: {
     open: true,
     label: "Offen für eine Festanstellung",
-    detail: "Remote (EU) oder Berlin hybrid",
+    // Steht auf dem Kurzprofil unter der Zusage. Vorher rendete dieses Feld
+    // nirgends — und dem Blatt fehlte damit die eine Angabe, die ein Recruiter
+    // vor dem Anruf braucht: unter welchen Bedingungen.
+    detail: "Remote in der EU · async · wenig Meetings",
   },
 
   meta: {
