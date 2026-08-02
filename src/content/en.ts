@@ -423,7 +423,7 @@ export const en: Content = {
         "A locally running agent that scans five portals around the clock, checks each new listing against defined criteria, sends borderline cases to an LLM for a full-text assessment, and drafts an individual cover letter. It ships in REVIEW mode: it sends nothing without approval, until you deliberately switch it to automatic.",
       hardPart: {
         title: "An agent that does not act unasked",
-        body: "What makes such a system appealing is also its risk: a bot sending applications with your real personal data can do real damage. So the shipped state is REVIEW: propose, do not send. Automatic mode exists, but as a deliberate user decision rather than the default. The same logic sits in the watchdogs on my other projects: self-healing always with a cooldown, a cap, and a visible alert on every intervention.",
+        body: "What makes such a system appealing is also its risk: a bot sending applications with real personal data can do real damage. So the shipped state is REVIEW: propose, do not send. Automatic mode exists, but as a deliberate user decision rather than the default. The same logic sits in the watchdogs on my other projects: self-healing always with a cooldown, a cap, and a visible alert on every intervention.",
       },
       highlights: [
         "Playwright with persistent Chrome profiles per portal: real sessions instead of brittle scrapers",
