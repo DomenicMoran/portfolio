@@ -195,13 +195,20 @@ export function OnePager({
                       also erbte die Überschrift das Weiß des dunklen Themas —
                       die vier Projektnamen standen weiß auf weiß. */}
                   <h3 className="text-[16px] font-semibold text-[#101014]">
-                    {study.name}{" "}
-                    {/* Das Leerzeichen ist kein Schönheitsfehler, es ist der
+                    {/* Das Leerzeichen gehört in denselben Textknoten wie der
                         Unterschied zwischen „Salati Live im App Store" und
                         „SalatiLive im App Store". Optisch trennt der
                         Außenabstand, im Text stand nichts: Ein Screenreader
                         las die beiden Wörter zusammen, und dasselbe zog ein
-                        Bewerbermanagementsystem aus der PDF. */}
+                        Bewerbermanagementsystem aus der PDF.
+
+                        Als eigener Knoten hinter diesem Kommentar reichte es
+                        nicht: Im DOM stand „Salati Live im App Store", der
+                        zugängliche Name aber weiterhin „SalatiLive im App
+                        Store" — die Namensberechnung verwirft einen
+                        Textknoten, der nur aus Leerraum besteht. Deshalb
+                        hängt das Leerzeichen jetzt am Namen selbst. */}
+                    {`${study.name} `}
                     <span className="ml-1 text-[13px] font-normal text-[#5a5a66]">
                       {study.statusLabel} · {study.year}
                     </span>
