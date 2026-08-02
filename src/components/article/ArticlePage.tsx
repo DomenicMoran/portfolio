@@ -123,19 +123,37 @@ export function ArticlePage({
           <Reveal>
             <section className="mt-16 rounded-2xl border border-line bg-surface/40 p-6 sm:p-7">
               <h2 className="text-eyebrow mb-4">{chrome.evidenceLabel}</h2>
-              <ul className="flex flex-col gap-2.5">
-                {article.evidence.map((item) => (
-                  <li
-                    key={item}
-                    className="flex gap-2.5 font-mono text-[12px] leading-relaxed text-ink-faint"
-                  >
-                    <span
-                      aria-hidden
-                      className="mt-[0.6em] size-1 shrink-0 rounded-full bg-acid/60"
-                    />
-                    {item}
-                  </li>
-                ))}
+              {/* `evidence-list` hängt nur für den Druck daran: Dort steht die
+                  Adresse hinter dem Linktext, weil ein unterstrichenes Wort auf
+                  Papier nirgendwohin führt. Nur hier und nicht an allen Links —
+                  ausgeschriebene Adressen im Fließtext wären Lärm. */}
+              <ul className="evidence-list flex flex-col gap-2.5">
+                {article.evidence.map((item) => {
+                  const text = typeof item === "string" ? item : item.text;
+                  return (
+                    <li
+                      key={text}
+                      className="flex gap-2.5 font-mono text-[12px] leading-relaxed text-ink-faint"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-[0.6em] size-1 shrink-0 rounded-full bg-acid/60"
+                      />
+                      {typeof item === "string" ? (
+                        text
+                      ) : (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-acid underline decoration-acid/30 underline-offset-4 transition-colors hover:decoration-acid"
+                        >
+                          {text}
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           </Reveal>

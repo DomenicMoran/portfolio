@@ -634,6 +634,19 @@ textarea:-webkit-autofill {
     display: block !important;
   }
 
+  /* In der Belegliste steht die Adresse hinter dem Linktext.
+
+     Die Liste am Fuß eines Artikels ist der Teil, den jemand ausdruckt oder
+     weiterreicht, und seit die öffentlichen Pakete dort verlinkt sind, führte
+     genau dieser Eintrag auf Papier nirgendwohin: ein unterstrichenes Wort
+     ohne Adresse. Nur hier und nicht an allen Links — jede Adresse im
+     Fließtext ausgeschrieben wäre Lärm statt Hilfe. */
+  .evidence-list a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    color: var(--color-ink-faint);
+    word-break: break-all;
+  }
+
   .grain::after {
     display: none;
   }
