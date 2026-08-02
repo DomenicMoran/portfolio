@@ -19,7 +19,8 @@
     "prebuild": "node scripts/check-public-dir.mjs",
     "check:print": "node scripts/check-print.mjs",
     "check:reading": "node scripts/check-reading-time.mjs",
-    "check:headings": "node scripts/check-headings.mjs"
+    "check:headings": "node scripts/check-headings.mjs",
+    "check:a11y": "node scripts/check-a11y.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -36,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "axe-core": "^4.12.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "marked": "^18.0.7",
