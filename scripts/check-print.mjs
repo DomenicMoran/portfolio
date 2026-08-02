@@ -33,7 +33,7 @@
 
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
 
@@ -99,16 +99,56 @@ process.on("SIGINT", () => {
 });
 
 /**
- * Die Seitenliste kommt aus der Sitemap, nicht aus einer zweiten Aufzählung.
- * Eine neue Seite ist damit automatisch mitgeprüft; eine Liste im Skript wäre
- * am Tag nach dem nächsten Artikel unvollständig, ohne dass es auffällt.
+ * Die Seitenliste kommt aus dem Bau, nicht aus der Sitemap.
+ *
+ * Zuerst stand hier die Sitemap. Das war falsch, und zwar auf eine Art, die
+ * still ist: Als /onepager, /impressum und /datenschutz aus der Sitemap flogen
+ * — sie tragen `noindex`, gehören dort also nicht hin —, verschwanden sie
+ * damit auch aus dieser Prüfung. Ausgerechnet der One-Pager, dessen einziger
+ * Zweck der Ausdruck ist, wurde nicht mehr auf den Ausdruck geprüft, und die
+ * Meldung sagte weiter „alle Seiten sauber", nur eben über weniger Seiten.
+ *
+ * Der Bauordner kennt jede ausgelieferte Seite. Eine Sitemap ist eine Aussage
+ * über Suchmaschinen, keine über Vollständigkeit.
  */
-const sitemap = await (await fetch(`${basis}/sitemap.xml`)).text();
-const pfade = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)]
-  .map((treffer) => new URL(treffer[1]).pathname)
-  .filter((pfad, i, alle) => alle.indexOf(pfad) === i);
+const bauOrdnerSeiten = join(".next", "server", "app");
+const pfade = [];
+{
+  const suchen = (ordner) => {
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) suchen(pfad);
+      else if (eintrag.name.endsWith(".html")) {
+        const route = pfad
+          .slice(bauOrdnerSeiten.length)
+          .replace(/\\/g, "/")
+          .replace(/\.html$/, "");
+        pfade.push(route === "/index" ? "/" : route);
+      }
+    }
+  };
+  suchen(bauOrdnerSeiten);
+  pfade.sort();
+}
 
-if (pfade.length === 0) throw new Error("Die Sitemap nennt keine Seiten.");
+/**
+ * `_global-error` und `_not-found` liegen als HTML im Bau, sind aber keine
+ * Adressen: Die erste antwortet mit 500, die zweite mit 404, weil sie beide nur
+ * dann erscheinen, wenn etwas anderes schiefging.
+ */
+const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
+const gepruefteSeiten = pfade.filter((p) => !p.split("/").pop().startsWith("_"));
+
+/*
+  Die 404-Seite wird über eine erfundene Adresse geprüft und nicht über ihre
+  Datei im Bau. Nur so entsteht, was ein Besucher wirklich bekommt: `Next`
+  liefert dafür `global-not-found.tsx` aus, das sein eigenes Dokument mitbringt
+  — eigene Schriften, eigenes Stylesheet, kein gemeinsames Layout. Genau dort
+  ist eine vergessene Druckregel am wahrscheinlichsten.
+*/
+gepruefteSeiten.push(UNBEKANNTE_ADRESSE);
+
+if (gepruefteSeiten.length === 0) throw new Error("Der Bau enthält keine Seiten.");
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({
@@ -330,10 +370,13 @@ function textEinsammeln() {
 
 let fehler = 0;
 
-for (const pfad of pfade) {
+for (const pfad of gepruefteSeiten) {
+  // Die erfundene Adresse muss mit 404 antworten: Ein 200 hiesse, dass Next
+  // irgendetwas ausliefert, wo nichts sein sollte.
+  const erwartet = pfad === UNBEKANNTE_ADRESSE ? 404 : 200;
   const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
-  if (!antwort || antwort.status() !== 200) {
-    console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()}`);
+  if (!antwort || antwort.status() !== erwartet) {
+    console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`);
     fehler++;
     continue;
   }
@@ -443,10 +486,10 @@ await browser.close();
 
 if (fehler > 0) {
   console.error(
-    `\n${fehler} von ${pfade.length} Seiten drucken nicht sauber. ` +
+    `\n${fehler} von ${gepruefteSeiten.length} Seiten drucken nicht sauber. ` +
       `Die Druckregeln stehen in src/app/globals.css unter @media print.`,
   );
   process.exit(1);
 }
 
-console.log(`\nAlle ${pfade.length} Seiten drucken lesbar und vollständig.`);
+console.log(`\nAlle ${gepruefteSeiten.length} Seiten drucken lesbar und vollständig.`);

@@ -770,6 +770,98 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Sitemap gegen die robots-Angaben der Seiten
+   ---------------------------------------------------------------------------
+
+   Anlass: In der Sitemap standen /onepager, /impressum und /datenschutz, und
+   alle drei trugen `robots: noindex`. Eine Sitemap ist die Bitte, eine Seite
+   aufzunehmen; `noindex` ist die Anweisung, sie nicht aufzunehmen. Die Google
+   Search Console führt genau das als eigenen Fehler, und für einen Leser des
+   Repos sieht es aus, als hätte niemand beide Stellen zusammen gelesen.
+
+   Geprüft wird gegen die gebauten Dateien: Die Sitemap-Route erzeugt beim
+   Bauen eine sitemap.xml, die Seiten liegen als HTML daneben. Ohne Bau
+   übersprungen. */
+{
+  const bauOrdner = join(".next", "server", "app");
+  const sitemapDatei = join(bauOrdner, "sitemap.xml.body");
+
+  if (!existsSync(sitemapDatei)) {
+    zeilen.push("  --  Sitemap: nicht gebaut, übersprungen (npm run build)");
+  } else {
+    const xml = readFileSync(sitemapDatei, "utf8");
+    const adressen = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+
+    const zuDatei = (adresse) => {
+      const pfad = new URL(adresse).pathname.replace(/\/$/, "");
+      return join(bauOrdner, pfad === "" ? "index.html" : `${pfad}.html`);
+    };
+
+    const funde = [];
+    for (const adresse of adressen) {
+      const datei = zuDatei(adresse);
+      if (!existsSync(datei)) {
+        funde.push(`${adresse} steht in der Sitemap, hat aber keine gebaute Seite`);
+        continue;
+      }
+      const html = readFileSync(datei, "utf8");
+      const treffer = html.match(/<meta name="robots" content="([^"]+)"/);
+      if (treffer && /noindex/.test(treffer[1])) {
+        funde.push(`${adresse} steht in der Sitemap und trägt zugleich "${treffer[1]}"`);
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Widerspruch/Widersprüche in der Sitemap:`);
+      for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(`  ok  Sitemap                 ${String(adressen.length).padStart(6)} Adressen indexierbar`);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Alter des Prüfstempels
+   ---------------------------------------------------------------------------
+
+   Die Seite sagt: „Ein Automat frischt die Zahl täglich auf." Das ist eine
+   Aussage über einen Zeitplan, und Zeitpläne fallen leise aus. Am 02.08.2026
+   stand der Automat auf täglich 04:12 UTC und hatte um 05:53 UTC noch keinen
+   einzigen planmäßigen Lauf hinter sich — aufgefallen ist das nur, weil
+   jemand in die Actions-Ansicht gesehen hat.
+
+   Drei Tage Spielraum: Ein ausgefallener Lauf ist bei GitHubs Zeitplan normal
+   (die Warteschlange verschiebt Termine um Stunden), drei ausgefallene sind
+   ein Defekt. Bis dahin bleibt die Zahl richtig, sie wird nur älter — danach
+   ist die Zusage auf der Seite nicht mehr gedeckt. */
+{
+  const TAGE_SPIELRAUM = 3;
+  const alterText = (n) =>
+    n === 0 ? "von heute" : n === 1 ? "1 Tag alt" : `${n} Tage alt`;
+  const stempel = existsSync("src/content/verified.json")
+    ? JSON.parse(readFileSync("src/content/verified.json", "utf8"))
+    : null;
+  const alter = stempel
+    ? Math.floor((Date.now() - Date.parse(stempel.date)) / 86_400_000)
+    : null;
+  if (alter === null) {
+    zeilen.push("  --  Prüfstempel: verified.json fehlt, übersprungen");
+  } else if (alter > TAGE_SPIELRAUM) {
+    abweichungen++;
+    zeilen.push(
+      `  !!  Prüfstempel ${alterText(alter)} (${stempel.date}). Der Automat ` +
+        `„Zahlen auffrischen" läuft nicht mehr täglich — Actions-Ansicht prüfen.`,
+    );
+  } else {
+    zeilen.push(
+      `  ok  Prüfstempel              ${alterText(alter).padStart(10)} (${stempel.date})`,
+    );
+  }
+}
+
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {

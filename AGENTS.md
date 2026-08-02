@@ -31,14 +31,26 @@ globale 404 kann Next dadurch nicht komponieren. Dafür ist
 
 ## Benennung: englisch außen, deutsch innen
 
-**Dateinamen, Ordner, Bezeichner und JSON-Schlüssel sind englisch. Fließtext,
-Kommentare und alles Sichtbare sind deutsch.**
+**Dateinamen, Ordner und JSON-Schlüssel sind englisch. Fließtext, Kommentare
+und alles Sichtbare sind deutsch. Bezeichner im Code dürfen deutsch sein,
+müssen dann aber ohne Umlaute auskommen.**
 
 Das ist keine Geschmacksfrage, sondern folgt aus zwei harten Punkten: Umlaute
 in Dateinamen brechen über Betriebssysteme hinweg, und die Ersatzschreibung
 `ue/ae/oe` ist die Krücke, die man sich dafür einhandelt — sie stand einmal in
 sechs Dateinamen neben sechzig englischen. Wer diese Datei liest, sieht sonst
 zwei Sprachen und zwei Konventionen in einem Verzeichnis.
+
+Bei **Bezeichnern im Code** gilt dieser Grund nicht: Sie verlassen das Repo
+nie und kollidieren mit keinem Dateisystem. Hier stand trotzdem „englisch",
+und der Code hielt sich nie daran — gezählt rund 1.400 deutsche gegen 2.500
+englische Vorkommen, quer durch `src/` und `scripts/`. Eine Regel, die
+niemand befolgt, macht das Dokument wertlos und nicht den Code besser: Die
+Regel wandert dorthin, wo sie einen Grund hat. Deutsch ist erlaubt, wo die
+Sache deutsch ist (`abweichungen`, `pruefe`, `bauOrdner`); englisch bleibt,
+was das Framework vorgibt (`params`, `metadata`, `generateStaticParams`).
+Umlaute bleiben auch dort draußen, weil sie sich über Tastaturen, Terminals
+und `grep`-Aufrufe hinweg als Ärger erweisen.
 
 Ausgenommen sind **URL-Segmente**: `/artikel`, `/impressum`, `/datenschutz`
 sind deutsch, weil sie der Leser sieht und weil sie stabil bleiben müssen.

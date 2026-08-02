@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -24,10 +25,30 @@ export const metadata: Metadata = {
  * jeden Morgen selbst neu datiert, sagt nichts darüber aus, was sich geändert
  * hat.
  */
+/**
+ * Das Datum der letzten inhaltlichen Änderung dieser Erklärung, von Hand
+ * gepflegt.
+ *
+ * Hier stand `new Date()`. Damit trug die Erklärung das Datum des letzten
+ * Bauvorgangs — und der läuft täglich, weil ein Automat die Commit-Zahlen
+ * auffrischt. Die Seite datierte sich also jeden Morgen neu, ohne dass sich ein
+ * Wort geändert hatte. Der Kommentar über dieser Datei hat das immer schon
+ * ausgeschlossen; der Code tat das Gegenteil.
+ *
+ * Belegt: Der sichtbare Text wurde zuletzt am 01.08.2026 geändert, als die
+ * Anschrift des Verantwortlichen dazukam (`git log -S "Heidelberger"`).
+ *
+ * Wer den Text ändert, ändert diese Zeile mit. Eine Erklärung, die sich selbst
+ * neu datiert, sagt nichts darüber aus, was sich geändert hat.
+ */
+const STAND = "1. August 2026";
+
 export default function Datenschutz() {
   return (
     <main>
       <h1 className="text-title mb-10 text-ink">Datenschutzerklärung</h1>
+
+      <EnglishNote />
 
       <Section title="Verantwortlicher">
         Domenic Moran
@@ -93,13 +114,7 @@ export default function Datenschutz() {
         der Berliner Beauftragten für Datenschutz und Informationsfreiheit.
       </Section>
 
-      <Section title="Stand">
-        {new Date().toLocaleDateString("de-DE", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        })}
-      </Section>
+      <Section title="Stand">{STAND}</Section>
     </main>
   );
 }
