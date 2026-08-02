@@ -93,6 +93,19 @@ export function NotFoundPage({
             {site.email}
           </a>
         </p>
+
+        {/* Auch eine 404 ist eine Seite des Angebots: § 5 DDG verlangt das
+            Impressum von jeder aus unmittelbar erreichbar. Gemessen an elf
+            ausgelieferten Adressen fehlte es hier — und diese Seite bekommt
+            jeder zu sehen, der sich vertippt. */}
+        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
+          <Link href="/impressum" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+            {content.footer.impressum}
+          </Link>
+          <Link href="/datenschutz" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+            {content.footer.datenschutz}
+          </Link>
+        </p>
       </div>
     </main>
   );
