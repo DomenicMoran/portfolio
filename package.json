@@ -16,7 +16,8 @@
     "start": "next start",
     "lint": "eslint",
     "onepager:pdf": "node scripts/build-onepager-pdf.mjs",
-    "prebuild": "node scripts/check-public-dir.mjs"
+    "prebuild": "node scripts/check-public-dir.mjs",
+    "check:print": "node scripts/check-print.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

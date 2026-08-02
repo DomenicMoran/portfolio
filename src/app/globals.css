@@ -456,6 +456,47 @@ textarea:-webkit-autofill {
     color-scheme: light;
   }
 
+  /* Alles sichtbar, was am Bildschirm auf das Hineinscrollen wartet.
+     ---------------------------------------------------------------
+     Die Abschnitte blenden sich beim Scrollen ein: Bis dahin stehen sie auf
+     `opacity: 0` und einer Verschiebung. Beim Drucken scrollt niemand, der
+     Beobachter feuert nie, und die Abschnitte bleiben unsichtbar — gedruckt
+     wird ihr Platz, nicht ihr Inhalt.
+
+     Gemessen am 02.08.2026, Startseite ohne vorheriges Scrollen gedruckt:
+     15 Seiten, 230 KB, 407 von 504 textführenden Elementen unsichtbar.
+     Dieselbe Seite nach einem Durchlauf: 16 Seiten, 2.386 KB, kein einziges
+     unsichtbar. Ein Ausdruck war also fast leeres Papier, und zwar genau
+     dann, wenn jemand die Seite ungelesen weiterreichen wollte.
+
+     `!important` ist hier nicht Notwehr, sondern notwendig: Die Werte setzt
+     die Animationsbibliothek als Inline-Stil, den eine gewöhnliche Regel
+     nicht erreicht. */
+  *,
+  *::before,
+  *::after {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Das Karussell wickelt um, statt seitlich zu verschwinden.
+     Es ist am Bildschirm eine Geste; auf Papier gibt es keine. Gemessen
+     fehlten 1.950 px, das sind alle Aufnahmen außer der ersten. */
+  .shot-track {
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+  }
+
+  /* Durchsichtiger Text hat auf Papier keine Reserve mehr.
+     Am Bildschirm liegt `text-ink-faint/70` auf einer dunklen Fläche und
+     bleibt gut lesbar. Gedruckt steht derselbe Wert auf Weiß, und die 30 %
+     Durchsicht kosten genau den Kontrast, den die Token-Umdefinition dem
+     Druck gerade zurückgegeben hat: gemessen 3,13:1 bei 10 px, gefordert
+     sind 4,5:1. Volle Deckung, Farbe bleibt. */
+  [class*="text-ink-faint/"] {
+    color: var(--color-ink-faint) !important;
+  }
+
   /* Dekoration kostet nur Toner. */
   .glow-orb,
   .dot-grid,

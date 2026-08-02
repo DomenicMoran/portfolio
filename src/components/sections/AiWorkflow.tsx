@@ -90,12 +90,12 @@ const LINE_STYLE = {
 } as const;
 
 /**
- * Replays a scripted agent iteration.
+ * Spielt einen aufgezeichneten Agentendurchlauf ab.
  *
- * Deliberately a *replay*, not a fake live session: it is labelled as an
- * illustration, and the "Nochmal"-button makes clear it is a recording. A
- * portfolio that fakes a live terminal is doing the exact thing the copy next
- * to it argues against.
+ * Mit Absicht eine *Aufzeichnung* und keine vorgetäuschte Sitzung: Sie ist als
+ * Nachzeichnung ausgewiesen, und die Schaltfläche „Nochmal" macht deutlich,
+ * dass hier etwas abgespielt wird. Eine Bewerbungsseite, die ein Terminal live
+ * vortäuscht, tut genau das, wogegen der Text daneben argumentiert.
  */
 function AgentTerminal() {
   const { workflow, a11y } = useContent();
@@ -106,8 +106,9 @@ function AgentTerminal() {
 
   const lines = workflow.demo.lines;
 
-  // Rewind during render when the replay button bumps runId, dasselbe Muster wie
-  // the palette: no effect, no cascading render, no flash of the old lines.
+  // Zurückspulen während des Renderns, wenn die Schaltfläche runId erhöht —
+  // dasselbe Muster wie bei der Palette: kein Effekt, kein Nachziehen-Rendern,
+  // kein Aufblitzen der alten Zeilen.
   const [playedRun, setPlayedRun] = useState(runId);
   if (runId !== playedRun) {
     setPlayedRun(runId);
@@ -126,6 +127,31 @@ function AgentTerminal() {
 
     return () => window.clearInterval(timer);
   }, [inView, lines.length, runId]);
+
+  /**
+   * Im Ausdruck stehen alle Zeilen sofort da.
+   *
+   * Die Aufzeichnung läuft erst los, wenn der Kasten in den Sichtbereich
+   * kommt. Beim Drucken kommt er das nie: `shown` bleibt auf 0, und auf dem
+   * Papier steht ein leerer Terminalrahmen mit Überschrift — die Stelle, an
+   * der die Seite ihre Arbeitsweise zeigt, ausgerechnet leer.
+   */
+  useEffect(() => {
+    const druck = window.matchMedia("print");
+    const alleZeigen = () => setShown(lines.length);
+    const beiDruck = () => {
+      if (druck.matches) alleZeigen();
+    };
+
+    beiDruck();
+    window.addEventListener("beforeprint", alleZeigen);
+    druck.addEventListener("change", beiDruck);
+
+    return () => {
+      window.removeEventListener("beforeprint", alleZeigen);
+      druck.removeEventListener("change", beiDruck);
+    };
+  }, [lines.length]);
 
   return (
     <div ref={ref} className="lit overflow-hidden rounded-2xl border border-line bg-base">
@@ -180,7 +206,8 @@ function AgentTerminal() {
 }
 
 /**
- * Standalone speed comparison. Sits between the workflow and skills sections.
+ * Der Geschwindigkeitsvergleich für sich. Steht zwischen Arbeitsweise und
+ * Fähigkeiten.
  */
 export function DeliverySpeed() {
   const { workflow } = useContent();
