@@ -572,17 +572,31 @@ export const caseStudies: CaseStudy[] = [
       { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
       { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
-      // Beide Apps am 01.08.2026 in beiden Stores nachgeprüft. Sie standen
-      // bisher nirgends auf der Seite, obwohl sie der greifbarste Beleg sind:
-      // Ein Recruiter kann sie in dreissig Sekunden selbst oeffnen.
+      // Vier Store-Einträge, alle am 02.08.2026 einzeln aufgerufen und mit
+      // Status 200 und dem erwarteten Titel bestätigt. Die beiden
+      // App-Store-Einträge fehlten hier: Der Kommentar darüber sagte "in
+      // beiden Stores nachgeprüft", verlinkt war nur Play. Zwei
+      // ausgelieferte iOS-Apps waren damit auf der ganzen Seite unsichtbar,
+      // obwohl sie der greifbarste Beleg sind — ein Recruiter kann sie in
+      // dreißig Sekunden selbst öffnen.
       {
         label: "Restaurant-App (Play)",
         href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
         kind: "store",
       },
       {
+        label: "Restaurant-App (App Store)",
+        href: "https://apps.apple.com/de/app/menucloud/id6762983057",
+        kind: "store",
+      },
+      {
         label: "Discovery (Play)",
         href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
+        kind: "store",
+      },
+      {
+        label: "Discovery (App Store)",
+        href: "https://apps.apple.com/de/app/menucloud-discovery/id6763892926",
         kind: "store",
       },
     ],

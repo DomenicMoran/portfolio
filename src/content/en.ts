@@ -217,6 +217,13 @@ export const en: Content = {
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
         { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
+        // The German page linked the App Store listing, the English one did
+        // not — the same shipped app, invisible to half the readers.
+        {
+          label: "App Store",
+          href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
+          kind: "store",
+        },
       ],
       architecture: "salati",
       shots: [
@@ -349,7 +356,30 @@ export const en: Content = {
         { label: "Status page", href: "https://menucloud-berlin.de/status", kind: "live" },
         { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
         { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
-        ],
+        // The English page carried no app links at all, while the German one
+        // carried two of four. All four checked on 2 August 2026: status 200
+        // and the expected title.
+        {
+          label: "Restaurant app (Play)",
+          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
+          kind: "store",
+        },
+        {
+          label: "Restaurant app (App Store)",
+          href: "https://apps.apple.com/de/app/menucloud/id6762983057",
+          kind: "store",
+        },
+        {
+          label: "Discovery (Play)",
+          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
+          kind: "store",
+        },
+        {
+          label: "Discovery (App Store)",
+          href: "https://apps.apple.com/de/app/menucloud-discovery/id6763892926",
+          kind: "store",
+        },
+      ],
       architecture: "menucloud",
       shots: [
         {
