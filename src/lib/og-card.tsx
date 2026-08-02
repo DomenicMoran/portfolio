@@ -38,8 +38,11 @@ const STACK = ["TypeScript", "React Native", "Next.js", "Postgres", "AI Engineer
  *
  * Der OG-Renderer läuft ohne Ursprung und kann `/portrait.jpg` nicht
  * auflösen; eine absolute Adresse wäre ein Abruf nach außen zur Bauzeit.
- * Die Datei wird deshalb eingelesen und eingebettet — 320 Pixel, 12 kB, mehr
+ * Die Datei wird deshalb eingelesen und eingebettet — 320 Pixel, 9 kB, mehr
  * braucht ein Kreis von 150 Pixeln nicht.
+ *
+ * Sie wird nicht von Hand gepflegt: `npm run build:portrait` schreibt sie aus
+ * demselben Original wie die beiden Fassungen in `public/`.
  *
  * Warum überhaupt: Eine Vorschaukarte mit Gesicht wird auf LinkedIn anders
  * gelesen als eine mit Buchstaben. Der Anlass, sie zu teilen, ist eine

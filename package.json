@@ -23,7 +23,8 @@
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:privacy": "node scripts/check-privacy.mjs",
     "check:headers": "node scripts/check-headers.mjs",
-    "build:favicon": "node scripts/build-favicon.mjs"
+    "build:favicon": "node scripts/build-favicon.mjs",
+    "build:portrait": "node scripts/build-portrait.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -46,6 +47,7 @@
     "marked": "^18.0.7",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.62.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

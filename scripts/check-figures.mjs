@@ -375,14 +375,18 @@ if (fehlendeRepos.length) {
 }
 
 /* ---------------------------------------------------------------------------
-   Die Zahlen der Lernplattform in USER-TODO.md
+   Die Zahlen der Lernplattform in ihrer eigenen README
    ---------------------------------------------------------------------------
 
-   USER-TODO.md beschreibt, was der Prüfstand enthält: Folgen, Minuten,
-   Kapitel, Fachwörter, Fragen. Diese Datei wird gelesen, wenn jemand wissen
+Die README des Prüfstands beschreibt, was er enthält: Folgen, Minuten,
+   Kapitel, Fachwörter, Karten. Diese Datei wird gelesen, wenn jemand wissen
    will, was ihn erwartet — und sie wuchs, während der Prüfstand wuchs. Bei
    einer Stichprobe standen dort 240 Fragen, gezählt waren es 280, und 125
    Minuten gegen gemessene 127.
+
+   Die Angaben standen früher in USER-TODO.md. Die Datei ist auf das
+   zusammengestrichen, was nur der Inhaber tun kann; die Zahlen gehören
+   ohnehin dorthin, wo die Sache beschrieben wird.
 
    Kein Beinbruch, aber dieselbe Sorte Fehler, gegen die dieses Skript für die
    Webseite gebaut wurde: eine Zahl, die einmal richtig war. Also zählt es sie
@@ -390,7 +394,7 @@ if (fehlendeRepos.length) {
    Block übersprungen statt zu scheitern. */
 
 const PRUEFSTAND = resolve("../pruefstand");
-const TODO = "../USER-TODO.md";
+const TODO = "../pruefstand/README.md";
 
 if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   const todo = readFileSync(TODO, "utf8");
@@ -416,13 +420,13 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     if (gemessen == null) return;
     const behauptet = ausTodo(muster);
     if (behauptet === null) {
-      zeilen.push(`  --  USER-TODO: "${was}" nicht gefunden, übersprungen`);
+      zeilen.push(`  --  Prüfstand-README: "${was}" nicht gefunden, übersprungen`);
       return;
     }
     const gleich = behauptet === gemessen;
     if (!gleich) abweichungen++;
     zeilen.push(
-      `${gleich ? "  ok " : "  != "} USER-TODO: ${was.padEnd(22)} gemessen ${String(gemessen).padStart(5)}` +
+      `${gleich ? "  ok " : "  != "} Prüfstand: ${was.padEnd(22)} gemessen ${String(gemessen).padStart(5)}` +
         (gleich ? "" : `   dort ${behauptet}`),
     );
   };
@@ -438,7 +442,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   pruefe(
     "Podcast-Minuten",
     folgen ? Math.round(folgen.reduce((n, f) => n + (f.sekunden ?? 0), 0) / 60) : null,
-    /Podcast-Folgen mit ([\d.]+) Minuten/,
+    /Podcast-Folgen\s+mit\s+([\d.]+)\s+Minuten/,
   );
   pruefe("Buchkapitel", lektionen?.length, /([\d.]+) Buchkapitel/);
   pruefe("Fachwörter", woerter?.length, /([\d.]+) Fachwörter/);
@@ -458,7 +462,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     : null;
   pruefe("Fragen mit Auswahl", quizfaehig, /([\d.]+) Fragen mit Antwortauswahl/);
 } else {
-  zeilen.push("  --  Prüfstand oder USER-TODO.md nicht gefunden, übersprungen");
+  zeilen.push("  --  Prüfstand nicht gefunden, übersprungen");
 }
 
 /* ---------------------------------------------------------------------------
@@ -995,6 +999,51 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
   }
 }
 
+
+/* ---------------------------------------------------------------------------
+   Die Rezeptzahl von NOURI, gegen die Anwendung selbst
+   ---------------------------------------------------------------------------
+
+   Diese eine Zahl stand als einzige ohne Nachzählung auf der Seite: Sie liegt
+   in der Datenbank, und die Anwendung hat keinen Endpunkt, der sie herausgibt.
+   Sie hat aber eine Startseite, und dort steht sie — als „11892+" in der
+   Kennzahlenreihe. Damit ist sie prüfbar, ohne dass jemand eine Abfrage
+   ausführt.
+
+   Verglichen wird nach oben offen: Die Anwendung schreibt „11892+", der
+   Katalog wächst. Die Seite darf deshalb nicht mehr behaupten, als dort
+   steht; weniger schon.
+
+   Ohne Netz wird übersprungen und das gesagt. */
+{
+  const behauptet = quelle.match(/value: "([\d.,]+)", label: "Rezepte im Katalog"/)?.[1];
+  if (!behauptet) {
+    zeilen.push("  --  Rezeptzahl: Angabe nicht gefunden, übersprungen");
+  } else {
+    const meine = Number(behauptet.replace(/[.,]/g, ""));
+    try {
+      const antwort = await fetch("https://nouri-fitness.vercel.app/", {
+        signal: AbortSignal.timeout(20000),
+      });
+      const seite = await antwort.text();
+      const dort = seite.match(/(\d{4,6})\+/)?.[1];
+      if (!dort) {
+        zeilen.push("  --  Rezeptzahl: auf nouri-fitness.vercel.app nicht gefunden");
+      } else if (meine > Number(dort)) {
+        abweichungen++;
+        zeilen.push(
+          `  !!  Rezeptzahl: die Seite sagt ${behauptet}, die Anwendung ${dort}+`,
+        );
+      } else {
+        zeilen.push(
+          `  ok  Rezepte              ${String(meine).padStart(6)} und die Anwendung sagt ${dort}+`,
+        );
+      }
+    } catch {
+      zeilen.push("  --  Rezeptzahl: NOURI nicht erreichbar, übersprungen");
+    }
+  }
+}
 
 /* ---------------------------------------------------------------------------
    Das Profil-README, wie GitHub es zeigt

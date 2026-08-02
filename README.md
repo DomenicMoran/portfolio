@@ -116,6 +116,14 @@ Seite, die unter `/onepager` liegt — keine zweite Quelle, kein zweites Layout:
 npm run onepager:pdf    # beide Sprachfassungen nach public/
 ```
 
+Zwei Binärdateien im Repo werden nicht von Hand gepflegt, weil eine Binärdatei
+nicht mitliest, wenn sich ihre Quelle ändert:
+
+```bash
+npm run build:favicon   # favicon.ico aus derselben Form wie die Marke
+npm run build:portrait  # alle drei Porträt-Fassungen aus einem Original
+```
+
 `scripts/check-figures.mjs` prüft zusätzlich jede Zahl auf der Seite gegen die
 Repositories, aus denen sie stammt. Der Lauf braucht die Nachbar-Repos und
 läuft deshalb nicht in der CI, sondern beim Zahlen-Automaten.
@@ -181,6 +189,7 @@ scripts/
 ├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
 ├─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
 ├─ build-favicon.mjs              erzeugt favicon.ico aus derselben Form wie die Marke
+├─ build-portrait.mjs             erzeugt alle drei Porträt-Fassungen aus einem Original
 └─ lib/local-server.mjs           startet den gebauten Stand auf einem freien Port
 
 .github/workflows/
