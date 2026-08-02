@@ -25,7 +25,14 @@ export function EnglishNote() {
       These two pages are German on purpose: they exist to satisfy German law and
       are addressed to German authorities, so a translation would have unclear
       standing.{" "}
-      <Link href="/en" className="text-acid underline underline-offset-4">
+      {/* `-my-1 py-1`: gemessen 174 x 18 px, unter den 24 px aus WCAG 2.5.8.
+          Der Verweis steht am Ende eines Satzes, fällt also unter die Ausnahme
+          für Verweise mitten im Text — die Ausnahme zu brauchen ist trotzdem
+          schlechter, als sie nicht zu brauchen. */}
+      <Link
+        href="/en"
+        className="-my-1 py-1 text-acid underline underline-offset-4"
+      >
         Back to the English version
       </Link>
       .
