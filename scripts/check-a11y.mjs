@@ -77,7 +77,14 @@ const pfade = [];
   Dokument und Sprachauszeichnung.
 */
 const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
-pfade.push(UNBEKANNTE_ADRESSE);
+/*
+  Und einmal unterhalb von `/en`: Das ist eine andere Antwort. Die 404-Seite
+  liest die Sprache aus einer Kopfzeile, die der Proxy setzt, und rendert
+  englischen Text mit `lang="en"`. Ohne diesen Pfad pruefte der Waechter nur
+  die Haelfte der Seite, die jeder Vertipper zu sehen bekommt.
+*/
+const UNBEKANNTE_ADRESSE_EN = "/en/this-address-does-not-exist";
+pfade.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
 
 const browser = await chromium.launch();
 let verstoesse = 0;
@@ -94,7 +101,10 @@ for (const breite of BREITEN) {
     // Die erfundene Adresse muss mit 404 antworten. Ein 200 hiesse, dass eine
     // Route sie doch bedient, und dann prüft dieser Durchgang etwas anderes
     // als die 404-Seite.
-    if (pfad === UNBEKANNTE_ADRESSE && antwort.status() !== 404) {
+    if (
+      (pfad === UNBEKANNTE_ADRESSE || pfad === UNBEKANNTE_ADRESSE_EN) &&
+      antwort.status() !== 404
+    ) {
       console.error(`  ${pfad} antwortet mit ${antwort.status()} statt 404.`);
       verstoesse++;
       continue;

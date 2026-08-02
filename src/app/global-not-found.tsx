@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
+import { SPRACH_KOPFZEILE } from "@/lib/language-header";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: `${de.notFound.title} – ${de.site.name}`,
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
+  const inhalt = englisch ? en : de;
+  return {
+    title: `${inhalt.notFound.title} – ${inhalt.site.name}`,
+    robots: { index: false, follow: true },
+  };
+}
 
 /**
  * Die 404-Seite für Adressen, die zu keiner Route gehören.
@@ -22,22 +28,20 @@ export const metadata: Metadata = {
  * landet, hat sich verlaufen und soll schnell weiterkommen. Die Kursivschrift
  * für Akzentwörter kommt auf dieser Seite nicht vor.
  *
- * Zweisprachig, und zwar notgedrungen: Next beantwortet damit jede Adresse,
- * die auf gar keine Route passt — auch `/en/irgendwas`. Diese Seite ist die
- * einzige, die nicht wissen kann, welche Sprache gemeint war. Gemessen bekam
- * ein englischer Besucher bisher „Diese Seite gibt es nicht." samt `lang="de"`.
+ * Diese Seite beantwortet jede Adresse, die auf gar keine Route passt — auch
+ * `/en/irgendwas`. Welche Sprache gemeint war, weiß sie als einzige Seite
+ * nicht von sich aus: `src/proxy.ts` sagt es ihr über eine Kopfzeile. Ohne
+ * die Angabe bleibt es beim Deutschen, und der Hinweis in der jeweils anderen
+ * Sprache steht in beiden Fällen darunter.
  *
- * Es gab einmal je Sprache eine eigene `not-found.tsx`. Beide wurden nie
- * gerendert: Die Artikelrouten stehen auf `dynamicParams = false`, ein
- * unbekannter Slug erreicht das Bauteil also gar nicht, und Next liefert
- * stattdessen diese Seite aus. Gemessen am 02.08.2026 über vier falsche
- * Adressen, darunter `/en/articles/made-up` — jede bekam diese Seite mit
- * `lang="de"`.
- *
- * Der naheliegende Umbau macht es schlimmer: Mit `dynamicParams = true`
- * antwortet `/en/articles/made-up` zwar weiterhin mit 404, aber ohne jedes
- * HTML — kein `lang`, keine Überschrift, eine leere Seite. Die beiden Dateien
- * sind deshalb entfernt statt erreichbar gemacht.
+ * Der Weg über `not-found.tsx` ist verbaut. Es gab einmal je Sprache eine,
+ * beide wurden nie gerendert, weil eine Adresse ohne Route auch kein Layout
+ * hat. Auch der Umbau dahin führt nicht hin: Ein Fangsegment unter `/en`, das
+ * `notFound()` wirft, bekommt bei zwei Wurzel-Layouts keine Grenze mehr
+ * gerendert, sondern das leere Fehlerdokument — gemessen am 02.08.2026 mit
+ * der Grenze auf beiden Ebenen und mit wie ohne `globalNotFound`: Status 404,
+ * aber kein `lang`, keine Überschrift, nichts. Dasselbe gilt für
+ * `dynamicParams = true` auf den Artikelrouten.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,14 +67,22 @@ const geistMono = Geist_Mono({
   preload: false,
 });
 
-export default function GlobalNotFound() {
+export default async function GlobalNotFound() {
+  const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
+  const inhalt = englisch ? en : de;
+  const zweitsprache = englisch ? de : en;
+
   return (
     <html
-      lang="de"
+      lang={inhalt.lang}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
-        <NotFoundPage content={de} zweitsprache={en} />
+        <NotFoundPage
+          content={inhalt}
+          base={englisch ? "/en" : ""}
+          zweitsprache={zweitsprache}
+        />
       </body>
     </html>
   );
