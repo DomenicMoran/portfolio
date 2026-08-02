@@ -88,6 +88,7 @@ npm run dev   # http://localhost:3000
 npm run build      # Produktions-Build (Turbopack)
 npx tsc --noEmit   # Typecheck
 npx eslint .       # Lint
+npm test           # die reine Rechenlogik, ohne Browser
 ```
 
 Nach dem Bau laufen sieben Prüfungen, die den Bau nicht ersetzen. Sechs davon

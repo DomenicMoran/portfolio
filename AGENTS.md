@@ -192,11 +192,23 @@ unverändert blieb, darf mit — das ist der Teil, den man später sucht.
 Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 „Commit-Zahlen aufgefrischt".
 
+## Tests
+
+Die sieben Prüfläufe messen an der ausgelieferten Seite und sind der eigentliche
+Beweis. Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare
+Ausgabe: `src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate" oder „fünf
+Monate" steht, und ein Fehler um eins sieht auf der Seite völlig normal aus.
+Solche Funktionen gehören in `src/lib/` mit einer `.test.ts` daneben.
+
+Alles, was den Browser braucht, bleibt bei den Prüfläufen: Ein Bauteil mit
+jsdom nachzustellen prüft die Nachstellung, nicht die Seite.
+
 ## Definition of Done
 
 ```bash
 npx tsc --noEmit      # 0 Fehler
 npx eslint .          # 0 Errors
+npm test              # die reine Rechenlogik, ohne Browser
 npm run build         # grün
 npm run check:a11y    # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:privacy # keine Seite baut eine Verbindung nach außen auf
