@@ -656,7 +656,7 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "Eine Plattform aus Web-App, Expo-App und Fastify-API auf einem gemeinsamen Katalog von fast 12.000 Rezepten, mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung und Trainingsplänen. Und mit einer API, die drei Zustände sauber unterscheidet, statt sie zu verschleiern.",
     hardPart: {
-      title: "Fehler ehrlich melden",
+      title: "Ein Fehlschlag, der wie Erfolg aussieht",
       body: "Jeder schreibende Endpunkt unterscheidet explizit: Secrets fehlen (Dry-Run, kein Datenverlust vorgetäuscht), Datenbank nicht erreichbar (503), Datenbank erreichbar aber lehnt ab (echter 4xx mit Postgres-Fehlercode). Das klingt nach Kleinkram, ist aber der Unterschied zwischen einem System, dem man beim Debuggen glauben kann, und einem, das lügt. Genau dieselbe Disziplin wende ich auf KI-Output an: eine Behauptung ohne Beleg zählt nicht.",
     },
     highlights: [
@@ -865,7 +865,7 @@ export const recruiter = {
       body: "React-Native-Widget, Postgres-Migration, Docker-Compose auf dem eigenen VPS, Fiskal-Compliance. Kein Ticket-Ping-Pong, weil etwas „nicht mein Bereich“ ist.",
     },
     {
-      title: "Belegpflicht statt Bauchgefühl",
+      title: "Ich weise nach, statt zu behaupten",
       body: "Ein grüner Testlauf beweist nichts. Das habe ich zweimal teuer gelernt. Deshalb wird jede Änderung am Live-System nachgewiesen, bevor sie als fertig gilt. Genau das macht agentengestützte Entwicklung erst belastbar.",
     },
     {
@@ -873,7 +873,7 @@ export const recruiter = {
       body: "64 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Abgelehnte Reviews, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
     },
     {
-      title: "Regulierung behandle ich als Teil des Produkts",
+      title: "Ich behandle Regulierung als Teil des Produkts",
       body: "Fiskalanforderungen nach § 146a AO, Auftragsverarbeitung nach DSGVO, Hinweispflichten für KI-Funktionen. Das kenne ich aus der Umsetzung mit Kunden, nicht aus einer Zusammenfassung. Wer das erst nach dem Launch anfasst, baut es zweimal.",
     },
     {

@@ -422,7 +422,7 @@ export const en: Content = {
       solution:
         "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
       hardPart: {
-        title: "Reporting failure honestly",
+        title: "A failure that looks like success",
         body: "Every write endpoint distinguishes explicitly: secrets missing (dry run, no pretence that data was saved), database unreachable (503), database reachable but rejecting (a real 4xx carrying the Postgres error code). It sounds like a detail, but it is the difference between a system you can believe while debugging and one that lies to you.",
       },
       highlights: [
@@ -763,7 +763,7 @@ export const en: Content = {
         body: "React Native widget, Postgres migration, Docker Compose on my own VPS, fiscal compliance. No ticket ping-pong because something is “not my area”.",
       },
       {
-        title: "Evidence over gut feeling",
+        title: "I prove it rather than claim it",
         body: "A green test run proves nothing. I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
       },
       {
