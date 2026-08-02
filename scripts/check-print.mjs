@@ -1,0 +1,452 @@
+#!/usr/bin/env node
+/**
+ * Prüft jede Seite in der Druckdarstellung auf drei Fehler, die im Browser
+ * unsichtbar sind.
+ *
+ * **Abgeschnittener Inhalt.** Ein Codeblock steht als `white-space: pre` in
+ * einem Kasten mit `overflow-x: auto`. Am Bildschirm schiebt man die lange
+ * Zeile nach rechts; auf Papier gibt es diese Bewegung nicht, und was über die
+ * Spaltenkante ragt, fehlt im Ausdruck — ohne Lücke, ohne Hinweis, nur eine
+ * Zeile, die früher endet. Gefunden am 02.08.2026 im Artikel „Warum ein
+ * kleineres Whisper-Modell mein größeres schlug".
+ *
+ * **Zu schwacher Kontrast.** Für den Druck werden die Farbtoken umdefiniert.
+ * Wer eine Farbe an den Token vorbei setzt, merkt davon nichts: Am Bildschirm
+ * stimmt sie weiter. Genau so standen vier Projektnamen einmal weiß auf weiß
+ * im Ausdruck.
+ *
+ * **Festgeheftete Bedienelemente.** Was am Bildschirm mitfährt, klebt gedruckt
+ * an der ersten Seite: Die Navigationsleiste lag quer über dem Anfang des
+ * ersten Abschnitts, der Cursor-Ring als leerer Kreis in der Ecke.
+ *
+ * Keiner der drei Fehler entsteht beim Schreiben der Druckregeln, sondern
+ * später beim Ändern des Inhalts. Deshalb gehören sie in eine Prüfung und
+ * nicht in eine Notiz.
+ *
+ * Aufruf nach `npm run build`:
+ *
+ *   npm run check:print
+ *
+ * Startet den Server selbst und beendet ihn wieder. Eine Adresse als Argument
+ * überspringt das und misst gegen die laufende Seite.
+ */
+
+import { spawn } from "node:child_process";
+import { createServer } from "node:net";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { chromium } from "playwright";
+
+/** A4 bei 96 dpi. Chromium legt die Druckdarstellung auf diese Breite aus. */
+const PAPIERBREITE = 794;
+const PAPIERHOEHE = 1123;
+
+/** Ab hier gilt Text als groß und darf nach WCAG 1.4.3 auf 3:1 herunter. */
+const GROSSER_TEXT_PX = 24;
+const GROSSER_FETTER_TEXT_PX = 18.66;
+
+const vorgegebeneBasis = process.argv[2];
+
+async function freierPort() {
+  return new Promise((fertig, scheitern) => {
+    const horcher = createServer();
+    horcher.unref();
+    horcher.on("error", scheitern);
+    horcher.listen(0, "127.0.0.1", () => {
+      const { port } = horcher.address();
+      horcher.close(() => fertig(port));
+    });
+  });
+}
+
+async function warteAufAntwort(adresse, versuche = 60) {
+  for (let i = 0; i < versuche; i++) {
+    try {
+      const antwort = await fetch(adresse, { signal: AbortSignal.timeout(1000) });
+      if (antwort.ok) return true;
+    } catch {
+      // Noch nicht oben.
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  return false;
+}
+
+let server = null;
+let basis = vorgegebeneBasis;
+
+if (!basis) {
+  const port = await freierPort();
+  basis = `http://127.0.0.1:${port}`;
+  server = spawn(
+    process.execPath,
+    [join("node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port)],
+    { stdio: "ignore" },
+  );
+  if (!(await warteAufAntwort(`${basis}/`))) {
+    server.kill();
+    throw new Error(`Der eigene Server auf ${basis} kam nicht hoch.`);
+  }
+}
+
+function serverBeenden() {
+  if (server && !server.killed) server.kill();
+}
+process.on("exit", serverBeenden);
+process.on("SIGINT", () => {
+  serverBeenden();
+  process.exit(130);
+});
+
+/**
+ * Die Seitenliste kommt aus der Sitemap, nicht aus einer zweiten Aufzählung.
+ * Eine neue Seite ist damit automatisch mitgeprüft; eine Liste im Skript wäre
+ * am Tag nach dem nächsten Artikel unvollständig, ohne dass es auffällt.
+ */
+const sitemap = await (await fetch(`${basis}/sitemap.xml`)).text();
+const pfade = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)]
+  .map((treffer) => new URL(treffer[1]).pathname)
+  .filter((pfad, i, alle) => alle.indexOf(pfad) === i);
+
+if (pfade.length === 0) throw new Error("Die Sitemap nennt keine Seiten.");
+
+const browser = await chromium.launch();
+const seite = await browser.newPage({
+  viewport: { width: PAPIERBREITE, height: PAPIERHOEHE },
+});
+
+// Wie beim One-Pager-Druck: belegen, dass hier der eben gebaute Stand läuft.
+// HTTP 200 sagt nur, dass jemand antwortet, nicht dass der Richtige antwortet.
+if (!vorgegebeneBasis) {
+  const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
+  await seite.goto(`${basis}/`, { waitUntil: "domcontentloaded" });
+  if (!(await seite.content()).includes(gebauteId)) {
+    await browser.close();
+    throw new Error(`Auf ${basis} läuft ein anderer Build als ${gebauteId}.`);
+  }
+}
+
+/**
+ * Misst eine Seite in der Druckdarstellung.
+ *
+ * Läuft vollständig im Browser, weil beides Layout- und Farbfragen sind, die
+ * sich nur aus dem gerenderten Baum beantworten lassen: Der Quelltext einer
+ * Klasse verrät nicht, wie breit sie auf Papier wird.
+ */
+async function messen() {
+  return seite.evaluate(
+    ({ grossPx, grossFettPx }) => {
+      // Farben über einen Canvas auflösen statt sie selbst zu parsen.
+      //
+      // Der erste Anlauf las die Zahlen aus `oklab(0.999994 ...)` als
+      // RGB-Werte und hielt Weiß dadurch für Fast-Schwarz: 15 gemeldete
+      // Stellen, alle falsch. Der Canvas kennt jeden Farbraum, den auch das
+      // Stylesheet benutzen darf, und liefert immer RGBA.
+      const flaeche = document.createElement("canvas");
+      flaeche.width = flaeche.height = 1;
+      const stift = flaeche.getContext("2d", { willReadFrequently: true });
+      const zuRgba = (farbe) => {
+        stift.clearRect(0, 0, 1, 1);
+        stift.fillStyle = farbe;
+        stift.fillRect(0, 0, 1, 1);
+        const d = stift.getImageData(0, 0, 1, 1).data;
+        return [d[0], d[1], d[2], d[3] / 255];
+      };
+      const ueber = (vorne, hinten) =>
+        [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3])).concat(1);
+      const helligkeit = ([r, g, b]) => {
+        const f = (x) => {
+          x /= 255;
+          return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+        };
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      };
+      // Halbdurchsichtige Flächen stapeln sich. Nur die oberste zu nehmen
+      // ergäbe für `bg-surface/40` über Weiß einen Wert, den niemand sieht.
+      const untergrund = (el) => {
+        const stapel = [];
+        for (let n = el; n; n = n.parentElement) {
+          stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
+        }
+        let ergebnis = [255, 255, 255, 1]; // Papier
+        for (let i = stapel.length - 1; i >= 0; i--) ergebnis = ueber(stapel[i], ergebnis);
+        return ergebnis;
+      };
+      const kontrast = (a, b) =>
+        (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+      // `opacity` steht nicht in `color` und nicht in `backgroundColor`.
+      //
+      // Ein Vorfahr mit `opacity: 0.64` lässt beide Werte unberührt und macht
+      // trotzdem alles darunter blasser. Ohne diesen Faktor meldete die
+      // Prüfung 28 Stellen auf der Startseite, die es nicht gibt: Sie maß
+      // mitten in der Einblend-Animation. Der wandernde Grauton von Lauf zu
+      // Lauf — 175, dann 170 — war der Beleg dafür, dass hier die Zeit
+      // mitgemessen wurde und nicht die Seite.
+      const geerbteDeckkraft = (el) => {
+        let wert = 1;
+        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+          wert *= parseFloat(getComputedStyle(n).opacity);
+        }
+        return wert;
+      };
+
+      const schwach = [];
+      const abgeschnitten = [];
+      const festgeheftet = [];
+
+      for (const el of document.querySelectorAll("body *")) {
+        const stil = getComputedStyle(el);
+        if (stil.display === "none" || stil.visibility === "hidden") continue;
+
+        // Unsichtbares kann nicht schlecht aussehen. Das betrifft die
+        // ausgeblendete Kopfleiste am Seitenanfang ebenso wie den
+        // Sprunglink, der nur bei Tastaturfokus aus seinem 1-Pixel-Kasten
+        // heraustritt — dessen Inhalt ragte sonst als „abgeschnitten" in den
+        // Bericht.
+        const deckkraft = geerbteDeckkraft(el);
+        if (deckkraft === 0) continue;
+
+        // Größe über das Rechteck, nicht über `clientWidth`.
+        //
+        // `clientWidth` ist bei jedem nicht ersetzten Inline-Element 0 — bei
+        // jedem `span`, `a`, `time`, `code`. Die erste Fassung dieser Zeile
+        // hat damit genau die Elemente übersprungen, die den Fließtext
+        // tragen, und meldete eine saubere Seite. Eine Prüfung, die das
+        // Wichtigste nicht ansieht, ist schlimmer als keine.
+        const rechteck = el.getBoundingClientRect();
+        if (rechteck.width <= 1 || rechteck.height <= 1) continue;
+
+        // Festgeheftetes klebt nicht am Papier, es klebt an der ersten Seite.
+        //
+        // `position: fixed` heißt gedruckt: einmal ganz oben, über dem, was
+        // dort steht. Die Navigationsleiste lag so quer über dem Anfang des
+        // ersten Abschnitts, der Cursor-Ring als leerer Kreis in der Ecke.
+        // Das sind Bedienelemente des Bildschirms; auf Papier bedienen sie
+        // niemanden.
+        if (stil.position === "fixed" || stil.position === "sticky") {
+          festgeheftet.push({
+            marke: el.tagName.toLowerCase(),
+            klasse: (el.className?.toString?.() || "").slice(0, 60),
+            groesse: `${Math.round(rechteck.width)}x${Math.round(rechteck.height)}`,
+            text: (el.textContent || "").trim().slice(0, 30),
+          });
+        }
+
+        // Waagerecht abgeschnitten: Der Kasten hält mehr, als er zeigt, und
+        // auf Papier gibt es keine Bewegung, die den Rest holen könnte.
+        // Zwei Pixel Toleranz gegen Rundung bei gebrochenen Breiten.
+        if (stil.overflowX !== "visible" && el.scrollWidth > el.clientWidth + 2) {
+          abgeschnitten.push({
+            marke: el.tagName.toLowerCase(),
+            klasse: (el.className?.toString?.() || "").slice(0, 60),
+            fehlt: el.scrollWidth - el.clientWidth,
+            text: (el.textContent || "").trim().slice(0, 40),
+          });
+        }
+
+        const eigenerText = Array.from(el.childNodes)
+          .filter((n) => n.nodeType === Node.TEXT_NODE)
+          .map((n) => n.textContent.trim())
+          .join("");
+        if (eigenerText.length < 3) continue;
+
+        const vorne = zuRgba(stil.color);
+        if (vorne[3] === 0) continue;
+        vorne[3] *= deckkraft;
+        const hinten = untergrund(el);
+        const wert = kontrast(helligkeit(ueber(vorne, hinten)), helligkeit(hinten));
+
+        const px = parseFloat(stil.fontSize);
+        const fett = parseInt(stil.fontWeight, 10) >= 700;
+        const schwelle = px >= grossPx || (px >= grossFettPx && fett) ? 3 : 4.5;
+        if (wert < schwelle) {
+          schwach.push({
+            text: eigenerText.slice(0, 40),
+            farbe: stil.color,
+            // Die Fläche gehört in die Meldung: „zu blass" ist ohne sie nicht
+            // nachvollziehbar, weil derselbe Farbwert auf Weiß trägt und auf
+            // Grau nicht.
+            flaeche: `rgb(${hinten.slice(0, 3).map(Math.round).join(", ")})`,
+            px,
+            ist: Math.round(wert * 100) / 100,
+            soll: schwelle,
+          });
+        }
+      }
+
+      return { schwach, abgeschnitten, festgeheftet };
+    },
+    { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
+  );
+}
+
+/**
+ * Sammelt den sichtbaren Text einer Seite, ohne das, was bewusst nicht
+ * gedruckt wird.
+ *
+ * Damit lässt sich die stärkste Zusage dieser Prüfung belegen: Drucken darf
+ * Text weder verlieren noch verändern. Ein Zähler, der auf Papier "0" zeigt,
+ * ein Karussell, von dem nur die erste Karte kommt, ein Abschnitt, der
+ * unsichtbar bleibt — alle drei fallen hier auf, ohne dass die Prüfung sie
+ * einzeln kennen muss.
+ */
+function textEinsammeln() {
+  return seite.evaluate(() => {
+    // An der lebenden Seite messen, nicht an einem Klon.
+    //
+    // Der erste Anlauf klonte den Körper und las `textContent`. Das war
+    // wertlos, und der Gegentest hat es bewiesen: Mit entfernter
+    // Sichtbarkeitsregel im Druck — also bei einer Seite, die als fast leeres
+    // Papier herauskommt — meldete die Prüfung weiter „alles vollständig".
+    // `textContent` kennt kein CSS. Für den Baum ist unsichtbarer Text
+    // vorhanden; für den Drucker ist er weg.
+    //
+    // Knotenweise, weil `textContent` benachbarte Elemente ohne Trennung
+    // aneinanderklebt: Gemeldet wurde einmal „automatisiertAI-Act-Disclosure"
+    // als fehlendes Wort, ein Gebilde aus drei Abschnitten, das es nirgends
+    // gibt.
+    const unsichtbar = (el) => {
+      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        if (n.classList?.contains("no-print")) return true;
+        const s = getComputedStyle(n);
+        if (s.display === "none" || s.visibility === "hidden") return true;
+        if (parseFloat(s.opacity) === 0) return true;
+      }
+      return false;
+    };
+
+    const laeufer = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const stuecke = [];
+    for (let n = laeufer.nextNode(); n; n = laeufer.nextNode()) {
+      const t = n.textContent.trim();
+      if (!t) continue;
+      if (unsichtbar(n.parentElement)) continue;
+      stuecke.push(t);
+    }
+    return stuecke.join(" ").replace(/\s+/g, " ").trim();
+  });
+}
+
+let fehler = 0;
+
+for (const pfad of pfade) {
+  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  if (!antwort || antwort.status() !== 200) {
+    console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()}`);
+    fehler++;
+    continue;
+  }
+
+  // Erster Durchgang: der Maßstab.
+  //
+  // Einmal ganz durchscrollen, damit jede Einblendung gefeuert und jeder
+  // Zähler am Endwert ist. Das ist der Text, den ein Leser zu sehen bekommt.
+  await seite.evaluate(async () => {
+    const hoehe = document.documentElement.scrollHeight;
+    for (let y = 0; y < hoehe; y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+    window.scrollTo(0, 0);
+    await new Promise((r) => setTimeout(r, 500));
+  });
+  const textAmBildschirm = await textEinsammeln();
+
+  // Zweiter Durchgang: der schlimmste Fall.
+  //
+  // Frisch laden und sofort drucken, ohne eine Zeile gelesen zu haben — genau
+  // das tut jemand, der die Seite weiterreichen will. Ohne das Neuladen wären
+  // die Zähler vom ersten Durchgang längst am Endwert und die Prüfung bliebe
+  // grün, während der Ausdruck „0" zeigt.
+  await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  await seite.emulateMedia({ media: "print" });
+
+  // Die Seite in ihren Ruhezustand zwingen, statt auf ihn zu warten.
+  //
+  // Ein fester Wartewert entscheidet nur, wie oft die Prüfung danebenliegt:
+  // Zu kurz misst sie die Einblendung, zu lang kostet sie bei 17 Seiten
+  // Minuten. `finish()` setzt jede endliche Animation auf ihren Endwert;
+  // Endlosschleifen wie der Laufschriftbalken lehnen das mit einem Fehler ab
+  // und laufen weiter, was richtig ist — dort gibt es keinen Endzustand.
+  await seite.evaluate(() => {
+    for (const bewegung of document.getAnimations()) {
+      try {
+        bewegung.finish();
+      } catch {
+        // Endlos, also ohne Endwert. Bleibt, wie sie ist.
+      }
+    }
+  });
+  await seite.waitForTimeout(50);
+  const { schwach, abgeschnitten, festgeheftet } = await messen();
+  const textImDruck = await textEinsammeln();
+  await seite.emulateMedia({ media: "screen" });
+
+  // Wörter zählen, nicht nur nachschlagen.
+  //
+  // Eine Menge beantwortet „kommt dieses Wort irgendwo vor", und das war zu
+  // wenig: Vom leeren Terminalrahmen im Ausdruck fiel genau ein Wort auf,
+  // weil alle anderen zufällig auch an anderer Stelle der Seite stehen. Die
+  // Häufigkeit verrät auch das Fehlen eines ganzen Abschnitts, dessen
+  // Vokabular sich woanders wiederholt.
+  const zaehlen = (text) => {
+    const karte = new Map();
+    for (const wort of text.split(" ")) {
+      if (wort.length > 1) karte.set(wort, (karte.get(wort) ?? 0) + 1);
+    }
+    return karte;
+  };
+  const amBildschirm = zaehlen(textAmBildschirm);
+  const imDruck = zaehlen(textImDruck);
+  const fehlend = [];
+  for (const [wort, anzahl] of amBildschirm) {
+    const da = imDruck.get(wort) ?? 0;
+    if (da < anzahl) fehlend.push(anzahl - da > 1 ? `${wort} (${anzahl - da}×)` : wort);
+  }
+
+  if (
+    schwach.length === 0 &&
+    abgeschnitten.length === 0 &&
+    festgeheftet.length === 0 &&
+    fehlend.length === 0
+  ) {
+    console.log(`  ok ${pfad}`);
+    continue;
+  }
+
+  fehler++;
+  console.log(`  FEHLER ${pfad}`);
+  if (fehlend.length > 0) {
+    console.log(
+      `        Text fehlt im Ausdruck (${fehlend.length} Wörter): ${fehlend.slice(0, 12).join(" · ")}`,
+    );
+  }
+  for (const s of abgeschnitten) {
+    console.log(
+      `        abgeschnitten: <${s.marke} class="${s.klasse}"> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}"`,
+    );
+  }
+  for (const s of festgeheftet) {
+    console.log(
+      `        festgeheftet: <${s.marke} class="${s.klasse}"> ${s.groesse} px — landet gedruckt über der ersten Seite: „${s.text}"`,
+    );
+  }
+  for (const s of schwach) {
+    console.log(
+      `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — ${s.farbe} auf ${s.flaeche}: „${s.text}"`,
+    );
+  }
+}
+
+await browser.close();
+
+if (fehler > 0) {
+  console.error(
+    `\n${fehler} von ${pfade.length} Seiten drucken nicht sauber. ` +
+      `Die Druckregeln stehen in src/app/globals.css unter @media print.`,
+  );
+  process.exit(1);
+}
+
+console.log(`\nAlle ${pfade.length} Seiten drucken lesbar und vollständig.`);

@@ -1,10 +1,16 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Infinite horizontal ticker. The list is rendered twice and translated by
- * exactly -50%, so the seam lands on an identical frame.
+ * Endlose Laufschrift. Die Liste steht zweimal im Baum und wird um genau
+ * -50 % verschoben, damit die Naht auf ein identisches Bild fällt.
  *
- * Pure CSS, no rAF loop, no JS on the main thread while it runs.
+ * Reines CSS: keine rAF-Schleife, kein JavaScript im Hauptthread, solange sie
+ * läuft.
+ *
+ * Nicht im Ausdruck. Auf Papier steht nichts still und nichts scrollt: Von
+ * 6.221 px Inhalt blieben gemessen 794 px übrig, der Rest fehlte ohne Hinweis.
+ * Ein Verlust ist das nicht — die Leiste ist `aria-hidden`, und jeder Begriff
+ * darauf steht an anderer Stelle noch einmal im Fließtext.
  */
 export function Marquee({
   items,
@@ -18,7 +24,7 @@ export function Marquee({
   return (
     <div
       className={cn(
-        "relative flex overflow-hidden",
+        "no-print relative flex overflow-hidden",
         "[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]",
         className,
       )}

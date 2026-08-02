@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useSpring } from "framer-motion";
 
-/** Hairline reading-progress bar pinned to the top of the viewport. */
+/** Haarfeiner Lesefortschritt, festgeheftet am oberen Rand des Sichtbereichs. */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -15,7 +15,7 @@ export function ScrollProgress() {
     <motion.div
       aria-hidden
       style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-[9998] h-px origin-left bg-gradient-to-r from-acid via-cyan to-violet"
+      className="no-print fixed inset-x-0 top-0 z-[9998] h-px origin-left bg-gradient-to-r from-acid via-cyan to-violet"
     />
   );
 }

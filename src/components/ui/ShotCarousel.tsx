@@ -97,7 +97,10 @@ export function ShotCarousel({
         tabIndex={0}
         aria-label={label}
         className={cn(
-          "flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4",
+          // `shot-track` hängt nur für den Druck daran: Dort wickelt die
+          // Reihe um, statt seitlich wegzulaufen. Gemessen fehlten sonst
+          // 1.950 px, also alle Aufnahmen außer der ersten.
+          "shot-track flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4",
           // Die Bildlaufleiste ist hier Rauschen: Die Position steht als
           // Punktreihe darunter, und gescrollt wird ohnehin mit Wischen,
           // Rad oder Tasten.
@@ -119,7 +122,7 @@ export function ShotCarousel({
         ))}
       </ul>
 
-      <div className="mt-4 flex items-center gap-4">
+      <div className="no-print mt-4 flex items-center gap-4">
         <div className="flex gap-1.5">
           <button
             type="button"

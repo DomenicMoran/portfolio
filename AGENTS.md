@@ -158,10 +158,17 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 ## Definition of Done
 
 ```bash
-npx tsc --noEmit   # 0 Fehler
-npx eslint .       # 0 Errors
-npm run build      # grün
+npx tsc --noEmit    # 0 Fehler
+npx eslint .        # 0 Errors
+npm run build       # grün
+npm run check:print # 17 Seiten drucken lesbar und vollständig
 ```
+
+`check:print` gehört dazu, weil der Ausdruck ein eigener Auslieferungsweg ist,
+den niemand ansieht. Gemessen: Die Startseite kam ohne vorheriges Scrollen als
+15 fast leere Seiten aus dem Drucker, weil die Einblendungen auf ein
+Hineinscrollen warten, das beim Drucken nie stattfindet — und die Kennzahlen
+standen auf eingefrorenen Zwischenwerten statt auf ihren belegten Zahlen.
 
 Dazu: sichtbare Änderungen im Browser prüfen, mindestens bei 390 px und
 1440 px Breite, und einmal mit aktiviertem Reduced-Motion. Ein grüner Build ist

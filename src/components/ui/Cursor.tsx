@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 
 /**
- * Custom cursor: a small dot that tracks exactly, plus a lagging ring that
- * grows over interactive elements.
+ * Eigener Mauszeiger: ein kleiner Punkt, der genau folgt, dazu ein Ring, der
+ * nachläuft und über bedienbaren Elementen größer wird.
  *
- * Rendered only for fine pointers and only when motion is allowed. The native
- * cursor is never hidden globally via CSS; if this component does not mount,
- * the user still has a working pointer.
+ * Nur bei genauem Zeigegerät und nur, wenn Bewegung erlaubt ist. Der Zeiger des
+ * Systems wird nie global per CSS ausgeblendet: Hängt sich diese Komponente
+ * nicht ein, hat der Besucher trotzdem einen funktionierenden Zeiger.
  */
 export function Cursor() {
   const finePointer = useMediaQuery("(pointer: fine)");
@@ -51,7 +51,7 @@ export function Cursor() {
   if (!enabled) return null;
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[10000]">
+    <div aria-hidden className="no-print pointer-events-none fixed inset-0 z-[10000]">
       <motion.div
         className="absolute size-1.5 rounded-full bg-acid"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}

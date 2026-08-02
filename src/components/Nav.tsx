@@ -68,7 +68,7 @@ export function Nav({
           // gemessen bei 72 px (16 px Abstand + 56 px Kapsel). Erst
           // darunter beginnt der Auslauf, sonst scheint der Text auf Höhe
           // der Kapsel hindurch.
-          "pointer-events-none fixed inset-x-0 top-0 z-[9989] h-32 bg-[linear-gradient(to_bottom,var(--color-void)_0%,var(--color-void)_66%,transparent_100%)] transition-opacity duration-500",
+          "no-print pointer-events-none fixed inset-x-0 top-0 z-[9989] h-32 bg-[linear-gradient(to_bottom,var(--color-void)_0%,var(--color-void)_66%,transparent_100%)] transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0",
         )}
       />
@@ -77,7 +77,10 @@ export function Nav({
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease: ease.expo, delay: 0.9 }}
-        className="fixed inset-x-0 top-0 z-[9990] px-4 pt-4 sm:px-6"
+        // Auf Papier ist eine Navigationsleiste nichts wert: Sie klebt fest,
+        // landet dadurch über dem Inhalt der ersten Seite und bietet Ziele an,
+        // die niemand anklicken kann.
+        className="no-print fixed inset-x-0 top-0 z-[9990] px-4 pt-4 sm:px-6"
       >
         <nav
           aria-label={a11y.mainNav}
