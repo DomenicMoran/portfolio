@@ -24,9 +24,8 @@
  *   npm run check:links
  */
 
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
 import { chromium } from "playwright";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const vorgegebeneBasis = process.argv[2];
@@ -38,22 +37,7 @@ if (!basis) {
 }
 
 /** Jede gebaute Seite, ohne die Bau-Interna. */
-const bauOrdner = join(".next", "server", "app");
-const pfade = [];
-{
-  const suchen = (ordner) => {
-    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
-      const pfad = join(ordner, eintrag.name);
-      if (eintrag.isDirectory()) suchen(pfad);
-      else if (eintrag.name.endsWith(".html")) {
-        const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/").replace(/\.html$/, "");
-        if (!route.split("/").pop().startsWith("_")) pfade.push(route === "/index" ? "/" : route);
-      }
-    }
-  };
-  suchen(bauOrdner);
-  pfade.sort();
-}
+const pfade = gebauteSeiten();
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
