@@ -19,9 +19,9 @@ type Action = {
 };
 
 /**
- * ⌘K palette. Two reasons it earns its bundle cost on a portfolio:
- * every action is also reachable by normal navigation (so it is pure
- * enhancement), and the audience, engineers, will actually press ⌘K.
+ * Die ⌘K-Palette. Zwei Gründe, warum sie ihren Platz im Bündel wert ist: Jede
+ * Aktion ist auch über die gewöhnliche Navigation erreichbar, sie ist also
+ * reine Zugabe — und das Publikum, Entwickler, drückt ⌘K tatsächlich.
  */
 export function CommandPalette({
   open,
@@ -136,8 +136,8 @@ export function CommandPalette({
   }, [actions, query]);
 
   // Reset during render rather than in an effect. React's documented pattern
-  // for "adjust state when a prop changes": it happens before paint, so the
-  // stale query is never rendered, and it avoids a cascading re-render.
+  // für „Zustand anpassen, wenn sich eine Eigenschaft ändert": Es geschieht vor
+  // dem Zeichnen, die alte Eingabe wird nie gerendert, und ein Nachziehen-Rendern entfällt.
   const [wasOpen, setWasOpen] = useState(open);
   if (open !== wasOpen) {
     setWasOpen(open);
@@ -149,7 +149,7 @@ export function CommandPalette({
 
   useEffect(() => {
     if (!open) return;
-    // Focus after the entrance transition starts, else iOS Safari scrolls.
+    // Fokus erst, wenn der Auftritt beginnt — sonst scrollt Safari unter iOS.
     const id = window.setTimeout(() => inputRef.current?.focus(), 60);
     return () => window.clearTimeout(id);
   }, [open]);

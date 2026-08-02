@@ -42,20 +42,22 @@ export const metadata: Metadata = {
 };
 
 /**
- * A4-shaped summary that becomes the downloadable PDF via the browser's own
- * print pipeline.
+ * Kurzprofil im A4-Zuschnitt, das über den Druckweg des Browsers zur
+ * herunterladbaren PDF wird.
  *
- * Why not generate a PDF server-side: a headless-Chrome dependency for one
- * static document is a maintenance liability, and the print stylesheet gives
- * identical output with selectable text and working links. The button below
- * just calls window.print().
+ * Warum die PDF nicht auf dem Server entsteht: Ein Headless-Chrome für ein
+ * einziges statisches Dokument ist eine Last in der Wartung, und die
+ * Druckregeln liefern dasselbe Ergebnis mit markierbarem Text und
+ * funktionierenden Links. Die Schaltfläche darunter ruft schlicht
+ * window.print() auf.
  */
 /**
- * Keeps the PDF to a single A4 page. The full argument lives on the site; here
- * only the opening claim of each "hard part" is needed.
+ * Hält die PDF auf einer A4-Seite. Die vollständige Begründung steht auf der
+ * Website; hier genügt der erste Satz jedes „schwierigen Teils".
  *
- * Splits on sentence-ending punctuation followed by a space and a capital, so
- * abbreviations and decimals ("§ 146a AO", "1.44") do not cut the sentence short.
+ * Getrennt wird an Satzzeichen, denen ein Leerzeichen und ein Großbuchstabe
+ * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO", „1.44")
+ * den Satz nicht vorzeitig ab.
  */
 function firstSentence(text: string) {
   const match = text.match(/^.*?[.!?](?=\s+[A-ZÄÖÜ])/);

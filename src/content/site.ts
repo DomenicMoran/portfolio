@@ -37,14 +37,13 @@ function alsWort(n: number) {
 /** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
 export const bauzeit = `${alsWort(monateSeitBeginn())} Monat${monateSeitBeginn() === 1 ? "" : "en"}`;
 /**
- * Single source of truth for every piece of copy and data on the site.
+ * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
  *
- * Everything marked `TODO(domenic)` is a value only the owner can supply; the
- * open ones are collected in USER-TODO.md. Components are written so that a
- * missing (empty or
- * null) value removes the element rather than rendering a placeholder: an
- * unanswered question must never become a visible "lorem ipsum" on a page whose
- * whole point is credibility.
+ * Alles mit `TODO(domenic)` ist ein Wert, den nur der Inhaber liefern kann; die
+ * offenen stehen gesammelt in USER-TODO.md. Die Komponenten sind so gebaut,
+ * dass ein fehlender Wert — leer oder null — das Element entfernt, statt einen
+ * Platzhalter zu rendern: Eine offene Frage darf auf einer Seite, deren ganzer
+ * Zweck Glaubwürdigkeit ist, nie als sichtbares „Lorem ipsum" enden.
  */
 
 export const site = {
@@ -62,9 +61,9 @@ export const site = {
   // öffentlich, und beides wird aus öffentlichen Repos zuverlässig
   // abgegriffen. Beides steht im Lebenslauf unter docs/, also außerhalb des Repos.
 
-  // Typed as plain strings, not literals: components branch on whether these
-  // are filled in, and `as const` would narrow "" to a type that makes the
-  // populated branch unreachable.
+  // Als einfache Zeichenketten getippt, nicht als Literale: Die Komponenten
+  // verzweigen danach, ob hier etwas steht, und `as const` würde "" so eng
+  // machen, dass der gefüllte Zweig unerreichbar wird.
   socials: {
     github: "https://github.com/DomenicMoran" as string,
     linkedin: "https://www.linkedin.com/in/domenicmoran" as string,
@@ -106,7 +105,7 @@ export const about = {
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
-  // Verified against `git log` and the repositories on 2026-07-31.
+  // Am 31.07.2026 gegen `git log` und die Repositories geprüft.
   stats: [
     { value: verified.commitsHead, label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
@@ -271,7 +270,7 @@ export const about = {
 
 export const hero = {
   eyebrow: "Berlin · verfügbar",
-  // Rendered word by word; `accent` switches to the editorial serif.
+  // Wort für Wort gerendert; `accent` schaltet auf die Serifenschrift um.
   headline: [
     { text: "Ich" },
     { text: "liefere" },
@@ -314,7 +313,7 @@ export type CaseStudy = {
   accent: "acid" | "violet" | "cyan";
   problem: string;
   solution: string;
-  /** The one detail that proves depth rather than breadth. */
+  /** Das eine Detail, das Tiefe belegt statt Breite. */
   hardPart: { title: string; body: string };
   highlights: string[];
   stack: StackGroup[];
@@ -329,9 +328,9 @@ export type CaseStudy = {
     groups: { title: string; items: string[] }[];
   };
   /**
-   * Live screenshots captured from the running products on 2026-07-31.
-   * Omitted where there is nothing safe to show: WohnungsJäger's dashboard
-   * carries real listings and applicant data.
+   * Aufnahmen aus den laufenden Produkten, gemacht am 31.07.2026.
+   * Ausgelassen, wo sich nichts unbedenklich zeigen lässt: Die Übersicht von
+   * WohnungsJäger führt echte Angebote und Bewerberdaten.
    */
   shots?: {
     src: string;
@@ -851,8 +850,8 @@ export const recruiter = {
     { label: "Verfügbar", value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung, keine Freiberuflichkeit" },
-    // Pre-empts the "where's the code?" question and answers it as a decision
-    // rather than a gap, see USER-TODO block D.
+    // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
+    // Entscheidung statt als Lücke, siehe USER-TODO Block D.
     { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
   ],
   strengths: [
@@ -926,7 +925,7 @@ export const navItems = [
   { label: "Kontakt", href: "#contact" },
 ] as const;
 
-/** Tech ticker in the hero. Ordered for rhythm, not by importance. */
+/** Die Laufschrift im Kopfbereich. Nach Rhythmus geordnet, nicht nach Gewicht. */
 export const techTicker = [
   "TypeScript",
   "React",

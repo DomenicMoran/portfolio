@@ -2,38 +2,38 @@ import verified from "./verified.json";
 import type { Content } from "./types";
 
 /**
- * English content.
+ * Die englische Fassung.
  *
- * Not a literal translation. The German original leans on constructions that
- * do not survive word-for-word. What is preserved is the argument and the
- * evidence behind every number.
+ * Keine wörtliche Übersetzung: Das deutsche Original lebt von Konstruktionen,
+ * die Wort für Wort nicht überstehen. Erhalten bleiben die Argumentation und
+ * der Beleg hinter jeder Zahl.
  *
- * The legal pages stay German: they exist to satisfy German law and are
- * addressed to German authorities. Translating them would create a second
- * version whose legal standing is unclear.
+ * Die Rechtsseiten bleiben deutsch. Sie erfüllen deutsches Recht und richten
+ * sich an deutsche Stellen; eine Übersetzung wäre eine zweite Fassung mit
+ * unklarer Verbindlichkeit.
  */
 /**
- * Days since the first Salati commit, computed rather than typed.
+ * Tage seit dem ersten Salati-Commit, gerechnet statt getippt.
  *
- * This read "107 days … until today". Correct when written, 108 the next
- * morning — the same drifting window the commit figure already dropped
- * ("3,971 commits in 4 months"). A number that moves on its own cannot be
- * maintained by hand.
+ * Hier stand „107 days … until today". Am Tag des Schreibens richtig, am
+ * nächsten Morgen 108 — dasselbe wandernde Fenster, das die Commit-Angabe
+ * schon abgelegt hat („3.971 Commits in vier Monaten"). Eine Zahl, die sich
+ * von allein bewegt, lässt sich von Hand nicht pflegen.
  *
- * Counted up to the verification date in `verified.json`, not to the moment of
- * the request: the pages are prerendered, so a `new Date()` here would freeze
- * at build time anyway. The stamp moves forward daily with the scheduled job,
- * and the note beside the figure names it.
+ * Gezählt wird bis zum Prüfdatum in `verified.json`, nicht bis zum Aufruf: Die
+ * Seiten sind vorgerendert, ein `new Date()` würde hier ohnehin beim Bauen
+ * einfrieren. Der Stempel rückt täglich mit dem geplanten Lauf weiter, und die
+ * Anmerkung neben der Zahl benennt ihn.
  */
 const SALATI_FIRST_COMMIT = "2026-04-16";
 const salatiDays = Math.round(
   (Date.parse(verified.date) - Date.parse(SALATI_FIRST_COMMIT)) / 86_400_000,
 );
-/** Counted in the app's changelog, see check-figures.mjs. */
+/** Im Änderungsprotokoll der App gezählt, siehe check-figures.mjs. */
 const SALATI_VERSIONS = 64;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
-/** "2026-08-01" as "1 August 2026". */
+/** „2026-08-01" als „1 August 2026". */
 function dateLong(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -43,13 +43,13 @@ function dateLong(iso: string) {
 }
 
 /**
- * How long the four production systems have been in the making — computed.
+ * Wie lange die vier Produktionssysteme entstehen — gerechnet.
  *
- * The lede said "built in four months". Exactly right on the day it was
- * written, understated from the 26th of the month after next, and nobody
- * notices: the claim does not become false, it becomes quietly modest. Same
- * drifting figure as "3,971 commits in 4 months" and "107 days until today",
- * both already dropped.
+ * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
+ * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
+ * es: Die Aussage wird nicht falsch, sie wird still zu klein. Dasselbe
+ * wandernde Maß wie „3.971 Commits in vier Monaten" und „107 Tage bis heute",
+ * beide bereits abgelegt.
  */
 const FIRST_COMMIT = "2026-03-26";
 
@@ -76,9 +76,9 @@ const buildTime = `${asWord(monthsSinceStart())} month${monthsSinceStart() === 1
 export const en: Content = {
   lang: "en",
   site: {
-    // The origin, not the path: buildMetadata appends "/en" itself. With the
-    // full /en address here, the canonical came out as
-    // "https://domenicmoran.de/en/en".
+    // Der Ursprung, nicht der Pfad: buildMetadata hängt „/en" selbst an. Mit
+    // der vollständigen /en-Adresse an dieser Stelle kam als kanonische URL
+    // „https://domenicmoran.de/en/en" heraus.
     url: "https://domenicmoran.de",
     name: "Domenic Moran",
     role: "AI Product Engineer",

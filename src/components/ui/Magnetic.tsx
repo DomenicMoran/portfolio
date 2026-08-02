@@ -5,8 +5,9 @@ import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Pulls its child toward the cursor. Pointer-precision only. On touch there is
- * no hover state to react to, and the transform would just add jank.
+ * Zieht sein Kind zum Zeiger. Nur bei genauem Zeigegerät: Auf einem
+ * Berührungsbildschirm gibt es kein Überfahren, auf das sich reagieren ließe,
+ * und die Verschiebung würde dort nur ruckeln.
  */
 export function Magnetic({
   children,

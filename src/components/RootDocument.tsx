@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
   preload: false,
 });
 
-/** Used only for accent words. One weight, one style, nothing else needed. */
+/** Nur für Akzentwörter. Ein Schnitt, ein Stil, mehr braucht es nicht. */
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
   subsets: ["latin"],
@@ -47,8 +47,8 @@ export function RootDocument({
   return (
     <html
       lang={lang}
-      // Next 16 no longer neutralises smooth scrolling during navigation unless
-      // this attribute is present.
+      // Next 16 hebt weiches Scrollen bei der Navigation nur noch auf, wenn
+      // dieses Attribut gesetzt ist.
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >

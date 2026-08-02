@@ -11,12 +11,12 @@ import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * The biography section.
+ * Der Abschnitt zur Person.
  *
- * Placed after the case studies on purpose: the work earns the right to the
- * story. Someone who has just seen four production systems reads "taught
- * himself, alongside a full-time job" as remarkable. Read first, the same
- * sentence sounds like an excuse.
+ * Steht mit Absicht hinter den Fallstudien: Die Arbeit verdient sich das Recht
+ * auf die Geschichte. Wer gerade vier Produktionssysteme gesehen hat, liest
+ * „selbst beigebracht, neben einem Vollzeitjob" als bemerkenswert. Zuerst
+ * gelesen klingt derselbe Satz nach einer Ausrede.
  */
 /**
  * Aus "2022-07-25" wird "07/2022". Der Tag trägt bei einem Zertifikat keine
@@ -90,9 +90,9 @@ export function About() {
                       transition: { duration: 0.6, ease: ease.expo },
                     },
                   }}
-                  // A <dl> may only contain dt/dd groups: label and note both
-                  // live inside <dt>, the number in <dd>, and flex-col-reverse
-                  // puts the number back on top visually.
+                  // Eine <dl> darf nur dt/dd-Paare enthalten: Beschriftung und
+                  // Anmerkung stehen zusammen im <dt>, die Zahl im <dd>, und
+                  // flex-col-reverse stellt die Zahl optisch wieder nach oben.
                   className="flex flex-col-reverse gap-1"
                 >
                   <dt className="flex flex-col gap-0.5">

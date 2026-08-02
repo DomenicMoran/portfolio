@@ -1,10 +1,11 @@
 /**
- * Brand marks.
+ * Wortmarken.
  *
- * lucide-react v1 dropped brand icons, so these two are inlined. Both are the
- * official marks, used only to label links pointing at the respective profiles
- *: the one use every brand guideline permits. They take the same props shape
- * as lucide icons so they drop into the same slots.
+ * lucide-react hat die Markenzeichen mit Fassung 1 entfernt, deshalb stehen
+ * diese beiden direkt hier. Beide sind die offiziellen Zeichen und beschriften
+ * ausschließlich Links auf die jeweiligen Profile — die eine Verwendung, die
+ * jede Markenrichtlinie erlaubt. Sie nehmen dieselben Eigenschaften wie die
+ * lucide-Symbole und passen damit in dieselben Stellen.
  */
 
 type IconProps = { className?: string };

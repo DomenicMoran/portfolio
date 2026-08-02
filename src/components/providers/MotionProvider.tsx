@@ -4,20 +4,20 @@ import { MotionConfig } from "framer-motion";
 import type { ReactNode } from "react";
 
 /**
- * Honours `prefers-reduced-motion` for Framer Motion.
+ * Setzt `prefers-reduced-motion` für Framer Motion durch.
  *
- * The `@media (prefers-reduced-motion)` block in globals.css only reaches CSS
- * animations and transitions. Framer Motion drives inline styles from
- * requestAnimationFrame, so it ignores that rule entirely. Without this
- * provider the site would claim to respect the setting while still animating
- * every reveal.
+ * Der Block `@media (prefers-reduced-motion)` in globals.css erreicht nur
+ * CSS-Animationen und -Übergänge. Framer Motion setzt Inline-Stile aus
+ * `requestAnimationFrame` und geht an dieser Regel vollständig vorbei. Ohne
+ * diesen Anbieter würde die Seite die Einstellung zu achten behaupten und
+ * trotzdem jede Einblendung animieren.
  *
- * `reducedMotion="user"` keeps opacity/colour transitions but drops transform
- * and layout animation, which is exactly the distinction the setting is about:
- * movement is the problem, not change.
+ * `reducedMotion="user"` behält Übergänge von Deckkraft und Farbe, lässt aber
+ * Verschiebung und Layout-Animation weg — genau die Unterscheidung, um die es
+ * bei dieser Einstellung geht: Bewegung stört, Veränderung nicht.
  *
- * Children pass through as a slot, so pages above this boundary stay Server
- * Components.
+ * Die Kinder laufen als Steckplatz durch, damit Seiten oberhalb dieser Grenze
+ * Server Components bleiben.
  */
 export function MotionProvider({ children }: { children: ReactNode }) {
   return <MotionConfig reducedMotion="user">{children}</MotionConfig>;

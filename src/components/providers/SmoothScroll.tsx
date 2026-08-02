@@ -4,11 +4,12 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 
 /**
- * Lenis smooth scroll, driven by rAF.
+ * Weiches Scrollen mit Lenis, angetrieben von `requestAnimationFrame`.
  *
- * Deliberately skipped when the user prefers reduced motion: hijacking the
- * scroll of someone with vestibular sensitivity is the single most hostile
- * thing a "premium" site does. In that case native scrolling stays untouched.
+ * Bewusst nicht geladen, wenn jemand weniger Bewegung eingestellt hat: Einem
+ * Menschen mit Gleichgewichtsempfindlichkeit das Scrollen aus der Hand zu
+ * nehmen, ist das Unfreundlichste, was eine „hochwertige" Seite tun kann. Dann
+ * bleibt das Scrollen des Browsers unangetastet.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -17,7 +18,7 @@ export function SmoothScroll() {
 
     const lenis = new Lenis({
       duration: 1.1,
-      // Matches --ease-out-expo so scroll inertia and CSS transitions agree.
+      // Entspricht --ease-out-expo, damit Nachlauf und CSS-Übergänge zusammenpassen.
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 1.6,
@@ -30,8 +31,8 @@ export function SmoothScroll() {
     };
     frame = requestAnimationFrame(raf);
 
-    // In-page anchors must go through Lenis, otherwise the native jump fights
-    // the animation loop and lands at the wrong offset.
+    // Sprungmarken innerhalb der Seite müssen über Lenis laufen: Sonst kämpft
+    // der Sprung des Browsers gegen die Animationsschleife und landet daneben.
     const onAnchorClick = (event: MouseEvent) => {
       const anchor = (event.target as HTMLElement | null)?.closest?.(
         'a[href^="#"]',
