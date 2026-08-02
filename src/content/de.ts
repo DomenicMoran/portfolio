@@ -121,6 +121,7 @@ export const de: Content = {
       problem: "Das Problem",
       solution: "Die Lösung",
       hardPart: "Die harte Stelle",
+      readOn: "Ausführlich nachzulesen",
     },
   },
 

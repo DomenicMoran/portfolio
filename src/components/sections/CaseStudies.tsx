@@ -3,7 +3,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, Bot, Check, Layers, Smartphone, Workflow } from "lucide-react";
+import Link from "next/link";
 import { GithubIcon } from "@/components/ui/BrandIcons";
+import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
 import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
@@ -50,10 +52,17 @@ export function CaseStudies() {
 }
 
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
-  const { work, a11y } = useContent();
+  const { work, a11y, lang } = useContent();
   const [tab, setTab] = useState<TabId>("highlights");
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
+  /* Titel und Adresse kommen aus derselben Liste, aus der die Artikelseite
+     baut: Ein hier abgetippter Titel wäre die zweite Stelle, an der er steht. */
+  const artikel = lang === "de" ? artikelDe : artikelEn;
+  const chrome = lang === "de" ? chromeDe : chromeEn;
+  const artikelDazu = (study.articles ?? [])
+    .map((slug) => artikel.find((a) => a.slug === slug))
+    .filter((a): a is NonNullable<typeof a> => Boolean(a));
   /** Der Automatisierungs-Reiter erscheint nur, wo es etwas zu zeigen gibt. */
   const sichtbareTabs = TAB_IDS.filter((id) => id !== "automation" || study.automation);
 
@@ -438,6 +447,44 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 />
               </a>
             ))}
+          </Reveal>
+        ) : null}
+
+        {/* Der Weg von der Fallstudie in den Artikel.
+
+            Vier der fünf Fachartikel handeln von einem Fehler in genau diesen
+            Systemen, und aus dem Fallstudien-Bereich führte kein einziger
+            Verweis dorthin — gezählt an der ausgelieferten Seite. Wer wissen
+            will, wie tief das geht, musste weiterscrollen und dann raten,
+            welcher Artikel zu welchem System gehört. */}
+        {artikelDazu.length > 0 ? (
+          <Reveal delay={0.04}>
+            <div className="mt-8 border-t border-line pt-6">
+              <h4 className="text-eyebrow mb-3">{work.labels.readOn}</h4>
+              <ul className="flex flex-col gap-2">
+                {artikelDazu.map((artikel) => (
+                  <li key={artikel.slug}>
+                    <Link
+                      href={`${chrome.base}/${artikel.slug}`}
+                      /* `-my-0.5 py-0.5`: Ein einzeiliger Titel misst sonst
+                         23 px hoch — gemessen bei 390 px — und liegt damit
+                         unter den 24 px aus WCAG 2.5.8. Die Ausnahme für
+                         Verweise mitten im Satz greift hier nicht: Jeder steht
+                         allein in seiner Zeile. Optisch ändert sich nichts. */
+                      className="group -my-0.5 inline-flex items-start gap-2 py-0.5 text-sm leading-relaxed text-ink-dim transition-colors hover:text-ink"
+                    >
+                      <ArrowUpRight
+                        className="mt-1 size-3.5 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
+                        aria-hidden
+                      />
+                      <span className="underline decoration-line underline-offset-4 transition-colors group-hover:decoration-acid">
+                        {artikel.title}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Reveal>
         ) : null}
       </div>
