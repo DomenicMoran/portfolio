@@ -104,4 +104,28 @@ jobs:
             echo "noch nicht ausgeliefert. Der nächste Deploy nimmt sie mit."
             exit 0
           fi
-          npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
+
+          # Der Fehlerfall braucht eine Anleitung, keine Fehlermeldung.
+          #
+          # Am 02.08.2026 lief dieser Schritt zweimal auf "The token provided
+          # via --token argument is not valid" — von Hand angestoßen und
+          # planmäßig. Die Zahlen lagen danach im Repository und nicht auf der
+          # Seite, und im Protokoll stand nur die Meldung der CLI. Wer den Lauf
+          # später ansieht, soll den Weg zur Behebung gleich mitlesen.
+          if ! npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"; then
+            echo ""
+            echo "::error::Die Auslieferung ist gescheitert. Die neue Zahl steht im Repository, aber nicht auf der Seite."
+            echo ""
+            echo "Wahrscheinlichste Ursache: VERCEL_TOKEN ist abgelaufen oder ungültig."
+            echo ""
+            echo "So wird es behoben, drei Minuten:"
+            echo "  1. vercel.com öffnen, oben rechts aufs Kontobild, Account Settings, Tokens"
+            echo "  2. Create Token, Geltungsbereich Full Account, Ablauf No Expiration"
+            echo "  3. github.com/DomenicMoran/portfolio, Settings, Secrets and variables,"
+            echo "     Actions, bei VERCEL_TOKEN auf Update, neuen Wert einsetzen"
+            echo "  4. Hier in Actions, Zahlen auffrischen, Run workflow — der Lauf muss grün sein"
+            echo ""
+            echo "Ein Token lässt sich nicht aus einer angemeldeten CLI-Sitzung erzeugen:"
+            echo "Die Vercel-API antwortet darauf mit 403 Cannot create tokens for this app."
+            exit 1
+          fi
