@@ -10,9 +10,6 @@ import { Footer } from "@/components/Footer";
 import { Prose } from "@/components/article/Prose";
 import { Reveal } from "@/components/ui/Reveal";
 
-/** Kennung der Überschrift, die die Weiterlese-Navigation benennt. */
-const WEITERE_ID = "weitere-artikel";
-
 /** Aus "2026-07-27" wird "27. Juli 2026" bzw. "27 July 2026". */
 function datum(iso: string, lang: "de" | "en") {
   return new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-GB", {
@@ -203,10 +200,12 @@ export function ArticlePage({
                   "Navigation in der Fußzeile") und diese ohne. Wer die
                   Landmarkenliste aufruft, sieht dann dreimal "Navigation" und
                   weiß bei einer davon nicht, wohin sie führt. */}
-              <nav aria-labelledby={WEITERE_ID} className="mt-14 border-t border-line pt-10">
-                <h2 id={WEITERE_ID} className="text-eyebrow mb-6">
-                  {chrome.allArticles}
-                </h2>
+              {/* `aria-label` und nicht `aria-labelledby`: Die Überschrift
+                  trägt `text-transform: uppercase`, und der Name folgt dem
+                  gerenderten Text — gemessen kam "ARTIKEL" heraus. Manche
+                  Vorleseprogramme buchstabieren Grossbuchstaben. */}
+              <nav aria-label={chrome.allArticles} className="mt-14 border-t border-line pt-10">
+                <h2 className="text-eyebrow mb-6">{chrome.allArticles}</h2>
                 <ul className="flex flex-col gap-3">
                   {weitere.map((a) => (
                     <li key={a.slug}>
