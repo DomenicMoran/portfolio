@@ -189,6 +189,20 @@ async function messen() {
       const schwach = [];
       const abgeschnitten = [];
       const festgeheftet = [];
+      /*
+        Bilder, die nie geladen wurden, drucken als leerer Rahmen.
+
+        `next/image` setzt ohne `priority` ein `loading="lazy"`. Am Bildschirm
+        ist das richtig; beim Drucken gibt es kein Scrollen, und was nie
+        geladen wurde, fehlt auf dem Papier. Gemessen am 02.08.2026: sechs von
+        elf Produktaufnahmen fehlten im PDF der Startseite.
+      */
+      const ungeladen = [...document.querySelectorAll("img")]
+        .filter((b) => getComputedStyle(b).display !== "none" && b.naturalWidth === 0)
+        .map((b) => ({
+          alt: (b.getAttribute("alt") || "(ohne Alternativtext)").slice(0, 45),
+          laden: b.loading,
+        }));
 
       for (const el of document.querySelectorAll("body *")) {
         const stil = getComputedStyle(el);
@@ -270,7 +284,7 @@ async function messen() {
         }
       }
 
-      return { schwach, abgeschnitten, festgeheftet };
+      return { schwach, abgeschnitten, festgeheftet, ungeladen };
     },
     { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
   );
@@ -377,7 +391,7 @@ for (const pfad of gepruefteSeiten) {
     }
   });
   await seite.waitForTimeout(50);
-  const { schwach, abgeschnitten, festgeheftet } = await messen();
+  const { schwach, abgeschnitten, festgeheftet, ungeladen } = await messen();
   const textImDruck = await textEinsammeln();
   await seite.emulateMedia({ media: "screen" });
 
@@ -407,7 +421,8 @@ for (const pfad of gepruefteSeiten) {
     schwach.length === 0 &&
     abgeschnitten.length === 0 &&
     festgeheftet.length === 0 &&
-    fehlend.length === 0
+    fehlend.length === 0 &&
+    ungeladen.length === 0
   ) {
     console.log(`  ok ${pfad}`);
     continue;
@@ -423,6 +438,11 @@ for (const pfad of gepruefteSeiten) {
   for (const s of abgeschnitten) {
     console.log(
       `        abgeschnitten: <${s.marke} class="${s.klasse}"> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}"`,
+    );
+  }
+  for (const s of ungeladen) {
+    console.log(
+      `        Bild nicht geladen (loading="${s.laden}"), druckt als leerer Rahmen: „${s.alt}"`,
     );
   }
   for (const s of festgeheftet) {
