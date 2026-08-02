@@ -1049,6 +1049,46 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
 
 /* ---------------------------------------------------------------------------
+   Die Sicherheitskontaktdatei läuft nicht ab
+   ---------------------------------------------------------------------------
+
+   RFC 9116 verlangt in security.txt ein `Expires` weniger als ein Jahr in der
+   Zukunft. Steht dort ein vergangener Zeitpunkt, behandeln Scanner die Datei
+   als ungültig — stillschweigend, es gibt keine Meldung.
+
+   Die Datei lag als statische Kopie in public/ mit fest eingetragenem
+   „2027-07-31". Ein Datum ein Jahr voraus fällt niemandem auf, bis es vorbei
+   ist. Sie entsteht jetzt beim Bauen mit sechs Monaten Vorlauf; geprüft wird
+   das gebaute Ergebnis, nicht die Absicht. */
+{
+  const datei = join(".next", "server", "app", ".well-known", "security.txt.body");
+  if (!existsSync(datei)) {
+    zeilen.push("  --  security.txt nicht gebaut, übersprungen (npm run build)");
+  } else {
+    const inhalt = readFileSync(datei, "utf8");
+    const treffer = inhalt.match(/^Expires:\s*(\S+)/m);
+    const bis = treffer ? Date.parse(treffer[1]) : NaN;
+    const tage = Math.round((bis - Date.now()) / 86_400_000);
+
+    if (!treffer || Number.isNaN(bis)) {
+      abweichungen++;
+      zeilen.push("  !!  security.txt: kein gültiges Expires nach RFC 3339");
+    } else if (tage <= 0) {
+      abweichungen++;
+      zeilen.push(`  !!  security.txt ist seit ${-tage} Tagen abgelaufen (${treffer[1]})`);
+    } else if (tage >= 365) {
+      abweichungen++;
+      zeilen.push(
+        `  !!  security.txt gilt ${tage} Tage — RFC 9116 verlangt weniger als ein Jahr`,
+      );
+    } else {
+      zeilen.push(`  ok  security.txt          ${String(tage).padStart(6)} Tage gültig`);
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
    Alter des Prüfstempels
    ---------------------------------------------------------------------------
 

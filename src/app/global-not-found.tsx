@@ -26,8 +26,18 @@ export const metadata: Metadata = {
  * die auf gar keine Route passt — auch `/en/irgendwas`. Diese Seite ist die
  * einzige, die nicht wissen kann, welche Sprache gemeint war. Gemessen bekam
  * ein englischer Besucher bisher „Diese Seite gibt es nicht." samt `lang="de"`.
- * Ein Auffang unter /en hilft nicht: Die Dokumentation ist deutlich, dass
- * global-not-found das Rendern überspringt und direkt ausgeliefert wird.
+ *
+ * Es gab einmal je Sprache eine eigene `not-found.tsx`. Beide wurden nie
+ * gerendert: Die Artikelrouten stehen auf `dynamicParams = false`, ein
+ * unbekannter Slug erreicht das Bauteil also gar nicht, und Next liefert
+ * stattdessen diese Seite aus. Gemessen am 02.08.2026 über vier falsche
+ * Adressen, darunter `/en/articles/made-up` — jede bekam diese Seite mit
+ * `lang="de"`.
+ *
+ * Der naheliegende Umbau macht es schlimmer: Mit `dynamicParams = true`
+ * antwortet `/en/articles/made-up` zwar weiterhin mit 404, aber ohne jedes
+ * HTML — kein `lang`, keine Überschrift, eine leere Seite. Die beiden Dateien
+ * sind deshalb entfernt statt erreichbar gemacht.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
