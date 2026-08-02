@@ -68,8 +68,8 @@ async function commitsIn(repo) {
   });
 
   // Nicht sofort werfen: Sonst nennt die Meldung nur das erste unerreichbare
-  // Repository, und wer das Token einrichtet, gibt ein Recht frei, laeuft
-  // wieder auf, gibt das naechste frei. Gesammelt wird, dann einmal gemeldet.
+  // Repository, und wer das Token einrichtet, gibt ein Recht frei, läuft
+  // wieder auf, gibt das nächste frei. Gesammelt wird, dann einmal gemeldet.
   if (antwort.status === 404) return { repo, fehler: "nicht lesbar (404)" };
   if (antwort.status === 403) return { repo, fehler: "abgelehnt (403)" };
   if (!antwort.ok) return { repo, fehler: `HTTP ${antwort.status}` };
@@ -127,7 +127,7 @@ const alt = existsSync(ZIEL) ? readFileSync(ZIEL, "utf8") : "";
 const text = JSON.stringify(neu, null, 2) + "\n";
 
 if (text === alt) {
-  console.log("\nUnveraendert, nichts geschrieben.");
+  console.log("\nUnverändert, nichts geschrieben.");
   process.exit(0);
 }
 

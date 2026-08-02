@@ -36,6 +36,44 @@ function alsWort(n: number) {
 
 /** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
 export const bauzeit = `${alsWort(monateSeitBeginn())} Monat${monateSeitBeginn() === 1 ? "" : "en"}`;
+
+/**
+ * Dieselbe Spanne ohne vorangestelltes „in", groß geschrieben.
+ *
+ * Die Überschrift der Über-mich-Sektion sagte „Vier Monate ausgeliefert" und
+ * stand als Zeichenkette da, zwei Zeilen über einem Absatz, der dieselbe
+ * Spanne rechnet. Ab dem 26. des übernächsten Monats hätte die Überschrift
+ * „Vier Monate" behauptet, während der Absatz darunter „fünf Monaten" sagt —
+ * genau die Falle, die der Kommentar über `ERSTER_COMMIT` als abgeschafft
+ * beschreibt.
+ */
+function grossErstes(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export const bauzeitNominativ = grossErstes(
+  `${alsWort(monateSeitBeginn()).replace(/^einem$/, "ein")} Monat${
+    monateSeitBeginn() === 1 ? "" : "e"
+  }`,
+);
+
+/**
+ * Wie lange der Lernweg dauert, ebenfalls gerechnet.
+ *
+ * Die Kurszertifikate sind von Juli und August 2022; seitdem läuft der
+ * autodidaktische Weg weiter. „Vier Jahre" war am Tag des Schreibens richtig
+ * und wäre 2027 eine zu niedrige Angabe.
+ */
+const LERNBEGINN = "2022-07-01";
+
+export const lernzeit = grossErstes(
+  alsWort(
+    Math.max(
+      1,
+      new Date(verified.date).getFullYear() - new Date(LERNBEGINN).getFullYear(),
+    ),
+  ) + " Jahre",
+);
 /**
  * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
  *
@@ -105,7 +143,7 @@ export const about = {
   portrait: "/portrait-dark.jpg" as string,
   /* Fuer den One-Pager, der auf Papier geht. */
   portraitPrint: "/portrait.jpg" as string,
-  title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
+  title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
     `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
@@ -622,8 +660,12 @@ export const caseStudies: CaseStudy[] = [
       {
         src: "/shots/menucloud-desktop.png",
         alt: "Startseite von menucloud-berlin.de mit dem Versprechen null Provision, DSGVO und KassenSichV sowie einer Vorschau des Self-Service-Admins.",
+        /* Der Ausschnitt endet an der Sektionskante, nicht an einer runden
+           Zahl: Die vorherige Aufnahme war 1440 x 900 und schnitt quer durch
+           die Knopfreihe. Dazu trug sie eine echte Bildlaufleiste am Rand,
+           innerhalb eines gezeichneten Browserrahmens. */
         width: 1440,
-        height: 900,
+        height: 1466,
         label: "menucloud-berlin.de",
       },
       {
@@ -720,9 +762,11 @@ export const caseStudies: CaseStudy[] = [
     shots: [
       {
         src: "/shots/nouri-desktop.png",
-        alt: "Startseite der NOURI-Plattform mit Rezeptkatalog, Wochenplanung und Trainingsbereich.",
+        alt: "Startseite der NOURI-Plattform: Sprachwahl, Titelzeile und die Knöpfe zum Öffnen der App.",
+        /* Endet an der Kante des Kopfbereichs. Die vorherige Aufnahme war
+           1440 x 900 und schnitt mitten durch die Kennzahlenreihe. */
         width: 1440,
-        height: 900,
+        height: 828,
         label: "nouri-fitness.vercel.app",
       },
     ],
