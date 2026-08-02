@@ -997,6 +997,102 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
 
 /* ---------------------------------------------------------------------------
+   Das Profil-README, wie GitHub es zeigt
+   ---------------------------------------------------------------------------
+
+   Der Waechter darunter vergleicht Artikeltitel gegen `docs/GITHUB-PROFILE-README.md`
+   — eine Datei in diesem Rechner, die niemand aufruft. Gerendert wird auf
+   GitHub der Inhalt des Repositoriums `DomenicMoran/DomenicMoran`, und beide
+   koennen auseinanderlaufen: Wer dort ueber die Weboberflaeche etwas aendert,
+   aendert die oertliche Datei nicht mit, und ab da prueft der naechste
+   Waechter eine Fassung, die es nirgends gibt.
+
+   Verglichen wird deshalb zuerst die Vorlage gegen das Veroeffentlichte.
+   Zeilenenden und Leerraum am Zeilenende bleiben aussen vor, sonst schlaegt
+   der Lauf unter Windows bei jedem Durchgang an.
+
+   Dazu die Zahlen im README: Es nennt je Paket eine Testzahl und "null
+   Abhaengigkeiten". Gezaehlt wird in den oertlichen Klonen unter ../oss —
+   dieselbe Quelle, aus der die Pakete veroeffentlicht sind.
+
+   Ohne Netz wird uebersprungen und das gesagt. */
+{
+  const vorlage = "../docs/GITHUB-PROFILE-README.md";
+  if (!existsSync(vorlage)) {
+    zeilen.push("  --  Profil-README: keine Vorlage, uebersprungen");
+  } else {
+    const oertlich = readFileSync(vorlage, "utf8");
+    const glatt = (t) =>
+      t
+        .replace(/\r\n/g, "\n")
+        .replace(/[ 	]+$/gm, "")
+        .trim();
+
+    try {
+      const antwort = await fetch(
+        "https://raw.githubusercontent.com/DomenicMoran/DomenicMoran/main/README.md",
+        { signal: AbortSignal.timeout(20000) },
+      );
+      if (!antwort.ok) throw new Error(String(antwort.status));
+      const veroeffentlicht = await antwort.text();
+      if (glatt(oertlich) !== glatt(veroeffentlicht)) {
+        abweichungen++;
+        const a = glatt(oertlich).split("\n");
+        const b = glatt(veroeffentlicht).split("\n");
+        const erste = a.findIndex((z, i) => z !== b[i]);
+        zeilen.push("  !!  Profil-README: Vorlage und Veroeffentlichtes weichen ab");
+        zeilen.push(`        Zeile ${erste + 1}`);
+        zeilen.push(`        hier:    ${(a[erste] ?? "(fehlt)").slice(0, 70)}`);
+        zeilen.push(`        auf GitHub: ${(b[erste] ?? "(fehlt)").slice(0, 70)}`);
+      } else {
+        zeilen.push(
+          `  ok  Profil-README        ${String(glatt(oertlich).split("\n").length).padStart(6)} Zeilen wie auf GitHub`,
+        );
+      }
+    } catch {
+      zeilen.push("  --  Profil-README: GitHub nicht erreichbar, uebersprungen");
+    }
+
+    /* Die Testzahlen und die Abhaengigkeitsfreiheit je Paket. */
+    const funde = [];
+    let gezaehlt = 0;
+    for (const treffer of oertlich.matchAll(
+      /\[([a-z-]+)\]\(https:\/\/github\.com\/DomenicMoran\/[a-z-]+\)[^\n|]*\|[^\n|]*?(\d+) Tests?, null Abhängigkeiten/g,
+    )) {
+      const [, paket, behauptet] = treffer;
+      const ordner = join("..", "oss", paket);
+      if (!existsSync(ordner)) {
+        funde.push(`${paket}: kein Klon unter ../oss, nicht nachzaehlbar`);
+        continue;
+      }
+      const dateien = readdirSync(join(ordner, "src")).filter((d) => d.endsWith(".test.ts"));
+      const echt = dateien.reduce(
+        (n, d) =>
+          n + (readFileSync(join(ordner, "src", d), "utf8").match(/\b(it|test)\(/g) ?? []).length,
+        0,
+      );
+      if (String(echt) !== behauptet) {
+        funde.push(`${paket}: README sagt ${behauptet} Tests, gezaehlt ${echt}`);
+      }
+      const manifest = JSON.parse(readFileSync(join(ordner, "package.json"), "utf8"));
+      const abh = Object.keys(manifest.dependencies ?? {}).length;
+      if (abh > 0) funde.push(`${paket}: README sagt null Abhaengigkeiten, es sind ${abh}`);
+      gezaehlt++;
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Abweichung(en) bei den Paketzahlen im README:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Paketzahlen im README ${String(gezaehlt).padStart(6)} Pakete: Tests und Abhaengigkeiten stimmen`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Artikeltitel im Profil-README
    ---------------------------------------------------------------------------
 
