@@ -20,10 +20,10 @@
  *   npm run check:a11y
  */
 
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import { join } from "node:path";
 import { chromium } from "playwright";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const require = createRequire(import.meta.url);
@@ -50,22 +50,7 @@ if (!basis) {
 }
 
 /** Jede gebaute Seite, ohne die Bau-Interna. */
-const bauOrdner = join(".next", "server", "app");
-const pfade = [];
-{
-  const suchen = (ordner) => {
-    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
-      const pfad = join(ordner, eintrag.name);
-      if (eintrag.isDirectory()) suchen(pfad);
-      else if (eintrag.name.endsWith(".html")) {
-        const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/").replace(/\.html$/, "");
-        if (!route.split("/").pop().startsWith("_")) pfade.push(route === "/index" ? "/" : route);
-      }
-    }
-  };
-  suchen(bauOrdner);
-  pfade.sort();
-}
+const pfade = gebauteSeiten();
 
 /*
   Die 404-Seite über eine erfundene Adresse, nicht über ihre Datei.

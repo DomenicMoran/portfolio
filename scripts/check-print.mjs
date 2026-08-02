@@ -31,9 +31,9 @@
  * überspringt das und misst gegen die laufende Seite.
  */
 
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** A4 bei 96 dpi. Chromium legt die Druckdarstellung auf diese Breite aus. */
@@ -66,25 +66,7 @@ if (!basis) {
  * Der Bauordner kennt jede ausgelieferte Seite. Eine Sitemap ist eine Aussage
  * über Suchmaschinen, keine über Vollständigkeit.
  */
-const bauOrdnerSeiten = join(".next", "server", "app");
-const pfade = [];
-{
-  const suchen = (ordner) => {
-    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
-      const pfad = join(ordner, eintrag.name);
-      if (eintrag.isDirectory()) suchen(pfad);
-      else if (eintrag.name.endsWith(".html")) {
-        const route = pfad
-          .slice(bauOrdnerSeiten.length)
-          .replace(/\\/g, "/")
-          .replace(/\.html$/, "");
-        pfade.push(route === "/index" ? "/" : route);
-      }
-    }
-  };
-  suchen(bauOrdnerSeiten);
-  pfade.sort();
-}
+const pfade = gebauteSeiten();
 
 /**
  * `_global-error` und `_not-found` liegen als HTML im Bau, sind aber keine
@@ -93,7 +75,8 @@ const pfade = [];
  */
 const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
 const UNBEKANNTE_ADRESSE_EN = "/en/this-address-does-not-exist";
-const gepruefteSeiten = pfade.filter((p) => !p.split("/").pop().startsWith("_"));
+/* `gebauteSeiten` lässt die Bau-Interna bereits aus. */
+const gepruefteSeiten = [...pfade];
 
 /*
   Die 404-Seite wird über eine erfundene Adresse geprüft und nicht über ihre
