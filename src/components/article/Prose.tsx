@@ -86,7 +86,7 @@ export function Prose({ blocks }: { blocks: readonly Block[] }) {
               <figure key={i} className="mt-2 mb-7">
                 {/* Der Kasten scrollt für sich. Ohne das schiebt eine lange
                     Zeile das ganze Dokument in die Breite. */}
-                <pre className="lit overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed">
+                <pre className="lit code-scroll overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed">
                   <code className={`language-${block.lang} font-mono text-ink-dim`}>
                     {block.code}
                   </code>
