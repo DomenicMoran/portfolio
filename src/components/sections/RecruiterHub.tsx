@@ -7,6 +7,7 @@ import { SOCIALS } from "@/content/types";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Spotlight } from "@/components/ui/Spotlight";
 
 export function RecruiterHub() {
   const { recruiter, site } = useContent();
@@ -46,10 +47,16 @@ export function RecruiterHub() {
         {/* Die drei Stärken zuerst über die volle Breite: neben dem Faktenblatt
             fiel ihr Zeilenmaß auf ~27 Zeichen, und der Text zerhackte sich in
             Silbentrennungen. Volle Breite bringt jede Karte auf ~48 Zeichen. */}
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Spotlight className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {recruiter.strengths.map((item, i) => (
             <Reveal key={item.title} delay={0.05 * i}>
-              <div className="lit h-full rounded-2xl border border-line bg-surface/50 p-6">
+              {/* `data-schein` meldet die Karte beim Lichtschein an: Sie
+                  bekommt die Zeigerposition als CSS-Variable und damit den
+                  weichen Schein plus den Bogen auf ihrer Kante. */}
+              <div
+                data-schein
+                className="lit h-full rounded-2xl border border-line bg-surface/50 p-6"
+              >
                 <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance">
                   {item.title}
                 </h3>
@@ -59,7 +66,7 @@ export function RecruiterHub() {
               </div>
             </Reveal>
           ))}
-        </div>
+        </Spotlight>
 
         {/* Faktenblatt über die volle Breite, darunter die Aktionen.
             Vorher standen beide nebeneinander, und weil das Faktenblatt sieben

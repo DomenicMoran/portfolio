@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
-import { join } from "node:path";
+import { createRequire } from "node:module";
 
 /**
  * Startet den gebauten Stand auf einem freien Port und gibt ihn wieder frei.
@@ -14,17 +14,21 @@ import { join } from "node:path";
  * Next wird direkt mit Node gestartet, nicht über npx: Mit `shell: true` warnt
  * Node zu Recht, dass Argumente nur verkettet und nicht maskiert werden, und
  * ohne Shell lässt sich `npx.cmd` unter Windows seit Node 20 gar nicht mehr
- * starten. Der Einstiegspunkt liegt ohnehin im Repo.
+ * starten.
+ *
+ * Der Einstiegspunkt wird aufgelöst und nicht zusammengesetzt: In einem
+ * git-Arbeitsbaum liegt kein eigenes `node_modules`, Node findet die Pakete
+ * über die Elternordner. Ein zusammengesetzter Pfad `node_modules/next/...`
+ * zeigt dort ins Leere, und der Server kommt nicht hoch.
  */
 export async function starteServer() {
   const port = await freierPort();
   const basis = `http://127.0.0.1:${port}`;
 
-  const server = spawn(
-    process.execPath,
-    [join("node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port)],
-    { stdio: "ignore" },
-  );
+  const nextBin = createRequire(import.meta.url).resolve("next/dist/bin/next");
+  const server = spawn(process.execPath, [nextBin, "start", "-p", String(port)], {
+    stdio: "ignore",
+  });
 
   const beenden = () => {
     if (!server.killed) server.kill();
