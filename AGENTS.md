@@ -170,10 +170,12 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 ## Definition of Done
 
 ```bash
-npx tsc --noEmit    # 0 Fehler
-npx eslint .        # 0 Errors
-npm run build       # grün
-npm run check:print # 17 Seiten drucken lesbar und vollständig
+npx tsc --noEmit      # 0 Fehler
+npx eslint .          # 0 Errors
+npm run build         # grün
+npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
+npm run check:headings # keine abgeschnittene Unterlänge
+npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
 ```
 
 `check:print` gehört dazu, weil der Ausdruck ein eigener Auslieferungsweg ist,
