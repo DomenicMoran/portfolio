@@ -927,6 +927,76 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Dateipfade, die die Artikel nennen
+   ---------------------------------------------------------------------------
+
+   Die Fachartikel belegen ihre Aussagen mit konkreten Dateien: "src/lib/
+   tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql".
+   Das ist die tiefste Behauptung der ganzen Seite — und die einzige, die
+   niemand prüfen konnte, weil die Produktivrepos privat sind.
+
+   Hier lassen sie sich prüfen: Sie liegen auf diesem Rechner neben dem
+   Projekt. Ein Pfad, der nach einem Umbau nicht mehr stimmt, macht aus einem
+   Beleg eine Behauptung, und das fiele sonst erst auf, wenn jemand nachfragt.
+
+   Geprüft werden nur Pfade mit erkennbarer Wurzel (src/, apps/, supabase/,
+   scripts/, packages/). Bloße Dateinamen wie "index.js" sind nicht eindeutig
+   und bleiben draußen. Fehlt ein Repo, wird übersprungen. */
+{
+  const REPOS = {
+    kassensichv: "../../MenuCloud",
+    ota: "../../SalatiTech",
+    shaper: "../../SalatiTech",
+    whisper: "../../SalatiTech",
+    widget: "../../SalatiTech",
+  };
+  const WURZELN = /^(src|apps|supabase|scripts|packages)\//;
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const datei of readdirSync("src/content/articles")) {
+    const treffer = datei.match(/^de-(.+)\.ts$/);
+    if (!treffer) continue;
+    const repo = REPOS[treffer[1]];
+    if (!repo) continue;
+    if (!existsSync(repo)) {
+      uebersprungen++;
+      continue;
+    }
+
+    const inhalt = readFileSync(join("src/content/articles", datei), "utf8");
+    const pfade = new Set(
+      [...inhalt.matchAll(/[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g)]
+        .map((m) => m[0])
+        .filter((pfad) => WURZELN.test(pfad)),
+    );
+
+    for (const pfad of pfade) {
+      geprueft++;
+      if (!existsSync(join(repo, pfad))) {
+        funde.push(`${datei}: ${pfad} gibt es in ${repo.split("/").pop()} nicht`);
+      }
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Dateipfad(e) aus Artikeln ohne Entsprechung:`);
+    for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
+  } else if (geprueft > 0) {
+    zeilen.push(
+      `  ok  Belegte Dateipfade      ${String(geprueft).padStart(6)} aus Artikeln vorhanden` +
+        (uebersprungen ? `, ${uebersprungen} Repo(s) nicht da` : ""),
+    );
+  } else {
+    zeilen.push("  --  Produktivrepos nicht gefunden, Dateipfade übersprungen");
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
    Artikeltitel im Profil-README
    ---------------------------------------------------------------------------
 

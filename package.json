@@ -18,6 +18,7 @@
     "onepager:pdf": "node scripts/build-onepager-pdf.mjs",
     "prebuild": "node scripts/check-public-dir.mjs",
     "check:print": "node scripts/check-print.mjs",
+    "check:reading": "node scripts/check-reading-time.mjs",
     "check:headings": "node scripts/check-headings.mjs"
   },
   "dependencies": {
