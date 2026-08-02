@@ -149,7 +149,22 @@ export function OnePager({
               `text-inherit` und keine Unterstreichung: Am Bildschirm und auf
               Papier sieht die Zeile aus wie vorher, sie lässt sich nur
               zusätzlich anklicken. */}
-          <div className="text-right text-sm leading-relaxed text-[#4a4a55] [&_a]:text-inherit [&_a]:no-underline">
+          {/* Die Trefferflaeche der Kontaktzeilen.
+
+              axe meldete sie mit 174 x 18 px als zu klein: WCAG 2.2 AA
+              verlangt 24 x 24 px, und jede dieser Zeilen steht allein in
+              ihrem Absatz, faellt also nicht unter die Ausnahme fuer Verweise
+              mitten im Satz.
+
+              `py-1` mit gleich grossem `-my-1` allein reichte nicht: Die
+              Flaechen benachbarter Zeilen ueberlappten sich dann, und axe
+              misst den freien Platz, nicht die Box — gemeldet blieben
+              22,8 px. Erst mit einem Zeilenabstand von 26 px statt der 22,75
+              aus `leading-relaxed` steht jede Zeile fuer sich.
+
+              Die Zeile bleibt optisch stehen; das Blatt waechst um zwoelf
+              Pixel und bleibt eine Seite. */}
+          <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
             <p>{site.location}</p>
             <p>
               <a href={`mailto:${site.email}`}>{site.email}</a>

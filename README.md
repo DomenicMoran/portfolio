@@ -95,6 +95,7 @@ der gebauten Seite und nicht am Quelltext, und derselbe Workflow führt sie bei
 jedem Push aus:
 
 ```bash
+npm run check:a11y      # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
 npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand

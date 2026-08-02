@@ -48,6 +48,12 @@ jobs:
       - name: Chromium
         run: npx playwright install --with-deps chromium
 
+      # axe-core gegen jede gebaute Seite, zwei Breiten. Es prüft rund hundert
+      # Regeln auf einmal und findet damit auch, wonach hier noch niemand
+      # gesucht hat.
+      - name: Barrierefreiheit
+        run: npm run check:a11y
+
       # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand
       # ansieht: Die Startseite kam einmal als 15 fast leere Seiten aus dem
       # Drucker, weil die Einblendungen auf ein Hineinscrollen warten, das

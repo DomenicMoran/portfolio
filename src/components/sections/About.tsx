@@ -196,7 +196,14 @@ export function About() {
                                 {" "}
                                 <time
                                   dateTime={item.date}
-                                  className="font-mono text-[10px] whitespace-nowrap text-ink-faint/70"
+                                  /* Volle Deckkraft statt /70: Mit der
+                                     Abschwaechung kam das Datum auf
+                                     #5f5f67 ueber #08080a und damit auf
+                                     3,16:1 — unter den 4,5:1, die WCAG fuer
+                                     10-px-Text verlangt. Gemessen mit
+                                     axe-core an der gebauten Seite, zehn
+                                     Stellen auf der Startseite je Sprache. */
+                                  className="font-mono text-[10px] whitespace-nowrap text-ink-faint"
                                 >
                                   {jahrMonat(item.date)}
                                 </time>
