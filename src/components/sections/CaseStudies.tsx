@@ -188,14 +188,24 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   // meldet dann "Registerkarte, ausgewählt" und kann von dort
                   // nirgendwohin, weil die Verbindung zum Inhalt fehlt.
                   id={`${study.id}-tab-${id}`}
-                  // `aria-controls` nur am gewählten Reiter.
+                  // `aria-controls` nur am gewählten Reiter, und die Kennung
+                  // gehört der Tafel, nicht dem Reiter.
                   //
                   // Gerendert wird immer nur die gewählte Tafel, AnimatePresence
                   // tauscht sie aus. An allen dreizehn Reitern gesetzt zeigten
                   // deshalb neun auf eine Kennung, die es im Dokument nicht
                   // gibt — gemessen an der ausgelieferten Seite. Ein Verweis
                   // ins Leere ist schlechter als keiner: Er behauptet ein Ziel.
-                  aria-controls={selected ? `${study.id}-panel-${id}` : undefined}
+                  //
+                  // Die Kennung hieß danach `…-panel-architecture` und wechselte
+                  // beim Umschalten mit. Zwischen dem Klick und dem Ende der
+                  // Blende zeigte sie erneut ins Leere — gemessen am
+                  // 02.08.2026 an der Live-Seite: bei 100 ms unauflösbar, bei
+                  // 250 ms wieder da. Ein Zustand, den die statische Prüfung
+                  // nicht sehen kann, weil er nur zwischen zwei Bildern
+                  // besteht. Eine Tafel je Fallstudie, eine feste Kennung:
+                  // Dann gibt es den Zustand nicht mehr.
+                  aria-controls={selected ? `${study.id}-panel` : undefined}
                   aria-selected={selected}
                   onClick={() => setTab(id)}
                   className={cn(
@@ -227,7 +237,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               <motion.div
                 key={tab}
                 role="tabpanel"
-                id={`${study.id}-panel-${tab}`}
+                id={`${study.id}-panel`}
                 aria-labelledby={`${study.id}-tab-${tab}`}
                 // Fokussierbar, weil die Tafel Text enthält, der selbst keine
                 // Station in der Tabulator-Reihenfolge hat. Ohne das springt
