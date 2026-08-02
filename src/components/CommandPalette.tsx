@@ -41,6 +41,7 @@ export function CommandPalette({
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const actions = useMemo<Action[]>(() => {
     // Auf der Startseite gibt es das Ziel im Dokument, dann wird gescrollt.
@@ -151,6 +152,71 @@ export function CommandPalette({
     }
   }
 
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setActive((i) => (i + 1) % Math.max(results.length, 1));
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setActive((i) => (i - 1 + results.length) % Math.max(results.length, 1));
+      }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        results[active]?.run();
+      }
+
+    };
+
+    /*
+      Der Fokus bleibt im Dialog.
+
+      Gemessen am 03.08.2026 an der ausgelieferten Seite: Bei geöffneter
+      Palette führte die zweite Tabulatortaste hinaus in die Seite dahinter —
+      „Projekte ansehen", „Für Recruiter", die Bildstrecke der ersten
+      Fallstudie. Sichtbar verdeckt der Dialog diese Elemente, erreichbar
+      blieben sie trotzdem. `aria-modal` sagt Vorleseprogrammen, dass der Rest
+      stillsteht; die Tastatur hält sich nicht daran, solange niemand sie hält.
+
+      Nicht über eine Liste der fokussierbaren Elemente: Die Ergebnisliste ist
+      ein Scrollbereich, und Chrome macht solche Bereiche seit Version 127 von
+      sich aus tastaturfokussierbar, ohne `tabindex`. Ein Auswahlausdruck
+      übersieht sie deshalb — gemessen sprang der Fokus genau von dort nach
+      draußen. Stattdessen wird beobachtet, wo er landet: Verlässt er den
+      Dialog, holt ihn das Eingabefeld zurück. Das gilt für jede Art, ihn zu
+      bewegen, nicht nur für die Tabulatortaste.
+    */
+    const beiFokus = (event: FocusEvent) => {
+      const ziel = event.target as Node | null;
+      if (!ziel || dialogRef.current?.contains(ziel)) return;
+      inputRef.current?.focus();
+    };
+
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("focusin", beiFokus);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("focusin", beiFokus);
+    };
+  }, [open, results, active, onClose]);
+
+  /*
+     Steht bewusst *nach* dem Effekt darüber.
+
+     React räumt Effekte in der Reihenfolge auf, in der sie stehen. Lag die
+     Rückgabe vorher, holte der Fokuswächter den gerade zurückgegebenen Fokus
+     sofort wieder ins Eingabefeld — und weil der Dialog im selben Moment
+     verschwand, landete er im `body`. Gemessen: „nach Escape: BODY" statt am
+     Knopf, von dem aus geöffnet wurde.
+  */
   useEffect(() => {
     if (!open) return;
 
@@ -173,32 +239,6 @@ export function CommandPalette({
     };
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-        return;
-      }
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        setActive((i) => (i + 1) % Math.max(results.length, 1));
-      }
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        setActive((i) => (i - 1 + results.length) % Math.max(results.length, 1));
-      }
-      if (event.key === "Enter") {
-        event.preventDefault();
-        results[active]?.run();
-      }
-    };
-
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, results, active, onClose]);
-
   return (
     <AnimatePresence>
       {open ? (
@@ -207,6 +247,7 @@ export function CommandPalette({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
+          ref={dialogRef}
           className="fixed inset-0 z-[9999] flex items-start justify-center bg-void/80 px-4 pt-[12vh] backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
