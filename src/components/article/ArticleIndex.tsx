@@ -4,6 +4,7 @@ import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
 import type { Article, ArticleChrome } from "@/content/articles";
 import { SiteShell } from "@/components/SiteShell";
+import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -65,9 +66,10 @@ export function ArticleIndex({
   return (
     <ContentProvider content={content}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
+      <SkipLink text={content.skipToContent} />
       <SiteShell otherHref={otherHref} hashBase={heim} />
 
-      <main className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
+      <main id={INHALT_ID} tabIndex={-1} className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
         <div className="mx-auto w-full max-w-5xl">
           {/* Die Uebersicht ist eine eigene Seite, ihre Ueberschrift ist
               deshalb die h1 und nicht wie in einer Sektion eine h2. */}

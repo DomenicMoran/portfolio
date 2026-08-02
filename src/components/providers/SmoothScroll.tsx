@@ -48,6 +48,25 @@ export function SmoothScroll() {
       event.preventDefault();
       lenis.scrollTo(target as HTMLElement, { offset: -80 });
       history.replaceState(null, "", id);
+
+      /*
+        Den Fokus mitnehmen, nicht nur den Bildausschnitt.
+
+        Ein Klick auf `#inhalt` löst normalerweise zwei Dinge aus: Der Browser
+        scrollt hin und setzt den Fokus auf das Ziel. Hier wird das
+        Standardverhalten unterbunden, damit Lenis scrollen kann — und damit
+        blieb auch der Fokus stehen. Gemessen am 02.08.2026: Nach dem
+        Sprunglink war `document.activeElement` weiterhin der Link selbst, der
+        Lesepunkt einer Vorlesesoftware also unverändert in der Kopfleiste.
+        Für den Sprunglink heißt das: Er tut sichtbar etwas und für den, der
+        ihn am dringendsten braucht, nichts.
+
+        `preventScroll` ist nötig, weil `focus()` sonst selbst springt und
+        gegen die laufende Bewegung von Lenis arbeitet.
+      */
+      const ziel = target as HTMLElement;
+      if (ziel.tabIndex < 0 && !ziel.hasAttribute("tabindex")) ziel.tabIndex = -1;
+      ziel.focus({ preventScroll: true });
     };
 
     document.addEventListener("click", onAnchorClick);
