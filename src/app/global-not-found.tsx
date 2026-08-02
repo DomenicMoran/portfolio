@@ -35,10 +35,22 @@ const geistSans = Geist({
   display: "swap",
 });
 
+/**
+ * Nicht vorgeladen, wie im Hauptdokument auch.
+ *
+ * `RootDocument` setzt für dieselbe Schrift seit einer Messung `preload: false`:
+ * Geist Mono trägt nur Beschriftungen, nie das Element, das für den Largest
+ * Contentful Paint zählt. Diese Datei bringt ihr eigenes Dokument mit und hatte
+ * die Entscheidung nie übernommen — gemessen meldete der Browser auf jeder
+ * 404-Seite "preloaded using link preload but not used", also eine Schriftdatei,
+ * die geladen und nicht gebraucht wird. Auf einer Seite, auf der niemand
+ * bleiben soll, ist das die falsche Ladung.
+ */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 export default function GlobalNotFound() {
