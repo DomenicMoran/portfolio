@@ -1,4 +1,41 @@
 import verified from "./verified.json";
+
+/**
+ * Wie lange die vier Systeme in Produktion entstehen — gerechnet, nicht getippt.
+ *
+ * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
+ * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
+ * Angabe wird nicht falsch, sie wird stillschweigend bescheiden. Dieselbe
+ * Sorte wandernder Angabe wie "3.971 Commits in 4 Monaten" und "107 Tage bis
+ * heute", beide bereits abgeschafft.
+ *
+ * Gerechnet ab dem ersten MenuCloud-Commit bis zum Prüfdatum aus
+ * `verified.json`. Der Stempel wandert täglich mit dem Automaten, ein
+ * `new Date()` hier fröre dagegen auf den Bauzeitpunkt ein.
+ */
+const ERSTER_COMMIT = "2026-03-26";
+
+function monateSeitBeginn() {
+  const start = new Date(ERSTER_COMMIT);
+  const stand = new Date(verified.date);
+  let m =
+    (stand.getFullYear() - start.getFullYear()) * 12 +
+    (stand.getMonth() - start.getMonth());
+  if (stand.getDate() < start.getDate()) m -= 1;
+  return Math.max(1, m);
+}
+
+/** Kleine Zahlen als Wort, wie es im Fließtext üblich ist. */
+function alsWort(n: number) {
+  const woerter = [
+    "einem", "zwei", "drei", "vier", "fünf", "sechs",
+    "sieben", "acht", "neun", "zehn", "elf", "zwölf",
+  ];
+  return woerter[n - 1] ?? String(n);
+}
+
+/** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
+export const bauzeit = `${alsWort(monateSeitBeginn())} Monat${monateSeitBeginn() === 1 ? "" : "en"}`;
 /**
  * Single source of truth for every piece of copy and data on the site.
  *
@@ -65,7 +102,7 @@ export const about = {
   portrait: "" as string,
   title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
   paragraphs: [
-    "Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in vier Monaten, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.",
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -243,7 +280,7 @@ export const hero = {
     { text: "keine" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  lede: "Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in vier Monaten neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.",
+  lede: `Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   // Jede Zahl am 31.07.2026 gegen `git log` und die Repositories geprüft.
