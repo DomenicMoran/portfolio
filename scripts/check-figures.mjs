@@ -441,6 +441,68 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
 }
 
 /* ---------------------------------------------------------------------------
+   NOURI: Tabellen und Migrationen
+   ---------------------------------------------------------------------------
+
+   Zwei Zahlen, die bisher niemand nachgezählt hat. Sie ändern sich nur mit dem
+   Code — aber genau das galt auch für die 63 ausgelieferten Versionen, die
+   trotzdem überholt waren, als jemand hinsah. Was auf der Seite steht, wird
+   hier gezählt oder es steht nicht da. */
+
+const NOURI = resolve("../../NOURI");
+
+if (existsSync(join(NOURI, "supabase", "migrations"))) {
+  const migrationen = readdirSync(join(NOURI, "supabase", "migrations")).filter((d) =>
+    d.endsWith(".sql"),
+  );
+
+  // `create table` zählt auch die Varianten mit `if not exists` und mit
+  // Schema-Präfix. Gezählt wird die Anweisung, nicht die Zeile: In einer
+  // Migration können mehrere Tabellen entstehen.
+  let tabellen = 0;
+  for (const datei of migrationen) {
+    const inhalt = readFileSync(join(NOURI, "supabase", "migrations", datei), "utf8");
+    tabellen += (inhalt.match(/create\s+table(\s+if\s+not\s+exists)?\s+["a-z_.]+/gi) ?? []).length;
+  }
+
+  vergleiche("NOURI-Migrationen", migrationen.length, ausSeite(/value: "(\d+)", label: "Migrationen"/));
+  vergleiche("NOURI-Tabellen", tabellen, ausSeite(/value: "(\d+)", label: "Tabellen"/));
+} else {
+  zeilen.push(`  --  NOURI nicht unter ${NOURI}, übersprungen`);
+}
+
+/* ---------------------------------------------------------------------------
+   Salati: Sprachen der App
+   ---------------------------------------------------------------------------
+
+   Die Seite nennt vierzehn Sprachen, an zwei Stellen je Sprachfassung.
+   Gezählt werden die Sprachordner im Repository, gelesen über dieselbe
+   gh-Verbindung wie der Changelog. */
+
+{
+  let sprachen = null;
+  try {
+    const roh = execFileSync(
+      "gh",
+      ["api", "repos/MenuCloud-Berlin/salatibox/git/trees/main?recursive=1", "-q", ".tree[].path"],
+      { encoding: "utf8", maxBuffer: 16 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] },
+    );
+    const codes = new Set();
+    for (const pfad of roh.split("\n")) {
+      const treffer = pfad.match(/(?:locales?|i18n|translations)\/([a-z]{2}(?:-[A-Z]{2})?)[/.]/);
+      if (treffer) codes.add(treffer[1]);
+    }
+    sprachen = codes.size || null;
+  } catch {
+    zeilen.push("  --  Salati-Sprachen nicht lesbar (gh fehlt oder Konto ohne Zugriff)");
+  }
+
+  if (sprachen) {
+    vergleiche("Salati-Sprachen", sprachen, ausSeite(/(\d+) Sprachen gepflegt/));
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Ausgelieferte Versionen von Salati
    ---------------------------------------------------------------------------
 
