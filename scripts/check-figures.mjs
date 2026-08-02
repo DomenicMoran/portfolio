@@ -656,6 +656,99 @@ const QUELLENDUNGEN = new Set([
   }
 }
 
+/* ---------------------------------------------------------------------------
+   ARIA-Beziehungen im gebauten HTML
+   ---------------------------------------------------------------------------
+
+   Anlass: Die Fallstudien-Reiter trugen `role="tab"` und `aria-selected`, aber
+   es gab keine `tabpanel`, und nach dem ersten Fix zeigten neun von dreizehn
+   `aria-controls` auf eine Kennung, die es im Dokument nicht gibt. Beides sah
+   im Bauteil vollständig aus und war es erst im gerenderten Dokument nicht.
+
+   Geprüft wird deshalb das Ergebnis: jeder Verweis muss auflösen, jede Rolle
+   ihren Partner haben, jede Kennung einmal vorkommen. Gegen die gebauten
+   Dateien und nicht gegen die Live-Seite — so greift es vor dem Ausliefern und
+   braucht kein Netz.
+
+   Fehlt der Bau, wird der Block übersprungen: Der Prüflauf soll auch laufen,
+   wenn gerade nicht gebaut wurde. */
+
+const ARIA_VERWEISE = [
+  "aria-controls",
+  "aria-labelledby",
+  "aria-describedby",
+  "aria-owns",
+  "aria-activedescendant",
+];
+
+const BRAUCHT_ELTERN = { tab: ["tablist"], option: ["listbox"] };
+const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radio"] };
+
+{
+  const bauOrdner = join(".next", "server", "app");
+
+  if (!existsSync(bauOrdner)) {
+    zeilen.push("  --  ARIA: kein Bau vorhanden, übersprungen (npm run build)");
+  } else {
+    /** Alle .html unterhalb des Bauordners einsammeln. */
+    const seiten = [];
+    const suchen = (ordner) => {
+      for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+        const pfad = join(ordner, eintrag.name);
+        if (eintrag.isDirectory()) suchen(pfad);
+        else if (eintrag.name.endsWith(".html")) seiten.push(pfad);
+      }
+    };
+    suchen(bauOrdner);
+
+    const funde = [];
+    for (const seite of seiten) {
+      const html = readFileSync(seite, "utf8");
+      const name = seite.replace(bauOrdner, "").replace(/\\/g, "/");
+
+      const alleIds = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+      const kennungen = new Set(alleIds);
+
+      for (const eigenschaft of ARIA_VERWEISE) {
+        for (const m of html.matchAll(new RegExp(`${eigenschaft}="([^"]+)"`, "g"))) {
+          for (const ziel of m[1].split(/\s+/).filter(Boolean)) {
+            if (!kennungen.has(ziel)) {
+              funde.push(`${name}: ${eigenschaft}="${ziel}" zeigt auf keine Kennung`);
+            }
+          }
+        }
+      }
+
+      const rollen = {};
+      for (const m of html.matchAll(/\srole="([^"]+)"/g)) {
+        rollen[m[1]] = (rollen[m[1]] ?? 0) + 1;
+      }
+      for (const [rolle, eltern] of Object.entries(BRAUCHT_ELTERN)) {
+        if (rollen[rolle] && !eltern.some((e) => rollen[e])) {
+          funde.push(`${name}: role="${rolle}" ohne ${eltern.join(" oder ")}`);
+        }
+      }
+      for (const [rolle, kinder] of Object.entries(BRAUCHT_KIND)) {
+        if (rollen[rolle] && !kinder.some((k) => rollen[k])) {
+          funde.push(`${name}: role="${rolle}" ohne ${kinder.join(" oder ")}`);
+        }
+      }
+
+      for (const d of new Set(alleIds.filter((v, i) => alleIds.indexOf(v) !== i))) {
+        funde.push(`${name}: Kennung "${d}" mehrfach vergeben`);
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} ARIA-Befund(e):`);
+      for (const f of [...new Set(funde)].slice(0, 8)) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(`  ok  ARIA-Beziehungen        ${String(seiten.length).padStart(6)} Seiten sauber`);
+    }
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
