@@ -71,6 +71,12 @@ jobs:
       - name: Verweise
         run: npm run check:links
 
+      # Die Typen erzwingen, dass jedes Feld übersetzt ist — nicht, dass am
+      # Ende gleich viel gerendert wird. Ein Eintrag, der nur in einer Liste
+      # steht, kommt durch den Typecheck.
+      - name: Gleichstand der Sprachfassungen
+        run: npm run check:parity
+
       # vercel.json wird vom Bau nicht gelesen: Ein Tippfehler im Schlüssel
       # oder eine Änderung über die Weboberfläche fällt nirgends auf.
       # Gemessen wird deshalb die Antwort der Live-Adresse.

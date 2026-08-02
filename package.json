@@ -26,7 +26,8 @@
     "build:favicon": "node scripts/build-favicon.mjs",
     "build:portrait": "node scripts/build-portrait.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:parity": "node scripts/check-parity.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
