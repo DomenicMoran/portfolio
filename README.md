@@ -70,9 +70,12 @@ nicht gemountet und jede Animation auf 0,01 ms verkürzt. Den Scroll von jemande
 mit vestibulärer Empfindlichkeit zu kapern, ist das Feindseligste, was eine
 „Premium"-Seite tun kann.
 
-**Der PDF-Download ist der Druckdialog.** `/onepager` ist eine A4-optimierte
-Route mit eigenem Print-Stylesheet. Kein Headless-Chrome, keine PDF-Bibliothek –
-dafür auswählbarer Text und funktionierende Links.
+**Der PDF-Download ist der Druckdialog.** `/onepager` und `/en/onepager` sind
+A4-optimierte Routen mit eigenem Print-Stylesheet. Kein Headless-Chrome im
+Betrieb, keine PDF-Bibliothek im Bündel – dafür auswählbarer Text und
+funktionierende Links. Beide Sprachen rendern dasselbe Bauteil und ziehen ihre
+Zahlen aus derselben Quelle wie die Startseite; ein englisches Blatt mit
+abweichenden Zahlen ist damit nicht baubar.
 
 ## Lokal starten
 
@@ -101,6 +104,7 @@ src/
 │  │  ├─ not-found.tsx       404 innerhalb des Layouts
 │  │  └─ page.tsx            Startseite (Server Component)
 │  ├─ (en)/en/               englische Fassung, zweites Wurzel-Layout
+│  │  └─ onepager/           dasselbe Blatt auf Englisch, eigenes PDF
 │  ├─ global-not-found.tsx   404 ohne Layout — bei zwei Wurzel-Layouts nötig
 │  ├─ humans.txt/route.ts    liest denselben Prüfstempel wie die Seite
 │  ├─ icon.tsx               Favicon als Monogramm
@@ -115,6 +119,7 @@ src/
 │  ├─ article/               ArticleIndex · ArticlePage · Prose
 │  ├─ providers/             MotionProvider · SmoothScroll
 │  ├─ ArchitectureDiagram.tsx
+│  ├─ OnePager.tsx           das A4-Blatt, beide Sprachen rendern dasselbe
 │  ├─ CommandPalette.tsx
 │  ├─ ConsoleGreeting.tsx    Nachricht für die Entwicklerkonsole
 │  └─ SiteShell.tsx          Client-Insel: hält den Palette-State
@@ -129,9 +134,10 @@ src/
 scripts/
 ├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
 ├─ check-figures.mjs              zählt die Zahlen der Seite gegen die Repos nach
+├─ check-print.mjs                prüft jede gebaute Seite in der Druckansicht
 ├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
 ├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
-├─ build-onepager-pdf.mjs         druckt /onepager auf genau eine A4-Seite
+├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
 └─ build-linkedin-banner.mjs      Titelbild aus derselben Zahl wie die Seite
 
 .github/workflows/
