@@ -36,8 +36,15 @@ export type Article = {
   /**
    * Woran die Aussagen des Artikels nachprüfbar sind: Commit, Datei, Messung.
    * Steht sichtbar am Fuß jedes Artikels.
+   *
+   * Ein Eintrag darf eine Adresse tragen. Der Grund ist der Unterschied
+   * zwischen Beleg und Nachweis: Bis hierher zeigte jede Zeile auf eine Datei
+   * in einem Repo, das niemand außer mir öffnen kann — gemessen am 02.08.2026
+   * waren das alle 21 Belege der fünf Artikel. Wo derselben Arbeit ein
+   * öffentliches Paket entstammt, gehört es hierher, denn das ist die einzige
+   * Zeile, die ein Leser selbst ausführen kann.
    */
-  evidence: readonly string[];
+  evidence: readonly (string | { text: string; href: string })[];
   blocks: readonly Block[];
 };
 
