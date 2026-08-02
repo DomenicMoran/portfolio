@@ -220,8 +220,14 @@ textarea:-webkit-autofill {
   background-image:
     linear-gradient(to right, var(--color-base) 30%, transparent),
     linear-gradient(to left, var(--color-base) 30%, transparent),
-    linear-gradient(to right, color-mix(in oklab, var(--color-void) 70%, transparent), transparent),
-    linear-gradient(to left, color-mix(in oklab, var(--color-void) 70%, transparent), transparent);
+    /* Der Hinweis ist hell, nicht dunkel.
+     *
+     * Erster Anlauf mischte ihn aus `--color-void` (#08080a) auf einer Fläche
+     * von `--color-base` (#0b0b0e): drei Werte Unterschied je Kanal, im
+     * Bildschirmfoto nicht zu erkennen. Auf dunklem Grund trägt nur eine
+     * Aufhellung, dieselbe Technik wie beim Kantenglanz von `.lit`. */
+    linear-gradient(to right, color-mix(in oklab, var(--color-ink) 20%, transparent), transparent),
+    linear-gradient(to left, color-mix(in oklab, var(--color-ink) 20%, transparent), transparent);
   background-position:
     left center,
     right center,
