@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Content } from "@/content/types";
 import { SOCIALS } from "@/content/types";
@@ -133,9 +134,31 @@ export function OnePager({
       <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
         {/* Header */}
         <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
-          <div>
-            <h1 className="text-4xl font-semibold tracking-tight">{site.name}</h1>
-            <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
+          <div className="flex items-center gap-5">
+            {/* Das Porträt kostet keine Zeile.
+                Die Kontaktspalte rechts ist sechs Zeilen hoch, gemessen
+                156 px; das Bild bleibt darunter, und das Blatt bleibt eine
+                Seite. In Deutschland gehört ein Foto auf eine Bewerbung, und
+                dieses Blatt geht als PDF an Firmen. */}
+            {about.portrait ? (
+              <Image
+                src={about.portrait}
+                alt={site.name}
+                width={110}
+                height={110}
+                sizes="110px"
+                /* Ohne `priority` setzt next/image `loading="lazy"`, und ein
+                   Bild, das nie geladen wurde, druckt als leerer Rahmen.
+                   Genau darauf prueft scripts/check-print.mjs. Hier steht es
+                   ohnehin ganz oben: verzoegern gibt es nichts zu. */
+                priority
+                className="size-[6.875rem] shrink-0 rounded-lg object-cover"
+              />
+            ) : null}
+            <div>
+              <h1 className="text-4xl font-semibold tracking-tight">{site.name}</h1>
+              <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
+            </div>
           </div>
           {/* Die Adressen sind Verweise, keine abgetippten Zeichenketten.
 
