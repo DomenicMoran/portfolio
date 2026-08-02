@@ -92,6 +92,7 @@ const pfade = [];
  * dann erscheinen, wenn etwas anderes schiefging.
  */
 const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
+const UNBEKANNTE_ADRESSE_EN = "/en/this-address-does-not-exist";
 const gepruefteSeiten = pfade.filter((p) => !p.split("/").pop().startsWith("_"));
 
 /*
@@ -101,7 +102,7 @@ const gepruefteSeiten = pfade.filter((p) => !p.split("/").pop().startsWith("_"))
   — eigene Schriften, eigenes Stylesheet, kein gemeinsames Layout. Genau dort
   ist eine vergessene Druckregel am wahrscheinlichsten.
 */
-gepruefteSeiten.push(UNBEKANNTE_ADRESSE);
+gepruefteSeiten.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
 
 if (gepruefteSeiten.length === 0) throw new Error("Der Bau enthält keine Seiten.");
 
@@ -342,7 +343,8 @@ let fehler = 0;
 for (const pfad of gepruefteSeiten) {
   // Die erfundene Adresse muss mit 404 antworten: Ein 200 hiesse, dass Next
   // irgendetwas ausliefert, wo nichts sein sollte.
-  const erwartet = pfad === UNBEKANNTE_ADRESSE ? 404 : 200;
+  const erwartet =
+    pfad === UNBEKANNTE_ADRESSE || pfad === UNBEKANNTE_ADRESSE_EN ? 404 : 200;
   const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
   if (!antwort || antwort.status() !== erwartet) {
     console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`);
