@@ -180,6 +180,15 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   key={id}
                   role="tab"
                   type="button"
+                  // Ein Reiter ohne Tafel ist ein halbes Muster.
+                  //
+                  // `role="tab"` und `aria-selected` standen hier, aber es gab
+                  // keine `tabpanel` und kein `aria-controls`: gemessen 4
+                  // Tab-Listen, 13 Reiter, null Tafeln. Ein Vorleseprogramm
+                  // meldet dann "Registerkarte, ausgewählt" und kann von dort
+                  // nirgendwohin, weil die Verbindung zum Inhalt fehlt.
+                  id={`${study.id}-tab-${id}`}
+                  aria-controls={`${study.id}-panel-${id}`}
                   aria-selected={selected}
                   onClick={() => setTab(id)}
                   className={cn(
@@ -210,6 +219,14 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             <AnimatePresence mode="wait">
               <motion.div
                 key={tab}
+                role="tabpanel"
+                id={`${study.id}-panel-${tab}`}
+                aria-labelledby={`${study.id}-tab-${tab}`}
+                // Fokussierbar, weil die Tafel Text enthält, der selbst keine
+                // Station in der Tabulator-Reihenfolge hat. Ohne das springt
+                // die Tastatur vom Reiter direkt zum nächsten Reiter und
+                // überspringt genau den Inhalt, den man gerade gewählt hat.
+                tabIndex={0}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
