@@ -40,8 +40,8 @@ import { starteServer } from "./lib/local-server.mjs";
  * Inhaltsdatei.
  */
 const BLAETTER = [
-  { route: "/onepager", ziel: "public/domenic-moran-kurzprofil.pdf", betreff: "Kurzprofil: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite" },
-  { route: "/en/onepager", ziel: "public/domenic-moran-one-pager.pdf", betreff: "One-page profile: four systems in production, path and contact on a single page" },
+  { route: "/onepager", sprache: "de", ziel: "public/domenic-moran-kurzprofil.pdf", betreff: "Kurzprofil: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite" },
+  { route: "/en/onepager", sprache: "en", ziel: "public/domenic-moran-one-pager.pdf", betreff: "One-page profile: four systems in production, path and contact on a single page" },
 ];
 const vorgegebeneBasis = process.argv[2];
 
@@ -56,7 +56,7 @@ if (!basis) {
 
 const browser = await chromium.launch();
 const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
-const { PDFDocument, PDFName } = await import("pdf-lib");
+const { PDFDocument, PDFName, PDFString } = await import("pdf-lib");
 let fehler = 0;
 
 for (const blatt of BLAETTER) {
@@ -118,6 +118,23 @@ for (const blatt of BLAETTER) {
     "Berlin",
   ]);
   doc.setCreator("domenicmoran.de");
+
+  /*
+    Die Sprache des Dokuments, im Katalog.
+
+    Ein Vorleseprogramm entscheidet daran, mit welcher Aussprache es liest.
+    Ohne Angabe nimmt es die Systemsprache: Das deutsche Blatt wird dann in
+    einem englischen Windows englisch vorgelesen, mit „Domenic Moran" als
+    „Domenick Moron" und „Fiskalisierung" als Buchstabensalat. Chromium
+    schreibt den Eintrag beim Drucken nicht mit, obwohl `<html lang>` gesetzt
+    ist.
+  */
+  /* `PDFString` und nicht `context.obj`: Letzteres macht aus einer
+     Zeichenkette einen Namen, und im Katalog stand dann `/Lang /de` statt
+     `/Lang (de)`. Der Eintrag war vorhanden und trotzdem wirkungslos — die
+     Norm verlangt an dieser Stelle eine Textzeichenkette. */
+  doc.catalog.set(PDFName.of("Lang"), PDFString.of(blatt.sprache));
+
   writeFileSync(blatt.ziel, await doc.save());
 
   /*
@@ -146,8 +163,26 @@ for (const blatt of BLAETTER) {
     }
   }
 
+  /* Die Sprache aus dem fertigen Dokument zurücklesen, nicht aus der Absicht.
+     Sie steht im Katalog und der landet beim Speichern in einem Objektstrom —
+     eine Suche im Rohtext findet sie dort nicht, genau wie bei den Verweisen. */
+  const fertig = await PDFDocument.load(readFileSync(blatt.ziel));
+  const sprache = fertig.catalog.get(PDFName.of("Lang"));
+  const spracheOk = sprache instanceof PDFString && sprache.asString() === blatt.sprache;
+
   const kb = Math.round(statSync(blatt.ziel).size / 1024);
-  console.log(`${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n), ${verweise.length} Verweis(e)`);
+  console.log(
+    `${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n), ${verweise.length} Verweis(e), ` +
+      `Sprache ${spracheOk ? blatt.sprache : "FEHLT"}`,
+  );
+
+  if (!spracheOk) {
+    console.error(
+      `${blatt.route}: Das Dokument nennt seine Sprache nicht. Ein ` +
+        `Vorleseprogramm nimmt dann die Systemsprache.`,
+    );
+    process.exitCode = 1;
+  }
 
   if (verweise.length < 4) {
     console.error(
