@@ -134,6 +134,17 @@ ab, sobald eine Parallaxe ihn verschiebt. Im Hero hat das bei 320 px die untere
 Kennzahlenreihe waagerecht mitten durch die Ziffern getrennt. Zusätzlich
 `overflow-x: clip` an `html`/`body` als Netz.
 
+## Das Zeichen
+
+Die Form steht in `src/lib/mark.tsx` und **nur dort**. Kopfleiste, `icon.tsx`,
+`apple-icon.tsx` und die Vorschaukarte lesen daraus; `favicon.ico` wird von
+`npm run build:favicon` aus derselben Datei erzeugt, weil eine Binärdatei nicht
+mitliest. Wer die Form ändert, ruft den Lauf hinterher auf.
+
+Vorher gab es zwei Marken: dunkler Buchstabe auf grüner Fläche in der
+Kopfleiste, grüner auf dunkler im Lesezeichen. So entsteht das — nicht durch
+eine Entscheidung, sondern durch eine zweite Stelle.
+
 ## Server/Client-Grenze
 
 `page.tsx` bleibt Server Component. Seitenweiter Client-State lebt in

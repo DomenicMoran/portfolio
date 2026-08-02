@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { useMemo, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
 import Link from "next/link";
+import { Marke } from "@/lib/mark";
 import { useContent } from "@/content/ContentProvider";
 import { useActiveSection } from "@/lib/useActiveSection";
 import { ease } from "@/lib/motion";
@@ -98,8 +99,12 @@ export function Nav({
             className="group -my-1 flex items-center gap-2.5 py-1"
             aria-label={a11y.toTop}
           >
-            <span className="relative grid size-7 shrink-0 place-items-center rounded-md border border-acid/30 bg-acid font-mono text-[13px] font-bold text-void">
-              D
+            {/* Dasselbe Zeichen wie im Lesezeichen und auf der Vorschaukarte.
+                Vorher stand hier ein dunkles D auf gruener Flaeche und dort
+                ein gruenes auf dunkler: zwei Marken fuer dieselbe Seite. Die
+                Form kommt jetzt aus einer Datei. */}
+            <span className="relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border border-acid/25 transition-colors group-hover:border-acid/60">
+              <Marke size={28} radius={0} />
             </span>
             <span className="hidden text-sm font-medium tracking-tight text-ink sm:block">
               {site.name}

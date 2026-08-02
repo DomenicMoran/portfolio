@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { Marke } from "@/lib/mark";
 
 /**
  * Die Social-Vorschaukarte, für beide Sprachfassungen dieselbe Gestaltung.
@@ -90,21 +91,9 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
         />
 
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 10,
-              background: "#d4ff45",
-              color: "#08080a",
-              fontSize: 26,
-              fontWeight: 700,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            D
+          {/* Dasselbe Zeichen wie in der Kopfleiste und im Lesezeichen. */}
+          <div style={{ display: "flex" }}>
+            <Marke size={44} radius={10} />
           </div>
           <div
             style={{
