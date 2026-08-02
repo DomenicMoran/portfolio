@@ -41,7 +41,7 @@ export const metadata: Metadata = {
  * Wer den Text ändert, ändert diese Zeile mit. Eine Erklärung, die sich selbst
  * neu datiert, sagt nichts darüber aus, was sich geändert hat.
  */
-const STAND = "1. August 2026";
+const STAND = "3. August 2026";
 
 export default function Datenschutz() {
   return (
@@ -58,19 +58,36 @@ export default function Datenschutz() {
         E-Mail:{" "}
         <a
           href={`mailto:${site.email}`}
-          className="text-acid underline underline-offset-4"
+          /* `-my-1 py-1`: Der Verweis maß 174 x 18 px und lag damit unter den
+             24 px aus WCAG 2.5.8. Das Impressum nebenan hatte den Ausgleich
+             schon, diese Stelle nicht — dieselbe Regel, zwei Fassungen.
+             Optisch ändert sich nichts. */
+          className="-my-1 py-1 text-acid underline underline-offset-4"
         >
           {site.email}
         </a>
       </Section>
 
+      {/* Die Speicherdauer gehört hierher, nicht ins Ungefähre.
+
+          Art. 13 Abs. 2 lit. a DSGVO verlangt die Dauer der Speicherung oder,
+          wenn das nicht geht, die Kriterien dafür. Der Abschnitt nannte beides
+          nicht: Er sagte, welche Logdaten anfallen und warum, und ließ offen,
+          wie lange sie liegen — auf einer Seite, die sonst jede Angabe belegt.
+
+          Die Stunde ist keine Schätzung: Vercel nennt in der eigenen
+          Dokumentation zu den Laufzeitprotokollen je Tarif eine
+          Aufbewahrungszeit, und für den hier genutzten Tarif steht dort eine
+          Stunde. Wer den Tarif wechselt, muss diesen Satz nachziehen. */}
       <Section title="Hosting">
         Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
         technisch notwendige Server-Logdaten verarbeitet (IP-Adresse,
         Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage
         ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
-        stabilen Betrieb. Die Übermittlung in die USA erfolgt auf Grundlage der
-        EU-Standardvertragsklauseln.
+        stabilen Betrieb. Der Hoster hält diese Protokolle eine Stunde lang vor
+        und löscht sie danach automatisch; eine eigene Speicherung, Auswertung
+        oder Weitergabe findet nicht statt. Die Übermittlung in die USA erfolgt
+        auf Grundlage der EU-Standardvertragsklauseln.
       </Section>
 
       <Section title="Cookies und Tracking">
