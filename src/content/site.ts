@@ -372,7 +372,7 @@ export const caseStudies: CaseStudy[] = [
       "On-Device-LLM (GGUF/llama.cpp) mit eigenem RAG über kuratiertem Korpus, ohne Cloud-Call",
       "Whisper-basierte Rezitations-Erkennung mit vers-konditioniertem Prompting",
       "Vollständiger Mushaf-Reader: vier Schriftarten, Tafsir, Übersetzung, Wort-Zeitstempel",
-      "15-teiliger deutscher Koran-Arabisch-Podcast, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
+      "Deutscher Koran-Arabisch-Podcast, 68 Folgen und gut zehn Stunden, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
       "OTA-Updates über EAS Update: Inhaltskorrekturen ohne Store-Zyklus",
       "iOS Live Activities und Android-Widgets für die nächste Gebetszeit",
       "App und Store-Texte in 14 Sprachen gepflegt, über vier Geräteklassen",

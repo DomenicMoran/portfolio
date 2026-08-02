@@ -90,7 +90,24 @@ export function Hero() {
             // Außerhalb trennt es sichtbar und hält die Überschrift für
             // Screenreader und zum Kopieren lesbar.
             <Fragment key={i}>
-              <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
+{/* Das Polster ist die Maske, nicht Zierde.
+
+                  Jedes Wort sitzt in einem inline-block mit overflow:hidden,
+                  aus dem es beim Auftritt hervorkommt. Die untere Kante dieses
+                  Kastens schneidet damit auch die Unterlängen ab.
+
+                  Gemessen bei 1440 px: Schriftgröße 129,6 px, Zeilenbox
+                  114 px (line-height 0,88). Unter der Grundlinie bleiben
+                  dadurch nur 9 px im Kasten. Die Grundschrift trägt 21 px
+                  Tinte unter die Grundlinie, die kursive Auszeichnungsschrift
+                  28 px — das "g" in "fertige" und das "y" in "Prototypen"
+                  endeten flach abgeschnitten.
+
+                  0,2 em Polster deckt 25,9 px ab und damit beide Schriften mit
+                  Reserve. Der gleich große negative Außenabstand nimmt die
+                  zusätzliche Höhe wieder heraus: Der Kasten wird tiefer, die
+                  Zeile bleibt, wo sie war. */}
+              <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.14em] align-bottom">
                 <span
                   className={cn(
                     "animate-word-rise inline-block",
