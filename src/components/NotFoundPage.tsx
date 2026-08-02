@@ -98,11 +98,22 @@ export function NotFoundPage({
             Impressum von jeder aus unmittelbar erreichbar. Gemessen an elf
             ausgelieferten Adressen fehlte es hier — und diese Seite bekommt
             jeder zu sehen, der sich vertippt. */}
+        {/* Unterstrichen, nicht nur eingefärbt. Gemessen an der
+            ausgelieferten Seite trugen beide Verweise genau die Farbe
+            ihres Umfelds — rgb(132,132,143) auf rgb(132,132,143) — und
+            keine Unterstreichung. Wer die Zeile liest, kann nicht
+            erkennen, dass sie anklickbar ist. */}
         <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
-          <Link href="/impressum" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+          <Link
+            href="/impressum"
+            className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+          >
             {content.footer.impressum}
           </Link>
-          <Link href="/datenschutz" className="-my-2 py-2 transition-colors hover:text-ink-dim">
+          <Link
+            href="/datenschutz"
+            className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+          >
             {content.footer.datenschutz}
           </Link>
         </p>
