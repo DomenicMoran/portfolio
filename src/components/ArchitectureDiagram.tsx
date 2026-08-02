@@ -267,7 +267,18 @@ export function ArchitectureDiagram({
           die Deckel wandern mit dem Inhalt, die Schatten bleiben stehen. Ist
           nichts zu scrollen, deckt der Deckel den Schatten zu, und der Hinweis
           erscheint genau dann, wenn er stimmt. */}
-      <div className="scroll-hint overflow-x-auto [--deckfarbe:var(--color-surface)]">
+      {/* Und er ist anspringbar, weil ein Bereich, der scrollt, mit der
+          Tastatur erreichbar sein muss. Gemessen bei 390 px an der
+          ausgelieferten Seite: Der Kasten scrollte, `tabIndex` war -1 — wer
+          keine Maus benutzt, kam an die rechte Hälfte des Diagramms nicht
+          heran. Der Name ist der Diagrammtitel, sonst wird der Bereich nur
+          als "Bereich" angesagt. */}
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label={diagram.title}
+        className="scroll-hint overflow-x-auto [--deckfarbe:var(--color-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
+      >
         <motion.svg
           viewBox={`0 0 920 ${diagram.height}`}
           className="h-auto w-full min-w-[720px]"
@@ -378,6 +389,42 @@ export function ArchitectureDiagram({
             );
           })}
         </motion.svg>
+      </div>
+
+      {/* Das Diagramm als Text, für die, die es nicht sehen.
+
+          Das `aria-label` am SVG fasst die Aussage in zwei Sätzen zusammen.
+          Sichtbar stehen aber zwischen 17 und 30 Bausteine darin — iOS, Expo,
+          llama.cpp, Postgres, TSE —, und die sind der eigentliche Inhalt.
+          Weil das SVG `role="img"` trägt, werden sie nicht vorgelesen: Ein
+          Sehender liest den Stack je Ebene, ein Vorleseprogramm hört zwei
+          Sätze. Eine Zusammenfassung ist keine Entsprechung.
+
+          Die Liste entsteht aus denselben Daten wie die Zeichnung. Ein Knoten
+          gehört zu der Bahn, deren Oberkante am nächsten über ihm liegt —
+          dieselbe Zuordnung, die das Auge im Bild vornimmt. */}
+      <div className="sr-only">
+        <p>{`${diagram.title}. ${diagram.caption}`}</p>
+        <dl>
+          {diagram.lanes.map((bahn, i) => {
+            const naechste = diagram.lanes[i + 1];
+            const drin = diagram.nodes.filter(
+              (k) => k.y >= bahn.y && (!naechste || k.y < naechste.y),
+            );
+            if (drin.length === 0) return null;
+            return (
+              <div key={bahn.label}>
+                <dt>{bahn.label}</dt>
+                <dd>
+                  {drin
+                    .map((k) => (k.sub ? `${k.label} (${k.sub})` : k.label))
+                    .join(", ")}
+                  .
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
       </div>
 
       <figcaption className="mt-5 flex flex-col gap-2 border-t border-line pt-4">
