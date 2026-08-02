@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -17,12 +18,17 @@ export const metadata: Metadata = {
 
 /**
  * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
- * Betreibers die Privatanschrift, sie ist damit öffentlich und wird indexiert.
+ * Betreibers die Privatanschrift: Sie ist damit öffentlich, wird aber nicht
+ * indexiert — die Seite trägt `noindex` und steht deshalb auch nicht in der
+ * Sitemap. Erreichbar bleibt sie über die Fußzeile jeder Seite, was § 5 DDG
+ * verlangt; über eine Suche nach der Anschrift findet man sie nicht.
  */
 export default function Impressum() {
   return (
     <main>
       <h1 className="text-title mb-10 text-ink">Impressum</h1>
+
+      <EnglishNote />
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">
@@ -50,12 +56,6 @@ export default function Impressum() {
             {site.email}
           </a>
         </p>
-        <p className="mt-3 text-xs leading-relaxed text-ink-faint">
-          Eine Telefonnummer wird hier bewusst nicht veröffentlicht. § 5 DDG
-          verlangt eine Angabe, die eine schnelle elektronische Kontaktaufnahme
-          ermöglicht. Die E-Mail-Adresse oben erfüllt das. Auf Anfrage nenne
-          ich eine Rufnummer.
-        </p>
       </section>
 
       {/*
@@ -69,7 +69,8 @@ export default function Impressum() {
           </section>
 
         Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
-        Angabe ersatzlos, ein leerer oder erfundener Eintrag wäre schlechter
+        Angabe ersatzlos. Ein leerer oder erfundener Eintrag wäre schlechter als
+        keiner.
       */}
 
       <section className="mb-10">
