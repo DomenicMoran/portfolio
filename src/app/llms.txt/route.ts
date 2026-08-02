@@ -115,8 +115,6 @@ ${schriften}
 
 ## What is deliberately absent
 
-- No portrait yet. A generated one would be the single defect that puts every
-  other claim on this page in doubt.
 - No phone number. The email satisfies the German § 5 DDG requirement for fast
   contact, and a published number gets scraped.
 - No screenshot of the WohnungsJäger dashboard: it shows real listings and real

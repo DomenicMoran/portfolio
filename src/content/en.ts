@@ -500,7 +500,7 @@ export const en: Content = {
 
   about: {
     eyebrow: "Who I am",
-    portrait: "",
+    portrait: "/portrait.jpg",
     title: "Four years learning. Four months shipping.",
     paragraphs: [
       `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, two of them shipping in both app stores, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,

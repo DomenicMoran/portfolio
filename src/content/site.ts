@@ -92,16 +92,17 @@ export const site = {
 export const about = {
   eyebrow: "Wer ich bin",
   /**
-   * TODO(domenic): echtes Porträt nach `public/portrait.jpg` legen und den Pfad
-   * hier eintragen, siehe USER-TODO 0.1. Solange leer, entfällt das Bildelement und
-   * die Textspalte nimmt die volle Breite ein; die Sektion sieht dann
-   * vollständig aus statt lückenhaft.
+   * Eine echte Aufnahme, kein erzeugtes Bild.
    *
-   * Bewusst KEIN generiertes Bild: Auf einer Seite, die mit Belegbarkeit
-   * argumentiert, ist ein erfundenes Porträt der eine Fehler, der alles andere
-   * infrage stellt.
+   * Auf einer Seite, die mit Belegbarkeit argumentiert, wäre ein erfundenes
+   * Porträt der eine Fehler, der alles andere infrage stellt. Solange keine
+   * Aufnahme vorlag, blieb dieses Feld leer und das Bildelement entfiel — die
+   * Sektion sah dadurch vollständig aus statt lückenhaft.
+   *
+   * Die Datei ist quadratisch, weil dieselbe Aufnahme auch als Profilbild auf
+   * LinkedIn und GitHub steht und dort im Kreis beschnitten wird.
    */
-  portrait: "" as string,
+  portrait: "/portrait.jpg" as string,
   title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
   paragraphs: [
     `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,

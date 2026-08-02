@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 /**
@@ -29,6 +31,22 @@ export type OgKarte = {
 };
 
 const STACK = ["TypeScript", "React Native", "Next.js", "Postgres", "AI Engineering"];
+
+/**
+ * Das Portraet als Datenadresse.
+ *
+ * Der OG-Renderer laeuft ohne Ursprung und kann `/portrait.jpg` nicht
+ * aufloesen; eine absolute Adresse waere ein Abruf nach aussen zur Bauzeit.
+ * Die Datei wird deshalb eingelesen und eingebettet — 320 Pixel, 12 kB, mehr
+ * braucht ein Kreis von 150 Pixeln nicht.
+ *
+ * Warum ueberhaupt: Eine Vorschaukarte mit Gesicht wird auf LinkedIn anders
+ * gelesen als eine mit Buchstaben. Der Anlass, sie zu teilen, ist eine
+ * Bewerbung, und dort steht am anderen Ende ein Mensch.
+ */
+const PORTRAET = `data:image/jpeg;base64,${readFileSync(
+  join(process.cwd(), "src", "lib", "og-portrait.jpg"),
+).toString("base64")}`;
 
 export function renderOgCard({ name, role, location, tagline }: OgKarte) {
   return new ImageResponse(
@@ -101,11 +119,23 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
+          {/* Kein `next/image` und kein `alt`: Diese Baumstruktur wird nicht
+              als HTML ausgeliefert, sondern von Satori zu einem PNG gerendert.
+              Es gibt kein Vorleseprogramm, das ein `alt` lesen koennte, und
+              keinen Bildoptimierer, der hier liefe. */}
+          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+          <img
+            src={PORTRAET}
+            width={188}
+            height={188}
+            style={{ borderRadius: 9999, border: "3px solid #23232c" }}
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div
             style={{
               display: "flex",
-              fontSize: 88,
+              fontSize: 76,
               lineHeight: 1,
               fontWeight: 600,
               letterSpacing: -4,
@@ -128,13 +158,14 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
           <div
             style={{
               display: "flex",
-              fontSize: 25,
+              fontSize: 24,
               lineHeight: 1.45,
               color: "#a5a5b0",
-              maxWidth: 900,
+              maxWidth: 720,
             }}
           >
             {tagline}
+          </div>
           </div>
         </div>
 

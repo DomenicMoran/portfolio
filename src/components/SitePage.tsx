@@ -38,6 +38,15 @@ export function SitePage({ content }: { content: Content }) {
     description: content.site.meta.description,
     url: content.site.url,
     email: `mailto:${content.site.email}`,
+    /* Das Porträt gehört in die Angabe, sobald es eines gibt.
+       Suchmaschinen und Antwortmaschinen zeigen daraus das Bild neben dem
+       Namen; ohne `image` steht dort der Platzhalter, den jede Person ohne
+       Angabe bekommt. Die Bedingung bleibt, weil das Feld leer sein darf —
+       ein Verweis auf eine Datei, die es nicht gibt, wäre schlechter als
+       keine Angabe. */
+    ...(content.about.portrait
+      ? { image: `${content.site.url}${content.about.portrait}` }
+      : {}),
     address: {
       "@type": "PostalAddress",
       addressLocality: "Berlin",
