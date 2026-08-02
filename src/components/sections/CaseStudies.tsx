@@ -160,7 +160,15 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   height={shot.height}
                   label={shot.label}
                   variant={shot.variant}
-                  className={shot.variant === "phone" ? "shrink-0" : "min-w-0 flex-1"}
+                  /* `w-full` ist hier kein Beiwerk: Der Behälter ist eine
+                     Spalte mit `items-center`, und darin bekommt ein Kind nur
+                     die Breite, die es von sich aus mitbringt. Die kam bei
+                     einer Aufnahme aus dem Bild selbst und stand erst nach dem
+                     Laden fest — gemessen wuchs der Rahmen von 212 auf 340 px
+                     und die Fallstudie damit um 141 px, mitten im Dokument.
+                     Wer über `#hire` einstieg, bekam dadurch 0,17 bis 0,52
+                     Layout-Verschiebung auf ein Budget von 0,1. */
+                  className={shot.variant === "phone" ? "shrink-0" : "w-full min-w-0 flex-1"}
                 />
               ))}
             </div>
