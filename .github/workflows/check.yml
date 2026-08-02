@@ -54,6 +54,12 @@ jobs:
       - name: Barrierefreiheit
         run: npm run check:a11y
 
+      # Die Datenschutzerklärung sagt als Tatsache, dass keine Verbindung nach
+      # außen aufgebaut wird. Diese Aussage bricht leise — eine Schrift von
+      # einem CDN, ein Video, ein Zählpixel.
+      - name: Datenschutz
+        run: npm run check:privacy
+
       # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand
       # ansieht: Die Startseite kam einmal als 15 fast leere Seiten aus dem
       # Drucker, weil die Einblendungen auf ein Hineinscrollen warten, das

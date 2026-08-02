@@ -20,7 +20,8 @@
     "check:print": "node scripts/check-print.mjs",
     "check:reading": "node scripts/check-reading-time.mjs",
     "check:headings": "node scripts/check-headings.mjs",
-    "check:a11y": "node scripts/check-a11y.mjs"
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "check:privacy": "node scripts/check-privacy.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
