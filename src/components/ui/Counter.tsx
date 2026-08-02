@@ -26,24 +26,70 @@ export function Counter({ value, className }: { value: string; className?: strin
   // Jahreszahl wie "2018" als "2.018" erscheinen.
   const useGrouping = numericPart.includes(".");
 
-  const [display, setDisplay] = useState(animatable ? "0" : value);
+  const endwert = animatable
+    ? target.toLocaleString("de-DE", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+        useGrouping,
+      })
+    : value;
+
+  /**
+   * Der Endwert steht von Anfang an da, die Animation kommt obendrauf.
+   *
+   * Vorher stand hier `useState("0")`. Damit trug das ausgelieferte HTML eine
+   * Null, und alles, was kein JavaScript ausführt, las sie: Vorleseprogramme
+   * mit abgeschaltetem Skript, Antwortmaschinen, jeder Besucher mit
+   * Skriptblocker. Auf einer Seite, deren erster Satz "Vier Systeme in
+   * Produktion" lautet, stand darunter "0 Systeme in Produktion".
+   *
+   * Schlimmer noch, es traf auch Besucher mit JavaScript. Gemessen am
+   * 02.08.2026 an der ausgelieferten Seite, drei Umgebungen, zehn Sekunden
+   * ohne jede Eingabe: Desktop 1440, Telefon 390 und Reduced Motion zeigten
+   * durchgehend "0,0,0,0". Der Kasten lag dabei vollständig im Sichtbereich,
+   * 386 px unter der Oberkante eines 900 px hohen Fensters. Erst ein Scrollen
+   * ließ den Beobachter anspringen, dann standen 4, 4.109, 1.276 und 7.437 da.
+   *
+   * Deshalb wird nie vorsorglich auf null gesetzt. Springt der Beobachter nie
+   * an, bleibt schlicht die richtige Zahl stehen — der Fehlerfall ist damit
+   * der stille Normalfall statt einer sichtbaren Falschaussage.
+   */
+  const [display, setDisplay] = useState(endwert);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || !animatable) return;
 
+    /**
+     * Bei Reduced Motion läuft gar nichts.
+     *
+     * `MotionConfig reducedMotion="user"` erreicht diese Stelle nicht: Der
+     * imperative Aufruf `animate()` liest die Einstellung nicht, anders als
+     * die Motion-Bauteile. Der Wunsch stand also im Dokument und wurde hier
+     * übergangen. Da der Endwert ohnehin von Anfang an dasteht, ist die
+     * richtige Antwort schlicht: nichts tun.
+     */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     let controls: ReturnType<typeof animate> | null = null;
     let done = false;
-
-    const endwert = target.toLocaleString("de-DE", {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-      useGrouping,
-    });
+    /**
+     * Was schon beim Ankommen im Bild steht, zählt nicht hoch.
+     *
+     * Sonst spränge die Zahl vom richtigen Wert auf null zurück, nur um
+     * wieder hinaufzulaufen — ein Flackern genau an der Stelle, die Vertrauen
+     * herstellen soll. Die Animation ist für das gedacht, was man beim
+     * Scrollen erreicht.
+     */
+    const gemountet = performance.now();
 
     const starten = () => {
       if (done) return;
       done = true;
+      if (performance.now() - gemountet < 400) {
+        setDisplay(endwert);
+        return;
+      }
       controls = animate(0, target, {
         duration: 1.4,
         ease: [0.16, 1, 0.3, 1],
@@ -137,7 +183,7 @@ export function Counter({ value, className }: { value: string; className?: strin
       druck.removeEventListener("change", beiDruck);
       controls?.stop();
     };
-  }, [animatable, target, decimals, useGrouping]);
+  }, [animatable, target, decimals, useGrouping, endwert]);
 
   return (
     <span ref={ref} className={className}>
