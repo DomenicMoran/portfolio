@@ -153,17 +153,30 @@ for (const breite of BREITEN) {
           const kind = maske.firstElementChild ?? maske;
           const stil = getComputedStyle(kind);
 
-          /* Ein noch verschobenes Wort ist keine abgeschnittene Unterlänge.
+          /* Die Verschiebung wird herausgerechnet, nicht abgewartet.
 
-             Die Kastenmaße kommen aus `getBoundingClientRect`, und die zählt
-             Transformationen mit. Steht das Wort noch unter seiner Maske,
-             kommt eine negative Platzangabe heraus — ein Befund, den es so
-             nicht gibt. Solche Fälle werden gezählt und gemeldet, nicht
-             stillschweigend übergangen: Ein Wächter, der beim Messfehler
-             „alles in Ordnung" sagt, ist schlimmer als einer, der schweigt. */
-          if (stil.transform !== "none" && stil.transform !== "matrix(1, 0, 0, 1, 0, 0)") {
-            unruhig.push(`${wort.trim().slice(0, 20)} (${stil.transform})`);
-            continue;
+             `getBoundingClientRect` zählt Transformationen mit. Steht das Wort
+             noch unter seiner Maske, kommt eine negative Platzangabe heraus —
+             ein Befund, den es so nicht gibt. Auf dem Bauserver meldete der
+             Lauf deshalb „gebaut." mit -55,8 px Platz, und auch mit einer
+             Wartebedingung blieb dieses eine Wort bei matrix(…, 75,2): Es
+             steht dort dauerhaft verschoben, warten hilft nicht.
+
+             Für die Frage, ob die Maske eine Unterlänge abschneidet, ist die
+             Verschiebung ohnehin gleichgültig: Geschnitten wird am ruhenden
+             Kasten. Aus der Matrix kommt der senkrechte Anteil als sechster
+             Wert; er wird abgezogen. Skaliert oder gedreht wird nichts — käme
+             so etwas vor, wäre die Rechnung falsch, und der Fall wird als
+             nicht messbar gemeldet statt stillschweigend übergangen. */
+          let versatzY = 0;
+          if (stil.transform !== "none") {
+            const werte = /^matrix\(([^)]+)\)$/.exec(stil.transform);
+            const zahlen = werte ? werte[1].split(",").map(Number) : null;
+            if (!zahlen || Math.abs(zahlen[0] - 1) > 0.001 || Math.abs(zahlen[3] - 1) > 0.001) {
+              unruhig.push(`${wort.trim().slice(0, 20)} (${stil.transform})`);
+              continue;
+            }
+            versatzY = zahlen[5];
           }
           messer.font = `${stil.fontStyle} ${stil.fontWeight} ${stil.fontSize} ${stil.fontFamily}`;
           const tinte = messer.measureText(wort).actualBoundingBoxDescent;
@@ -174,7 +187,8 @@ for (const breite of BREITEN) {
           // wird er über die Schriftmetrik der Zeile geschätzt: `line-height`
           // gegen `font-size`.
           const unterKante =
-            maske.getBoundingClientRect().bottom - kind.getBoundingClientRect().bottom;
+            maske.getBoundingClientRect().bottom -
+            (kind.getBoundingClientRect().bottom - versatzY);
           const groesse = parseFloat(stil.fontSize);
           const zeile = parseFloat(stil.lineHeight) || groesse;
           const inDerZeile = Math.max(0, (zeile - groesse) / 2) + groesse * 0.07;
@@ -225,10 +239,9 @@ if (fehler > 0) {
 
 if (nichtMessbar > 0) {
   console.error(
-    `\n${nichtMessbar} ${nichtMessbar === 1 ? "Wort stand" : "Wörter standen"} beim ` +
-      `Messen noch verschoben. Das ist kein Befund ` +
-      `an der Schrift, sondern einer am Lauf: Die Wartebedingung oben hat die ` +
-      `Bewegung nicht abgewartet.`,
+    `\n${nichtMessbar} ${nichtMessbar === 1 ? "Wort war" : "Wörter waren"} nicht ` +
+      `messbar: gedreht oder skaliert, sodass sich die Verschiebung nicht ` +
+      `herausrechnen lässt. Das ist ein Befund am Lauf, nicht an der Schrift.`,
   );
 }
 
