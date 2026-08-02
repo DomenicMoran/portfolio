@@ -138,7 +138,7 @@ scripts/
 ├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
 ├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
 ├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
-└─ build-linkedin-banner.mjs      Titelbild aus derselben Zahl wie die Seite
+└─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
 
 .github/workflows/
 ├─ check.yml                      Typen, Linter und Bau bei jedem Push
