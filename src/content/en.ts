@@ -88,7 +88,7 @@ export const en: Content = {
     email: "domenicmoran@gmail.com",
     availability: {
       label: "Open to a permanent role",
-      detail: "Remote (EU) or hybrid in Berlin",
+      detail: "Remote in the EU · async · few meetings",
     },
     meta: {
       title: "Domenic Moran – AI Product Engineer",

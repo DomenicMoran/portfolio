@@ -182,6 +182,11 @@ export function OnePager({
             <p className="mt-1 font-medium text-[#101014]">
               {site.availability.label}
             </p>
+            {/* Die Bedingungen unter der Zusage. `availability.detail` stand im
+                Inhalt und wurde von nichts gerendert; auf dem Blatt fehlte
+                damit die eine Angabe, die ein Recruiter vor dem Anruf braucht.
+                Eine Zeile, das Blatt bleibt eine Seite. */}
+            <p>{site.availability.detail}</p>
           </div>
         </header>
 
