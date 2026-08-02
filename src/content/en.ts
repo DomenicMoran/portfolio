@@ -145,7 +145,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `Fullstack product engineer in Berlin. Four systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
+    lede: `AI product engineer in Berlin. Four systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [

@@ -279,7 +279,14 @@ export const hero = {
     { text: "keine" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  lede: `Fullstack Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
+  // Dieselbe Berufsbezeichnung wie überall sonst.
+  //
+  // Hier stand "Fullstack Product Engineer", während Titel, Kopfleiste,
+  // Lebenslauf und das GitHub-Profil "AI Product Engineer" sagen. Auf dem
+  // ersten Bildschirm standen damit zwei Berufsbezeichnungen für dieselbe
+  // Person — das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
+  // ohnehin selbst, mit der Migration und dem Impressum in einer Aufzählung.
+  lede: `AI Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   // Jede Zahl am 31.07.2026 gegen `git log` und die Repositories geprüft.
