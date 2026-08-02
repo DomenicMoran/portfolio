@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import { PrintNote } from "@/components/ui/PrintNote";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
 
@@ -164,6 +165,8 @@ export function Footer({
             © {year} {site.name}
           </p>
         </div>
+
+        <PrintNote text={footer.printNote} />
       </div>
     </footer>
   );

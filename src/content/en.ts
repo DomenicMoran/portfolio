@@ -820,6 +820,7 @@ export const en: Content = {
     onepager: "One-pager as PDF",
     sourceLabel: "Source code of this site",
     sourceHref: "https://github.com/DomenicMoran/portfolio",
+    printNote: `Printed from domenicmoran.de — Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
   },
 
   notFound: {
