@@ -260,7 +260,14 @@ export function ArchitectureDiagram({
 
   return (
     <figure className={cn("w-full", className)}>
-      <div className="overflow-x-auto">
+      {/* Bei 390 px ist das Diagramm 720 px breit: 354 px stehen rechts
+          außerhalb des Bildes. Scrollen geht, nur sah man es nicht — dieselbe
+          Lage wie bei den Codeblöcken in den Artikeln, und deshalb dieselbe
+          Lösung. `scroll-hint` legt zwei Deckel und zwei Schatten übereinander;
+          die Deckel wandern mit dem Inhalt, die Schatten bleiben stehen. Ist
+          nichts zu scrollen, deckt der Deckel den Schatten zu, und der Hinweis
+          erscheint genau dann, wenn er stimmt. */}
+      <div className="scroll-hint overflow-x-auto [--deckfarbe:var(--color-surface)]">
         <motion.svg
           viewBox={`0 0 920 ${diagram.height}`}
           className="h-auto w-full min-w-[720px]"
