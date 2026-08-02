@@ -12,6 +12,36 @@ import type { Content } from "./types";
  * addressed to German authorities. Translating them would create a second
  * version whose legal standing is unclear.
  */
+/**
+ * Days since the first Salati commit, computed rather than typed.
+ *
+ * This read "107 days … until today". Correct when written, 108 the next
+ * morning — the same drifting window the commit figure already dropped
+ * ("3,971 commits in 4 months"). A number that moves on its own cannot be
+ * maintained by hand.
+ *
+ * Counted up to the verification date in `verified.json`, not to the moment of
+ * the request: the pages are prerendered, so a `new Date()` here would freeze
+ * at build time anyway. The stamp moves forward daily with the scheduled job,
+ * and the note beside the figure names it.
+ */
+const SALATI_FIRST_COMMIT = "2026-04-16";
+const salatiDays = Math.round(
+  (Date.parse(verified.date) - Date.parse(SALATI_FIRST_COMMIT)) / 86_400_000,
+);
+/** Counted in the app's changelog, see check-figures.mjs. */
+const SALATI_VERSIONS = 64;
+const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
+
+/** "2026-08-01" as "1 August 2026". */
+function dateLong(iso: string) {
+  return new Date(iso).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export const en: Content = {
   lang: "en",
   site: {
@@ -595,11 +625,23 @@ export const en: Content = {
       title: "The difference is not that I type faster.",
       lede: "It is that research, implementation, testing and verification run in parallel rather than in sequence, and that context does not get lost between sessions. What that produces can be counted.",
       facts: [
-        { value: "107", label: "days", note: "first commit on 16 April 2026 until today" },
-        { value: "63", label: "versions shipped", note: "1.0.0 to 1.45.0, listed in the app's own changelog" },
-        { value: "40 h", label: "per version on average", note: "107 days divided by 63 versions" },
+        {
+          value: String(salatiDays),
+          label: "days",
+          note: `first commit on 16 April 2026 until the verification date, ${dateLong(verified.date)}`,
+        },
+        {
+          value: String(SALATI_VERSIONS),
+          label: "versions shipped",
+          note: "1.0.0 to 1.46.0, listed in the app's own changelog",
+        },
+        {
+          value: `${salatiHoursPerVersion} h`,
+          label: "per version on average",
+          note: `${salatiDays} days divided by ${SALATI_VERSIONS} versions`,
+        },
       ],
-      note: "Figures for Salati, counted on 1 August 2026 in the app's changelog file. Three further systems were in production alongside it.",
+      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app's changelog file. Three further systems were in production alongside it.`,
     },
   },
 
@@ -695,7 +737,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: "63 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejected reviews, age ratings, privacy forms and signing chains are routine here, not new ground.",
+        body: "64 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejected reviews, age ratings, privacy forms and signing chains are routine here, not new ground.",
       },
       {
         title: "I treat regulation as part of the product",

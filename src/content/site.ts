@@ -370,7 +370,7 @@ export const caseStudies: CaseStudy[] = [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
       { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
       // Nachgeprüft am 01.08.2026: Der App-Store-Eintrag existiert unter
-      // id6791867298 in Version 1.45.0. Auf Google Play gibt es unter dem
+      // id6791867298, zuletzt Version 1.46.0. Auf Google Play gibt es unter dem
       // Paketnamen de.salatibox.de keinen oeffentlichen Eintrag, und eine
       // Suche nach "Salatibox" liefert nichts. Deshalb steht hier nur der
       // Store, der wirklich erreichbar ist. Sobald Android oeffentlich ist,
@@ -833,7 +833,7 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: "63 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Abgelehnte Reviews, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
+      body: "64 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Abgelehnte Reviews, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
     },
     {
       title: "Regulierung behandle ich als Teil des Produkts",
