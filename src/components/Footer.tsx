@@ -113,6 +113,7 @@ export function Footer({
               <Link
                 href={sprachZiel}
                 hrefLang={languageSwitch.to}
+                lang={languageSwitch.to}
                 className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {languageSwitch.label}

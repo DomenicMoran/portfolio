@@ -149,7 +149,14 @@ export function Nav({
           <div className="flex items-center gap-2">
             <Link
               href={sprachZiel}
+              /* `lang` neben `hrefLang`: Beschriftung und Ansage stehen in
+                  der Zielsprache — auf der englischen Seite also "Deutsch"
+                  und "Diese Seite auf Deutsch". Ohne die Auszeichnung liest
+                  ein Vorleseprogramm beides mit englischer Aussprache vor.
+                  `hrefLang` sagt nur, was am Ziel liegt, nicht in welcher
+                  Sprache der Verweis selbst geschrieben ist. */
               hrefLang={c.languageSwitch.to}
+              lang={c.languageSwitch.to}
               aria-label={c.languageSwitch.aria}
               className="rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
             >
@@ -204,6 +211,7 @@ export function Nav({
                 <Link
                   href={sprachZiel}
                   hrefLang={c.languageSwitch.to}
+                  lang={c.languageSwitch.to}
                   aria-label={c.languageSwitch.aria}
                   className="rounded-full border border-line px-3.5 py-2 font-mono text-[11px] text-ink-faint"
                 >
