@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Arbeitsbäume von Agenten liegen unter .claude/ und bringen einen
+    // vollständigen Checkout samt Bau mit. Ohne diese Zeile liest der Linter
+    // deren .next-Ordner mit und meldete 288 Fehler in erzeugtem Code.
+    ".claude/**",
   ]),
 ]);
 
