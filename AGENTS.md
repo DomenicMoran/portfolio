@@ -174,6 +174,7 @@ npx tsc --noEmit      # 0 Fehler
 npx eslint .          # 0 Errors
 npm run build         # grün
 npm run check:a11y    # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
+npm run check:privacy # keine Seite baut eine Verbindung nach außen auf
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
