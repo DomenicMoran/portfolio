@@ -102,7 +102,9 @@ export const about = {
    * Die Datei ist quadratisch, weil dieselbe Aufnahme auch als Profilbild auf
    * LinkedIn und GitHub steht und dort im Kreis beschnitten wird.
    */
-  portrait: "/portrait.jpg" as string,
+  portrait: "/portrait-dark.jpg" as string,
+  /* Fuer den One-Pager, der auf Papier geht. */
+  portraitPrint: "/portrait.jpg" as string,
   title: "Vier Jahre gelernt. Vier Monate ausgeliefert.",
   paragraphs: [
     `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,

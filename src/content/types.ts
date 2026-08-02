@@ -123,6 +123,14 @@ export type Content = {
   about: {
     eyebrow: string;
     portrait: string;
+    /**
+     * Dieselbe Aufnahme auf hellem Grund, fuer Papier.
+     *
+     * Am Bildschirm steht die Seite auf fast Schwarz, und ein Portraet mit
+     * heller Wand ist darin die einzige helle Flaeche weit und breit — es
+     * sieht aufgeklebt aus. Gedruckt ist es genau umgekehrt.
+     */
+    portraitPrint: string;
     title: string;
     paragraphs: readonly string[];
     stats: readonly { value: string; label: string; note: string }[];

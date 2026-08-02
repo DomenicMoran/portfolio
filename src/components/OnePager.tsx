@@ -140,9 +140,9 @@ export function OnePager({
                 156 px; das Bild bleibt darunter, und das Blatt bleibt eine
                 Seite. In Deutschland gehört ein Foto auf eine Bewerbung, und
                 dieses Blatt geht als PDF an Firmen. */}
-            {about.portrait ? (
+            {about.portraitPrint ? (
               <Image
-                src={about.portrait}
+                src={about.portraitPrint}
                 alt={site.name}
                 width={110}
                 height={110}
