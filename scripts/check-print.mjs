@@ -31,11 +31,10 @@
  * überspringt das und misst gegen die laufende Seite.
  */
 
-import { spawn } from "node:child_process";
-import { createServer } from "node:net";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
+import { starteServer } from "./lib/local-server.mjs";
 
 /** A4 bei 96 dpi. Chromium legt die Druckdarstellung auf diese Breite aus. */
 const PAPIERBREITE = 794;
@@ -47,56 +46,12 @@ const GROSSER_FETTER_TEXT_PX = 18.66;
 
 const vorgegebeneBasis = process.argv[2];
 
-async function freierPort() {
-  return new Promise((fertig, scheitern) => {
-    const horcher = createServer();
-    horcher.unref();
-    horcher.on("error", scheitern);
-    horcher.listen(0, "127.0.0.1", () => {
-      const { port } = horcher.address();
-      horcher.close(() => fertig(port));
-    });
-  });
-}
-
-async function warteAufAntwort(adresse, versuche = 60) {
-  for (let i = 0; i < versuche; i++) {
-    try {
-      const antwort = await fetch(adresse, { signal: AbortSignal.timeout(1000) });
-      if (antwort.ok) return true;
-    } catch {
-      // Noch nicht oben.
-    }
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  return false;
-}
-
-let server = null;
+let beenden = () => {};
 let basis = vorgegebeneBasis;
 
 if (!basis) {
-  const port = await freierPort();
-  basis = `http://127.0.0.1:${port}`;
-  server = spawn(
-    process.execPath,
-    [join("node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port)],
-    { stdio: "ignore" },
-  );
-  if (!(await warteAufAntwort(`${basis}/`))) {
-    server.kill();
-    throw new Error(`Der eigene Server auf ${basis} kam nicht hoch.`);
-  }
+  ({ basis, beenden } = await starteServer());
 }
-
-function serverBeenden() {
-  if (server && !server.killed) server.kill();
-}
-process.on("exit", serverBeenden);
-process.on("SIGINT", () => {
-  serverBeenden();
-  process.exit(130);
-});
 
 /**
  * Die Seitenliste kommt aus dem Bau, nicht aus der Sitemap.
@@ -483,6 +438,7 @@ for (const pfad of gepruefteSeiten) {
 }
 
 await browser.close();
+beenden();
 
 if (fehler > 0) {
   console.error(
