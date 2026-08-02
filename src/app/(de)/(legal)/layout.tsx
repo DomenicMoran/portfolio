@@ -2,8 +2,8 @@ import Link from "next/link";
 import { site } from "@/content/site";
 
 /**
- * Shared chrome for the legal pages. Deliberately plain: these pages exist to
- * be read and to satisfy § 5 DDG, not to impress anyone.
+ * Gemeinsamer Rahmen der Rechtsseiten. Bewusst schlicht: Diese Seiten sind zum
+ * Lesen da und um § 5 DDG zu genügen, nicht um jemanden zu beeindrucken.
  */
 export default function LegalLayout({
   children,

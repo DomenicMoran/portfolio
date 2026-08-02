@@ -1,9 +1,10 @@
 import type { Transition, Variants } from "framer-motion";
 
 /**
- * Shared easing. `expo` is the site's signature: fast start, long glide.
- * Every transition uses one of these three so the whole page feels like one
- * object rather than a collection of independently tuned widgets.
+ * Gemeinsame Beschleunigungskurven. `expo` ist die Handschrift dieser Seite:
+ * schneller Start, langes Ausgleiten. Jeder Übergang nimmt eine dieser drei,
+ * damit die Seite wie ein Gegenstand wirkt und nicht wie eine Sammlung einzeln
+ * eingestellter Bauteile.
  */
 export const ease = {
   expo: [0.16, 1, 0.3, 1],
@@ -18,7 +19,7 @@ export const springSoft: Transition = {
   mass: 0.6,
 };
 
-/** Fade + rise. The default entrance for prose and cards. */
+/** Aufblenden und Aufsteigen. Der Regelauftritt für Fließtext und Karten. */
 export const riseIn: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
@@ -28,7 +29,7 @@ export const riseIn: Variants = {
   },
 };
 
-/** Parent that staggers its children's `riseIn`. */
+/** Elternteil, das `riseIn` seiner Kinder zeitlich versetzt. */
 export const stagger = (delay = 0, gap = 0.07): Variants => ({
   hidden: {},
   visible: {
@@ -37,8 +38,9 @@ export const stagger = (delay = 0, gap = 0.07): Variants => ({
 });
 
 /**
- * Mask reveal for headline words. The parent needs `overflow: hidden` on each
- * word wrapper: the child slides out from under its own clip rectangle.
+ * Maskierter Auftritt für Wörter einer Überschrift. Die Hülle jedes Wortes
+ * braucht `overflow: hidden`: Das Kind schiebt sich unter dem eigenen
+ * Beschnittrechteck hervor.
  */
 export const maskWord: Variants = {
   hidden: { y: "110%", opacity: 0 },
@@ -49,5 +51,5 @@ export const maskWord: Variants = {
   },
 };
 
-/** Viewport config used everywhere so reveal timing is consistent. */
+/** Überall dieselbe Sichtbereichs-Einstellung, damit die Einblendungen im Takt bleiben. */
 export const viewportOnce = { once: true, amount: 0.25 } as const;

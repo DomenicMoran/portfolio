@@ -5,12 +5,13 @@ import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /* ==========================================================================
-   A tiny declarative diagram format.
+   Ein winziges beschreibendes Diagrammformat.
 
-   Hand-drawing four SVGs would have been faster to write once and miserable to
-   change. Nodes are placed on a 1000x-wide grid; edges reference node ids and
-   are routed as orthogonal paths. Everything animates in on scroll: boxes fade
-   up in row order, connectors draw themselves.
+   Vier SVGs von Hand zu zeichnen wäre einmal schneller geschrieben und danach
+   eine Qual zu ändern gewesen. Knoten sitzen auf einem 1000 Einheiten breiten
+   Raster, Kanten verweisen auf Knoten-Kennungen und werden rechtwinklig
+   geführt. Alles blendet sich beim Scrollen ein: Kästen steigen zeilenweise
+   auf, Verbindungen zeichnen sich selbst.
    ========================================================================== */
 
 type Tone = "neutral" | "acid" | "violet" | "cyan" | "muted";
@@ -228,8 +229,8 @@ function edgePath(from: Node, to: Node) {
   const y2 = to.y;
   const mid = y1 + (y2 - y1) / 2;
 
-  // Orthogonal route with a rounded elbow, so lines read as wiring rather than
-  // as arbitrary curves.
+  // Rechtwinklig mit gerundetem Knie, damit die Linien wie Verkabelung wirken
+  // und nicht wie beliebige Kurven.
   if (Math.abs(x1 - x2) < 2) return `M ${x1} ${y1} L ${x2} ${y2}`;
 
   const r = Math.min(10, Math.abs(x2 - x1) / 2, Math.abs(mid - y1));

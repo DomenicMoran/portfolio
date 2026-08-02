@@ -47,8 +47,9 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
         <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
-        {/* The two secondary orbs are pure decoration; they only appear once
-            the viewport is wide enough for the cost to be irrelevant. */}
+        {/* Die beiden hinteren Glühkreise sind reine Dekoration und erscheinen
+            erst, wenn der Sichtbereich breit genug ist, dass ihr Preis nicht
+            mehr ins Gewicht fällt. */}
         <div
           className="glow-orb animate-float top-[10%] right-[2%] hidden size-[30rem] bg-cyan/12 sm:block"
           style={{ animationDelay: "-5s" }}
@@ -80,13 +81,14 @@ export function Hero() {
           </span>
         </div>
 
-        {/* Headline: each word rises out of its own clip mask */}
+        {/* Überschrift: Jedes Wort steigt aus seiner eigenen Maske auf */}
         <h1 className="text-display max-w-[18ch] text-balance text-ink">
           {hero.headline.map((word, i) => (
-            // The space is a real text node BETWEEN the clip wrappers, not
-            // inside one; innerhalb eines overflow:hidden inline-block it collapses
-            // and the words run together. Outside, it spaces them visually and
-            // keeps the heading readable for screen readers and copy-paste.
+            // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken,
+            // nicht in einer: Innerhalb eines inline-block mit overflow:hidden
+            // wird es zusammengefaltet, und die Wörter kleben aneinander.
+            // Außerhalb trennt es sichtbar und hält die Überschrift für
+            // Screenreader und zum Kopieren lesbar.
             <Fragment key={i}>
               <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
                 <span
@@ -158,9 +160,10 @@ export function Hero() {
           className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
         >
           {hero.proof.map((item) => (
-            // flex-col-reverse: DOM order stays dt → dd (the only structure a
-            // <dl> may contain), while the number still renders above its
-            // label. A <span> sibling here is invalid markup and axe flags it.
+            // flex-col-reverse: Im Baum bleibt die Reihenfolge dt → dd, die
+            // einzige Struktur, die eine <dl> enthalten darf — und die Zahl
+            // steht trotzdem über ihrer Beschriftung. Ein <span> als
+            // Geschwister wäre ungültig, und axe meldet das.
             <div key={item.label} className="flex flex-col-reverse gap-1.5">
               <dt className="text-xs leading-snug text-ink-faint">{item.label}</dt>
               <dd className="text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl">

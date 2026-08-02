@@ -3,13 +3,13 @@
 import { useCallback, useSyncExternalStore } from "react";
 
 /**
- * Media query as an external store.
+ * Eine Medienabfrage als externer Speicher.
  *
- * `useSyncExternalStore` rather than `useState` + `useEffect`: the server
- * snapshot is explicit (`false`), so the markup React renders on the server and
- * the markup it hydrates with always agree. The effect-based version sets state
- * after mount, which both trips the set-state-in-effect rule and produces a
- * one-frame flash of the wrong branch.
+ * `useSyncExternalStore` statt `useState` und `useEffect`: Der Serverwert steht
+ * ausdrücklich da (`false`), damit die Auszeichnung vom Server und die, mit der
+ * React hydriert, immer übereinstimmen. Die Fassung über einen Effekt setzt den
+ * Zustand erst nach dem Einhängen — das verstößt gegen die
+ * set-state-in-effect-Regel und zeigt für ein Bild den falschen Zweig.
  */
 export function useMediaQuery(query: string) {
   const subscribe = useCallback(
@@ -23,7 +23,7 @@ export function useMediaQuery(query: string) {
 
   const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
 
-  // Nothing matches during server rendering: capabilities are client-only.
+  // Auf dem Server trifft nichts zu: Gerätefähigkeiten kennt nur der Browser.
   const getServerSnapshot = useCallback(() => false, []);
 
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

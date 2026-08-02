@@ -140,7 +140,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </Reveal>
       </div>
 
-      {/* The hard part: the section that separates a portfolio from a résumé */}
+      {/* Der schwierige Teil: der Abschnitt, der eine Bewerbungsseite von einem Lebenslauf trennt */}
       <Reveal delay={0.05}>
         <div
           className={cn(
@@ -334,8 +334,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 hidden: { opacity: 0, y: 14 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.expo } },
               }}
-              // See Hero: a <dl> may only contain dt/dd groups, so the label
-              // lives in <dt> and the visual order comes from flex-col-reverse.
+              // Siehe Hero: Eine <dl> darf nur dt/dd-Paare enthalten, deshalb
+              // steht die Beschriftung im <dt> und die sichtbare Reihenfolge
+              // kommt von flex-col-reverse.
               className="flex flex-col-reverse gap-1"
             >
               <dt className="text-xs text-ink-faint">{metric.label}</dt>

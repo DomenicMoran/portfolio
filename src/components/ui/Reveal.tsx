@@ -9,14 +9,14 @@ type RevealProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
-  /** Distance travelled on entrance, in px. */
+  /** Weg, den das Element beim Erscheinen zurücklegt, in Pixeln. */
   y?: number;
   as?: "div" | "section" | "li" | "span" | "p";
 };
 
 /**
- * The workhorse entrance animation. One component so timing never drifts
- * between sections.
+ * Die Einblendung für den Alltag. Eine Komponente, damit die Zeiten zwischen
+ * den Abschnitten nie auseinanderlaufen.
  */
 export function Reveal({
   children,
@@ -41,8 +41,9 @@ export function Reveal({
 }
 
 /**
- * Splits a string into words and reveals each from behind its own clip mask.
- * Used for section headlines: the effect only reads well at large sizes.
+ * Zerlegt einen Text in Wörter und schiebt jedes hinter seiner eigenen Maske
+ * hervor. Für Abschnittsüberschriften: In kleinen Graden wirkt der Effekt
+ * nicht.
  *
  * `css` schaltet dieselbe Bewegung auf eine reine CSS-Animation um. Der
  * Unterschied ist der Startzeitpunkt: Die JS-Variante beginnt, wenn der
@@ -99,10 +100,11 @@ export function RevealWords({
       transition={{ delayChildren: delay, staggerChildren: 0.05 }}
     >
       {words.map((word, i) => (
-        // The space is a real text node BETWEEN the clip wrappers, not inside
-        // one; innerhalb eines overflow:hidden inline-block it collapses and the
-        // words run together. Outside, it spaces them visually and keeps the
-        // heading readable for screen readers and copy-paste.
+        // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken, nicht
+        // in einer: Innerhalb eines inline-block mit overflow:hidden wird es
+        // zusammengefaltet, und die Wörter kleben aneinander. Außerhalb trennt
+        // es sichtbar und hält die Überschrift für Screenreader und zum
+        // Kopieren lesbar.
         <Fragment key={`${word}-${i}`}>
           <span className="inline-block overflow-hidden pb-[0.05em] align-bottom">
             <motion.span

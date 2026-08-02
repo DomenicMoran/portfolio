@@ -8,9 +8,10 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
 /**
- * Holds the small amount of state that spans the whole page (palette open) and
- * mounts the global interaction layers. Keeping this here means `page.tsx` can
- * stay a server component and ship the section markup as static HTML.
+ * Hält den wenigen Zustand, der die ganze Seite betrifft (Befehlspalette offen)
+ * und hängt die globalen Interaktionsebenen ein. Weil er hier liegt, bleibt
+ * `page.tsx` eine Server Component und liefert die Abschnitte als statisches
+ * HTML aus.
  */
 export function SiteShell({
   otherHref,

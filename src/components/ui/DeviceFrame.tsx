@@ -2,21 +2,21 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * Wraps a product screenshot in a browser or phone chrome.
+ * Fasst eine Produktaufnahme in einen Browser- oder Telefonrahmen.
  *
- * The frame does real work: a raw screenshot of a website pasted onto another
- * website reads as a stray image, while the same shot inside a browser bar
- * reads immediately as "this is a running product". The frame is pure CSS:
- * no image assets beyond the screenshot itself.
+ * Der Rahmen leistet etwas: Eine nackte Aufnahme einer Website, auf eine andere
+ * Website geklebt, wirkt wie ein verirrtes Bild. Dieselbe Aufnahme in einer
+ * Adressleiste liest sich sofort als „das läuft". Der Rahmen ist reines CSS,
+ * außer der Aufnahme selbst kommt keine Bilddatei dazu.
  */
 
 type Props = {
   src: string;
   alt: string;
-  /** Intrinsic size of the screenshot, for correct aspect ratio and no CLS. */
+  /** Eigengröße der Aufnahme: für das richtige Seitenverhältnis und gegen Layout-Sprünge. */
   width: number;
   height: number;
-  /** Shown in the fake address bar (browser) or as a caption (screen). */
+  /** Steht in der nachgebildeten Adressleiste (Browser) oder als Bildunterschrift (Bildschirm). */
   label?: string;
   variant?: "browser" | "phone" | "screen";
   priority?: boolean;

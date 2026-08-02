@@ -26,8 +26,8 @@ export function RecruiterHub() {
   }[];
 
   return (
-    // overflow-hidden clips the glow orb below. Without it the 34rem circle
-    // pushes the document wider than the viewport on phones.
+    // overflow-hidden beschneidet den Glühkreis darunter. Ohne das schiebt der
+    // Kreis mit 34rem das Dokument auf Telefonen breiter als den Sichtbereich.
     <section
       id="hire"
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
