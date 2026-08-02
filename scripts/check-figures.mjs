@@ -927,6 +927,58 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Artikeltitel im Profil-README
+   ---------------------------------------------------------------------------
+
+   Das Profil-README auf GitHub verlinkt die fünf Artikel mit ihrem Titel als
+   Linktext. Zwei davon wichen ab: „was in der Dokumentation nicht steht" gegen
+   „was die Dokumentation auslässt" und „mein größeres geschlagen hat" gegen
+   „mein größeres schlug". Wer dort klickt, landete auf einer Seite mit anderer
+   Überschrift als versprochen — und das ist die erste Seite, die ein Leser des
+   Profils überhaupt sieht.
+
+   Verglichen wird der Linktext gegen `title` in der jeweiligen Artikeldatei.
+   Das README liegt außerhalb dieses Repos; fehlt es, wird übersprungen. */
+{
+  const readme = "../docs/GITHUB-PROFILE-README.md";
+  if (!existsSync(readme)) {
+    zeilen.push("  --  Profil-README nicht gefunden, übersprungen");
+  } else {
+    const text = readFileSync(readme, "utf8");
+    const titelJeSlug = new Map();
+    for (const datei of readdirSync("src/content/articles")) {
+      if (!datei.startsWith("de-")) continue;
+      const inhalt = readFileSync(join("src/content/articles", datei), "utf8");
+      const slug = inhalt.match(/slug: "([^"]+)"/)?.[1];
+      const titel = inhalt.match(/^  title: "([^"]+)"/m)?.[1];
+      if (slug && titel) titelJeSlug.set(slug, titel);
+    }
+
+    const funde = [];
+    for (const treffer of text.matchAll(/\[([^\]]+)\]\(https:\/\/domenicmoran\.de\/artikel\/([a-z0-9-]+)\)/g)) {
+      const [, linktext, slug] = treffer;
+      const echt = titelJeSlug.get(slug);
+      if (!echt) {
+        funde.push(`${slug}: im README verlinkt, gibt es als Artikel nicht`);
+      } else if (linktext.replace(/[“”„"]/g, '"') !== echt.replace(/[“”„"]/g, '"')) {
+        funde.push(`${slug}: README sagt „${linktext}", der Artikel heißt „${echt}"`);
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Titelabweichung(en) im Profil-README:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Profil-README            ${String(titelJeSlug.size).padStart(6)} Artikeltitel stimmen`,
+      );
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
    Alter des Prüfstempels
    ---------------------------------------------------------------------------
 

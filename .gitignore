@@ -53,3 +53,7 @@ _about.txt
 _deploy.log
 _srv.log
 _dep.log
+
+
+# Arbeitsbäume und Sitzungsdaten von Agenten gehören nicht ins Repo.
+.claude/

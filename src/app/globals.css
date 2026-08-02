@@ -298,9 +298,26 @@ textarea:-webkit-autofill {
 @media (min-width: 640px) {
   .glow-orb {
     filter: blur(90px);
-    will-change: transform;
   }
 }
+
+/* Hier stand `will-change: transform` auf den Glüh-Kreisen, und es hat die
+   flüssige Seite gekostet.
+
+   `will-change` hebt ein Element dauerhaft auf eine eigene Zeichenebene. Bei
+   neun Kreisen mit 90 px Weichzeichner heißt das: neun große Ebenen, die der
+   Browser beim Scrollen immer wieder neu rastert, weil ein Weichzeichner
+   nicht einfach verschoben werden kann.
+
+   Gemessen am 02.08.2026 gegen die Live-Seite, 1440 px, dreißig
+   Scrollschritte, Abstände zwischen den `requestAnimationFrame`-Zeitstempeln:
+
+     mit will-change    53,6 und 55,6 fps, 18 und 14 Bilder über 32 ms
+     ohne will-change   60,0 fps, kein einziges Bild über 32 ms
+
+   Bei 390 px war beides schon bei 60,0 — dort greift die Regel gar nicht.
+   Sichtbar ändert sich nichts: `will-change` zeichnet selbst nichts, es sagt
+   dem Browser nur, was er vorbereiten soll. Hier hat er zu viel vorbereitet. */
 
 @keyframes float-slow {
   0%,
