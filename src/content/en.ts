@@ -720,7 +720,10 @@ export const en: Content = {
           { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, four device types" },
           { name: "TypeScript", evidence: "Strict everywhere, 0 errors as a merge gate" },
           { name: "Motion & interaction", evidence: "Reanimated 4, Framer Motion" },
-          { name: "Core Web Vitals", evidence: "LCP/CLS/INP budgets in CI" },
+          {
+            name: "Core Web Vitals",
+            evidence: "Lighthouse cron against production, per-route bundle budget",
+          },
           { name: "Accessibility", evidence: "TV focus navigation, reduced motion" },
         ],
       },
