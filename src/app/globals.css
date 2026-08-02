@@ -203,6 +203,60 @@ textarea:-webkit-autofill {
   pointer-events: none;
 }
 
+/* Lichtschein am Zeiger.
+ *
+ * Über einem Kartenfeld folgt ein weicher Schein dem Zeiger, dazu ein heller
+ * Bogen auf der Kante der Karte, über der er gerade steht. Das Muster kennt
+ * man von Linear und Aceternity; hier kostet es kein Canvas und kein
+ * zusätzliches Element, weil beide Verläufe auf Pseudoelementen liegen, die
+ * es ohnehin gibt.
+ *
+ * Die Position kommt als `--maus-x` und `--maus-y` von `Spotlight.tsx`, je
+ * Karte und in Kartenkoordinaten. Bewegt wird nur ein Verlauf, also allein
+ * die Malphase: kein Layout, kein Rerender.
+ *
+ * Ruhezustand ist "weit weg": Ohne Zeiger stehen die Mittelpunkte bei
+ * -9999px, und beide Verläufe liegen außerhalb der Karte. Die Klasse
+ * `schein-feld` setzt `Spotlight.tsx` überhaupt erst, wenn ein genaues
+ * Zeigegerät da ist und Bewegung erlaubt bleibt.
+ */
+.schein-feld {
+  --maus-x: -9999px;
+  --maus-y: -9999px;
+  --schein: 0;
+}
+
+.schein-feld [data-schein]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--schein);
+  transition: opacity 260ms ease-out;
+  background: radial-gradient(
+    18rem 18rem at var(--maus-x) var(--maus-y),
+    color-mix(in oklab, var(--color-acid) 9%, transparent),
+    transparent 68%
+  );
+}
+
+/* Der Kantenbogen läuft durch dieselbe 1-px-Maske wie der ruhende
+   Kantenglanz von `.lit`: ein zweiter Verlauf davor, sonst nichts. */
+.schein-feld [data-schein].lit::before {
+  background:
+    radial-gradient(
+      14rem 14rem at var(--maus-x) var(--maus-y),
+      color-mix(in oklab, var(--color-acid) 50%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-ink) 14%, transparent),
+      transparent 40%
+    );
+}
+
 /* Codeblöcke zeigen, dass rechts noch etwas steht.
  *
  * Gemessen auf 390 px in einem Artikel: Zeilen von 59 und 66 Zeichen in einem
@@ -520,7 +574,12 @@ textarea:-webkit-autofill {
   /* Dekoration kostet nur Toner. */
   .glow-orb,
   .dot-grid,
-  .lit::before {
+  .lit::before,
+  /* Der Lichtschein hat auf Papier keinen Zeiger, dem er folgen könnte — und
+     die Regel oben setzt jede Deckkraft auf 1, er käme sonst als grüner
+     Fleck heraus, sobald jemand vor dem Drucken über eine Karte gefahren
+     ist. */
+  .schein-feld [data-schein]::after {
     display: none !important;
   }
 
