@@ -219,7 +219,16 @@ export function OnePager({
                 </div>
                 <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
                   {study.tagline}.{" "}
-                  <strong className="font-semibold">{study.hardPart.title}:</strong>{" "}
+                  {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
+                      hat. Sonst stolpert die Zeile über zwei davon:
+                      "Ein Agent, der nicht ungefragt handelt: Der Reiz eines
+                      solchen Systems ist auch sein Risiko: ein Bot, der …".
+                      Auf dem gedruckten Blatt betraf das zwei der vier
+                      Projekte. */}
+                  <strong className="font-semibold">
+                    {study.hardPart.title}
+                    {firstSentence(study.hardPart.body).includes(":") ? " —" : ":"}
+                  </strong>{" "}
                   {firstSentence(study.hardPart.body)}
                 </p>
                 <p className="mt-1 font-mono text-[10.5px] leading-snug text-[#6a6a76]">
