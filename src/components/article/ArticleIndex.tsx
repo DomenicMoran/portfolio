@@ -31,8 +31,40 @@ export function ArticleIndex({
   const heim = lang === "de" ? "/" : "/en";
   const otherHref = lang === "de" ? "/en/articles" : "/artikel";
 
+  /*
+    Die Übersicht ist eine Sammlung, kein Werk und keine Person.
+
+    Artikel tragen `TechArticle`, die Startseite `Person` — nur diese Seite
+    trug gar nichts, obwohl sie die einzige ist, die alle fünf Artikel
+    zusammenfasst. `Blog` mit `blogPost` ist die Form, die eine Suchmaschine
+    dafür kennt: Sie verbindet die Einzelseiten zu einer Reihe, statt sie als
+    fünf unverbundene Seiten zu lesen.
+
+    Nur Kopfdaten je Artikel, keine Zusammenfassung des Textes: Was auf der
+    Einzelseite steht, gehört dorthin. Zweimal dieselbe Beschreibung wäre für
+    eine Suchmaschine ein Duplikat.
+  */
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: chrome.title,
+    description: chrome.lede,
+    url: `${content.site.url}${chrome.base}`,
+    inLanguage: lang,
+    author: { "@type": "Person", name: content.site.name, url: content.site.url },
+    blogPost: articles.map((a) => ({
+      "@type": "TechArticle",
+      headline: a.title,
+      description: a.dek,
+      datePublished: a.date,
+      url: `${content.site.url}${chrome.base}/${a.slug}`,
+    })),
+  };
+  const json = JSON.stringify(schema).replace(/</g, "\u003c");
+
   return (
     <ContentProvider content={content}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
       <SiteShell otherHref={otherHref} hashBase={heim} />
 
       <main className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
