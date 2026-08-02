@@ -15,7 +15,15 @@ import { RichText } from "@/components/ui/InlineCode";
  * an gezählten Zeichen ausgerichtet.
  */
 
-export function Prose({ blocks, codeLabel }: { blocks: readonly Block[]; codeLabel: string }) {
+export function Prose({
+  blocks,
+  codeLabel,
+  tabelleLabel,
+}: {
+  blocks: readonly Block[];
+  codeLabel: string;
+  tabelleLabel: string;
+}) {
   return (
     <div className="flex flex-col">
       {blocks.map((block, i) => {
@@ -130,7 +138,16 @@ export function Prose({ blocks, codeLabel }: { blocks: readonly Block[]; codeLab
           case "table":
             return (
               <figure key={i} className="mt-2 mb-7">
-                <div className="overflow-x-auto rounded-xl border border-line">
+                {/* Wie beim Codekasten: Was scrollt, muss anspringbar sein.
+                    Heute passt die eine Tabelle in beide Breiten, aber eine
+                    Spalte mehr, und die rechte Haelfte waere ohne Maus nicht
+                    erreichbar — lautlos, weil nichts danach aussieht. */}
+                <div
+                  tabIndex={0}
+                  role="region"
+                  aria-label={block.caption ?? tabelleLabel}
+                  className="overflow-x-auto rounded-xl border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
+                >
                   <table className="w-full border-collapse text-left text-sm">
                     <thead>
                       <tr className="border-b border-line bg-surface/60">

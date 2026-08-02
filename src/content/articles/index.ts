@@ -26,6 +26,7 @@ export const chromeDe: ArticleChrome = {
   backToIndex: "Alle Artikel",
   evidenceLabel: "Belege",
   codeLabel: "Codebeispiel",
+  tableLabel: "Tabelle",
   publishedLabel: "Veröffentlicht",
   allArticles: "Artikel",
   home: {
@@ -45,6 +46,7 @@ export const chromeEn: ArticleChrome = {
   backToIndex: "All articles",
   evidenceLabel: "Evidence",
   codeLabel: "Code sample",
+  tableLabel: "Table",
   publishedLabel: "Published",
   allArticles: "Articles",
   home: {
