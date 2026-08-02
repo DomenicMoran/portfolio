@@ -59,6 +59,8 @@ const pfade = [];
 
 const browser = await chromium.launch();
 let fehler = 0;
+/** Wörter, die beim Messen noch in Bewegung waren: ein Befund am Lauf. */
+let nichtMessbar = 0;
 
 for (const breite of BREITEN) {
   const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
@@ -90,21 +92,55 @@ for (const breite of BREITEN) {
       Endliche Animationen springen ans Ende, Endlosschleifen bleiben; der
       Rest ist Wartezeit für das, was die Animationsbibliothek über
       requestAnimationFrame fährt und was `getAnimations` deshalb nicht kennt.
+
+      Eine feste Wartezeit reichte dafür nicht.
+
+      Sie stand hier auf 1.400 ms, und lokal ging das immer gut. Auf dem
+      Bauserver scheiterte derselbe Lauf am 02.08.2026 an „gebaut." mit
+      „12 px Tinte, nur -55,8 px Platz" — eine negative Zahl, die es als
+      Befund nicht geben kann: Sie heißt, dass das Wort zum Messzeitpunkt
+      noch 56 px unter seiner Maske stand, also mitten im Auftritt war.
+
+      Die Wörter im Hero starten gestaffelt, das letzte mit gut einer halben
+      Sekunde Verzögerung. Auf einer langsamen Maschine liegt die Hydration
+      hinter dem `finish()`-Aufruf: Die Animation entsteht danach neu, läuft
+      erneut an, und 1.400 ms treffen genau ihr Ende. Ein Wächter, der je nach
+      Maschine etwas anderes meldet, ist kein Wächter.
+
+      Deshalb eine Bedingung statt einer Frist: In Runden wird beendet, was
+      endlich ist, und erst weitergemacht, wenn nichts mehr läuft.
     */
-    await seite.evaluate(() => {
-      for (const bewegung of document.getAnimations()) {
-        try {
-          bewegung.finish();
-        } catch {
-          // Endlos, also ohne Endwert.
-        }
-      }
-    });
+    await seite
+      .waitForFunction(
+        () => {
+          for (const bewegung of document.getAnimations()) {
+            try {
+              bewegung.finish();
+            } catch {
+              // Endlos, also ohne Endwert.
+            }
+          }
+          return document.getAnimations().every((bewegung) => {
+            if (bewegung.playState !== "running") return true;
+            // Endlosschleifen (Marquee, Puls) laufen absichtlich weiter.
+            return bewegung.effect?.getComputedTiming().iterations === Infinity;
+          });
+        },
+        null,
+        { timeout: 20000, polling: 200 },
+      )
+      .catch(() => {
+        // Auch dann noch messen: Der Verschiebungstest unten fängt ab, was
+        // sich nicht beruhigt hat, und meldet es als nicht messbar.
+      });
+    // Rest für das, was die Animationsbibliothek über requestAnimationFrame
+    // fährt und was `getAnimations` deshalb nicht kennt.
     await seite.waitForTimeout(1400);
 
-    const funde = await seite.evaluate(() => {
+    const { raus: funde, unruhig } = await seite.evaluate(() => {
       const messer = document.createElement("canvas").getContext("2d");
       const raus = [];
+      const unruhig = [];
 
       for (const ueberschrift of document.querySelectorAll("h1, h2, h3")) {
         const masken = [...ueberschrift.querySelectorAll("span")].filter(
@@ -116,6 +152,19 @@ for (const breite of BREITEN) {
 
           const kind = maske.firstElementChild ?? maske;
           const stil = getComputedStyle(kind);
+
+          /* Ein noch verschobenes Wort ist keine abgeschnittene Unterlänge.
+
+             Die Kastenmaße kommen aus `getBoundingClientRect`, und die zählt
+             Transformationen mit. Steht das Wort noch unter seiner Maske,
+             kommt eine negative Platzangabe heraus — ein Befund, den es so
+             nicht gibt. Solche Fälle werden gezählt und gemeldet, nicht
+             stillschweigend übergangen: Ein Wächter, der beim Messfehler
+             „alles in Ordnung" sagt, ist schlimmer als einer, der schweigt. */
+          if (stil.transform !== "none" && stil.transform !== "matrix(1, 0, 0, 1, 0, 0)") {
+            unruhig.push(`${wort.trim().slice(0, 20)} (${stil.transform})`);
+            continue;
+          }
           messer.font = `${stil.fontStyle} ${stil.fontWeight} ${stil.fontSize} ${stil.fontFamily}`;
           const tinte = messer.measureText(wort).actualBoundingBoxDescent;
 
@@ -140,8 +189,14 @@ for (const breite of BREITEN) {
           }
         }
       }
-      return raus;
+      return { raus, unruhig };
     });
+
+    if (unruhig.length > 0) {
+      nichtMessbar += unruhig.length;
+      console.log(`  NICHT MESSBAR ${pfad} bei ${breite} px`);
+      for (const u of unruhig) console.log(`        ${u} stand noch verschoben`);
+    }
 
     if (funde.length > 0) {
       fehler += funde.length;
@@ -166,8 +221,18 @@ if (fehler > 0) {
       `Maske steht in Hero.tsx und Reveal.tsx als \`pb-[…em]\`, ausgeglichen durch ` +
       `ein gleich großes negatives \`-mb-[…em]\`.`,
   );
-  process.exit(1);
 }
+
+if (nichtMessbar > 0) {
+  console.error(
+    `\n${nichtMessbar} ${nichtMessbar === 1 ? "Wort stand" : "Wörter standen"} beim ` +
+      `Messen noch verschoben. Das ist kein Befund ` +
+      `an der Schrift, sondern einer am Lauf: Die Wartebedingung oben hat die ` +
+      `Bewegung nicht abgewartet.`,
+  );
+}
+
+if (fehler > 0 || nichtMessbar > 0) process.exit(1);
 
 console.log(
   `Keine abgeschnittene Unterlänge: ${pfade.length} Seiten × ${BREITEN.length} Breiten geprüft.`,
