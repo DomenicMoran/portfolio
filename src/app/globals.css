@@ -487,6 +487,19 @@ textarea:-webkit-autofill {
     overflow: visible !important;
   }
 
+  /* Zwei nebeneinander statt jede Aufnahme auf einer eigenen Seite.
+     Umgewickelt in voller Breite wuchs der Ausdruck der Startseite von 15 auf
+     26 Seiten, elf davon nur Bildschirmfotos. Vollständig muss er sein,
+     aufgebläht nicht. */
+  .shot-track > li {
+    flex: 0 1 48%;
+  }
+
+  .shot-track > li > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   /* Durchsichtiger Text hat auf Papier keine Reserve mehr.
      Am Bildschirm liegt `text-ink-faint/70` auf einer dunklen Fläche und
      bleibt gut lesbar. Gedruckt steht derselbe Wert auf Weiß, und die 30 %
