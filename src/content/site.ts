@@ -473,7 +473,7 @@ export const caseStudies: CaseStudy[] = [
     index: "02",
     name: "MenuCloud Berlin",
     tagline: "Multi-Tenant-SaaS für Gastronomie, inklusive gesetzlicher Fiskalisierung",
-    year: "2025–2026",
+    year: "2026",
     role: "Gründer & alleiniger Entwickler",
     status: "live",
     statusLabel: "Live in Produktion",
