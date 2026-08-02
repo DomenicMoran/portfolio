@@ -1,5 +1,5 @@
 import { ContentProvider } from "@/content/ContentProvider";
-import type { Content } from "@/content/types";
+import { SOCIALS, type Content } from "@/content/types";
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
@@ -22,9 +22,17 @@ import { Contact } from "@/components/sections/Contact";
  * nach der Hydration.
  */
 export function SitePage({ content }: { content: Content }) {
-  const schema = {
-    "@context": "https://schema.org",
+  /**
+   * Die Person, verpackt in die Seite, die sie beschreibt.
+   *
+   * Bisher stand hier ein bloßes `Person`-Objekt. `ProfilePage` ist der Typ,
+   * den Suchmaschinen für genau diesen Fall vorsehen — eine Seite, deren
+   * Gegenstand ein Mensch ist —, und Antwortmaschinen lesen daraus, dass die
+   * Angaben zusammengehören statt zufällig nebeneinanderzustehen.
+   */
+  const person = {
     "@type": "Person",
+    "@id": `${content.site.url}#person`,
     name: content.site.name,
     jobTitle: content.site.role,
     description: content.site.meta.description,
@@ -35,7 +43,10 @@ export function SitePage({ content }: { content: Content }) {
       addressLocality: "Berlin",
       addressCountry: "DE",
     },
-    sameAs: ["https://github.com/DomenicMoran"],
+    /* Aus dem Inhalt statt fest verdrahtet, und ohne leere Einträge.
+       LinkedIn fehlte hier: Genau dieser Verweis verbindet für eine Maschine
+       das Profil mit der Seite, und ohne ihn bleiben es zwei Personen. */
+    sameAs: [SOCIALS.github, SOCIALS.linkedin].filter(Boolean),
     knowsAbout: [
       "TypeScript",
       "React",
@@ -46,12 +57,30 @@ export function SitePage({ content }: { content: Content }) {
       "Stripe Connect",
       "KassenSichV",
     ],
+    /* Der Anwendungstyp kommt aus den Verweisen der Fallstudie, nicht aus
+       einer Pauschale. Vorher stand an jedem Produkt "WebApplication", auch
+       an denen, die in beiden Stores liegen — falsch für Salati und
+       MenuCloud und damit genau die Sorte Angabe, die eine Maschine
+       übernimmt und weiterreicht. */
     subjectOf: content.caseStudies.map((study) => ({
       "@type": "SoftwareApplication",
       name: study.name,
       description: study.tagline,
-      applicationCategory: "WebApplication",
+      /* Ein Store-Verweis heißt: Es gibt eine App. Mehr wird hier nicht
+         behauptet — `operatingSystem` stand einen Bau lang mit drin und war
+         unvollständig, weil je Fallstudie nur einer der beiden Stores
+         verlinkt ist, obwohl Salati und MenuCloud in beiden liegen. Eine
+         halbe Angabe wird von einer Maschine als ganze weitergereicht. */
+      applicationCategory: study.links.some((l) => l.kind === "store" && l.href)
+        ? "MobileApplication"
+        : "WebApplication",
     })),
+  };
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    mainEntity: person,
   };
 
   // Das Objekt oben besteht ausschließlich aus lokalen Konstanten. `<` wird

@@ -63,7 +63,36 @@ export function ArticlePage({
     publisher: { "@type": "Person", name: content.site.name },
     mainEntityOfPage: `${content.site.url}${chrome.base}/${article.slug}`,
   };
-  const json = JSON.stringify(schema).replace(/</g, "\\u003c");
+  /**
+   * Der Weg zur Seite, maschinenlesbar.
+   *
+   * Der Artikel wusste bisher nichts über seinen Ort: kein Verweis auf die
+   * Übersicht, keiner auf die Startseite. Suchmaschinen zeigen daraus die
+   * Pfadzeile unter dem Treffer, und Antwortmaschinen erkennen, dass hier eine
+   * Reihe von fünf Texten steht und kein einzelner Fund. Sichtbar gab es den
+   * Weg längst — der Zurück-Verweis oben trägt ihn —, nur nicht als Angabe.
+   */
+  const brotkrumen = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: content.site.name,
+        item: `${content.site.url}${heim}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: chrome.title,
+        item: `${content.site.url}${chrome.base}`,
+      },
+      { "@type": "ListItem", position: 3, name: article.title },
+    ],
+  };
+
+  const json = JSON.stringify([schema, brotkrumen]).replace(/</g, "\\u003c");
 
   return (
     <ContentProvider content={content}>
