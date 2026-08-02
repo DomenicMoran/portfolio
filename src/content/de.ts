@@ -149,7 +149,11 @@ export const de: Content = {
         {
           value: String(salatiTage),
           label: "Tage",
-          note: `erster Commit am 16.04.2026 bis zum Prüfdatum ${datumLang(verified.date)}`,
+          // Beide Daten in derselben Schreibweise. In einem Satz standen
+          // "16.04.2026" und "2. August 2026" nebeneinander — zwei Formate
+          // für dieselbe Sache, und das auf einer Seite, deren Argument
+          // Genauigkeit ist. Die englische Fassung war schon einheitlich.
+          note: `erster Commit am ${datumLang(SALATI_ERSTER_COMMIT)} bis zum Prüfdatum ${datumLang(verified.date)}`,
         },
         {
           value: String(SALATI_VERSIONEN),
