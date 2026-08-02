@@ -328,6 +328,36 @@ export function OnePager({
         >
           {onepager.back}
         </Link>
+
+        {/* Impressum und Datenschutz, weil § 5 DDG sie von jeder Seite des
+            Angebots aus unmittelbar erreichbar verlangt.
+
+            Gemessen am 02.08.2026 an elf ausgelieferten Adressen: /onepager
+            und /en/onepager waren die einzigen öffentlichen Seiten ohne
+            beide Verweise — und genau diese Adresse verschickt man an
+            Recruiter.
+
+            Nur am Bildschirm: `no-print` sitzt schon am umgebenden Kasten.
+            Auf dem Blatt selbst steht das Impressum nicht, dort trägt die
+            Fußzeile die Adresse der Webseite. */}
+        <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
+          &middot;
+        </span>
+        <Link
+          href="/impressum"
+          className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
+        >
+          {inhalt.footer.impressum}
+        </Link>
+        <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
+          &middot;
+        </span>
+        <Link
+          href="/datenschutz"
+          className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
+        >
+          {inhalt.footer.datenschutz}
+        </Link>
       </div>
     </main>
   );
