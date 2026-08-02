@@ -274,7 +274,7 @@ export const en: Content = {
       index: "02",
       name: "MenuCloud Berlin",
       tagline: "Multi-tenant SaaS for restaurants, including statutory fiscal signing",
-      year: "2025–2026",
+      year: "2026",
       role: "Founder & sole developer",
       statusLabel: "Live in production",
       accent: "violet",

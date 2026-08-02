@@ -1049,6 +1049,77 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
 
 /* ---------------------------------------------------------------------------
+   Die Jahresangabe einer Fallstudie gegen die Repo-Historie
+   ---------------------------------------------------------------------------
+
+   Der One-Pager wies MenuCloud als "2025–2026" aus, und die Fallstudie
+   ebenso, in beiden Sprachen. Der erste Commit des Repos stammt vom
+   26.03.2026 ("Initialize MenuCloud Berlin Web Application"), vor 2026 gibt
+   es null Commits. Zugleich stand auf derselben Seite "über 4.000 Commits
+   seit März 2026" und "in vier Monaten" — die Angabe widersprach sich
+   innerhalb eines Blattes.
+
+   Geprüft wird deshalb das früheste Jahr jeder Angabe gegen den ersten
+   Commit des zugehörigen Repos. Ein späteres Endjahr ist erlaubt: Die
+   Arbeit läuft weiter. Ein früheres Anfangsjahr ist es nicht. */
+{
+  const zuRepo = {
+    salati: resolve("../../SalatiTech"),
+    menucloud: resolve("../../MenuCloud"),
+    nouri: resolve("../../NOURI"),
+  };
+
+  const quelle = readFileSync("src/content/site.ts", "utf8");
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const [id, repo] of Object.entries(zuRepo)) {
+    const block = quelle.slice(quelle.indexOf(`id: "${id}"`));
+    const jahr = /year:\s*"([^"]+)"/.exec(block)?.[1];
+    if (!jahr) continue;
+    const angegeben = Number(jahr.match(/\d{4}/)?.[0]);
+    if (!angegeben) continue;
+
+    if (!existsSync(join(repo, ".git"))) {
+      uebersprungen++;
+      continue;
+    }
+
+    let erstes;
+    try {
+      erstes = Number(
+        execFileSync("git", ["-C", repo, "log", "--reverse", "--format=%ad", "--date=format:%Y"], {
+          encoding: "utf8",
+        })
+          .split("\n")[0]
+          .trim(),
+      );
+    } catch {
+      uebersprungen++;
+      continue;
+    }
+
+    geprueft++;
+    if (angegeben < erstes) {
+      funde.push(`${id}: Seite sagt ${jahr}, erster Commit ${erstes}`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Jahresangabe(n) vor dem ersten Commit:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (uebersprungen) {
+    zeilen.push(`  --  Jahresangaben: ${uebersprungen} Repo(s) nicht da, übersprungen`);
+  } else {
+    zeilen.push(
+      `  ok  Jahresangaben          ${String(geprueft).padStart(6)} Fallstudien nicht vordatiert`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Sicherheitskontaktdatei läuft nicht ab
    ---------------------------------------------------------------------------
 
