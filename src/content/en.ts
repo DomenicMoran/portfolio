@@ -788,7 +788,8 @@ export const en: Content = {
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       {
         label: "Looking for",
-        value: "A remote product team where one person owns a feature all the way to production",
+        value:
+          "A remote product team that works async: own a feature into production, few meetings, decide in writing",
       },
       { label: "Location", value: "Berlin · remote EU" },
       { label: "Available", value: "Open to talk now · start after notice period" },

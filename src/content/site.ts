@@ -882,7 +882,13 @@ export const recruiter = {
     // ich will.
     {
       label: "Suche",
-      value: "Remote-Produktteam, in dem eine Person ein Feature bis in Produktion besitzt",
+      // Die Zeile nennt jetzt auch die Arbeitsweise, nicht nur den Zuschnitt
+      // der Rolle. Wer async-first arbeitet und wenig Meetings hält, schreibt
+      // das in seine Anzeige — und sucht jemanden, der es ebenso benennt. Die
+      // Rolle allein trifft auch Teams, in denen der Kalender die Arbeit
+      // bestimmt, und das ist nicht dasselbe.
+      value:
+        "Remote-Produktteam, das async arbeitet: ein Feature bis in Produktion besitzen, wenig Meetings, schriftlich entscheiden",
     },
     { label: "Standort", value: "Berlin · Remote EU" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
