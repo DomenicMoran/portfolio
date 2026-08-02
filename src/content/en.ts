@@ -73,6 +73,28 @@ function asWord(n: number) {
 /** "four months", "five months", … — never a frozen value. */
 const buildTime = `${asWord(monthsSinceStart())} month${monthsSinceStart() === 1 ? "" : "s"}`;
 
+/* Dieselbe Spanne für die Überschrift, groß geschrieben. Sie stand als
+   Zeichenkette da („Four months shipping"), zwei Zeilen über einem Absatz, der
+   dieselbe Spanne rechnet — ab dem 26. des übernächsten Monats hätten beide
+   verschiedene Zahlen gesagt. */
+function capitalise(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+const buildTimeTitle = capitalise(buildTime);
+
+/* Der Lernweg beginnt mit den Kurszertifikaten von Juli 2022. „Four years"
+   war beim Schreiben richtig und wäre 2027 zu niedrig. */
+const LEARNING_START = "2022-07-01";
+const learningYears = capitalise(
+  asWord(
+    Math.max(
+      1,
+      new Date(verified.date).getFullYear() - new Date(LEARNING_START).getFullYear(),
+    ),
+  ) + " years",
+);
+
 export const en: Content = {
   lang: "en",
   site: {
@@ -396,7 +418,7 @@ export const en: Content = {
           src: "/shots/menucloud-desktop.png",
           alt: "Home page of menucloud-berlin.de promising zero commission, GDPR and cash-register compliance, with a preview of the self-service admin.",
           width: 1440,
-          height: 900,
+          height: 1466,
           label: "menucloud-berlin.de",
         },
         {
@@ -489,9 +511,9 @@ export const en: Content = {
       shots: [
         {
           src: "/shots/nouri-desktop.png",
-          alt: "Home page of the NOURI platform showing the recipe catalogue, weekly planning and training section.",
+          alt: "Home page of the NOURI platform: language switch, headline and the buttons that open the app.",
           width: 1440,
-          height: 900,
+          height: 828,
           label: "nouri-fitness.vercel.app",
         },
       ],
@@ -502,7 +524,7 @@ export const en: Content = {
     eyebrow: "Who I am",
     portrait: "/portrait-dark.jpg",
     portraitPrint: "/portrait.jpg",
-    title: "Four years learning. Four months shipping.",
+    title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
       `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, two of them shipping in both app stores, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",

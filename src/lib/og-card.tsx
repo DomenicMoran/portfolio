@@ -16,7 +16,7 @@ import { Marke } from "@/lib/mark";
  * steht, gibt es sie zwangsläufig nur einmal.
  *
  * Zur Bauzeit erzeugt, also ohne Laufzeitkosten und ohne Schriftabruf von
- * aussen. Der OG-Renderer beherrscht nur einen Teil von CSS; die Karte bildet
+ * außen. Der OG-Renderer beherrscht nur einen Teil von CSS; die Karte bildet
  * das Aussehen der Seite deshalb nach, statt ihre Komponenten zu benutzen.
  */
 
@@ -34,14 +34,14 @@ export type OgKarte = {
 const STACK = ["TypeScript", "React Native", "Next.js", "Postgres", "AI Engineering"];
 
 /**
- * Das Portraet als Datenadresse.
+ * Das Porträt als Datenadresse.
  *
- * Der OG-Renderer laeuft ohne Ursprung und kann `/portrait.jpg` nicht
- * aufloesen; eine absolute Adresse waere ein Abruf nach aussen zur Bauzeit.
+ * Der OG-Renderer läuft ohne Ursprung und kann `/portrait.jpg` nicht
+ * auflösen; eine absolute Adresse wäre ein Abruf nach außen zur Bauzeit.
  * Die Datei wird deshalb eingelesen und eingebettet — 320 Pixel, 12 kB, mehr
  * braucht ein Kreis von 150 Pixeln nicht.
  *
- * Warum ueberhaupt: Eine Vorschaukarte mit Gesicht wird auf LinkedIn anders
+ * Warum überhaupt: Eine Vorschaukarte mit Gesicht wird auf LinkedIn anders
  * gelesen als eine mit Buchstaben. Der Anlass, sie zu teilen, ist eine
  * Bewerbung, und dort steht am anderen Ende ein Mensch.
  */
@@ -111,7 +111,7 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
         <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
           {/* Kein `next/image` und kein `alt`: Diese Baumstruktur wird nicht
               als HTML ausgeliefert, sondern von Satori zu einem PNG gerendert.
-              Es gibt kein Vorleseprogramm, das ein `alt` lesen koennte, und
+              Es gibt kein Vorleseprogramm, das ein `alt` lesen könnte, und
               keinen Bildoptimierer, der hier liefe. */}
           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
           <img

@@ -60,10 +60,16 @@ jobs:
       - name: Datenschutz
         run: npm run check:privacy
 
-      # vercel.json wird vom Bau nicht gelesen: Ein Tippfehler im Schluessel
-      # oder eine Aenderung ueber die Weboberflaeche faellt nirgends auf.
+      # vercel.json wird vom Bau nicht gelesen: Ein Tippfehler im Schlüssel
+      # oder eine Änderung über die Weboberfläche fällt nirgends auf.
       # Gemessen wird deshalb die Antwort der Live-Adresse.
-      - name: Schutz-Kopfzeilen
+      #
+      # Und genau deshalb nicht auf Pull Requests: Der Lauf misst, was gerade
+      # ausgeliefert wird, nicht den Stand des Zweigs. Ein Pull Request könnte
+      # sonst grün werden, obwohl er die Kopfzeilen zerschießt, und rot, obwohl
+      # er nichts damit zu tun hat.
+      - name: Schutz-Kopfzeilen der Auslieferung
+        if: github.event_name != 'pull_request'
         run: npm run check:headers
 
       # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand

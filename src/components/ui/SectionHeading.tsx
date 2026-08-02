@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  * Consistent section opener: mono eyebrow, masked headline, optional lede.
  * Every section uses this so vertical rhythm stays identical throughout.
  *
- * `as` waehlt die Überschriftenebene. Auf der Startseite sind alle Sektionen
+ * `as` wählt die Überschriftenebene. Auf der Startseite sind alle Sektionen
  * gleichrangig unter der Hero-Überschrift, also h2. Auf einer eigenen Seite
  * ist dieselbe Überschrift die Hauptüberschrift: Die Artikelübersicht hatte
  * dadurch gar keine h1, gemessen über alle sechs Breiten in beiden Engines.
@@ -28,7 +28,7 @@ export function SectionHeading({
   className?: string;
   children?: ReactNode;
   as?: "h1" | "h2";
-  /** Ueber der Falz: Bewegung als CSS statt als JS-Animation. */
+  /** Über der Falz: Bewegung als CSS statt als JS-Animation. */
   css?: boolean;
 }) {
   return (

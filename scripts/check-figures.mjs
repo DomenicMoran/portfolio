@@ -31,10 +31,10 @@ const OSS = resolve("../oss");
 const INHALT = "src/content/site.ts";
 
 /**
- * vitest direkt mit node starten, nicht ueber npx.
+ * vitest direkt mit node starten, nicht über npx.
  *
  * Mit `shell: true` warnt Node zu Recht, dass Argumente nur verkettet und
- * nicht maskiert werden. Ohne shell laesst sich `npx.cmd` unter Windows gar
+ * nicht maskiert werden. Ohne shell lässt sich `npx.cmd` unter Windows gar
  * nicht starten (EINVAL). Der Einstiegspunkt des Pakets liegt ohnehin im
  * jeweiligen Repo, und ihn direkt aufzurufen umgeht beides.
  */
@@ -49,14 +49,14 @@ function vitestLauf(repo) {
     stdio: ["ignore", "pipe", "ignore"],
   };
 
-  // vitest endet mit Rueckgabewert 1, sobald ein Test rot ist — und
+  // vitest endet mit Rückgabewert 1, sobald ein Test rot ist — und
   // execFileSync wirft dann. Genau der Fall ist aber der interessante: Der
-  // Bericht unten hat einen Zweig fuer rote Tests, der ohne dieses catch nie
-  // erreicht wurde. Statt einer Meldung ueber gescheiterte Tests brach der
+  // Bericht unten hat einen Zweig für rote Tests, der ohne dieses catch nie
+  // erreicht wurde. Statt einer Meldung über gescheiterte Tests brach der
   // Lauf mit einem Stapelabzug ab, in dem die Zahlen als 2 MB JSON steckten.
   //
-  // Der Bericht liegt in beiden Faellen auf stdout, also wird er in beiden
-  // Faellen gelesen.
+  // Der Bericht liegt in beiden Fällen auf stdout, also wird er in beiden
+  // Fällen gelesen.
   try {
     return JSON.parse(execFileSync(process.execPath, [einstieg, "run", "--reporter=json"], optionen));
   } catch (fehler) {
@@ -170,7 +170,7 @@ for (const [paket, muster] of PAKETE) {
   }
   const j = vitestLauf(pfad);
   if (!j) {
-    zeilen.push(`  --  ${paket}: vitest nicht installiert, uebersprungen`);
+    zeilen.push(`  --  ${paket}: vitest nicht installiert, übersprungen`);
     continue;
   }
   vergleiche(paket, j.numTotalTests, ausSeite(muster));
@@ -326,7 +326,7 @@ if (fehlendeRepos.length) {
    * Rückstand von mehr als zwei Prozent (dann ist das Datum daneben wertlos).
    */
   // Die Zahl steht nicht mehr als Text in site.ts, sondern kommt von dort aus
-  // dem Pruefstempel. Gelesen wird deshalb der Stempel selbst.
+  // dem Prüfstempel. Gelesen wird deshalb der Stempel selbst.
   const stempelJetzt = existsSync("src/content/verified.json")
     ? JSON.parse(readFileSync("src/content/verified.json", "utf8"))
     : {};
@@ -361,8 +361,8 @@ if (fehlendeRepos.length) {
    * `src/content/verified.json` hat genau einen Schreiber: den Automaten unter
    * .github/workflows, der über die GitHub-API zählt. Das ist kein Formalismus,
    * sondern der Unterschied zwischen zwei Zahlen. Hier wird lokal gezählt, also
-   * einschliesslich Commits, die auf keinem Server liegen; die Seite lädt
-   * ausdrücklich zum Nachrechnen ein, und nachrechnen kann ein Aussenstehender
+   * einschließlich Commits, die auf keinem Server liegen; die Seite lädt
+   * ausdrücklich zum Nachrechnen ein, und nachrechnen kann ein Außenstehender
    * nur, was bei GitHub liegt.
    *
    * Schriebe dieser Lauf mit, stünde im Stempel eine Zahl, die niemand
@@ -386,7 +386,7 @@ if (fehlendeRepos.length) {
 
    Kein Beinbruch, aber dieselbe Sorte Fehler, gegen die dieses Skript für die
    Webseite gebaut wurde: eine Zahl, die einmal richtig war. Also zählt es sie
-   mit. Der Prüfstand liegt ausserhalb dieses Projekts; fehlt er, wird der
+   mit. Der Prüfstand liegt außerhalb dieses Projekts; fehlt er, wird der
    Block übersprungen statt zu scheitern. */
 
 const PRUEFSTAND = resolve("../pruefstand");
@@ -697,7 +697,7 @@ function ghKonten() {
    wurde. Im Editor und in `git diff` sieht das Muster richtig aus, es trifft
    nur nie — und der Test, der die Schreibweise prüfte, blieb grün.
 
-   Gesucht wird deshalb nach dem Ergebnis: jedes Steuerzeichen ausser
+   Gesucht wird deshalb nach dem Ergebnis: jedes Steuerzeichen außer
    Zeilenumbruch, Wagenrücklauf und Tabulator. Über alle erreichbaren Repos,
    weil dieselbe Sorte Bearbeitung überall stattfindet.
 
@@ -1000,26 +1000,26 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
    Das Profil-README, wie GitHub es zeigt
    ---------------------------------------------------------------------------
 
-   Der Waechter darunter vergleicht Artikeltitel gegen `docs/GITHUB-PROFILE-README.md`
+   Der Wächter darunter vergleicht Artikeltitel gegen `docs/GITHUB-PROFILE-README.md`
    — eine Datei in diesem Rechner, die niemand aufruft. Gerendert wird auf
    GitHub der Inhalt des Repositoriums `DomenicMoran/DomenicMoran`, und beide
-   koennen auseinanderlaufen: Wer dort ueber die Weboberflaeche etwas aendert,
-   aendert die oertliche Datei nicht mit, und ab da prueft der naechste
-   Waechter eine Fassung, die es nirgends gibt.
+   können auseinanderlaufen: Wer dort über die Weboberfläche etwas ändert,
+   ändert die örtliche Datei nicht mit, und ab da prüft der nächste
+   Wächter eine Fassung, die es nirgends gibt.
 
-   Verglichen wird deshalb zuerst die Vorlage gegen das Veroeffentlichte.
-   Zeilenenden und Leerraum am Zeilenende bleiben aussen vor, sonst schlaegt
+   Verglichen wird deshalb zuerst die Vorlage gegen das Veröffentlichte.
+   Zeilenenden und Leerraum am Zeilenende bleiben außen vor, sonst schlägt
    der Lauf unter Windows bei jedem Durchgang an.
 
    Dazu die Zahlen im README: Es nennt je Paket eine Testzahl und "null
-   Abhaengigkeiten". Gezaehlt wird in den oertlichen Klonen unter ../oss —
-   dieselbe Quelle, aus der die Pakete veroeffentlicht sind.
+   Abhängigkeiten". Gezählt wird in den örtlichen Klonen unter ../oss —
+   dieselbe Quelle, aus der die Pakete veröffentlicht sind.
 
-   Ohne Netz wird uebersprungen und das gesagt. */
+   Ohne Netz wird übersprungen und das gesagt. */
 {
   const vorlage = "../docs/GITHUB-PROFILE-README.md";
   if (!existsSync(vorlage)) {
-    zeilen.push("  --  Profil-README: keine Vorlage, uebersprungen");
+    zeilen.push("  --  Profil-README: keine Vorlage, übersprungen");
   } else {
     const oertlich = readFileSync(vorlage, "utf8");
     const glatt = (t) =>
@@ -1029,9 +1029,16 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         .trim();
 
     try {
+      /* Über die API und nicht über raw.githubusercontent.com: Deren
+         Auslieferung liegt hinter einem Zwischenspeicher und zeigte nach
+         einer Änderung noch minutenlang die alte Fassung — der Wächter
+         meldete dann eine Abweichung, die es nicht gab. */
       const antwort = await fetch(
-        "https://raw.githubusercontent.com/DomenicMoran/DomenicMoran/main/README.md",
-        { signal: AbortSignal.timeout(20000) },
+        "https://api.github.com/repos/DomenicMoran/DomenicMoran/contents/README.md",
+        {
+          headers: { accept: "application/vnd.github.raw" },
+          signal: AbortSignal.timeout(20000),
+        },
       );
       if (!antwort.ok) throw new Error(String(antwort.status));
       const veroeffentlicht = await antwort.text();
@@ -1040,7 +1047,7 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         const a = glatt(oertlich).split("\n");
         const b = glatt(veroeffentlicht).split("\n");
         const erste = a.findIndex((z, i) => z !== b[i]);
-        zeilen.push("  !!  Profil-README: Vorlage und Veroeffentlichtes weichen ab");
+        zeilen.push("  !!  Profil-README: Vorlage und Veröffentlichtes weichen ab");
         zeilen.push(`        Zeile ${erste + 1}`);
         zeilen.push(`        hier:    ${(a[erste] ?? "(fehlt)").slice(0, 70)}`);
         zeilen.push(`        auf GitHub: ${(b[erste] ?? "(fehlt)").slice(0, 70)}`);
@@ -1050,10 +1057,10 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         );
       }
     } catch {
-      zeilen.push("  --  Profil-README: GitHub nicht erreichbar, uebersprungen");
+      zeilen.push("  --  Profil-README: GitHub nicht erreichbar, übersprungen");
     }
 
-    /* Die Testzahlen und die Abhaengigkeitsfreiheit je Paket. */
+    /* Die Testzahlen und die Abhängigkeitsfreiheit je Paket. */
     const funde = [];
     let gezaehlt = 0;
     for (const treffer of oertlich.matchAll(
@@ -1062,7 +1069,7 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       const [, paket, behauptet] = treffer;
       const ordner = join("..", "oss", paket);
       if (!existsSync(ordner)) {
-        funde.push(`${paket}: kein Klon unter ../oss, nicht nachzaehlbar`);
+        funde.push(`${paket}: kein Klon unter ../oss, nicht nachzählbar`);
         continue;
       }
       const dateien = readdirSync(join(ordner, "src")).filter((d) => d.endsWith(".test.ts"));
@@ -1072,11 +1079,11 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         0,
       );
       if (String(echt) !== behauptet) {
-        funde.push(`${paket}: README sagt ${behauptet} Tests, gezaehlt ${echt}`);
+        funde.push(`${paket}: README sagt ${behauptet} Tests, gezählt ${echt}`);
       }
       const manifest = JSON.parse(readFileSync(join(ordner, "package.json"), "utf8"));
       const abh = Object.keys(manifest.dependencies ?? {}).length;
-      if (abh > 0) funde.push(`${paket}: README sagt null Abhaengigkeiten, es sind ${abh}`);
+      if (abh > 0) funde.push(`${paket}: README sagt null Abhängigkeiten, es sind ${abh}`);
       gezaehlt++;
     }
 
@@ -1086,7 +1093,7 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        `  ok  Paketzahlen im README ${String(gezaehlt).padStart(6)} Pakete: Tests und Abhaengigkeiten stimmen`,
+        `  ok  Paketzahlen im README ${String(gezaehlt).padStart(6)} Pakete: Tests und Abhängigkeiten stimmen`,
       );
     }
   }
@@ -1216,21 +1223,21 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
-   Jede Bestaetigungsseite eines Zertifikats antwortet und traegt den Namen
+   Jede Bestätigungsseite eines Zertifikats antwortet und trägt den Namen
    ---------------------------------------------------------------------------
 
-   Die Seite sagt, alle zehn Zertifikate seien beim Aussteller pruefbar, und
+   Die Seite sagt, alle zehn Zertifikate seien beim Aussteller prüfbar, und
    das Zertifikate-Repository schreibt dazu: "Die PDF daneben ist nur die
-   Kopie — massgeblich ist der Link, weil eine PDF sich faelschen laesst und
-   eine Bestaetigungsseite nicht." Genau dieser Satz macht den Link zum
-   staerksten Beleg der Seite und zum teuersten Verlust, wenn er stirbt.
+   Kopie — maßgeblich ist der Link, weil eine PDF sich fälschen lässt und
+   eine Bestätigungsseite nicht." Genau dieser Satz macht den Link zum
+   stärksten Beleg der Seite und zum teuersten Verlust, wenn er stirbt.
 
-   Geprueft wird nicht nur der Statuscode: Eine Bestaetigungsseite, die 200
-   antwortet, aber den Namen nicht mehr enthaelt, ist kein Nachweis. Der
-   Udemy-Kurznachweis bleibt aussen vor, er steht hinter einer Bot-Pruefung
-   und antwortet einer Maschine grundsaetzlich mit 403.
+   Geprüft wird nicht nur der Statuscode: Eine Bestätigungsseite, die 200
+   antwortet, aber den Namen nicht mehr enthält, ist kein Nachweis. Der
+   Udemy-Kurznachweis bleibt außen vor, er steht hinter einer Bot-Prüfung
+   und antwortet einer Maschine grundsätzlich mit 403.
 
-   Ohne Netz wird uebersprungen und das gesagt, nicht stillschweigend
+   Ohne Netz wird übersprungen und das gesagt, nicht stillschweigend
    bestanden. */
 {
   const ids = [...quelle.matchAll(/coursera\.org\/verify\/([A-Z0-9]+)/g)].map((m) => m[1]);
@@ -1257,10 +1264,10 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Zertifikatsnachweis(e) auffaellig:`);
+    zeilen.push(`  !!  ${funde.length} Zertifikatsnachweis(e) auffällig:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (uebersprungen) {
-    zeilen.push(`  --  Zertifikatsnachweise: ${uebersprungen} nicht erreichbar, uebersprungen`);
+    zeilen.push(`  --  Zertifikatsnachweise: ${uebersprungen} nicht erreichbar, übersprungen`);
   } else {
     zeilen.push(
       `  ok  Zertifikatsnachweise   ${String(geprueft).padStart(6)} Seiten antworten mit dem Namen`,

@@ -90,9 +90,11 @@ npx tsc --noEmit   # Typecheck
 npx eslint .       # Lint
 ```
 
-Nach dem Bau laufen drei Prüfungen, die den Bau nicht ersetzt. Sie messen an
-der gebauten Seite und nicht am Quelltext, und derselbe Workflow führt sie bei
-jedem Push aus:
+Nach dem Bau laufen sechs Prüfungen, die den Bau nicht ersetzen. Fünf davon
+messen an der gebauten Seite und nicht am Quelltext; `check:headers` misst an
+der Auslieferung, weil `vercel.json` vom Bau gar nicht gelesen wird — und läuft
+deshalb auf Pull Requests nicht mit. Derselbe Workflow führt sie bei jedem Push
+aus:
 
 ```bash
 npm run check:a11y      # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
@@ -129,13 +131,16 @@ src/
 │  │  ├─ (legal)/            Impressum + Datenschutz (geteiltes Layout)
 │  │  ├─ artikel/            Übersicht, Einzelseiten, Atom-Feed, OG-Bilder
 │  │  ├─ onepager/           A4-Route, wird zum PDF
-│  │  ├─ not-found.tsx       404 innerhalb des Layouts
 │  │  └─ page.tsx            Startseite (Server Component)
 │  ├─ (en)/en/               englische Fassung, zweites Wurzel-Layout
-│  │  └─ onepager/           dasselbe Blatt auf Englisch, eigenes PDF
+│  │  ├─ articles/           dieselben Artikel auf Englisch, eigener Feed
+│  │  ├─ onepager/           dasselbe Blatt auf Englisch, eigenes PDF
+│  │  └─ opengraph-image/    als Route, damit die Adresse ohne Hash feststeht
+│  ├─ .well-known/           security.txt nach RFC 9116, Datum aus dem Bau
 │  ├─ global-not-found.tsx   404 ohne Layout — bei zwei Wurzel-Layouts nötig
 │  ├─ humans.txt/route.ts    liest denselben Prüfstempel wie die Seite
-│  ├─ icon.tsx               Favicon als Monogramm
+│  ├─ llms.txt/route.ts      dieselbe Seite als Text für Sprachmodelle
+│  ├─ icon.tsx · apple-icon.tsx   Symbole aus derselben Form wie die Marke
 │  ├─ opengraph-image.tsx    Social-Card, zur Bauzeit erzeugt
 │  ├─ robots.ts · sitemap.ts
 │  └─ globals.css
@@ -147,7 +152,10 @@ src/
 │  ├─ article/               ArticleIndex · ArticlePage · Prose
 │  ├─ providers/             MotionProvider · SmoothScroll
 │  ├─ ArchitectureDiagram.tsx
+│  ├─ RootDocument.tsx       das <html>-Gerüst, das sich beide Layouts teilen
+│  ├─ SitePage.tsx           die Sektionsfolge, beide Sprachen rendern dieselbe
 │  ├─ OnePager.tsx           das A4-Blatt, beide Sprachen rendern dasselbe
+│  ├─ Nav.tsx · Footer.tsx · NotFoundPage.tsx
 │  ├─ CommandPalette.tsx
 │  ├─ ConsoleGreeting.tsx    Nachricht für die Entwicklerkonsole
 │  └─ SiteShell.tsx          Client-Insel: hält den Palette-State
@@ -155,21 +163,28 @@ src/
 │  ├─ site.ts                deutsche Quelle: jeder Text, jede Zahl
 │  ├─ de.ts · en.ts          Adapter je Sprache, gegen types.ts deklariert
 │  ├─ types.ts               gemeinsame Form — fehlt ein Feld, bricht der Bau
+│  ├─ ContentProvider.tsx    reicht die Sprachfassung an die Client-Sektionen
 │  ├─ articles/              fünf Fachartikel je Sprache, getippte Blöcke
 │  └─ verified.json          Prüfstempel, nur vom Workflow geschrieben
-└─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks
+└─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks · Marke · OG-Karte
 
 scripts/
 ├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
-├─ check-figures.mjs              zählt die Zahlen der Seite gegen die Repos nach
+├─ check-a11y.mjs                 axe-core gegen jede gebaute Seite, zwei Breiten
+├─ check-privacy.mjs              keine Seite baut eine Verbindung nach außen auf
+├─ check-headers.mjs              die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 ├─ check-print.mjs                prüft jede gebaute Seite in der Druckansicht
+├─ check-headings.mjs             keine Überschrift schneidet ihre Unterlängen ab
 ├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
+├─ check-figures.mjs              zählt die Zahlen der Seite gegen die Repos nach
 ├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
 ├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
-└─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
+├─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
+├─ build-favicon.mjs              erzeugt favicon.ico aus derselben Form wie die Marke
+└─ lib/local-server.mjs           startet den gebauten Stand auf einem freien Port
 
 .github/workflows/
-├─ check.yml                      Typen, Linter und Bau bei jedem Push
+├─ check.yml                      Typen, Linter, Bau und die sechs Prüfungen
 └─ refresh-figures.yml            zählt täglich nach und liefert aus
 ```
 
@@ -185,7 +200,7 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
 - Vollständiger Header-Satz in [`vercel.json`](vercel.json): HSTS mit Preload,
   CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`,
   `Permissions-Policy`, `X-DNS-Prefetch-Control`
-- [`/.well-known/security.txt`](public/.well-known/security.txt) für Meldungen
+- [`/.well-known/security.txt`](https://domenicmoran.de/.well-known/security.txt) für Meldungen
 
 ### Zur CSP: eine bewusste Abwägung
 

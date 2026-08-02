@@ -124,10 +124,10 @@ export type Content = {
     eyebrow: string;
     portrait: string;
     /**
-     * Dieselbe Aufnahme auf hellem Grund, fuer Papier.
+     * Dieselbe Aufnahme auf hellem Grund, für Papier.
      *
-     * Am Bildschirm steht die Seite auf fast Schwarz, und ein Portraet mit
-     * heller Wand ist darin die einzige helle Flaeche weit und breit — es
+     * Am Bildschirm steht die Seite auf fast Schwarz, und ein Porträt mit
+     * heller Wand ist darin die einzige helle Fläche weit und breit — es
      * sieht aufgeklebt aus. Gedruckt ist es genau umgekehrt.
      */
     portraitPrint: string;
