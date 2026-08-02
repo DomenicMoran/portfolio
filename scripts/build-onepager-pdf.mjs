@@ -27,10 +27,8 @@
  */
 
 import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { spawn } from "node:child_process";
-import { createServer } from "node:net";
-import { join } from "node:path";
 import { chromium } from "playwright";
+import { starteServer } from "./lib/local-server.mjs";
 
 /**
  * Zwei Blätter, eines je Sprache.
@@ -49,64 +47,12 @@ const vorgegebeneBasis = process.argv[2];
 
 mkdirSync("public", { recursive: true });
 
-/** Einen Port suchen, den gerade niemand hält. */
-async function freierPort() {
-  return new Promise((fertig, scheitern) => {
-    const horcher = createServer();
-    horcher.unref();
-    horcher.on("error", scheitern);
-    horcher.listen(0, "127.0.0.1", () => {
-      const { port } = horcher.address();
-      horcher.close(() => fertig(port));
-    });
-  });
-}
-
-/** Wartet, bis die Adresse antwortet — oder gibt nach `versuche` auf. */
-async function warteAufAntwort(adresse, versuche = 60) {
-  for (let i = 0; i < versuche; i++) {
-    try {
-      const antwort = await fetch(adresse, { signal: AbortSignal.timeout(1000) });
-      if (antwort.ok) return true;
-    } catch {
-      // Noch nicht oben. Nächster Versuch.
-    }
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  return false;
-}
-
-let server = null;
+let beenden = () => {};
 let basis = vorgegebeneBasis;
 
 if (!basis) {
-  const port = await freierPort();
-  basis = `http://127.0.0.1:${port}`;
-  // Next direkt mit Node starten, nicht über npx.
-  //
-  // Mit `shell: true` warnt Node zu Recht, dass Argumente nur verkettet und
-  // nicht maskiert werden. Ohne Shell lässt sich `npx.cmd` unter Windows seit
-  // Node 20 gar nicht mehr starten. Der Einstiegspunkt liegt ohnehin im Repo,
-  // und ihn direkt aufzurufen umgeht beides — dasselbe Muster wie in
-  // check-figures.mjs für vitest.
-  server = spawn(process.execPath, [join("node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port)], {
-    stdio: "ignore",
-  });
-  if (!(await warteAufAntwort(`${basis}/onepager`))) {
-    server.kill();
-    throw new Error(`Der eigene Server auf ${basis} kam nicht hoch.`);
-  }
+  ({ basis, beenden } = await starteServer());
 }
-
-/** Den selbst gestarteten Server in jedem Fall wieder beenden. */
-function serverBeenden() {
-  if (server && !server.killed) server.kill();
-}
-process.on("exit", serverBeenden);
-process.on("SIGINT", () => {
-  serverBeenden();
-  process.exit(130);
-});
 
 const browser = await chromium.launch();
 const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
@@ -189,5 +135,6 @@ for (const blatt of BLAETTER) {
 }
 
 await browser.close();
+beenden();
 
 if (fehler > 0) process.exit(1);
