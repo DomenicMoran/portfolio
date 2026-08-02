@@ -58,6 +58,8 @@ export type ArticleChrome = {
   readingTime: (m: number) => string;
   backToIndex: string;
   evidenceLabel: string;
+  /** Name des Codekastens für Vorleseprogramme, wenn er keine Bildunterschrift hat. */
+  codeLabel: string;
   publishedLabel: string;
   allArticles: string;
   /** Teaser auf der Startseite. */

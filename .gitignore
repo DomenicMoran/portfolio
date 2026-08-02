@@ -57,3 +57,7 @@ _dep.log
 
 # Arbeitsbäume und Sitzungsdaten von Agenten gehören nicht ins Repo.
 .claude/
+
+# Wegwerf-Skripte einer Prüfrunde. Sie greifen auf Nachbarrepos und auf die
+# private Lernplattform zu und haben in einem öffentlichen Repo nichts verloren.
+scripts/tmp-*
