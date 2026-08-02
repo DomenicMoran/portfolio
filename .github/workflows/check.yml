@@ -37,3 +37,25 @@ jobs:
       # Typ deklariert ist wie die deutsche Fassung.
       - name: Bau
         run: npm run build
+
+      # Lesezeit vor dem Browser, weil sie ihn nicht braucht: reine Zählung
+      # gegen die angegebene Minutenzahl je Artikel.
+      - name: Lesezeiten
+        run: npm run check:reading
+
+      # Chromium nur, wenn er gebraucht wird — die beiden folgenden Schritte
+      # messen an der gebauten Seite, nicht am Quelltext.
+      - name: Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand
+      # ansieht: Die Startseite kam einmal als 15 fast leere Seiten aus dem
+      # Drucker, weil die Einblendungen auf ein Hineinscrollen warten, das
+      # beim Drucken nie stattfindet.
+      - name: Druckbild
+        run: npm run check:print
+
+      # Unterlängen: g, y und p standen unten angeschnitten in den
+      # Masken-Reveals, weil die Zeilenbox knapper war als die Schrift.
+      - name: Unterlängen
+        run: npm run check:headings
