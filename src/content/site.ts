@@ -145,7 +145,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, zwei davon mit Apps in beiden Stores, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, drei Apps in den Stores und zwei davon in beiden, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -458,9 +458,9 @@ export const caseStudies: CaseStudy[] = [
       { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
       // Nachgeprüft am 01.08.2026: Der App-Store-Eintrag existiert unter
       // id6791867298, zuletzt Version 1.46.0. Auf Google Play gibt es unter dem
-      // Paketnamen de.salatibox.de keinen oeffentlichen Eintrag, und eine
+      // Paketnamen de.salatibox.de keinen öffentlichen Eintrag, und eine
       // Suche nach "Salatibox" liefert nichts. Deshalb steht hier nur der
-      // Store, der wirklich erreichbar ist. Sobald Android oeffentlich ist,
+      // Store, der wirklich erreichbar ist. Sobald Android öffentlich ist,
       // kommt die Zeile dazu und das Statuswort wieder auf beide Stores.
       {
         label: "App Store",
@@ -618,9 +618,10 @@ export const caseStudies: CaseStudy[] = [
       { value: "812", label: "DB-Migrationen" },
       { value: "7.437", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
-      // TODO(domenic): Kunden, MRR, GMV oder Uptime — jede dieser Zahlen
-      // ersetzt eine Behauptung durch einen Beleg. Steht in USER-TODO unter
-      // "Optional", weil sie niemand erfinden kann.
+      // Kunden, MRR, GMV oder Uptime würden hier eine Behauptung durch einen
+      // Beleg ersetzen. Sie stehen bewusst nicht da: Erfinden kommt nicht in
+      // Frage, und solange die Zahl nicht nachzählbar ist, bleibt die Zeile
+      // leer statt ungefähr.
     ],
     links: [
       { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },
@@ -947,7 +948,7 @@ export const recruiter = {
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung, keine Freiberuflichkeit" },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
-    // Entscheidung statt als Lücke, siehe USER-TODO Block D.
+    // Entscheidung statt als Lücke.
     { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
   ],
   strengths: [

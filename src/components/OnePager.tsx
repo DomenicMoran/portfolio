@@ -172,20 +172,20 @@ export function OnePager({
               `text-inherit` und keine Unterstreichung: Am Bildschirm und auf
               Papier sieht die Zeile aus wie vorher, sie lässt sich nur
               zusätzlich anklicken. */}
-          {/* Die Trefferflaeche der Kontaktzeilen.
+          {/* Die Trefferfläche der Kontaktzeilen.
 
               axe meldete sie mit 174 x 18 px als zu klein: WCAG 2.2 AA
               verlangt 24 x 24 px, und jede dieser Zeilen steht allein in
-              ihrem Absatz, faellt also nicht unter die Ausnahme fuer Verweise
+              ihrem Absatz, fällt also nicht unter die Ausnahme für Verweise
               mitten im Satz.
 
-              `py-1` mit gleich grossem `-my-1` allein reichte nicht: Die
-              Flaechen benachbarter Zeilen ueberlappten sich dann, und axe
+              `py-1` mit gleich großem `-my-1` allein reichte nicht: Die
+              Flächen benachbarter Zeilen ueberlappten sich dann, und axe
               misst den freien Platz, nicht die Box — gemeldet blieben
               22,8 px. Erst mit einem Zeilenabstand von 26 px statt der 22,75
-              aus `leading-relaxed` steht jede Zeile fuer sich.
+              aus `leading-relaxed` steht jede Zeile für sich.
 
-              Die Zeile bleibt optisch stehen; das Blatt waechst um zwoelf
+              Die Zeile bleibt optisch stehen; das Blatt wächst um zwölf
               Pixel und bleibt eine Seite. */}
           <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
             <p>{site.location}</p>
@@ -362,9 +362,9 @@ export function OnePager({
       </article>
 
       <div className="no-print mx-auto max-w-[820px] px-8 pb-16">
-        {/* -my-2/py-2 bringt die Trefferflaeche von gemessenen 18 px auf
+        {/* -my-2/py-2 bringt die Trefferfläche von gemessenen 18 px auf
             34 px, ohne die Zeile optisch zu verschieben. Ein eigenstaendiger
-            Link faellt nicht unter die Inline-Ausnahme von WCAG 2.5.8. */}
+            Link fällt nicht unter die Inline-Ausnahme von WCAG 2.5.8. */}
         <Link
           href={sprache === "de" ? "/" : "/en"}
           className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"

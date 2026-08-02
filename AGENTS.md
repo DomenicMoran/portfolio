@@ -93,8 +93,9 @@ Platzhalter rendern. Muster:
 Grund: Diese Seite verkauft Glaubwürdigkeit. Ein sichtbares „Lorem ipsum" oder
 ein toter Link kostet mehr, als das fehlende Element je gebracht hätte.
 
-Offene Datenpunkte werden als `TODO(domenic)` markiert und verweisen auf den
-Abschnitt in `USER-TODO.md`, der sie liefert.
+Offene Datenpunkte werden als `TODO(domenic)` markiert. Was nur der Inhaber
+liefern kann, steht gesammelt in `USER-TODO.md` — und diese Datei enthält
+ausschließlich das.
 
 ## Bewegung
 
@@ -144,6 +145,19 @@ mitliest. Wer die Form ändert, ruft den Lauf hinterher auf.
 Vorher gab es zwei Marken: dunkler Buchstabe auf grüner Fläche in der
 Kopfleiste, grüner auf dunkler im Lesezeichen. So entsteht das — nicht durch
 eine Entscheidung, sondern durch eine zweite Stelle.
+
+## Das Porträt
+
+Dasselbe in Grün, nur mit einem Foto: Es liegt an drei Stellen — groß auf der
+Seite (`public/portrait-dark.jpg`), klein auf dem One-Pager
+(`public/portrait.jpg`), eingebettet in der Vorschaukarte
+(`src/lib/og-portrait.jpg`). Alle drei schreibt `npm run build:portrait` aus
+den Originalen in `../assets/pb/`, die bewusst neben dem Repo liegen: 3,1 MB
+verlustfreies PNG liefert niemand aus.
+
+Wer das Foto tauscht, tauscht das Original und ruft den Lauf. Wer eine der
+drei Dateien von Hand bearbeitet, hat wieder ein zweites Gesicht — und merkt
+es erst, wenn jemand die Seite teilt.
 
 ## Server/Client-Grenze
 
