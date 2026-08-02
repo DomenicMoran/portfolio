@@ -60,6 +60,8 @@ export type ArticleChrome = {
   evidenceLabel: string;
   /** Name des Codekastens für Vorleseprogramme, wenn er keine Bildunterschrift hat. */
   codeLabel: string;
+  /** Name der Tabelle für Vorleseprogramme, wenn sie keine Bildunterschrift hat. */
+  tableLabel: string;
   publishedLabel: string;
   allArticles: string;
   /** Teaser auf der Startseite. */
