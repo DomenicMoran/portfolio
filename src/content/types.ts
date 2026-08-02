@@ -237,6 +237,15 @@ export type Content = {
     onepager: string;
     sourceLabel: string;
     sourceHref: string;
+    /**
+     * Herkunftszeile, die nur im Ausdruck erscheint.
+     *
+     * Ein ausgedrucktes Blatt verliert die Adresszeile des Browsers und damit
+     * jeden Hinweis darauf, woher es stammt und wie alt es ist. Auf einer
+     * Seite, deren Argument „jede Zahl ist belegt" lautet, gehört beides
+     * aufs Papier.
+     */
+    printNote: string;
   };
 
   notFound: {

@@ -242,6 +242,13 @@ textarea:-webkit-autofill {
    Effects
    ========================================================================= */
 
+/* Steht nur auf Papier. Am Bildschirm gar nicht vorhanden, damit nichts
+   umbricht, nichts vorgelesen wird und nichts Platz kostet; die Umkehrung
+   steht im Druckblock am Dateiende. */
+.print-only {
+  display: none;
+}
+
 /* Film grain. A single tiled SVG turbulence, no image request, no canvas. */
 .grain::after {
   content: "";
@@ -538,6 +545,13 @@ textarea:-webkit-autofill {
 
   .no-print {
     display: none !important;
+  }
+
+  /* Das Gegenstück: erscheint erst auf Papier. Trägt die Herkunftszeile, die
+     ein Ausdruck sonst nicht hat, weil ihm die Adresszeile des Browsers
+     fehlt. */
+  .print-only {
+    display: block !important;
   }
 
   .grain::after {

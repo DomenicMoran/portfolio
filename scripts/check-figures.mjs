@@ -428,14 +428,35 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   };
 
   pruefe("Podcast-Folgen", folgen?.length, /(\d+) Podcast-Folgen/);
+  // Aus `sekunden` rechnen, nicht aus `minuten`.
+  //
+  // `minuten` ist die geschätzte Länge aus der Zeichenzahl des Skripts und je
+  // Folge gerundet; `sekunden` ist die Länge der fertigen Tonspur. Über
+  // sechzehn Folgen summierten sich die Rundungen auf 127 Minuten, während die
+  // Anwendung selbst 125 anzeigt — aus 7.518 Sekunden. Zwei Rechenwege für
+  // dieselbe Zahl, und der falsche stand im Dokument für den Leser.
   pruefe(
     "Podcast-Minuten",
-    folgen ? Math.round(folgen.reduce((n, f) => n + (f.minuten ?? 0), 0)) : null,
+    folgen ? Math.round(folgen.reduce((n, f) => n + (f.sekunden ?? 0), 0) / 60) : null,
     /Podcast-Folgen mit ([\d.]+) Minuten/,
   );
   pruefe("Buchkapitel", lektionen?.length, /([\d.]+) Buchkapitel/);
   pruefe("Fachwörter", woerter?.length, /([\d.]+) Fachwörter/);
-  pruefe("Fragen", karten?.length, /([\d.]+) Fragen mit Antwortauswahl/);
+  // Nicht alle Karten sind Quizfragen.
+  //
+  // `karten.json` hält 280 Einträge, im Quiz stehen 240: Merksätze und die
+  // Karten mit langen Rückseiten bleiben draußen, weil man die richtige Antwort
+  // sonst an der Länge erkennt statt am Inhalt; dafür kommen die dreißig
+  // Interviewfragen dazu. Die Prüfung zählte vorher schlicht die Datei und
+  // deckte damit die Behauptung „280 Fragen mit Antwortauswahl", die um 40 zu
+  // hoch war. Gerechnet wird jetzt wie in lib/quiz.ts.
+  const INTERVIEWFRAGEN_ANZAHL = 30;
+  const quizfaehig = karten
+    ? karten.filter(
+        (k) => (k.art === "wort" || k.art === "begriff") && (k.hinten ?? "").length <= 400,
+      ).length + INTERVIEWFRAGEN_ANZAHL
+    : null;
+  pruefe("Fragen mit Auswahl", quizfaehig, /([\d.]+) Fragen mit Antwortauswahl/);
 } else {
   zeilen.push("  --  Prüfstand oder USER-TODO.md nicht gefunden, übersprungen");
 }
