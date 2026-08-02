@@ -890,6 +890,11 @@ export const recruiter = {
   cta: {
     pdf: { label: "Kurzprofil als PDF", href: "/domenic-moran-kurzprofil.pdf" },
     mail: { label: "Direkt schreiben" },
+    copy: {
+      label: "Adresse kopieren",
+      done: "Adresse kopiert",
+      failed: "Kopieren ging nicht — die Adresse steht daneben",
+    },
   },
 } as const;
 

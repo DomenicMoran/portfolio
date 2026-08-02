@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, FileDown, Mail } from "lucide-react";
+import { CopyEmail } from "@/components/ui/CopyEmail";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
@@ -19,7 +20,6 @@ export function RecruiterHub() {
     SOCIALS.github
       ? { label: "GitHub", href: SOCIALS.github, icon: GithubIcon }
       : null,
-    { label: site.email, href: `mailto:${site.email}`, icon: Mail },
   ].filter(Boolean) as {
     label: string;
     href: string;
@@ -128,6 +128,18 @@ export function RecruiterHub() {
                     />
                   </a>
                 ))}
+
+                {/* Die Adresse stand hier als zweiter mailto-Verweis, mit
+                    demselben Pfeilsymbol wie LinkedIn und GitHub — also als
+                    etwas, das anderswohin führt. Auf einem Arbeitsrechner ohne
+                    eingerichtetes Mailprogramm führt sie nirgendwohin, und
+                    kopieren liess sie sich nur mit der Maus. */}
+                <CopyEmail
+                  email={site.email}
+                  label={recruiter.cta.copy.label}
+                  done={recruiter.cta.copy.done}
+                  failed={recruiter.cta.copy.failed}
+                />
               </div>
             </div>
           </Reveal>
