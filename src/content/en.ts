@@ -343,7 +343,17 @@ export const en: Content = {
         { group: "Frontend", items: ["Next.js 16 App Router", "React 19 RSC", "TypeScript", "Tailwind"] },
         { group: "Backend & data", items: ["Supabase / Postgres", "Row Level Security", "Stripe Connect", "Fiskaly"] },
         { group: "Infrastructure", items: ["Hetzner", "Coolify", "Cloudflare", "Docker", "Mailcow", "n8n"] },
-        { group: "Quality", items: ["Vitest", "Playwright", "Sentry", "Umami", "Lighthouse budgets"] },
+        {
+          group: "Quality",
+          items: [
+            "Vitest",
+            "Playwright",
+            "Sentry",
+            "Umami",
+            "Lighthouse cron",
+            "Bundle budget",
+          ],
+        },
       ],
       metrics: [
         { value: "1,276", label: "API routes" },

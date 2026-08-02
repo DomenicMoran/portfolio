@@ -555,7 +555,18 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         group: "Qualität",
-        items: ["Vitest", "Playwright", "Sentry", "Umami", "Lighthouse-Budgets"],
+        // "Lighthouse-Budgets" hiess es hier, und "Budget" heisst blockieren.
+        // Der Lauf meldet nach Ampel an Slack — ab 90 gruen, ab 70 gelb,
+        // darunter rot — und haelt nichts auf. Was wirklich blockiert, ist das
+        // Bundle-Budget je Route, und das steht als eigenes Werkzeug daneben.
+        items: [
+          "Vitest",
+          "Playwright",
+          "Sentry",
+          "Umami",
+          "Lighthouse-Cron",
+          "Bundle-Budget",
+        ],
       },
     ],
     metrics: [
