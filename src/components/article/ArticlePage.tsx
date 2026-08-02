@@ -5,6 +5,7 @@ import type { Content } from "@/content/types";
 import { andereSprache, type Article, type ArticleChrome } from "@/content/articles";
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
+import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Footer } from "@/components/Footer";
 import { Prose } from "@/components/article/Prose";
 import { Reveal } from "@/components/ui/Reveal";
@@ -69,9 +70,10 @@ export function ArticlePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
       <ConsoleGreeting />
 
+      <SkipLink text={content.skipToContent} />
       <SiteShell otherHref={otherHref} hashBase={heim} />
 
-      <main className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
+      <main id={INHALT_ID} tabIndex={-1} className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
         {/* 38,5 rem sind 616 px. Gemessen ergibt das im Fließtext 73 Zeichen
               pro Zeile; bei den vorherigen 768 px waren es 91. */}
           <article className="mx-auto w-full max-w-[38.5rem]">

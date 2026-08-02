@@ -3,6 +3,7 @@ import type { Content } from "@/content/types";
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
+import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { About } from "@/components/sections/About";
@@ -63,25 +64,11 @@ export function SitePage({ content }: { content: Content }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
       <ConsoleGreeting />
 
-      {/* Vor der Kopfleiste, nicht danach.
-          Ein Sprunglink ist nur etwas wert, wenn er die erste Station der
-          Tabulator-Reihenfolge ist. Weil er im Markup hinter <SiteShell>
-          stand, war er gemessen die elfte: erst die gesamte Navigation, dann
-          der Link, mit dem man sie hätte überspringen können.
-
-          Der Header ist fixiert und 70 px hoch. Bei `top-4` legte sich dieser
-          Link beim ersten Tabben quer über den Namen im Header. Er sitzt
-          deshalb darunter: gemessen 84 px, das sind 14 px Luft. */}
-      <a
-        href="#work"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-[5.25rem] focus:left-4 focus:z-[10001] focus:rounded-full focus:bg-acid focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-void focus:shadow-lg focus:shadow-void/40"
-      >
-        {content.skipToContent}
-      </a>
+      <SkipLink text={content.skipToContent} />
 
       <SiteShell />
 
-      <main className="flex-1">
+      <main id={INHALT_ID} tabIndex={-1} className="flex-1">
         <Hero />
         <CaseStudies />
         <About />
