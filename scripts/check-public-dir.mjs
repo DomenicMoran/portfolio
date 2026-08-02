@@ -40,7 +40,10 @@ const WURZEL = resolve(OEFFENTLICH);
  * private Datei `notizen.pdf` zu nennen, und der Wächter schweigt. Eine
  * Verbotsliste schützt nur vor dem Fehler, den man schon einmal gemacht hat.
  */
-const FREIGEGEBEN = new Set(["domenic-moran-kurzprofil.pdf"]);
+const FREIGEGEBEN = new Set([
+  "domenic-moran-kurzprofil.pdf",
+  "domenic-moran-one-pager.pdf",
+]);
 
 /**
  * Endungen, die von sich aus unbedenklich sind: Bilder, Schriften, Symbole und

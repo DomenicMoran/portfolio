@@ -111,7 +111,7 @@ ${schriften}
 - LinkedIn: ${quelle.socials.linkedin}
 - GitHub: ${quelle.socials.github}
 - Fact sheet for recruiters: ${site.url}/en#hire
-- One-page profile as PDF: ${site.url}/domenic-moran-kurzprofil.pdf
+- One-page profile as PDF: ${site.url}/domenic-moran-one-pager.pdf
 
 ## What is deliberately absent
 

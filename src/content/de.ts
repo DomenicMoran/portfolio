@@ -193,6 +193,31 @@ export const de: Content = {
     printNote: `Gedruckt von domenicmoran.de — Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
   },
 
+  onepager: {
+    title: "Kurzprofil",
+    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
+    positioning:
+      "Fullstack Product Engineer mit vier eigenständig gebauten Systemen in " +
+      "Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit " +
+      "gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. " +
+      "{commits} Commits seit März 2026, neben einem Vollzeitjob. " +
+      "Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt: " +
+      "agentengestützte Entwicklung mit strikter Verifikationsdisziplin, " +
+      "ein grüner Testlauf ist kein Beweis.",
+    projects: "Projekte",
+    focus: "Schwerpunkte",
+    path: "Werdegang",
+    pathNote:
+      "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
+      "Der Nachweis sind vier Systeme in Produktion.",
+    fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
+    asOf: "Stand:",
+    back: "← Zurück zur Seite",
+    printHint: "Als PDF speichern: im Druckdialog „Als PDF sichern“ wählen.",
+    printButton: "Drucken / PDF",
+    atLeast: "Über",
+  },
+
   notFound: {
     eyebrow: "Fehler 404",
     title: "Diese Seite gibt es nicht.",

@@ -248,6 +248,35 @@ export type Content = {
     printNote: string;
   };
 
+  /**
+   * Die Beschriftungen des Kurzprofils.
+   *
+   * Bis eben stand der One-Pager nur auf Deutsch, und die englische Fußzeile
+   * verlinkte trotzdem darauf: Wer „One-pager as PDF" anklickte, bekam ein
+   * deutsches Dokument — ausgerechnet das Blatt, das weitergereicht wird.
+   */
+  onepager: {
+    /** Seitentitel und Beschreibung für die Metadaten. */
+    title: string;
+    description: string;
+    /** Der Absatz unter dem Namen. `{commits}` wird durch die Untergrenze ersetzt. */
+    positioning: string;
+    projects: string;
+    focus: string;
+    path: string;
+    /** Ein Satz unter dem Werdegang. */
+    pathNote: string;
+    /** Fußzeile des Blattes. */
+    fullCaseStudies: string;
+    asOf: string;
+    back: string;
+    /** Leiste über dem Blatt, nur am Bildschirm. */
+    printHint: string;
+    printButton: string;
+    /** Präfix vor einer abgerundeten Zahl: „über 4.000" / „over 4,000". */
+    atLeast: string;
+  };
+
   notFound: {
     eyebrow: string;
     title: string;
