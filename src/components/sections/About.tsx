@@ -42,28 +42,41 @@ export function About() {
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
           {/* Narrative */}
           <div className="flex flex-col gap-6">
-            {/* Porträt nur, wenn ein echtes hinterlegt ist, siehe site.ts */}
+            {/* Porträt und erster Absatz stehen nebeneinander.
+                Darunter stand das Bild allein in der linken Spalte, mit einer
+                leeren Fläche daneben bis zur Werdegangs-Spalte: Es sah
+                hineingelegt aus statt gesetzt. Neben dem Absatz füllt es die
+                Zeile, und die Sektion beginnt mit Gesicht und Aussage
+                zugleich. Unter 640 px stapelt es wie vorher.
+
+                Der Grund der Aufnahme ist die Farbe der Seite, nicht die Wand
+                dahinter — siehe `portraitPrint` in site.ts. Auf fast Schwarz
+                war die helle Wand die einzige helle Fläche der ganzen Seite
+                und damit das, was man zuerst sah. */}
             {about.portrait ? (
               <Reveal>
-                <div className="lit relative mb-2 w-fit overflow-hidden rounded-2xl border border-line">
+                <div className="mb-2 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
                   <Image
                     src={about.portrait}
                     alt={site.name}
                     width={220}
                     height={220}
-                    sizes="220px"
-                    className="h-auto w-[13.75rem] object-cover"
+                    sizes="(max-width: 640px) 60vw, 220px"
+                    className="w-[13.75rem] max-w-[60vw] shrink-0 rounded-2xl object-cover"
                   />
+                  <p className="text-lg leading-relaxed text-ink text-pretty sm:text-xl">
+                    {about.paragraphs[0]}
+                  </p>
                 </div>
               </Reveal>
             ) : null}
 
-            {about.paragraphs.map((paragraph, i) => (
-              <Reveal key={i} delay={i * 0.06}>
+            {about.paragraphs.slice(about.portrait ? 1 : 0).map((paragraph, i) => (
+              <Reveal key={paragraph} delay={i * 0.06}>
                 <p
                   className={cn(
                     "leading-relaxed text-pretty",
-                    i === 0 ? "text-lg text-ink sm:text-xl" : "text-ink-dim",
+                    !about.portrait && i === 0 ? "text-lg text-ink sm:text-xl" : "text-ink-dim",
                   )}
                 >
                   {paragraph}
