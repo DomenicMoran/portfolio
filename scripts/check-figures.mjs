@@ -492,6 +492,58 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
   zeilen.push(`  --  NOURI nicht unter ${NOURI}, übersprungen`);
 }
 
+/**
+ * Eine GitHub-Abfrage, notfalls mit einem zweiten angemeldeten Konto.
+ *
+ * Salati liegt unter `MenuCloud-Berlin` und ist privat. Auf diesem Rechner
+ * sind zwei Konten angemeldet, aktiv ist `DomenicMoran` — und das darf dort
+ * nicht lesen. Die beiden Salati-Prüfungen wurden deshalb seit Tagen
+ * stillschweigend übersprungen, während die Seite weiter „64 ausgelieferte
+ * Versionen" und „14 Sprachen" behauptete: zwei Zahlen ohne Prüfung, und die
+ * Meldung „nicht lesbar" las niemand als Mangel.
+ *
+ * Das aktive Konto wird nicht umgestellt: `gh auth switch` verändert den
+ * Rechner des Lesers, und ein Prüflauf hat dort nichts zu ändern. Stattdessen
+ * wird der Token des anderen Kontos für genau diesen Aufruf gereicht.
+ */
+function ghApi(argumente) {
+  const versuche = [null, ...ghKonten()];
+  let letzterFehler = null;
+  for (const konto of versuche) {
+    try {
+      const umgebung = { ...process.env };
+      if (konto) {
+        umgebung.GH_TOKEN = execFileSync("gh", ["auth", "token", "-u", konto], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+      }
+      return execFileSync("gh", argumente, {
+        encoding: "utf8",
+        maxBuffer: 16 * 1024 * 1024,
+        stdio: ["ignore", "pipe", "ignore"],
+        env: umgebung,
+      });
+    } catch (fehler) {
+      letzterFehler = fehler;
+    }
+  }
+  throw letzterFehler ?? new Error("gh nicht erreichbar");
+}
+
+/** Die Namen aller angemeldeten Konten, das aktive zuerst weggelassen. */
+function ghKonten() {
+  try {
+    const roh = execFileSync("gh", ["auth", "status"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    return [...roh.matchAll(/account (\S+)/g)].map((m) => m[1]);
+  } catch {
+    return [];
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Salati: Sprachen der App
    ---------------------------------------------------------------------------
@@ -503,11 +555,12 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
 {
   let sprachen = null;
   try {
-    const roh = execFileSync(
-      "gh",
-      ["api", "repos/MenuCloud-Berlin/salatibox/git/trees/main?recursive=1", "-q", ".tree[].path"],
-      { encoding: "utf8", maxBuffer: 16 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] },
-    );
+    const roh = ghApi([
+      "api",
+      "repos/MenuCloud-Berlin/salatibox/git/trees/main?recursive=1",
+      "-q",
+      ".tree[].path",
+    ]);
     const codes = new Set();
     for (const pfad of roh.split("\n")) {
       const treffer = pfad.match(/(?:locales?|i18n|translations)\/([a-z]{2}(?:-[A-Z]{2})?)[/.]/);
@@ -520,6 +573,61 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
 
   if (sprachen) {
     vergleiche("Salati-Sprachen", sprachen, ausSeite(/(\d+) Sprachen gepflegt/));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Salati: Folgen des Podcasts
+   ---------------------------------------------------------------------------
+
+   Die Seite nannte einen "15-teiligen" Podcast. Ausgeliefert werden 68 Folgen
+   mit 627 Minuten — die Zahl stand seit der ersten Fassung da und ist mit der
+   Produktion mitgewachsen, ohne dass sie jemand nachgezogen hätte. Auf einer
+   Seite, die mit belegten Zahlen argumentiert, ist eine zu kleine Zahl kein
+   harmloser Fehler: Sie verschenkt genau das, was sie belegen soll.
+
+   Gezählt wird der Index auf R2, den die App selbst lädt, und nicht das
+   Manifest im Repository. Beide sagten hier dasselbe, aber nur der Index ist
+   das, was ein Nutzer bekommt: Eine Folge, die im Repository liegt und nicht
+   im Index steht, gibt es für die App nicht.
+
+   Ohne Netz wird übersprungen. Die Schlusszeile sagt dann, dass eine Prüfung
+   ausgefallen ist. */
+
+{
+  const INDEX =
+    "https://pub-d0489c0572704285af79896edb72cbed.r2.dev/podcast/index.json";
+  let folgen = null;
+  let minuten = null;
+  try {
+    const antwort = await fetch(INDEX, { signal: AbortSignal.timeout(20_000) });
+    if (!antwort.ok) throw new Error(String(antwort.status));
+    const index = await antwort.json();
+    const liste = index.episodes ?? [];
+    folgen = liste.length || null;
+    minuten = Math.round(liste.reduce((n, f) => n + (f.duration_sec ?? 0), 0) / 60) || null;
+  } catch {
+    zeilen.push("  --  Salati-Podcast-Index nicht erreichbar, übersprungen");
+  }
+
+  if (folgen) {
+    vergleiche("Salati-Podcastfolgen", folgen, ausSeite(/Podcast, (\d+) Folgen/));
+    const enTreffer = readFileSync("src/content/en.ts", "utf8").match(/Quran: (\d+) episodes/);
+    const gleich = Number(enTreffer?.[1]) === folgen;
+    if (!gleich) abweichungen++;
+    zeilen.push(
+      `${gleich ? "  ok " : "  != "} en.ts       Podcastfolgen    gemessen ${String(folgen).padStart(5)}` +
+        (gleich ? "" : `   dort ${enTreffer?.[1] ?? "(nicht gefunden)"}`),
+    );
+
+    // Die Seite sagt "gut zehn Stunden" beziehungsweise "over ten hours".
+    const stunden = minuten / 60;
+    const passt = stunden >= 10 && stunden < 11;
+    if (!passt) abweichungen++;
+    zeilen.push(
+      `${passt ? "  ok " : "  != "} Podcastdauer                ${String(minuten).padStart(6)} Minuten ` +
+        `(${stunden.toFixed(1)} h, Seite sagt „gut zehn Stunden")`,
+    );
   }
 }
 
@@ -541,11 +649,7 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
   const pfad = "apps/mobile/src/features/changelog/changelog.ts";
   let inhalt = null;
   try {
-    const roh = execFileSync(
-      "gh",
-      ["api", `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`, "-q", ".content"],
-      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
-    );
+    const roh = ghApi(["api", `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`, "-q", ".content"]);
     inhalt = Buffer.from(roh.trim(), "base64").toString("utf8");
   } catch {
     zeilen.push("  --  Salati-Changelog nicht lesbar (gh fehlt oder Konto ohne Zugriff)");
@@ -870,4 +974,22 @@ if (abweichungen) {
   );
   process.exit(1);
 }
-console.log("\nAlle Zahlen auf der Seite stimmen mit den Repos überein.");
+/*
+  Die Schlusszeile darf keine Vollständigkeit behaupten, die es nicht gab.
+
+  Vorher stand hier immer "Alle Zahlen auf der Seite stimmen mit den Repos
+  überein" — auch dann, wenn zwei Prüfungen mangels Zugriff ausgefallen waren.
+  Genau so blieb tagelang unbemerkt, dass "64 ausgelieferte Versionen" und
+  "14 Sprachen" ungeprüft auf der Seite standen: Die übersprungenen Zeilen
+  standen mitten im Bericht, und die letzte Zeile sagte, alles sei gut.
+*/
+const uebersprungen = zeilen.filter((z) => z.startsWith("  --")).length;
+if (uebersprungen > 0) {
+  console.log(
+    `\nAlle geprüften Zahlen stimmen mit den Repos überein. ` +
+      `${uebersprungen} Prüfung${uebersprungen === 1 ? "" : "en"} ausgefallen, siehe oben — ` +
+      `diese Angaben sind damit unbelegt.`,
+  );
+} else {
+  console.log("\nAlle Zahlen auf der Seite stimmen mit den Repos überein.");
+}

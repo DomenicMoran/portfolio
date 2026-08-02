@@ -196,7 +196,7 @@ export const en: Content = {
         "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus, no cloud call",
         "Whisper-based recitation checking with verse-conditioned prompting",
         "Complete Mushaf reader: four typefaces, tafsir, translation, word-level timestamps",
-        "A 15-part German podcast on the Arabic of the Quran, produced through a two-voice ElevenLabs pipeline",
+        "A German podcast on the Arabic of the Quran: 68 episodes, over ten hours, produced through a two-voice ElevenLabs pipeline",
         "Over-the-air updates via EAS: content corrections without a store cycle",
         "iOS Live Activities and Android widgets for the next prayer time",
         "App and store copy maintained in 14 languages, across four device classes",
