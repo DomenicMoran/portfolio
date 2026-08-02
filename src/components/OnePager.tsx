@@ -119,7 +119,12 @@ export function OnePager({
     //
     // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Höhe
     // auf und schiebt sonst eine leere zweite Seite an.
-    <div
+    // `main` und nicht `div`: Die beiden One-Pager waren die einzigen Seiten
+    // ohne Haupt-Bereich — gemessen am 02.08.2026 an der ausgelieferten Seite,
+    // acht Adressen geprüft, nur /onepager und /en/onepager ohne `main`.
+    // Vorleseprogramme bieten damit keinen Sprung zum Inhalt an, und
+    // ausgerechnet dieses Blatt bekommt ein Recruiter als Erstes geschickt.
+    <main
       style={{ colorScheme: "light" }}
       className="min-h-svh bg-white text-[#101014] print:min-h-0 print:bg-white"
     >
@@ -324,6 +329,6 @@ export function OnePager({
           {onepager.back}
         </Link>
       </div>
-    </div>
+    </main>
   );
 }
