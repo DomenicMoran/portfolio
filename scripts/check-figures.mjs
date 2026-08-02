@@ -562,6 +562,100 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Steuerzeichen in Quelldateien
+   ---------------------------------------------------------------------------
+
+   Anlass ist ein Fehler, der zwei Stunden gekostet hat: In einer Regex stand
+   statt der Wortgrenze `\b` ein echtes Backspace (0x08). Ein Einfüge-Skript
+   hatte es hineingeschrieben, weil ein Escape eine Ebene zu früh aufgelöst
+   wurde. Im Editor und in `git diff` sieht das Muster richtig aus, es trifft
+   nur nie — und der Test, der die Schreibweise prüfte, blieb grün.
+
+   Gesucht wird deshalb nach dem Ergebnis: jedes Steuerzeichen ausser
+   Zeilenumbruch, Wagenrücklauf und Tabulator. Über alle erreichbaren Repos,
+   weil dieselbe Sorte Bearbeitung überall stattfindet.
+
+   Eine Ausnahme ist eingetragen und begründet: Ein MenuCloud-Test füttert
+   absichtlich eine URL mit NUL-Zeichen, um zu prüfen, dass die Funktion leer
+   zurückkommt statt zu stolpern. Das ist der Zweck der Zeile, kein Unfall. */
+
+const ERLAUBTE_STEUERZEICHEN = new Set([0x09, 0x0a, 0x0d]);
+
+const STEUERZEICHEN_AUSNAHMEN = new Map([
+  [
+    "MenuCloud:src/lib/email-discovery-jsrender.test.ts",
+    "prüft absichtlich eine URL mit NUL-Zeichen",
+  ],
+]);
+
+const ZU_PRUEFEN = [
+  [".", "portfolio"],
+  ["../pruefstand", "pruefstand"],
+  ["../oss/verified-done", "verified-done"],
+  ["../oss/cron-last-due", "cron-last-due"],
+  ["../oss/whisper-ggml-header", "whisper-ggml-header"],
+  ["../oss/arabic-normalize", "arabic-normalize"],
+  [MENUCLOUD, "MenuCloud"],
+];
+
+const QUELLENDUNGEN = new Set([
+  ".ts", ".tsx", ".mjs", ".js", ".json", ".md", ".yml", ".yaml", ".css", ".sql",
+]);
+
+{
+  let geprueft = 0;
+  const funde = [];
+
+  for (const [pfad, name] of ZU_PRUEFEN) {
+    const wurzel = resolve(pfad);
+    if (!existsSync(join(wurzel, ".git"))) continue;
+
+    let dateien = [];
+    try {
+      dateien = execFileSync("git", ["-C", wurzel, "ls-files"], {
+        encoding: "utf8",
+        maxBuffer: 32 * 1024 * 1024,
+      })
+        .split("\n")
+        .filter(Boolean);
+    } catch {
+      continue;
+    }
+
+    for (const rel of dateien) {
+      const endung = rel.slice(rel.lastIndexOf("."));
+      if (!QUELLENDUNGEN.has(endung)) continue;
+      if (STEUERZEICHEN_AUSNAHMEN.has(`${name}:${rel}`)) continue;
+
+      let inhalt;
+      try {
+        inhalt = readFileSync(join(wurzel, rel), "utf8");
+      } catch {
+        continue;
+      }
+      geprueft++;
+
+      for (let i = 0; i < inhalt.length; i++) {
+        const code = inhalt.charCodeAt(i);
+        if (code < 32 && !ERLAUBTE_STEUERZEICHEN.has(code)) {
+          const zeile = inhalt.slice(0, i).split("\n").length;
+          funde.push(`${name}/${rel}:${zeile} enthält 0x${code.toString(16).padStart(2, "0")}`);
+          break;
+        }
+      }
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Datei(en) mit Steuerzeichen:`);
+    for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
+  } else {
+    zeilen.push(`  ok  Steuerzeichen              ${String(geprueft).padStart(6)} Dateien sauber`);
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
