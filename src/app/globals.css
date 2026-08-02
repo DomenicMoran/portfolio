@@ -469,6 +469,19 @@ textarea:-webkit-autofill {
     background-image: none !important;
   }
 
+  /* Und weil nichts scrollt, ist alles rechts der Spaltenkante gedruckt weg.
+     Gemessen am 02.08.2026 bei 794 px Papierbreite: Im Artikel „Warum ein
+     kleineres Whisper-Modell mein größeres schlug" ragte ein Block 14 px
+     über die Spalte, die Zeichen fehlten still im Ausdruck — kein Hinweis,
+     keine Lücke, nur eine Zeile, die früher endet als im Browser.
+     Umbrechen ist die richtige Wahl: eine Zeile mehr im Code liest sich,
+     ein fehlendes Zeichen nicht. */
+  pre {
+    white-space: pre-wrap !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere;
+  }
+
   .no-print {
     display: none !important;
   }
