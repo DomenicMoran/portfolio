@@ -23,6 +23,10 @@ type Action = {
  * Aktion ist auch über die gewöhnliche Navigation erreichbar, sie ist also
  * reine Zugabe — und das Publikum, Entwickler, drückt ⌘K tatsächlich.
  */
+/** Feste Kennungen, damit `aria-controls` und `aria-activedescendant` auflösen. */
+const LISTEN_ID = "befehlspalette-liste";
+const eintragId = (i: number) => `befehlspalette-eintrag-${i}`;
+
 export function CommandPalette({
   open,
   onClose,
@@ -149,9 +153,24 @@ export function CommandPalette({
 
   useEffect(() => {
     if (!open) return;
+
+    /*
+      Den Fokus merken und beim Schließen zurückgeben.
+
+      Gemessen am 02.08.2026: Nach `Escape` stand der Fokus im `body`. Wer die
+      Palette mit der Tastatur öffnet und wieder schließt, landete damit am
+      Anfang des Dokuments und musste sich erneut durch alles tabben — genau
+      dorthin, wo er vor dem Öffnen schon war.
+    */
+    const vorher = document.activeElement as HTMLElement | null;
+
     // Fokus erst, wenn der Auftritt beginnt — sonst scrollt Safari unter iOS.
     const id = window.setTimeout(() => inputRef.current?.focus(), 60);
-    return () => window.clearTimeout(id);
+
+    return () => {
+      window.clearTimeout(id);
+      vorher?.focus?.();
+    };
   }, [open]);
 
   useEffect(() => {
@@ -214,22 +233,42 @@ export function CommandPalette({
                 placeholder={palette.placeholder}
                 className="w-full bg-transparent py-4 text-sm text-ink outline-none placeholder:text-ink-faint"
                 aria-label={palette.searchLabel}
+                /*
+                  Ohne diese vier Angaben blättert man blind.
+
+                  Die Pfeiltasten verschieben die Markierung sichtbar, der
+                  Fokus bleibt aber im Eingabefeld — das ist das richtige
+                  Muster. Eine Vorlesesoftware erfährt davon jedoch nur über
+                  `aria-activedescendant`. Ohne sie hörte man beim Blättern
+                  nichts, gemessen über drei Tastendrücke am 02.08.2026.
+                */
+                role="combobox"
+                aria-expanded
+                aria-autocomplete="list"
+                aria-controls={LISTEN_ID}
+                aria-activedescendant={results[active] ? eintragId(active) : undefined}
               />
               <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-ink-faint sm:block">
                 ESC
               </kbd>
             </div>
 
-            <ul className="max-h-[52vh] overflow-y-auto p-2">
+            <ul id={LISTEN_ID} role="listbox" aria-label={palette.title} className="max-h-[52vh] overflow-y-auto p-2">
               {results.length === 0 ? (
                 <li className="px-3 py-8 text-center text-sm text-ink-faint">
                   {palette.empty}
                 </li>
               ) : (
                 results.map((action, i) => (
-                  <li key={action.id}>
+                  <li key={action.id} role="presentation">
                     <button
                       type="button"
+                      id={eintragId(i)}
+                      role="option"
+                      aria-selected={i === active}
+                      // Ein Eintrag ist über die Liste erreichbar, nicht über
+                      // Tab: Sonst gäbe es zwei Wege durch dieselbe Auswahl.
+                      tabIndex={-1}
                       onMouseEnter={() => setActive(i)}
                       onClick={action.run}
                       className={cn(
