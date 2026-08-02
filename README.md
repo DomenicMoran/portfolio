@@ -90,7 +90,7 @@ npx tsc --noEmit   # Typecheck
 npx eslint .       # Lint
 ```
 
-Nach dem Bau laufen sechs Prüfungen, die den Bau nicht ersetzen. Fünf davon
+Nach dem Bau laufen sieben Prüfungen, die den Bau nicht ersetzen. Sechs davon
 messen an der gebauten Seite und nicht am Quelltext; `check:headers` misst an
 der Auslieferung, weil `vercel.json` vom Bau gar nicht gelesen wird — und läuft
 deshalb auf Pull Requests nicht mit. Derselbe Workflow führt sie bei jedem Push
@@ -99,6 +99,7 @@ aus:
 ```bash
 npm run check:a11y      # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:privacy   # keine Seite baut eine Verbindung nach außen auf
+npm run check:links     # kein Anker und keine interne Adresse zeigt ins Leere
 npm run check:headers   # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab

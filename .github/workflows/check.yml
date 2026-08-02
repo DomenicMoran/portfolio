@@ -60,6 +60,12 @@ jobs:
       - name: Datenschutz
         run: npm run check:privacy
 
+      # Ein Anker ohne Ziel springt nirgendwohin, und der Browser meldet
+      # nichts. Betrifft Kopfleiste, Fußzeile, 404-Seite und jeden Beleg im
+      # Recruiter-Bereich.
+      - name: Verweise
+        run: npm run check:links
+
       # vercel.json wird vom Bau nicht gelesen: Ein Tippfehler im Schlüssel
       # oder eine Änderung über die Weboberfläche fällt nirgends auf.
       # Gemessen wird deshalb die Antwort der Live-Adresse.

@@ -837,26 +837,38 @@ export const en: Content = {
       {
         title: "I ship finished, not nearly finished",
         body: "Four systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        proof: "#work",
+        proofLabel: "The four case studies",
       },
       {
         title: "I work across the whole stack",
         body: "React Native widget, Postgres migration, Docker Compose on my own VPS, fiscal compliance. No ticket ping-pong because something is “not my area”.",
+        proof: "#case-menucloud",
+        proofLabel: "MenuCloud in detail",
       },
       {
         title: "I prove it rather than claim it",
         body: "A green test run proves nothing. I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
+        proof: "/en/articles/published-is-not-proof",
+        proofLabel: "“Published” is not proof",
       },
       {
         title: "I know the way through the app stores",
         body: "64 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejected reviews, age ratings, privacy forms and signing chains are routine here, not new ground.",
+        proof: "#case-salati",
+        proofLabel: "Salati in detail",
       },
       {
         title: "I treat regulation as part of the product",
         body: "German fiscal requirements under § 146a AO, GDPR processing agreements, disclosure duties for AI features. I know these from shipping them with customers, not from a summary. Handle them after launch and you build the thing twice.",
+        proof: "/en/articles/german-till-law-in-practice",
+        proofLabel: "German till law in practice",
       },
       {
         title: "I work with agents without handing over control",
         body: "The leverage is not typing speed. It is context, written-down conventions and review loops a model cannot talk its way past. I let agents draft. The architecture, the boundaries and the sign-off stay with me.",
+        proof: "https://github.com/DomenicMoran/verified-done",
+        proofLabel: "verified-done on GitHub",
       },
     ],
     cta: {
