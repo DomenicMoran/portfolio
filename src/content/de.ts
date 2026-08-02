@@ -1,4 +1,5 @@
 import type { Content } from "./types";
+import verified from "./verified.json";
 import {
   about as aboutDe,
   caseStudies,
@@ -18,6 +19,37 @@ import {
  * Zweisprachigkeit entstehen: Beschriftungen für Tabs, Fußzeile, 404 und
  * Sprachumschalter. So gibt es weiterhin genau eine Stelle je Sprache.
  */
+
+/**
+ * Tage seit dem ersten Salati-Commit, gerechnet statt getippt.
+ *
+ * Hier stand "107 Tage … bis heute". Zum Zeitpunkt des Schreibens richtig, am
+ * Tag darauf 108 — dasselbe wandernde Fenster, das bei den Commits schon
+ * abgeschafft wurde ("3.971 Commits in 4 Monaten"). Eine Zahl, die von selbst
+ * weiterläuft, kann man nicht pflegen.
+ *
+ * Gerechnet wird bis zum Prüfdatum aus `verified.json`, nicht bis zum
+ * Aufrufzeitpunkt: Die Seite wird vorab erzeugt, und ein `new Date()` im
+ * Render fröre ohnehin auf den Bauzeitpunkt ein. Der Stempel wandert täglich
+ * mit dem Automaten weiter, und die Angabe daneben nennt ihn.
+ */
+const SALATI_ERSTER_COMMIT = "2026-04-16";
+const salatiTage = Math.round(
+  (Date.parse(verified.date) - Date.parse(SALATI_ERSTER_COMMIT)) / 86_400_000,
+);
+/** Im Changelog der App gezählt, siehe check-figures.mjs. */
+const SALATI_VERSIONEN = 64;
+const salatiStundenJeVersion = Math.round((salatiTage * 24) / SALATI_VERSIONEN);
+
+/** "2026-08-01" als "1. August 2026". */
+function datumLang(iso: string) {
+  return new Date(iso).toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export const de: Content = {
   lang: "de",
 
@@ -114,11 +146,23 @@ export const de: Content = {
       title: "Der Unterschied ist nicht, dass ich schneller tippe.",
       lede: "Er ist, dass Recherche, Implementierung, Test und Verifikation parallel statt nacheinander laufen, und dass der Kontext zwischen den Sitzungen nicht verloren geht. Wie sich das auswirkt, lässt sich zählen.",
       facts: [
-        { value: "107", label: "Tage", note: "erster Commit am 16.04.2026 bis heute" },
-        { value: "63", label: "ausgelieferte Versionen", note: "1.0.0 bis 1.45.0, im Changelog der App nachlesbar" },
-        { value: "40 h", label: "im Schnitt je Version", note: "107 Tage geteilt durch 63 Versionen" },
+        {
+          value: String(salatiTage),
+          label: "Tage",
+          note: `erster Commit am 16.04.2026 bis zum Prüfdatum ${datumLang(verified.date)}`,
+        },
+        {
+          value: String(SALATI_VERSIONEN),
+          label: "ausgelieferte Versionen",
+          note: "1.0.0 bis 1.46.0, im Changelog der App nachlesbar",
+        },
+        {
+          value: `${salatiStundenJeVersion} h`,
+          label: "im Schnitt je Version",
+          note: `${salatiTage} Tage geteilt durch ${SALATI_VERSIONEN} Versionen`,
+        },
       ],
-      note: "Zahlen für Salati, gezählt am 01.08.2026 in der Changelog-Datei der App. Parallel dazu liefen drei weitere Systeme in Produktion.",
+      note: `Zahlen für Salati, gezählt am ${datumLang(verified.date)} in der Changelog-Datei der App. Parallel dazu liefen drei weitere Systeme in Produktion.`,
     },
   },
 

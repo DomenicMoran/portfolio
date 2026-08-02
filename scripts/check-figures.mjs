@@ -440,6 +440,66 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   zeilen.push("  --  Prüfstand oder USER-TODO.md nicht gefunden, übersprungen");
 }
 
+/* ---------------------------------------------------------------------------
+   Ausgelieferte Versionen von Salati
+   ---------------------------------------------------------------------------
+
+   Die Seite nennt die Zahl der ausgelieferten Versionen und die Spanne
+   ("1.0.0 bis 1.46.0"). Beides stand von Hand da und war bei einer Stichprobe
+   überholt: Der App Store führte 1.46.0, die Seite 1.45.0 und 63 statt 64.
+
+   Salati liegt nicht neben diesem Projekt, sondern nur bei GitHub, und das
+   Repository ist privat. Gezählt wird deshalb über `gh api` mit dem gerade
+   angemeldeten Konto. Fehlt gh oder darf das Konto nicht lesen, wird der Block
+   übersprungen statt zu scheitern: Eine Prüfung, die auf einem fremden Rechner
+   immer rot ist, wird abgeschaltet und prüft dann nie wieder etwas. */
+
+{
+  const pfad = "apps/mobile/src/features/changelog/changelog.ts";
+  let inhalt = null;
+  try {
+    const roh = execFileSync(
+      "gh",
+      ["api", `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`, "-q", ".content"],
+      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
+    );
+    inhalt = Buffer.from(roh.trim(), "base64").toString("utf8");
+  } catch {
+    zeilen.push("  --  Salati-Changelog nicht lesbar (gh fehlt oder Konto ohne Zugriff)");
+  }
+
+  if (inhalt) {
+    const reihenfolge = (s) => s.split(".").map(Number);
+    const versionen = [...new Set(inhalt.match(/\b\d+\.\d+\.\d+\b/g) ?? [])].sort((a, b) => {
+      const [a1, a2, a3] = reihenfolge(a);
+      const [b1, b2, b3] = reihenfolge(b);
+      return a1 - b1 || a2 - b2 || a3 - b3;
+    });
+    const hoechste = versionen.at(-1);
+
+    // Die Zahl steht als Konstante in de.ts und nicht als Literal im Inhalt:
+    // Sie wird dort auch für die Stunden je Version gebraucht.
+    const inDe = readFileSync("src/content/de.ts", "utf8").match(
+      /const SALATI_VERSIONEN = (\d+);/,
+    );
+    vergleiche("Salati-Versionen", versionen.length, inDe?.[1] ?? "(nicht gefunden)");
+
+    // Die Spanne steht als Fließtext in beiden Sprachfassungen.
+    for (const [datei, muster] of [
+      ["src/content/de.ts", /1\.0\.0 bis (\d+\.\d+\.\d+)/],
+      ["src/content/en.ts", /1\.0\.0 to (\d+\.\d+\.\d+)/],
+    ]) {
+      const treffer = readFileSync(datei, "utf8").match(muster);
+      const gleich = treffer?.[1] === hoechste;
+      if (!gleich) abweichungen++;
+      zeilen.push(
+        `${gleich ? "  ok " : "  != "} ${datei.split("/").pop().padEnd(12)} höchste Version  gemessen ${hoechste}` +
+          (gleich ? "" : `   dort ${treffer?.[1] ?? "(nicht gefunden)"}`),
+      );
+    }
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
