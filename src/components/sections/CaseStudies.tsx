@@ -188,7 +188,14 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   // meldet dann "Registerkarte, ausgewählt" und kann von dort
                   // nirgendwohin, weil die Verbindung zum Inhalt fehlt.
                   id={`${study.id}-tab-${id}`}
-                  aria-controls={`${study.id}-panel-${id}`}
+                  // `aria-controls` nur am gewählten Reiter.
+                  //
+                  // Gerendert wird immer nur die gewählte Tafel, AnimatePresence
+                  // tauscht sie aus. An allen dreizehn Reitern gesetzt zeigten
+                  // deshalb neun auf eine Kennung, die es im Dokument nicht
+                  // gibt — gemessen an der ausgelieferten Seite. Ein Verweis
+                  // ins Leere ist schlechter als keiner: Er behauptet ein Ziel.
+                  aria-controls={selected ? `${study.id}-panel-${id}` : undefined}
                   aria-selected={selected}
                   onClick={() => setTab(id)}
                   className={cn(
