@@ -159,7 +159,19 @@ export function ShotCarousel({
           ))}
         </div>
 
-        <span className="ml-auto font-mono text-[11px] text-ink-faint tabular-nums">
+        {/* Der Zähler sagt die neue Stelle an, nicht nur die alte.
+
+            Er stand als stummer Text daneben: Wer „Nächstes Bild" drückt, hörte
+            die Beschriftung des Knopfes und erfuhr nie, wo er gelandet ist —
+            gemessen am 02.08.2026, `aria-live` war nicht gesetzt. Die Punktreihe
+            darüber ist `aria-hidden`, sie kann es also nicht übernehmen.
+
+            `polite`, nicht `assertive`: Die Stelle ist eine Auskunft, keine
+            Warnung, und darf den laufenden Satz nicht unterbrechen. */}
+        <span
+          aria-live="polite"
+          className="ml-auto font-mono text-[11px] text-ink-faint tabular-nums"
+        >
           {aktiv + 1} {hinweis.von} {shots.length}
         </span>
       </div>
