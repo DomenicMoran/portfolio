@@ -826,9 +826,9 @@ export const en: Content = {
   onepager: {
     title: "One-pager",
     description:
-      "One-page profile of Domenic Moran, AI-native product engineer in Berlin: four systems in production, path and contact on a single page.",
+      "One-page profile of Domenic Moran, AI product engineer in Berlin: four systems in production, path and contact on a single page.",
     positioning:
-      "Fullstack product engineer with four systems in production, each built " +
+      "AI product engineer with four systems in production, each built " +
       "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
       "fiscal signing, an autonomous agent. {commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +

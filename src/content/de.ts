@@ -197,7 +197,7 @@ export const de: Content = {
     title: "Kurzprofil",
     description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
     positioning:
-      "Fullstack Product Engineer mit vier eigenständig gebauten Systemen in " +
+      "AI Product Engineer mit vier eigenständig gebauten Systemen in " +
       "Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit " +
       "gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. " +
       "{commits} Commits seit März 2026, neben einem Vollzeitjob. " +
