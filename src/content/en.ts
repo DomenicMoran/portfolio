@@ -784,7 +784,12 @@ export const en: Content = {
     title: "The essentials in 60 seconds",
     lede: "No cover letter needed. Here is what I can do, what I am looking for, and how to reach me.",
     facts: [
-      { label: "Role", value: "AI product engineer / fullstack" },
+      // Titelschreibung wie überall sonst auf der englischen Fassung. Als
+      // Wert einer Beschriftung ist die Rolle ein Titel, kein Fließtext — im
+      // Positionierungssatz des Kurzprofils bleibt sie klein, weil sie dort
+      // mitten im Satz steht. "Full-stack" mit Bindestrich, so schreibt man es
+      // im Englischen.
+      { label: "Role", value: "AI Product Engineer / Full-stack" },
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       {
         label: "Looking for",
