@@ -98,6 +98,7 @@ export function Footer({
             <div className="-my-2 flex flex-col">
               <a
                 href={recruiter.cta.pdf.href}
+                download
                 className="group flex w-fit items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.onepager}

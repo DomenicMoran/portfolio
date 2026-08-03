@@ -133,9 +133,16 @@ export function RecruiterHub() {
           <Reveal delay={0.08}>
             <div className="lit flex flex-col gap-6 rounded-2xl border border-acid/25 bg-acid/[0.06] p-7 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
               <div className="flex flex-wrap items-center gap-3">
+                {/* `download`, wie auf der One-Pager-Seite: Die Datei gibt es,
+                    damit sie weitergereicht wird. Ohne das Attribut öffnet sie
+                    sich in einem Betrachter, und wer sie an die fachliche
+                    Führung schicken will, muss sie von dort erst noch sichern.
+                    Drei Stellen verweisen auf dasselbe Blatt; zwei taten es bis
+                    heute anders als die dritte. */}
                 <Magnetic>
                   <a
                     href={recruiter.cta.pdf.href}
+                    download
                     className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-5 py-3 text-sm font-medium text-void transition-colors hover:bg-ink"
                   >
                     <FileDown className="size-4" aria-hidden />
