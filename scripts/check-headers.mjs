@@ -63,9 +63,62 @@ for (const pfad of adressen) {
     const ist = antwort.headers.get(key);
     if (ist === null) funde.push(`${pfad}: ${key} fehlt`);
     else if (ist.trim() !== value.trim()) {
-      funde.push(`${pfad}: ${key}\n        vorgegeben: ${value}\n        geliefert:  ${ist}`);
+      funde.push(
+        `${pfad}: ${key}\n        vorgegeben: ${value}\n        geliefert:  ${ist}`,
+      );
     }
     geprueft++;
+  }
+}
+
+/*
+   Die Zwischenspeicher-Regeln, an je einer Datei ihrer Art.
+
+   Sie stehen in `vercel.json` als eigene Blöcke mit einem regulären Ausdruck
+   als Quelle, und ein Ausdruck, der auf nichts passt, fällt genauso wenig auf
+   wie ein fehlender Block: Die Antwort trägt dann still die Voreinstellung
+   `max-age=0, must-revalidate`. Genau die stand bis zum 03.08.2026 auf jeder
+   Datei unter `public/`, auch auf dem Porträt und den Bildschirmfotos.
+
+   Geprüft wird je Block eine Beispieldatei. Mehr wäre Aufwand ohne Erkenntnis:
+   Passt der Ausdruck für eine `.jpg`, passt er für alle.
+*/
+let zwischenspeicher = 0;
+const KANDIDATEN = ["/portrait-dark.jpg", "/domenic-moran-kurzprofil.pdf"];
+
+for (const block of vorgabe.headers ?? []) {
+  if (block.source === "/(.*)" || block.source.startsWith("/api/")) continue;
+
+  /* Der Ausdruck aus der Datei entscheidet, welche Beispieldatei gemeint ist —
+     eine zweite Liste mit denselben Mustern waere die Stelle, an der beide
+     auseinanderlaufen. */
+  const muster = new RegExp("^" + block.source + "$");
+  const beispiel = KANDIDATEN.find((k) => muster.test(k));
+  if (!beispiel) {
+    funde.push(
+      `Kein Beispiel fuer ${block.source} — Kandidaten: ${KANDIDATEN.join(", ")}`,
+    );
+    continue;
+  }
+
+  zwischenspeicher++;
+  const antwort = await fetch(`${basis}${beispiel}`, {
+    redirect: "manual",
+    signal: AbortSignal.timeout(20000),
+  });
+  for (const { key, value } of block.headers) {
+    const ist = antwort.headers.get(key);
+    geprueft++;
+    if (ist === null) funde.push(`${beispiel}: ${key} fehlt`);
+    else if (ist.trim() !== value.trim()) {
+      funde.push(
+        `${beispiel}: ${key}` +
+          `
+        vorgegeben: ${value}` +
+          `
+        geliefert:  ${ist}`,
+      );
+    }
   }
 }
 
@@ -80,6 +133,6 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `Alle ${fuerAlles.length} Schutz-Kopfzeilen stimmen: ${geprueft} Prüfungen ` +
-    `über ${adressen.length} Adressen auf ${basis}.`,
+  `Alle ${fuerAlles.length} Schutz-Kopfzeilen und ${zwischenspeicher} ` +
+    `Zwischenspeicher-Regeln stimmen: ${geprueft} Prüfungen auf ${basis}.`,
 );
