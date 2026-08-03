@@ -269,9 +269,32 @@ const weiterleitungen =
   JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? [];
 let ziele = 0;
 
+/* Die Anker der Ziele, aus dem, was oben ohnehin gelesen wurde. */
+const ankerJeSeite = new Map();
+
 for (const w of weiterleitungen) {
-  const ziel = w.destination.split("#")[0];
+  const [ziel, anker] = w.destination.split("#");
   ziele++;
+
+  /* Ein Ziel mit Anker ist zwei Zusagen, und die zweite prüfte niemand.
+     `/kontakt` zeigt auf `/#contact`; verschwindet die `id`, landet der
+     Besucher stumm am Seitenanfang und sucht selbst. */
+  if (anker) {
+    const seite = ziel || "/";
+    if (!ankerJeSeite.has(seite)) {
+      const html = await (await fetch(`${basis}${seite}`)).text();
+      ankerJeSeite.set(
+        seite,
+        new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])),
+      );
+    }
+    if (!ankerJeSeite.get(seite).has(anker)) {
+      funde.push(
+        `vercel.json: ${w.source} zeigt auf ${w.destination}, ` +
+          `und ${seite} hat kein Element mit id="${anker}"`,
+      );
+    }
+  }
 
   /* Dauerhaft heisst 308, nicht 307.
      Ohne `permanent` antwortet Vercel mit 307 — gemessen an allen sieben
