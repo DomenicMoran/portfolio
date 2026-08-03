@@ -353,7 +353,6 @@ export const TECH_TICKER = [
   "Cloudflare",
   "Hetzner",
   "n8n",
-  "llama.cpp",
   "Whisper",
   "Tailwind",
   "Turborepo",
