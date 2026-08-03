@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/article/ArticlePage";
-import { artikelEn, artikelNach, chromeEn, andereSprache } from "@/content/articles";
+import {
+  artikelEn,
+  artikelNach,
+  chromeEn,
+  andereSprache,
+} from "@/content/articles";
 import { en } from "@/content/en";
-import { kurzbeschreibung } from "@/lib/metadata";
+import { feedFuer, kurzbeschreibung } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -54,7 +59,7 @@ export async function generateMetadata({
       // Eine Seite mit eigenem `alternates` ersetzt das des Layouts
       // vollständig — ohne diese Zeile hätte ausgerechnet die Artikelseite
       // keinen Feed-Hinweis.
-      types: { "application/atom+xml": "/en/articles/feed.xml" },
+      types: feedFuer("en"),
     },
   };
 }

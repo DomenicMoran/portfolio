@@ -22,9 +22,9 @@ import Link from "next/link";
 export function EnglishNote() {
   return (
     <p lang="en" className="-mt-4 mb-10 text-sm text-ink-faint">
-      These two pages are German on purpose: they exist to satisfy German law and
-      are addressed to German authorities, so a translation would have unclear
-      standing.{" "}
+      These two pages are German on purpose: they exist to satisfy German law
+      and are addressed to German authorities, so a translation would have
+      unclear standing.{" "}
       {/* `-my-1 py-1`: gemessen 174 x 18 px, unter den 24 px aus WCAG 2.5.8.
           Der Verweis steht am Ende eines Satzes, fällt also unter die Ausnahme
           für Verweise mitten im Text — die Ausnahme zu brauchen ist trotzdem
