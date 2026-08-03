@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { feedFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
@@ -20,7 +21,12 @@ export const metadata: Metadata = {
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.
-  alternates: { canonical: `${site.url}/impressum` },
+  alternates: {
+    canonical: `${site.url}/impressum`,
+    // Der Feed steht auf jeder Seite, auch hier: Next ersetzt das geerbte
+    // `alternates` vollständig, statt es zu mischen.
+    types: feedFuer("de"),
+  },
 };
 
 /**

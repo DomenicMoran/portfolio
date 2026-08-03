@@ -12,6 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const inhalt = englisch ? en : de;
   return {
     title: `${inhalt.notFound.title} – ${inhalt.site.name}`,
+    // `metadataBase`, obwohl diese Seite kein Bild deklariert.
+    //
+    // Ohne die Angabe löst Next relative Adressen in Metadaten gegen
+    // http://localhost:3000 auf und warnt bei jedem Bau darauf hin — zweimal,
+    // für diese Seite und für die interne Not-found-Route. Zwei Warnungen in
+    // jedem grünen Lauf sind zwei, die man zu übersehen lernt.
+    metadataBase: new URL(inhalt.site.url),
     robots: { index: false, follow: true },
   };
 }

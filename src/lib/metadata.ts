@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import type { Content } from "@/content/types";
+import { chromeDe, chromeEn } from "@/content/articles";
+import { site } from "@/content/site";
 
 /** Die Kennung der englischen Fassung. Steht hier, damit sie nur einmal steht. */
 const OG_LOCALE_EN = "en_GB";
@@ -25,7 +27,6 @@ export function kurzbeschreibung(text: string, grenze = 158): string {
   const wortende = bisGrenze.lastIndexOf(" ");
   return bisGrenze.slice(0, wortende > 0 ? wortende : grenze).trimEnd() + " …";
 }
-
 
 /**
  * Metadaten für eine Sprachfassung.
@@ -99,7 +100,14 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       // Und die Karte hat eine Sprache: Beide Fassungen zeigten auf dieselbe
       // deutsche, wer /en teilte bekam eine Vorschau mit "BERLIN,
       // DEUTSCHLAND". Jede Sprache hat jetzt ihre eigene Route.
-      images: [{ url: ogBild, width: 1200, height: 630, alt: `${site.name} – ${site.role}` }],
+      images: [
+        {
+          url: ogBild,
+          width: 1200,
+          height: 630,
+          alt: `${site.name} – ${site.role}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -126,10 +134,32 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       // /en/articles: Wer von einem Artikel aus abonnieren wollte, fand nichts.
       // Je Sprache der eigene, sonst bekommt ein englischer Leser deutsche
       // Einträge ins Lesegerät.
-      types: {
-        "application/atom+xml":
-          lang === "de" ? `${base}/artikel/feed.xml` : `${base}/en/articles/feed.xml`,
-      },
+      types: feedFuer(lang),
     },
+  };
+}
+
+/**
+ * Der Artikel-Feed, wie ihn `alternates.types` erwartet.
+ *
+ * Als Funktion, weil vier Seiten ihr `alternates` vollständig selbst setzen
+ * müssen: Next ersetzt das geerbte Objekt, statt es zu mischen. Ohne diese
+ * Stelle stünde die Angabe fünfmal da, und auf /artikel fehlte der Titel
+ * bereits — im Leser stand dort die nackte Adresse.
+ */
+const SEITE_URL = site.url;
+
+export function feedFuer(lang: "de" | "en") {
+  const basis = SEITE_URL.replace(/\/$/, "");
+  return {
+    "application/atom+xml": [
+      {
+        url:
+          lang === "de"
+            ? `${basis}/artikel/feed.xml`
+            : `${basis}/en/articles/feed.xml`,
+        title: lang === "de" ? chromeDe.title : chromeEn.title,
+      },
+    ],
   };
 }

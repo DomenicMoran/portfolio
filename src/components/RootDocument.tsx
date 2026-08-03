@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { MotionProvider } from "@/components/providers/MotionProvider";
-import { chromeDe, chromeEn } from "@/content/articles";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -87,25 +86,6 @@ export function RootDocument({
           type="text/plain"
           href="/llms.txt"
           title="Facts for language models"
-        />
-        {/*
-          Der Artikel-Feed, je Sprache seiner.
-
-          Beide Adressen gab es schon und beide antworteten mit 200 —
-          angemeldet war keine. Ein Feedreader findet einen Feed über genau
-          diese Zeile; ohne sie muss man die Adresse erraten. Gemessen an der
-          ausgelieferten Seite trug keine der zwanzig Seiten ein
-          `rel="alternate"` mit `application/rss+xml`.
-
-          Der Titel steht in `chromeDe`/`chromeEn` und ist derselbe, den der
-          Feed selbst als `<title>` führt: Im Reader soll nicht ein zweiter
-          Name stehen.
-        */}
-        <link
-          rel="alternate"
-          type="application/atom+xml"
-          href={lang === "de" ? "/artikel/feed.xml" : "/en/articles/feed.xml"}
-          title={lang === "de" ? chromeDe.title : chromeEn.title}
         />
         <MotionProvider>{children}</MotionProvider>
       </body>

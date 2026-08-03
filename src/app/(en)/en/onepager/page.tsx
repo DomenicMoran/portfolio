@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { feedFuer } from "@/lib/metadata";
 import { OnePager } from "@/components/OnePager";
 import { en } from "@/content/en";
 import { site } from "@/content/site";
@@ -13,6 +14,9 @@ export const metadata: Metadata = {
     locale: "en_GB",
   },
   alternates: {
+    // Der Feed steht auf jeder Seite, auch hier: Next ersetzt das geerbte
+    // `alternates` vollständig, statt es zu mischen.
+    types: feedFuer("en"),
     canonical: `${site.url}/en/onepager`,
     languages: {
       de: `${site.url}/onepager`,

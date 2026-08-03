@@ -141,14 +141,63 @@ for (const pfad of pfade) {
         rel: l.getAttribute("rel"),
         href: l.getAttribute("href"),
         type: l.getAttribute("type"),
+        sprache: l.getAttribute("hreflang"),
       }))
-      .filter((l) => l.href?.startsWith("/")),
+      /* Nur eigene Adressen. Die Metadaten schreiben sie absolut mit der
+         Produktionsdomain, das Dokumentgerüst relativ — beide gehören hierher,
+         eine fremde Domain nicht. Geprüft wird gegen das Attribut und nicht
+         gegen die Eigenschaft `href`: Die ist im Browser immer absolut und
+         aufgelöst gegen den Testserver, womit der Vergleich nichts mehr
+         aussagt. */
+      .filter(
+        (l) =>
+          l.href?.startsWith("/") ||
+          l.href?.startsWith("https://domenicmoran.de/"),
+      )
+      .map((l) => ({
+        ...l,
+        href: l.href.replace("https://domenicmoran.de", ""),
+      })),
   );
+  /* Zweimal dieselbe Anmeldung ist so schlecht wie keine: Der Leser zeigt den
+     Feed dann doppelt an. Gemessen stand er eine Runde lang zweimal auf jeder
+     Seite — einmal aus den Metadaten, einmal aus dem Dokumentgerüst —, weil
+     die erste Anmeldung bei der Suche nach "rss" nicht auffiel.
+
+     Verglichen wird die Adresse und nicht der Medientyp: humans.txt und
+     llms.txt sind beide `text/plain` und stehen zu Recht nebeneinander, und
+     die Sprachvarianten tragen überhaupt keinen. Die Sprache gehört in den
+     Schlüssel: `hreflang="de"` und `hreflang="x-default"` zeigen richtigerweise
+     auf dieselbe Adresse. */
+  const jeAdresse = new Map();
+  for (const eintrag of kopf) {
+    const schluessel = `${eintrag.rel}|${eintrag.sprache ?? ""}|${eintrag.href}`;
+    jeAdresse.set(schluessel, (jeAdresse.get(schluessel) ?? 0) + 1);
+  }
+  for (const [schluessel, anzahl] of jeAdresse) {
+    if (anzahl > 1)
+      funde.push(`${pfad}: ${anzahl} Anmeldungen für ${schluessel}`);
+  }
+
+  /* Je Adresse und Medientyp einmal abrufen, nicht je Seite: Dieselbe Datei
+     ist auf zwanzig Seiten angemeldet. */
   for (const eintrag of kopf) {
     const schluessel = `${eintrag.href}|${eintrag.type}`;
     if (kopfGesehen.has(schluessel)) continue;
     kopfGesehen.add(schluessel);
     nebendateien.push([pfad, [eintrag]]);
+  }
+
+  /* Und er muss überall stehen: Auf den Seiten, die ihr `alternates` selbst
+     setzen, fiel er ersatzlos weg, weil Next das geerbte Objekt ersetzt statt
+     es zu mischen. Gemessen betraf das Kurzprofil, Impressum und
+     Datenschutz — also drei der zwanzig Seiten. */
+  const istNichtGefunden = /adresse|address/.test(pfad);
+  if (
+    !istNichtGefunden &&
+    !kopf.some((e) => e.type === "application/atom+xml")
+  ) {
+    funde.push(`${pfad}: meldet keinen Artikel-Feed an`);
   }
 
   anker += ergebnis.gesamt;
