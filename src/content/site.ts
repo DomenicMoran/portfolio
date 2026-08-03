@@ -332,14 +332,14 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
     solution:
-      "Eine werbefreie Plattform über vier Zielgeräte hinweg: iOS, Android, Android TV und Wear OS. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-KI läuft als quantisiertes Modell auf dem Gerät. Keine Anfrage verlässt das Telefon.",
+      "Eine werbefreie Plattform über vier Zielgeräte hinweg: iOS, Android, Android TV und Wear OS. Gebetszeiten werden lokal berechnet, der komplette Koran-Reader mit mehreren Rezitatoren und Übersetzungen funktioniert offline, und die Fragen-Antwort-Suche arbeitet vollständig auf dem Gerät. Keine Anfrage verlässt das Telefon.",
     hardPart: {
       title: "Spracherkennung für Koran-Rezitation",
       body: "Für den Auswendiglern-Modus muss die App hören, ob ein Vers korrekt rezitiert wurde. Der naheliegende Weg, ein größeres Whisper-Modell, war der falsche. Der Hebel lag in der Methode: den erwarteten Vers als Prompt ins Modell konditionieren, persische und Urdu-Buchstabenvarianten vor dem Vergleich normalisieren, und milde bewerten statt binär. Ein auf Tarteel feingetuntes Base-Modell schlägt so das dreifach größere Large-Modell, bei einem Bruchteil der Latenz auf dem Gerät.",
     },
     highlights: [
       "Vier Zielgeräte aus einem Monorepo: Phone, Tablet, Android TV, Wear OS",
-      "On-Device-LLM (GGUF/llama.cpp) mit eigenem RAG über kuratiertem Korpus, ohne Cloud-Call",
+      "Fragen-Antwort-Suche auf dem Gerät: eigener Korpus, eigene Rangfolge, kein Cloud-Call",
       "Whisper-basierte Rezitations-Erkennung mit vers-konditioniertem Prompting",
       "Vollständiger Mushaf-Reader: vier Schriftarten, Tafsir, Übersetzung, Wort-Zeitstempel",
       "Deutscher Koran-Arabisch-Podcast, 68 Folgen und gut zehn Stunden, produziert über eine ElevenLabs-Zwei-Stimmen-Pipeline",
@@ -355,7 +355,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         group: "KI on-device",
-        items: ["llama.cpp / GGUF", "whisper.rn", "Eigenes RAG", "Prompt-Konditionierung"],
+        items: ["Eigenes Retrieval", "whisper.rn", "Kuratierter Korpus", "Prompt-Konditionierung"],
       },
       {
         group: "Backend & Delivery",
@@ -828,13 +828,13 @@ export const skillDomains: SkillDomain[] = [
     id: "ai",
     title: "KI-Integration",
     summary:
-      "Von der Agenten-Pipeline in meinem Editor bis zum quantisierten Modell auf dem Telefon des Nutzers.",
+      "Von der Agenten-Pipeline in meinem Editor bis zur Antwort, die das Telefon des Nutzers ohne Netz findet.",
     skills: [
       { name: "Agenten-Orchestrierung", evidence: "Sub-Agenten, Tool-Pipelines, Loops" },
-      { name: "On-Device-Inferenz", evidence: "llama.cpp/GGUF, whisper.rn" },
+      { name: "On-Device-Inferenz", evidence: "whisper.rn, Spracherkennung ohne Netz" },
       { name: "RAG & Retrieval", evidence: "Eigener Korpus, Granularität gemessen" },
       { name: "Prompt-Engineering", evidence: "Vers-Konditionierung schlägt Modellgröße" },
-      { name: "Evaluation", evidence: "Lokale Iteration gegen dieselbe GGUF" },
+      { name: "Evaluation", evidence: "Lokale Iteration gegen dasselbe Whisper-Modell" },
       { name: "KI-Recht (EU AI Act)", evidence: "Kennzeichnung nach Art. 50 als Gate" },
     ],
   },
@@ -979,7 +979,6 @@ export const techTicker = [
   "Cloudflare",
   "Hetzner",
   "n8n",
-  "llama.cpp",
   "Whisper",
   "Tailwind",
   "Turborepo",

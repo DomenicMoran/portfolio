@@ -84,7 +84,7 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { id: "core", label: "packages/core", sub: "Gebetszeiten · Qibla · Hijri · Mushaf-Modell", x: 20, y: 198, w: 520, tone: "neutral" },
       { id: "ui", label: "packages/ui", sub: "Design-Tokens · Komponenten", x: 554, y: 198, w: 346, tone: "neutral" },
 
-      { id: "llm", label: "llama.cpp / GGUF", sub: "Quantisiertes LLM + RAG-Korpus", x: 20, y: 310, w: 300, tone: "violet" },
+      { id: "llm", label: "Lokale Suche", sub: "Eigener Korpus, eigene Rangfolge", x: 20, y: 310, w: 300, tone: "violet" },
       { id: "whisper", label: "whisper.rn", sub: "Vers-konditionierte Erkennung", x: 334, y: 310, w: 300, tone: "violet" },
       { id: "cache", label: "Offline-Cache", sub: "Audio · Übersetzungen", x: 648, y: 310, w: 252, tone: "violet" },
 
@@ -395,7 +395,7 @@ export function ArchitectureDiagram({
 
           Das `aria-label` am SVG fasst die Aussage in zwei Sätzen zusammen.
           Sichtbar stehen aber zwischen 17 und 30 Bausteine darin — iOS, Expo,
-          llama.cpp, Postgres, TSE —, und die sind der eigentliche Inhalt.
+          Whisper, Postgres, TSE —, und die sind der eigentliche Inhalt.
           Weil das SVG `role="img"` trägt, werden sie nicht vorgelesen: Ein
           Sehender liest den Stack je Ebene, ein Vorleseprogramm hört zwei
           Sätze. Eine Zusammenfassung ist keine Entsprechung.

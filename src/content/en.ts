@@ -178,14 +178,14 @@ export const en: Content = {
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
-        "An ad-free platform across four device classes: iOS, Android, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering model runs quantised on the device. No query ever leaves the phone.",
+        "An ad-free platform across four device classes: iOS, Android, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering search runs entirely on the device. No query ever leaves the phone.",
       hardPart: {
         title: "Speech recognition for Quran recitation",
         body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route, a larger Whisper model, was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
       },
       highlights: [
         "Four device classes from one monorepo: phone, tablet, Android TV, Wear OS",
-        "On-device LLM (GGUF via llama.cpp) with custom RAG over a curated corpus, no cloud call",
+        "Question answering on the device: own corpus, own ranking, no cloud call",
         "Whisper-based recitation checking with verse-conditioned prompting",
         "Complete Mushaf reader: four typefaces, tafsir, translation, word-level timestamps",
         "A German podcast on the Arabic of the Quran: 68 episodes, over ten hours, produced through a two-voice ElevenLabs pipeline",
@@ -196,7 +196,7 @@ export const en: Content = {
       ],
       stack: [
         { group: "Mobile", items: ["React Native 0.86", "Expo SDK 57", "Expo Router", "Reanimated 4", "TypeScript"] },
-        { group: "On-device AI", items: ["llama.cpp / GGUF", "whisper.rn", "Custom RAG", "Prompt conditioning"] },
+        { group: "On-device AI", items: ["Custom retrieval", "whisper.rn", "Curated corpus", "Prompt conditioning"] },
         { group: "Backend & delivery", items: ["Supabase", "Cloudflare R2", "EAS Build & Update", "Vercel", "Turborepo"] },
         { group: "Native", items: ["Android TV (Leanback)", "Wear OS", "Live Activities", "App Widgets"] },
       ],
@@ -766,13 +766,13 @@ export const en: Content = {
       {
         id: "ai",
         title: "AI integration",
-        summary: "From the agent pipeline in my editor to the quantised model on the user's phone.",
+        summary: "From the agent pipeline in my editor to the answer the user's phone finds without a network.",
         skills: [
           { name: "Agent orchestration", evidence: "Sub-agents, tool pipelines, loops" },
-          { name: "On-device inference", evidence: "llama.cpp/GGUF, whisper.rn" },
+          { name: "On-device inference", evidence: "whisper.rn, speech recognition without a network" },
           { name: "RAG & retrieval", evidence: "Own corpus, granularity measured" },
           { name: "Prompt engineering", evidence: "Verse conditioning beats model size" },
-          { name: "Evaluation", evidence: "Local iteration against the same GGUF" },
+          { name: "Evaluation", evidence: "Local iteration against the same Whisper model" },
           { name: "AI regulation (EU AI Act)", evidence: "Art. 50 disclosure as a gate" },
         ],
       },
