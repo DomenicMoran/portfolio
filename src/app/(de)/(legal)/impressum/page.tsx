@@ -82,7 +82,7 @@ export default function Impressum() {
           Umsatzsteuer-Identifikationsnummer
         </h2>
         <p className="text-sm leading-relaxed text-ink-dim">
-          USt-IdNr. gemäß § 27 a UStG: DE461628017
+          USt-IdNr. gemäß § 27a UStG: DE461628017
           <br />
           Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
           berechnet.
