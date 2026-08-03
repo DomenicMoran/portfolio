@@ -106,7 +106,7 @@ export default {
     },
     {
       kind: "p",
-      text: "After the fix, the project's first update ever was published: runtime 1.41.0, both platforms. Because the manifest correction touches the native side, Android had to be rebuilt. That the address is now right I read out of the built artefact, not out of the source.",
+      text: "After the fix, the project’s first update ever was published: runtime 1.41.0, both platforms. Because the manifest correction touches the native side, Android had to be rebuilt. That the address is now right I read out of the built artefact, not out of the source.",
     },
     { kind: "h2", text: "The actual lesson" },
     {
@@ -125,7 +125,7 @@ export default {
       kind: "list",
       ordered: true,
       items: [
-        "A tool's success message is about the tool, not about the outcome.",
+        "A tool’s success message is about the tool, not about the outcome.",
         "For anything that ships, the right question is not “did the command run” but “is something now where it belongs”. That question almost always has a query that answers it.",
         "A comment in the code describing a route as established is not evidence. It is the recollection of someone who tried it once.",
         "If a value exists in two places because a generation step is missing, the two will drift apart. Not perhaps, but eventually and certainly. That is what tests are for.",

@@ -74,7 +74,7 @@ export const widgetEn: Article = {
     },
     {
       kind: "p",
-      text: "So Android loaded the iOS entry point. The application started normally, because that file registers the app just the same. Only the widget registration happened to be in the other file. There was no error, because from the system's point of view nothing failed: a background job with no handler simply does nothing.",
+      text: "So Android loaded the iOS entry point. The application started normally, because that file registers the app just the same. Only the widget registration happened to be in the other file. There was no error, because from the system’s point of view nothing failed: a background job with no handler simply does nothing.",
     },
     { kind: "h2", text: "Why it stayed hidden for so long" },
     {

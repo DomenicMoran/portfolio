@@ -717,7 +717,7 @@ export const en: Content = {
     },
     certificates: {
       label: "Certificates",
-      note: "Every entry opens the issuer's verification page.",
+      note: "Every entry opens the issuer’s verification page.",
       noteHref: {
         label: "All ten also kept as PDFs",
         href: "https://github.com/DomenicMoran/Zertifikate",
@@ -892,7 +892,7 @@ export const en: Content = {
         {
           value: String(SALATI_VERSIONS),
           label: "versions shipped",
-          note: "1.0.0 to 1.46.0, listed in the app's own changelog",
+          note: "1.0.0 to 1.46.0, listed in the app’s own changelog",
         },
         {
           value: `${salatiHoursPerVersion} h`,
@@ -900,7 +900,7 @@ export const en: Content = {
           note: `${salatiDays} days divided by ${SALATI_VERSIONS} versions`,
         },
       ],
-      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app's changelog file. Three further systems were in production alongside it.`,
+      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app’s changelog file. Three further systems were in production alongside it.`,
     },
   },
 
@@ -999,7 +999,7 @@ export const en: Content = {
         id: "ai",
         title: "AI integration",
         summary:
-          "From the agent pipeline in my editor to the answer the user's phone finds without a network.",
+          "From the agent pipeline in my editor to the answer the user’s phone finds without a network.",
         skills: [
           {
             name: "Agent orchestration",
@@ -1110,7 +1110,7 @@ export const en: Content = {
 
   contact: {
     eyebrow: "Contact",
-    title: "Let's build something",
+    title: "Let’s build something",
     lede: "A concrete role, a question about one of the projects, or just a technical question: I reply within 24 hours.",
     hinweis:
       "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither, and you keep a copy of your message in your own sent folder.",
