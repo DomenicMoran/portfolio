@@ -114,6 +114,12 @@ jobs:
       - name: Typografie je Sprache
         run: npm run check:typography
 
+      # Das Datum der Datenschutzerklaerung wird von Hand gepflegt, damit sie
+      # sich nicht taeglich selbst neu datiert. Von Hand heisst aber auch:
+      # Es kann stehen bleiben, waehrend der Text weiterwandert.
+      - name: Stand der Datenschutzerklärung
+        run: npm run check:legal
+
       # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
       # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
       # Kette, damit die Liste vollständig ist und niemand ihn für vergessen
