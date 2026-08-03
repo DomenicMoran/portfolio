@@ -39,6 +39,22 @@ if (!basis) {
 /** Jede gebaute Seite, ohne die Bau-Interna. */
 const pfade = gebauteSeiten();
 
+/*
+  Dazu die 404, über zwei erfundene Adressen.
+
+  Sie liegt als `_not-found` im Bau und fällt damit durch das Filter, das
+  Bau-Interna auslässt — geprüft hat sie hier deshalb niemand. Dabei ist sie
+  die Seite mit der höchsten Wahrscheinlichkeit für einen toten Verweis: Sie
+  zeigt auf sieben Sprungmarken der Startseite, auf beide Rechtsseiten und auf
+  die andere Sprachfassung, und sie wird bei keiner Inhaltsänderung
+  mitgedacht. Ändert sich eine Abschnittskennung, springt sie ins Leere, und
+  auffallen würde das erst jemandem, der sich vertippt hat.
+
+  Zwei Adressen, weil es zwei Antworten sind: Unterhalb von `/en` rendert die
+  Seite englischen Text und verweist auf die englischen Ziele.
+*/
+pfade.push("/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist");
+
 const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
