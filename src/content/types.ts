@@ -345,6 +345,29 @@ export type Content = {
   };
 
   /**
+   * Die Tagesrechnung aus NOURI.
+   *
+   * Zwölf Gerichte aus dem Katalog des Produktivrepos, mit den Werten, die
+   * dort je Portion hinterlegt sind. Kein Tagesziel: Das hängt in der App am
+   * Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite
+   * ohne Beleg.
+   */
+  demoNouri: {
+    title: string;
+    lede: string;
+    /** Name der Gerichteauswahl für Vorleseprogramme. */
+    mealsLabel: string;
+    units: {
+      kcal: string;
+      protein: string;
+      carbs: string;
+      fat: string;
+      fiber: string;
+    };
+    note: string;
+  };
+
+  /**
    * Die Beschriftungen des Kurzprofils.
    *
    * Bis eben stand der One-Pager nur auf Deutsch, und die englische Fußzeile

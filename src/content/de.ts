@@ -202,6 +202,19 @@ export const de: Content = {
     printNote: `Gedruckt von domenicmoran.de. Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
   },
 
+  demoNouri: {
+    title: "Ein Tag, zusammengerechnet",
+    lede: "Zwölf Gerichte aus dem Katalog, mit den Werten, die dort je Portion hinterlegt sind. Auswählen und sehen, was zusammenkommt.",
+    mealsLabel: "Gerichte wählen",
+    units: {
+      kcal: "kcal",
+      protein: "Eiweiß",
+      carbs: "Kohlenhydrate",
+      fat: "Fett",
+      fiber: "Ballaststoffe",
+    },
+    note: "Werte aus dem NOURI-Katalog (11.892 Rezepte, hier die zwölf handkuratierten). Energieverteilung über 4/4/9 kcal je Gramm. Kein Tagesziel: Das hängt in der App am Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.",
+  },
   demoSalati: {
     title: "Gebetszeiten, hier gerechnet",
     lede: "Kein Bildschirmfoto und keine Nachbildung: Diese Kachel lädt dieselbe Bibliothek, die in der ausgelieferten App rechnet, und setzt dieselben Werte, die dort voreingestellt sind.",

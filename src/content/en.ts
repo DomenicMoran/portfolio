@@ -1148,6 +1148,19 @@ export const en: Content = {
     printNote: `Printed from domenicmoran.de. Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
   },
 
+  demoNouri: {
+    title: "One day, added up",
+    lede: "Twelve meals from the catalogue, with the values it holds per serving. Pick some and watch the day add up.",
+    mealsLabel: "Choose meals",
+    units: {
+      kcal: "kcal",
+      protein: "Protein",
+      carbs: "Carbs",
+      fat: "Fat",
+      fiber: "Fibre",
+    },
+    note: "Values from the NOURI catalogue (11,892 recipes, these twelve are the curated ones). Energy split via the standard 4/4/9 kcal per gram. No daily target: in the app that depends on the profile, and one invented here would be the only figure on this site without evidence.",
+  },
   demoSalati: {
     title: "Prayer times, computed right here",
     lede: "Not a screenshot and not a re-creation: this panel loads the same library that runs in the shipped app, with the same values it ships with.",
