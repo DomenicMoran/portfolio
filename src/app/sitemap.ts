@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/content/site";
 import { artikelDe, artikelEn, andereSprache } from "@/content/articles";
+import geprueft from "@/content/verified.json";
 
 /**
  * Beide Sprachfassungen, mit gegenseitigen Verweisen.
@@ -10,7 +11,29 @@ import { artikelDe, artikelEn, andereSprache } from "@/content/articles";
  * ob sie eine Seite überhaupt abrufen.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  /*
+    `lastModified` muss stimmen, sonst zaehlt es nicht.
+
+    Bis hierher stand an den vier Uebersichtsseiten die Bauzeit. Damit meldete
+    jede Auslieferung, alle vier Seiten haetten sich geaendert - auch wenn nur
+    ein Kommentar in einem Skript anders war. Google behandelt eine Sitemap,
+    in der sich taeglich alles aendert, wie eine ohne Angabe: Das Feld
+    verliert seinen Wert, und zwar fuer die Seiten gleich mit, bei denen es
+    zutrifft.
+
+    Die Artikel tragen laengst ihr Erscheinungsdatum. Fuer die beiden
+    Startseiten ist der Pruefstempel die ehrliche Angabe: Er haelt fest, wann
+    die Zahlen der Seite zuletzt gegen die Repos gemessen wurden, und die
+    Zahlen sind das, was sich dort aendert. Die beiden Artikeluebersichten
+    tragen das Datum des juengsten Artikels, denn genau daraus bestehen sie.
+  */
+  const stempel = new Date(geprueft.date);
+  const juengsterArtikel = new Date(
+    artikelDe.reduce(
+      (neu, a) => (a.date > neu ? a.date : neu),
+      artikelDe[0].date,
+    ),
+  );
   const basis = site.url.replace(/\/$/, "");
 
   const paar = (de: string, en: string) => ({
@@ -20,28 +43,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const urls: MetadataRoute.Sitemap = [
     {
       url: basis,
-      lastModified: now,
+      lastModified: stempel,
       changeFrequency: "monthly",
       priority: 1,
       alternates: paar("/", "/en"),
     },
     {
       url: `${basis}/en`,
-      lastModified: now,
+      lastModified: stempel,
       changeFrequency: "monthly",
       priority: 0.9,
       alternates: paar("/", "/en"),
     },
     {
       url: `${basis}/artikel`,
-      lastModified: now,
+      lastModified: juengsterArtikel,
       changeFrequency: "monthly",
       priority: 0.8,
       alternates: paar("/artikel", "/en/articles"),
     },
     {
       url: `${basis}/en/articles`,
-      lastModified: now,
+      lastModified: juengsterArtikel,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: paar("/artikel", "/en/articles"),
@@ -75,7 +98,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(a.date),
       changeFrequency: "yearly",
       priority: 0.7,
-      ...(en ? { alternates: paar(`/artikel/${a.slug}`, `/en/articles/${en}`) } : {}),
+      ...(en
+        ? { alternates: paar(`/artikel/${a.slug}`, `/en/articles/${en}`) }
+        : {}),
     });
   }
 
@@ -86,7 +111,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(a.date),
       changeFrequency: "yearly",
       priority: 0.6,
-      ...(de ? { alternates: paar(`/artikel/${de}`, `/en/articles/${a.slug}`) } : {}),
+      ...(de
+        ? { alternates: paar(`/artikel/${de}`, `/en/articles/${a.slug}`) }
+        : {}),
     });
   }
 
