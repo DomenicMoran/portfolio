@@ -77,7 +77,7 @@ export default function Datenschutz() {
 
       {/* Die Speicherdauer gehört hierher, nicht ins Ungefähre.
 
-          Art. 13 Abs. 2 lit. a DSGVO verlangt die Dauer der Speicherung oder,
+          Art. 13 Abs. 2 lit. a DSGVO verlangt die Dauer der Speicherung oder,
           wenn das nicht geht, die Kriterien dafür. Der Abschnitt nannte beides
           nicht: Er sagte, welche Logdaten anfallen und warum, und ließ offen,
           wie lange sie liegen — auf einer Seite, die sonst jede Angabe belegt.
@@ -89,8 +89,8 @@ export default function Datenschutz() {
       <Section title="Hosting">
         Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
         technisch notwendige Server-Logdaten verarbeitet (IP-Adresse, Zeitpunkt,
-        aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage ist Art. 6
-        Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
+        aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage ist Art. 6
+        Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
         stabilen Betrieb. Der Hoster hält diese Protokolle eine Stunde lang vor
         und löscht sie danach automatisch; eine eigene Speicherung, Auswertung
         oder Weitergabe findet nicht statt. Die Übermittlung in die USA erfolgt
@@ -116,7 +116,7 @@ export default function Datenschutz() {
         nichts gespeichert, wenn du Kontakt aufnimmst. Deine Nachricht geht
         direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
         daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
-        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b bzw.
+        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b bzw.
         lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
         gesetzliche Aufbewahrungsfrist entgegensteht.
       </Section>
@@ -130,9 +130,9 @@ export default function Datenschutz() {
       </Section>
 
       <Section title="Deine Rechte">
-        Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16),
-        Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18),
-        Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO). Eine
+        Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16),
+        Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18),
+        Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO). Eine
         formlose E-Mail an die oben genannte Adresse genügt. Außerdem steht dir
         ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, etwa bei
         der Berliner Beauftragten für Datenschutz und Informationsfreiheit.

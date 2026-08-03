@@ -10,7 +10,9 @@ import { alsAnzeige } from "./adresse";
  */
 describe("alsAnzeige", () => {
   it("nimmt Schema und www. weg, damit zwei Zeilen gleich aussehen", () => {
-    expect(alsAnzeige("https://github.com/DomenicMoran")).toBe("github.com/DomenicMoran");
+    expect(alsAnzeige("https://github.com/DomenicMoran")).toBe(
+      "github.com/DomenicMoran",
+    );
     expect(alsAnzeige("https://www.linkedin.com/in/domenicmoran")).toBe(
       "linkedin.com/in/domenicmoran",
     );
@@ -24,7 +26,9 @@ describe("alsAnzeige", () => {
 
   it("fasst nur den Anfang an", () => {
     // Ein `www.` mitten im Pfad gehört zum Pfad und bleibt stehen.
-    expect(alsAnzeige("https://example.com/www.test")).toBe("example.com/www.test");
+    expect(alsAnzeige("https://example.com/www.test")).toBe(
+      "example.com/www.test",
+    );
     expect(alsAnzeige("http://example.com")).toBe("example.com");
   });
 });

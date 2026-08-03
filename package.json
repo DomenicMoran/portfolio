@@ -21,6 +21,7 @@
     "check:reading": "node scripts/check-reading-time.mjs",
     "check:headings": "node scripts/check-headings.mjs",
     "check:separators": "node scripts/check-separators.mjs",
+    "check:nbsp": "node scripts/check-nbsp.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:privacy": "node scripts/check-privacy.mjs",
     "check:headers": "node scripts/check-headers.mjs",

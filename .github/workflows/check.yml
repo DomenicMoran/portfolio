@@ -132,6 +132,13 @@ jobs:
       - name: Trennzeichen
         run: npm run check:separators
 
+      # „EU AI Act Art." am Zeilenende und „50" auf der nächsten — gefunden auf
+      # der Startseite bei 390 px und auf /en bei 320 px. Dieselbe Klasse wie
+      # der Trennpunkt darunter, und ebenso wenig von einem anderen Lauf zu
+      # sehen.
+      - name: Geschützte Leerzeichen
+        run: npm run check:nbsp
+
       # Die beiden PDFs entstehen nicht beim Bau — dafür bräuchte der Lauf ein
       # Chromium mit Druckfunktion. Sie werden von Hand gedruckt, und ein
       # Schritt von Hand wird irgendwann vergessen. Ausgerechnet diese Datei
