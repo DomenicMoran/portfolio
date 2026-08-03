@@ -274,7 +274,7 @@ export const en: Content = {
       ],
       shots: [
         {
-          src: "/shots/salati/shot-prayer.png",
+          src: "/shots/salati/shot-prayer.webp",
           alt: "The prayer-times view: above the list an image of the Kaaba with the current time and a countdown to the next prayer, below it the five daily times with the next one highlighted and the Hijri date.",
           width: 720,
           height: 1600,
@@ -282,7 +282,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/shot-quran.png",
+          src: "/shots/salati/shot-quran.webp",
           alt: "The Quran reader on the phone: the Arabic verse set large, transliteration and German translation below it.",
           width: 720,
           height: 1600,
@@ -290,7 +290,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/shot-ki.png",
+          src: "/shots/salati/shot-ki.webp",
           alt: "The question-answering model replies with its source named and a note that the answer is AI-assisted.",
           width: 720,
           height: 1600,
@@ -298,7 +298,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/shot-qibla.png",
+          src: "/shots/salati/shot-qibla.webp",
           alt: "The Qibla compass shows the prayer direction with the bearing in degrees and the distance to Mecca.",
           width: 720,
           height: 1600,
@@ -306,7 +306,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/shot-study.png",
+          src: "/shots/salati/shot-study.webp",
           alt: "The study area with courses and a progress indicator per lesson.",
           width: 720,
           height: 1477,
@@ -314,7 +314,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/shot-tracker.png",
+          src: "/shots/salati/shot-tracker.webp",
           alt: "Prayer tracking: a tick per day and prayer, with the streak of consecutive days above.",
           width: 720,
           height: 1600,
@@ -322,7 +322,7 @@ export const en: Content = {
           variant: "phone",
         },
         {
-          src: "/shots/salati/tv-quran.png",
+          src: "/shots/salati/tv-quran.webp",
           alt: "The Quran reader on a television: the Arabic verse set large, transliteration and translation below, remote-control hints at the bottom.",
           width: 1280,
           height: 720,
@@ -330,7 +330,7 @@ export const en: Content = {
           variant: "screen",
         },
         {
-          src: "/shots/salati/tv-home.png",
+          src: "/shots/salati/tv-home.webp",
           alt: "The television home screen with tiles for prayer times, Quran and the study area, one of them showing the focus ring.",
           width: 1280,
           height: 720,
@@ -507,14 +507,14 @@ export const en: Content = {
       articles: ["german-till-law-in-practice"],
       shots: [
         {
-          src: "/shots/menucloud-desktop.png",
+          src: "/shots/menucloud-desktop.webp",
           alt: "Home page of menucloud-berlin.de promising zero commission, GDPR and cash-register compliance, with a preview of the self-service admin.",
           width: 1440,
           height: 1466,
           label: "menucloud-berlin.de",
         },
         {
-          src: "/shots/menucloud-app.png",
+          src: "/shots/menucloud-app.webp",
           alt: "A restaurant page in the MenuCloud app on iPhone: menu, reservation, opening hours and description of a Berlin restaurant.",
           width: 1242,
           height: 2688,
@@ -627,7 +627,7 @@ export const en: Content = {
       architecture: "nouri",
       shots: [
         {
-          src: "/shots/nouri-desktop.png",
+          src: "/shots/nouri-desktop.webp",
           alt: "Home page of the NOURI platform: language switch, headline and the buttons that open the app.",
           width: 1440,
           height: 828,
