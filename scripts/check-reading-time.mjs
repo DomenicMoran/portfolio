@@ -38,7 +38,9 @@ function woerterZaehlen(quelle) {
   }
 
   // Aufzählungen stehen als nackte Zeichenketten in items-Feldern.
-  for (const treffer of ohneCode.matchAll(/^\s{6,}"((?:[^"\\]|\\.)*)",\s*$/gm)) {
+  for (const treffer of ohneCode.matchAll(
+    /^\s{6,}"((?:[^"\\]|\\.)*)",\s*$/gm,
+  )) {
     wort += treffer[1].split(/\s+/).filter(Boolean).length;
   }
 
@@ -48,7 +50,8 @@ function woerterZaehlen(quelle) {
 const befunde = [];
 
 for (const datei of readdirSync(ORDNER)) {
-  if (!datei.endsWith(".ts") || ["types.ts", "index.ts"].includes(datei)) continue;
+  if (!datei.endsWith(".ts") || ["types.ts", "index.ts"].includes(datei))
+    continue;
 
   const pfad = join(ORDNER, datei);
   const quelle = readFileSync(pfad, "utf8");
@@ -63,7 +66,11 @@ for (const datei of readdirSync(ORDNER)) {
   befunde.push({ datei, woerter, angegeben, berechnet, abweichung });
 
   if (setzen && abweichung > 0) {
-    writeFileSync(pfad, quelle.replace(/minutes:\s*\d+/, `minutes: ${berechnet}`), "utf8");
+    writeFileSync(
+      pfad,
+      quelle.replace(/minutes:\s*\d+/, `minutes: ${berechnet}`),
+      "utf8",
+    );
   }
 }
 
@@ -89,7 +96,21 @@ for (const b of befunde) {
    ändert, ruft `--setzen` — derselbe Handgriff wie beim Kurzprofil. */
 const schief = befunde.filter((b) => b.abweichung > 0);
 if (schief.length && !setzen) {
-  console.error(`\n${schief.length} Artikel mit falscher Lesezeit. Beheben: --setzen`);
+  console.error(
+    `\n${schief.length} Artikel mit falscher Lesezeit. Beheben: --setzen`,
+  );
   process.exit(1);
 }
 if (setzen) console.log("\nWerte gesetzt.");
+/* Eine Bilanz zum Schluss, wie bei jedem anderen Lauf.
+
+   Ohne sie endete die Ausgabe mit der letzten Tabellenzeile, und in der
+   Actions-Ansicht sah ein bestandener Lauf aus wie einer, der mittendrin
+   abgebrochen ist. Sechzehn Läufe sagen dort, was sie geprüft haben;
+   dieser sagte nichts. */
+else
+  console.log(
+    `
+Jede Lesezeit stimmt mit dem Wortbestand: ${befunde.length} Artikel gezählt, ` +
+      `${befunde.reduce((n, b) => n + b.woerter, 0).toLocaleString("de-DE")} Wörter.`,
+  );
