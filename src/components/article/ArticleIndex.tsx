@@ -143,48 +143,78 @@ export function ArticleIndex({
                   <Karte key={article.slug}>
                     <Link
                       href={`${chrome.base}/${article.slug}`}
-                      className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9"
+                      className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
                     >
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-ink-faint">
+                      {/* Kopfdaten links, Text rechts — aber erst ab `lg`.
+
+                          Vorher lief alles über die volle Kartenbreite: Die
+                          Karte ist 1.024 px breit, der Vorspann auf 62 Zeichen
+                          begrenzt und damit 658 px, und rechts standen auf
+                          jeder der fünf Karten rund 300 px leer. Eine Fläche,
+                          die auf jedem Desktop zu 30 Prozent ungenutzt ist,
+                          sieht nicht ruhig aus, sondern unfertig.
+
+                          Als Spalte gewinnt die Angabe zusätzlich einen
+                          Zweck: Untereinander lassen sich fünf Daten und fünf
+                          Systeme vergleichen, in einer Zeile hinter dem
+                          Mittelpunkt liest man sie einzeln.
+
+                          Darunter bleibt die Zeile, weil ein Telefon keine
+                          zweite Spalte hat — und dort gehört jeder Trennpunkt
+                          mit dem, was er einleitet, in dieselbe Einheit.
+                          Standen die drei Angaben als fünf gleichrangige
+                          Kästchen nebeneinander, brach die Zeile bei 390 px
+                          hinter dem zweiten Punkt um: „31. Juli 2026 · 5 Min.
+                          Lesezeit ·" und darunter allein „Salati". Ein
+                          Mittelpunkt am Zeilenende trennt nichts. */}
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-ink-faint lg:flex-col lg:items-start lg:gap-y-2 lg:pt-1">
                         <time dateTime={article.date}>
                           {datum(article.date, lang)}
                         </time>
-                        <span aria-hidden>·</span>
-                        <span>{chrome.readingTime(article.minutes)}</span>
+                        <span className="flex items-center gap-4 lg:gap-0">
+                          <span aria-hidden className="lg:hidden">
+                            ·
+                          </span>
+                          {chrome.readingTime(article.minutes)}
+                        </span>
                         {system ? (
-                          <>
-                            <span aria-hidden>·</span>
+                          <span className="flex items-center gap-4 lg:gap-0">
+                            <span aria-hidden className="lg:hidden">
+                              ·
+                            </span>
                             {/* Kein eigener Verweis: Die ganze Karte führt in den
                             Artikel, und ein Verweis in einem Verweis ist im
                             Barrierefreiheitsbaum zweimal dasselbe Ziel mit
                             zwei Namen. Der Weg ins System steht im Artikel. */}
                             <span className="text-ink-dim">{system.name}</span>
-                          </>
+                          </span>
                         ) : null}
                       </div>
 
-                      <h2 className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl">
-                        {article.title}
-                        <ArrowUpRight
-                          className="mt-1 size-4 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
-                          aria-hidden
-                        />
-                      </h2>
+                      <div className="min-w-0">
+                        <h2 className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl lg:mt-0">
+                          {article.title}
+                          <ArrowUpRight
+                            className="mt-1 size-4 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
+                            aria-hidden
+                          />
+                        </h2>
 
-                      <p className="mt-3 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
-                        {article.dek}
-                      </p>
+                        <p className="mt-3 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
+                          {article.dek}
+                        </p>
 
-                      <ul className="mt-5 flex flex-wrap gap-1.5">
-                        {article.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-md border border-line bg-base/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
+                        <ul className="mt-5 flex flex-wrap gap-1.5">
+                          {article.tags.map((tag) => (
+                            <li
+                              key={tag}
+                              className="rounded-md border border-line bg-base/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
+                            >
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </Link>
                   </Karte>
                 );
