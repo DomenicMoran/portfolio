@@ -58,9 +58,18 @@ function vitestLauf(repo) {
   // Der Bericht liegt in beiden Fällen auf stdout, also wird er in beiden
   // Fällen gelesen.
   try {
-    return JSON.parse(execFileSync(process.execPath, [einstieg, "run", "--reporter=json"], optionen));
+    return JSON.parse(
+      execFileSync(
+        process.execPath,
+        [einstieg, "run", "--reporter=json"],
+        optionen,
+      ),
+    );
   } catch (fehler) {
-    if (typeof fehler?.stdout === "string" && fehler.stdout.trim().startsWith("{")) {
+    if (
+      typeof fehler?.stdout === "string" &&
+      fehler.stdout.trim().startsWith("{")
+    ) {
       return JSON.parse(fehler.stdout);
     }
     throw fehler;
@@ -119,7 +128,9 @@ if (existsSync(MENUCLOUD)) {
     ausSeite(/title: "([\d.]+) Workflows, die den Betrieb tragen"/),
   );
   if (dateien !== namen.size) {
-    zeilen.push(`       (${dateien} Dateien, ${dateien - namen.size} doppelt exportiert)`);
+    zeilen.push(
+      `       (${dateien} Dateien, ${dateien - namen.size} doppelt exportiert)`,
+    );
   }
 
   // --- Testfälle -----------------------------------------------------------
@@ -134,12 +145,21 @@ if (existsSync(MENUCLOUD)) {
     .split("\n")
     .filter(Boolean);
   const e2e = specs.reduce(
-    (n, s) => n + (readFileSync(join(MENUCLOUD, s), "utf8").match(/^\s*test\(/gm) ?? []).length,
+    (n, s) =>
+      n +
+      (readFileSync(join(MENUCLOUD, s), "utf8").match(/^\s*test\(/gm) ?? [])
+        .length,
     0,
   );
 
-  const aufSeite = quelle.match(/"([\d.]+) Testfälle \(([\d.]+) Unit, ([\d.]+) End-to-End\)/);
-  vergleiche("MenuCloud Unit-Tests", vitest.numTotalTests, aufSeite?.[2].replace(/\./g, ""));
+  const aufSeite = quelle.match(
+    /"([\d.]+) Testfälle \(([\d.]+) Unit, ([\d.]+) End-to-End\)/,
+  );
+  vergleiche(
+    "MenuCloud Unit-Tests",
+    vitest.numTotalTests,
+    aufSeite?.[2].replace(/\./g, ""),
+  );
   vergleiche("MenuCloud End-to-End", e2e, aufSeite?.[3].replace(/\./g, ""));
   vergleiche(
     "MenuCloud gesamt",
@@ -158,7 +178,10 @@ if (existsSync(MENUCLOUD)) {
 
 const PAKETE = [
   ["cron-last-due", /name: "cron-last-due",[\s\S]{0,400}?· (\d+) Tests/],
-  ["whisper-ggml-header", /name: "whisper-ggml-header",[\s\S]{0,400}?· (\d+) Tests/],
+  [
+    "whisper-ggml-header",
+    /name: "whisper-ggml-header",[\s\S]{0,400}?· (\d+) Tests/,
+  ],
   ["arabic-normalize", /name: "arabic-normalize",[\s\S]{0,400}?· (\d+) Tests/],
 ];
 
@@ -209,7 +232,8 @@ const UNTERGRENZEN = [
   {
     was: "Commits gesamt",
     imText: /über ([\d.]+) Commits\*\* über drei Monorepos/g,
-    gemessen: () => zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+    gemessen: () =>
+      zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
   },
   {
     was: "Commits in Salati",
@@ -219,7 +243,8 @@ const UNTERGRENZEN = [
   {
     was: "Commits seit März",
     imText: /[Üü]ber ([\d.]+) Commits seit März 2026/g,
-    gemessen: () => zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+    gemessen: () =>
+      zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
   },
   {
     was: "Testfälle",
@@ -244,10 +269,14 @@ for (const datei of ["../docs/LEBENSLAUF.md", "../docs/CAREER-LAUNCHPAD.md"]) {
       const grenze = Number(treffer[1].replace(/\./g, ""));
       const name = `${kurz}: über ${treffer[1]} ${was}`;
       if (grenze > wirklich) {
-        zeilen.push(`  !!  ${name} — gemessen nur ${wirklich}. Die Aussage stimmt nicht.`);
+        zeilen.push(
+          `  !!  ${name} — gemessen nur ${wirklich}. Die Aussage stimmt nicht.`,
+        );
         abweichungen++;
       } else if (wirklich > grenze * 1.25) {
-        zeilen.push(`  ~   ${name} — gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`);
+        zeilen.push(
+          `  ~   ${name} — gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`,
+        );
         abweichungen++;
       } else {
         zeilen.push(`  ok  ${name.padEnd(42)} gemessen ${wirklich}`);
@@ -307,7 +336,9 @@ for (const [name, pfad] of REPOS) {
 const deutsch = (n) => n.toLocaleString("de-DE");
 
 if (fehlendeRepos.length) {
-  zeilen.push(`  --  Nicht gefunden: ${fehlendeRepos.join(", ")}. Prüfstempel übersprungen.`);
+  zeilen.push(
+    `  --  Nicht gefunden: ${fehlendeRepos.join(", ")}. Prüfstempel übersprungen.`,
+  );
 } else {
   /**
    * Die Commit-Zahl wird mit Nachsicht verglichen, alle anderen nicht.
@@ -330,11 +361,15 @@ if (fehlendeRepos.length) {
   const stempelJetzt = existsSync("src/content/verified.json")
     ? JSON.parse(readFileSync("src/content/verified.json", "utf8"))
     : {};
-  const aufDerSeite = Number(String(stempelJetzt.commitsHead ?? "").replace(/\./g, ""));
+  const aufDerSeite = Number(
+    String(stempelJetzt.commitsHead ?? "").replace(/\./g, ""),
+  );
   const rueckstand = head - aufDerSeite;
 
   if (!Number.isFinite(aufDerSeite)) {
-    zeilen.push("  !!  Commits über alle Repos: keine Zahl in site.ts gefunden.");
+    zeilen.push(
+      "  !!  Commits über alle Repos: keine Zahl in site.ts gefunden.",
+    );
     abweichungen++;
   } else if (rueckstand < 0) {
     zeilen.push(
@@ -351,7 +386,9 @@ if (fehlendeRepos.length) {
   } else {
     zeilen.push(
       `  ok  Commits über alle Repos      gemessen ${String(head).padStart(6)}` +
-        (rueckstand ? `   Seite ${deutsch(aufDerSeite)}, ${rueckstand} hinterher` : ""),
+        (rueckstand
+          ? `   Seite ${deutsch(aufDerSeite)}, ${rueckstand} hinterher`
+          : ""),
     );
   }
 
@@ -420,7 +457,9 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     if (gemessen == null) return;
     const behauptet = ausTodo(muster);
     if (behauptet === null) {
-      zeilen.push(`  --  Prüfstand-README: "${was}" nicht gefunden, übersprungen`);
+      zeilen.push(
+        `  --  Prüfstand-README: "${was}" nicht gefunden, übersprungen`,
+      );
       return;
     }
     const gleich = behauptet === gemessen;
@@ -441,7 +480,9 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   // dieselbe Zahl, und der falsche stand im Dokument für den Leser.
   pruefe(
     "Podcast-Minuten",
-    folgen ? Math.round(folgen.reduce((n, f) => n + (f.sekunden ?? 0), 0) / 60) : null,
+    folgen
+      ? Math.round(folgen.reduce((n, f) => n + (f.sekunden ?? 0), 0) / 60)
+      : null,
     /Podcast-Folgen\s+mit\s+([\d.]+)\s+Minuten/,
   );
   pruefe("Buchkapitel", lektionen?.length, /([\d.]+) Buchkapitel/);
@@ -457,10 +498,16 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   const INTERVIEWFRAGEN_ANZAHL = 30;
   const quizfaehig = karten
     ? karten.filter(
-        (k) => (k.art === "wort" || k.art === "begriff") && (k.hinten ?? "").length <= 400,
+        (k) =>
+          (k.art === "wort" || k.art === "begriff") &&
+          (k.hinten ?? "").length <= 400,
       ).length + INTERVIEWFRAGEN_ANZAHL
     : null;
-  pruefe("Fragen mit Auswahl", quizfaehig, /([\d.]+) Fragen mit Antwortauswahl/);
+  pruefe(
+    "Fragen mit Auswahl",
+    quizfaehig,
+    /([\d.]+) Fragen mit Antwortauswahl/,
+  );
 } else {
   zeilen.push("  --  Prüfstand nicht gefunden, übersprungen");
 }
@@ -477,8 +524,8 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
 const NOURI = resolve("../../NOURI");
 
 if (existsSync(join(NOURI, "supabase", "migrations"))) {
-  const migrationen = readdirSync(join(NOURI, "supabase", "migrations")).filter((d) =>
-    d.endsWith(".sql"),
+  const migrationen = readdirSync(join(NOURI, "supabase", "migrations")).filter(
+    (d) => d.endsWith(".sql"),
   );
 
   // `create table` zählt auch die Varianten mit `if not exists` und mit
@@ -486,12 +533,25 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
   // Migration können mehrere Tabellen entstehen.
   let tabellen = 0;
   for (const datei of migrationen) {
-    const inhalt = readFileSync(join(NOURI, "supabase", "migrations", datei), "utf8");
-    tabellen += (inhalt.match(/create\s+table(\s+if\s+not\s+exists)?\s+["a-z_.]+/gi) ?? []).length;
+    const inhalt = readFileSync(
+      join(NOURI, "supabase", "migrations", datei),
+      "utf8",
+    );
+    tabellen += (
+      inhalt.match(/create\s+table(\s+if\s+not\s+exists)?\s+["a-z_.]+/gi) ?? []
+    ).length;
   }
 
-  vergleiche("NOURI-Migrationen", migrationen.length, ausSeite(/value: "(\d+)", label: "Migrationen"/));
-  vergleiche("NOURI-Tabellen", tabellen, ausSeite(/value: "(\d+)", label: "Tabellen"/));
+  vergleiche(
+    "NOURI-Migrationen",
+    migrationen.length,
+    ausSeite(/value: "(\d+)", label: "Migrationen"/),
+  );
+  vergleiche(
+    "NOURI-Tabellen",
+    tabellen,
+    ausSeite(/value: "(\d+)", label: "Tabellen"/),
+  );
 } else {
   zeilen.push(`  --  NOURI nicht unter ${NOURI}, übersprungen`);
 }
@@ -567,16 +627,24 @@ function ghKonten() {
     ]);
     const codes = new Set();
     for (const pfad of roh.split("\n")) {
-      const treffer = pfad.match(/(?:locales?|i18n|translations)\/([a-z]{2}(?:-[A-Z]{2})?)[/.]/);
+      const treffer = pfad.match(
+        /(?:locales?|i18n|translations)\/([a-z]{2}(?:-[A-Z]{2})?)[/.]/,
+      );
       if (treffer) codes.add(treffer[1]);
     }
     sprachen = codes.size || null;
   } catch {
-    zeilen.push("  --  Salati-Sprachen nicht lesbar (gh fehlt oder Konto ohne Zugriff)");
+    zeilen.push(
+      "  --  Salati-Sprachen nicht lesbar (gh fehlt oder Konto ohne Zugriff)",
+    );
   }
 
   if (sprachen) {
-    vergleiche("Salati-Sprachen", sprachen, ausSeite(/(\d+) Sprachen gepflegt/));
+    vergleiche(
+      "Salati-Sprachen",
+      sprachen,
+      ausSeite(/(\d+) Sprachen gepflegt/),
+    );
   }
 }
 
@@ -609,14 +677,22 @@ function ghKonten() {
     const index = await antwort.json();
     const liste = index.episodes ?? [];
     folgen = liste.length || null;
-    minuten = Math.round(liste.reduce((n, f) => n + (f.duration_sec ?? 0), 0) / 60) || null;
+    minuten =
+      Math.round(liste.reduce((n, f) => n + (f.duration_sec ?? 0), 0) / 60) ||
+      null;
   } catch {
     zeilen.push("  --  Salati-Podcast-Index nicht erreichbar, übersprungen");
   }
 
   if (folgen) {
-    vergleiche("Salati-Podcastfolgen", folgen, ausSeite(/Podcast, (\d+) Folgen/));
-    const enTreffer = readFileSync("src/content/en.ts", "utf8").match(/Quran: (\d+) episodes/);
+    vergleiche(
+      "Salati-Podcastfolgen",
+      folgen,
+      ausSeite(/Podcast, (\d+) Folgen/),
+    );
+    const enTreffer = readFileSync("src/content/en.ts", "utf8").match(
+      /Quran: (\d+) episodes/,
+    );
     const gleich = Number(enTreffer?.[1]) === folgen;
     if (!gleich) abweichungen++;
     zeilen.push(
@@ -653,15 +729,24 @@ function ghKonten() {
   const pfad = "apps/mobile/src/features/changelog/changelog.ts";
   let inhalt = null;
   try {
-    const roh = ghApi(["api", `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`, "-q", ".content"]);
+    const roh = ghApi([
+      "api",
+      `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`,
+      "-q",
+      ".content",
+    ]);
     inhalt = Buffer.from(roh.trim(), "base64").toString("utf8");
   } catch {
-    zeilen.push("  --  Salati-Changelog nicht lesbar (gh fehlt oder Konto ohne Zugriff)");
+    zeilen.push(
+      "  --  Salati-Changelog nicht lesbar (gh fehlt oder Konto ohne Zugriff)",
+    );
   }
 
   if (inhalt) {
     const reihenfolge = (s) => s.split(".").map(Number);
-    const versionen = [...new Set(inhalt.match(/\b\d+\.\d+\.\d+\b/g) ?? [])].sort((a, b) => {
+    const versionen = [
+      ...new Set(inhalt.match(/\b\d+\.\d+\.\d+\b/g) ?? []),
+    ].sort((a, b) => {
       const [a1, a2, a3] = reihenfolge(a);
       const [b1, b2, b3] = reihenfolge(b);
       return a1 - b1 || a2 - b2 || a3 - b3;
@@ -673,7 +758,11 @@ function ghKonten() {
     const inDe = readFileSync("src/content/de.ts", "utf8").match(
       /const SALATI_VERSIONEN = (\d+);/,
     );
-    vergleiche("Salati-Versionen", versionen.length, inDe?.[1] ?? "(nicht gefunden)");
+    vergleiche(
+      "Salati-Versionen",
+      versionen.length,
+      inDe?.[1] ?? "(nicht gefunden)",
+    );
 
     // Die Spanne steht als Fließtext in beiden Sprachfassungen.
     for (const [datei, muster] of [
@@ -729,7 +818,16 @@ const ZU_PRUEFEN = [
 ];
 
 const QUELLENDUNGEN = new Set([
-  ".ts", ".tsx", ".mjs", ".js", ".json", ".md", ".yml", ".yaml", ".css", ".sql",
+  ".ts",
+  ".tsx",
+  ".mjs",
+  ".js",
+  ".json",
+  ".md",
+  ".yml",
+  ".yaml",
+  ".css",
+  ".sql",
 ]);
 
 {
@@ -769,7 +867,9 @@ const QUELLENDUNGEN = new Set([
         const code = inhalt.charCodeAt(i);
         if (code < 32 && !ERLAUBTE_STEUERZEICHEN.has(code)) {
           const zeile = inhalt.slice(0, i).split("\n").length;
-          funde.push(`${name}/${rel}:${zeile} enthält 0x${code.toString(16).padStart(2, "0")}`);
+          funde.push(
+            `${name}/${rel}:${zeile} enthält 0x${code.toString(16).padStart(2, "0")}`,
+          );
           break;
         }
       }
@@ -781,7 +881,9 @@ const QUELLENDUNGEN = new Set([
     zeilen.push(`  !!  ${funde.length} Datei(en) mit Steuerzeichen:`);
     for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
   } else {
-    zeilen.push(`  ok  Steuerzeichen              ${String(geprueft).padStart(6)} Dateien sauber`);
+    zeilen.push(
+      `  ok  Steuerzeichen              ${String(geprueft).padStart(6)} Dateien sauber`,
+    );
   }
 }
 
@@ -811,7 +913,11 @@ const ARIA_VERWEISE = [
 ];
 
 const BRAUCHT_ELTERN = { tab: ["tablist"], option: ["listbox"] };
-const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radio"] };
+const BRAUCHT_KIND = {
+  tablist: ["tab"],
+  listbox: ["option"],
+  radiogroup: ["radio"],
+};
 
 {
   const bauOrdner = join(".next", "server", "app");
@@ -839,10 +945,14 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       const kennungen = new Set(alleIds);
 
       for (const eigenschaft of ARIA_VERWEISE) {
-        for (const m of html.matchAll(new RegExp(`${eigenschaft}="([^"]+)"`, "g"))) {
+        for (const m of html.matchAll(
+          new RegExp(`${eigenschaft}="([^"]+)"`, "g"),
+        )) {
           for (const ziel of m[1].split(/\s+/).filter(Boolean)) {
             if (!kennungen.has(ziel)) {
-              funde.push(`${name}: ${eigenschaft}="${ziel}" zeigt auf keine Kennung`);
+              funde.push(
+                `${name}: ${eigenschaft}="${ziel}" zeigt auf keine Kennung`,
+              );
             }
           }
         }
@@ -863,7 +973,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         }
       }
 
-      for (const d of new Set(alleIds.filter((v, i) => alleIds.indexOf(v) !== i))) {
+      for (const d of new Set(
+        alleIds.filter((v, i) => alleIds.indexOf(v) !== i),
+      )) {
         funde.push(`${name}: Kennung "${d}" mehrfach vergeben`);
       }
 
@@ -886,7 +998,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         if (!angesprungen.has(kennung)) continue;
         const attribute = m[1] + m[3];
         if (!/aria-labelledby=|aria-label=/.test(attribute)) {
-          funde.push(`${name}: Abschnitt "${kennung}" wird angesprungen, traegt aber keinen Namen`);
+          funde.push(
+            `${name}: Abschnitt "${kennung}" wird angesprungen, traegt aber keinen Namen`,
+          );
         }
       }
     }
@@ -894,9 +1008,12 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     if (funde.length) {
       abweichungen += funde.length;
       zeilen.push(`  !!  ${funde.length} ARIA-Befund(e):`);
-      for (const f of [...new Set(funde)].slice(0, 8)) zeilen.push(`        ${f}`);
+      for (const f of [...new Set(funde)].slice(0, 8))
+        zeilen.push(`        ${f}`);
     } else {
-      zeilen.push(`  ok  ARIA-Beziehungen        ${String(seiten.length).padStart(6)} Seiten sauber`);
+      zeilen.push(
+        `  ok  ARIA-Beziehungen        ${String(seiten.length).padStart(6)} Seiten sauber`,
+      );
     }
   }
 }
@@ -933,22 +1050,30 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     for (const adresse of adressen) {
       const datei = zuDatei(adresse);
       if (!existsSync(datei)) {
-        funde.push(`${adresse} steht in der Sitemap, hat aber keine gebaute Seite`);
+        funde.push(
+          `${adresse} steht in der Sitemap, hat aber keine gebaute Seite`,
+        );
         continue;
       }
       const html = readFileSync(datei, "utf8");
       const treffer = html.match(/<meta name="robots" content="([^"]+)"/);
       if (treffer && /noindex/.test(treffer[1])) {
-        funde.push(`${adresse} steht in der Sitemap und trägt zugleich "${treffer[1]}"`);
+        funde.push(
+          `${adresse} steht in der Sitemap und trägt zugleich "${treffer[1]}"`,
+        );
       }
     }
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Widerspruch/Widersprüche in der Sitemap:`);
+      zeilen.push(
+        `  !!  ${funde.length} Widerspruch/Widersprüche in der Sitemap:`,
+      );
       for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
     } else {
-      zeilen.push(`  ok  Sitemap                 ${String(adressen.length).padStart(6)} Adressen indexierbar`);
+      zeilen.push(
+        `  ok  Sitemap                 ${String(adressen.length).padStart(6)} Adressen indexierbar`,
+      );
     }
   }
 }
@@ -1000,17 +1125,25 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       geprueft++;
       let zeile;
       try {
-        zeile = execFileSync("git", ["-C", repo, "log", "-1", "--format=%h %ad", "--date=short", kennung], {
-          encoding: "utf8",
-          stdio: ["ignore", "pipe", "ignore"],
-        }).trim();
+        zeile = execFileSync(
+          "git",
+          ["-C", repo, "log", "-1", "--format=%h %ad", "--date=short", kennung],
+          {
+            encoding: "utf8",
+            stdio: ["ignore", "pipe", "ignore"],
+          },
+        ).trim();
       } catch {
-        funde.push(`${datei}: Commit ${kennung} gibt es in ${repo.split("/").pop()} nicht`);
+        funde.push(
+          `${datei}: Commit ${kennung} gibt es in ${repo.split("/").pop()} nicht`,
+        );
         continue;
       }
       const datum = zeile.split(" ")[1];
       if (tag && datum !== `${jahr}-${monat}-${tag}`) {
-        funde.push(`${datei}: Commit ${kennung} ist vom ${datum}, im Artikel steht ${tag}.${monat}.${jahr}`);
+        funde.push(
+          `${datei}: Commit ${kennung} ist vom ${datum}, im Artikel steht ${tag}.${monat}.${jahr}`,
+        );
       }
     }
   }
@@ -1071,7 +1204,11 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
     const inhalt = readFileSync(join("src/content/articles", datei), "utf8");
     const pfade = new Set(
-      [...inhalt.matchAll(/[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g)]
+      [
+        ...inhalt.matchAll(
+          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g,
+        ),
+      ]
         .map((m) => m[0])
         .filter((pfad) => WURZELN.test(pfad)),
     );
@@ -1079,14 +1216,18 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     for (const pfad of pfade) {
       geprueft++;
       if (!existsSync(join(repo, pfad))) {
-        funde.push(`${datei}: ${pfad} gibt es in ${repo.split("/").pop()} nicht`);
+        funde.push(
+          `${datei}: ${pfad} gibt es in ${repo.split("/").pop()} nicht`,
+        );
       }
     }
   }
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Dateipfad(e) aus Artikeln ohne Entsprechung:`);
+    zeilen.push(
+      `  !!  ${funde.length} Dateipfad(e) aus Artikeln ohne Entsprechung:`,
+    );
     for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
   } else if (geprueft > 0) {
     zeilen.push(
@@ -1097,7 +1238,6 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     zeilen.push("  --  Produktivrepos nicht gefunden, Dateipfade übersprungen");
   }
 }
-
 
 /* ---------------------------------------------------------------------------
    Die Rezeptzahl von NOURI, gegen die Anwendung selbst
@@ -1115,7 +1255,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 
    Ohne Netz wird übersprungen und das gesagt. */
 {
-  const behauptet = quelle.match(/value: "([\d.,]+)", label: "Rezepte im Katalog"/)?.[1];
+  const behauptet = quelle.match(
+    /value: "([\d.,]+)", label: "Rezepte im Katalog"/,
+  )?.[1];
   if (!behauptet) {
     zeilen.push("  --  Rezeptzahl: Angabe nicht gefunden, übersprungen");
   } else {
@@ -1127,7 +1269,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       const seite = await antwort.text();
       const dort = seite.match(/(\d{4,6})\+/)?.[1];
       if (!dort) {
-        zeilen.push("  --  Rezeptzahl: auf nouri-fitness.vercel.app nicht gefunden");
+        zeilen.push(
+          "  --  Rezeptzahl: auf nouri-fitness.vercel.app nicht gefunden",
+        );
       } else if (meine > Number(dort)) {
         abweichungen++;
         zeilen.push(
@@ -1141,6 +1285,82 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     } catch {
       zeilen.push("  --  Rezeptzahl: NOURI nicht erreichbar, übersprungen");
     }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Die Adressen der Produkte, jede einmal abgerufen
+   ---------------------------------------------------------------------------
+
+   Jede Fallstudie verweist auf ihr Produkt: Store-Eintrag, Live-Adresse,
+   Statusseite. Das sind die Verweise, mit denen die Seite ihre stärkste
+   Behauptung belegt — „vier Systeme in Produktion" —, und sie sind die
+   einzigen, die von außen kaputtgehen können, ohne dass hier jemand etwas
+   ändert: Eine App wird aus dem Store genommen, eine Domain läuft ab, eine
+   Statusseite zieht um.
+
+   `check-links` lässt äußere Adressen bewusst draußen, weil ein Lauf, der bei
+   jedem Netzwackler rot wird, ignoriert wird. Deshalb steht die Prüfung hier,
+   mit derselben Regel wie bei den Zertifikaten: Ein Netzfehler wird
+   übersprungen und gesagt; nur eine Antwort mit 4xx oder 5xx ist ein Befund.
+
+   Das 999 von LinkedIn ist keiner — es ist deren Abwehr gegen Abrufe ohne
+   Browser, und das Profil steht. */
+{
+  const adressen = [
+    ...new Set(
+      [...quelle.matchAll(/href:\s*"(https:\/\/[^"]+)"/g)]
+        .map((m) => m[1])
+        /* Drei bleiben draussen, jede mit Grund: die eigene Adresse, weil sie
+            prueft; LinkedIn, weil es Abrufen ohne Browser mit 999
+           antwortet; und der Udemy-Kurznachweis, der hinter einer Bot-Pruefung
+           liegt und einer Maschine grundsaetzlich 403 gibt — dieselbe Stelle
+           steht schon in der Zertifikatspruefung darueber. */
+        .filter(
+          (a) =>
+            !a.includes("domenicmoran.de") &&
+            !a.includes("linkedin.com") &&
+            !a.includes("ude.my"),
+        ),
+    ),
+  ];
+
+  const funde = [];
+  let uebersprungen = 0;
+  let erreicht = 0;
+
+  for (const adresse of adressen) {
+    try {
+      const antwort = await fetch(adresse, {
+        redirect: "follow",
+        headers: {
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (antwort.status >= 400) {
+        funde.push(`${adresse} antwortet mit ${antwort.status}`);
+      } else {
+        erreicht++;
+      }
+    } catch {
+      uebersprungen++;
+    }
+  }
+
+  if (funde.length > 0) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Produktadresse(n) kaputt:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (uebersprungen > 0 && erreicht === 0) {
+    zeilen.push("  --  Produktadressen: nicht erreichbar, übersprungen");
+  } else {
+    zeilen.push(
+      `  ok  Produktadressen    ${String(erreicht).padStart(6)} erreichbar` +
+        (uebersprungen ? `, ${uebersprungen} übersprungen` : ""),
+    );
   }
 }
 
@@ -1199,7 +1419,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
        "!!" über derselben Sache ist genau die Sorte Bericht, die man
        überfliegt und für grün hält. */
     if (geprueft > 0 && abweichend === 0) {
-      zeilen.push(`  ok  Rolle             ${String(geprueft).padStart(6)} Flächen sagen „${rolle}"`);
+      zeilen.push(
+        `  ok  Rolle             ${String(geprueft).padStart(6)} Flächen sagen „${rolle}"`,
+      );
     }
   }
 }
@@ -1230,11 +1452,7 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     zeilen.push("  --  Profil-README: keine Vorlage, übersprungen");
   } else {
     const oertlich = readFileSync(vorlage, "utf8");
-    const glatt = (t) =>
-      t
-        .replace(/\r\n/g, "\n")
-        .replace(/[ 	]+$/gm, "")
-        .trim();
+    const glatt = (t) => t.replace(/\r\n/g, "\n").replace(/[ 	]+$/gm, "").trim();
 
     try {
       /* Über die API und nicht über raw.githubusercontent.com: Deren
@@ -1255,10 +1473,14 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         const a = glatt(oertlich).split("\n");
         const b = glatt(veroeffentlicht).split("\n");
         const erste = a.findIndex((z, i) => z !== b[i]);
-        zeilen.push("  !!  Profil-README: Vorlage und Veröffentlichtes weichen ab");
+        zeilen.push(
+          "  !!  Profil-README: Vorlage und Veröffentlichtes weichen ab",
+        );
         zeilen.push(`        Zeile ${erste + 1}`);
         zeilen.push(`        hier:    ${(a[erste] ?? "(fehlt)").slice(0, 70)}`);
-        zeilen.push(`        auf GitHub: ${(b[erste] ?? "(fehlt)").slice(0, 70)}`);
+        zeilen.push(
+          `        auf GitHub: ${(b[erste] ?? "(fehlt)").slice(0, 70)}`,
+        );
       } else {
         zeilen.push(
           `  ok  Profil-README        ${String(glatt(oertlich).split("\n").length).padStart(6)} Zeilen wie auf GitHub`,
@@ -1280,24 +1502,36 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
         funde.push(`${paket}: kein Klon unter ../oss, nicht nachzählbar`);
         continue;
       }
-      const dateien = readdirSync(join(ordner, "src")).filter((d) => d.endsWith(".test.ts"));
+      const dateien = readdirSync(join(ordner, "src")).filter((d) =>
+        d.endsWith(".test.ts"),
+      );
       const echt = dateien.reduce(
         (n, d) =>
-          n + (readFileSync(join(ordner, "src", d), "utf8").match(/\b(it|test)\(/g) ?? []).length,
+          n +
+          (
+            readFileSync(join(ordner, "src", d), "utf8").match(
+              /\b(it|test)\(/g,
+            ) ?? []
+          ).length,
         0,
       );
       if (String(echt) !== behauptet) {
         funde.push(`${paket}: README sagt ${behauptet} Tests, gezählt ${echt}`);
       }
-      const manifest = JSON.parse(readFileSync(join(ordner, "package.json"), "utf8"));
+      const manifest = JSON.parse(
+        readFileSync(join(ordner, "package.json"), "utf8"),
+      );
       const abh = Object.keys(manifest.dependencies ?? {}).length;
-      if (abh > 0) funde.push(`${paket}: README sagt null Abhängigkeiten, es sind ${abh}`);
+      if (abh > 0)
+        funde.push(`${paket}: README sagt null Abhängigkeiten, es sind ${abh}`);
       gezaehlt++;
     }
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Abweichung(en) bei den Paketzahlen im README:`);
+      zeilen.push(
+        `  !!  ${funde.length} Abweichung(en) bei den Paketzahlen im README:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
@@ -1336,19 +1570,27 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     }
 
     const funde = [];
-    for (const treffer of text.matchAll(/\[([^\]]+)\]\(https:\/\/domenicmoran\.de\/artikel\/([a-z0-9-]+)\)/g)) {
+    for (const treffer of text.matchAll(
+      /\[([^\]]+)\]\(https:\/\/domenicmoran\.de\/artikel\/([a-z0-9-]+)\)/g,
+    )) {
       const [, linktext, slug] = treffer;
       const echt = titelJeSlug.get(slug);
       if (!echt) {
         funde.push(`${slug}: im README verlinkt, gibt es als Artikel nicht`);
-      } else if (linktext.replace(/[“”„"]/g, '"') !== echt.replace(/[“”„"]/g, '"')) {
-        funde.push(`${slug}: README sagt „${linktext}", der Artikel heißt „${echt}"`);
+      } else if (
+        linktext.replace(/[“”„"]/g, '"') !== echt.replace(/[“”„"]/g, '"')
+      ) {
+        funde.push(
+          `${slug}: README sagt „${linktext}", der Artikel heißt „${echt}"`,
+        );
       }
     }
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Titelabweichung(en) im Profil-README:`);
+      zeilen.push(
+        `  !!  ${funde.length} Titelabweichung(en) im Profil-README:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
@@ -1357,7 +1599,6 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     }
   }
 }
-
 
 /* ---------------------------------------------------------------------------
    Die Jahresangabe einer Fallstudie gegen die Repo-Historie
@@ -1400,9 +1641,13 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     let erstes;
     try {
       erstes = Number(
-        execFileSync("git", ["-C", repo, "log", "--reverse", "--format=%ad", "--date=format:%Y"], {
-          encoding: "utf8",
-        })
+        execFileSync(
+          "git",
+          ["-C", repo, "log", "--reverse", "--format=%ad", "--date=format:%Y"],
+          {
+            encoding: "utf8",
+          },
+        )
           .split("\n")[0]
           .trim(),
       );
@@ -1422,7 +1667,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     zeilen.push(`  !!  ${funde.length} Jahresangabe(n) vor dem ersten Commit:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (uebersprungen) {
-    zeilen.push(`  --  Jahresangaben: ${uebersprungen} Repo(s) nicht da, übersprungen`);
+    zeilen.push(
+      `  --  Jahresangaben: ${uebersprungen} Repo(s) nicht da, übersprungen`,
+    );
   } else {
     zeilen.push(
       `  ok  Jahresangaben          ${String(geprueft).padStart(6)} Fallstudien nicht vordatiert`,
@@ -1448,7 +1695,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
    Ohne Netz wird übersprungen und das gesagt, nicht stillschweigend
    bestanden. */
 {
-  const ids = [...quelle.matchAll(/coursera\.org\/verify\/([A-Z0-9]+)/g)].map((m) => m[1]);
+  const ids = [...quelle.matchAll(/coursera\.org\/verify\/([A-Z0-9]+)/g)].map(
+    (m) => m[1],
+  );
   const einmalig = [...new Set(ids)];
   const funde = [];
   let geprueft = 0;
@@ -1464,7 +1713,8 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       const text = await antwort.text();
       geprueft++;
       if (antwort.status !== 200) funde.push(`${id}: Status ${antwort.status}`);
-      else if (!/Domenic|Moran/i.test(text)) funde.push(`${id}: Seite ohne den Namen`);
+      else if (!/Domenic|Moran/i.test(text))
+        funde.push(`${id}: Seite ohne den Namen`);
     } catch {
       uebersprungen++;
     }
@@ -1475,7 +1725,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     zeilen.push(`  !!  ${funde.length} Zertifikatsnachweis(e) auffällig:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (uebersprungen) {
-    zeilen.push(`  --  Zertifikatsnachweise: ${uebersprungen} nicht erreichbar, übersprungen`);
+    zeilen.push(
+      `  --  Zertifikatsnachweise: ${uebersprungen} nicht erreichbar, übersprungen`,
+    );
   } else {
     zeilen.push(
       `  ok  Zertifikatsnachweise   ${String(geprueft).padStart(6)} Seiten antworten mit dem Namen`,
@@ -1525,7 +1777,9 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
   };
 
   if (!existsSync(bauOrdner)) {
-    zeilen.push("  --  Rechtsverweise nicht gebaut, übersprungen (npm run build)");
+    zeilen.push(
+      "  --  Rechtsverweise nicht gebaut, übersprungen (npm run build)",
+    );
   } else {
     suchen(bauOrdner);
     if (funde.length) {
@@ -1553,9 +1807,17 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
    ist. Sie entsteht jetzt beim Bauen mit sechs Monaten Vorlauf; geprüft wird
    das gebaute Ergebnis, nicht die Absicht. */
 {
-  const datei = join(".next", "server", "app", ".well-known", "security.txt.body");
+  const datei = join(
+    ".next",
+    "server",
+    "app",
+    ".well-known",
+    "security.txt.body",
+  );
   if (!existsSync(datei)) {
-    zeilen.push("  --  security.txt nicht gebaut, übersprungen (npm run build)");
+    zeilen.push(
+      "  --  security.txt nicht gebaut, übersprungen (npm run build)",
+    );
   } else {
     const inhalt = readFileSync(datei, "utf8");
     const treffer = inhalt.match(/^Expires:\s*(\S+)/m);
@@ -1567,18 +1829,21 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       zeilen.push("  !!  security.txt: kein gültiges Expires nach RFC 3339");
     } else if (tage <= 0) {
       abweichungen++;
-      zeilen.push(`  !!  security.txt ist seit ${-tage} Tagen abgelaufen (${treffer[1]})`);
+      zeilen.push(
+        `  !!  security.txt ist seit ${-tage} Tagen abgelaufen (${treffer[1]})`,
+      );
     } else if (tage >= 365) {
       abweichungen++;
       zeilen.push(
         `  !!  security.txt gilt ${tage} Tage — RFC 9116 verlangt weniger als ein Jahr`,
       );
     } else {
-      zeilen.push(`  ok  security.txt          ${String(tage).padStart(6)} Tage gültig`);
+      zeilen.push(
+        `  ok  security.txt          ${String(tage).padStart(6)} Tage gültig`,
+      );
     }
   }
 }
-
 
 /* ---------------------------------------------------------------------------
    Alter des Prüfstempels
@@ -1618,7 +1883,6 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
     );
   }
 }
-
 
 console.log(zeilen.join("\n"));
 
