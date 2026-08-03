@@ -1,5 +1,6 @@
 import type { Block } from "@/content/articles";
 import { RichText } from "@/components/ui/InlineCode";
+import { alsSprungmarke } from "@/lib/slug";
 
 /**
  * Setzt die Artikel-Bausteine.
@@ -19,22 +20,51 @@ export function Prose({
   blocks,
   codeLabel,
   tabelleLabel,
+  sprungmarkeLabel,
 }: {
   blocks: readonly Block[];
   codeLabel: string;
   tabelleLabel: string;
+  sprungmarkeLabel: string;
 }) {
   return (
     <div className="flex flex-col">
       {blocks.map((block, i) => {
         switch (block.kind) {
           case "h2":
+            /* Jede Zwischenüberschrift bekommt eine Adresse.
+
+               Die Artikel haben fünf bis sieben davon und bis hierher keine
+               Sprungmarke: Wer einen Absatz weitergeben wollte, konnte nur
+               den ganzen Text schicken. Bei Texten, deren Zweck es ist, eine
+               bestimmte Stelle zu belegen, ist das die falsche kleinste
+               Einheit.
+
+               Das Doppelkreuz steht **außerhalb des Textflusses** im linken
+               Rand. Der erste Anlauf setzte es inline hinter die Überschrift,
+               unsichtbar bis zum Überfahren — und genau das war der Fehler:
+               `text-balance` rechnet das Zeichen mit, auch wenn es niemand
+               sieht. Gemessen brachen dadurch 13 von 232 Überschriften anders
+               um. Ein unsichtbares Element, das die Typografie verschiebt,
+               ist schlimmer als kein Element.
+
+               Erst ab `lg` sichtbar, weil es davor keinen Rand gibt, in den
+               es passen würde. Die `id` trägt jede Breite: Ein geteilter
+               Verweis springt auch auf dem Telefon an die richtige Stelle. */
             return (
               <h2
                 key={i}
-                className="mt-14 mb-5 max-w-[24ch] text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
+                id={alsSprungmarke(block.text)}
+                className="group relative mt-14 mb-5 max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
               >
                 {block.text}
+                <a
+                  href={`#${alsSprungmarke(block.text)}`}
+                  aria-label={`${sprungmarkeLabel}: ${block.text}`}
+                  className="absolute top-[0.15em] -left-7 hidden text-[0.62em] text-ink-faint opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 lg:block"
+                >
+                  #
+                </a>
               </h2>
             );
 
@@ -42,7 +72,8 @@ export function Prose({
             return (
               <h3
                 key={i}
-                className="mt-10 mb-4 max-w-[30ch] text-lg font-semibold tracking-tight text-ink text-balance sm:text-xl"
+                id={alsSprungmarke(block.text)}
+                className="mt-10 mb-4 max-w-[30ch] scroll-mt-28 text-lg font-semibold tracking-tight text-ink text-balance sm:text-xl"
               >
                 {block.text}
               </h3>

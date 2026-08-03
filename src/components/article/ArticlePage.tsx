@@ -201,6 +201,7 @@ export function ArticlePage({
               blocks={article.blocks}
               codeLabel={chrome.codeLabel}
               tabelleLabel={chrome.tableLabel}
+              sprungmarkeLabel={chrome.anchorLabel}
             />
           </div>
 
