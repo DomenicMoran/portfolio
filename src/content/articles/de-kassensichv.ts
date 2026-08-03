@@ -15,7 +15,7 @@ export const kassensichvDe: Article = {
   evidence: [
     "src/lib/tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql (Sperre, Hash-Kette)",
     "src/lib/food-order-tse.ts (Signatur, Token-Zwischenspeicher)",
-    "src/app/api/food-orders/route.ts, Zeile 472 ff. (fail-closed, HTTP 503)",
+    "src/app/api/food-orders/route.ts, Zeile 473 ff. (fail-closed, HTTP 503)",
     "src/lib/fiskaly-provision.ts (Provisionierung je Mandant)",
   ],
   blocks: [
