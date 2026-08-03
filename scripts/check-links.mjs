@@ -60,6 +60,7 @@ const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
 let anker = 0;
+let bilder = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -86,8 +87,34 @@ for (const pfad of pfade) {
       ...new Set(ziele.filter((h) => h.startsWith("#") && h.length > 1).map((h) => h.slice(1))),
     ].filter((id) => !document.getElementById(id));
     const intern = [...new Set(ziele.filter((h) => h.startsWith("/") && !h.startsWith("//")))];
-    return { ohneZiel, intern, gesamt: ziele.length };
+    return {
+      ohneZiel,
+      intern,
+      gesamt: ziele.length,
+      bilder: document.querySelectorAll("img").length,
+    };
   });
+
+  /*
+     Bilder, die nichts zeigen.
+
+     Ein `img` mit falschem Pfad rendert einen leeren Kasten: kein Fehler im
+     Bau, keine Meldung, und der Verweis-Lauf sah es nicht, weil er nur `a`
+     zählt. Aufgefallen ist die Lücke, als die elf Produktaufnahmen von PNG
+     auf WebP wechselten — hätte ich einen Pfad falsch geschrieben, wäre die
+     Fallstudie mit leeren Rahmen online gegangen und jeder Lauf grün
+     geblieben.
+
+     `naturalWidth === 0` heißt: geladen wurde nichts. Der Lauf wartet vorher
+     auf `networkidle` und scrollt durch, verzögerte Bilder sind also da.
+  */
+  const leere = await seite.evaluate(() =>
+    [...document.querySelectorAll("img")]
+      .filter((bild) => bild.naturalWidth === 0)
+      .map((bild) => bild.getAttribute("src")?.slice(0, 70) ?? "(ohne src)"),
+  );
+  for (const quelle of leere) funde.push(`${pfad}: Bild ohne Inhalt — ${quelle}`);
+  bilder += ergebnis.bilder ?? 0;
 
   anker += ergebnis.gesamt;
   for (const id of ergebnis.ohneZiel) funde.push(`${pfad}: Anker #${id} hat kein Ziel`);
@@ -114,5 +141,5 @@ if (funde.length > 0) {
 
 console.log(
   `Kein toter Verweis: ${anker} Verweise auf ${pfade.length} Seiten, ` +
-    `${adressen} interne Adressen abgerufen.`,
+    `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt.`,
 );
