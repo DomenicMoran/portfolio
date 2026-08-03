@@ -24,6 +24,7 @@
  *   npm run check:links
  */
 
+import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
 import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
@@ -65,7 +66,9 @@ let adressen = 0;
 const gesehen = new Map();
 
 for (const pfad of pfade) {
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (!antwort || antwort.status() >= 500) continue;
 
   /*
@@ -82,11 +85,19 @@ for (const pfad of pfade) {
   });
 
   const ergebnis = await seite.evaluate(() => {
-    const ziele = [...document.querySelectorAll("a[href]")].map((a) => a.getAttribute("href"));
+    const ziele = [...document.querySelectorAll("a[href]")].map((a) =>
+      a.getAttribute("href"),
+    );
     const ohneZiel = [
-      ...new Set(ziele.filter((h) => h.startsWith("#") && h.length > 1).map((h) => h.slice(1))),
+      ...new Set(
+        ziele
+          .filter((h) => h.startsWith("#") && h.length > 1)
+          .map((h) => h.slice(1)),
+      ),
     ].filter((id) => !document.getElementById(id));
-    const intern = [...new Set(ziele.filter((h) => h.startsWith("/") && !h.startsWith("//")))];
+    const intern = [
+      ...new Set(ziele.filter((h) => h.startsWith("/") && !h.startsWith("//"))),
+    ];
     return {
       ohneZiel,
       intern,
@@ -113,11 +124,13 @@ for (const pfad of pfade) {
       .filter((bild) => bild.naturalWidth === 0)
       .map((bild) => bild.getAttribute("src")?.slice(0, 70) ?? "(ohne src)"),
   );
-  for (const quelle of leere) funde.push(`${pfad}: Bild ohne Inhalt — ${quelle}`);
+  for (const quelle of leere)
+    funde.push(`${pfad}: Bild ohne Inhalt — ${quelle}`);
   bilder += ergebnis.bilder ?? 0;
 
   anker += ergebnis.gesamt;
-  for (const id of ergebnis.ohneZiel) funde.push(`${pfad}: Anker #${id} hat kein Ziel`);
+  for (const id of ergebnis.ohneZiel)
+    funde.push(`${pfad}: Anker #${id} hat kein Ziel`);
 
   for (const adresse of ergebnis.intern) {
     /* Dateien mit Endung (PDF, Feed, Bilder) beantwortet der Server direkt. */
@@ -126,7 +139,36 @@ for (const pfad of pfade) {
     const status = (await seite.request.get(`${basis}${ohneAnker}`)).status();
     gesehen.set(ohneAnker, status);
     adressen++;
-    if (status >= 400) funde.push(`${pfad}: ${ohneAnker} antwortet mit ${status}`);
+    if (status >= 400)
+      funde.push(`${pfad}: ${ohneAnker} antwortet mit ${status}`);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Die Abkürzungen aus vercel.json
+
+   `/cv`, `/blog`, `/en/resume` — Adressen, die niemand verlinkt und die
+   trotzdem jemand tippt. Sie stehen als Weiterleitung in `vercel.json`, und
+   genau deshalb sieht sie kein Lauf an: Der Bau liest die Datei nicht, und
+   die gebauten Seiten verweisen nicht darauf.
+
+   Verschiebt jemand `/onepager`, zeigen sie ins Leere, und gemerkt wird das
+   erst, wenn ein Recruiter auf der 404 landet. Geprüft wird deshalb das
+   Ziel: Es muss eine Seite sein, die es wirklich gibt. Die Weiterleitung
+   selbst kann hier nicht getestet werden — sie entsteht erst bei Vercel. */
+const weiterleitungen =
+  JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? [];
+let ziele = 0;
+
+for (const w of weiterleitungen) {
+  const ziel = w.destination.split("#")[0];
+  ziele++;
+  const antwort = await fetch(`${basis}${ziel}`).catch(() => null);
+  if (!antwort || antwort.status !== 200) {
+    funde.push(
+      `vercel.json: ${w.source} zeigt auf ${w.destination}, ` +
+        `und das antwortet mit ${antwort ? antwort.status : "gar nicht"}`,
+    );
   }
 }
 
@@ -134,12 +176,15 @@ await browser.close();
 beenden();
 
 if (funde.length > 0) {
-  console.error(`${funde.length} toter Verweis${funde.length === 1 ? "" : "e"}:\n`);
+  console.error(
+    `${funde.length} toter Verweis${funde.length === 1 ? "" : "e"}:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   process.exit(1);
 }
 
 console.log(
   `Kein toter Verweis: ${anker} Verweise auf ${pfade.length} Seiten, ` +
-    `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt.`,
+    `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt, ` +
+    `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel.`,
 );
