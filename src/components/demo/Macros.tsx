@@ -325,7 +325,9 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           {lauf
             ? demo.solveNote
                 .replace("{n}", zahl(lauf.geprueft))
-                .replace("{ms}", String(lauf.dauer))
+                // Auch die Millisekunde ist eine Zahl der jeweiligen Sprache:
+                // "0.9 ms" stand auf der deutschen Fassung mit Punkt.
+                .replace("{ms}", zahl(lauf.dauer))
             : " "}
         </p>
       </div>
