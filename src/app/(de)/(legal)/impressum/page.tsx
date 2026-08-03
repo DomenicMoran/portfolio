@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   description:
     "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
   robots: { index: false, follow: false },
+  /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
+     Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
+  openGraph: {
+    title: "Impressum",
+    locale: "de_DE",
+  },
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.

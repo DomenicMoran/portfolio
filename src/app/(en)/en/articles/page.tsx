@@ -7,6 +7,11 @@ import { kurzbeschreibung } from "@/lib/metadata";
 export const metadata: Metadata = {
   title: chromeEn.title,
   description: kurzbeschreibung(chromeEn.lede),
+  openGraph: {
+    title: chromeEn.title,
+    description: kurzbeschreibung(chromeEn.lede),
+    locale: "en_US",
+  },
   alternates: {
     canonical: "/en/articles",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },

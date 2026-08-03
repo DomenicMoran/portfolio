@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: de.onepager.title,
   description: de.onepager.description,
   robots: { index: false, follow: true },
+  openGraph: {
+    title: de.onepager.title,
+    description: de.onepager.description,
+    locale: "de_DE",
+  },
   alternates: {
     canonical: `${site.url}/onepager`,
     languages: {
