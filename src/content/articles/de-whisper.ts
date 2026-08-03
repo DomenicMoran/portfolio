@@ -121,6 +121,8 @@ export const whisperDe: Article = {
         ["Whisper large-v3-turbo, q5_0", "574 MB", "wählbar, generisch, nicht koran-tuned"],
         ["Whisper large-v3", "~1 GB", "entfernt, kein messbarer Vorteil"],
       ],
+      caption:
+        "Die drei Modelle, die in der App gelandet oder wieder verschwunden sind, mit Größe und Rolle.",
     },
     {
       kind: "p",
