@@ -621,6 +621,15 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     quizfaehig,
     /([\d.]+) Fragen mit Antwortauswahl/,
   );
+  /* Der Rest sind die Karten zum Aufsagen: alles, was keine Auswahlfrage sein
+     kann. Ungeprüft stand dort "40", während es 66 waren — die Zahl war aus
+     der Zeit vor den Sprechvorlagen und hatte sich um zwei Drittel bewegt,
+     ohne dass jemand sie ansah. */
+  pruefe(
+    "Karten zum Aufsagen",
+    karten && quizfaehig !== null ? karten.length - quizfaehig : null,
+    /([\d.]+) Karten zum Aufsagen/,
+  );
 } else {
   zeilen.push("  --  Prüfstand nicht gefunden, übersprungen");
 }
