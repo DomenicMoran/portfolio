@@ -220,7 +220,7 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-Sieben der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+Acht der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
 Seite: `check:a11y`, `check:headings`, `check:links`, `check:parity`,
 `check:print`, `check:privacy` und `check:separators`. Sie sind der eigentliche
 Beweis.
@@ -253,6 +253,7 @@ npm run check:headers # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
 npm run check:separators # kein Trennzeichen am Zeilenende
+npm run check:nbsp     # keine Rechtsangabe bricht vor ihrer Ziffer um
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 ```

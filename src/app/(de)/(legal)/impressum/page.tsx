@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // Seiten mit derselben Beschreibung sind ein bekannter Mangel; hier ist
   // sie ausserdem inhaltlich falsch.
   description:
-    "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
+    "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
   robots: { index: false, follow: false },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
@@ -68,13 +68,13 @@ export default function Impressum() {
       {/*
         Die Angabe ist Pflicht, weil eine Kennung existiert.
 
-        § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
+        § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
         sobald es eine gibt — nicht erst ab einer Umsatzgrenze. Hier stand
         lange ein Vorbehalt („falls eine existiert"), und die Antwort stand
         die ganze Zeit öffentlich im Impressum von menucloud-berlin.de:
-        DE461628017, zusammen mit der Kleinunternehmerregelung nach § 19 UStG.
+        DE461628017, zusammen mit der Kleinunternehmerregelung nach § 19 UStG.
 
-        Beide Angaben gehören zusammen. Eine Kennung ohne den Hinweis auf § 19
+        Beide Angaben gehören zusammen. Eine Kennung ohne den Hinweis auf § 19
         legt nahe, dass Umsatzsteuer ausgewiesen wird; sie wird es nicht.
       */}
       <section className="mb-10">
@@ -82,16 +82,16 @@ export default function Impressum() {
           Umsatzsteuer-Identifikationsnummer
         </h2>
         <p className="text-sm leading-relaxed text-ink-dim">
-          USt-IdNr. gemäß § 27 a UStG: DE461628017
+          USt-IdNr. gemäß § 27 a UStG: DE461628017
           <br />
-          Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
+          Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
           berechnet.
         </p>
       </section>
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">
-          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
         </h2>
         <p className="text-sm leading-relaxed text-ink-dim">
           {site.name}, Anschrift wie oben.

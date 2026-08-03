@@ -50,7 +50,7 @@ function untergrenze(zahl: string, sprache: "de" | "en"): string {
  * Website; hier genügt der erste Satz jedes „schwierigen Teils".
  *
  * Getrennt wird an Satzzeichen, denen ein Leerzeichen und ein Großbuchstabe
- * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO", „1.44")
+ * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO", „1.44")
  * den Satz nicht vorzeitig ab.
  */
 function firstSentence(text: string) {

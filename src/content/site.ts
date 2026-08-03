@@ -364,7 +364,7 @@ export const caseStudies: CaseStudy[] = [
       "OTA-Updates über EAS Update: Inhaltskorrekturen ohne Store-Zyklus",
       "iOS Live Activities und Android-Widgets für die nächste Gebetszeit",
       "App und Store-Texte in 14 Sprachen gepflegt, über vier Geräteklassen",
-      "KI-Antworten mit Quellenangabe und Kennzeichnung nach EU AI Act Art. 50",
+      "KI-Antworten mit Quellenangabe und Kennzeichnung nach EU AI Act Art. 50",
     ],
     stack: [
       {
@@ -531,7 +531,7 @@ export const caseStudies: CaseStudy[] = [
       "7.437 Testfälle (7.263 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
-      "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
+      "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
     /** Eigener Block, weil 63 Workflows keine Fußnote sind. */
@@ -765,7 +765,7 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "Eine Plattform aus Web-App, Expo-App und Fastify-API auf einem gemeinsamen Katalog von fast 12.000 Rezepten, mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung und Trainingsplänen. Und mit einer API, die drei Zustände sauber unterscheidet, statt sie zu verschleiern.",
     hardPart: {
-      title: "Ein Fehlschlag, der wie Erfolg aussieht",
+      title: "Eine API, die nicht lügt",
       body: "Jeder schreibende Endpunkt unterscheidet explizit: Secrets fehlen (Dry-Run, kein Datenverlust vorgetäuscht), Datenbank nicht erreichbar (503), Datenbank erreichbar aber lehnt ab (echter 4xx mit Postgres-Fehlercode). Das klingt nach Kleinkram, ist aber der Unterschied zwischen einem System, dem man beim Debuggen glauben kann, und einem, das lügt. Genau dieselbe Disziplin wende ich auf KI-Output an: eine Behauptung ohne Beleg zählt nicht.",
     },
     highlights: [
@@ -855,8 +855,8 @@ export const workflow = {
     {
       n: "05",
       title: "Recht als Definition of Done",
-      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG § 7 bei Outreach beachtet? EU AI Act Art. 50: Ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
-      artifacts: ["DSGVO Art. 30", "AVV automatisiert", "AI-Act-Disclosure"],
+      body: "Jedes kundenwirksame Feature durchläuft dasselbe Gate: DSGVO-Rechtsgrundlage vorhanden? UWG § 7 bei Outreach beachtet? EU AI Act Art. 50: Ist die KI als solche gekennzeichnet? Wird auf der Website etwas versprochen, das wir nicht liefern? Bei Consumer-Produkten in der EU ist das kein Beiwerk, sondern Teil des Produkts.",
+      artifacts: ["DSGVO Art. 30", "AVV automatisiert", "AI-Act-Disclosure"],
     },
   ],
   /**
@@ -968,7 +968,7 @@ export const skillDomains: SkillDomain[] = [
       },
       {
         name: "Compliance-Systeme",
-        evidence: "KassenSichV-TSE, DSGVO Art. 30",
+        evidence: "KassenSichV-TSE, DSGVO Art. 30",
       },
     ],
   },
@@ -1020,7 +1020,7 @@ export const skillDomains: SkillDomain[] = [
       },
       {
         name: "KI-Recht (EU AI Act)",
-        evidence: "Kennzeichnung nach Art. 50 als Gate",
+        evidence: "Kennzeichnung nach Art. 50 als Gate",
       },
     ],
   },
@@ -1097,7 +1097,7 @@ export const recruiter = {
     },
     {
       title: "Ich behandle Regulierung als Teil des Produkts",
-      body: "Fiskalanforderungen nach § 146a AO, Auftragsverarbeitung nach DSGVO, Hinweispflichten für KI-Funktionen. Das kenne ich aus der Umsetzung mit Kunden, nicht aus einer Zusammenfassung. Wer das erst nach dem Launch anfasst, baut es zweimal.",
+      body: "Fiskalanforderungen nach § 146a AO, Auftragsverarbeitung nach DSGVO, Hinweispflichten für KI-Funktionen. Das kenne ich aus der Umsetzung mit Kunden, nicht aus einer Zusammenfassung. Wer das erst nach dem Launch anfasst, baut es zweimal.",
       proof: "/artikel/kassensichv-in-der-praxis",
       proofLabel: "KassenSichV in der Praxis",
     },

@@ -202,7 +202,7 @@ export const en: Content = {
         "Over-the-air updates via EAS: content corrections without a store cycle",
         "iOS Live Activities and Android widgets for the next prayer time",
         "App and store copy maintained in 14 languages, across four device classes",
-        "AI answers cite their source and carry an EU AI Act Art. 50 disclosure",
+        "AI answers cite their source and carry an EU AI Act Art. 50 disclosure",
       ],
       stack: [
         {
@@ -365,7 +365,7 @@ export const en: Content = {
         "7,437 test cases (7,263 unit, 174 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         "Self-hosted mail stack with a three-stage fallback chain",
-        "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
+        "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
         "iOS and Android apps for owners and service staff",
       ],
       automation: {
@@ -591,7 +591,7 @@ export const en: Content = {
       solution:
         "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
       hardPart: {
-        title: "A failure that looks like success",
+        title: "An API that does not lie",
         body: "Every write endpoint distinguishes explicitly: secrets missing (dry run, no pretence that data was saved), database unreachable (503), database reachable but rejecting (a real 4xx carrying the Postgres error code). It sounds like a detail, but it is the difference between a system you can believe while debugging and one that lies to you.",
       },
       highlights: [
@@ -836,9 +836,9 @@ export const en: Content = {
       {
         n: "05",
         title: "Compliance as definition of done",
-        body: "Every customer-facing feature passes the same gate: is there a lawful basis under GDPR? Does outreach respect German unfair-competition law? EU AI Act Art. 50: is the AI labelled as such? Does the site promise anything we do not deliver? For consumer products in the EU that is not an extra; it is part of the product.",
+        body: "Every customer-facing feature passes the same gate: is there a lawful basis under GDPR? Does outreach respect German unfair-competition law? EU AI Act Art. 50: is the AI labelled as such? Does the site promise anything we do not deliver? For consumer products in the EU that is not an extra; it is part of the product.",
         artifacts: [
-          "GDPR Art. 30",
+          "GDPR Art. 30",
           "Automated processing agreements",
           "AI Act disclosure",
         ],
@@ -968,7 +968,7 @@ export const en: Content = {
           },
           {
             name: "Compliance systems",
-            evidence: "§ 146a AO signing, GDPR Art. 30",
+            evidence: "§ 146a AO signing, GDPR Art. 30",
           },
         ],
       },
@@ -1023,7 +1023,7 @@ export const en: Content = {
           },
           {
             name: "AI regulation (EU AI Act)",
-            evidence: "Art. 50 disclosure as a gate",
+            evidence: "Art. 50 disclosure as a gate",
           },
         ],
       },
@@ -1086,7 +1086,7 @@ export const en: Content = {
       },
       {
         title: "I treat regulation as part of the product",
-        body: "German fiscal requirements under § 146a AO, GDPR processing agreements, disclosure duties for AI features. I know these from shipping them with customers, not from a summary. Handle them after launch and you build the thing twice.",
+        body: "German fiscal requirements under § 146a AO, GDPR processing agreements, disclosure duties for AI features. I know these from shipping them with customers, not from a summary. Handle them after launch and you build the thing twice.",
         proof: "/en/articles/german-till-law-in-practice",
         proofLabel: "German till law in practice",
       },
