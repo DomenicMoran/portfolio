@@ -208,7 +208,23 @@ export function ArticlePage({
               anders. Eine Behauptung ohne prüfbare Quelle hat auf dieser
               Seite keinen Platz. */}
           <Reveal>
-            <section className="mt-16 rounded-2xl border border-line bg-surface/40 p-6 sm:p-7">
+            {/* Benannt, damit der Abschnitt eine Landmarke ist.
+
+                Ein `section` ohne Namen ist im Barrierefreiheitsbaum keine —
+                gemessen an der ausgelieferten Artikelseite gab es dort drei
+                Regionen (die beiden Codekästen und die Tabelle) und für die
+                Belege keine. Das ist der Abschnitt, den jemand gezielt sucht,
+                der wissen will, worauf sich der Text stützt.
+
+                `aria-label` und nicht `aria-labelledby`: Die Überschrift trägt
+                `text-transform: uppercase`, und der Name folgt dem gerenderten
+                Text — dann käme „BELEGE" heraus, und manche Vorleseprogramme
+                buchstabieren Großbuchstaben. Dieselbe Entscheidung wie bei der
+                Artikelnavigation darunter. */}
+            <section
+              aria-label={chrome.evidenceLabel}
+              className="mt-16 rounded-2xl border border-line bg-surface/40 p-6 sm:p-7"
+            >
               <h2 className="text-eyebrow mb-4">{chrome.evidenceLabel}</h2>
               {/* `evidence-list` hängt nur für den Druck daran: Dort steht die
                   Adresse hinter dem Linktext, weil ein unterstrichenes Wort auf
