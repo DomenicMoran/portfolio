@@ -1,11 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  TafelAutomation,
+  TafelHighlights,
+  TafelStack,
+} from "@/components/sections/case-study/Tafeln";
 import { useState, type KeyboardEvent } from "react";
 import {
   ArrowUpRight,
   Bot,
-  Check,
   Layers,
   Smartphone,
   Workflow,
@@ -377,85 +381,18 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 transition={{ duration: 0.35, ease: ease.expo }}
               >
                 {tab === "highlights" ? (
-                  <ul className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
-                    {study.highlights.map((item) => (
-                      <li key={item} className="flex gap-3">
-                        <Check
-                          className={cn("mt-1 size-4 shrink-0", accent.text)}
-                          aria-hidden
-                        />
-                        <span className="text-sm leading-relaxed text-ink-dim">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <TafelHighlights punkte={study.highlights} akzent={accent} />
                 ) : null}
 
                 {tab === "automation" && study.automation ? (
-                  <div className="flex flex-col gap-8">
-                    <div>
-                      <h5
-                        className={cn(
-                          "text-lg font-semibold tracking-tight",
-                          accent.text,
-                        )}
-                      >
-                        {study.automation.title}
-                      </h5>
-                      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-dim text-pretty">
-                        {study.automation.lede}
-                      </p>
-                    </div>
-                    <div className="grid gap-x-10 gap-y-7 sm:grid-cols-2">
-                      {study.automation.groups.map((group) => (
-                        <div key={group.title}>
-                          <h6 className="text-eyebrow mb-3">{group.title}</h6>
-                          <ul className="flex flex-col gap-2">
-                            {group.items.map((item) => (
-                              <li key={item} className="flex gap-2.5">
-                                <span
-                                  aria-hidden
-                                  className={cn(
-                                    "mt-1.5 size-1.5 shrink-0 rounded-full",
-                                    accent.bg,
-                                  )}
-                                />
-                                <span className="text-sm leading-relaxed text-ink-dim">
-                                  {item}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <TafelAutomation daten={study.automation} akzent={accent} />
                 ) : null}
 
                 {tab === "architecture" ? (
                   <ArchitectureDiagram name={study.architecture} />
                 ) : null}
 
-                {tab === "stack" ? (
-                  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    {study.stack.map((group) => (
-                      <div key={group.group}>
-                        <h5 className="text-eyebrow mb-3">{group.group}</h5>
-                        <ul className="flex flex-wrap gap-1.5">
-                          {group.items.map((item) => (
-                            <li
-                              key={item}
-                              className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-ink-dim"
-                            >
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
+                {tab === "stack" ? <TafelStack gruppen={study.stack} /> : null}
               </motion.div>
             </AnimatePresence>
           </div>
