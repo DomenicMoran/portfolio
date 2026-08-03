@@ -27,10 +27,12 @@ export function Writing() {
   return (
     <section
       id="writing"
+      aria-labelledby="writing-titel"
       className="relative scroll-mt-24 overflow-hidden px-6 pb-28 sm:pb-40"
     >
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="writing-titel"
           eyebrow={chrome.home.eyebrow}
           title={chrome.home.title}
           lede={chrome.home.lede}

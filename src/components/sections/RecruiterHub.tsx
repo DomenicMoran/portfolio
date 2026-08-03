@@ -32,6 +32,7 @@ export function RecruiterHub() {
     // Kreis mit 34rem das Dokument auf Telefonen breiter als den Sichtbereich.
     <section
       id="hire"
+      aria-labelledby="hire-titel"
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -40,6 +41,7 @@ export function RecruiterHub() {
 
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="hire-titel"
           eyebrow={recruiter.eyebrow}
           title={recruiter.title}
           lede={recruiter.lede}
@@ -119,7 +121,9 @@ export function RecruiterHub() {
               {recruiter.facts.map((fact) => (
                 <div key={fact.label} className="flex flex-col gap-1">
                   <dt className="text-eyebrow">{fact.label}</dt>
-                  <dd className="text-sm leading-snug text-ink">{fact.value}</dd>
+                  <dd className="text-sm leading-snug text-ink">
+                    {fact.value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -156,7 +160,9 @@ export function RecruiterHub() {
                   <a
                     key={link.label}
                     href={link.href}
-                    target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                    target={
+                      link.href.startsWith("mailto:") ? undefined : "_blank"
+                    }
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                   >
