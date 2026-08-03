@@ -20,8 +20,15 @@ export function Footer({
   otherHref,
   hashBase = "",
 }: { otherHref?: string; hashBase?: string } = {}) {
-  const { nav: navItems, site, footer, a11y, recruiter, languageSwitch, lang } =
-    useContent();
+  const {
+    nav: navItems,
+    site,
+    footer,
+    a11y,
+    recruiter,
+    languageSwitch,
+    lang,
+  } = useContent();
   const year = new Date().getFullYear();
   const sprachZiel = otherHref ?? (lang === "de" ? "/en" : "/");
 
@@ -32,7 +39,11 @@ export function Footer({
     SOCIALS.linkedin
       ? { label: "LinkedIn", href: SOCIALS.linkedin, icon: LinkedinIcon }
       : null,
-  ].filter(Boolean) as { label: string; href: string; icon: typeof GithubIcon }[];
+  ].filter(Boolean) as {
+    label: string;
+    href: string;
+    icon: typeof GithubIcon;
+  }[];
 
   return (
     <footer className="relative overflow-hidden border-t border-line px-6 pt-20 pb-10">
@@ -126,14 +137,22 @@ export function Footer({
           <div className="flex flex-col gap-3">
             <h2 className="text-eyebrow">{footer.legalLabel}</h2>
             <div className="-my-2 flex flex-col">
+              {/* `hreflang` an beiden Rechtsverweisen: Die Seiten dahinter gibt es
+                  nur auf Deutsch. Das Impressum nach § 5 DDG ist ein deutsches
+                  Rechtsdokument, und eine Übersetzung wäre nicht dieselbe
+                  Erklärung. Wer von der englischen Fassung dorthin klickt,
+                  landet also in einer anderen Sprache — die Angabe sagt das
+                  vorher, und ein Vorleseprogramm wechselt die Aussprache. */}
               <Link
                 href="/impressum"
+                hrefLang="de"
                 className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.impressum}
               </Link>
               <Link
                 href="/datenschutz"
+                hrefLang="de"
                 className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.datenschutz}
