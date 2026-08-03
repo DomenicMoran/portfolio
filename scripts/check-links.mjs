@@ -61,6 +61,10 @@ const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
 let anker = 0;
+/** Die im Kopf angemeldeten Nebendateien, je einmal geprüft. */
+const nebendateien = [];
+const kopfGesehen = new Set();
+let nebenzeilen = 0;
 let bilder = 0;
 let adressen = 0;
 const gesehen = new Map();
@@ -128,6 +132,25 @@ for (const pfad of pfade) {
     funde.push(`${pfad}: Bild ohne Inhalt — ${quelle}`);
   bilder += ergebnis.bilder ?? 0;
 
+  /* Die Kopfzeilen dieser Seite, für die Prüfung weiter unten. Gesammelt
+     statt sofort geprüft: Dieselbe Datei ist auf zwanzig Seiten angemeldet,
+     und zwanzigmal dieselbe Antwort abzurufen kostet nur Zeit. */
+  const kopf = await seite.evaluate(() =>
+    [...document.querySelectorAll("link[rel=alternate], link[rel=author]")]
+      .map((l) => ({
+        rel: l.getAttribute("rel"),
+        href: l.getAttribute("href"),
+        type: l.getAttribute("type"),
+      }))
+      .filter((l) => l.href?.startsWith("/")),
+  );
+  for (const eintrag of kopf) {
+    const schluessel = `${eintrag.href}|${eintrag.type}`;
+    if (kopfGesehen.has(schluessel)) continue;
+    kopfGesehen.add(schluessel);
+    nebendateien.push([pfad, [eintrag]]);
+  }
+
   anker += ergebnis.gesamt;
   for (const id of ergebnis.ohneZiel)
     funde.push(`${pfad}: Anker #${id} hat kein Ziel`);
@@ -141,6 +164,43 @@ for (const pfad of pfade) {
     adressen++;
     if (status >= 400)
       funde.push(`${pfad}: ${ohneAnker} antwortet mit ${status}`);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Die angemeldeten Nebendateien
+
+   Feed, humans.txt, llms.txt: Jede meldet sich im Kopf mit `rel` und einem
+   Medientyp an, und beides ist eine Behauptung. Der Medientyp ist die
+   gefährlichere von beiden — ein falsches Ziel merkt der Leser sofort, einen
+   falschen Typ glaubt ihm der Reader.
+
+   Gemessen: Der Artikel-Feed wurde als `application/rss+xml` angemeldet und
+   antwortet als `application/atom+xml`. Beide Fassungen, jede Seite.
+
+   Verglichen wird deshalb gegen die Antwort des Servers und nicht gegen eine
+   Liste erlaubter Typen: Die Liste wäre die nächste Stelle, an der etwas
+   veraltet. */
+for (const [pfad, angemeldet] of nebendateien) {
+  for (const eintrag of angemeldet) {
+    nebenzeilen++;
+    const antwort = await fetch(`${basis}${eintrag.href}`).catch(() => null);
+    if (!antwort || antwort.status !== 200) {
+      funde.push(
+        `${pfad}: angemeldet als ${eintrag.rel} zeigt auf ${eintrag.href}, ` +
+          `und das antwortet mit ${antwort ? antwort.status : "gar nicht"}`,
+      );
+      continue;
+    }
+    const geliefert = (antwort.headers.get("content-type") ?? "")
+      .split(";")[0]
+      .trim();
+    if (eintrag.type && geliefert && eintrag.type !== geliefert) {
+      funde.push(
+        `${pfad}: ${eintrag.href} ist angemeldet als ${eintrag.type}, ` +
+          `geliefert wird ${geliefert}`,
+      );
+    }
   }
 }
 
@@ -176,9 +236,10 @@ await browser.close();
 beenden();
 
 if (funde.length > 0) {
-  console.error(
-    `${funde.length} toter Verweis${funde.length === 1 ? "" : "e"}:\n`,
-  );
+  /* "2 toter Verweise" stand hier, und ab jetzt wäre selbst die richtige
+     Beugung falsch: Der Lauf findet auch Medientypen, die nicht zur
+     Antwort passen, und das ist kein toter Verweis. */
+  console.error(`${funde.length} Befund${funde.length === 1 ? "" : "e"}:\n`);
   for (const f of funde) console.error(`  ${f}`);
   process.exit(1);
 }
@@ -186,5 +247,6 @@ if (funde.length > 0) {
 console.log(
   `Kein toter Verweis: ${anker} Verweise auf ${pfade.length} Seiten, ` +
     `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt, ` +
-    `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel.`,
+    `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel, ` +
+    `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp.`,
 );
