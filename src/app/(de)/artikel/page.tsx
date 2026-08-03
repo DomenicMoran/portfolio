@@ -7,6 +7,20 @@ import { kurzbeschreibung } from "@/lib/metadata";
 export const metadata: Metadata = {
   title: chromeDe.title,
   description: kurzbeschreibung(chromeDe.lede),
+  /*
+     Eigene Vorschaukarte statt der geerbten.
+
+     `openGraph` wird vom Wurzel-Layout geerbt, wenn eine Seite nichts setzt.
+     Gemessen an der ausgelieferten Seite trugen deshalb alle Seiten außer den
+     zehn Artikelseiten denselben Kartentitel: „Domenic Moran – AI Product
+     Engineer". Wer die Artikelübersicht teilte, zeigte damit die Startseite.
+     Titel und Text stehen längst da — sie wurden nur nicht weitergereicht.
+  */
+  openGraph: {
+    title: chromeDe.title,
+    description: kurzbeschreibung(chromeDe.lede),
+    locale: "de_DE",
+  },
   alternates: {
     canonical: "/artikel",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },

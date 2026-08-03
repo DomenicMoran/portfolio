@@ -1386,6 +1386,83 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Jede Seite mit eigener Vorschaukarte
+   ---------------------------------------------------------------------------
+
+   `openGraph` wird vom Wurzel-Layout geerbt, wenn eine Seite nichts setzt.
+   Gemessen am 03.08.2026 an der gebauten Seite trugen deshalb alle Seiten
+   ausser den zehn Artikelseiten denselben Kartentitel: „Domenic Moran – AI
+   Product Engineer". Wer die Artikeluebersicht teilte, zeigte damit die
+   Startseite — und der Titel dafuer stand seit Langem in der Inhaltsdatei,
+   er wurde nur nicht weitergereicht.
+
+   Die beiden Startseiten duerfen ihn tragen, sie sind gemeint. */
+{
+  const bauOrdner = join(".next", "server", "app");
+  const startseiten = new Set(["/index.html", "/en.html"]);
+  const funde = [];
+  let geprueft = 0;
+  let seitentitel = null;
+
+  const sammeln = (ordner) => {
+    let eintraege;
+    try {
+      eintraege = readdirSync(ordner, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const eintrag of eintraege) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) {
+        sammeln(pfad);
+        continue;
+      }
+      if (!eintrag.name.endsWith(".html") || eintrag.name.startsWith("_")) continue;
+
+      const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/");
+      const titel = readFileSync(pfad, "utf8").match(
+        /<meta property="og:title" content="([^"]*)"/,
+      )?.[1];
+      if (!titel) {
+        funde.push(`${route}: keine Vorschaukarte`);
+        continue;
+      }
+      if (startseiten.has(route)) {
+        seitentitel ??= titel;
+        continue;
+      }
+      geprueft++;
+      if (seitentitel !== null && titel === seitentitel) {
+        funde.push(`${route}: traegt den Kartentitel der Startseite`);
+      }
+    }
+  };
+
+  /* Die Startseiten zuerst, damit ihr Titel bekannt ist, wenn die uebrigen
+     dagegen gehalten werden. */
+  for (const start of ["index.html", "en.html"]) {
+    const pfad = join(bauOrdner, start);
+    if (!existsSync(pfad)) continue;
+    seitentitel ??= readFileSync(pfad, "utf8").match(
+      /<meta property="og:title" content="([^"]*)"/,
+    )?.[1];
+  }
+  sammeln(bauOrdner);
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Seite(n) ohne eigene Vorschaukarte:`);
+    for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
+  } else if (geprueft > 0) {
+    zeilen.push(
+      `  ok  Vorschaukarten      ${String(geprueft).padStart(6)} Seiten mit eigenem Kartentitel`,
+    );
+  } else {
+    zeilen.push("  --  Vorschaukarten: kein Bau vorhanden, übersprungen");
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Adressen der Produkte, jede einmal abgerufen
    ---------------------------------------------------------------------------
 
