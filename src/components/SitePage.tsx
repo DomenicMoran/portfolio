@@ -1,4 +1,5 @@
 import { ContentProvider } from "@/content/ContentProvider";
+import { mailAdresse } from "@/lib/mailto";
 import { SOCIALS, type Content } from "@/content/types";
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
@@ -37,7 +38,10 @@ export function SitePage({ content }: { content: Content }) {
     jobTitle: content.site.role,
     description: content.site.meta.description,
     url: content.site.url,
-    email: `mailto:${content.site.email}`,
+    /* Ohne Betreff: Eine Angabe fuer Maschinen nennt die Adresse, sie
+       schreibt keine Nachricht vor. Ueber `mailAdresse` trotzdem, damit es
+       genau eine Stelle gibt, an der ein Mailverweis entsteht. */
+    email: mailAdresse(content.site.email),
     /* Das Porträt gehört in die Angabe, sobald es eines gibt.
        Suchmaschinen und Antwortmaschinen zeigen daraus das Bild neben dem
        Namen; ohne `image` steht dort der Platzhalter, den jede Person ohne
@@ -99,7 +103,10 @@ export function SitePage({ content }: { content: Content }) {
 
   return (
     <ContentProvider content={content}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: json }}
+      />
       <ConsoleGreeting />
 
       <SkipLink text={content.skipToContent} />

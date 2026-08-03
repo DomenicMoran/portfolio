@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
 
@@ -57,7 +58,7 @@ export default function Datenschutz() {
         <br />
         E-Mail:{" "}
         <a
-          href={`mailto:${site.email}`}
+          href={mailAdresse(site.email, site.mailSubject)}
           /* `-my-1 py-1`: Der Verweis maß 174 x 18 px und lag damit unter den
              24 px aus WCAG 2.5.8. Das Impressum nebenan hatte den Ausgleich
              schon, diese Stelle nicht — dieselbe Regel, zwei Fassungen.
@@ -81,9 +82,9 @@ export default function Datenschutz() {
           Stunde. Wer den Tarif wechselt, muss diesen Satz nachziehen. */}
       <Section title="Hosting">
         Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
-        technisch notwendige Server-Logdaten verarbeitet (IP-Adresse,
-        Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage
-        ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
+        technisch notwendige Server-Logdaten verarbeitet (IP-Adresse, Zeitpunkt,
+        aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage ist Art. 6
+        Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
         stabilen Betrieb. Der Hoster hält diese Protokolle eine Stunde lang vor
         und löscht sie danach automatisch; eine eigene Speicherung, Auswertung
         oder Weitergabe findet nicht statt. Die Übermittlung in die USA erfolgt
@@ -109,17 +110,17 @@ export default function Datenschutz() {
         nichts gespeichert, wenn du Kontakt aufnimmst. Deine Nachricht geht
         direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
         daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
-        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b
-        bzw. lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
+        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b bzw.
+        lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
         gesetzliche Aufbewahrungsfrist entgegensteht.
       </Section>
 
       <Section title="Keine weiteren Datenempfänger">
-        Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website
-        lädt keine Skripte, Schriften, Karten, Videos oder Analysedienste von
-        fremden Servern nach, weder beim Aufruf noch bei einer Interaktion.
-        Sämtliche Seiten werden vorab erzeugt und als fertige Dateien
-        ausgeliefert; es gibt keinen Endpunkt, der Eingaben entgegennimmt.
+        Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website lädt
+        keine Skripte, Schriften, Karten, Videos oder Analysedienste von fremden
+        Servern nach, weder beim Aufruf noch bei einer Interaktion. Sämtliche
+        Seiten werden vorab erzeugt und als fertige Dateien ausgeliefert; es
+        gibt keinen Endpunkt, der Eingaben entgegennimmt.
       </Section>
 
       <Section title="Deine Rechte">

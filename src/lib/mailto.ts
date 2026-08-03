@@ -1,10 +1,16 @@
 /**
  * Die Mailadresse als Verweis, mit vorbelegtem Betreff.
  *
- * Sieben Stellen bauten `mailto:${site.email}` von Hand zusammen: Kopfleiste,
- * Fußzeile, Kontaktbereich, Recruiter-Bereich, Befehlspalette, 404-Seite und
- * der One-Pager. Siebenmal dieselbe Zeichenkette heißt: Wer etwas daran
- * ändert, ändert es an sechs Stellen nicht mit.
+ * Neun Stellen bauten `mailto:${site.email}` von Hand zusammen: Kopfleiste,
+ * Fußzeile, Kontaktbereich, Recruiter-Bereich, Befehlspalette, 404-Seite,
+ * One-Pager, Impressum und Datenschutzerklärung. Neunmal dieselbe
+ * Zeichenkette heißt: Wer etwas daran ändert, ändert es an acht Stellen nicht
+ * mit — und genau so war es: Die beiden Rechtsseiten blieben beim ersten
+ * Durchgang liegen und waren danach die einzigen zwei Mailverweise der Seite
+ * ohne Betreff.
+ *
+ * Eine Ausnahme bleibt: `security.txt` nennt die Adresse ohne Betreff. RFC
+ * 9116 erwartet dort eine blanke Kontaktangabe, keine vorbelegte Nachricht.
  *
  * Der Betreff ist der Grund, warum es die Funktion jetzt gibt. Ohne ihn öffnet
  * sich ein leeres Fenster, und die Nachricht kommt ohne Zeile an, an der sich
