@@ -63,6 +63,15 @@ export type ArticleChrome = {
   /** Name der Tabelle für Vorleseprogramme, wenn sie keine Bildunterschrift hat. */
   tableLabel: string;
   publishedLabel: string;
+  /**
+   * Beschriftung des Rückwegs vom Artikel in die Fallstudie.
+   *
+   * Gezählt an der ausgelieferten Seite: Aus dem Artikelbereich führte kein
+   * Verweis in den Fallstudienbereich. Die Fallstudie zeigt ihre Artikel seit
+   * einer Weile; umgekehrt landete jeder, der einen geteilten Artikel öffnet,
+   * in einem Text ohne Produkt dahinter.
+   */
+  fromSystem: string;
   allArticles: string;
   /** Teaser auf der Startseite. */
   home: { eyebrow: string; title: string; lede: string; cta: string };

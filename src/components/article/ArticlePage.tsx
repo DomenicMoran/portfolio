@@ -45,6 +45,21 @@ export function ArticlePage({
       : `/artikel/${anderer}`
     : undefined;
 
+  /**
+   * Das System, aus dem der Artikel stammt.
+   *
+   * Abgeleitet und nicht am Artikel notiert: Die Zuordnung steht bereits in
+   * der Fallstudie, weil die dort ihre Artikel auflistet. Eine zweite Stelle
+   * wäre die Stelle, an der beide Listen auseinanderlaufen.
+   *
+   * Warum es den Rückweg überhaupt gibt: Ein geteilter Artikel ist für viele
+   * Leser die erste Seite. Gezählt an der ausgelieferten Seite führte aus
+   * jedem der fünf Artikel kein einziger Verweis in den Fallstudienbereich —
+   * wer über eine Suchmaschine im Whisper-Text landete, las von Salati, ohne
+   * zu erfahren, dass es die App in zwei Stores gibt.
+   */
+  const system = content.caseStudies.find((study) => study.articles?.includes(article.slug));
+
   // Ein Artikel ist ein Werk, kein Personenprofil. Schema.org unterscheidet
   // das, und Suchmaschinen wie Antwortmaschinen lesen es aus.
   const schema = {
@@ -62,6 +77,13 @@ export function ArticlePage({
     },
     publisher: { "@type": "Person", name: content.site.name },
     mainEntityOfPage: `${content.site.url}${chrome.base}/${article.slug}`,
+    /* Wovon der Text handelt, als Angabe und nicht nur als Wort im Fließtext.
+       Antwortmaschinen verbinden darüber den Artikel mit dem Produkt; ohne
+       das steht hier ein Text über Whisper und daneben, unverbunden, eine App
+       in zwei Stores. Nur gesetzt, wo die Zuordnung existiert. */
+    ...(system
+      ? { about: { "@type": "SoftwareApplication", name: system.name } }
+      : {}),
   };
   /**
    * Der Weg zur Seite, maschinenlesbar.
@@ -140,6 +162,25 @@ export function ArticlePage({
                 ))}
               </ul>
             </div>
+
+            {/* Kein zweiter Zurück-Verweis, sondern ein Schild: Der Rahmen und
+                die Beschriftung davor sagen, dass hier ein Produkt steht und
+                keine Navigation. */}
+            {system ? (
+              <Link
+                href={`${heim}#case-${system.id}`}
+                className="group mt-5 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/40 py-2 pr-4 pl-3.5 text-[13px] transition-colors hover:border-acid/40"
+              >
+                <span className="font-mono text-[11px] tracking-wide text-ink-faint">
+                  {chrome.fromSystem}
+                </span>
+                <span className="font-medium text-ink">{system.name}</span>
+                <ArrowRight
+                  className="size-3.5 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-acid"
+                  aria-hidden
+                />
+              </Link>
+            ) : null}
           </div>
 
           <div className="mt-12">
