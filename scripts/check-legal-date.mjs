@@ -22,7 +22,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 const STAND_DATEI = join("src", "app", "(de)", "(legal)", "stand.ts");
 
@@ -87,7 +87,86 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
   process.exit(1);
 }
 
+/* ---------------------------------------------------------------------------
+   Die zwei technischen Zusagen der Erklärung
+
+   Sie sagt zwei Sätze über die Bauart dieser Seite, und beide sind prüfbar:
+
+     "Sämtliche Seiten werden vorab erzeugt und als fertige Dateien
+      ausgeliefert; es gibt keinen Endpunkt, der Eingaben entgegennimmt."
+
+   Der erste Satz fällt, sobald eine Seite auf Anfrage gerendert wird, der
+   zweite, sobald ein Route Handler etwas anderes als GET annimmt. Beides kann
+   an einem gewöhnlichen Arbeitstag entstehen, ohne dass jemand an die
+   Datenschutzerklärung denkt — und dann steht dort eine Zusage, die nicht
+   mehr gilt. `check:privacy` misst, was die fertige Seite tut; hier steht,
+   was der Bau daraus macht.
+
+   Die interne Not-found-Route bleibt draußen: Next erzeugt sie immer als
+   dynamisch, und sie beantwortet nur Adressen, die es nicht gibt. */
+const AUSNAHMEN = new Set(["/_not-found"]);
+const SCHREIBENDE =
+  /export\s+(?:async\s+)?function\s+(POST|PUT|PATCH|DELETE)\b/;
+
+const dynamische = [];
+try {
+  const bau = JSON.parse(
+    readFileSync(join(".next", "prerender-manifest.json"), "utf8"),
+  );
+  const vorab = new Set([
+    ...Object.keys(bau.routes ?? {}),
+    ...Object.keys(bau.dynamicRoutes ?? {}),
+  ]);
+  const app = JSON.parse(
+    readFileSync(join(".next", "app-path-routes-manifest.json"), "utf8"),
+  );
+  for (const pfad of new Set(Object.values(app))) {
+    if (AUSNAHMEN.has(pfad)) continue;
+    // Route Handler stehen nicht im Prerender-Manifest, sie liefern Dateien.
+    if (
+      /\/(feed\.xml|llms\.txt|humans\.txt|security\.txt|robots\.txt|sitemap\.xml)$/.test(
+        pfad,
+      )
+    )
+      continue;
+    if (!vorab.has(pfad) && !vorab.has(pfad.replace(/\/page$/, ""))) {
+      dynamische.push(pfad);
+    }
+  }
+} catch {
+  dynamische.length = 0;
+}
+
+const schreibend = [];
+for (const datei of dateienUnter(join("src", "app"))) {
+  if (!/route\.ts$/.test(datei)) continue;
+  const treffer = SCHREIBENDE.exec(readFileSync(datei, "utf8"));
+  if (treffer) schreibend.push(`${datei} nimmt ${treffer[1]} entgegen`);
+}
+
+if (dynamische.length || schreibend.length) {
+  console.error(
+    "Die Datenschutzerklärung sagt, dass alle Seiten vorab erzeugt werden " +
+      "und kein Endpunkt Eingaben entgegennimmt. Der Bau sagt etwas anderes:\n",
+  );
+  for (const p of dynamische)
+    console.error(`  ${p} wird auf Anfrage gerendert`);
+  for (const p of schreibend) console.error(`  ${p}`);
+  process.exit(1);
+}
+
 console.log(
   `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
-    `Stand ${STAND}.`,
+    `Stand ${STAND}. Alle Seiten vorab erzeugt, kein Endpunkt nimmt Eingaben entgegen.`,
 );
+
+/** Alle Dateien unter einem Ordner, rekursiv. */
+function dateienUnter(ordner) {
+  const raus = [];
+  for (const eintrag of readdirSync(ordner)) {
+    const voll = join(ordner, eintrag);
+    if (statSync(voll).isDirectory()) raus.push(...dateienUnter(voll));
+    else raus.push(voll);
+  }
+  return raus;
+}
