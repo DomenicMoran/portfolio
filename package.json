@@ -29,7 +29,8 @@
     "test": "vitest run",
     "check:parity": "node scripts/check-parity.mjs",
     "check:stack": "node scripts/check-stack.mjs",
-    "check:onepager": "node scripts/check-onepager-pdf.mjs"
+    "check:onepager": "node scripts/check-onepager-pdf.mjs",
+    "check:typography": "node scripts/check-typography.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

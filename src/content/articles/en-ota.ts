@@ -2,7 +2,7 @@ import type { Article } from "./types";
 
 export const otaEn: Article = {
   slug: "published-is-not-proof",
-  title: "“Published” is not proof. My updates never arrived.",
+  title: "”Published” is not proof. My updates never arrived.",
   dek: "For months I believed I could ship content fixes without a store cycle. The tool reported success every time. Not a single user ever received anything.",
   date: "2026-07-30",
   minutes: 5,
@@ -24,7 +24,7 @@ export const otaEn: Article = {
     },
     {
       kind: "p",
-      text: "My own project page listed “over-the-air updates: content fixes without a store cycle” as a capability for months. I believed it. There was a comment in the codebase describing the route as established. There was configuration, there was a channel, and the command ran.",
+      text: "My own project page listed ”over-the-air updates: content fixes without a store cycle” as a capability for months. I believed it. There was a comment in the codebase describing the route as established. There was configuration, there was a channel, and the command ran.",
     },
     {
       kind: "p",
@@ -51,7 +51,7 @@ export const otaEn: Article = {
     },
     {
       kind: "p",
-      text: "It can be given as a policy, for instance “take the fingerprint of the native dependencies”. That is the convenient route, and it works when the tool generates the native project itself.",
+      text: "It can be given as a policy, for instance ”take the fingerprint of the native dependencies”. That is the convenient route, and it works when the tool generates the native project itself.",
     },
     {
       kind: "p",
@@ -85,7 +85,7 @@ export default {
     {
       kind: "note",
       title: "Why nobody notices this",
-      text: "An update that does not reach a platform looks, on that platform, exactly like “no update available”. No error, no warning, no log entry. The healthy state and the broken state are indistinguishable.",
+      text: "An update that does not reach a platform looks, on that platform, exactly like ”no update available”. No error, no warning, no log entry. The healthy state and the broken state are indistinguishable.",
     },
     { kind: "h2", text: "What now stops it from coming back" },
     {
@@ -111,7 +111,7 @@ export default {
     },
     {
       kind: "p",
-      text: "The cause is not carelessness but a confusion that is very easy to fall into: a tool reports success for its own part of the work. “Published” means a bundle was built and uploaded. It does not mean a device ever asks for it, let alone that one receives it.",
+      text: "The cause is not carelessness but a confusion that is very easy to fall into: a tool reports success for its own part of the work. ”Published” means a bundle was built and uploaded. It does not mean a device ever asks for it, let alone that one receives it.",
     },
     {
       kind: "p",
@@ -122,7 +122,7 @@ export default {
       ordered: true,
       items: [
         "A tool's success message is about the tool, not about the outcome.",
-        "For anything that ships, the right question is not “did the command run” but “is something now where it belongs”. That question almost always has a query that answers it.",
+        "For anything that ships, the right question is not ”did the command run” but ”is something now where it belongs”. That question almost always has a query that answers it.",
         "A comment in the code describing a route as established is not evidence. It is the recollection of someone who tried it once.",
         "If a value exists in two places because a generation step is missing, the two will drift apart. Not perhaps, but eventually and certainly. That is what tests are for.",
       ],
