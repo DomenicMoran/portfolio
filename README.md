@@ -2,7 +2,7 @@
 
 # domenicmoran.de
 
-**Portfolio eines AI-Native Product Engineers: gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
+**Portfolio eines AI Product Engineers: gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
 
 Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
 Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
