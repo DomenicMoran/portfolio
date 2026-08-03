@@ -57,9 +57,18 @@ export function RecruiterHub() {
               {/* `data-schein` meldet die Karte beim Lichtschein an: Sie
                   bekommt die Zeigerposition als CSS-Variable und damit den
                   weichen Schein plus den Bogen auf ihrer Kante. */}
+              {/* Spalte statt Block, damit der Beleg unten steht.
+
+                  Die Karten einer Reihe sind gleich hoch, ihre Texte nicht.
+                  Der Verweis folgte dem Text und stand deshalb je Karte
+                  woanders: gemessen bei 1440 px 24, 46 und 24 px über der
+                  Unterkante in der ersten Reihe, 68, 24 und 24 in der zweiten.
+                  Ein Recruiter überfliegt genau diese Zeile — sie gehört auf
+                  eine Höhe. `mt-auto` schiebt den Verweis ans Ende, der Text
+                  bleibt oben. */}
               <div
                 data-schein
-                className="lit h-full rounded-2xl border border-line bg-surface/50 p-6"
+                className="lit flex h-full flex-col rounded-2xl border border-line bg-surface/50 p-6"
               >
                 <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance">
                   {item.title}
@@ -85,7 +94,7 @@ export function RecruiterHub() {
                       href={item.proof}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/beleg mt-4 -mb-1 inline-flex items-center gap-1.5 py-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                      className="group/beleg mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
                     >
                       {item.proofLabel}
                       <ArrowUpRight
@@ -96,7 +105,7 @@ export function RecruiterHub() {
                   ) : (
                     <Link
                       href={item.proof}
-                      className="group/beleg mt-4 -mb-1 inline-flex items-center gap-1.5 py-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                      className="group/beleg mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
                     >
                       {item.proofLabel}
                       <ArrowRight
