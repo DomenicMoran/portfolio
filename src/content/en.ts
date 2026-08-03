@@ -371,7 +371,7 @@ export const en: Content = {
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
-        "7,464 test cases (7,290 unit, 174 end-to-end), the end-to-end suite running against production",
+        "over 7,400 test cases (over 7,200 unit, 174 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         "Self-hosted mail stack with a three-stage fallback chain",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",

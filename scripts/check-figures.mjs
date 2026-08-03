@@ -89,6 +89,45 @@ function vergleiche(was, gemessen, aufDerSeite) {
   );
 }
 
+/**
+ * Eine Untergrenze prüfen statt einer exakten Zahl.
+ *
+ * Für Werte, die zwischen zwei Prüfläufen wachsen. Die Testzahl von MenuCloud
+ * stand dreimal an einem Nachmittag falsch auf der Seite — 7.437, 7.444,
+ * 7.464, 7.302 — nicht weil sie jemand falsch abgeschrieben hätte, sondern
+ * weil das Produktivrepo weiterläuft. Eine Zahl, die stundenweise veraltet,
+ * ist keine belegte Zahl, sondern eine Momentaufnahme mit Ablaufdatum.
+ *
+ * Eine Untergrenze bleibt wahr, solange der Wert wächst. Dieselbe Regel, die
+ * das gedruckte Kurzprofil für die Commits anwendet.
+ *
+ * Zwei Richtungen werden gemeldet: unterschritten ist ein Fehler, und mehr als
+ * `spielraum` darüber ist ein Hinweis, dass die Angabe zu bescheiden geworden
+ * ist.
+ */
+function mindestens(was, gemessen, aufDerSeite, spielraum = 1000) {
+  const grenze = Number(String(aufDerSeite).replace(/[.,]/g, ""));
+  if (!Number.isFinite(grenze)) {
+    abweichungen++;
+    zeilen.push(`  !=  ${was.padEnd(26)} keine Untergrenze gefunden`);
+    return;
+  }
+  if (gemessen < grenze) {
+    abweichungen++;
+    zeilen.push(
+      `  !=  ${was.padEnd(26)} gemessen ${String(gemessen).padStart(6)}` +
+        `   unter der genannten Grenze ${grenze}`,
+    );
+    return;
+  }
+  const weit = gemessen - grenze > spielraum;
+  zeilen.push(
+    `  ${weit ? "--" : "ok"}  ${was.padEnd(26)} gemessen ${String(gemessen).padStart(6)}` +
+      `   über der Grenze ${grenze}` +
+      (weit ? " — die Angabe darf wachsen" : ""),
+  );
+}
+
 /** Die Zahl aus einem Satz der Inhaltsdatei ziehen. */
 function ausSeite(muster) {
   const m = quelle.match(muster);
@@ -152,19 +191,18 @@ if (existsSync(MENUCLOUD)) {
     0,
   );
 
+  /* Untergrenzen statt exakter Zahlen — siehe `mindestens()`. Die End-to-End-
+     Zahl bleibt exakt: Sie ändert sich nur mit einem neuen Testlauf, nicht
+     nebenbei. */
   const aufSeite = quelle.match(
-    /"([\d.]+) Testfälle \(([\d.]+) Unit, ([\d.]+) End-to-End\)/,
+    /"über ([\d.]+) Testfälle \(über ([\d.]+) Unit, ([\d.]+) End-to-End\)/,
   );
-  vergleiche(
-    "MenuCloud Unit-Tests",
-    vitest.numTotalTests,
-    aufSeite?.[2].replace(/\./g, ""),
-  );
-  vergleiche("MenuCloud End-to-End", e2e, aufSeite?.[3].replace(/\./g, ""));
-  vergleiche(
+  mindestens("MenuCloud Unit-Tests", vitest.numTotalTests, aufSeite?.[2] ?? "");
+  vergleiche("MenuCloud End-to-End", e2e, aufSeite?.[3]?.replace(/\./g, ""));
+  mindestens(
     "MenuCloud gesamt",
     vitest.numTotalTests + e2e,
-    aufSeite?.[1].replace(/\./g, ""),
+    aufSeite?.[1] ?? "",
   );
   if (vitest.numFailedTests > 0) {
     zeilen.push(`  !!  ${vitest.numFailedTests} Unit-Tests scheitern`);
@@ -271,7 +309,11 @@ const UNTERGRENZEN = [
   {
     was: "Testfälle",
     imText: /über ([\d.]+) Testfäll/g,
-    gemessen: () => zahlAusSeite(/"([\d.]+) Testfälle \(/),
+    // Die Seite nennt die Zahl seit heute als Untergrenze („über 7.400"),
+    // weil sie stündlich wächst. Die Dokumente nennen dieselbe Grenze, also
+    // liest der Lauf sie von dort statt einer exakten Zahl, die es auf der
+    // Seite nicht mehr gibt.
+    gemessen: () => zahlAusSeite(/"über ([\d.]+) Testfälle \(/),
   },
   /*
      Das Vorbereitungsbuch nennt die Gesamtzahl in drei Sätzen und in drei
@@ -1421,7 +1463,9 @@ const BRAUCHT_KIND = {
       ["Umsatzsteuer-Identifikationsnummer", /DE\d{9}/],
     ];
 
-    const fehlend = PFLICHT.filter(([, muster]) => !muster.test(text)).map(([was]) => was);
+    const fehlend = PFLICHT.filter(([, muster]) => !muster.test(text)).map(
+      ([was]) => was,
+    );
     if (fehlend.length) {
       abweichungen += fehlend.length;
       zeilen.push(`  !!  Impressum: ${fehlend.join(", ")} fehlt/fehlen`);
@@ -1484,7 +1528,9 @@ const BRAUCHT_KIND = {
     const stellen = imAbzeichen.split(".").length;
     const kurz = installiert.split(".").slice(0, stellen).join(".");
     if (kurz !== imAbzeichen) {
-      funde.push(`${beschriftung}: Abzeichen sagt ${imAbzeichen}, installiert ist ${installiert}`);
+      funde.push(
+        `${beschriftung}: Abzeichen sagt ${imAbzeichen}, installiert ist ${installiert}`,
+      );
     }
   }
 
@@ -1531,7 +1577,8 @@ const BRAUCHT_KIND = {
         sammeln(pfad);
         continue;
       }
-      if (!eintrag.name.endsWith(".html") || eintrag.name.startsWith("_")) continue;
+      if (!eintrag.name.endsWith(".html") || eintrag.name.startsWith("_"))
+        continue;
 
       const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/");
       const titel = readFileSync(pfad, "utf8").match(
