@@ -8,6 +8,17 @@ import {
 import type { Content } from "./types";
 
 /**
+ * Angaben, die auf dem Kurzprofil und im Faktenblatt stehen.
+ *
+ * Als Konstante, weil sie an zwei Stellen gebraucht werden und dort zweimal
+ * anders formuliert waren: "Open to talk now · start after notice period" im
+ * Faktenblatt gegen die neue Zeile auf dem Blatt. Zwei Sätze für dieselbe
+ * Sache sind die nächste Stelle, an der einer veraltet.
+ */
+const ENTRY = "Open to talk now · start after my notice period";
+const LANGUAGES = "German (native) · English";
+
+/**
  * Die englische Fassung.
  *
  * Keine wörtliche Übersetzung: Das deutsche Original lebt von Konstruktionen,
@@ -86,6 +97,8 @@ export const en: Content = {
     availability: {
       label: "Open to a permanent role",
       detail: "Berlin · remote in the EU · hybrid",
+      entry: ENTRY,
+      languages: LANGUAGES,
     },
     meta: {
       title: "Domenic Moran – AI Product Engineer",
@@ -1057,11 +1070,8 @@ export const en: Content = {
           "A product team where I take a feature all the way into production",
       },
       { label: "Location", value: "Berlin · remote in the EU · hybrid" },
-      {
-        label: "Available",
-        value: "Open to talk now · start after notice period",
-      },
-      { label: "Languages", value: "German (native) · English" },
+      { label: "Available", value: ENTRY },
+      { label: "Languages", value: LANGUAGES },
       { label: "Model", value: "Permanent employment" },
       {
         label: "Source code",

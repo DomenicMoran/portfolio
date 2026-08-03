@@ -64,6 +64,8 @@ export const de: Content = {
     availability: {
       label: siteDe.availability.label,
       detail: siteDe.availability.detail,
+      entry: siteDe.availability.entry,
+      languages: siteDe.availability.languages,
     },
 
     meta: siteDe.meta,

@@ -228,11 +228,15 @@ export function OnePager({
               <p className="mt-1 font-medium text-[#101014]">
                 {site.availability.label}
               </p>
-              {/* Die Bedingungen unter der Zusage. `availability.detail` stand im
-                Inhalt und wurde von nichts gerendert; auf dem Blatt fehlte
-                damit die eine Angabe, die ein Recruiter vor dem Anruf braucht.
-                Eine Zeile, das Blatt bleibt eine Seite. */}
+              {/* Die Bedingungen unter der Zusage: wo, ab wann, in welcher
+                Sprache. `detail` stand im Inhalt und wurde von nichts
+                gerendert; Eintritt und Sprachen standen ausschließlich im
+                Faktenblatt der Startseite und erreichten damit niemanden, der
+                nur dieses Blatt in die Hand bekommt — also genau den Fall, für
+                den es gemacht ist. Drei Zeilen, das Blatt bleibt eine Seite. */}
               <p>{site.availability.detail}</p>
+              <p>{site.availability.entry}</p>
+              <p>{site.availability.languages}</p>
             </div>
           </header>
 
@@ -397,8 +401,11 @@ export function OnePager({
                     .filter((paket) => paket.name !== "portfolio")
                     .map((paket) => paket.name)
                     .join(" · ")}
+                  {/* Der Doppelpunkt gehört an das Wort davor. Als eigenes
+                      Textstück mit führendem Leerzeichen stand auf dem Blatt
+                      "arabic-normalize : alle mit Tests" — französische
+                      Setzung in einem deutschen Dokument. */}
                   <span className="text-[#6a6a76]">
-                    {" "}
                     : {onepager.openSourceNote}
                   </span>
                 </p>

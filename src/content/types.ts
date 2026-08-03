@@ -72,7 +72,15 @@ export type Content = {
      * schon drin, bevor jemand tippt — aenderbar wie jeder Betreff.
      */
     mailSubject: string;
-    availability: { label: string; detail: string };
+    availability: {
+      label: string;
+      /** Wo gearbeitet wird. */
+      detail: string;
+      /** Ab wann — die erste Rückfrage jedes Recruiters. */
+      entry: string;
+      /** In welchen Sprachen. */
+      languages: string;
+    };
     meta: { title: string; description: string };
     /** Ein Satz auf der Social-Vorschaukarte, je Sprache eigener Text. */
     ogTagline: string;
