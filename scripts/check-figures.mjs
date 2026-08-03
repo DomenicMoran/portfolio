@@ -183,6 +183,10 @@ const PAKETE = [
     /name: "whisper-ggml-header",[\s\S]{0,400}?· (\d+) Tests/,
   ],
   ["arabic-normalize", /name: "arabic-normalize",[\s\S]{0,400}?· (\d+) Tests/],
+  /* `verified-done` kam zuletzt dazu. Es legt seine Tests unter `test/`
+     statt `src/` und erzeugt einen Teil über `it.each`; gezählt wird deshalb
+     mit dem Testläufer wie bei den anderen drei, nicht mit einem Muster. */
+  ["verified-done", /name: "verified-done",[\s\S]{0,400}?· (\d+) Tests/],
 ];
 
 for (const [paket, muster] of PAKETE) {
@@ -1690,24 +1694,26 @@ const BRAUCHT_KIND = {
       /\[([a-z-]+)\]\(https:\/\/github\.com\/DomenicMoran\/[a-z-]+\)[^\n|]*\|[^\n|]*?(\d+) Tests?, null Abhängigkeiten/g,
     )) {
       const [, paket, behauptet] = treffer;
-      const ordner = join("..", "oss", paket);
+      const ordner = join(OSS, paket);
       if (!existsSync(ordner)) {
         funde.push(`${paket}: kein Klon unter ../oss, nicht nachzählbar`);
         continue;
       }
-      const dateien = readdirSync(join(ordner, "src")).filter((d) =>
-        d.endsWith(".test.ts"),
-      );
-      const echt = dateien.reduce(
-        (n, d) =>
-          n +
-          (
-            readFileSync(join(ordner, "src", d), "utf8").match(
-              /\b(it|test)\(/g,
-            ) ?? []
-          ).length,
-        0,
-      );
+
+      /* Gezählt wird mit dem Testläufer, nicht mit einem Suchmuster.
+
+         Vorher las der Lauf `src/*.test.ts` und zählte darin `it(` und
+         `test(`. Das hielt, solange alle drei genannten Pakete gleich gebaut
+         waren. Mit `verified-done` kam ein viertes dazu, das seine Tests
+         unter `test/` legt und einen Teil über `it.each` erzeugt — der Lauf
+         stürzte dort mit ENOENT ab, und ein Suchmuster hätte 12 statt 16
+         gezählt. Der Läufer zählt dasselbe wie das README behauptet. */
+      const bericht = vitestLauf(ordner);
+      if (!bericht) {
+        funde.push(`${paket}: kein Vitest im Klon, nicht nachzählbar`);
+        continue;
+      }
+      const echt = bericht.numTotalTests;
       if (String(echt) !== behauptet) {
         funde.push(`${paket}: README sagt ${behauptet} Tests, gezählt ${echt}`);
       }
