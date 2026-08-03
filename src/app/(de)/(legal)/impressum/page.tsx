@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
 
@@ -50,7 +51,7 @@ export default function Impressum() {
         <p className="text-sm leading-relaxed text-ink-dim">
           E-Mail:{" "}
           <a
-            href={`mailto:${site.email}`}
+            href={mailAdresse(site.email, site.mailSubject)}
             className="-my-1 py-1 text-acid underline underline-offset-4"
           >
             {site.email}
@@ -94,7 +95,9 @@ export default function Impressum() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-ink">Haftung für Links</h2>
+        <h2 className="mb-3 text-lg font-semibold text-ink">
+          Haftung für Links
+        </h2>
         <p className="text-sm leading-relaxed text-ink-dim">
           Diese Seite verlinkt auf externe Websites, auf deren Inhalte ich
           keinen Einfluss habe. Für diese fremden Inhalte ist stets der
