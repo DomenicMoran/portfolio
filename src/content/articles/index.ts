@@ -28,6 +28,7 @@ export const chromeDe: ArticleChrome = {
   codeLabel: "Codebeispiel",
   tableLabel: "Tabelle",
   publishedLabel: "Veröffentlicht",
+  fromSystem: "Aus dem System",
   allArticles: "Artikel",
   home: {
     eyebrow: "Geschrieben",
@@ -48,6 +49,7 @@ export const chromeEn: ArticleChrome = {
   codeLabel: "Code sample",
   tableLabel: "Table",
   publishedLabel: "Published",
+  fromSystem: "From the system",
   allArticles: "Articles",
   home: {
     eyebrow: "Writing",
