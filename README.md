@@ -24,7 +24,7 @@ versucht etwas anderes: für jedes der vier Systeme in Produktion beantwortet es
 drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
 Architektur?*, *Was war der schwierige Teil?*
 
-Der Abschnitt **„Die harte Stelle"** ist der Kern jeder Fallstudie. Nicht die
+Der Abschnitt **„Die harte Stelle“** ist der Kern jeder Fallstudie. Nicht die
 Feature-Liste unterscheidet Entwickler voneinander, sondern das eine Problem,
 an dem man nicht drumherum kam.
 
@@ -57,7 +57,7 @@ ausfüllt, und dabei die Kopie seiner eigenen Nachricht verliert.
 ist die einzige Quelle für jeden Text und jede Zahl. Komponenten enthalten
 keinerlei Copy. Ein leerer Wert lässt das jeweilige Element verschwinden statt
 einen Platzhalter zu rendern: auf einer Seite, deren Zweck Glaubwürdigkeit ist,
-darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum" enden.
+darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum“ enden.
 
 **Architekturdiagramme sind Daten, kein Bild.** Die vier Diagramme in
 [`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx) sind als
@@ -69,7 +69,7 @@ Bild-Request.
 `prefers-reduced-motion: reduce` wird Lenis nicht initialisiert, der Custom-Cursor
 nicht gemountet und jede Animation auf 0,01 ms verkürzt. Den Scroll von jemandem
 mit vestibulärer Empfindlichkeit zu kapern, ist das Feindseligste, was eine
-„Premium"-Seite tun kann.
+„Premium“-Seite tun kann.
 
 **Der PDF-Download ist der Druckdialog.** `/onepager` und `/en/onepager` sind
 A4-optimierte Routen mit eigenem Print-Stylesheet. Kein Headless-Chrome im
@@ -92,11 +92,11 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen dreizehn Prüfungen, die den Bau nicht ersetzen. Sieben davon
-messen an der gebauten Seite und nicht am Quelltext; `check:headers` misst an
-der Auslieferung, weil `vercel.json` vom Bau gar nicht gelesen wird — und läuft
-deshalb auf Pull Requests nicht mit. Derselbe Workflow führt sie bei jedem Push
-aus:
+Nach dem Bau laufen fünfzehn Prüfungen, die den Bau nicht ersetzen. Sieben davon
+öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
+`check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
+gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
+führt sie bei jedem Push aus:
 
 ```bash
 npm run check:a11y      # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
@@ -113,6 +113,7 @@ npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
 npm run check:separators # kein Trennzeichen bleibt beim Umbruch am Zeilenende
 npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand
+npm run check:docs      # die Zahlen in dieser Datei und in AGENTS.md stimmen noch
 ```
 
 Der Druckpfad ist ein eigener Auslieferungsweg, den sonst niemand ansieht: Die
@@ -187,23 +188,41 @@ src/
 └─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks · Marke · OG-Karte
 
 scripts/
-├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
+│  Am Browser gemessen — diese sieben laden die gebaute Seite wirklich:
 ├─ check-a11y.mjs                 axe-core gegen jede gebaute Seite, zwei Breiten
-├─ check-privacy.mjs              keine Seite baut eine Verbindung nach außen auf
-├─ check-headers.mjs              die ausgelieferte Seite trägt die Schutz-Kopfzeilen
-├─ check-print.mjs                prüft jede gebaute Seite in der Druckansicht
 ├─ check-headings.mjs             keine Überschrift schneidet ihre Unterlängen ab
+├─ check-links.mjs                kein Anker und keine interne Adresse zeigt ins Leere
+├─ check-parity.mjs               beide Sprachfassungen zeigen gleich viel
+├─ check-print.mjs                prüft jede gebaute Seite in der Druckansicht
+├─ check-privacy.mjs              keine Seite baut eine Verbindung nach außen auf
+├─ check-separators.mjs           kein Trennzeichen bleibt beim Umbruch am Zeilenende
+│
+│  An Dateien gemessen:
+├─ check-docs.mjs                 die Zahlen in README.md und AGENTS.md stimmen noch
+├─ check-exports.mjs              jede Ausfuhr aus src/ hat einen Abnehmer
+├─ check-legal-date.mjs           das Datum der Datenschutzerklärung passt zu ihrem Text
+├─ check-onepager-pdf.mjs         das ausgelieferte PDF stammt aus dem aktuellen Inhalt
+├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
 ├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
+├─ check-stack.mjs                jede genannte Technik steht wirklich im Produktivrepo
+├─ check-typography.mjs           jede Sprachfassung setzt ihre eigenen Zeichen
+│
+│  An der Auslieferung und an den Nachbar-Repos:
+├─ check-headers.mjs              die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 ├─ check-figures.mjs              zählt die Zahlen der Seite gegen die Repos nach
 ├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
-├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
-├─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
+│
+│  Erzeugen statt prüfen:
 ├─ build-favicon.mjs              erzeugt favicon.ico aus derselben Form wie die Marke
+├─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
+├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
 ├─ build-portrait.mjs             erzeugt alle drei Porträt-Fassungen aus einem Original
+├─ build-shots.mjs                erzeugt public/shots/*.webp aus den Originalen daneben
 └─ lib/local-server.mjs           startet den gebauten Stand auf einem freien Port
 
 .github/workflows/
-├─ check.yml                      Typen, Linter, Bau und die sechs Prüfungen
+├─ check.yml                      Typen, Linter, Bau und jede Prüfung, die ohne
+│                                 die Nachbar-Repos auskommt
 └─ refresh-figures.yml            zählt täglich nach und liefert aus
 ```
 
@@ -254,5 +273,5 @@ Der Code steht unter der MIT-Lizenz — nimm dir Muster, die dir nützen.
 
 Nicht Teil der Lizenz sind die Inhalte: Texte, Fallstudien und Fachartikel
 unter `src/content/` sowie die Bilder unter `public/` sind © Domenic Moran,
-alle Rechte vorbehalten. Die MIT-Lizenz bezieht sich auf „the Software", also
+alle Rechte vorbehalten. Die MIT-Lizenz bezieht sich auf „the Software“, also
 auf den Quellcode; diese Zeile stellt nur klar, wo dessen Grenze verläuft.

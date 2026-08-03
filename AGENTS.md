@@ -42,7 +42,7 @@ sechs Dateinamen neben sechzig englischen. Wer diese Datei liest, sieht sonst
 zwei Sprachen und zwei Konventionen in einem Verzeichnis.
 
 Bei **Bezeichnern im Code** gilt dieser Grund nicht: Sie verlassen das Repo
-nie und kollidieren mit keinem Dateisystem. Hier stand trotzdem „englisch",
+nie und kollidieren mit keinem Dateisystem. Hier stand trotzdem „englisch“,
 und der Code hielt sich nie daran — gezählt rund 1.400 deutsche gegen 2.500
 englische Vorkommen, quer durch `src/` und `scripts/`. Eine Regel, die
 niemand befolgt, macht das Dokument wertlos und nicht den Code besser: Die
@@ -90,7 +90,7 @@ Platzhalter rendern. Muster:
 {site.socials.linkedin ? <a href={site.socials.linkedin}>…</a> : null}
 ```
 
-Grund: Diese Seite verkauft Glaubwürdigkeit. Ein sichtbares „Lorem ipsum" oder
+Grund: Diese Seite verkauft Glaubwürdigkeit. Ein sichtbares „Lorem ipsum“ oder
 ein toter Link kostet mehr, als das fehlende Element je gebracht hätte.
 
 Offene Datenpunkte werden als `TODO(domenic)` markiert. Was nur der Inhaber
@@ -99,14 +99,14 @@ ausschließlich das.
 
 ## Bewegung
 
-Drei Regeln, alle nicht verhandelbar:
+Vier Regeln, alle nicht verhandelbar:
 
 1. **`prefers-reduced-motion` gilt für JS-Animationen genauso.** Die CSS-Regel
    in `globals.css` erreicht Framer Motion nicht: dafür ist `MotionProvider`
    (`MotionConfig reducedMotion="user"`) zuständig. Wer eine neue
    Animationsbibliothek einführt, muss denselben Ausstieg bauen.
 2. **Lenis und der Custom-Cursor werden bei Reduced-Motion nicht gemountet.**
-   Nicht „deaktiviert": gar nicht erst geladen.
+   Nicht „deaktiviert“: gar nicht erst geladen.
 3. **Über der Falz nur CSS-Animationen.** Eine JS-Animation mit
    `initial opacity 0` ist bis zur Hydration unsichtbar. Steht das Element
    über der Falz, ist es damit das LCP-Element und erscheint erst nach der
@@ -208,7 +208,7 @@ Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 
 Deutsch, durchgängig. Der Betreff bleibt unter 72 Zeichen und beschreibt den
 Stand **nach** der Änderung, nicht den Fehler davor: „Kopfleiste bleibt bei
-1024 px einzeilig", nicht „Leiste war zweizeilig". Kein Präfix, keine
+1024 px einzeilig“, nicht „Leiste war zweizeilig“. Kein Präfix, keine
 Fehlernummer.
 
 Der Rumpf nennt den Grund und die Messung, auf die sich die Änderung stützt.
@@ -216,15 +216,19 @@ Eine Zahl ohne Messmethode gehört nicht hinein. Was geprüft wurde und
 unverändert blieb, darf mit — das ist der Teil, den man später sucht.
 
 Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
-„Commit-Zahlen aufgefrischt".
+„Commit-Zahlen aufgefrischt“.
 
 ## Tests
 
-Die sieben Prüfläufe messen an der ausgelieferten Seite und sind der eigentliche
-Beweis. Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare
-Ausgabe: `src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate" oder „fünf
-Monate" steht, und ein Fehler um eins sieht auf der Seite völlig normal aus.
-Solche Funktionen gehören in `src/lib/` mit einer `.test.ts` daneben.
+Sieben der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+Seite: `check:a11y`, `check:headings`, `check:links`, `check:parity`,
+`check:print`, `check:privacy` und `check:separators`. Sie sind der eigentliche
+Beweis.
+
+Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare Ausgabe:
+`src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate“ oder „fünf Monate“
+steht, und ein Fehler um eins sieht auf der Seite völlig normal aus. Solche
+Funktionen gehören in `src/lib/` mit einer `.test.ts` daneben.
 
 Alles, was den Browser braucht, bleibt bei den Prüfläufen: Ein Bauteil mit
 jsdom nachzustellen prüft die Nachstellung, nicht die Seite.
@@ -250,6 +254,15 @@ npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
 npm run check:separators # kein Trennzeichen am Zeilenende
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
+npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
+```
+
+Dazu, außerhalb der CI, weil er die Nachbar-Repos braucht:
+
+```bash
+node scripts/check-figures.mjs  # jede Zahl der Seite gegen die Repos, aus
+                                # denen sie stammt — dazu Lebenslauf,
+                                # Bewerbungsunterlagen und Lernplattform
 ```
 
 `check:print` gehört dazu, weil der Ausdruck ein eigener Auslieferungsweg ist,

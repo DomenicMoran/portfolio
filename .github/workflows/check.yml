@@ -157,6 +157,13 @@ jobs:
       - name: Ausfuhren mit Abnehmer
         run: npm run check:exports
 
+      # README.md und AGENTS.md zählen Dinge, und gezählte Dinge veralten leise.
+      # Gefunden beim Lesen: eine Ankündigung von drei Regeln über vier Punkten,
+      # dreizehn genannte Prüfungen bei vierzehn aufgezählten und ein
+      # Verzeichnisbaum, der 13 von 22 Skripten kannte.
+      - name: Handbuch gegen das Repo
+        run: npm run check:docs
+
       # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
       # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
       # Kette, damit die Liste vollständig ist und niemand ihn für vergessen
