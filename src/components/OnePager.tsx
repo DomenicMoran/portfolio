@@ -126,12 +126,14 @@ export function OnePager({
     //
     // print:min-h-0: min-h-svh loest auch auf Papier zur vollen Viewport-Höhe
     // auf und schiebt sonst eine leere zweite Seite an.
-    // `main` und nicht `div`: Die beiden One-Pager waren die einzigen Seiten
-    // ohne Haupt-Bereich — gemessen am 02.08.2026 an der ausgelieferten Seite,
-    // acht Adressen geprüft, nur /onepager und /en/onepager ohne `main`.
-    // Vorleseprogramme bieten damit keinen Sprung zum Inhalt an, und
-    // ausgerechnet dieses Blatt bekommt ein Recruiter als Erstes geschickt.
-    <main
+    //
+    // Die Hülle trägt nur das Aussehen und ist deshalb ein `div`. Der
+    // Hauptbereich umschließt allein das Blatt; Bedienleiste und
+    // Rechtsverweise stehen daneben, weil `header` und `footer` innerhalb von
+    // `main` ihre Rolle verlieren. Gemessen an der ausgelieferten Seite hatten
+    // beide Kurzprofile vorher genau eine Landmarke — auf dem Blatt, das ein
+    // Recruiter als Erstes bekommt.
+    <div
       style={{ colorScheme: "light" }}
       className="min-h-svh bg-white text-[#101014] print:min-h-0 print:bg-white"
     >
@@ -139,6 +141,7 @@ export function OnePager({
         hinweis={onepager.printHint}
         beschriftung={onepager.printButton}
         datei={inhalt.recruiter.cta.pdf}
+        navLabel={inhalt.a11y.onepagerNav}
         sprache={{
           href: sprache === "de" ? "/en/onepager" : "/onepager",
           label: inhalt.languageSwitch.label,
@@ -146,38 +149,39 @@ export function OnePager({
         }}
       />
 
-      <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
-        {/* Header */}
-        <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
-          <div className="flex items-center gap-5">
-            {/* Das Porträt kostet keine Zeile.
+      <main>
+        <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
+          {/* Header */}
+          <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
+            <div className="flex items-center gap-5">
+              {/* Das Porträt kostet keine Zeile.
                 Die Kontaktspalte rechts ist sechs Zeilen hoch, gemessen
                 156 px; das Bild bleibt darunter, und das Blatt bleibt eine
                 Seite. In Deutschland gehört ein Foto auf eine Bewerbung, und
                 dieses Blatt geht als PDF an Firmen. */}
-            {about.portraitPrint ? (
-              <Image
-                src={about.portraitPrint}
-                alt={site.name}
-                width={110}
-                height={110}
-                sizes="110px"
-                /* Ohne `priority` setzt next/image `loading="lazy"`, und ein
+              {about.portraitPrint ? (
+                <Image
+                  src={about.portraitPrint}
+                  alt={site.name}
+                  width={110}
+                  height={110}
+                  sizes="110px"
+                  /* Ohne `priority` setzt next/image `loading="lazy"`, und ein
                    Bild, das nie geladen wurde, druckt als leerer Rahmen.
                    Genau darauf prueft scripts/check-print.mjs. Hier steht es
                    ohnehin ganz oben: verzoegern gibt es nichts zu. */
-                priority
-                className="size-[6.875rem] shrink-0 rounded-lg object-cover"
-              />
-            ) : null}
-            <div>
-              <h1 className="text-4xl font-semibold tracking-tight">
-                {site.name}
-              </h1>
-              <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
+                  priority
+                  className="size-[6.875rem] shrink-0 rounded-lg object-cover"
+                />
+              ) : null}
+              <div>
+                <h1 className="text-4xl font-semibold tracking-tight">
+                  {site.name}
+                </h1>
+                <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
+              </div>
             </div>
-          </div>
-          {/* Die Adressen sind Verweise, keine abgetippten Zeichenketten.
+            {/* Die Adressen sind Verweise, keine abgetippten Zeichenketten.
 
               Die Begründung über dieser Datei nennt „funktionierende Links"
               als Grund, die PDF über den Druckweg zu erzeugen statt über eine
@@ -189,7 +193,7 @@ export function OnePager({
               `text-inherit` und keine Unterstreichung: Am Bildschirm und auf
               Papier sieht die Zeile aus wie vorher, sie lässt sich nur
               zusätzlich anklicken. */}
-          {/* Die Trefferfläche der Kontaktzeilen.
+            {/* Die Trefferfläche der Kontaktzeilen.
 
               axe meldete sie mit 174 x 18 px als zu klein: WCAG 2.2 AA
               verlangt 24 x 24 px, und jede dieser Zeilen steht allein in
@@ -204,52 +208,52 @@ export function OnePager({
 
               Die Zeile bleibt optisch stehen; das Blatt wächst um zwölf
               Pixel und bleibt eine Seite. */}
-          <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
-            <p>{site.location}</p>
-            <p>
-              <a href={mailAdresse(site.email, site.mailSubject)}>
-                {site.email}
-              </a>
-            </p>
-            {SOCIALS.github ? (
+            <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
+              <p>{site.location}</p>
               <p>
-                <a href={SOCIALS.github}>{alsAnzeige(SOCIALS.github)}</a>
+                <a href={mailAdresse(site.email, site.mailSubject)}>
+                  {site.email}
+                </a>
               </p>
-            ) : null}
-            {SOCIALS.linkedin ? (
-              <p>
-                <a href={SOCIALS.linkedin}>{alsAnzeige(SOCIALS.linkedin)}</a>
+              {SOCIALS.github ? (
+                <p>
+                  <a href={SOCIALS.github}>{alsAnzeige(SOCIALS.github)}</a>
+                </p>
+              ) : null}
+              {SOCIALS.linkedin ? (
+                <p>
+                  <a href={SOCIALS.linkedin}>{alsAnzeige(SOCIALS.linkedin)}</a>
+                </p>
+              ) : null}
+              <p className="mt-1 font-medium text-[#101014]">
+                {site.availability.label}
               </p>
-            ) : null}
-            <p className="mt-1 font-medium text-[#101014]">
-              {site.availability.label}
-            </p>
-            {/* Die Bedingungen unter der Zusage. `availability.detail` stand im
+              {/* Die Bedingungen unter der Zusage. `availability.detail` stand im
                 Inhalt und wurde von nichts gerendert; auf dem Blatt fehlte
                 damit die eine Angabe, die ein Recruiter vor dem Anruf braucht.
                 Eine Zeile, das Blatt bleibt eine Seite. */}
-            <p>{site.availability.detail}</p>
-          </div>
-        </header>
+              <p>{site.availability.detail}</p>
+            </div>
+          </header>
 
-        {/* Positioning */}
-        <section className="mt-7 print:mt-4">
-          <p className="text-[14px] leading-snug text-[#25252e]">
-            {positionierung}
-          </p>
-        </section>
+          {/* Positioning */}
+          <section className="mt-7 print:mt-4">
+            <p className="text-[14px] leading-snug text-[#25252e]">
+              {positionierung}
+            </p>
+          </section>
 
-        {/* Projects */}
-        <section className="mt-8 print:mt-4">
-          <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
-            {onepager.projects}
-          </h2>
+          {/* Projects */}
+          <section className="mt-8 print:mt-4">
+            <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+              {onepager.projects}
+            </h2>
 
-          <div className="flex flex-col gap-5 print:gap-3">
-            {caseStudies.map((study) => (
-              <div key={study.id} className="break-inside-avoid">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  {/* Größe und Farbe stehen hier beide ausdrücklich, und das
+            <div className="flex flex-col gap-5 print:gap-3">
+              {caseStudies.map((study) => (
+                <div key={study.id} className="break-inside-avoid">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    {/* Größe und Farbe stehen hier beide ausdrücklich, und das
                       hat einen gemessenen Grund.
 
                       `text-base` ist auf dieser Seite keine Schriftgröße. Das
@@ -261,8 +265,8 @@ export function OnePager({
                       Auf der hellen Druckseite setzte sonst nichts die Farbe,
                       also erbte die Überschrift das Weiß des dunklen Themas —
                       die vier Projektnamen standen weiß auf weiß. */}
-                  <h3 className="text-[16px] font-semibold text-[#101014]">
-                    {/* Das Leerzeichen gehört in denselben Textknoten wie der
+                    <h3 className="text-[16px] font-semibold text-[#101014]">
+                      {/* Das Leerzeichen gehört in denselben Textknoten wie der
                         Unterschied zwischen „Salati Live im App Store" und
                         „SalatiLive im App Store". Optisch trennt der
                         Außenabstand, im Text stand nichts: Ein Screenreader
@@ -275,23 +279,23 @@ export function OnePager({
                         Store" — die Namensberechnung verwirft einen
                         Textknoten, der nur aus Leerraum besteht. Deshalb
                         hängt das Leerzeichen jetzt am Namen selbst. */}
-                    {`${study.name} `}
-                    <span className="ml-1 text-[13px] font-normal text-[#5a5a66]">
-                      {study.statusLabel} · {study.year}
+                      {`${study.name} `}
+                      <span className="ml-1 text-[13px] font-normal text-[#5a5a66]">
+                        {study.statusLabel} · {study.year}
+                      </span>
+                    </h3>
+                    <span className="font-mono text-[10px] text-[#6a6a76]">
+                      {study.metrics
+                        .map(
+                          (m) =>
+                            `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`,
+                        )
+                        .join("  ·  ")}
                     </span>
-                  </h3>
-                  <span className="font-mono text-[10px] text-[#6a6a76]">
-                    {study.metrics
-                      .map(
-                        (m) =>
-                          `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`,
-                      )
-                      .join("  ·  ")}
-                  </span>
-                </div>
-                <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
-                  {study.tagline}.{" "}
-                  {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
+                  </div>
+                  <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
+                    {study.tagline}.{" "}
+                    {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
                       hat. Sonst stolpert die Zeile über zwei davon:
                       "Ein Agent, der nicht ungefragt handelt: Der Reiz eines
                       solchen Systems ist auch sein Risiko: ein Bot, der …".
@@ -304,68 +308,73 @@ export function OnePager({
                       sich das wie ein Tippfehler. Ein Punkt trennt dasselbe,
                       ohne etwas zu behaupten, das die Zeichensetzung nicht
                       hergibt. */}
-                  <strong className="font-semibold">
-                    {study.hardPart.title}
-                    {firstSentence(study.hardPart.body).includes(":")
-                      ? "."
-                      : ":"}
-                  </strong>{" "}
-                  {firstSentence(study.hardPart.body)}
-                </p>
-                <p className="mt-1 font-mono text-[10.5px] leading-snug text-[#6a6a76]">
-                  {study.stack
-                    .flatMap((g) => g.items)
-                    .slice(0, 7)
-                    .join(" · ")}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
-            untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
-        <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-4">
-          <section>
-            <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
-              {onepager.focus}
-            </h2>
-            <dl className="flex flex-col gap-1.5">
-              {topSkills.map((group) => (
-                <div key={group.title}>
-                  <dt className="text-[12.5px] font-semibold">{group.title}</dt>
-                  <dd className="text-[12.5px] leading-snug text-[#3a3a44]">
-                    {group.items.join(" · ")}
-                  </dd>
+                    <strong className="font-semibold">
+                      {study.hardPart.title}
+                      {firstSentence(study.hardPart.body).includes(":")
+                        ? "."
+                        : ":"}
+                    </strong>{" "}
+                    {firstSentence(study.hardPart.body)}
+                  </p>
+                  <p className="mt-1 font-mono text-[10.5px] leading-snug text-[#6a6a76]">
+                    {study.stack
+                      .flatMap((g) => g.items)
+                      .slice(0, 7)
+                      .join(" · ")}
+                  </p>
                 </div>
               ))}
-            </dl>
+            </div>
           </section>
 
-          <section>
-            <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
-              {onepager.path}
-            </h2>
-            <dl className="flex flex-col gap-1.5">
-              {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten,
-                  auf einer Seite zählt, was die Projekte erklärt. */}
-              {about.timeline.slice(0, 3).map((entry) => (
-                <div key={entry.period} className="text-[12.5px] leading-snug">
-                  <dt className="font-mono text-[10.5px] text-[#5a5a66]">
-                    {entry.period}
-                  </dt>
-                  <dd>
-                    <span className="font-semibold">{entry.title}</span>
-                    <span className="text-[#3a3a44]"> · {entry.org}</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-2 text-[11.5px] leading-snug text-[#3a3a44]">
-              {onepager.pathNote}
-            </p>
+          {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
+            untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
+          <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-4">
+            <section>
+              <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+                {onepager.focus}
+              </h2>
+              <dl className="flex flex-col gap-1.5">
+                {topSkills.map((group) => (
+                  <div key={group.title}>
+                    <dt className="text-[12.5px] font-semibold">
+                      {group.title}
+                    </dt>
+                    <dd className="text-[12.5px] leading-snug text-[#3a3a44]">
+                      {group.items.join(" · ")}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
 
-            {/* Die veröffentlichten Pakete.
+            <section>
+              <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+                {onepager.path}
+              </h2>
+              <dl className="flex flex-col gap-1.5">
+                {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten,
+                  auf einer Seite zählt, was die Projekte erklärt. */}
+                {about.timeline.slice(0, 3).map((entry) => (
+                  <div
+                    key={entry.period}
+                    className="text-[12.5px] leading-snug"
+                  >
+                    <dt className="font-mono text-[10.5px] text-[#5a5a66]">
+                      {entry.period}
+                    </dt>
+                    <dd>
+                      <span className="font-semibold">{entry.title}</span>
+                      <span className="text-[#3a3a44]"> · {entry.org}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-2 text-[11.5px] leading-snug text-[#3a3a44]">
+                {onepager.pathNote}
+              </p>
+
+              {/* Die veröffentlichten Pakete.
 
                 Auf dem Blatt stehen vier Produktivsysteme, und alle vier sind
                 privat: Kundendaten und lizenzierte Inhalte. Wer es liest und
@@ -379,25 +388,25 @@ export function OnePager({
 
                 Platz war da: Das Blatt maß 854 px von 1.040 nutzbaren, und
                 diese Spalte endete 54 px über der linken. */}
-            <div className="mt-3">
-              <h3 className="font-mono text-[10.5px] tracking-[0.16em] text-[#5a5a66] uppercase">
-                {onepager.openSource}
-              </h3>
-              <p className="mt-1 text-[11.5px] leading-snug text-[#3a3a44]">
-                {about.openSource.items
-                  .filter((paket) => paket.name !== "portfolio")
-                  .map((paket) => paket.name)
-                  .join(" · ")}
-                <span className="text-[#6a6a76]">
-                  {" "}
-                  — {onepager.openSourceNote}
-                </span>
-              </p>
-            </div>
-          </section>
-        </div>
+              <div className="mt-3">
+                <h3 className="font-mono text-[10.5px] tracking-[0.16em] text-[#5a5a66] uppercase">
+                  {onepager.openSource}
+                </h3>
+                <p className="mt-1 text-[11.5px] leading-snug text-[#3a3a44]">
+                  {about.openSource.items
+                    .filter((paket) => paket.name !== "portfolio")
+                    .map((paket) => paket.name)
+                    .join(" · ")}
+                  <span className="text-[#6a6a76]">
+                    {" "}
+                    — {onepager.openSourceNote}
+                  </span>
+                </p>
+              </div>
+            </section>
+          </div>
 
-        {/* Der Abschnitt "Arbeitsweise" stand hier und ist raus.
+          {/* Der Abschnitt "Arbeitsweise" stand hier und ist raus.
 
             Grund: Das eingecheckte PDF war einseitig, die Seite erzeugt aber
             seit einer Weile zwei. Gemessen 1.495 px roh, mit zoom 0,83 also
@@ -410,33 +419,42 @@ export function OnePager({
             Webseite. Die vier Projekte sind die eigentliche Aussage und
             bleiben. */}
 
-        <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
-          <span>
-            {onepager.fullCaseStudies}{" "}
-            {/* Die Adresse fuehrt in die Sprache des Blattes.
+          <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
+            <span>
+              {onepager.fullCaseStudies}{" "}
+              {/* Die Adresse fuehrt in die Sprache des Blattes.
                 Auf dem englischen Blatt stand die Wurzel, und die ist
                 deutsch: Wer das PDF an eine englischsprachige fachliche
                 Fuehrung weiterreicht, schickt sie damit auf eine Seite, die
                 sie nicht lesen kann. Es ist der einzige Verweis auf die Seite
                 im ganzen Dokument. */}
-            <a href={heimatAdresse} className="text-inherit no-underline">
-              {alsAnzeige(heimatAdresse)}
-            </a>
-          </span>
-          <span>
-            {onepager.asOf}{" "}
-            {new Date().toLocaleDateString(
-              sprache === "de" ? "de-DE" : "en-GB",
-              {
-                month: "long",
-                year: "numeric",
-              },
-            )}
-          </span>
-        </footer>
-      </article>
+              <a href={heimatAdresse} className="text-inherit no-underline">
+                {alsAnzeige(heimatAdresse)}
+              </a>
+            </span>
+            <span>
+              {onepager.asOf}{" "}
+              {new Date().toLocaleDateString(
+                sprache === "de" ? "de-DE" : "en-GB",
+                {
+                  month: "long",
+                  year: "numeric",
+                },
+              )}
+            </span>
+          </footer>
+        </article>
+      </main>
 
-      <div className="no-print mx-auto max-w-[820px] px-8 pb-16">
+      {/* Die Rechtsverweise als Fußzeile.
+
+          Als `div` waren sie keine Landmarke, und die beiden Kurzprofile
+          hatten damit im Barrierefreiheitsbaum genau eine: den Hauptbereich.
+          Ausgerechnet auf dem Blatt, das ein Recruiter zuerst bekommt, gab es
+          weder einen Sprung zur Fußzeile noch zur Bedienleiste.
+
+          `npm run check:landmarks` hält es offen. */}
+      <footer className="no-print mx-auto max-w-[820px] px-8 pb-16">
         {/* -my-2/py-2 bringt die Trefferfläche von gemessenen 18 px auf
             34 px, ohne die Zeile optisch zu verschieben. Ein eigenstaendiger
             Link fällt nicht unter die Inline-Ausnahme von WCAG 2.5.8. */}
@@ -486,7 +504,7 @@ export function OnePager({
             {inhalt.footer.datenschutz}
           </Link>
         </span>
-      </div>
-    </main>
+      </footer>
+    </div>
   );
 }

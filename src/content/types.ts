@@ -92,6 +92,16 @@ export type Content = {
     toTop: string;
     mainNav: string;
     footerNav: string;
+    /**
+     * Name des Rückwegs auf den Rechtsseiten.
+     *
+     * Nicht „Hauptnavigation": Dort steht ein einziger Verweis zurück auf die
+     * Startseite, und zwei Landmarken desselben Namens auf einer Webseite
+     * helfen niemandem, der die Landmarkenliste benutzt.
+     */
+    legalNav: string;
+    /** Name der Bedienleiste über dem Kurzprofil. */
+    onepagerNav: string;
     openMenu: string;
     closeMenu: string;
     commandPalette: string;

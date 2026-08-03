@@ -82,6 +82,8 @@ export const de: Content = {
     toTop: "Zum Seitenanfang",
     mainNav: "Hauptnavigation",
     footerNav: "Navigation in der Fußzeile",
+    legalNav: "Zurück zur Seite",
+    onepagerNav: "Blatt drucken, herunterladen, Sprache wechseln",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schließen",
     commandPalette: "Befehlspalette öffnen",

@@ -22,6 +22,7 @@ export function PrintButton({
   beschriftung,
   datei,
   sprache,
+  navLabel,
 }: {
   hinweis: string;
   beschriftung: string;
@@ -36,9 +37,14 @@ export function PrintButton({
    * hatte und die englische brauchte, musste die Adresse von Hand ändern.
    */
   sprache: { href: string; label: string; aria: string };
+  /** Name der Leiste im Barrierefreiheitsbaum. */
+  navLabel: string;
 }) {
   return (
-    <div className="no-print sticky top-0 z-10 border-b border-[#e4e4ea] bg-white/90 backdrop-blur">
+    <nav
+      aria-label={navLabel}
+      className="no-print sticky top-0 z-10 border-b border-[#e4e4ea] bg-white/90 backdrop-blur"
+    >
       <div className="mx-auto flex max-w-[820px] flex-wrap items-center justify-between gap-x-4 gap-y-3 px-8 py-3">
         <div className="flex min-w-0 items-center gap-3">
           {/* Der Hinweis erklärt den Druckknopf, also die zweite von zwei
@@ -81,6 +87,6 @@ export function PrintButton({
           </button>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

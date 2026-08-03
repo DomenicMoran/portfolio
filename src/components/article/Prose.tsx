@@ -153,12 +153,23 @@ export function Prose({
             );
 
           case "note":
+            /* Der Merkkasten trägt seine Überschrift als Namen.
+
+               `aside` ist eine Landmarke, und eine Landmarke ohne Namen steht
+               in der Liste als „Ergänzung" — zweimal auf einer Seite also
+               zweimal derselbe Eintrag. Gemessen an sechs Artikelseiten war
+               genau das der Fall. Die Überschrift steht ohnehin darüber; sie
+               wird über `aria-labelledby` verknüpft, statt den Text ein
+               zweites Mal als `aria-label` zu schreiben. */
             return (
               <aside
                 key={i}
+                aria-labelledby={`merk-${i}`}
                 className="mt-2 mb-7 rounded-xl border border-acid/25 bg-acid/[0.05] p-5 sm:p-6"
               >
-                <p className="text-eyebrow mb-2.5">{block.title}</p>
+                <p id={`merk-${i}`} className="text-eyebrow mb-2.5">
+                  {block.title}
+                </p>
                 <p className="text-[0.95rem] leading-[1.7] text-ink-dim text-pretty">
                   <RichText text={block.text} />
                 </p>
