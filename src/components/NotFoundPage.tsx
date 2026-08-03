@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { chromeIn } from "@/content/articles";
 import { Marke } from "@/lib/mark";
 import { mailAdresse } from "@/lib/mailto";
 import type { Content } from "@/content/types";
@@ -33,6 +34,26 @@ export function NotFoundPage({
   zweitsprache?: Content;
 }) {
   const { notFound, nav, site } = content;
+
+  /*
+     Die Ziele der 404 sind die der Kopfleiste, mit einer Ausnahme.
+
+     Unter „Artikel" führt die Kopfleiste auf `#writing`, den Anreißer auf der
+     Startseite. Dort ist das richtig; hier nicht. Die wahrscheinlichste
+     Adresse, die auf dieser Seite landet, ist ein falscher oder veralteter
+     Artikel-Pfad: Fünf Artikel mit langen Slugs stehen im Profil-README, auf
+     LinkedIn und in llms.txt. Wer sich dort vertippt, will die Liste der fünf
+     und nicht einen Abschnitt mit drei Karten.
+
+     Ersetzt statt ergänzt: Zwei Kacheln mit derselben Beschriftung und
+     verschiedenen Zielen wären schlechter als die eine falsche.
+  */
+  const artikel = chromeIn(content.lang);
+  const ziele = nav.map((item) =>
+    item.href === "#writing"
+      ? { href: artikel.base, label: artikel.allArticles }
+      : { href: `${base}/${item.href}`, label: item.label },
+  );
 
   return (
     /* Ein Rahmen ueber beidem, damit der Fussteil unten im Bild steht und
@@ -92,13 +113,13 @@ export function NotFoundPage({
                   {notFound.home}
                 </Link>
               </li>
-              {nav.map((item) => (
-                <li key={item.href}>
+              {ziele.map((ziel) => (
+                <li key={ziel.href}>
                   <Link
-                    href={`${base}/${item.href}`}
+                    href={ziel.href}
                     className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                   >
-                    {item.label}
+                    {ziel.label}
                   </Link>
                 </li>
               ))}
