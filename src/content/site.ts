@@ -309,6 +309,12 @@ export const hero = {
   lede: `AI Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
+  tryIt: {
+    before: "Zwei der vier Systeme rechnen hier im Browser mit:",
+    label: "Gebetszeiten und Tagesbilanz ausprobieren",
+    href: "#case-salati",
+    after: "ohne eine Anfrage nach außen.",
+  },
   // Jede Zahl am 31.07.2026 gegen `git log` und die Repositories geprüft.
   // Commit-Stände wachsen weiter, deshalb steht das Prüfdatum sichtbar in der
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend

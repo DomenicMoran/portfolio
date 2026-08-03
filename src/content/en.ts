@@ -147,6 +147,13 @@ export const en: Content = {
     lede: `AI product engineer in Berlin. Four systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
+    tryIt: {
+      before: "Two of the four systems run right here in the browser:",
+      label: "try the prayer times and the daily macros",
+      href: "#case-salati",
+      after: "without a single request leaving it.",
+    },
+
     proof: [
       { value: "4", label: "systems in production" },
       {
