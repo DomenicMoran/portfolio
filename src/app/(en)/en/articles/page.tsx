@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: chromeEn.title,
     description: kurzbeschreibung(chromeEn.lede),
-    locale: "en_US",
+    locale: "en_GB",
   },
   alternates: {
     canonical: "/en/articles",

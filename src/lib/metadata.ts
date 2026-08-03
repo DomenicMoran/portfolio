@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import type { Content } from "@/content/types";
 
+/** Die Kennung der englischen Fassung. Steht hier, damit sie nur einmal steht. */
+const OG_LOCALE_EN = "en_GB";
+
 /**
  * Kürzt eine Beschreibung auf die Länge, die Suchmaschinen anzeigen.
  *
@@ -69,8 +72,16 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
           ],
     openGraph: {
       type: "website",
-      locale: lang === "de" ? "de_DE" : "en_US",
-      alternateLocale: lang === "de" ? "en_US" : "de_DE",
+      // en_GB, nicht en_US.
+      //
+      // Die englische Fassung ist durchgehend britisch geschrieben — licence,
+      // fibre, catalogue, recognise — und rechnet mit `en-GB`: Datumsangaben
+      // als "3 August 2026", Tausender mit Komma. Die Metadaten meldeten
+      // trotzdem amerikanisches Englisch an jedes System, das eine Vorschau
+      // baut. Die Seite sucht Stellen in Berlin und remote in der EU; das ist
+      // auch die richtige Angabe für das, was sie ist.
+      locale: lang === "de" ? "de_DE" : OG_LOCALE_EN,
+      alternateLocale: lang === "de" ? OG_LOCALE_EN : "de_DE",
       url: `${base}${path}`,
       siteName: site.name,
       title: site.meta.title,

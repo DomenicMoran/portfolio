@@ -34,7 +34,7 @@ export async function generateMetadata({
       title: article.title,
       description: kurzbeschreibung(article.dek),
       publishedTime: article.date,
-      locale: "en_US",
+      locale: "en_GB",
     },
     alternates: {
       canonical: `/en/articles/${slug}`,
