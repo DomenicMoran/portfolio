@@ -7,56 +7,52 @@
  * Vor dem Prozentzeichen steht im Deutschen ein Leerzeichen (100 %), im
  * Englischen nicht (100%).
  *
- * Beides fällt niemandem auf, der die Seite baut — und jedem, der sie in
- * seiner Muttersprache liest. Gemessen an der ausgelieferten Seite am
- * 03.08.2026: zehn deutsche Anführungszeichen auf `/en`, weitere auf jeder
- * englischen Artikelseite und dem englischen Kurzprofil, dazu „100 %" und
- * „15–30 %". Kein Prüflauf sah das, weil kein Prüflauf danach sah.
+ * Gezählt wird nicht, welche Zeichen vorkommen, sondern **in welcher
+ * Reihenfolge**. Das ist der Unterschied, an dem sich dieser Lauf entschieden
+ * hat: Ein Zeichen für sich ist mehrdeutig, weil U+201C im Deutschen schließt
+ * und im Englischen öffnet. Erst das Paar sagt, welche Sprache gemeint ist.
  *
- * Gemessen wird am gebauten HTML und ohne Browser: Es geht um Zeichen im
- * Text, nicht um Darstellung. Skripte bleiben draußen — im Datenstrom von
- * React steht Auszeichnung, kein Fließtext.
+ * Gemessen an der ausgelieferten Seite am 03.08.2026: Auf `/en` standen zehn
+ * deutsche Öffner, dazu „100 %" in den Kennzahlen. Nach der ersten Korrektur
+ * stand dort zwanzigmal derselbe Schließer — falsch in die andere Richtung,
+ * und ein Lauf, der nur nach dem deutschen Öffner suchte, meldete sauber.
+ * Deshalb die Reihenfolge.
+ *
+ * Erwartet wird also:
+ *
+ *   deutsch:   „ …  “   „ …  “     (unten, oben, unten, oben)
+ *   englisch:  “ …  ”   “ …  ”     (oben, oben)
+ *
+ * Gemessen am gebauten HTML und ohne Browser: Es geht um Zeichen im Text,
+ * nicht um Darstellung. Skripte bleiben draußen — im Datenstrom von React
+ * steht Auszeichnung, kein Fließtext.
  *
  *   npm run check:typography
  */
 
 import { readFileSync } from "node:fs";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { join } from "node:path";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 
-/** Deutsch: öffnend unten, schließend oben. Englisch: beide oben. */
-const DEUTSCH_AUF = "„";
-const DEUTSCH_ZU = "“";
-const ENGLISCH_ZU = "”";
+const UNTEN = "„"; // U+201E
+const OBEN = "“"; // U+201C
+const OBEN_RECHTS = "”"; // U+201D
 
-const REGELN = {
-  en: [
-    {
-      name: "deutsches Anführungszeichen",
-      muster: new RegExp(`[${DEUTSCH_AUF}]`, "g"),
-      rat: `„ gehört ins Deutsche. Englisch öffnet mit ${DEUTSCH_ZU}.`,
-    },
-    {
-      name: "Leerzeichen vor dem Prozentzeichen",
-      /* Auch das geschützte Leerzeichen, sonst rutscht es genau dort durch,
-         wo jemand den Umbruch verhindern wollte. */
-      muster: /\d[\s  ]%/g,
-      rat: "Im Englischen steht das Zeichen direkt an der Zahl: 100%.",
-    },
-  ],
-  de: [
-    {
-      name: "englisches Anführungszeichen",
-      muster: new RegExp(`[${ENGLISCH_ZU}]`, "g"),
-      rat: `” gehört ins Englische. Deutsch schließt mit ${DEUTSCH_ZU}.`,
-    },
-  ],
+/** Das erwartete Paar je Sprache, als Folge der drei Zeichen. */
+const PAAR = {
+  de: [UNTEN, OBEN],
+  en: [OBEN, OBEN_RECHTS],
+};
+
+const NAME = {
+  [UNTEN]: "„ (unten)",
+  [OBEN]: "“ (oben links)",
+  [OBEN_RECHTS]: "” (oben rechts)",
 };
 
 /** Der sichtbare Text einer gebauten Seite. */
 function sichtbarerText(pfad) {
-  const html = readFileSync(pfad, "utf8");
-  return html
+  return readFileSync(pfad, "utf8")
     .replace(/<script[\s\S]*?<\/script>/g, " ")
     .replace(/<style[\s\S]*?<\/style>/g, " ")
     .replace(/<[^>]+>/g, " ");
@@ -64,15 +60,11 @@ function sichtbarerText(pfad) {
 
 const funde = [];
 let geprueft = 0;
+let paare = 0;
 
 for (const route of gebauteSeiten()) {
   const sprache = route === "/en" || route.startsWith("/en/") ? "en" : "de";
-  const datei = join(
-    ".next",
-    "server",
-    "app",
-    `${route === "/" ? "/index" : route}.html`,
-  );
+  const datei = join(".next", "server", "app", `${route === "/" ? "/index" : route}.html`);
 
   let text;
   try {
@@ -82,18 +74,41 @@ for (const route of gebauteSeiten()) {
   }
   geprueft++;
 
-  for (const regel of REGELN[sprache]) {
-    const treffer = [...text.matchAll(regel.muster)];
-    if (treffer.length === 0) continue;
-    /* Eine Fundstelle mit Umgebung reicht: Wer sie sieht, findet die
-       anderen im selben Absatz von selbst. */
-    const stelle = text
-      .slice(Math.max(0, treffer[0].index - 45), treffer[0].index + 45)
-      .replace(/\s+/g, " ")
-      .trim();
+  /* Im Englischen steht das Prozentzeichen direkt an der Zahl. Auch das
+     geschützte Leerzeichen zählt, sonst rutscht es genau dort durch, wo
+     jemand den Umbruch verhindern wollte. */
+  if (sprache === "en") {
+    const luecken = [...text.matchAll(/\d[\s  ]%/g)];
+    if (luecken.length > 0) {
+      funde.push(
+        `${route}: ${luecken.length}× Leerzeichen vor dem Prozentzeichen — ` +
+          `im Englischen steht es direkt an der Zahl (100%).`,
+      );
+    }
+  }
+
+  const [auf, zu] = PAAR[sprache];
+  const folge = [...text].filter((z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS);
+  paare += folge.length / 2;
+
+  for (let i = 0; i < folge.length; i += 2) {
+    const erwartet = i + 1 < folge.length ? [auf, zu] : [auf];
+    const gefunden = folge.slice(i, i + 2);
+    if (gefunden[0] === erwartet[0] && (erwartet.length === 1 || gefunden[1] === erwartet[1])) {
+      continue;
+    }
+    /* Nur das erste kaputte Paar je Seite: Steht die Reihenfolge einmal
+       falsch, ist meist der ganze Absatz betroffen, und zwanzig gleiche
+       Zeilen verdecken den nächsten Befund. */
     funde.push(
-      `${route}: ${treffer.length}× ${regel.name} — …${stelle}…\n      ${regel.rat}`,
+      `${route} (${sprache}): Paar ${i / 2 + 1} ist ${gefunden.map((z) => NAME[z]).join(" … ")}, ` +
+        `erwartet ${erwartet.map((z) => NAME[z]).join(" … ")}`,
     );
+    break;
+  }
+
+  if (folge.length % 2 !== 0) {
+    funde.push(`${route}: ${folge.length} Anführungszeichen, also eines ohne Gegenstück.`);
   }
 }
 
@@ -103,4 +118,7 @@ if (funde.length > 0) {
   process.exit(1);
 }
 
-console.log(`Jede Sprachfassung setzt ihre eigene Typografie: ${geprueft} Seiten geprüft.`);
+console.log(
+  `Jede Sprachfassung setzt ihre eigene Typografie: ${geprueft} Seiten, ` +
+    `${paare} Anführungspaare in der richtigen Reihenfolge.`,
+);
