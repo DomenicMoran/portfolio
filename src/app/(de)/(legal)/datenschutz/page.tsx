@@ -131,11 +131,33 @@ export default function Datenschutz() {
 
       <Section title="Deine Rechte">
         Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16),
-        Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18),
-        Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21 DSGVO). Eine
-        formlose E-Mail an die oben genannte Adresse genügt. Außerdem steht dir
-        ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, etwa bei
-        der Berliner Beauftragten für Datenschutz und Informationsfreiheit.
+        Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und
+        Datenübertragbarkeit (Art. 20 DSGVO). Eine formlose E-Mail an die oben
+        genannte Adresse genügt. Außerdem steht dir nach Art. 77 DSGVO ein
+        Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, etwa bei der
+        Berliner Beauftragten für Datenschutz und Informationsfreiheit.
+      </Section>
+
+      {/* Das Widerspruchsrecht steht bewusst allein.
+
+          Art. 21 Abs. 4 DSGVO verlangt den Hinweis darauf „ausdrücklich und
+          in einer verständlichen und von anderen Informationen getrennten
+          Form“. Vorher stand er als sechster Halbsatz in der Aufzählung der
+          Rechte — inhaltlich vollständig, der Form nach aber nicht das, was
+          die Vorschrift verlangt.
+
+          Er greift hier auch wirklich: Die Server-Logdaten laufen über Art. 6
+          Abs. 1 lit. f, und genau dieses berechtigte Interesse ist die
+          Grundlage, gegen die sich ein Widerspruch richten kann. */}
+      <Section title="Widerspruchsrecht">
+        Soweit ich Daten auf Grundlage eines berechtigten Interesses verarbeite
+        (Art. 6 Abs. 1 lit. f DSGVO), hast du das Recht, aus Gründen, die sich
+        aus deiner besonderen Situation ergeben, jederzeit Widerspruch gegen
+        diese Verarbeitung einzulegen (Art. 21 Abs. 1 DSGVO). Auf dieser Seite
+        betrifft das die Server-Logdaten des Hosters. Eine formlose E-Mail an
+        die oben genannte Adresse genügt; ich verarbeite die betroffenen Daten
+        dann nicht mehr, es sei denn, ich kann zwingende schutzwürdige Gründe
+        nachweisen, die deine Interessen überwiegen.
       </Section>
 
       <Section title="Stand">{STAND}</Section>
