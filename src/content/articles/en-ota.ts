@@ -60,7 +60,8 @@ export const otaEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "The number now sits as a constant in both places. Same value, only resolvable.",
+      caption:
+        "The number now sits as a constant in both places. Same value, only resolvable.",
       code: `const VERSION = "1.41.0";
 
 export default {
@@ -69,7 +70,10 @@ export default {
   // previously: runtimeVersion: { policy: "fingerprint" }
 };`,
     },
-    { kind: "h2", text: "Failure two: two projects that knew nothing of each other" },
+    {
+      kind: "h2",
+      text: "Failure two: two projects that knew nothing of each other",
+    },
     {
       kind: "p",
       text: "The second failure was worse, because it would have kept working against me even after the first was fixed.",

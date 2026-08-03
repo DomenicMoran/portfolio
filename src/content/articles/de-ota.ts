@@ -48,7 +48,10 @@ export const otaDe: Article = {
       title: "Die Prüfung, die alles beantwortet hat",
       text: "Statt dem Kommentar im Code zu glauben, habe ich die Update-Liste beider EAS-Projekte abgefragt. Ergebnis: null Einträge auf dem Produktionskanal. In beiden. Es war nie eines veröffentlicht worden. Die Abfrage dauert fünf Sekunden und hätte die ganze Zeit über zur Verfügung gestanden.",
     },
-    { kind: "h2", text: "Fehler eins: eine Richtlinie, die es hier nicht gibt" },
+    {
+      kind: "h2",
+      text: "Fehler eins: eine Richtlinie, die es hier nicht gibt",
+    },
     {
       kind: "p",
       text: "Ein Über-die-Luft-Update darf nur auf Installationen laufen, deren nativer Teil dazu passt. Sonst spricht neuer JavaScript-Code mit alten nativen Modulen, und die App stürzt ab. Diese Zuordnung stellt die `runtimeVersion` her.",
@@ -64,7 +67,8 @@ export const otaDe: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "Die Nummer steht jetzt als Konstante an beiden Stellen. Derselbe Wert, nur auflösbar.",
+      caption:
+        "Die Nummer steht jetzt als Konstante an beiden Stellen. Derselbe Wert, nur auflösbar.",
       code: `const VERSION = "1.41.0";
 
 export default {
@@ -73,7 +77,10 @@ export default {
   // vorher: runtimeVersion: { policy: "fingerprint" }
 };`,
     },
-    { kind: "h2", text: "Fehler zwei: zwei Projekte, die nichts voneinander wussten" },
+    {
+      kind: "h2",
+      text: "Fehler zwei: zwei Projekte, die nichts voneinander wussten",
+    },
     {
       kind: "p",
       text: "Der zweite Fehler war schlimmer, weil er auch nach der Reparatur des ersten weitergewirkt hätte.",

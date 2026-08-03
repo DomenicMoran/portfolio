@@ -22,7 +22,10 @@ export const kassensichvEn: Article = {
       kind: "p",
       text: "I built this for MenuCloud, a multi-tenant platform for restaurants. The vendor whose cloud signing unit I use has decent documentation. It explains how to sign a transaction. It does not explain the three things you actually get stuck on.",
     },
-    { kind: "h2", text: "One: the signing unit belongs to the tenant, not the platform" },
+    {
+      kind: "h2",
+      text: "One: the signing unit belongs to the tenant, not the platform",
+    },
     {
       kind: "p",
       text: "The obvious build is a single signing unit for the platform with every tenant flowing through it. That is convenient and legally wrong. The record-keeping duty falls on the individual taxpayer. An inspection asks for the records of that one business, not for those of a platform in which it is one of many.",
@@ -34,7 +37,8 @@ export const kassensichvEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "food-order-tse.ts: the per-tenant override, with an environment fallback so single-tenant installs keep working.",
+      caption:
+        "food-order-tse.ts: the per-tenant override, with an environment fallback so single-tenant installs keep working.",
       code: `export interface TseOverride {
   tss_id?: string | null;
   client_id?: string | null;

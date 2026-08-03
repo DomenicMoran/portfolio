@@ -78,7 +78,8 @@ export const whisperDe: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "similarity.ts, gekürzt. Die fremden Buchstabenformen müssen zuerst.",
+      caption:
+        "similarity.ts, gekürzt. Die fremden Buchstabenformen müssen zuerst.",
       code: `export function normalizeArabic(text: string): string {
   return text
     .replace(DIACRITICS, '')
@@ -117,8 +118,16 @@ export const whisperDe: Article = {
       kind: "table",
       head: ["Modell", "Größe", "Rolle"],
       rows: [
-        ["tarteel-ai/whisper-base-ar-quran, q5_0", "55 MB", "Standard, läuft auf jedem Gerät"],
-        ["Whisper large-v3-turbo, q5_0", "574 MB", "wählbar, generisch, nicht koran-tuned"],
+        [
+          "tarteel-ai/whisper-base-ar-quran, q5_0",
+          "55 MB",
+          "Standard, läuft auf jedem Gerät",
+        ],
+        [
+          "Whisper large-v3-turbo, q5_0",
+          "574 MB",
+          "wählbar, generisch, nicht koran-tuned",
+        ],
         ["Whisper large-v3", "~1 GB", "entfernt, kein messbarer Vorteil"],
       ],
       caption:

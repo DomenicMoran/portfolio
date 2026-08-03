@@ -42,7 +42,8 @@ export const kassensichvDe: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "food-order-tse.ts: Die Zuordnung je Mandant, mit Rückfall auf die Umgebung für Einzelbetriebs-Installationen.",
+      caption:
+        "food-order-tse.ts: Die Zuordnung je Mandant, mit Rückfall auf die Umgebung für Einzelbetriebs-Installationen.",
       code: `export interface TseOverride {
   tss_id?: string | null;
   client_id?: string | null;

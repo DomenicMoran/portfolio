@@ -72,6 +72,14 @@ export type ArticleChrome = {
    * in einem Text ohne Produkt dahinter.
    */
   fromSystem: string;
+  /**
+   * Beschriftung des Feed-Verweises unter der Übersicht.
+   *
+   * Den Feed gibt es seit Langem, und der Seitenkopf nennt ihn — sichtbar
+   * stand er nirgends. Wer den Texten folgen wollte, musste in den Quelltext
+   * sehen.
+   */
+  feed: string;
   allArticles: string;
   /** Teaser auf der Startseite. */
   home: { eyebrow: string; title: string; lede: string; cta: string };

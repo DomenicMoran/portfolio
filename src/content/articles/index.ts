@@ -14,8 +14,20 @@ import { shaperEn } from "./en-shaper";
 const sortiert = (liste: Article[]) =>
   [...liste].sort((a, b) => b.date.localeCompare(a.date));
 
-export const artikelDe = sortiert([whisperDe, kassensichvDe, widgetDe, otaDe, shaperDe]);
-export const artikelEn = sortiert([whisperEn, kassensichvEn, widgetEn, otaEn, shaperEn]);
+export const artikelDe = sortiert([
+  whisperDe,
+  kassensichvDe,
+  widgetDe,
+  otaDe,
+  shaperDe,
+]);
+export const artikelEn = sortiert([
+  whisperEn,
+  kassensichvEn,
+  widgetEn,
+  otaEn,
+  shaperEn,
+]);
 
 export const chromeDe: ArticleChrome = {
   base: "/artikel",
@@ -29,6 +41,7 @@ export const chromeDe: ArticleChrome = {
   tableLabel: "Tabelle",
   publishedLabel: "Veröffentlicht",
   fromSystem: "Aus dem System",
+  feed: "Diese Artikel als Feed abonnieren",
   allArticles: "Artikel",
   home: {
     eyebrow: "Geschrieben",
@@ -50,6 +63,7 @@ export const chromeEn: ArticleChrome = {
   tableLabel: "Table",
   publishedLabel: "Published",
   fromSystem: "From the system",
+  feed: "Subscribe to these articles as a feed",
   allArticles: "Articles",
   home: {
     eyebrow: "Writing",
