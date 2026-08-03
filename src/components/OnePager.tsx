@@ -138,6 +138,11 @@ export function OnePager({
         hinweis={onepager.printHint}
         beschriftung={onepager.printButton}
         datei={inhalt.recruiter.cta.pdf}
+        sprache={{
+          href: sprache === "de" ? "/en/onepager" : "/onepager",
+          label: inhalt.languageSwitch.label,
+          aria: inhalt.languageSwitch.aria,
+        }}
       />
 
       <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
