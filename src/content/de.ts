@@ -217,6 +217,9 @@ export const de: Content = {
     pathNote:
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
       "Der Nachweis sind vier Systeme in Produktion.",
+    openSource: "Veröffentlicht",
+    openSourceNote:
+      "alle mit Tests, CI und MIT-Lizenz auf github.com/DomenicMoran",
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
     asOf: "Stand:",
     back: "← Zurück zur Seite",

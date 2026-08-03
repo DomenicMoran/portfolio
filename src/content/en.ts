@@ -1163,6 +1163,9 @@ export const en: Content = {
     pathNote:
       "Self-taught in software development: no degree, no bootcamp. " +
       "The evidence is four systems in production.",
+    openSource: "Published",
+    openSourceNote:
+      "all with tests, CI and an MIT licence on github.com/DomenicMoran",
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
     back: "← Back to the site",

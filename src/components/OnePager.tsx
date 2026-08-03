@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { mailAdresse } from "@/lib/mailto";
+import { alsAnzeige } from "@/lib/adresse";
 import Link from "next/link";
 import type { Content } from "@/content/types";
 import { SOCIALS } from "@/content/types";
@@ -212,16 +213,12 @@ export function OnePager({
             </p>
             {SOCIALS.github ? (
               <p>
-                <a href={SOCIALS.github}>
-                  {SOCIALS.github.replace("https://", "")}
-                </a>
+                <a href={SOCIALS.github}>{alsAnzeige(SOCIALS.github)}</a>
               </p>
             ) : null}
             {SOCIALS.linkedin ? (
               <p>
-                <a href={SOCIALS.linkedin}>
-                  {SOCIALS.linkedin.replace("https://", "")}
-                </a>
+                <a href={SOCIALS.linkedin}>{alsAnzeige(SOCIALS.linkedin)}</a>
               </p>
             ) : null}
             <p className="mt-1 font-medium text-[#101014]">
@@ -367,6 +364,36 @@ export function OnePager({
             <p className="mt-2 text-[11.5px] leading-snug text-[#3a3a44]">
               {onepager.pathNote}
             </p>
+
+            {/* Die veröffentlichten Pakete.
+
+                Auf dem Blatt stehen vier Produktivsysteme, und alle vier sind
+                privat: Kundendaten und lizenzierte Inhalte. Wer es liest und
+                nachsehen will, kann bis hierher genau nichts davon öffnen.
+                Diese vier Namen sind der Teil, der offen liegt, und für eine
+                fachliche Führung der einzige mit einer Adresse zum Anklicken.
+
+                Die Namen kommen aus dem Inhalt, nicht aus dieser Datei: Ein
+                fünftes Paket steht sonst auf der Seite und nicht auf dem Blatt.
+                `portfolio` fällt weg — die Seite selbst nennt die Fußzeile.
+
+                Platz war da: Das Blatt maß 854 px von 1.040 nutzbaren, und
+                diese Spalte endete 54 px über der linken. */}
+            <div className="mt-3">
+              <h3 className="font-mono text-[10.5px] tracking-[0.16em] text-[#5a5a66] uppercase">
+                {onepager.openSource}
+              </h3>
+              <p className="mt-1 text-[11.5px] leading-snug text-[#3a3a44]">
+                {about.openSource.items
+                  .filter((paket) => paket.name !== "portfolio")
+                  .map((paket) => paket.name)
+                  .join(" · ")}
+                <span className="text-[#6a6a76]">
+                  {" "}
+                  — {onepager.openSourceNote}
+                </span>
+              </p>
+            </div>
           </section>
         </div>
 
@@ -393,7 +420,7 @@ export function OnePager({
                 sie nicht lesen kann. Es ist der einzige Verweis auf die Seite
                 im ganzen Dokument. */}
             <a href={heimatAdresse} className="text-inherit no-underline">
-              {heimatAdresse.replace("https://", "")}
+              {alsAnzeige(heimatAdresse)}
             </a>
           </span>
           <span>

@@ -324,6 +324,17 @@ export type Content = {
     path: string;
     /** Ein Satz unter dem Werdegang. */
     pathNote: string;
+    /**
+     * Überschrift der Zeile mit den veröffentlichten Paketen.
+     *
+     * Auf dem Blatt stehen vier Produktivsysteme, und alle vier sind privat:
+     * Kundendaten und lizenzierte Inhalte. Wer das Blatt liest und prüfen
+     * will, kann genau nichts davon öffnen. Die vier Pakete sind der Teil,
+     * der offen liegt — mit Tests, CI und Lizenz.
+     */
+    openSource: string;
+    /** Der Nachsatz dazu, ohne die Namen: die kommen aus dem Inhalt. */
+    openSourceNote: string;
     /** Fußzeile des Blattes. */
     fullCaseStudies: string;
     asOf: string;
