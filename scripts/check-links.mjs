@@ -272,6 +272,18 @@ let ziele = 0;
 for (const w of weiterleitungen) {
   const ziel = w.destination.split("#")[0];
   ziele++;
+
+  /* Dauerhaft heisst 308, nicht 307.
+     Ohne `permanent` antwortet Vercel mit 307 — gemessen an allen sieben
+     Weiterleitungen, die es gab. 307 sagt "vorübergehend": Suchmaschinen
+     lassen die alte Adresse stehen, Browser fragen jedes Mal neu. Bei /cv und
+     /lebenslauf ist daran nichts vorübergehend. */
+  if (w.permanent !== true) {
+    funde.push(
+      `vercel.json: ${w.source} ist nicht als dauerhaft gekennzeichnet, ` +
+        `Vercel antwortet dann mit 307 statt 308`,
+    );
+  }
   const antwort = await fetch(`${basis}${ziel}`).catch(() => null);
   if (!antwort || antwort.status !== 200) {
     funde.push(

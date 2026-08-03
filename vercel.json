@@ -74,37 +74,87 @@
     {
       "source": "/cv",
       "destination": "/onepager",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/lebenslauf",
       "destination": "/onepager",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/resume",
       "destination": "/onepager",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/blog",
       "destination": "/artikel",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/en/blog",
       "destination": "/en/articles",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/en/cv",
       "destination": "/en/onepager",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/en/resume",
       "destination": "/en/onepager",
-      "permanent": false
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/feed.xml",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/rss",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/rss.xml",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/atom.xml",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/en/feed",
+      "destination": "/en/articles/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/en/rss",
+      "destination": "/en/articles/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/kontakt",
+      "destination": "/#contact",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/en#contact",
+      "permanent": true
+    },
+    {
+      "source": "/en/contact",
+      "destination": "/en#contact",
+      "permanent": true
     }
   ]
 }
