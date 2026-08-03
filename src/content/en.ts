@@ -687,7 +687,7 @@ export const en: Content = {
           name: "verified-done",
           href: "https://github.com/DomenicMoran/verified-done",
           body: "Four Claude Code skills against the claim with nothing behind it. Each comes from a bug that shipped, and says which one.",
-          meta: "Claude Code · 4 skills · frontmatter validated in CI",
+          meta: "Claude Code · 4 skills · 16 tests · zero dependencies",
         },
         {
           name: "cron-last-due",

@@ -170,7 +170,7 @@ export const about = {
         name: "verified-done",
         href: "https://github.com/DomenicMoran/verified-done",
         body: "Vier Claude-Code-Skills gegen die Behauptung ohne Beleg. Jeder stammt aus einem Fehler, der ausgeliefert wurde, und nennt ihn.",
-        meta: "Claude Code · 4 Skills · Frontmatter-Prüfung in der CI",
+        meta: "Claude Code · 4 Skills · 16 Tests · null Abhängigkeiten",
       },
       {
         name: "cron-last-due",
