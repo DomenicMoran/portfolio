@@ -5,12 +5,14 @@
  * Deutsch und Englisch setzen dieselben Zeichen anders. Anführungszeichen
  * stehen im Deutschen unten und oben („so"), im Englischen beide oben ("so").
  * Vor dem Prozentzeichen steht im Deutschen ein Leerzeichen (100 %), im
- * Englischen nicht (100%).
+ * Englischen nicht (100%). Tausender trennt das Deutsche mit einem Punkt, das
+ * Englische mit einem Komma.
  *
- * Gezählt wird nicht, welche Zeichen vorkommen, sondern **in welcher
- * Reihenfolge**. Das ist der Unterschied, an dem sich dieser Lauf entschieden
- * hat: Ein Zeichen für sich ist mehrdeutig, weil U+201C im Deutschen schließt
- * und im Englischen öffnet. Erst das Paar sagt, welche Sprache gemeint ist.
+ * Bei den Anführungszeichen wird nicht gezählt, welche Zeichen vorkommen,
+ * sondern **in welcher Reihenfolge**. Das ist der Unterschied, an dem sich
+ * dieser Lauf entschieden hat: Ein Zeichen für sich ist mehrdeutig, weil
+ * U+201C im Deutschen schließt und im Englischen öffnet. Erst das Paar sagt,
+ * welche Sprache gemeint ist.
  *
  * Gemessen an der ausgelieferten Seite am 03.08.2026: Auf `/en` standen zehn
  * deutsche Öffner, dazu „100 %" in den Kennzahlen. Nach der ersten Korrektur
@@ -20,8 +22,8 @@
  *
  * Erwartet wird also:
  *
- *   deutsch:   „ …  “   „ …  “     (unten, oben, unten, oben)
- *   englisch:  “ …  ”   “ …  ”     (oben, oben)
+ *   deutsch:   „ …  “   („ …  “)
+ *   englisch:  “ …  ”   (“ …  ”)
  *
  * Gemessen am gebauten HTML und ohne Browser: Es geht um Zeichen im Text,
  * nicht um Darstellung. Skripte bleiben draußen — im Datenstrom von React
@@ -48,6 +50,18 @@ const NAME = {
   [UNTEN]: "„ (unten)",
   [OBEN]: "“ (oben links)",
   [OBEN_RECHTS]: "” (oben rechts)",
+};
+
+/**
+ * Tausendertrennung je Sprache — gesucht wird jeweils die *fremde*.
+ *
+ * Die Zahlen dieser Seite kommen aus `toLocaleString`, aber nicht alle:
+ * Einige stehen als Text in den Inhaltsdateien, und dort merkt es niemand.
+ * „1.276" liest ein englischer Leser als eine Zahl knapp über eins.
+ */
+const FREMDER_TRENNER = {
+  en: /\b\d{1,3}(?:\.\d{3})+\b/g,
+  de: /\b\d{1,3}(?:,\d{3})+\b/g,
 };
 
 /** Der sichtbare Text einer gebauten Seite. */
@@ -87,9 +101,17 @@ for (const route of gebauteSeiten()) {
     }
   }
 
+  const falsch = [...new Set([...text.matchAll(FREMDER_TRENNER[sprache])].map((m) => m[0]))];
+  if (falsch.length > 0) {
+    funde.push(
+      `${route} (${sprache}): ${falsch.slice(0, 5).join(", ")} — Tausender trennt ` +
+        `${sprache === "en" ? "das Englische mit einem Komma" : "das Deutsche mit einem Punkt"}.`,
+    );
+  }
+
   const [auf, zu] = PAAR[sprache];
   const folge = [...text].filter((z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS);
-  paare += folge.length / 2;
+  paare += Math.floor(folge.length / 2);
 
   for (let i = 0; i < folge.length; i += 2) {
     const erwartet = i + 1 < folge.length ? [auf, zu] : [auf];
