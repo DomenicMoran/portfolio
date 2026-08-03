@@ -13,6 +13,7 @@ import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
 import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
+import { MacroDemo } from "@/components/demo/Macros";
 import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
@@ -300,6 +301,14 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <Reveal delay={0.05}>
           <div className="mt-12">
             <PrayerTimesDemo inhalt={inhalt} />
+          </div>
+        </Reveal>
+      ) : null}
+
+      {study.id === "nouri" ? (
+        <Reveal delay={0.05}>
+          <div className="mt-12">
+            <MacroDemo inhalt={inhalt} />
           </div>
         </Reveal>
       ) : null}
