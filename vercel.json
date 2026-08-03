@@ -1,7 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "regions": ["fra1"],
+  "regions": [
+    "fra1"
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -82,6 +84,26 @@
     {
       "source": "/resume",
       "destination": "/onepager",
+      "permanent": false
+    },
+    {
+      "source": "/blog",
+      "destination": "/artikel",
+      "permanent": false
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/en/articles",
+      "permanent": false
+    },
+    {
+      "source": "/en/cv",
+      "destination": "/en/onepager",
+      "permanent": false
+    },
+    {
+      "source": "/en/resume",
+      "destination": "/en/onepager",
       "permanent": false
     }
   ]
