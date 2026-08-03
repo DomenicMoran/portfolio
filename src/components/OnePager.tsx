@@ -431,26 +431,34 @@ export function OnePager({
             Nur am Bildschirm: `no-print` sitzt schon am umgebenden Kasten.
             Auf dem Blatt selbst steht das Impressum nicht, dort trägt die
             Fußzeile die Adresse der Webseite. */}
-        <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
-          &middot;
+        {/* `whitespace-nowrap` bindet den Punkt an den Verweis dahinter.
+            Ohne das brach die Zeile bei 320, 430 und 768 px hinter dem Punkt
+            um, und am Ende der ersten Zeile stand ein Trennzeichen, das
+            nichts mehr trennte. */}
+        <span className="whitespace-nowrap">
+          <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
+            &middot;
+          </span>
+          <Link
+            href="/impressum"
+            hrefLang="de"
+            className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
+          >
+            {inhalt.footer.impressum}
+          </Link>
         </span>
-        <Link
-          href="/impressum"
-          hrefLang="de"
-          className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
-        >
-          {inhalt.footer.impressum}
-        </Link>
-        <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
-          &middot;
+        <span className="whitespace-nowrap">
+          <span aria-hidden className="px-2 text-sm text-[#9a9aa6]">
+            &middot;
+          </span>
+          <Link
+            href="/datenschutz"
+            hrefLang="de"
+            className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
+          >
+            {inhalt.footer.datenschutz}
+          </Link>
         </span>
-        <Link
-          href="/datenschutz"
-          hrefLang="de"
-          className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
-        >
-          {inhalt.footer.datenschutz}
-        </Link>
       </div>
     </main>
   );

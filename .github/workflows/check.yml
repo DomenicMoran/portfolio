@@ -101,6 +101,13 @@ jobs:
       - name: Unterlängen
         run: npm run check:headings
 
+      # Ein Mittelpunkt, der beim Umbruch am Zeilenende hängen bleibt, trennt
+      # nichts mehr. Auf zehn Artikelseiten und dem Kurzprofil war das so;
+      # gesehen hat es keiner der anderen Läufe, weil es weder ein Verstoß
+      # noch ein toter Verweis ist, sondern ein Satzfehler.
+      - name: Trennzeichen
+        run: npm run check:separators
+
       # Die beiden PDFs entstehen nicht beim Bau — dafür bräuchte der Lauf ein
       # Chromium mit Druckfunktion. Sie werden von Hand gedruckt, und ein
       # Schritt von Hand wird irgendwann vergessen. Ausgerechnet diese Datei

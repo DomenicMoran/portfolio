@@ -248,6 +248,7 @@ npm run check:exports # jede Ausfuhr aus src/ hat einen Abnehmer
 npm run check:headers # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
+npm run check:separators # kein Trennzeichen am Zeilenende
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
 ```
 

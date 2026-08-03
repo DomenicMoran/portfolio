@@ -164,16 +164,25 @@ export function ArticlePage({
               {article.dek}
             </p>
 
+            {/* Jeder Trennpunkt gehört mit dem, was er einleitet, in eine
+                Einheit — sonst bricht die Zeile dahinter um und der Punkt
+                bleibt allein am Ende stehen. Gemessen bei 320 bis 430 px auf
+                allen zehn Artikelseiten; `npm run check:separators` hält es
+                offen. */}
             <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-6 font-mono text-[11px] text-ink-faint">
               <time dateTime={article.date}>{datum(article.date, lang)}</time>
-              <span aria-hidden>·</span>
-              <span>{chrome.readingTime(article.minutes)}</span>
-              <span aria-hidden>·</span>
-              <ul className="flex flex-wrap gap-x-3">
-                {article.tags.map((tag) => (
-                  <li key={tag}>{tag}</li>
-                ))}
-              </ul>
+              <span className="flex items-center gap-x-5">
+                <span aria-hidden>·</span>
+                <span>{chrome.readingTime(article.minutes)}</span>
+              </span>
+              <span className="flex items-center gap-x-5">
+                <span aria-hidden>·</span>
+                <ul className="flex flex-wrap gap-x-3">
+                  {article.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              </span>
             </div>
 
             {/* Kein zweiter Zurück-Verweis, sondern ein Schild: Der Rahmen und
