@@ -27,7 +27,8 @@
     "build:portrait": "node scripts/build-portrait.mjs",
     "check:links": "node scripts/check-links.mjs",
     "test": "vitest run",
-    "check:parity": "node scripts/check-parity.mjs"
+    "check:parity": "node scripts/check-parity.mjs",
+    "check:stack": "node scripts/check-stack.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

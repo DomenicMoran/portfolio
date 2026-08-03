@@ -214,6 +214,7 @@ npm run check:a11y    # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:privacy # keine Seite baut eine Verbindung nach außen auf
 npm run check:links   # kein Anker und keine interne Adresse zeigt ins Leere
 npm run check:parity  # beide Sprachfassungen zeigen gleich viel
+npm run check:stack   # jede genannte Technik steht wirklich im Produktivrepo
 npm run check:headers # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
