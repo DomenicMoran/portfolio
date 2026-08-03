@@ -26,6 +26,25 @@ import verified from "@/content/verified.json";
  * Erzeugt aus `src/content` und dem Prüfstempel, nicht getippt. Eine Datei mit
  * Zahlen, die niemand nachzieht, wäre schlechter als keine.
  */
+
+/*
+   Die veröffentlichten Pakete kommen aus derselben Quelle wie die Seite.
+
+   Vorher standen sie hier von Hand, mit eigenen Kurzbeschreibungen — und nur
+   das erste trug eine Adresse. Ein Modell, das nach `cron-last-due` gefragt
+   wird, konnte also weder sagen, wo es liegt, noch was die Seite selbst
+   darüber schreibt. Zwei Fassungen derselben Angabe sind außerdem genau die
+   Stelle, an der eine von beiden veraltet.
+
+   `meta` trägt die Kennzahlen (Tests, Abhängigkeiten); `check-figures.mjs`
+   liest sie gegen die Repos gegen. Sie gehören damit auch hierher.
+*/
+const pakete = en.about.openSource.items
+  .map((p) =>
+    [`- ${p.name} — ${p.body}`, `  ${p.meta}`, `  ${p.href}`].join("\n"),
+  )
+  .join("\n");
+
 export const dynamic = "force-static";
 
 /**
@@ -55,7 +74,9 @@ export function GET() {
     )
     .join("\n\n");
 
-  const fakten = recruiter.facts.map((f) => `- **${f.label}:** ${f.value}`).join("\n");
+  const fakten = recruiter.facts
+    .map((f) => `- **${f.label}:** ${f.value}`)
+    .join("\n");
 
   const schriften = artikel
     .map((a) => `- [${a.title}](${site.url}/en/articles/${a.slug}) — ${a.dek}`)
@@ -91,12 +112,7 @@ below.
 
 ## Published code
 
-- verified-done — Claude Code skills that block "done" without evidence:
-  ${quelle.socials.github}/verified-done
-- cron-last-due — timezone-aware previous-fire-time for watchdogs, on npm
-- whisper-ggml-header — validates a Whisper GGML model header, on npm
-- arabic-normalize — normalises Arabic script for comparison, on npm
-- portfolio — the source of this site: ${quelle.socials.github}/portfolio
+${pakete}
 
 ## Written
 
