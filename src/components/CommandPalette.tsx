@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useScrollSperre } from "@/lib/scroll-lock";
 import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpen, FileText, Mail, Search } from "lucide-react";
@@ -35,10 +36,19 @@ export function CommandPalette({
   open: boolean;
   onClose: () => void;
 }) {
-  const { nav: navItems, caseStudies, site, recruiter, palette, lang } = useContent();
+  const {
+    nav: navItems,
+    caseStudies,
+    site,
+    recruiter,
+    palette,
+    lang,
+  } = useContent();
   const artikel = artikelIn(lang);
   const chrome = chromeIn(lang);
   const heim = lang === "de" ? "/" : "/en";
+  useScrollSperre(open);
+
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -130,7 +140,17 @@ export function CommandPalette({
     }
 
     return list;
-  }, [onClose, navItems, caseStudies, site, recruiter, palette, artikel, chrome, heim]);
+  }, [
+    onClose,
+    navItems,
+    caseStudies,
+    site,
+    recruiter,
+    palette,
+    artikel,
+    chrome,
+    heim,
+  ]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -153,7 +173,6 @@ export function CommandPalette({
     }
   }
 
-
   useEffect(() => {
     if (!open) return;
 
@@ -168,13 +187,14 @@ export function CommandPalette({
       }
       if (event.key === "ArrowUp") {
         event.preventDefault();
-        setActive((i) => (i - 1 + results.length) % Math.max(results.length, 1));
+        setActive(
+          (i) => (i - 1 + results.length) % Math.max(results.length, 1),
+        );
       }
       if (event.key === "Enter") {
         event.preventDefault();
         results[active]?.run();
       }
-
     };
 
     /*
@@ -249,6 +269,12 @@ export function CommandPalette({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           ref={dialogRef}
+          /* Lenis darf Radbewegungen ueber der Palette nicht auf die Seite
+             durchreichen. `overflow: hidden` an `<html>` allein reicht dafuer
+             nicht: Lenis scrollt programmatisch und fragt den Ueberlauf nicht.
+             Gemessen an der gebauten Seite lief der Hintergrund trotz Sperre
+             von 0 auf 736 px. */
+          data-lenis-prevent
           className="fixed inset-0 z-[9999] flex items-start justify-center bg-void/80 px-4 pt-[12vh] backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
@@ -288,14 +314,21 @@ export function CommandPalette({
                 aria-expanded
                 aria-autocomplete="list"
                 aria-controls={LISTEN_ID}
-                aria-activedescendant={results[active] ? eintragId(active) : undefined}
+                aria-activedescendant={
+                  results[active] ? eintragId(active) : undefined
+                }
               />
               <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-ink-faint sm:block">
                 ESC
               </kbd>
             </div>
 
-            <ul id={LISTEN_ID} role="listbox" aria-label={palette.title} className="max-h-[52vh] overflow-y-auto p-2">
+            <ul
+              id={LISTEN_ID}
+              role="listbox"
+              aria-label={palette.title}
+              className="max-h-[52vh] overflow-y-auto p-2"
+            >
               {results.length === 0 ? (
                 <li className="px-3 py-8 text-center text-sm text-ink-faint">
                   {palette.empty}

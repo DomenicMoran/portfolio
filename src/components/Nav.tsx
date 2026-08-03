@@ -1,6 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
+import { useScrollSperre } from "@/lib/scroll-lock";
 import { mailAdresse } from "@/lib/mailto";
 import { useMemo, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
@@ -37,6 +43,7 @@ export function Nav({
   const zuAnker = (href: string) => `${hashBase}${href}`;
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  useScrollSperre(menuOpen);
   const { scrollY } = useScroll();
 
   // Aus "#work" wird "work". useMemo, weil useActiveSection das Array als
@@ -210,6 +217,9 @@ export function Nav({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            /* Wie bei der Palette: Lenis reicht Radbewegungen sonst an die
+               Seite dahinter weiter, gemessen 0 auf 655 px. */
+            data-lenis-prevent
             className="fixed inset-0 z-[9995] bg-void/95 backdrop-blur-xl lg:hidden"
           >
             <div className="flex h-full flex-col p-6">
@@ -242,7 +252,11 @@ export function Nav({
                       key={item.href}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.06 * i, duration: 0.5, ease: ease.expo }}
+                      transition={{
+                        delay: 0.06 * i,
+                        duration: 0.5,
+                        ease: ease.expo,
+                      }}
                     >
                       <a
                         href={zuAnker(item.href)}
