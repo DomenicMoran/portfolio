@@ -130,6 +130,13 @@ export type Content = {
     lede: string;
     ctaPrimary: { label: string; href: string };
     ctaSecondary: { label: string; href: string };
+    /**
+     * Ein Satz unter den Knöpfen, der auf die zwei Vorführungen zeigt.
+     *
+     * Beide stecken in ihrer Fallstudie, also weit unten. Wer den Kopf liest
+     * und weiterzieht, erfährt sonst nie, dass hier etwas zum Anfassen steht.
+     */
+    tryIt: { before: string; label: string; href: string; after: string };
     proof: readonly { value: string; label: string }[];
   };
 

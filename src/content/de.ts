@@ -65,6 +65,7 @@ export const de: Content = {
       label: siteDe.availability.label,
       detail: siteDe.availability.detail,
     },
+
     meta: siteDe.meta,
   },
 
