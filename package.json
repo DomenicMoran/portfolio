@@ -31,7 +31,8 @@
     "check:stack": "node scripts/check-stack.mjs",
     "check:onepager": "node scripts/check-onepager-pdf.mjs",
     "check:typography": "node scripts/check-typography.mjs",
-    "check:legal": "node scripts/check-legal-date.mjs"
+    "check:legal": "node scripts/check-legal-date.mjs",
+    "check:exports": "node scripts/check-exports.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

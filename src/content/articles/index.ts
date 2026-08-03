@@ -79,7 +79,7 @@ export function artikelNach(lang: "de" | "en", slug: string) {
  * hergeleitet: Sobald ein vierter Artikel dazukommt oder sich ein Datum
  * ändert, wäre die Position falsch, ohne dass es auffiele.
  */
-export const slugPaare = [
+const slugPaare = [
   { de: whisperDe.slug, en: whisperEn.slug },
   { de: kassensichvDe.slug, en: kassensichvEn.slug },
   { de: widgetDe.slug, en: widgetEn.slug },

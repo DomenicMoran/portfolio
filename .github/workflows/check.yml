@@ -120,6 +120,12 @@ jobs:
       - name: Stand der Datenschutzerklärung
         run: npm run check:legal
 
+      # Ein `export` ist die Aussage, dass etwas woanders gebraucht wird. Sechs
+      # davon stimmten nicht — nichts war kaputt, es war nur sechsmal eine
+      # falsche Faehrte fuer jeden, der den Quelltext liest.
+      - name: Ausfuhren mit Abnehmer
+        run: npm run check:exports
+
       # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
       # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
       # Kette, damit die Liste vollständig ist und niemand ihn für vergessen

@@ -62,7 +62,7 @@ const NODE_H = 62;
    Diagram definitions
    ========================================================================== */
 
-export const ARCHITECTURES: Record<string, Diagram> = {
+const ARCHITECTURES: Record<string, Diagram> = {
   salati: {
     title: "Salati: ein Monorepo, vier Zielgeräte",
     caption:

@@ -24,7 +24,7 @@ import { Marke } from "@/lib/mark";
 export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
 
-export type OgKarte = {
+type OgKarte = {
   name: string;
   role: string;
   location: string;
