@@ -6,9 +6,18 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
@@ -32,13 +41,48 @@
       ]
     },
     {
+      "source": "/(.*\\.(?:jpg|jpeg|png|svg|webp|avif|ico|woff2?))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.pdf)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
       "source": "/api/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     }
   ],
   "redirects": [
-    { "source": "/cv", "destination": "/onepager", "permanent": false },
-    { "source": "/lebenslauf", "destination": "/onepager", "permanent": false },
-    { "source": "/resume", "destination": "/onepager", "permanent": false }
+    {
+      "source": "/cv",
+      "destination": "/onepager",
+      "permanent": false
+    },
+    {
+      "source": "/lebenslauf",
+      "destination": "/onepager",
+      "permanent": false
+    },
+    {
+      "source": "/resume",
+      "destination": "/onepager",
+      "permanent": false
+    }
   ]
 }
