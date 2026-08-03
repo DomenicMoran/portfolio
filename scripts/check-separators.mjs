@@ -50,24 +50,45 @@ const browser = await chromium.launch();
 let fehler = 0;
 let geprueft = 0;
 
-for (const breite of BREITEN) {
-  const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+/*
+   Je Seite ein Aufruf, dann die Breiten durchfahren.
 
-  for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
-    if (!antwort || antwort.status() !== 200) continue;
+   Der erste Entwurf lief andersherum: fuenf Browserfenster, jedes mit allen
+   achtzehn Seiten — neunzig Aufrufe mit je einem Durchscrollen und einer
+   halben Sekunde Wartezeit, zusammen 112 s im Bauserver. Gemessen wird aber
+   dasselbe Dokument, nur schmaler oder breiter. Achtzehn Aufrufe reichen, der
+   Rest ist ein Wechsel der Fenstergroesse.
 
-    // Einmal durchscrollen: Was unter der Falz liegt, ist vorher unsichtbar
-    // und hat keine gemessene Position.
-    await seite.evaluate(async () => {
-      const hoehe = document.documentElement.scrollHeight;
-      for (let y = 0; y < hoehe; y += 600) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 40));
-      }
-      window.scrollTo(0, 0);
-    });
-    await seite.waitForTimeout(500);
+   Das Durchscrollen bleibt einmalig, weil die Einblendungen nur in eine
+   Richtung laufen: Was einmal sichtbar ist, bleibt es auch, wenn ein
+   schmaleres Fenster es wieder unter die Falz schiebt.
+*/
+const seite = await browser.newPage({
+  viewport: { width: BREITEN[0], height: 900 },
+});
+
+for (const pfad of pfade) {
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "domcontentloaded",
+  });
+  if (!antwort || antwort.status() !== 200) continue;
+
+  // Einmal durchscrollen: Was unter der Falz liegt, ist vorher unsichtbar
+  // und hat keine gemessene Position.
+  await seite.evaluate(async () => {
+    const hoehe = document.documentElement.scrollHeight;
+    for (let y = 0; y < hoehe; y += 600) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+    window.scrollTo(0, 0);
+  });
+  await seite.waitForTimeout(500);
+
+  for (const breite of BREITEN) {
+    await seite.setViewportSize({ width: breite, height: 900 });
+    // Nach dem Umbruch einmal durchatmen lassen, bevor gemessen wird.
+    await seite.waitForTimeout(120);
 
     const { funde, anzahl } = await seite.evaluate(() => {
       /** Zeichen, die zwischen zwei Angaben stehen und für sich nichts sagen. */
@@ -77,7 +98,8 @@ for (const breite of BREITEN) {
       const trenner = alle.filter((e) => {
         if (!TRENNER.test((e.textContent ?? "").trim())) return false;
         const stil = getComputedStyle(e);
-        if (stil.display === "none" || stil.visibility === "hidden") return false;
+        if (stil.display === "none" || stil.visibility === "hidden")
+          return false;
         return e.getBoundingClientRect().width > 0;
       });
 
@@ -109,7 +131,13 @@ for (const breite of BREITEN) {
       function zeilenKasten(el) {
         for (let e = el.parentElement; e; e = e.parentElement) {
           const d = getComputedStyle(e).display;
-          if (d === "block" || d === "flex" || d === "grid" || d === "list-item") return e;
+          if (
+            d === "block" ||
+            d === "flex" ||
+            d === "grid" ||
+            d === "list-item"
+          )
+            return e;
         }
         return document.body;
       }
@@ -128,7 +156,9 @@ for (const breite of BREITEN) {
           if (t.contains(knoten)) return false;
           return rect.top < meineMitte && rect.bottom > meineMitte;
         });
-        const rechtsDaneben = nachbarn.some(({ rect }) => rect.left >= meins.right - 0.5);
+        const rechtsDaneben = nachbarn.some(
+          ({ rect }) => rect.left >= meins.right - 0.5,
+        );
 
         /* Ein Trennzeichen trennt zwei Angaben — links von ihm muss also
            etwas stehen. Steht nichts, ist es kein Trenner, sondern eine
@@ -136,7 +166,9 @@ for (const breite of BREITEN) {
            einen Mittelpunkt, und der gehört ans Ende seiner Zeile genauso
            wenig wie ein Aufzählungspunkt ans Ende seines Absatzes. Der erste
            Anlauf unterschied das nicht und meldete beides. */
-        const linksDaneben = nachbarn.some(({ rect }) => rect.right <= meins.left + 0.5);
+        const linksDaneben = nachbarn.some(
+          ({ rect }) => rect.right <= meins.left + 0.5,
+        );
 
         if (linksDaneben && !rechtsDaneben) {
           funde.push({
@@ -159,10 +191,9 @@ for (const breite of BREITEN) {
       }
     }
   }
-
-  await seite.close();
 }
 
+await seite.close();
 await browser.close();
 beenden();
 
