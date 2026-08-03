@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { architekturText } from "@/content/architecture-en";
+import { useContent } from "@/content/ContentProvider";
 import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -76,22 +78,130 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       // Vier Zielgeräte, gleichmäßig über die Breite. Hier stand einmal ein
       // fünfter Knoten für einen HDMI-Stick; den gibt es in diesem Projekt
       // nicht.
-      { id: "ios", label: "iOS", sub: "Expo · Live Activities", x: 20, y: 62, w: 208, tone: "acid" },
-      { id: "android", label: "Android", sub: "Expo · Widgets", x: 244, y: 62, w: 208, tone: "acid" },
-      { id: "tv", label: "Android TV", sub: "Leanback-Fokus", x: 468, y: 62, w: 208, tone: "acid" },
-      { id: "wear", label: "Wear OS", sub: "Natives Modul", x: 692, y: 62, w: 208, tone: "acid" },
+      {
+        id: "ios",
+        label: "iOS",
+        sub: "Expo · Live Activities",
+        x: 20,
+        y: 62,
+        w: 208,
+        tone: "acid",
+      },
+      {
+        id: "android",
+        label: "Android",
+        sub: "Expo · Widgets",
+        x: 244,
+        y: 62,
+        w: 208,
+        tone: "acid",
+      },
+      {
+        id: "tv",
+        label: "Android TV",
+        sub: "Leanback-Fokus",
+        x: 468,
+        y: 62,
+        w: 208,
+        tone: "acid",
+      },
+      {
+        id: "wear",
+        label: "Wear OS",
+        sub: "Natives Modul",
+        x: 692,
+        y: 62,
+        w: 208,
+        tone: "acid",
+      },
 
-      { id: "core", label: "packages/core", sub: "Gebetszeiten · Qibla · Hijri · Mushaf-Modell", x: 20, y: 198, w: 520, tone: "neutral" },
-      { id: "ui", label: "packages/ui", sub: "Design-Tokens · Komponenten", x: 554, y: 198, w: 346, tone: "neutral" },
+      {
+        id: "core",
+        label: "packages/core",
+        sub: "Gebetszeiten · Qibla · Hijri · Mushaf-Modell",
+        x: 20,
+        y: 198,
+        w: 520,
+        tone: "neutral",
+      },
+      {
+        id: "ui",
+        label: "packages/ui",
+        sub: "Design-Tokens · Komponenten",
+        x: 554,
+        y: 198,
+        w: 346,
+        tone: "neutral",
+      },
 
-      { id: "llm", label: "Lokale Suche", sub: "Eigener Korpus, eigene Rangfolge", x: 20, y: 310, w: 300, tone: "violet" },
-      { id: "whisper", label: "whisper.rn", sub: "Vers-konditionierte Erkennung", x: 334, y: 310, w: 300, tone: "violet" },
-      { id: "cache", label: "Offline-Cache", sub: "Audio · Übersetzungen", x: 648, y: 310, w: 252, tone: "violet" },
+      {
+        id: "llm",
+        label: "Lokale Suche",
+        sub: "Eigener Korpus, eigene Rangfolge",
+        x: 20,
+        y: 310,
+        w: 300,
+        tone: "violet",
+      },
+      {
+        id: "whisper",
+        label: "whisper.rn",
+        sub: "Vers-konditionierte Erkennung",
+        x: 334,
+        y: 310,
+        w: 300,
+        tone: "violet",
+      },
+      {
+        id: "cache",
+        label: "Offline-Cache",
+        sub: "Audio · Übersetzungen",
+        x: 648,
+        y: 310,
+        w: 252,
+        tone: "violet",
+      },
 
-      { id: "eas", label: "EAS Build + Update", sub: "OTA ohne Store-Zyklus", x: 20, y: 418, w: 268, tone: "cyan", external: true },
-      { id: "supabase", label: "Supabase", sub: "Konten · Inhalte", x: 302, y: 418, w: 224, tone: "cyan", external: true },
-      { id: "r2", label: "Cloudflare R2", sub: "Audio · Podcast · Handouts", x: 540, y: 418, w: 268, tone: "cyan", external: true },
-      { id: "stores", label: "Stores", sub: "", x: 822, y: 418, w: 78, tone: "muted", external: true },
+      {
+        id: "eas",
+        label: "EAS Build + Update",
+        sub: "OTA ohne Store-Zyklus",
+        x: 20,
+        y: 418,
+        w: 268,
+        tone: "cyan",
+        external: true,
+      },
+      {
+        id: "supabase",
+        label: "Supabase",
+        sub: "Konten · Inhalte",
+        x: 302,
+        y: 418,
+        w: 224,
+        tone: "cyan",
+        external: true,
+      },
+      {
+        id: "r2",
+        label: "Cloudflare R2",
+        sub: "Audio · Podcast · Handouts",
+        x: 540,
+        y: 418,
+        w: 268,
+        tone: "cyan",
+        external: true,
+      },
+      {
+        id: "stores",
+        label: "Stores",
+        sub: "",
+        x: 822,
+        y: 418,
+        w: 78,
+        tone: "muted",
+        external: true,
+      },
     ],
     edges: [
       { from: "ios", to: "core" },
@@ -119,22 +229,130 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { label: "Betrieb", y: 396 },
     ],
     nodes: [
-      { id: "guest", label: "Gast", sub: "QR-Bestellung", x: 20, y: 62, w: 200, tone: "violet" },
-      { id: "owner", label: "Betreiber", sub: "Self-Service-Admin", x: 234, y: 62, w: 220, tone: "violet" },
-      { id: "crew", label: "Personal-App", sub: "iOS · Android", x: 468, y: 62, w: 200, tone: "violet" },
-      { id: "public", label: "Restaurant-Site", sub: "pro Mandant", x: 682, y: 62, w: 218, tone: "violet" },
+      {
+        id: "guest",
+        label: "Gast",
+        sub: "QR-Bestellung",
+        x: 20,
+        y: 62,
+        w: 200,
+        tone: "violet",
+      },
+      {
+        id: "owner",
+        label: "Betreiber",
+        sub: "Self-Service-Admin",
+        x: 234,
+        y: 62,
+        w: 220,
+        tone: "violet",
+      },
+      {
+        id: "crew",
+        label: "Personal-App",
+        sub: "iOS · Android",
+        x: 468,
+        y: 62,
+        w: 200,
+        tone: "violet",
+      },
+      {
+        id: "public",
+        label: "Restaurant-Site",
+        sub: "pro Mandant",
+        x: 682,
+        y: 62,
+        w: 218,
+        tone: "violet",
+      },
 
-      { id: "next", label: "Next.js 16 · App Router", sub: "RSC · Route Handlers · Magic-Link-Auth", x: 20, y: 198, w: 560, tone: "neutral" },
-      { id: "n8n", label: "n8n", sub: "75+ Workflows · Watchdogs", x: 594, y: 198, w: 306, tone: "neutral" },
+      {
+        id: "next",
+        label: "Next.js 16 · App Router",
+        sub: "RSC · Route Handlers · Magic-Link-Auth",
+        x: 20,
+        y: 198,
+        w: 560,
+        tone: "neutral",
+      },
+      {
+        id: "n8n",
+        label: "n8n",
+        sub: "75+ Workflows · Watchdogs",
+        x: 594,
+        y: 198,
+        w: 306,
+        tone: "neutral",
+      },
 
-      { id: "pg", label: "Postgres / Supabase", sub: "Row Level Security pro Mandant", x: 20, y: 310, w: 320, tone: "acid" },
-      { id: "stripe", label: "Stripe Connect", sub: "Destination-Charge", x: 354, y: 310, w: 246, tone: "acid", external: true },
-      { id: "tse", label: "Fiskaly Cloud-TSE", sub: "§ 146a AO · Hash-Kette", x: 614, y: 310, w: 286, tone: "acid", external: true },
+      {
+        id: "pg",
+        label: "Postgres / Supabase",
+        sub: "Row Level Security pro Mandant",
+        x: 20,
+        y: 310,
+        w: 320,
+        tone: "acid",
+      },
+      {
+        id: "stripe",
+        label: "Stripe Connect",
+        sub: "Destination-Charge",
+        x: 354,
+        y: 310,
+        w: 246,
+        tone: "acid",
+        external: true,
+      },
+      {
+        id: "tse",
+        label: "Fiskaly Cloud-TSE",
+        sub: "§ 146a AO · Hash-Kette",
+        x: 614,
+        y: 310,
+        w: 286,
+        tone: "acid",
+        external: true,
+      },
 
-      { id: "coolify", label: "Coolify / Hetzner", sub: "Docker · EU", x: 20, y: 418, w: 240, tone: "cyan" },
-      { id: "cf", label: "Cloudflare", sub: "DNS · Edge · WAF", x: 274, y: 418, w: 216, tone: "cyan", external: true },
-      { id: "mail", label: "Mailcow", sub: "+ SES-Fallback", x: 504, y: 418, w: 196, tone: "cyan" },
-      { id: "obs", label: "Sentry · Umami", sub: "Alerts nach Slack", x: 714, y: 418, w: 186, tone: "cyan", external: true },
+      {
+        id: "coolify",
+        label: "Coolify / Hetzner",
+        sub: "Docker · EU",
+        x: 20,
+        y: 418,
+        w: 240,
+        tone: "cyan",
+      },
+      {
+        id: "cf",
+        label: "Cloudflare",
+        sub: "DNS · Edge · WAF",
+        x: 274,
+        y: 418,
+        w: 216,
+        tone: "cyan",
+        external: true,
+      },
+      {
+        id: "mail",
+        label: "Mailcow",
+        sub: "+ SES-Fallback",
+        x: 504,
+        y: 418,
+        w: 196,
+        tone: "cyan",
+      },
+      {
+        id: "obs",
+        label: "Sentry · Umami",
+        sub: "Alerts nach Slack",
+        x: 714,
+        y: 418,
+        w: 186,
+        tone: "cyan",
+        external: true,
+      },
     ],
     edges: [
       { from: "guest", to: "next" },
@@ -161,19 +379,107 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { label: "Freigabe", y: 280 },
     ],
     nodes: [
-      { id: "is24", label: "ImmoScout24", x: 20, y: 62, w: 168, tone: "muted", external: true },
-      { id: "iw", label: "Immowelt", x: 202, y: 62, w: 152, tone: "muted", external: true },
-      { id: "ka", label: "Kleinanzeigen", x: 368, y: 62, w: 176, tone: "muted", external: true },
-      { id: "wg", label: "WG-Gesucht", x: 558, y: 62, w: 162, tone: "muted", external: true },
-      { id: "direct", label: "Vermieter-Sites", x: 734, y: 62, w: 166, tone: "muted", external: true },
+      {
+        id: "is24",
+        label: "ImmoScout24",
+        x: 20,
+        y: 62,
+        w: 168,
+        tone: "muted",
+        external: true,
+      },
+      {
+        id: "iw",
+        label: "Immowelt",
+        x: 202,
+        y: 62,
+        w: 152,
+        tone: "muted",
+        external: true,
+      },
+      {
+        id: "ka",
+        label: "Kleinanzeigen",
+        x: 368,
+        y: 62,
+        w: 176,
+        tone: "muted",
+        external: true,
+      },
+      {
+        id: "wg",
+        label: "WG-Gesucht",
+        x: 558,
+        y: 62,
+        w: 162,
+        tone: "muted",
+        external: true,
+      },
+      {
+        id: "direct",
+        label: "Vermieter-Sites",
+        x: 734,
+        y: 62,
+        w: 166,
+        tone: "muted",
+        external: true,
+      },
 
-      { id: "pw", label: "Playwright-Runner", sub: "Persistente Profile je Portal", x: 20, y: 190, w: 300, tone: "cyan" },
-      { id: "filter", label: "Kriterien-Filter", sub: "Regeln zuerst, deterministisch", x: 334, y: 190, w: 268, tone: "cyan" },
-      { id: "llm", label: "LLM-Volltextprüfung", sub: "Anthropic · Fallback: Regeln", x: 616, y: 190, w: 284, tone: "cyan" },
+      {
+        id: "pw",
+        label: "Playwright-Runner",
+        sub: "Persistente Profile je Portal",
+        x: 20,
+        y: 190,
+        w: 300,
+        tone: "cyan",
+      },
+      {
+        id: "filter",
+        label: "Kriterien-Filter",
+        sub: "Regeln zuerst, deterministisch",
+        x: 334,
+        y: 190,
+        w: 268,
+        tone: "cyan",
+      },
+      {
+        id: "llm",
+        label: "LLM-Volltextprüfung",
+        sub: "Anthropic · Fallback: Regeln",
+        x: 616,
+        y: 190,
+        w: 284,
+        tone: "cyan",
+      },
 
-      { id: "db", label: "SQLite", sub: "lokal · 127.0.0.1", x: 20, y: 302, w: 220, tone: "neutral" },
-      { id: "review", label: "REVIEW-Queue", sub: "Mensch entscheidet (Standard)", x: 254, y: 302, w: 330, tone: "acid" },
-      { id: "send", label: "Versand", sub: "nur nach Freigabe", x: 598, y: 302, w: 302, tone: "neutral" },
+      {
+        id: "db",
+        label: "SQLite",
+        sub: "lokal · 127.0.0.1",
+        x: 20,
+        y: 302,
+        w: 220,
+        tone: "neutral",
+      },
+      {
+        id: "review",
+        label: "REVIEW-Queue",
+        sub: "Mensch entscheidet (Standard)",
+        x: 254,
+        y: 302,
+        w: 330,
+        tone: "acid",
+      },
+      {
+        id: "send",
+        label: "Versand",
+        sub: "nur nach Freigabe",
+        x: 598,
+        y: 302,
+        w: 302,
+        tone: "neutral",
+      },
     ],
     edges: [
       { from: "is24", to: "pw" },
@@ -198,15 +504,71 @@ export const ARCHITECTURES: Record<string, Diagram> = {
       { label: "Persistenz", y: 280 },
     ],
     nodes: [
-      { id: "web", label: "Next.js Web-App", sub: "Planer · Tracking", x: 20, y: 62, w: 290, tone: "violet" },
-      { id: "mobile", label: "Expo App", sub: "iOS · Android", x: 324, y: 62, w: 262, tone: "violet" },
-      { id: "site", label: "Public Website", sub: "Marketing", x: 600, y: 62, w: 300, tone: "violet" },
+      {
+        id: "web",
+        label: "Next.js Web-App",
+        sub: "Planer · Tracking",
+        x: 20,
+        y: 62,
+        w: 290,
+        tone: "violet",
+      },
+      {
+        id: "mobile",
+        label: "Expo App",
+        sub: "iOS · Android",
+        x: 324,
+        y: 62,
+        w: 262,
+        tone: "violet",
+      },
+      {
+        id: "site",
+        label: "Public Website",
+        sub: "Marketing",
+        x: 600,
+        y: 62,
+        w: 300,
+        tone: "violet",
+      },
 
-      { id: "api", label: "Fastify API", sub: "Typisierte Verträge · Zod", x: 20, y: 190, w: 400, tone: "neutral" },
-      { id: "catalog", label: "Geteilter Katalog", sub: "11.892 Rezepte · Trainingspläne", x: 434, y: 190, w: 466, tone: "neutral" },
+      {
+        id: "api",
+        label: "Fastify API",
+        sub: "Typisierte Verträge · Zod",
+        x: 20,
+        y: 190,
+        w: 400,
+        tone: "neutral",
+      },
+      {
+        id: "catalog",
+        label: "Geteilter Katalog",
+        sub: "11.892 Rezepte · Trainingspläne",
+        x: 434,
+        y: 190,
+        w: 466,
+        tone: "neutral",
+      },
 
-      { id: "sb", label: "Supabase / Postgres", sub: "59 Tabellen · 12 Migrationen · RLS", x: 20, y: 302, w: 430, tone: "acid" },
-      { id: "states", label: "Dry-Run · 503 · echter 4xx", sub: "explizite Fehlerzustände", x: 464, y: 302, w: 436, tone: "cyan" },
+      {
+        id: "sb",
+        label: "Supabase / Postgres",
+        sub: "59 Tabellen · 12 Migrationen · RLS",
+        x: 20,
+        y: 302,
+        w: 430,
+        tone: "acid",
+      },
+      {
+        id: "states",
+        label: "Dry-Run · 503 · echter 4xx",
+        sub: "explizite Fehlerzustände",
+        x: 464,
+        y: 302,
+        w: 436,
+        tone: "cyan",
+      },
     ],
     edges: [
       { from: "web", to: "api" },
@@ -253,8 +615,14 @@ export function ArchitectureDiagram({
   name: string;
   className?: string;
 }) {
+  const { lang } = useContent();
   const diagram = ARCHITECTURES[name];
   if (!diagram) return null;
+
+  /* Die Geometrie ist in beiden Sprachen dieselbe, nur die Worte nicht.
+     Uebersetzt wird deshalb beim Zeichnen und nicht in einer zweiten
+     Datendatei mit denselben Koordinaten. */
+  const t = (text: string) => architekturText(text, lang);
 
   const byId = new Map(diagram.nodes.map((n) => [n.id, n]));
 
@@ -276,14 +644,14 @@ export function ArchitectureDiagram({
       <div
         tabIndex={0}
         role="region"
-        aria-label={diagram.title}
+        aria-label={t(diagram.title)}
         className="scroll-hint overflow-x-auto [--deckfarbe:var(--color-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
       >
         <motion.svg
           viewBox={`0 0 920 ${diagram.height}`}
           className="h-auto w-full min-w-[720px]"
           role="img"
-          aria-label={`${diagram.title}. ${diagram.caption}`}
+          aria-label={`${t(diagram.title)}. ${t(diagram.caption)}`}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
@@ -296,7 +664,7 @@ export function ArchitectureDiagram({
                 y={lane.y}
                 className="fill-[#5b5b66] font-mono text-[11px] tracking-[0.18em] uppercase"
               >
-                {lane.label}
+                {t(lane.label)}
               </text>
               <line
                 x1={20}
@@ -352,7 +720,11 @@ export function ArchitectureDiagram({
                   visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.5, ease: ease.expo, delay: i * 0.03 },
+                    transition: {
+                      duration: 0.5,
+                      ease: ease.expo,
+                      delay: i * 0.03,
+                    },
                   },
                 }}
               >
@@ -373,7 +745,7 @@ export function ArchitectureDiagram({
                   fill={tone.text}
                   className="text-[13px] font-medium"
                 >
-                  {node.label}
+                  {t(node.label)}
                 </text>
                 {node.sub ? (
                   <text
@@ -382,7 +754,7 @@ export function ArchitectureDiagram({
                     fill="#75757f"
                     className="font-mono text-[10px]"
                   >
-                    {node.sub}
+                    {node.sub ? t(node.sub) : null}
                   </text>
                 ) : null}
               </motion.g>
@@ -404,7 +776,7 @@ export function ArchitectureDiagram({
           gehört zu der Bahn, deren Oberkante am nächsten über ihm liegt —
           dieselbe Zuordnung, die das Auge im Bild vornimmt. */}
       <div className="sr-only">
-        <p>{`${diagram.title}. ${diagram.caption}`}</p>
+        <p>{`${t(diagram.title)}. ${t(diagram.caption)}`}</p>
         <dl>
           {diagram.lanes.map((bahn, i) => {
             const naechste = diagram.lanes[i + 1];
@@ -429,10 +801,10 @@ export function ArchitectureDiagram({
 
       <figcaption className="mt-5 flex flex-col gap-2 border-t border-line pt-4">
         <span className="font-mono text-[11px] tracking-[0.16em] text-ink-faint uppercase">
-          {diagram.title}
+          {t(diagram.title)}
         </span>
         <span className="max-w-3xl text-sm leading-relaxed text-ink-dim">
-          {diagram.caption}
+          {t(diagram.caption)}
         </span>
       </figcaption>
     </figure>

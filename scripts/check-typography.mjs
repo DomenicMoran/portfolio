@@ -72,6 +72,28 @@ function sichtbarerText(pfad) {
     .replace(/<[^>]+>/g, " ");
 }
 
+/*
+   Deutsche Woerter auf einer englischen Seite.
+
+   Die Architekturdiagramme trugen ihre Beschriftungen im Bauteil und gab es
+   nur einmal: Auf `/en` stand deshalb „GETEILTE LOGIK", „ZUGAENGE",
+   „QR-Bestellung". Kein Lauf sah das. `check-parity` zaehlt Elemente, nicht
+   Woerter, und ein Suchlauf ueber `innerText` findet Text in einem SVG nicht.
+   Dieser Lauf liest das HTML und damit auch `<text>`-Knoten.
+
+   Gesucht wird nach Umlauten und nach einer kurzen Liste von Woertern, die es
+   im Englischen nicht gibt. Eigennamen bleiben draussen: „WohnungsJaeger",
+   „WG-Gesucht" und „Kleinanzeigen" heissen so, wie sie heissen.
+*/
+const NUR_DEUTSCH = new RegExp(
+  String.raw`\b(und|oder|nicht|eine[nmr]?|mit|für|über|durch|wird|werden|sind|keine?|Seite|Daten|Zugänge|Betrieb|Anwendung|Freigabe|Quellen|Versand|Persistenz|Oberflächen|Geteilte[rs]?|Bestellung|Konten|Inhalte|Mensch|entscheidet|Fokus|Kette|Gebetszeiten|Verträge|Rezepte|Tabellen|Migrationen|Regeln|Suche)\b`,
+  "g",
+);
+
+/** Eigennamen heißen, wie sie heißen — auch auf einer englischen Seite. */
+const EIGENNAMEN =
+  /WohnungsJäger|WG-Gesucht|Kleinanzeigen|Immowelt|ImmoScout24|Salati|MenuCloud|NOURI/g;
+
 const funde = [];
 let geprueft = 0;
 let paare = 0;
@@ -97,6 +119,16 @@ for (const route of gebauteSeiten()) {
       funde.push(
         `${route}: ${luecken.length}× Leerzeichen vor dem Prozentzeichen — ` +
           `im Englischen steht es direkt an der Zahl (100%).`,
+      );
+    }
+  }
+
+  if (sprache === "en") {
+    const ohneNamen = text.replace(EIGENNAMEN, " ");
+    const deutsch = [...new Set([...ohneNamen.matchAll(NUR_DEUTSCH)].map((m) => m[0]))];
+    if (deutsch.length > 0) {
+      funde.push(
+        `${route}: deutsche Wörter auf einer englischen Seite — ${deutsch.slice(0, 6).join(", ")}`,
       );
     }
   }

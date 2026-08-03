@@ -96,6 +96,69 @@ for (const paar of PAARE) {
   }
 }
 
+/*
+  Die Architekturdiagramme, jedes einzeln aufgeklappt.
+
+  Sie stehen hinter einem Reiter, der nicht der erste ist — im gebauten HTML
+  taucht ihr Text deshalb gar nicht auf, und keiner der Läufe, die Dateien
+  lesen, konnte sie je sehen. Gemessen an der ausgelieferten Seite trugen alle
+  vier auf `/en` deutsche Beschriftungen: „GETEILTE LOGIK", „ZUGÄNGE",
+  „QR-Bestellung", „Mensch entscheidet". Also ausgerechnet in dem Bild, das
+  eine fachliche Führung als Erstes aufmacht.
+
+  Gesucht wird nach Umlauten und nach einer kurzen Liste von Wörtern, die es
+  im Englischen nicht gibt. Eigennamen bleiben draußen.
+*/
+const NUR_DEUTSCH =
+  /(?:^|\s)(?:und|oder|nicht|eine|mit|Zugänge|Betrieb|Anwendung|Freigabe|Quellen|Versand|Persistenz|Oberflächen|Geteilte|Geteilter|Bestellung|QR-Bestellung|Konten|Inhalte|Mensch|entscheidet|Leanback-Fokus|Hash-Kette|Gebetszeiten|Verträge|Rezepte|Tabellen|Migrationen|Regeln|Suche|Natives|Vermieter-Sites|Kriterien-Filter)(?=\s|$)/g;
+
+{
+  const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const funde2 = [];
+  let bilder = 0;
+
+  for (const id of ["salati", "menucloud", "nouri", "wohnungsjaeger"]) {
+    await seite.goto(`${basis}/en#case-${id}`, { waitUntil: "networkidle" });
+    await seite.waitForTimeout(400);
+    const reiter = seite.locator(`#${id}-tab-architecture`);
+    if ((await reiter.count()) === 0) continue;
+    await reiter.click();
+    await seite.waitForTimeout(500);
+
+    const texte = await seite.evaluate(
+      (kennung) =>
+        [...document.querySelectorAll(`#${kennung}-panel svg text`)]
+          .map((t) => t.textContent.trim())
+          .filter(Boolean),
+      id,
+    );
+    if (texte.length === 0) continue;
+    bilder++;
+
+    const deutsch = [...new Set([...texte.join(" ").matchAll(NUR_DEUTSCH)].map((m) => m[0].trim()))];
+    if (deutsch.length > 0) {
+      funde2.push(`Architekturbild ${id} auf /en: ${deutsch.slice(0, 6).join(", ")}`);
+    }
+  }
+
+  await seite.close();
+
+  if (funde2.length > 0) {
+    await browser.close();
+    beenden();
+    console.error(`${funde2.length} Architekturbild(er) mit deutschen Beschriftungen:
+`);
+    for (const f of funde2) console.error(`  ${f}`);
+    console.error(
+      `
+Die Beschriftung fehlt in src/content/architecture-en.ts. Ohne Eintrag ` +
+        `bleibt der deutsche Text stehen.`,
+    );
+    process.exit(1);
+  }
+  console.log(`${bilder} Architekturbilder auf /en ohne deutsche Beschriftung.`);
+}
+
 await browser.close();
 beenden();
 
