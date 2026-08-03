@@ -22,7 +22,7 @@
  * englischen Seiten seit heute auch auf deutsche Wörter in SVG-Texten und
  * meldet jede Lücke.
  */
-export const ARCHITEKTUR_EN: Record<string, string> = {
+const ARCHITEKTUR_EN: Record<string, string> = {
   /* Titel und Bildunterschriften */
   "Salati: ein Monorepo, vier Zielgeräte":
     "Salati: one monorepo, four target devices",

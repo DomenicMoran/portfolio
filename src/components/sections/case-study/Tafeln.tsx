@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  */
 
 /** Die Akzentfarbe der Fallstudie, wie `CaseStudies` sie zusammenstellt. */
-export type Akzent = {
+type Akzent = {
   text: string;
   bg: string;
   border: string;

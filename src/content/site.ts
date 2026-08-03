@@ -28,7 +28,7 @@ const LERNBEGINN = "2022-07-01";
 const monate = monateZwischen(new Date(ERSTER_COMMIT), new Date(verified.date));
 
 /** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
-export const bauzeit = `${alsWort(monate)} Monat${monate === 1 ? "" : "en"}`;
+const bauzeit = `${alsWort(monate)} Monat${monate === 1 ? "" : "en"}`;
 
 const bauzeitNominativ = grossErstes(
   `${alsWort(monate, "nominativ")} Monat${monate === 1 ? "" : "e"}`,
