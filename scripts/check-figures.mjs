@@ -220,6 +220,24 @@ function zahlAusSeite(muster) {
 }
 
 /**
+ * Die Gesamtzahl der Commits, aus dem Prüfstempel.
+ *
+ * Sie stand einmal als Zahl in `site.ts` und kommt seit der Umstellung auf den
+ * Automaten aus `verified.json`. Das Muster, das sie im Quelltext suchte, fand
+ * seitdem nichts — und weil ein `null` die Prüfung überspringt statt sie
+ * scheitern zu lassen, blieben fünf Aussagen in den privaten Unterlagen
+ * ungeprüft, ohne dass eine Zeile davon berichtete. Gemessen am 03.08.2026.
+ */
+function commitsGesamt() {
+  try {
+    const stempel = JSON.parse(readFileSync("src/content/verified.json", "utf8"));
+    return Number(String(stempel.commitsHead).replace(/\./g, "")) || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Jede Untergrenze mit ihrem Zusammenhang.
  *
  * Ohne den Zusammenhang wird die Prüfung falsch: Im Lebenslauf steht "über
@@ -232,8 +250,7 @@ const UNTERGRENZEN = [
   {
     was: "Commits gesamt",
     imText: /über ([\d.]+) Commits\*\* über drei Monorepos/g,
-    gemessen: () =>
-      zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+    gemessen: commitsGesamt,
   },
   {
     was: "Commits in Salati",
@@ -251,9 +268,32 @@ const UNTERGRENZEN = [
     imText: /über ([\d.]+) Testfäll/g,
     gemessen: () => zahlAusSeite(/"([\d.]+) Testfälle \(/),
   },
+  /*
+     Das Vorbereitungsbuch nennt die Gesamtzahl in drei Sätzen und in drei
+     Formulierungen. Alle drei meinen dieselbe Zahl, also prüft ein Muster
+     alle drei — sonst prüft der Lauf einen Satz und lässt zwei stehen.
+  */
+  {
+    was: "Commits in vier Monaten",
+    imText: /[Üü]ber ([\d.]+) Commits (?:über vier Monate|in vier Monaten|entstanden)/g,
+    gemessen: commitsGesamt,
+  },
 ];
 
-for (const datei of ["../docs/LEBENSLAUF.md", "../docs/BEWERBUNG.md"]) {
+/*
+   Das Vorbereitungsbuch kommt dazu.
+
+   Es war als einziges der drei privaten Dokumente ungeprüft, und es ist das
+   folgenreichste: Die Lernplattform zieht 280 Karten daraus, und was dort
+   steht, wird auswendig gelernt. Gemessen am 03.08.2026 nannte es dreimal
+   „4.053 Commits" — gemessen waren es 4.224. Die Zahl ist jetzt eine
+   Untergrenze, damit sie stimmt, solange sie wächst.
+*/
+for (const datei of [
+  "../docs/LEBENSLAUF.md",
+  "../docs/BEWERBUNG.md",
+  "../docs/MASTER_CAREER_GUIDE.md",
+]) {
   if (!existsSync(datei)) {
     zeilen.push(`  --  ${datei} nicht vorhanden, übersprungen`);
     continue;
@@ -264,6 +304,13 @@ for (const datei of ["../docs/LEBENSLAUF.md", "../docs/BEWERBUNG.md"]) {
   for (const { was, imText, gemessen } of UNTERGRENZEN) {
     const wirklich = gemessen();
     if (wirklich === null) continue;
+
+    /* Der Ausdruck wird über alle Dateien hinweg wiederverwendet, und
+       `matchAll` uebernimmt seinen `lastIndex`. Ohne das Zuruecksetzen fing
+       die zweite Datei dort an zu suchen, wo die erste aufgehoert hatte —
+       aufgefallen ist es erst mit der dritten, deren Treffer alle hinter
+       dem Stand lagen und deshalb keiner war. */
+    imText.lastIndex = 0;
 
     for (const treffer of inhalt.matchAll(imText)) {
       const grenze = Number(treffer[1].replace(/\./g, ""));
