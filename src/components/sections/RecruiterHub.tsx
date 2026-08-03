@@ -13,7 +13,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Spotlight } from "@/components/ui/Spotlight";
 
 export function RecruiterHub() {
-  const { recruiter, site } = useContent();
+  const { recruiter, site, hero } = useContent();
 
   const links = [
     SOCIALS.linkedin
@@ -119,6 +119,27 @@ export function RecruiterHub() {
             </Reveal>
           ))}
         </Spotlight>
+
+        {/* Der Hinweis auf die zwei Vorführungen, wörtlich derselbe wie im Kopf.
+
+            Dieses Panel ist für den Blick von sechzig Sekunden geschrieben,
+            und die beiden Kacheln sind das Einzige auf dieser Seite, das ein
+            Recruiter anfassen kann. Sie standen hier nicht.
+
+            `hero.tryIt` und keine zweite Formulierung: Zwei Sätze für
+            dieselbe Sache sind die nächste Stelle, an der einer veraltet. */}
+        <Reveal>
+          <p className="mt-5 text-sm leading-snug text-ink-faint text-pretty">
+            {hero.tryIt.before}{" "}
+            <a
+              href={hero.tryIt.href}
+              className="-my-1 py-1 text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+            >
+              {hero.tryIt.label}
+            </a>{" "}
+            {hero.tryIt.after}
+          </p>
+        </Reveal>
 
         {/* Faktenblatt über die volle Breite, darunter die Aktionen.
             Vorher standen beide nebeneinander, und weil das Faktenblatt sieben
