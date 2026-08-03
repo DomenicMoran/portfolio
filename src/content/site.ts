@@ -440,7 +440,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     shots: [
       {
-        src: "/shots/salati/shot-prayer.png",
+        src: "/shots/salati/shot-prayer.webp",
         alt: "Die Gebetszeiten-Ansicht: über der Liste ein Bild der Kaaba mit der aktuellen Uhrzeit und dem Countdown bis zum nächsten Gebet, darunter die fünf Zeiten des Tages mit hervorgehobenem nächsten Gebet und dem Hijri-Datum.",
         width: 720,
         height: 1600,
@@ -448,7 +448,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/shot-quran.png",
+        src: "/shots/salati/shot-quran.webp",
         alt: "Der Koran-Reader auf dem Telefon: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung.",
         width: 720,
         height: 1600,
@@ -456,7 +456,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/shot-ki.png",
+        src: "/shots/salati/shot-ki.webp",
         alt: "Die Fragen-Antwort-KI beantwortet eine Frage mit Quellenangabe und einem Hinweis, dass die Antwort KI-gestützt ist.",
         width: 720,
         height: 1600,
@@ -464,7 +464,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/shot-qibla.png",
+        src: "/shots/salati/shot-qibla.webp",
         alt: "Der Qibla-Kompass zeigt die Gebetsrichtung mit Gradzahl und Entfernung nach Mekka.",
         width: 720,
         height: 1600,
@@ -472,7 +472,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/shot-study.png",
+        src: "/shots/salati/shot-study.webp",
         alt: "Der Lernbereich mit Kursen und Fortschrittsanzeige je Lektion.",
         width: 720,
         height: 1477,
@@ -480,7 +480,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/shot-tracker.png",
+        src: "/shots/salati/shot-tracker.webp",
         alt: "Die Gebetsverfolgung: je Tag und Gebet ein Häkchen, darüber die Strähne aufeinanderfolgender Tage.",
         width: 720,
         height: 1600,
@@ -488,7 +488,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "phone",
       },
       {
-        src: "/shots/salati/tv-quran.png",
+        src: "/shots/salati/tv-quran.webp",
         alt: "Der Koran-Reader auf dem Fernseher: der arabische Vers groß gesetzt, darunter Umschrift und Übersetzung, unten die Hinweise für die Fernbedienung.",
         width: 1280,
         height: 720,
@@ -496,7 +496,7 @@ export const caseStudies: CaseStudy[] = [
         variant: "screen",
       },
       {
-        src: "/shots/salati/tv-home.png",
+        src: "/shots/salati/tv-home.webp",
         alt: "Die Startseite auf dem Fernseher mit den Kacheln für Gebetszeiten, Koran und Lernbereich, eine davon im Fokusrahmen.",
         width: 1280,
         height: 720,
@@ -679,7 +679,7 @@ export const caseStudies: CaseStudy[] = [
     articles: ["kassensichv-in-der-praxis"],
     shots: [
       {
-        src: "/shots/menucloud-desktop.png",
+        src: "/shots/menucloud-desktop.webp",
         alt: "Startseite von menucloud-berlin.de mit dem Versprechen null Provision, DSGVO und KassenSichV sowie einer Vorschau des Self-Service-Admins.",
         /* Der Ausschnitt endet an der Sektionskante, nicht an einer runden
            Zahl: Die vorherige Aufnahme war 1440 x 900 und schnitt quer durch
@@ -692,7 +692,7 @@ export const caseStudies: CaseStudy[] = [
       {
         // Store-Aufnahme aus dem Projekt selbst, die Fallstudie nennt die
         // Apps, zeigte sie aber vorher nicht.
-        src: "/shots/menucloud-app.png",
+        src: "/shots/menucloud-app.webp",
         alt: "Restaurantseite in der MenuCloud-App auf dem iPhone: Speisekarte, Reservierung, Öffnungszeiten und Beschreibung eines Berliner Restaurants.",
         width: 1242,
         height: 2688,
@@ -795,7 +795,7 @@ export const caseStudies: CaseStudy[] = [
     architecture: "nouri",
     shots: [
       {
-        src: "/shots/nouri-desktop.png",
+        src: "/shots/nouri-desktop.webp",
         alt: "Startseite der NOURI-Plattform: Sprachwahl, Titelzeile und die Knöpfe zum Öffnen der App.",
         /* Endet an der Kante des Kopfbereichs. Die vorherige Aufnahme war
            1440 x 900 und schnitt mitten durch die Kennzahlenreihe. */

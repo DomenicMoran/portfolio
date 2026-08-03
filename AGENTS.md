@@ -158,6 +158,20 @@ Wer ein neues Gewicht benutzt, legt den Schnitt nach `src/lib/fonts/` und
 trägt ihn in `ogSchriften` ein. `src/lib/fonts/fonts.test.ts` hält beides
 gegeneinander und schlägt sonst fehl.
 
+## Die Produktaufnahmen
+
+Dieselbe Trennung wie beim Porträt: Die Originale liegen in `../assets/shots`
+außerhalb des Repos, ausgeliefert wird `public/shots/*.webp`, erzeugt von
+`npm run build:shots`.
+
+Gemessen: Die elf Aufnahmen lagen als PNG im Repo und wogen zusammen 5,6 MB —
+jeder Klon zog sie mit. Als WebP bei Qualität 92 sind es 1,1 MB, ohne dass an
+einer Oberfläche etwas zu sehen wäre; es sind Bildschirmfotos, keine Fotos.
+Für den Besucher ändert sich nichts, `next/image` rechnet sie ohnehin herunter.
+
+Wer eine Aufnahme tauscht, legt das PNG nach `../assets/shots` und ruft den
+Lauf. Wer eine WebP-Datei von Hand bearbeitet, hat wieder zwei Fassungen.
+
 ## Das Porträt
 
 Dasselbe in Grün, nur mit einem Foto: Es liegt an drei Stellen — groß auf der

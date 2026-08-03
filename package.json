@@ -32,7 +32,8 @@
     "check:onepager": "node scripts/check-onepager-pdf.mjs",
     "check:typography": "node scripts/check-typography.mjs",
     "check:legal": "node scripts/check-legal-date.mjs",
-    "check:exports": "node scripts/check-exports.mjs"
+    "check:exports": "node scripts/check-exports.mjs",
+    "build:shots": "node scripts/build-shots.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
