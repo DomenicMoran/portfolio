@@ -107,6 +107,35 @@ for (const pfad of pfade) {
 
   landmarken += gefunden.length;
 
+  /* Zierzeichen im Namen einer Überschrift.
+
+     Die Sprungmarke jeder Zwischenüberschrift ist ein Doppelkreuz, und es
+     stand als Text im `h2`. Der Name der Überschrift im Barrierefreiheitsbaum
+     lautete damit „Warum ein größeres Modell hier nichts bringt#“, und wer
+     eine Überschrift markierte, kopierte es mit. Gefunden an allen sieben
+     Überschriften eines Artikels; axe prüft Namen auf Vorhandensein, nicht
+     auf Zierrat.
+
+     Geprüft wird der Name, wie ein Vorleseprogramm ihn bildet: sichtbarer
+     Text ohne die Teile, die `aria-hidden` trägt. */
+  const zierrat = await seite.evaluate(() => {
+    const raus = [];
+    for (const h of document.querySelectorAll("h1, h2, h3, h4")) {
+      const klon = h.cloneNode(true);
+      for (const weg of klon.querySelectorAll("[aria-hidden='true']"))
+        weg.remove();
+      const name = (klon.textContent ?? "").trim();
+      if (/[#*•·→↗]$/.test(name)) {
+        raus.push(name.slice(-45));
+      }
+    }
+    return raus;
+  });
+
+  for (const z of zierrat) {
+    funde.push(`${pfad}: Überschrift endet auf ein Zierzeichen — „…${z}“`);
+  }
+
   for (const pflicht of PFLICHT) {
     if (!gefunden.some((l) => l.rolle === pflicht)) {
       funde.push(`${pfad}: keine Landmarke „${pflicht}"`);
