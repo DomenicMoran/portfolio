@@ -144,10 +144,31 @@ export function Hero() {
             {hero.lede}
           </p>
 
+          {/* Der Hinweis auf die beiden Vorführungen.
+
+              Sie stecken in ihrer Fallstudie, also weit unten: Gemessen
+              beginnt die erste bei 3.100 px. Wer den Kopf liest und
+              weiterzieht, erfährt sonst nie, dass auf dieser Seite etwas zum
+              Anfassen steht — und genau das unterscheidet sie von jedem
+              anderen Portfolio.
+
+              Eine Zeile und kein dritter Knopf: Zwei Knöpfe führen, ein
+              dritter teilt. */}
+          <p className="mt-5 max-w-[52ch] text-sm leading-snug text-ink-faint text-pretty">
+            {hero.tryIt.before}{" "}
+            <a
+              href={hero.tryIt.href}
+              className="-my-1 py-1 text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+            >
+              {hero.tryIt.label}
+            </a>{" "}
+            {hero.tryIt.after}
+          </p>
+
           {/* CTAs */}
           <div
             style={{ animationDelay: "0.55s" }}
-            className="animate-fade-rise mt-10 flex flex-wrap items-center gap-3"
+            className="animate-fade-rise mt-8 flex flex-wrap items-center gap-3"
           >
             <Magnetic>
               <a
@@ -184,27 +205,6 @@ export function Hero() {
               </a>
             </Magnetic>
           </div>
-
-          {/* Der Hinweis auf die beiden Vorführungen.
-
-              Sie stecken in ihrer Fallstudie, also weit unten: Gemessen
-              beginnt die erste bei 3.100 px. Wer den Kopf liest und
-              weiterzieht, erfährt sonst nie, dass auf dieser Seite etwas zum
-              Anfassen steht — und genau das unterscheidet sie von jedem
-              anderen Portfolio.
-
-              Eine Zeile und kein dritter Knopf: Zwei Knöpfe führen, ein
-              dritter teilt. */}
-          <p className="mt-6 max-w-[52ch] text-sm leading-relaxed text-ink-faint text-pretty">
-            {hero.tryIt.before}{" "}
-            <a
-              href={hero.tryIt.href}
-              className="-my-1 py-1 text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
-            >
-              {hero.tryIt.label}
-            </a>{" "}
-            {hero.tryIt.after}
-          </p>
 
           {/* Proof strip */}
           <dl
