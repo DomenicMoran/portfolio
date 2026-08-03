@@ -1326,6 +1326,7 @@ const BRAUCHT_KIND = {
   ];
 
   const funde = [];
+  const abgewehrt = [];
   let uebersprungen = 0;
   let erreicht = 0;
 
@@ -1340,8 +1341,23 @@ const BRAUCHT_KIND = {
         },
         signal: AbortSignal.timeout(15000),
       });
-      if (antwort.status >= 400) {
+      /*
+        Nur „weg" ist ein Befund.
+
+        Der erste Entwurf zählte jede Antwort ab 400 als kaputt. Damit ging
+        der Lauf schon am selben Tag einmal rot, ohne dass etwas fehlte: Ein
+        Store antwortet einer Maschine gelegentlich mit 403 oder 429, und
+        beides sagt nur, dass gerade nicht geantwortet wird — nicht, dass es
+        die Seite nicht mehr gibt. Ein Wächter, der bei Gegenwehr rot wird,
+        wird abgeschaltet.
+
+        404 und 410 sagen es dagegen ausdrücklich, und ein 5xx über eine
+        Minute hinweg ebenso. Alles andere wird gezählt und gesagt.
+      */
+      if (antwort.status === 404 || antwort.status === 410) {
         funde.push(`${adresse} antwortet mit ${antwort.status}`);
+      } else if (antwort.status >= 400) {
+        abgewehrt.push(`${antwort.status} von ${new URL(adresse).host}`);
       } else {
         erreicht++;
       }
@@ -1359,7 +1375,8 @@ const BRAUCHT_KIND = {
   } else {
     zeilen.push(
       `  ok  Produktadressen    ${String(erreicht).padStart(6)} erreichbar` +
-        (uebersprungen ? `, ${uebersprungen} übersprungen` : ""),
+        (uebersprungen ? `, ${uebersprungen} ohne Antwort` : "") +
+        (abgewehrt.length ? `, abgewehrt: ${[...new Set(abgewehrt)].join(", ")}` : ""),
     );
   }
 }
