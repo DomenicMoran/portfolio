@@ -32,7 +32,7 @@ export const kassensichvEn: Article = {
     },
     {
       kind: "p",
-      text: "So every tenant gets its own attributable signing unit. Either they bring one, or one is provisioned for them under the platform's reseller account during setup. In both cases `tss_id` and `client_id` live on the tenant, not in the environment.",
+      text: "So every tenant gets its own attributable signing unit. Either they bring one, or one is provisioned for them under the platform’s reseller account during setup. In both cases `tss_id` and `client_id` live on the tenant, not in the environment.",
     },
     {
       kind: "code",
@@ -89,7 +89,7 @@ LIMIT 1;`,
     { kind: "h2", text: "Three: what happens when signing fails" },
     {
       kind: "p",
-      text: "This is the question that decides the quality of such a system, and no vendor documentation answers it. The signing unit is someone else's service. Someone else's services go down.",
+      text: "This is the question that decides the quality of such a system, and no vendor documentation answers it. The signing unit is someone else’s service. Someone else’s services go down.",
     },
     {
       kind: "p",
@@ -124,7 +124,7 @@ LIMIT 1;`,
     { kind: "h2", text: "A small thing that grew during dinner service" },
     {
       kind: "p",
-      text: "Every signing call needs an access token. In the first version each checkout fetched a fresh one, roughly 300 milliseconds ahead of the actual signature. At one order a minute nobody notices. At thirty orders in five minutes it becomes load on the vendor's auth endpoint that serves no purpose.",
+      text: "Every signing call needs an access token. In the first version each checkout fetched a fresh one, roughly 300 milliseconds ahead of the actual signature. At one order a minute nobody notices. At thirty orders in five minutes it becomes load on the vendor’s auth endpoint that serves no purpose.",
     },
     {
       kind: "p",

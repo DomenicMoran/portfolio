@@ -64,12 +64,44 @@ const FREMDER_TRENNER = {
   de: /\b\d{1,3}(?:,\d{3})+\b/g,
 };
 
+/**
+ * Der Text einer gebauten Seite — auch der, der erst im Browser entsteht.
+ *
+ * `sichtbarerText` wirft `<script>` weg, und das ist für die
+ * Anführungszeichen richtig: Dort stehen JSON-Anführungszeichen zu Tausenden.
+ * Für den Apostroph ist es die Falle. Die Kontaktüberschrift „Let’s build
+ * something" setzt `RevealWords` wortweise im Browser zusammen; im
+ * ausgelieferten HTML steht sie nur in der RSC-Nutzlast, also in genau dem
+ * `<script>`, das weggeworfen wird. Der Lauf sah sie deshalb nie — und hätte
+ * bei einem geraden Apostroph in der größten Schrift des Abschnitts Erfolg
+ * gemeldet.
+ *
+ * Hier wird der Rohtext genommen, die Maskierung der Nutzlast aufgelöst und
+ * dann gesucht. Das taugt nur für ein so enges Muster wie `it's` oder
+ * `doesn't`: Alles Breitere fände in der Nutzlast auch Schlüssel und Adressen.
+ */
+function nutztext(pfad) {
+  return readFileSync(pfad, "utf8")
+    .replace(/\\+"/g, '"')
+    .replace(/&#x27;|&apos;/g, "'");
+}
+
 /** Der sichtbare Text einer gebauten Seite. */
 function sichtbarerText(pfad) {
-  return readFileSync(pfad, "utf8")
-    .replace(/<script[\s\S]*?<\/script>/g, " ")
-    .replace(/<style[\s\S]*?<\/style>/g, " ")
-    .replace(/<[^>]+>/g, " ");
+  return (
+    readFileSync(pfad, "utf8")
+      .replace(/<script[\s\S]*?<\/script>/g, " ")
+      .replace(/<style[\s\S]*?<\/style>/g, " ")
+      .replace(/<[^>]+>/g, " ")
+      /* React schreibt jeden Apostroph als `&#x27;` ins HTML. Wer im Rohtext
+         nach `'` sucht, findet ihn nur dort, wo er ohnehin schon steht — die
+         Prüfung auf gerade Apostrophe lief deshalb ins Leere und meldete
+         Erfolg. Dieselbe Falle wie bei jedem Lauf, der Markup liest statt
+         Text. */
+      .replace(/&#x27;|&apos;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+  );
 }
 
 /*
@@ -100,7 +132,12 @@ let paare = 0;
 
 for (const route of gebauteSeiten()) {
   const sprache = route === "/en" || route.startsWith("/en/") ? "en" : "de";
-  const datei = join(".next", "server", "app", `${route === "/" ? "/index" : route}.html`);
+  const datei = join(
+    ".next",
+    "server",
+    "app",
+    `${route === "/" ? "/index" : route}.html`,
+  );
 
   let text;
   try {
@@ -125,7 +162,9 @@ for (const route of gebauteSeiten()) {
 
   if (sprache === "en") {
     const ohneNamen = text.replace(EIGENNAMEN, " ");
-    const deutsch = [...new Set([...ohneNamen.matchAll(NUR_DEUTSCH)].map((m) => m[0]))];
+    const deutsch = [
+      ...new Set([...ohneNamen.matchAll(NUR_DEUTSCH)].map((m) => m[0])),
+    ];
     if (deutsch.length > 0) {
       funde.push(
         `${route}: deutsche Wörter auf einer englischen Seite — ${deutsch.slice(0, 6).join(", ")}`,
@@ -133,7 +172,9 @@ for (const route of gebauteSeiten()) {
     }
   }
 
-  const falsch = [...new Set([...text.matchAll(FREMDER_TRENNER[sprache])].map((m) => m[0]))];
+  const falsch = [
+    ...new Set([...text.matchAll(FREMDER_TRENNER[sprache])].map((m) => m[0])),
+  ];
   if (falsch.length > 0) {
     funde.push(
       `${route} (${sprache}): ${falsch.slice(0, 5).join(", ")} — Tausender trennt ` +
@@ -141,14 +182,41 @@ for (const route of gebauteSeiten()) {
     );
   }
 
+  /* Der Apostroph in englischen Verkürzungen.
+
+     „Let's build something" stand als Überschrift des Kontaktabschnitts auf
+     /en — mit dem Schreibmaschinen-Apostroph, dem geraden U+0027. Gezählt an
+     der ausgelieferten Seite am 03.08.2026: 29 gerade und kein einziger
+     typografischer, quer über alle englischen Seiten.
+
+     Auf einer Seite, die auf jeder anderen Zeile typografische
+     Anführungszeichen setzt, ist das der eine Rest Schreibmaschine — und er
+     steht ausgerechnet in der größten Schrift des Abschnitts.
+
+     Geprüft wird nur die Verkürzung (`it's`, `doesn't`, `we've`): Ein
+     alleinstehendes ' gehört in Code, und Code steht in dieser Seite genug. */
+  const APOSTROPH = /[A-Za-z]'(s|t|re|ve|ll|d|m)\b/g;
+  const geradeApostrophe = [...nutztext(datei).matchAll(APOSTROPH)];
+  if (sprache === "en" && geradeApostrophe.length > 0) {
+    funde.push(
+      `${route} (en): ${geradeApostrophe.length}× gerader Apostroph statt ’ — ` +
+        `${[...new Set(geradeApostrophe.map((m) => m[0]))].slice(0, 4).join(", ")}`,
+    );
+  }
+
   const [auf, zu] = PAAR[sprache];
-  const folge = [...text].filter((z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS);
+  const folge = [...text].filter(
+    (z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS,
+  );
   paare += Math.floor(folge.length / 2);
 
   for (let i = 0; i < folge.length; i += 2) {
     const erwartet = i + 1 < folge.length ? [auf, zu] : [auf];
     const gefunden = folge.slice(i, i + 2);
-    if (gefunden[0] === erwartet[0] && (erwartet.length === 1 || gefunden[1] === erwartet[1])) {
+    if (
+      gefunden[0] === erwartet[0] &&
+      (erwartet.length === 1 || gefunden[1] === erwartet[1])
+    ) {
       continue;
     }
     /* Nur das erste kaputte Paar je Seite: Steht die Reihenfolge einmal
@@ -162,7 +230,9 @@ for (const route of gebauteSeiten()) {
   }
 
   if (folge.length % 2 !== 0) {
-    funde.push(`${route}: ${folge.length} Anführungszeichen, also eines ohne Gegenstück.`);
+    funde.push(
+      `${route}: ${folge.length} Anführungszeichen, also eines ohne Gegenstück.`,
+    );
   }
 }
 

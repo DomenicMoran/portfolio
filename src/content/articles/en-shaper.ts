@@ -2,7 +2,7 @@ import type { Article } from "./types";
 
 export const shaperEn: Article = {
   slug: "the-dotted-circle-was-not-the-font",
-  title: "The dotted circle was not the font's fault",
+  title: "The dotted circle was not the font’s fault",
   dek: "Roughly every third verse carried a dot inside a dashed circle where none belongs. I suspected the typeface first. It was innocent.",
   date: "2026-07-31",
   minutes: 5,
@@ -33,7 +33,7 @@ export const shaperEn: Article = {
     },
     {
       kind: "p",
-      text: "So I checked the font's character table. Every Arabic character of the Uthmani spelling was present, pause marks included. The explanation did not hold.",
+      text: "So I checked the font’s character table. Every Arabic character of the Uthmani spelling was present, pause marks included. The explanation did not hold.",
     },
     {
       kind: "note",
@@ -47,7 +47,7 @@ export const shaperEn: Article = {
     },
     {
       kind: "p",
-      text: "It is placed neither by the font nor by the app, but by the shaper that turns characters into glyphs. When a shaping run begins with a combining mark, the shaper inserts this circle in front of it as a carrier. From the shaper's point of view that is helpful: it signals a mark with nothing to attach to.",
+      text: "It is placed neither by the font nor by the app, but by the shaper that turns characters into glyphs. When a shaping run begins with a combining mark, the shaper inserts this circle in front of it as a carrier. From the shaper’s point of view that is helpful: it signals a mark with nothing to attach to.",
     },
     { kind: "h2", text: "Why the run begins that way at all" },
     {

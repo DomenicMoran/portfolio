@@ -92,7 +92,7 @@ export const whisperEn: Article = {
     },
     {
       kind: "p",
-      text: "The comparison itself is a Dice coefficient over words, not exact equality. A single misheard word in a twelve-word verse lowers the score without rejecting the recitation. That leniency is deliberate: someone practising should not be punished for the model's mistake.",
+      text: "The comparison itself is a Dice coefficient over words, not exact equality. A single misheard word in a twelve-word verse lowers the score without rejecting the recitation. That leniency is deliberate: someone practising should not be punished for the model’s mistake.",
     },
     { kind: "h2", text: "The outcome: smaller is better" },
     {
@@ -129,7 +129,7 @@ export const whisperEn: Article = {
     },
     {
       kind: "p",
-      text: "Tarteel's `config.json` carries `max_length: 1024`. That is a generation parameter, not the context length of the text decoder, which Whisper fixes at 448. Take the wrong value and you get a file that looks like a model and that whisper.rn refuses to load. The error message only says the model is unavailable.",
+      text: "Tarteel’s `config.json` carries `max_length: 1024`. That is a generation parameter, not the context length of the text decoder, which Whisper fixes at 448. Take the wrong value and you get a file that looks like a model and that whisper.rn refuses to load. The error message only says the model is unavailable.",
     },
     {
       kind: "note",
@@ -142,7 +142,7 @@ export const whisperEn: Article = {
     },
     {
       kind: "p",
-      text: "The project originally carried a third-party conversion from Hugging Face with no documented provenance. For an app meant to help people memorise a sacred text, that is the wrong foundation. So I convert Tarteel's original myself and host the file on storage I control.",
+      text: "The project originally carried a third-party conversion from Hugging Face with no documented provenance. For an app meant to help people memorise a sacred text, that is the wrong foundation. So I convert Tarteel’s original myself and host the file on storage I control.",
     },
     {
       kind: "p",
