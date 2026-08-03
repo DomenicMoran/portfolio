@@ -345,6 +345,10 @@ export type Content = {
       maghrib: string;
       isha: string;
     };
+    /** Beschriftung vor dem nächsten anstehenden Gebet. */
+    next: string;
+    /** Steht, wenn für heute alle Zeiten vorbei sind. */
+    dayDone: string;
     /** Steht statt einer Zeit, wenn die Rechnung nicht zustande kam. */
     failed: string;
     /** Woher die Rechnung stammt und was sie nicht tut. */

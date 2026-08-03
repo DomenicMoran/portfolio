@@ -323,7 +323,7 @@ export const hero = {
     { value: "4", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: "1.276", label: "API-Routen (MenuCloud)" },
-    { value: "7.437", label: "Testfälle (MenuCloud)" },
+    { value: "7.464", label: "Testfälle (MenuCloud)" },
   ],
 } as const;
 
@@ -534,7 +534,7 @@ export const caseStudies: CaseStudy[] = [
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "7.437 Testfälle (7.263 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
+      "7.464 Testfälle (7.290 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
@@ -625,7 +625,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: "1.276", label: "API-Routen" },
       { value: "812", label: "DB-Migrationen" },
-      { value: "7.437", label: "Testfälle" },
+      { value: "7.464", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // Kunden, MRR, GMV oder Uptime würden hier eine Behauptung durch einen
       // Beleg ersetzen. Sie stehen bewusst nicht da: Erfinden kommt nicht in

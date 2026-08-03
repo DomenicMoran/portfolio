@@ -21,12 +21,28 @@ const geistMono = Geist_Mono({
 });
 
 /** Nur für Akzentwörter. Ein Schnitt, ein Stil, mehr braucht es nicht. */
+/**
+ * Die Auszeichnungsschrift der Überschrift, mit `optional` statt `swap`.
+ *
+ * Sie setzt nur die kursiven Wörter der Hauptüberschrift, und deren Höhe
+ * unterscheidet sich von der Ersatzschrift. Bei `swap` erscheint die Zeile
+ * erst in der Ersatzschrift und tauscht dann: Die Überschrift wird höher, und
+ * alles darunter rutscht.
+ *
+ * Gemessen auf einem vierfach gedrosselten Telefon bei 1,6 Mbit/s: CLS 0,05,
+ * die Verschiebung um 1.495 ms, als Quelle die Wortmasken der Überschrift und
+ * die beiden Absätze darunter. Mit `optional` wartet der Browser kurz und
+ * verwendet die Schrift nur, wenn sie rechtzeitig da ist. Für eine
+ * Auszeichnung, die drei Wörter betrifft, ist das der richtige Tausch: Die
+ * Seite steht sofort still, und beim zweiten Aufruf liegt die Schrift im
+ * Zwischenspeicher.
+ */
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
   subsets: ["latin"],
   weight: "400",
   style: "italic",
-  display: "swap",
+  display: "optional",
 });
 
 /**
