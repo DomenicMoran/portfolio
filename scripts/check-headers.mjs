@@ -122,6 +122,42 @@ for (const block of vorgabe.headers ?? []) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Die Weiterleitungen, gemessen statt behauptet
+
+   `check:links` prüft ihre Ziele und ihre Kennzeichnung in der Datei, mehr
+   kann es nicht: Weiterleitungen entstehen bei Vercel und nicht beim Bau. Was
+   dabei herauskommt, sieht nur, wer die Live-Adresse fragt — und genau das
+   tut dieser Lauf ohnehin.
+
+   Gemessen wurden alle sieben mit 307 statt 308, weil `permanent` fehlte.
+   Aufgefallen ist das keinem Lauf, sondern erst beim Hinsehen. */
+let umleitungen = 0;
+for (const w of vorgabe.redirects ?? []) {
+  const antwort = await fetch(`${basis}${w.source}`, {
+    redirect: "manual",
+  }).catch(() => null);
+  umleitungen++;
+  const erwartet = w.permanent === true ? 308 : 307;
+  if (!antwort) {
+    funde.push(`${w.source}: keine Antwort`);
+    continue;
+  }
+  if (antwort.status !== erwartet) {
+    funde.push(
+      `${w.source}: antwortet mit ${antwort.status}, erwartet ${erwartet}`,
+    );
+    continue;
+  }
+  /* Vercel antwortet mit einer relativen Adresse, HTTP erlaubt beides.
+     Verglichen wird deshalb aufgelöst und nicht als Zeichenkette. */
+  const ziel = new URL(antwort.headers.get("location") ?? "", basis).href;
+  const soll = new URL(w.destination, basis).href;
+  if (ziel !== soll) {
+    funde.push(`${w.source}: zeigt auf ${ziel}, vorgegeben ist ${soll}`);
+  }
+}
+
 if (funde.length > 0) {
   console.error(`${funde.length} Abweichung(en) bei den Schutz-Kopfzeilen:\n`);
   for (const f of funde) console.error(`  ${f}`);
@@ -133,6 +169,7 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `Alle ${fuerAlles.length} Schutz-Kopfzeilen und ${zwischenspeicher} ` +
-    `Zwischenspeicher-Regeln stimmen: ${geprueft} Prüfungen auf ${basis}.`,
+  `Alle ${fuerAlles.length} Schutz-Kopfzeilen, ${zwischenspeicher} ` +
+    `Zwischenspeicher-Regeln und ${umleitungen} Weiterleitungen stimmen: ` +
+    `${geprueft + umleitungen} Prüfungen auf ${basis}.`,
 );
