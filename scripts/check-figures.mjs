@@ -1122,6 +1122,66 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
 }
 
 /* ---------------------------------------------------------------------------
+   Ein Titel, überall derselbe
+   ---------------------------------------------------------------------------
+
+   Die Rolle steht auf sechs öffentlichen Flächen: Seite, Vorschaukarte,
+   Kurzprofil, Profil-README, Repo-README und LinkedIn. Gemessen am
+   03.08.2026 stand im README des Portfolios „AI-Native Product Engineer",
+   überall sonst „AI Product Engineer" — zwei Titel für dieselbe Person, und
+   zwar genau dort, wo jemand nachschaut, der den Code sehen will.
+
+   Die Datei mit dem Bewerbungstext liegt außerhalb des Repos; fehlt sie,
+   wird sie übersprungen und nicht als Fehler gemeldet. */
+{
+  const rolle = quelle.match(/^\s*role: "([^"]+)"/m)?.[1];
+  if (!rolle) {
+    zeilen.push("  !!  Rolle: keine `role` in site.ts gefunden.");
+    abweichungen++;
+  } else {
+    /* Nur Dateien, die jemand von außen sehen kann. `docs/` ist privat und
+       steht bewusst nicht in dieser Liste — bis auf die beiden Vorlagen,
+       aus denen Veröffentlichtes entsteht. */
+    const flaechen = [
+      ["README.md", "README.md"],
+      ["Profil-README", "../docs/GITHUB-PROFILE-README.md"],
+      ["Lebenslauf", "../docs/LEBENSLAUF.md"],
+    ];
+
+    /* Gesucht wird die Wortfolge „… Product Engineer" mit allem, was davor
+       ohne Leerzeichen daran hängt. So fällt „AI-Native" auf, ohne dass der
+       Lauf jede Schreibweise vorher kennen muss. */
+    const muster = /([\wÄÖÜäöüß-]+[ -])?Product Engineer/g;
+
+    let geprueft = 0;
+    let abweichend = 0;
+    for (const [name, pfad] of flaechen) {
+      if (!existsSync(pfad)) {
+        zeilen.push(`  --  Rolle in ${name}: Datei nicht da, übersprungen`);
+        continue;
+      }
+      const gefunden = [...readFileSync(pfad, "utf8").matchAll(muster)]
+        .map((m) => m[0].replace(/s$/, ""))
+        .filter((t) => t !== rolle);
+      geprueft++;
+      if (gefunden.length > 0) {
+        zeilen.push(
+          `  !!  Rolle in ${name}: „${[...new Set(gefunden)].join('", „')}" statt „${rolle}"`,
+        );
+        abweichungen++;
+        abweichend++;
+      }
+    }
+    /* Die gute Zeile erscheint nur, wenn sie stimmt. Ein "ok" neben einem
+       "!!" über derselben Sache ist genau die Sorte Bericht, die man
+       überfliegt und für grün hält. */
+    if (geprueft > 0 && abweichend === 0) {
+      zeilen.push(`  ok  Rolle             ${String(geprueft).padStart(6)} Flächen sagen „${rolle}"`);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Das Profil-README, wie GitHub es zeigt
    ---------------------------------------------------------------------------
 
