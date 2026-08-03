@@ -31,13 +31,21 @@ export function About() {
   const { about, site } = useContent();
 
   return (
-    <section id="about" className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40">
+    <section
+      id="about"
+      aria-labelledby="about-titel"
+      className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
+    >
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="glow-orb animate-float top-0 right-[10%] size-[30rem] bg-violet/10" />
       </div>
 
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow={about.eyebrow} title={about.title} />
+        <SectionHeading
+          titleId="about-titel"
+          eyebrow={about.eyebrow}
+          title={about.title}
+        />
 
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
           {/* Narrative */}
@@ -71,18 +79,22 @@ export function About() {
               </Reveal>
             ) : null}
 
-            {about.paragraphs.slice(about.portrait ? 1 : 0).map((paragraph, i) => (
-              <Reveal key={paragraph} delay={i * 0.06}>
-                <p
-                  className={cn(
-                    "leading-relaxed text-pretty",
-                    !about.portrait && i === 0 ? "text-lg text-ink sm:text-xl" : "text-ink-dim",
-                  )}
-                >
-                  {paragraph}
-                </p>
-              </Reveal>
-            ))}
+            {about.paragraphs
+              .slice(about.portrait ? 1 : 0)
+              .map((paragraph, i) => (
+                <Reveal key={paragraph} delay={i * 0.06}>
+                  <p
+                    className={cn(
+                      "leading-relaxed text-pretty",
+                      !about.portrait && i === 0
+                        ? "text-lg text-ink sm:text-xl"
+                        : "text-ink-dim",
+                    )}
+                  >
+                    {paragraph}
+                  </p>
+                </Reveal>
+              ))}
 
             {/* Stats */}
             <motion.dl
@@ -109,7 +121,9 @@ export function About() {
                   className="flex flex-col-reverse gap-1"
                 >
                   <dt className="flex flex-col gap-0.5">
-                    <span className="text-xs leading-snug text-ink">{stat.label}</span>
+                    <span className="text-xs leading-snug text-ink">
+                      {stat.label}
+                    </span>
                     <span className="text-[11px] leading-snug text-ink-faint">
                       {stat.note}
                     </span>
@@ -141,7 +155,12 @@ export function About() {
               />
 
               {about.timeline.map((entry, i) => (
-                <Reveal as="li" key={entry.period} delay={i * 0.05} className="relative pb-9 pl-8 last:pb-0">
+                <Reveal
+                  as="li"
+                  key={entry.period}
+                  delay={i * 0.05}
+                  className="relative pb-9 pl-8 last:pb-0"
+                >
                   <span
                     aria-hidden
                     className={cn(
@@ -154,7 +173,9 @@ export function About() {
                   <span className="font-mono text-[11px] tracking-wide text-ink-faint">
                     {entry.period}
                   </span>
-                  <h4 className="mt-1.5 text-sm font-semibold text-ink">{entry.title}</h4>
+                  <h4 className="mt-1.5 text-sm font-semibold text-ink">
+                    {entry.title}
+                  </h4>
                   <p className="text-sm text-ink-dim">{entry.org}</p>
                   <p className="mt-2 text-xs leading-relaxed text-ink-faint text-pretty">
                     {entry.body}
@@ -205,8 +226,7 @@ export function About() {
                                 {/* Ein echtes Leerzeichen im Text, nicht nur
                                     ein Rand: Ohne das steht im kopierten Text
                                     und in der Vorlesereihenfolge
-                                    "Version Control07/2022". */}
-                                {" "}
+                                    "Version Control07/2022". */}{" "}
                                 <time
                                   dateTime={item.date}
                                   /* Volle Deckkraft statt /70: Mit der

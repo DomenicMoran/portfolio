@@ -15,6 +15,7 @@ export function AiWorkflow() {
   return (
     <section
       id="workflow"
+      aria-labelledby="workflow-titel"
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -27,6 +28,7 @@ export function AiWorkflow() {
 
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="workflow-titel"
           eyebrow={workflow.eyebrow}
           title={workflow.title}
           lede={workflow.lede}
@@ -154,7 +156,10 @@ function AgentTerminal() {
   }, [lines.length]);
 
   return (
-    <div ref={ref} className="lit overflow-hidden rounded-2xl border border-line bg-base">
+    <div
+      ref={ref}
+      className="lit overflow-hidden rounded-2xl border border-line bg-base"
+    >
       <div className="flex items-center justify-between border-b border-line px-4 py-3">
         <div className="flex items-center gap-1.5" aria-hidden>
           <span className="size-2.5 rounded-full bg-line" />
@@ -243,7 +248,9 @@ export function DeliverySpeed() {
                 className="flex flex-col-reverse gap-1.5"
               >
                 <dt className="flex flex-col gap-1">
-                  <span className="text-sm leading-snug text-ink">{fakt.label}</span>
+                  <span className="text-sm leading-snug text-ink">
+                    {fakt.label}
+                  </span>
                   <span className="text-xs leading-relaxed text-ink-faint text-pretty">
                     {fakt.note}
                   </span>

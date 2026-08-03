@@ -79,7 +79,7 @@ export const en: Content = {
     email: "domenicmoran@gmail.com",
     availability: {
       label: "Open to a permanent role",
-      detail: "Remote in the EU · async · few meetings",
+      detail: "Berlin · remote in the EU · hybrid",
     },
     meta: {
       title: "Domenic Moran – AI Product Engineer",
@@ -793,13 +793,12 @@ export const en: Content = {
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       {
         label: "Looking for",
-        value:
-          "A remote product team that works async: own a feature into production, few meetings, decide in writing",
+        value: "A product team where I take a feature all the way into production",
       },
-      { label: "Location", value: "Berlin · remote EU" },
+      { label: "Location", value: "Berlin · remote in the EU · hybrid" },
       { label: "Available", value: "Open to talk now · start after notice period" },
       { label: "Languages", value: "German (native) · English" },
-      { label: "Model", value: "Permanent employment, not freelance" },
+      { label: "Model", value: "Permanent employment" },
       { label: "Source code", value: "Open source on GitHub · production repos on request" },
     ],
     strengths: [

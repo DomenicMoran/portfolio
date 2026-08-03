@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 export function SectionHeading({
   eyebrow,
   title,
+  titleId,
   lede,
   align = "left",
   className,
@@ -23,6 +24,17 @@ export function SectionHeading({
 }: {
   eyebrow: string;
   title: string;
+  /**
+   * Kennung der Ueberschrift, damit der Abschnitt sie als Namen fuehren kann.
+   *
+   * Ohne Namen ist ein `<section>` fuer einen Screenreader keine Landmarke,
+   * sondern nichts: Gemessen im Baum der ausgelieferten Startseite gab es
+   * genau drei Landmarken (Kopf, Inhalt, Fuss) und keine einzige fuer die
+   * sieben Abschnitte, die in der Kopfleiste als Ziele stehen. Wer sieht,
+   * springt ueber die Leiste; wer die Landmarkenliste benutzt, bekam die
+   * ganze Startseite als einen Block.
+   */
+  titleId?: string;
   lede?: string;
   align?: "left" | "center";
   className?: string;
@@ -54,7 +66,10 @@ export function SectionHeading({
         </Reveal>
       )}
 
-      <Überschrift className="text-headline max-w-4xl text-balance text-ink">
+      <Überschrift
+        id={titleId}
+        className="text-headline max-w-4xl text-balance text-ink"
+      >
         <RevealWords text={title} css={css} />
       </Überschrift>
 

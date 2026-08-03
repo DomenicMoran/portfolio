@@ -866,6 +866,29 @@ const BRAUCHT_KIND = { tablist: ["tab"], listbox: ["option"], radiogroup: ["radi
       for (const d of new Set(alleIds.filter((v, i) => alleIds.indexOf(v) !== i))) {
         funde.push(`${name}: Kennung "${d}" mehrfach vergeben`);
       }
+
+      /* Jeder Abschnitt, den die Kopfleiste anspringt, muss einen Namen
+         tragen.
+
+         Ein `<section>` ohne Namen ist im Barrierefreiheitsbaum keine
+         Landmarke, sondern nichts. Gemessen am 03.08.2026 an der gebauten
+         Startseite: drei Landmarken (Kopf, Inhalt, Fuss) und keine einzige
+         fuer die sieben Abschnitte, die in der Leiste als Ziele stehen. Wer
+         sieht, springt ueber die Leiste; wer die Landmarkenliste benutzt,
+         bekam die ganze Startseite als einen Block. axe-core meldet das
+         nicht — eine namenlose Sektion verletzt keine Regel, sie verschwindet
+         nur. */
+      const angesprungen = new Set(
+        [...html.matchAll(/href="[^"#]*#([a-z-]+)"/g)].map((m) => m[1]),
+      );
+      for (const m of html.matchAll(/<section\s([^>]*)id="([^"]+)"([^>]*)>/g)) {
+        const kennung = m[2];
+        if (!angesprungen.has(kennung)) continue;
+        const attribute = m[1] + m[3];
+        if (!/aria-labelledby=|aria-label=/.test(attribute)) {
+          funde.push(`${name}: Abschnitt "${kennung}" wird angesprungen, traegt aber keinen Namen`);
+        }
+      }
     }
 
     if (funde.length) {

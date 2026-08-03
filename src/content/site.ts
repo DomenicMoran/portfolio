@@ -71,8 +71,8 @@ export const site = {
     label: "Offen für eine Festanstellung",
     // Steht auf dem Kurzprofil unter der Zusage. Vorher rendete dieses Feld
     // nirgends — und dem Blatt fehlte damit die eine Angabe, die ein Recruiter
-    // vor dem Anruf braucht: unter welchen Bedingungen.
-    detail: "Remote in der EU · async · wenig Meetings",
+    // vor dem Anruf braucht: wo und ab wann.
+    detail: "Berlin · remote in der EU · hybrid",
   },
 
   meta: {
@@ -856,20 +856,20 @@ export const recruiter = {
     // ich will.
     {
       label: "Suche",
-      // Die Zeile nennt jetzt auch die Arbeitsweise, nicht nur den Zuschnitt
-      // der Rolle. Wer async-first arbeitet und wenig Meetings hält, schreibt
-      // das in seine Anzeige — und sucht jemanden, der es ebenso benennt. Die
-      // Rolle allein trifft auch Teams, in denen der Kalender die Arbeit
-      // bestimmt, und das ist nicht dasselbe.
-      value:
-        "Remote-Produktteam, das async arbeitet: ein Feature bis in Produktion besitzen, wenig Meetings, schriftlich entscheiden",
+      // Die Zeile beschreibt, woran ich arbeiten will, und stellt keine
+      // Bedingungen an die Arbeitsweise des Teams. Vorher stand hier
+      // "async, wenig Meetings, schriftlich entscheiden": Das liest sich als
+      // Anforderungsliste an den Arbeitgeber, und wer bewirbt sich, sortiert
+      // damit Teams aus, bevor er sie kennt. Der Zuschnitt der Aufgabe ist
+      // das, worauf es ankommt.
+      value: "Produktteam, in dem ich ein Feature bis in die Produktion begleite",
     },
-    { label: "Standort", value: "Berlin · Remote EU" },
+    { label: "Standort", value: "Berlin · remote in der EU · hybrid" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
     { label: "Verfügbar", value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist" },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
-    { label: "Modell", value: "Festanstellung, keine Freiberuflichkeit" },
+    { label: "Modell", value: "Festanstellung" },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
     // Entscheidung statt als Lücke.
     { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },

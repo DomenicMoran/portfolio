@@ -2,7 +2,14 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, type KeyboardEvent } from "react";
-import { ArrowUpRight, Bot, Check, Layers, Smartphone, Workflow } from "lucide-react";
+import {
+  ArrowUpRight,
+  Bot,
+  Check,
+  Layers,
+  Smartphone,
+  Workflow,
+} from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
@@ -19,13 +26,33 @@ import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const ACCENT = {
-  acid: { text: "text-acid", bg: "bg-acid", border: "border-acid/30", soft: "bg-acid/10" },
-  violet: { text: "text-violet", bg: "bg-violet", border: "border-violet/30", soft: "bg-violet/10" },
-  cyan: { text: "text-cyan", bg: "bg-cyan", border: "border-cyan/30", soft: "bg-cyan/10" },
+  acid: {
+    text: "text-acid",
+    bg: "bg-acid",
+    border: "border-acid/30",
+    soft: "bg-acid/10",
+  },
+  violet: {
+    text: "text-violet",
+    bg: "bg-violet",
+    border: "border-violet/30",
+    soft: "bg-violet/10",
+  },
+  cyan: {
+    text: "text-cyan",
+    bg: "bg-cyan",
+    border: "border-cyan/30",
+    soft: "bg-cyan/10",
+  },
 } as const;
 
 const TAB_IDS = ["highlights", "automation", "architecture", "stack"] as const;
-const TAB_ICONS = { highlights: Layers, automation: Bot, architecture: Workflow, stack: Smartphone };
+const TAB_ICONS = {
+  highlights: Layers,
+  automation: Bot,
+  architecture: Workflow,
+  stack: Smartphone,
+};
 
 type TabId = (typeof TAB_IDS)[number];
 
@@ -33,9 +60,14 @@ export function CaseStudies() {
   const { work, caseStudies } = useContent();
 
   return (
-    <section id="work" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
+    <section
+      id="work"
+      aria-labelledby="work-titel"
+      className="relative scroll-mt-24 px-6 py-28 sm:py-40"
+    >
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="work-titel"
           eyebrow={work.eyebrow}
           title={work.title}
           lede={work.lede}
@@ -64,7 +96,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
     .map((slug) => artikel.find((a) => a.slug === slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a));
   /** Der Automatisierungs-Reiter erscheint nur, wo es etwas zu zeigen gibt. */
-  const sichtbareTabs = TAB_IDS.filter((id) => id !== "automation" || study.automation);
+  const sichtbareTabs = TAB_IDS.filter(
+    (id) => id !== "automation" || study.automation,
+  );
 
   /**
    * Pfeiltasten in der Reiterleiste, und nur ein Tabstopp je Fallstudie.
@@ -97,7 +131,10 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       const jetzt = sichtbareTabs.indexOf(tab);
       // Umlaufend: Vom letzten Reiter geht es auf den ersten. Eine Leiste, die
       // am Rand stumm bleibt, wirkt wie eine kaputte Taste.
-      ziel = sichtbareTabs[(jetzt + richtung + sichtbareTabs.length) % sichtbareTabs.length];
+      ziel =
+        sichtbareTabs[
+          (jetzt + richtung + sichtbareTabs.length) % sichtbareTabs.length
+        ];
     } else if (event.key === "Home") {
       ziel = sichtbareTabs[0];
     } else if (event.key === "End") {
@@ -119,7 +156,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">
           <div className="flex items-baseline gap-5">
-            <span className={cn("font-mono text-sm", accent.text)}>{study.index}</span>
+            <span className={cn("font-mono text-sm", accent.text)}>
+              {study.index}
+            </span>
             <h3 className="text-title text-ink">{study.name}</h3>
           </div>
           <div className="flex items-center gap-3">
@@ -133,7 +172,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               <span className={cn("size-1.5 rounded-full", accent.bg)} />
               {study.statusLabel}
             </span>
-            <span className="font-mono text-[11px] text-ink-faint">{study.year}</span>
+            <span className="font-mono text-[11px] text-ink-faint">
+              {study.year}
+            </span>
           </div>
         </div>
       </Reveal>
@@ -152,7 +193,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       {study.shots?.length ? (
         <Reveal delay={0.08}>
           {study.shots.length > 2 ? (
-            <ShotCarousel shots={study.shots} label={a11y.shots.label} hinweis={a11y.shots} />
+            <ShotCarousel
+              shots={study.shots}
+              label={a11y.shots.label}
+              hinweis={a11y.shots}
+            />
           ) : (
             <div
               className={cn(
@@ -177,7 +222,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                      und die Fallstudie damit um 141 px, mitten im Dokument.
                      Wer über `#hire` einstieg, bekam dadurch 0,17 bis 0,52
                      Layout-Verschiebung auf ein Budget von 0,1. */
-                  className={shot.variant === "phone" ? "shrink-0" : "w-full min-w-0 flex-1"}
+                  className={
+                    shot.variant === "phone"
+                      ? "shrink-0"
+                      : "w-full min-w-0 flex-1"
+                  }
                 />
               ))}
             </div>
@@ -198,11 +247,15 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
         <Reveal>
           <h4 className="text-eyebrow mb-4">{work.labels.problem}</h4>
-          <p className="leading-relaxed text-ink-dim text-pretty">{study.problem}</p>
+          <p className="leading-relaxed text-ink-dim text-pretty">
+            {study.problem}
+          </p>
         </Reveal>
         <Reveal delay={0.08}>
           <h4 className="text-eyebrow mb-4">{work.labels.solution}</h4>
-          <p className="leading-relaxed text-ink-dim text-pretty">{study.solution}</p>
+          <p className="leading-relaxed text-ink-dim text-pretty">
+            {study.solution}
+          </p>
         </Reveal>
       </div>
 
@@ -216,7 +269,12 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           )}
         >
           <span className="text-eyebrow">{work.labels.hardPart}</span>
-          <h4 className={cn("mt-3 text-lg font-semibold tracking-tight sm:text-xl", accent.text)}>
+          <h4
+            className={cn(
+              "mt-3 text-lg font-semibold tracking-tight sm:text-xl",
+              accent.text,
+            )}
+          >
             {study.hardPart.title}
           </h4>
           {/* Zeilenmaß in ch statt rem: 68 Zeichen bleiben 68 Zeichen, egal
@@ -282,7 +340,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                     // zusätzlich als Hintergrund des Knopfes: Sollte das
                     // Motion-Element je nicht rendern, bliebe sonst dunkler Text
                     // auf dunklem Grund, unsichtbar statt nur unschön.
-                    selected ? cn("text-void", accent.bg) : "text-ink-dim hover:text-ink",
+                    selected
+                      ? cn("text-void", accent.bg)
+                      : "text-ink-dim hover:text-ink",
                   )}
                 >
                   {selected ? (
@@ -324,7 +384,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                           className={cn("mt-1 size-4 shrink-0", accent.text)}
                           aria-hidden
                         />
-                        <span className="text-sm leading-relaxed text-ink-dim">{item}</span>
+                        <span className="text-sm leading-relaxed text-ink-dim">
+                          {item}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -333,7 +395,12 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 {tab === "automation" && study.automation ? (
                   <div className="flex flex-col gap-8">
                     <div>
-                      <h5 className={cn("text-lg font-semibold tracking-tight", accent.text)}>
+                      <h5
+                        className={cn(
+                          "text-lg font-semibold tracking-tight",
+                          accent.text,
+                        )}
+                      >
                         {study.automation.title}
                       </h5>
                       <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-dim text-pretty">
@@ -409,7 +476,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               key={metric.label}
               variants={{
                 hidden: { opacity: 0, y: 14 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.expo } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6, ease: ease.expo },
+                },
               }}
               // Siehe Hero: Eine <dl> darf nur dt/dd-Paare enthalten, deshalb
               // steht die Beschriftung im <dt> und die sichtbare Reihenfolge
@@ -439,7 +510,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
               >
-                {link.kind === "code" ? <GithubIcon className="size-3.5" /> : null}
+                {link.kind === "code" ? (
+                  <GithubIcon className="size-3.5" />
+                ) : null}
                 {link.label}
                 <ArrowUpRight
                   className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

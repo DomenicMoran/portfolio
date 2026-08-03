@@ -48,13 +48,18 @@ export function Contact() {
   }[];
 
   return (
-    <section id="contact" className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40">
+    <section
+      id="contact"
+      aria-labelledby="contact-titel"
+      className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
+    >
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="glow-orb bottom-0 left-1/2 size-[30rem] -translate-x-1/2 bg-acid/8" />
       </div>
 
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="contact-titel"
           eyebrow={contact.eyebrow}
           title={contact.title}
           lede={contact.lede}
@@ -130,8 +135,14 @@ export function Contact() {
               <h3 className="text-eyebrow mb-5">{contact.checkliste.titel}</h3>
               <ul className="flex flex-col gap-3">
                 {contact.checkliste.punkte.map((p) => (
-                  <li key={p} className="flex gap-2.5 text-sm leading-relaxed text-ink-dim">
-                    <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-acid" />
+                  <li
+                    key={p}
+                    className="flex gap-2.5 text-sm leading-relaxed text-ink-dim"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-1.5 size-1.5 shrink-0 rounded-full bg-acid"
+                    />
                     {p}
                   </li>
                 ))}

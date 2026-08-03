@@ -38,6 +38,11 @@ export function Hero() {
   return (
     <section
       id="top"
+      /* Der Abschnitt traegt die Hauptueberschrift als Namen. Er ist ein
+         Sprungziel — die Marke in der Kopfleiste zeigt darauf —, und ein
+         Sprungziel ohne Namen ist im Barrierefreiheitsbaum keine Landmarke,
+         sondern gar nichts. */
+      aria-labelledby="top-titel"
       className="relative flex min-h-svh flex-col justify-end overflow-x-clip pb-10"
     >
       {/* Ambient light. Three blurred orbs, GPU-composited, no canvas.
@@ -62,35 +67,35 @@ export function Hero() {
 
       <div className="w-full">
         <div className="mx-auto w-full max-w-6xl px-6 pt-32">
-        {/* Availability pill */}
-        <div
-          style={{ animationDelay: "0.1s" }}
-          className="animate-fade-rise mb-10 flex flex-wrap items-center gap-3"
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 backdrop-blur">
-            <span className="relative flex size-1.5">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-acid opacity-75" />
-              <span className="relative inline-flex size-1.5 rounded-full bg-acid" />
+          {/* Availability pill */}
+          <div
+            style={{ animationDelay: "0.1s" }}
+            className="animate-fade-rise mb-10 flex flex-wrap items-center gap-3"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 backdrop-blur">
+              <span className="relative flex size-1.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-acid opacity-75" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-acid" />
+              </span>
+              <span className="font-mono text-[11px] tracking-[0.14em] text-ink-dim uppercase">
+                {hero.eyebrow}
+              </span>
             </span>
-            <span className="font-mono text-[11px] tracking-[0.14em] text-ink-dim uppercase">
-              {hero.eyebrow}
+            <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
+              {site.role}
             </span>
-          </span>
-          <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
-            {site.role}
-          </span>
-        </div>
+          </div>
 
-        {/* Überschrift: Jedes Wort steigt aus seiner eigenen Maske auf */}
-        <h1 className="text-display max-w-[18ch] text-balance text-ink">
-          {hero.headline.map((word, i) => (
-            // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken,
-            // nicht in einer: Innerhalb eines inline-block mit overflow:hidden
-            // wird es zusammengefaltet, und die Wörter kleben aneinander.
-            // Außerhalb trennt es sichtbar und hält die Überschrift für
-            // Screenreader und zum Kopieren lesbar.
-            <Fragment key={i}>
-{/* Das Polster ist die Maske, nicht Zierde.
+          {/* Überschrift: Jedes Wort steigt aus seiner eigenen Maske auf */}
+          <h1 id="top-titel" className="text-display max-w-[18ch] text-balance text-ink">
+            {hero.headline.map((word, i) => (
+              // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken,
+              // nicht in einer: Innerhalb eines inline-block mit overflow:hidden
+              // wird es zusammengefaltet, und die Wörter kleben aneinander.
+              // Außerhalb trennt es sichtbar und hält die Überschrift für
+              // Screenreader und zum Kopieren lesbar.
+              <Fragment key={i}>
+                {/* Das Polster ist die Maske, nicht Zierde.
 
                   Jedes Wort sitzt in einem inline-block mit overflow:hidden,
                   aus dem es beim Auftritt hervorkommt. Die untere Kante dieses
@@ -107,91 +112,102 @@ export function Hero() {
                   Reserve. Der gleich große negative Außenabstand nimmt die
                   zusätzliche Höhe wieder heraus: Der Kasten wird tiefer, die
                   Zeile bleibt, wo sie war. */}
-              <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.14em] align-bottom">
-                <span
-                  className={cn(
-                    "animate-word-rise inline-block",
-                    word.accent && "font-editorial text-acid",
-                  )}
-                  style={{ animationDelay: `${0.06 + i * 0.045}s` }}
-                >
-                  {word.text}
+                <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.14em] align-bottom">
+                  <span
+                    className={cn(
+                      "animate-word-rise inline-block",
+                      word.accent && "font-editorial text-acid",
+                    )}
+                    style={{ animationDelay: `${0.06 + i * 0.045}s` }}
+                  >
+                    {word.text}
+                  </span>
                 </span>
-              </span>
-              {i < hero.headline.length - 1 ? " " : null}
-            </Fragment>
-          ))}
-        </h1>
+                {i < hero.headline.length - 1 ? " " : null}
+              </Fragment>
+            ))}
+          </h1>
 
-        {/* Alles im Hero läuft als CSS-Animation, nicht über Framer Motion.
+          {/* Alles im Hero läuft als CSS-Animation, nicht über Framer Motion.
             Als `motion.p` mit `initial opacity 0` war dieser Absatz bis zur
             Hydration unsichtbar; auf einem gedrosselten Telefon war er damit
             das LCP-Element und erschien erst nach 4,6 Sekunden. Die
             Überschrift daneben stand zu dem Zeitpunkt schon seit 1,35
             Sekunden da. */}
-        <p
-          style={{ animationDelay: "0.42s" }}
-          className="animate-fade-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
-        >
-          {hero.lede}
-        </p>
+          <p
+            style={{ animationDelay: "0.42s" }}
+            className="animate-fade-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
+          >
+            {hero.lede}
+          </p>
 
-        {/* CTAs */}
-        <div
-          style={{ animationDelay: "0.55s" }}
-          className="animate-fade-rise mt-10 flex flex-wrap items-center gap-3"
-        >
-          <Magnetic>
-            <a
-              href={hero.ctaPrimary.href}
-              // Der durchsichtige Rahmen ist normal unsichtbar. Im
-              // Kontrastmodus von Windows ersetzt das System jede Farbe, auch
-              // "transparent", und der Rahmen wird sichtbar. Ohne ihn verliert
-              // der gefüllte Knopf dort seine Form und liest sich wie
-              // gewöhnlicher Text.
-              className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
-            >
-              {hero.ctaPrimary.label}
-              <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden />
-            </a>
-          </Magnetic>
+          {/* CTAs */}
+          <div
+            style={{ animationDelay: "0.55s" }}
+            className="animate-fade-rise mt-10 flex flex-wrap items-center gap-3"
+          >
+            <Magnetic>
+              <a
+                href={hero.ctaPrimary.href}
+                // Der durchsichtige Rahmen ist normal unsichtbar. Im
+                // Kontrastmodus von Windows ersetzt das System jede Farbe, auch
+                // "transparent", und der Rahmen wird sichtbar. Ohne ihn verliert
+                // der gefüllte Knopf dort seine Form und liest sich wie
+                // gewöhnlicher Text.
+                className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
+              >
+                {hero.ctaPrimary.label}
+                <ArrowDown
+                  className="size-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                  aria-hidden
+                />
+              </a>
+            </Magnetic>
 
-          <Magnetic>
-            <a
-              href={hero.ctaSecondary.href}
-              className="group inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 font-medium text-ink transition-colors hover:border-ink-faint hover:bg-surface"
-            >
-              {hero.ctaSecondary.label}
-              {/* Derselbe Pfeil nach unten wie beim ersten Knopf: Beide führen
+            <Magnetic>
+              <a
+                href={hero.ctaSecondary.href}
+                className="group inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 font-medium text-ink transition-colors hover:border-ink-faint hover:bg-surface"
+              >
+                {hero.ctaSecondary.label}
+                {/* Derselbe Pfeil nach unten wie beim ersten Knopf: Beide führen
                   zu einem Abschnitt weiter unten im Dokument. Der Pfeil nach
                   schräg oben steht überall sonst auf dieser Seite für ein
                   Ziel außerhalb. */}
-              <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden />
-            </a>
-          </Magnetic>
-        </div>
+                <ArrowDown
+                  className="size-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                  aria-hidden
+                />
+              </a>
+            </Magnetic>
+          </div>
 
-        {/* Proof strip */}
-        <dl
-          style={{ animationDelay: "0.68s" }}
-          className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
-        >
-          {hero.proof.map((item) => (
-            // flex-col-reverse: Im Baum bleibt die Reihenfolge dt → dd, die
-            // einzige Struktur, die eine <dl> enthalten darf — und die Zahl
-            // steht trotzdem über ihrer Beschriftung. Ein <span> als
-            // Geschwister wäre ungültig, und axe meldet das.
-            <div key={item.label} className="flex flex-col-reverse gap-1.5">
-              <dt className="text-xs leading-snug text-ink-faint">{item.label}</dt>
-              <dd className="text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl">
-                <Counter value={item.value} />
-              </dd>
-            </div>
+          {/* Proof strip */}
+          <dl
+            style={{ animationDelay: "0.68s" }}
+            className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
+          >
+            {hero.proof.map((item) => (
+              // flex-col-reverse: Im Baum bleibt die Reihenfolge dt → dd, die
+              // einzige Struktur, die eine <dl> enthalten darf — und die Zahl
+              // steht trotzdem über ihrer Beschriftung. Ein <span> als
+              // Geschwister wäre ungültig, und axe meldet das.
+              <div key={item.label} className="flex flex-col-reverse gap-1.5">
+                <dt className="text-xs leading-snug text-ink-faint">
+                  {item.label}
+                </dt>
+                <dd className="text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl">
+                  <Counter value={item.value} />
+                </dd>
+              </div>
             ))}
           </dl>
         </div>
 
-        <div style={{ animationDelay: "0.85s" }} className="animate-fade-rise mt-14">
+        <div
+          style={{ animationDelay: "0.85s" }}
+          className="animate-fade-rise mt-14"
+        >
           <Marquee items={techTicker} duration={60} />
         </div>
       </div>

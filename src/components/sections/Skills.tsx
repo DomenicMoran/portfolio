@@ -25,9 +25,14 @@ export function Skills() {
   const { skills } = useContent();
 
   return (
-    <section id="skills" className="relative scroll-mt-24 px-6 py-28 sm:py-40">
+    <section
+      id="skills"
+      aria-labelledby="skills-titel"
+      className="relative scroll-mt-24 px-6 py-28 sm:py-40"
+    >
       <div className="mx-auto max-w-6xl">
         <SectionHeading
+          titleId="skills-titel"
           eyebrow={skills.eyebrow}
           title={skills.title}
           lede={skills.lede}
@@ -45,7 +50,11 @@ export function Skills() {
   );
 }
 
-function DomainCard({ domain }: { domain: Content["skills"]["domains"][number] }) {
+function DomainCard({
+  domain,
+}: {
+  domain: Content["skills"]["domains"][number];
+}) {
   const Icon = ICONS[domain.id as keyof typeof ICONS] ?? Layout;
 
   return (
@@ -55,7 +64,9 @@ function DomainCard({ domain }: { domain: Content["skills"]["domains"][number] }
           <Icon className="size-4.5" aria-hidden />
         </span>
         <div>
-          <h3 className="text-lg font-semibold tracking-tight text-ink">{domain.title}</h3>
+          <h3 className="text-lg font-semibold tracking-tight text-ink">
+            {domain.title}
+          </h3>
           <p className="mt-1.5 text-sm leading-relaxed text-ink-faint text-pretty">
             {domain.summary}
           </p>
