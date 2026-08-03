@@ -204,6 +204,25 @@ for (const route of gebauteSeiten()) {
     );
   }
 
+  /* Der Gedankenstrich, und warum er hier nichts zu suchen hat.
+
+     Er ist im Deutschen wie im Englischen richtiges Satzzeichen. Auf einer
+     Bewerbungsseite ist er trotzdem das Falsche: Er ist das deutlichste
+     Erkennungsmerkmal für maschinell geschriebenen Text, und diese Seite
+     argumentiert mit Eigenleistung. Was ein Mensch schreibt — Doppelpunkt,
+     Komma, Punkt, Klammer — sagt dasselbe und weckt keinen Zweifel.
+
+     Gezählt am 03.08.2026 an den ausgelieferten Seiten: elf Stellen. Kommentare
+     im Quelltext bleiben aussen vor, sie stehen auf keiner Seite. */
+  const striche = (text.match(/—/g) ?? []).length;
+  if (striche > 0) {
+    const stelle = text.indexOf("—");
+    funde.push(
+      `${route}: ${striche}× Gedankenstrich im sichtbaren Text — ` +
+        `„…${text.slice(Math.max(0, stelle - 45), stelle + 35).replace(/\s+/g, " ")}…“`,
+    );
+  }
+
   const [auf, zu] = PAAR[sprache];
   const folge = [...text].filter(
     (z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS,

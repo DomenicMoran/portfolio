@@ -399,7 +399,7 @@ export function OnePager({
                     .join(" · ")}
                   <span className="text-[#6a6a76]">
                     {" "}
-                    — {onepager.openSourceNote}
+                    : {onepager.openSourceNote}
                   </span>
                 </p>
               </div>

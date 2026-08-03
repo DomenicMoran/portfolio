@@ -199,7 +199,7 @@ export const de: Content = {
     onepager: "Kurzprofil als PDF",
     sourceLabel: "Quellcode dieser Seite",
     sourceHref: "https://github.com/DomenicMoran/portfolio",
-    printNote: `Gedruckt von domenicmoran.de — Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
+    printNote: `Gedruckt von domenicmoran.de. Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
   },
 
   onepager: {
