@@ -534,7 +534,7 @@ export const caseStudies: CaseStudy[] = [
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "7.464 Testfälle (7.290 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
+      "über 7.400 Testfälle (über 7.200 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
