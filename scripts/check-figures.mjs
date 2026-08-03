@@ -230,7 +230,9 @@ function zahlAusSeite(muster) {
  */
 function commitsGesamt() {
   try {
-    const stempel = JSON.parse(readFileSync("src/content/verified.json", "utf8"));
+    const stempel = JSON.parse(
+      readFileSync("src/content/verified.json", "utf8"),
+    );
     return Number(String(stempel.commitsHead).replace(/\./g, "")) || null;
   } catch {
     return null;
@@ -260,8 +262,7 @@ const UNTERGRENZEN = [
   {
     was: "Commits seit März",
     imText: /[Üü]ber ([\d.]+) Commits seit März 2026/g,
-    gemessen: () =>
-      zahlAusSeite(/value:\s*"([\d.]+)",\s*label:\s*"Commits seit/),
+    gemessen: commitsGesamt,
   },
   {
     was: "Testfälle",
@@ -275,7 +276,8 @@ const UNTERGRENZEN = [
   */
   {
     was: "Commits in vier Monaten",
-    imText: /[Üü]ber ([\d.]+) Commits (?:über vier Monate|in vier Monaten|entstanden)/g,
+    imText:
+      /[Üü]ber ([\d.]+) Commits (?:über vier Monate|in vier Monaten|entstanden)/g,
     gemessen: commitsGesamt,
   },
 ];
@@ -303,7 +305,25 @@ for (const datei of [
 
   for (const { was, imText, gemessen } of UNTERGRENZEN) {
     const wirklich = gemessen();
-    if (wirklich === null) continue;
+    /*
+       Eine Messung ohne Ergebnis wird gesagt, nicht übersprungen.
+
+       Hier stand `continue`. Als die Gesamtzahl der Commits aus `site.ts` in
+       den Prüfstempel wanderte, fand das zugehörige Muster nichts mehr — und
+       fünf Aussagen in den privaten Unterlagen blieben ungeprüft, ohne dass
+       eine Zeile davon berichtete. Ein Wächter, der beim Ausfall schweigt,
+       meldet Erfolg.
+    */
+    if (wirklich === null) {
+      imText.lastIndex = 0;
+      if (imText.test(inhalt)) {
+        zeilen.push(
+          `  !!  ${kurz}: „${was}" steht drin, ist aber nicht messbar.`,
+        );
+        abweichungen++;
+      }
+      continue;
+    }
 
     /* Der Ausdruck wird über alle Dateien hinweg wiederverwendet, und
        `matchAll` uebernimmt seinen `lastIndex`. Ohne das Zuruecksetzen fing
@@ -1718,6 +1738,19 @@ const BRAUCHT_KIND = {
   };
 
   const quelle = readFileSync("src/content/site.ts", "utf8");
+
+  /* WohnungsJäger fehlt in der Zuordnung oben, weil das Verzeichnis keine
+     Git-Historie hat — es gibt dort keinen ersten Commit, gegen den sich ein
+     Jahr halten ließe. Die Zahl unten nennt das ausdrücklich: „3 von 4" statt
+     „3", sonst liest sich die Zeile wie eine vollständige Prüfung. */
+  const anfang = quelle.indexOf("export const caseStudies");
+  const fallstudienBlock = quelle.slice(
+    anfang,
+    quelle.indexOf("\nexport const", anfang + 10),
+  );
+  const alleFallstudien = [...fallstudienBlock.matchAll(/^ {4}id: "[a-z-]+"/gm)]
+    .length;
+
   const funde = [];
   let geprueft = 0;
   let uebersprungen = 0;
@@ -1768,7 +1801,10 @@ const BRAUCHT_KIND = {
     );
   } else {
     zeilen.push(
-      `  ok  Jahresangaben          ${String(geprueft).padStart(6)} Fallstudien nicht vordatiert`,
+      `  ok  Jahresangaben          ${String(geprueft).padStart(6)} von ${alleFallstudien} Fallstudien nicht vordatiert` +
+        (alleFallstudien > geprueft
+          ? ` (${alleFallstudien - geprueft} ohne Git-Historie)`
+          : ""),
     );
   }
 }
