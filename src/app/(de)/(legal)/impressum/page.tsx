@@ -66,19 +66,28 @@ export default function Impressum() {
       </section>
 
       {/*
-        TODO(domenic): Falls eine Umsatzsteuer-Identifikationsnummer existiert,
-        ist ihre Angabe nach § 5 Abs. 1 Nr. 6 DDG Pflicht. Dann diesen
-        Abschnitt wieder einsetzen:
+        Die Angabe ist Pflicht, weil eine Kennung existiert.
 
-          <section className="mb-10">
-            <h2 …>Umsatzsteuer-Identifikationsnummer</h2>
-            <p …>USt-IdNr. gemäß § 27 a UStG: DE…</p>
-          </section>
+        § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
+        sobald es eine gibt — nicht erst ab einer Umsatzgrenze. Hier stand
+        lange ein Vorbehalt („falls eine existiert"), und die Antwort stand
+        die ganze Zeit öffentlich im Impressum von menucloud-berlin.de:
+        DE461628017, zusammen mit der Kleinunternehmerregelung nach § 19 UStG.
 
-        Ohne USt-IdNr. (Kleinunternehmerregelung nach § 19 UStG) entfällt die
-        Angabe ersatzlos. Ein leerer oder erfundener Eintrag wäre schlechter als
-        keiner.
+        Beide Angaben gehören zusammen. Eine Kennung ohne den Hinweis auf § 19
+        legt nahe, dass Umsatzsteuer ausgewiesen wird; sie wird es nicht.
       */}
+      <section className="mb-10">
+        <h2 className="mb-3 text-lg font-semibold text-ink">
+          Umsatzsteuer-Identifikationsnummer
+        </h2>
+        <p className="text-sm leading-relaxed text-ink-dim">
+          USt-IdNr. gemäß § 27 a UStG: DE461628017
+          <br />
+          Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
+          berechnet.
+        </p>
+      </section>
 
       <section className="mb-10">
         <h2 className="mb-3 text-lg font-semibold text-ink">
