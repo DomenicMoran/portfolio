@@ -58,12 +58,24 @@ export function Prose({
                 className="group relative mt-14 mb-5 max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
               >
                 {block.text}
+                {/* Das Doppelkreuz gehört nicht zur Überschrift.
+
+                    Es stand als Text im `h2` und damit im Textinhalt: Der
+                    Name der Überschrift im Barrierefreiheitsbaum lautete
+                    „Warum ein größeres Modell hier nichts bringt#", und wer
+                    eine Überschrift markierte und kopierte, nahm es mit.
+                    Gemessen an der ausgelieferten Seite an allen sieben
+                    Überschriften des Artikels.
+
+                    `aria-hidden` nimmt es aus dem Namen — der Verweis behält
+                    seinen eigenen über `aria-label`. `select-none` hält es aus
+                    der Zwischenablage. */}
                 <a
                   href={`#${alsSprungmarke(block.text)}`}
                   aria-label={`${sprungmarkeLabel}: ${block.text}`}
-                  className="absolute top-[0.15em] -left-7 hidden text-[0.62em] text-ink-faint opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 lg:block"
+                  className="absolute top-[0.15em] -left-7 hidden text-[0.62em] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 lg:block"
                 >
-                  #
+                  <span aria-hidden>#</span>
                 </a>
               </h2>
             );
