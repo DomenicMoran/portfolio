@@ -47,7 +47,8 @@ export const whisperEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "whisperCheck.ts: the expected verse rides along as prior context.",
+      caption:
+        "whisperCheck.ts: the expected verse rides along as prior context.",
       code: `const { promise } = ctx.transcribeData(pcm, {
   language: 'ar',
   ...(expectedText ? { prompt: expectedText } : {}),
@@ -65,7 +66,8 @@ export const whisperEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "similarity.ts, abridged. The foreign letter forms have to go first.",
+      caption:
+        "similarity.ts, abridged. The foreign letter forms have to go first.",
       code: `export function normalizeArabic(text: string): string {
   return text
     .replace(DIACRITICS, '')
@@ -101,8 +103,16 @@ export const whisperEn: Article = {
       kind: "table",
       head: ["Model", "Size", "Role"],
       rows: [
-        ["tarteel-ai/whisper-base-ar-quran, q5_0", "55 MB", "default, runs on any device"],
-        ["Whisper large-v3-turbo, q5_0", "574 MB", "optional, generic, not Quran-tuned"],
+        [
+          "tarteel-ai/whisper-base-ar-quran, q5_0",
+          "55 MB",
+          "default, runs on any device",
+        ],
+        [
+          "Whisper large-v3-turbo, q5_0",
+          "574 MB",
+          "optional, generic, not Quran-tuned",
+        ],
         ["Whisper large-v3", "~1 GB", "removed, no measurable gain"],
       ],
       caption:
@@ -126,7 +136,10 @@ export const whisperEn: Article = {
       title: "Read the header before you ship it",
       text: "Many freely available conversions of Whisper models tuned for the Quran carry n_text_ctx = 1024 and are therefore unusable. The value sits in the GGML header and takes seconds to check. The right source field is max_target_positions = 448, not max_length.",
     },
-    { kind: "h2", text: "Where the weights come from, and why that is provable" },
+    {
+      kind: "h2",
+      text: "Where the weights come from, and why that is provable",
+    },
     {
       kind: "p",
       text: "The project originally carried a third-party conversion from Hugging Face with no documented provenance. For an app meant to help people memorise a sacred text, that is the wrong foundation. So I convert Tarteel's original myself and host the file on storage I control.",

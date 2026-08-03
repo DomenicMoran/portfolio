@@ -82,7 +82,8 @@ export const shaperEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "arabicText.ts: mark tokens attach to the preceding word instead of becoming one.",
+      caption:
+        "arabicText.ts: mark tokens attach to the preceding word instead of becoming one.",
       code: `// A standalone pause mark is not a word of its own.
 // It belongs to the word before it: where the source counts it too.
 export function splitArabicWords(text: string): string[] {

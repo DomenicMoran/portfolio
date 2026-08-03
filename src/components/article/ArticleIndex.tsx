@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Rss } from "lucide-react";
 import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
 import type { Article, ArticleChrome } from "@/content/articles";
@@ -179,6 +179,24 @@ export function ArticleIndex({
               );
             })}
           </ul>
+
+          {/* Der Feed, sichtbar.
+
+              Es gibt ihn seit Langem, der Seitenkopf nennt ihn als
+              `link rel="alternate"`, und beide Sprachfassungen haben einen
+              eigenen. Sichtbar stand er nirgends: Wer den Texten folgen
+              wollte, musste in den Quelltext sehen. Eine Zeile unter der
+              Liste reicht — dort, wo jemand am Ende der fünf Artikel
+              angekommen ist und wissen will, ob noch etwas kommt. */}
+          <p className="mt-10 font-mono text-[11px] text-ink-faint">
+            <a
+              href={`${chrome.base}/feed.xml`}
+              className="-my-2 inline-flex items-center gap-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+            >
+              <Rss className="size-3.5" aria-hidden />
+              {chrome.feed}
+            </a>
+          </p>
         </div>
       </main>
 

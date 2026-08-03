@@ -70,7 +70,10 @@ export const shaperDe: Article = {
       kind: "p",
       text: "Der Kreis war also kein Fehler in den Daten und keiner in der Schrift. Er war die korrekte Reaktion des Formers auf eine Zerlegung, die ihm einen Lauf ohne Träger gegeben hat.",
     },
-    { kind: "h2", text: "Der zweite Schaden, den dieselbe Ursache angerichtet hat" },
+    {
+      kind: "h2",
+      text: "Der zweite Schaden, den dieselbe Ursache angerichtet hat",
+    },
     {
       kind: "p",
       text: "Beim Suchen nach dem Kreis ist ein zweiter Fehler aufgefallen, der viel länger unbemerkt gelaufen war.",
@@ -86,7 +89,8 @@ export const shaperDe: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "arabicText.ts: Zeichen-Token hängen sich an das vorherige Wort, statt eines zu werden.",
+      caption:
+        "arabicText.ts: Zeichen-Token hängen sich an das vorherige Wort, statt eines zu werden.",
       code: `// Ein allein stehendes Pausenzeichen ist kein eigenes Wort.
 // Es gehört an das Wort davor: dorthin, wo auch die Quelle es zählt.
 export function splitArabicWords(text: string): string[] {
