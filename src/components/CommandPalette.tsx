@@ -4,7 +4,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useScrollSperre } from "@/lib/scroll-lock";
 import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BookOpen, FileText, Mail, Search } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  FileText,
+  Mail,
+  Scale,
+  Search,
+} from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
 import { artikelIn, chromeIn } from "@/content/articles";
@@ -38,6 +45,8 @@ export function CommandPalette({
 }) {
   const {
     nav: navItems,
+    navContact,
+    footer,
     caseStudies,
     site,
     recruiter,
@@ -108,6 +117,18 @@ export function CommandPalette({
           window.open(recruiter.cta.pdf.href, "_blank", "noopener,noreferrer");
         },
       },
+      /* Der Kontaktbereich stand nicht in der Liste.
+         Die Kopfleiste bietet ihn als eigenen Knopf an, die Palette bildet
+         aber nur `navItems` ab, und dort steht er nicht. Wer „Kontakt" tippte,
+         bekam „Nichts gefunden" — auf einer Seite, deren Zweck es ist, dass
+         jemand Kontakt aufnimmt. */
+      {
+        id: "nav-contact",
+        label: navContact,
+        hint: palette.jump,
+        icon: ArrowRight,
+        run: go("#contact"),
+      },
       {
         id: "mail",
         label: palette.mail,
@@ -139,10 +160,33 @@ export function CommandPalette({
       });
     }
 
+    /* Die beiden Rechtsseiten gehoeren dazu.
+       Sie stehen in der Fusszeile jeder Seite, wie § 5 DDG es verlangt — in
+       der Palette fand „Impressum" trotzdem nichts. Wer sie mit der Tastatur
+       sucht, sucht sie meistens gezielt. */
+    list.push(
+      {
+        id: "impressum",
+        label: footer.impressum,
+        hint: footer.legalLabel,
+        icon: Scale,
+        run: goto("/impressum"),
+      },
+      {
+        id: "datenschutz",
+        label: footer.datenschutz,
+        hint: footer.legalLabel,
+        icon: Scale,
+        run: goto("/datenschutz"),
+      },
+    );
+
     return list;
   }, [
     onClose,
     navItems,
+    navContact,
+    footer,
     caseStudies,
     site,
     recruiter,
