@@ -75,10 +75,15 @@ export const site = {
   availability: {
     open: true,
     label: "Offen für eine Festanstellung",
-    // Steht auf dem Kurzprofil unter der Zusage. Vorher rendete dieses Feld
-    // nirgends — und dem Blatt fehlte damit die eine Angabe, die ein Recruiter
-    // vor dem Anruf braucht: wo und ab wann.
+    // Die drei Angaben, nach denen ein Recruiter vor dem Anruf sucht: wo, ab
+    // wann, in welcher Sprache. `detail` stand hier schon mit dem Hinweis, es
+    // beantworte "wo und ab wann" — es beantwortete nur das Wo, und auf dem
+    // Kurzprofil fehlten Eintritt und Sprachen ganz. Beide standen bis dahin
+    // ausschließlich im Faktenblatt der Startseite, das nicht mitgedruckt
+    // wird und niemanden erreicht, der nur das Blatt bekommt.
     detail: "Berlin · remote in der EU · hybrid",
+    entry: "Gespräche jederzeit · Eintritt nach Kündigungsfrist",
+    languages: "Deutsch (Muttersprache) · Englisch",
   },
 
   meta: {
@@ -1063,11 +1068,8 @@ export const recruiter = {
     { label: "Standort", value: "Berlin · remote in der EU · hybrid" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
-    {
-      label: "Verfügbar",
-      value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist",
-    },
-    { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
+    { label: "Verfügbar", value: site.availability.entry },
+    { label: "Sprachen", value: site.availability.languages },
     { label: "Modell", value: "Festanstellung" },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
     // Entscheidung statt als Lücke.
