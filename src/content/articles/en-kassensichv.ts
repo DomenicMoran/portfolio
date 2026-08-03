@@ -115,7 +115,7 @@ LIMIT 1;`,
     { kind: "h3", text: "The exception worth naming honestly" },
     {
       kind: "p",
-      text: "Fail-closed applies when a signing unit is configured for the tenant. With none configured at all, the order goes through and can be signed later. That is deliberate, so a business is not halted mid-setup, and it is the place I would audit myself at the next iteration: the transition from ”not yet set up” to ”set up” has to be unambiguous, or a setup convenience quietly becomes a permanent hole.",
+      text: "Fail-closed applies when a signing unit is configured for the tenant. With none configured at all, the order goes through and can be signed later. That is deliberate, so a business is not halted mid-setup, and it is the place I would audit myself at the next iteration: the transition from “not yet set up” to “set up” has to be unambiguous, or a setup convenience quietly becomes a permanent hole.",
     },
     { kind: "h2", text: "A small thing that grew during dinner service" },
     {

@@ -587,7 +587,7 @@ export const en: Content = {
       statusLabel: "Beta",
       accent: "violet",
       problem:
-        "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetics: when the server is unreachable they display ”saved” and lose the entry.",
+        "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetics: when the server is unreachable they display “saved” and lose the entry.",
       solution:
         "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
       hardPart: {
@@ -644,8 +644,8 @@ export const en: Content = {
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
       `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, three apps in the stores and two of them in both, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
-      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported ”Published” after every release. Not a single user ever received anything.",
-      "Since then the same rule sits in every one of my repositories: ”should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
+      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
+      "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
       {
@@ -704,7 +704,7 @@ export const en: Content = {
         {
           name: "arabic-normalize",
           href: "https://github.com/DomenicMoran/arabic-normalize",
-          body: "Normalising Arabic script for comparison. Solves a speech model emitting ”علی” where the source has ”علي”. Identical to the ear, different to ===.",
+          body: "Normalising Arabic script for comparison. Solves a speech model emitting “علی” where the source has “علي”. Identical to the ear, different to ===.",
           meta: "TypeScript · 23 tests · zero dependencies",
         },
         {
@@ -816,7 +816,7 @@ export const en: Content = {
       {
         n: "03",
         title: "Verification instead of trust",
-        body: "”Should work now” is not a result. Every claim about system state needs evidence: an HTTP response, a database query, a Playwright screenshot, a received email, an actual cron execution. This rule has repeatedly surfaced bugs in my own projects that had slipped through green test suites, because the tests were checking the wrong thing.",
+        body: "“Should work now” is not a result. Every claim about system state needs evidence: an HTTP response, a database query, a Playwright screenshot, a received email, an actual cron execution. This rule has repeatedly surfaced bugs in my own projects that had slipped through green test suites, because the tests were checking the wrong thing.",
         artifacts: [
           "Playwright against production",
           "Screenshot diffs",
@@ -1068,7 +1068,7 @@ export const en: Content = {
       },
       {
         title: "I work across the whole stack",
-        body: "React Native widget, Postgres migration, Docker Compose on my own VPS, fiscal compliance. No ticket ping-pong because something is ”not my area”.",
+        body: "React Native widget, Postgres migration, Docker Compose on my own VPS, fiscal compliance. No ticket ping-pong because something is “not my area”.",
         proof: "#case-menucloud",
         proofLabel: "MenuCloud in detail",
       },
@@ -1076,7 +1076,7 @@ export const en: Content = {
         title: "I prove it rather than claim it",
         body: "A green test run proves nothing. I learned that twice, expensively. So every change is verified against the live system before it counts as done. That is what makes agent-assisted development dependable.",
         proof: "/en/articles/published-is-not-proof",
-        proofLabel: "”Published” is not proof",
+        proofLabel: "“Published” is not proof",
       },
       {
         title: "I know the way through the app stores",
@@ -1166,7 +1166,7 @@ export const en: Content = {
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
     back: "← Back to the site",
-    printHint: "Save as PDF: choose ”Save as PDF” in the print dialog.",
+    printHint: "Save as PDF: choose “Save as PDF” in the print dialog.",
     printButton: "Print / PDF",
     atLeast: "Over",
   },
