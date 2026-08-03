@@ -28,7 +28,8 @@
     "check:links": "node scripts/check-links.mjs",
     "test": "vitest run",
     "check:parity": "node scripts/check-parity.mjs",
-    "check:stack": "node scripts/check-stack.mjs"
+    "check:stack": "node scripts/check-stack.mjs",
+    "check:onepager": "node scripts/check-onepager-pdf.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
