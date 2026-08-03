@@ -1221,6 +1221,36 @@ const BRAUCHT_KIND = {
         );
       }
     }
+
+    /*
+      Zitierte Zeilennummern.
+
+      Zwei Belege nennen nicht nur eine Datei, sondern eine Stelle darin:
+      „whisperCheck.ts, Zeile 617" und „route.ts, Zeile 472 ff.". Eine
+      Zeilennummer ist die genaueste Behauptung dieser Artikel und die
+      flüchtigste — der Pfad bleibt, der Commit bleibt, und die Zeile wandert
+      bei der nächsten Einfügung darüber.
+
+      Geprüft wird, dass es die Zeile gibt und dass etwas darauf steht. Den
+      Inhalt zu vergleichen wäre schöner und wäre brüchig: Jede Umbenennung
+      im fremden Repo ergäbe einen Befund, der keiner ist.
+    */
+    for (const stelle of inhalt.matchAll(
+      /([a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql))[,\s]+Zeile\s+(\d+)/g,
+    )) {
+      const [, pfad, nummer] = stelle;
+      if (!WURZELN.test(pfad) || !existsSync(join(repo, pfad))) continue;
+      geprueft++;
+      const zeilen_ = readFileSync(join(repo, pfad), "utf8").split(/\r?\n/);
+      const zeile = zeilen_[Number(nummer) - 1];
+      if (zeile === undefined) {
+        funde.push(
+          `${datei}: ${pfad} hat nur ${zeilen_.length} Zeilen, zitiert ist ${nummer}`,
+        );
+      } else if (zeile.trim() === "") {
+        funde.push(`${datei}: ${pfad} Zeile ${nummer} ist leer`);
+      }
+    }
   }
 
   if (funde.length) {
@@ -1376,7 +1406,9 @@ const BRAUCHT_KIND = {
     zeilen.push(
       `  ok  Produktadressen    ${String(erreicht).padStart(6)} erreichbar` +
         (uebersprungen ? `, ${uebersprungen} ohne Antwort` : "") +
-        (abgewehrt.length ? `, abgewehrt: ${[...new Set(abgewehrt)].join(", ")}` : ""),
+        (abgewehrt.length
+          ? `, abgewehrt: ${[...new Set(abgewehrt)].join(", ")}`
+          : ""),
     );
   }
 }

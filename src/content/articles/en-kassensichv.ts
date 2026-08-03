@@ -10,7 +10,7 @@ export const kassensichvEn: Article = {
   evidence: [
     "src/lib/tse-chain.ts and supabase/migrations/20260413_tse_chain_atomic_append.sql (lock, hash chain)",
     "src/lib/food-order-tse.ts (signing, token cache)",
-    "src/app/api/food-orders/route.ts, line 472 onward (fail-closed, HTTP 503)",
+    "src/app/api/food-orders/route.ts, line 473 onward (fail-closed, HTTP 503)",
     "src/lib/fiskaly-provision.ts (per-tenant provisioning)",
   ],
   blocks: [
