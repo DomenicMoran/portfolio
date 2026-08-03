@@ -43,10 +43,34 @@ jobs:
       - name: Lesezeiten
         run: npm run check:reading
 
-      # Chromium nur, wenn er gebraucht wird — die beiden folgenden Schritte
-      # messen an der gebauten Seite, nicht am Quelltext.
+      # Chromium nur, wenn er gebraucht wird — die folgenden Schritte messen
+      # an der gebauten Seite, nicht am Quelltext.
+      #
+      # Und aus dem Zwischenspeicher, weil der Download der eigentliche Posten
+      # ist: Ein Lauf am 03.08.2026 brauchte dafür 631 s bei 1.049 s Gesamtzeit,
+      # während die acht Läufe davor zusammen bei 306 bis 340 s lagen. Der
+      # Schlüssel trägt die Playwright-Fassung: Ein Wechsel lädt neu, alles
+      # andere greift auf dasselbe Verzeichnis zu.
+      - name: Playwright-Fassung ermitteln
+        id: pw
+        run: echo "version=$(node -p "require('./package-lock.json').packages['node_modules/playwright'].version")" >> "$GITHUB_OUTPUT"
+
+      - name: Chromium aus dem Zwischenspeicher
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      # Bei einem Treffer fehlen nur die Systembibliotheken; das Browserpaket
+      # selbst liegt schon da.
       - name: Chromium
-        run: npx playwright install --with-deps chromium
+        run: |
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = "true" ]; then
+            npx playwright install-deps chromium
+          else
+            npx playwright install --with-deps chromium
+          fi
 
       # axe-core gegen jede gebaute Seite, zwei Breiten. Es prüft rund hundert
       # Regeln auf einmal und findet damit auch, wonach hier noch niemand
