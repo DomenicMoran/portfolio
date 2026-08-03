@@ -663,7 +663,7 @@ export const en: Content = {
         note: "Meta & Udemy certificates",
       },
     ],
-    statsHinweis: `Measured on ${verified.date} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub — local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
+    statsHinweis: `Measured on ${verified.date} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [
       {
@@ -1145,7 +1145,7 @@ export const en: Content = {
     onepager: "One-pager as PDF",
     sourceLabel: "Source code of this site",
     sourceHref: "https://github.com/DomenicMoran/portfolio",
-    printNote: `Printed from domenicmoran.de — Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
+    printNote: `Printed from domenicmoran.de. Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
   },
 
   onepager: {
@@ -1157,7 +1157,7 @@ export const en: Content = {
       "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
       "fiscal signing, an autonomous agent. {commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +
-      "Focus: agent-assisted development with strict verification discipline — " +
+      "Focus: agent-assisted development with strict verification discipline: " +
       "a green test run is not proof.",
     projects: "Projects",
     focus: "Focus areas",

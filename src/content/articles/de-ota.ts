@@ -17,7 +17,7 @@ export const otaDe: Article = {
     "Regressionstest: apps/mobile/src/__tests__/versionen-gleichlauf.test.ts",
     "Nach dem Fix: erstes veröffentlichtes Update, Runtime 1.41.0, Android und iOS",
     {
-      text: "verified-done — die Regel aus diesem Artikel als Werkzeug",
+      text: "verified-done: die Regel aus diesem Artikel als Werkzeug",
       href: "https://github.com/DomenicMoran/verified-done",
     },
   ],

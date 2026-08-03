@@ -13,7 +13,7 @@ export const otaEn: Article = {
     "Regression test: apps/mobile/src/__tests__/versionen-gleichlauf.test.ts",
     "After the fix: first update ever published, runtime 1.41.0, Android and iOS",
     {
-      text: "verified-done — the rule from this article, as a tool",
+      text: "verified-done: the rule from this article, as a tool",
       href: "https://github.com/DomenicMoran/verified-done",
     },
   ],

@@ -17,11 +17,11 @@ export const whisperDe: Article = {
     "apps/mobile/src/features/hifz/whisperCheck.ts, Zeile 617 (prompt-Übergabe)",
     "docs/audit-2026-07-27/WHISPER-EIGENE-KONVERTIERUNG.md",
     {
-      text: "whisper-ggml-header — liest den Header und meldet n_text_ctx selbst nach",
+      text: "whisper-ggml-header: liest den Header und meldet n_text_ctx selbst nach",
       href: "https://github.com/DomenicMoran/whisper-ggml-header",
     },
     {
-      text: "arabic-normalize — die Normalisierung aus similarity.ts als eigenes Paket",
+      text: "arabic-normalize: die Normalisierung aus similarity.ts als eigenes Paket",
       href: "https://github.com/DomenicMoran/arabic-normalize",
     },
   ],
