@@ -123,7 +123,21 @@ const NUR_DEUTSCH =
     const reiter = seite.locator(`#${id}-tab-architecture`);
     if ((await reiter.count()) === 0) continue;
     await reiter.click();
-    await seite.waitForTimeout(500);
+
+    /*
+      Gewartet wird auf das Bild, nicht auf die Uhr.
+
+      Die Tafeln werden eingeblendet, und während der Blende hängt die vorige
+      noch im Dokument. Gemessen an der ausgelieferten Seite: 300 ms nach dem
+      Klick auf „Architektur" stand dort noch der Text des vorigen Reiters,
+      erst nach rund 900 ms das Diagramm. Eine feste Wartezeit prüft damit
+      mal das eine und mal das andere — ein Wächter, der nicht weiß, was er
+      gerade misst, ist schlimmer als keiner.
+    */
+    await seite
+      .locator(`#${id}-panel svg text`)
+      .first()
+      .waitFor({ state: "attached", timeout: 5000 });
 
     const texte = await seite.evaluate(
       (kennung) =>
