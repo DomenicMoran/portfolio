@@ -1390,6 +1390,50 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die Pflichtangaben im Impressum
+   ---------------------------------------------------------------------------
+
+   § 5 DDG zählt auf, was dort stehen muss. Vier davon lassen sich prüfen,
+   ohne den Text zu lesen: Anschrift, Kontakt, inhaltlich Verantwortlicher und
+   die Umsatzsteuer-Identifikationsnummer.
+
+   Die letzte stand lange nicht da. Im Quelltext hing ein Vorbehalt („falls
+   eine existiert"), und die Antwort stand die ganze Zeit öffentlich im
+   Impressum von menucloud-berlin.de. § 5 Abs. 1 Nr. 6 DDG verlangt sie,
+   sobald es eine gibt.
+
+   Geprüft wird die gebaute Seite: Was im Quelltext hinter einer Bedingung
+   steht, kann fehlen, ohne dass es jemandem auffällt. */
+{
+  const seite = join(".next", "server", "app", "impressum.html");
+  if (!existsSync(seite)) {
+    zeilen.push("  --  Impressum: kein Bau vorhanden, übersprungen");
+  } else {
+    const text = readFileSync(seite, "utf8")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ");
+
+    const PFLICHT = [
+      ["Anschrift", /Heidelberger Stra(ß|ss)e 36/],
+      ["Postleitzahl und Ort", /12059 Berlin/],
+      ["Kontakt", /domenicmoran@gmail\.com/],
+      ["inhaltlich Verantwortlicher", /§ ?18 Abs\. ?2 MStV/],
+      ["Umsatzsteuer-Identifikationsnummer", /DE\d{9}/],
+    ];
+
+    const fehlend = PFLICHT.filter(([, muster]) => !muster.test(text)).map(([was]) => was);
+    if (fehlend.length) {
+      abweichungen += fehlend.length;
+      zeilen.push(`  !!  Impressum: ${fehlend.join(", ")} fehlt/fehlen`);
+    } else {
+      zeilen.push(
+        `  ok  Impressum          ${String(PFLICHT.length).padStart(6)} Pflichtangaben nach § 5 DDG`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Abzeichen im README nennen die Fassungen, die installiert sind
    ---------------------------------------------------------------------------
 
