@@ -1156,9 +1156,9 @@ export const en: Content = {
   },
 
   demoNouri: {
-    title: "One day, added up",
-    lede: "Twelve meals from the catalogue, with the values it holds per serving. Pick some and watch the day add up.",
-    mealsLabel: "Choose meals",
+    title: "A day, put together",
+    lede: "Twelve dishes from the catalogue, with the per-portion values stored there. Set a target and let it run: it checks all 4,096 possible combinations and takes the one with the most protein that stays under the target.",
+    mealsLabel: "Choose dishes",
     units: {
       kcal: "kcal",
       protein: "Protein",
@@ -1166,11 +1166,16 @@ export const en: Content = {
       fat: "Fat",
       fiber: "Fibre",
     },
-    note: "Values from the NOURI catalogue (11,892 recipes, these twelve are the curated ones). Energy split via the standard 4/4/9 kcal per gram. No daily target: in the app that depends on the profile, and one invented here would be the only figure on this site without evidence.",
+    targetLabel: "Daily target",
+    solve: "Put a day together",
+    solveNote: "{n} combinations checked in {ms} ms",
+    noFit: "No meal fits under this target",
+    below: "{n} kcal below the target",
+    note: "Values from the NOURI catalogue (11,892 recipes, these twelve are the curated ones). Energy split via the standard 4/4/9 kcal per gram. The target is the visitor’s: in the app it comes from the profile, and one invented here would be the only figure on this site without evidence.",
   },
   demoSalati: {
-    title: "Prayer times, computed right here",
-    lede: "Not a screenshot and not a re-creation: this panel loads the same library that runs in the shipped app, with the same values it ships with.",
+    title: "A year of prayer times, computed right here",
+    lede: "Not a screenshot and not a re-creation: this panel loads the same library that runs in the shipped app. Every stroke is one day, every line one prayer time. The switch on the right is where this got genuinely hard in production.",
     placeLabel: "Choose a city",
     prayers: {
       fajr: "Fajr",
@@ -1183,7 +1188,24 @@ export const en: Content = {
     next: "Up next",
     dayDone: "All of today has passed",
     failed: "not computed",
-    note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. All in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
+    ruleLabel: "High-latitude rule",
+    rules: {
+      auto: "as the app ships",
+      angle: "twilight angle",
+      seventh: "seventh of the night",
+      middle: "middle of the night",
+    },
+    dayLabel: "Day of the year",
+    spread: "Spread between the rules",
+    gap: "{n} days without a result",
+    legend: {
+      active: "selected rule",
+      others: "the other two",
+    },
+    speed: "{ms} ms",
+    today: "today",
+    note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. 2,190 points in time, computed in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
+    hardPart: "Above roughly 48° the sun never drops far enough below the horizon in summer, and Fajr and Isha are no longer well defined. The three common rules then drift apart: in Berlin, in June, by more than two hours. A user report saying “the prayer times are wrong” led exactly here. The app picks the twilight-angle rule, not because it is more correct, but because it matches what users compare against. In Tromsø even that leaves 117 days without a result: the night the calculation refers to does not happen there.",
   },
   onepager: {
     title: "One-pager",

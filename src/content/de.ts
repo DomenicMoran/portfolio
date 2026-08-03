@@ -204,8 +204,8 @@ export const de: Content = {
   },
 
   demoNouri: {
-    title: "Ein Tag, zusammengerechnet",
-    lede: "Zwölf Gerichte aus dem Katalog, mit den Werten, die dort je Portion hinterlegt sind. Auswählen und sehen, was zusammenkommt.",
+    title: "Ein Tag, zusammengestellt",
+    lede: "Zwölf Gerichte aus dem Katalog, mit den Werten, die dort je Portion hinterlegt sind. Ziel setzen, rechnen lassen: Der Lauf prüft jede der 4.096 möglichen Zusammenstellungen und nimmt die mit dem meisten Eiweiß, die unter dem Ziel bleibt.",
     mealsLabel: "Gerichte wählen",
     units: {
       kcal: "kcal",
@@ -214,11 +214,16 @@ export const de: Content = {
       fat: "Fett",
       fiber: "Ballaststoffe",
     },
-    note: "Werte aus dem NOURI-Katalog (11.892 Rezepte, hier die zwölf handkuratierten). Energieverteilung über 4/4/9 kcal je Gramm. Kein Tagesziel: Das hängt in der App am Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.",
+    targetLabel: "Tagesziel",
+    solve: "Tag zusammenstellen",
+    solveNote: "{n} Zusammenstellungen geprüft in {ms} ms",
+    noFit: "Unter diesem Ziel passt keine Mahlzeit",
+    below: "{n} kcal unter dem Ziel",
+    note: "Werte aus dem NOURI-Katalog (11.892 Rezepte, hier die zwölf handkuratierten). Energieverteilung über 4/4/9 kcal je Gramm. Das Ziel setzt der Besucher: In der App hängt es am Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.",
   },
   demoSalati: {
-    title: "Gebetszeiten, hier gerechnet",
-    lede: "Kein Bildschirmfoto und keine Nachbildung: Diese Kachel lädt dieselbe Bibliothek, die in der ausgelieferten App rechnet, und setzt dieselben Werte, die dort voreingestellt sind.",
+    title: "Ein Jahr Gebetszeiten, hier gerechnet",
+    lede: "Kein Bildschirmfoto und keine Nachbildung: Diese Kachel lädt dieselbe Bibliothek, die in der ausgelieferten App rechnet. Jeder Strich ist ein Tag, jede Linie eine Gebetszeit. Der Schalter rechts ist die Stelle, an der es in Produktion wirklich schwierig wurde.",
     placeLabel: "Ort wählen",
     prayers: {
       fajr: "Fadschr",
@@ -231,7 +236,24 @@ export const de: Content = {
     next: "Als Nächstes",
     dayDone: "Für heute sind alle Zeiten vorbei",
     failed: "nicht berechnet",
-    note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. Alles im Browser, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
+    ruleLabel: "Regel für hohe Breiten",
+    rules: {
+      auto: "wie in der App",
+      angle: "winkelbasiert",
+      seventh: "Siebtel der Nacht",
+      middle: "Mitte der Nacht",
+    },
+    dayLabel: "Tag im Jahr",
+    spread: "Spanne zwischen den Regeln",
+    gap: "{n} Tage ohne Ergebnis",
+    legend: {
+      active: "gewählte Regel",
+      others: "die beiden anderen",
+    },
+    speed: "{ms} ms",
+    today: "heute",
+    note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. 2.190 Zeitpunkte, im Browser gerechnet, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
+    hardPart: "Oberhalb von etwa 48° geht die Sonne im Sommer nie tief genug unter den Horizont, und Fadschr und Ischa sind nicht mehr eindeutig bestimmt. Die drei üblichen Regeln laufen dann auseinander, in Berlin im Juni um über zwei Stunden. Eine Nutzermeldung „Gebetszeiten stimmen nicht“ führte genau hierher. Die App wählt die winkelbasierte Regel, nicht weil sie richtiger wäre, sondern weil sie zu dem passt, womit Nutzer vergleichen. In Tromsø bleiben auch damit 117 Tage ohne Ergebnis: Dort gibt es die Nacht nicht, auf die sich die Rechnung bezieht.",
   },
   onepager: {
     title: "Kurzprofil",

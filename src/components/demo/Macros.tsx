@@ -11,11 +11,19 @@ import type { Content } from "@/content/types";
  * insgesamt 11.892 Einträge hat. Kilokalorien, Eiweiß, Kohlenhydrate, Fett und
  * Ballaststoffe stehen dort je Portion, und genau diese Werte stehen hier.
  *
- * Was der Besucher tut, ist das, was die App tut: Gerichte für einen Tag
- * zusammenstellen und sehen, was zusammenkommt. Die Rechnung ist Addition,
- * dazu die Energieverteilung über die Standardwerte 4/4/9 kcal je Gramm.
- * Kein Tagesziel: Das hängt in der App am Profil, und ein hier erfundenes
- * Ziel wäre die einzige Zahl auf dieser Seite ohne Beleg.
+ * Was der Besucher tut, ist das, was die App tut: einen Tag zusammenstellen,
+ * der ein Ziel trifft. Der erste Anlauf konnte nur addieren — anklicken und
+ * die Summe ablesen. Das ist keine Vorführung, das ist ein Taschenrechner.
+ *
+ * Diese Fassung löst die Aufgabe, die dahintersteckt: Aus zwölf Gerichten
+ * die Zusammenstellung finden, die unter einem Kalorienziel bleibt und dabei
+ * das meiste Eiweiß bringt. Zwölf Gerichte sind 2^12 = 4.096 Möglichkeiten,
+ * und die lassen sich vollständig durchrechnen — gemessen in unter einer
+ * Millisekunde. Kein Näherungsverfahren, keine Heuristik: das Ergebnis ist
+ * beweisbar das beste, und die geprüfte Anzahl steht daneben.
+ *
+ * Das Ziel setzt der Besucher am Regler. In der App hängt es am Profil, und
+ * ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.
  *
  * Die Titel stehen im Katalog in Ersatzschreibung („Haehnchen"), weil er über
  * ASCII-Kennungen erzeugt wird. Hier stehen sie mit Umlaut: Die Zahlen sind
@@ -149,10 +157,67 @@ const GERICHTE = [
 /** Energie je Gramm. Standardwerte, nicht projektspezifisch. */
 const KCAL_JE_GRAMM = { p: 4, k: 4, f: 9 } as const;
 
+/** Die Grenzen des Reglers. Unter 1.200 kcal passt kaum noch ein Tag. */
+const ZIEL = { min: 1200, max: 3400, schritt: 50, start: 2200 } as const;
+
+/**
+ * Die beste Zusammenstellung unter einem Kalorienziel.
+ *
+ * Vollständige Aufzählung über die Bitmuster von 0 bis 4.095: Jedes Bit ist
+ * ein Gericht. Das geht, weil zwölf Gerichte nur 4.096 Teilmengen haben —
+ * bei dreissig wären es eine Milliarde, und dann bräuchte es ein anderes
+ * Verfahren. Genau das ist der Punkt, den die Zahl daneben belegt.
+ *
+ * Bewertet wird nach Eiweiß, bei Gleichstand nach Ballaststoffen. Mindestens
+ * drei Mahlzeiten, weil ein Tag aus einem einzigen Gericht kein Tag ist.
+ */
+function besterTag(ziel: number) {
+  const beginn = performance.now();
+  let beste: number[] = [];
+  let bestesEiweiss = -1;
+  let besteBallast = -1;
+
+  for (let muster = 0; muster < 1 << GERICHTE.length; muster++) {
+    let kcal = 0;
+    let eiweiss = 0;
+    let ballast = 0;
+    let anzahl = 0;
+
+    for (let i = 0; i < GERICHTE.length; i++) {
+      if (!(muster & (1 << i))) continue;
+      kcal += GERICHTE[i].kcal;
+      if (kcal > ziel) break;
+      eiweiss += GERICHTE[i].p;
+      ballast += GERICHTE[i].b;
+      anzahl++;
+    }
+
+    if (kcal > ziel || anzahl < 3) continue;
+    if (
+      eiweiss > bestesEiweiss ||
+      (eiweiss === bestesEiweiss && ballast > besteBallast)
+    ) {
+      bestesEiweiss = eiweiss;
+      besteBallast = ballast;
+      beste = GERICHTE.map((_, i) => i).filter((i) => muster & (1 << i));
+    }
+  }
+
+  return {
+    auswahl: beste,
+    geprueft: 1 << GERICHTE.length,
+    dauer: Math.round((performance.now() - beginn) * 100) / 100,
+  };
+}
+
 export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const demo = inhalt.demoNouri;
   // Ein Frühstück und ein Mittagessen als Start: Eine leere Tabelle zeigt nichts.
   const [gewaehlt, setGewaehlt] = useState<number[]>([1, 0]);
+  const [ziel, setZiel] = useState<number>(ZIEL.start);
+  const [lauf, setLauf] = useState<{ geprueft: number; dauer: number } | null>(
+    null,
+  );
 
   const summe = useMemo(() => {
     const s = { kcal: 0, p: 0, k: 0, f: 0, b: 0 };
@@ -183,16 +248,31 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
     };
   }, [summe]);
 
-  const umschalten = (i: number) =>
+  const umschalten = (i: number) => {
     setGewaehlt((alt) =>
       alt.includes(i) ? alt.filter((x) => x !== i) : [...alt, i],
     );
+    // Von Hand geändert heißt: Was dasteht, ist nicht mehr das Ergebnis des
+    // Laufs. Die Messung dazu stehen zu lassen, wäre eine falsche Behauptung.
+    setLauf(null);
+  };
+
+  const zusammenstellen = () => {
+    const { auswahl, geprueft, dauer } = besterTag(ziel);
+    setGewaehlt(auswahl);
+    setLauf({ geprueft, dauer });
+  };
 
   const zahl = (n: number) =>
     n.toLocaleString(inhalt.lang === "de" ? "de-DE" : "en-GB");
 
   return (
-    <div className="lit rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
+    /* `no-print`: Eine Vorführung, die man anfassen muss, gehört nicht auf
+       Papier. Gemessen kam sie dort auch nicht an: `check:print` lädt frisch
+       und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
+       durch — auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
+       Aussage trägt, steht in der Fallstudie darüber. */
+    <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-base font-semibold tracking-tight text-ink">
           {demo.title}
@@ -202,14 +282,58 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         </p>
       </div>
 
-      <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-ink-dim text-pretty">
+      <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
         {demo.lede}
       </p>
+
+      {/* Ziel, dann Lauf: erst die Eingabe, darunter die Handlung.
+          Nebeneinander gestellt lief die rechtsbündige Zahl des Reglers in den
+          Knopf hinein, sobald die Kachel schmaler wurde als 900 px. */}
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <label className="basis-full sm:max-w-md">
+          <span className="flex items-baseline justify-between gap-4">
+            <span className="text-eyebrow">{demo.targetLabel}</span>
+            <span className="font-mono text-sm text-ink tabular-nums">
+              {zahl(ziel)} {demo.units.kcal}
+            </span>
+          </span>
+          <input
+            type="range"
+            min={ZIEL.min}
+            max={ZIEL.max}
+            step={ZIEL.schritt}
+            value={ziel}
+            onChange={(e) => {
+              setZiel(Number(e.target.value));
+              setLauf(null);
+            }}
+            className="mt-2 w-full accent-acid"
+          />
+        </label>
+
+        <button
+          type="button"
+          onClick={zusammenstellen}
+          className="shrink-0 rounded-full border border-acid/40 bg-acid/10 px-4 py-2 text-[13px] font-medium text-ink transition-colors hover:border-acid hover:bg-acid/15"
+        >
+          {demo.solve}
+        </button>
+
+        {/* Feste Höhe: Der Text erscheint erst nach dem Lauf und darf die
+            Gerichte darunter nicht verschieben. */}
+        <p className="min-h-[1.1rem] font-mono text-[11px] text-ink-faint tabular-nums">
+          {lauf
+            ? demo.solveNote
+                .replace("{n}", zahl(lauf.geprueft))
+                .replace("{ms}", String(lauf.dauer))
+            : " "}
+        </p>
+      </div>
 
       <div
         role="group"
         aria-label={demo.mealsLabel}
-        className="mt-5 flex flex-wrap gap-1.5"
+        className="mt-1 flex flex-wrap gap-1.5"
       >
         {GERICHTE.map((g, i) => {
           const an = gewaehlt.includes(i);
@@ -276,7 +400,17 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         {demo.units.fat} {anteile.f} %
       </p>
 
-      <p className="mt-5 border-t border-line pt-4 font-mono text-[11px] leading-relaxed text-ink-faint">
+      {/* Wie weit die Zusammenstellung unter dem Ziel bleibt — der Rest, den
+          das Verfahren nicht füllen konnte, ohne darüber zu gehen. Bei zwölf
+          Gerichten mit festen Portionen bleibt fast immer etwas übrig, und
+          das zu verschweigen wäre die unehrlichere Darstellung. */}
+      <p className="mt-4 min-h-[1.1rem] font-mono text-[11px] text-ink-faint tabular-nums">
+        {summe.kcal === 0
+          ? demo.noFit
+          : demo.below.replace("{n}", zahl(Math.max(0, ziel - summe.kcal)))}
+      </p>
+
+      <p className="mt-4 border-t border-line pt-4 font-mono text-[11px] leading-relaxed text-ink-faint">
         {demo.note}
       </p>
     </div>

@@ -351,17 +351,35 @@ export type Content = {
     dayDone: string;
     /** Steht statt einer Zeit, wenn die Rechnung nicht zustande kam. */
     failed: string;
+    /** Name der Regelwahl für Vorleseprogramme. */
+    ruleLabel: string;
+    /** Die vier Regeln für hohe Breiten, in der Reihenfolge der Schaltflächen. */
+    rules: { auto: string; angle: string; seventh: string; middle: string };
+    /** Beschriftung des Tagesreglers. */
+    dayLabel: string;
+    /** Vor der Spanne zwischen der frühesten und spätesten Regel. */
+    spread: string;
+    /** Wie viele Tage im Jahr ohne Ergebnis bleiben. `{n}` wird ersetzt. */
+    gap: string;
+    /** Was die durchgezogene und was die gestrichelte Linie bedeutet. */
+    legend: { active: string; others: string };
+    /** Vor der gemessenen Rechenzeit. `{ms}` wird ersetzt. */
+    speed: string;
+    /** Markierung des heutigen Tages im Band. */
+    today: string;
     /** Woher die Rechnung stammt und was sie nicht tut. */
     note: string;
+    /** Der Befund hinter der Regelwahl, in wenigen Sätzen. */
+    hardPart: string;
   };
 
   /**
    * Die Tagesrechnung aus NOURI.
    *
    * Zwölf Gerichte aus dem Katalog des Produktivrepos, mit den Werten, die
-   * dort je Portion hinterlegt sind. Kein Tagesziel: Das hängt in der App am
-   * Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite
-   * ohne Beleg.
+   * dort je Portion hinterlegt sind. Das Tagesziel setzt der Besucher: In der
+   * App hängt es am Profil, und ein hier erfundenes wäre die einzige Zahl auf
+   * dieser Seite ohne Beleg.
    */
   demoNouri: {
     title: string;
@@ -375,6 +393,16 @@ export type Content = {
       fat: string;
       fiber: string;
     };
+    /** Beschriftung des Kalorienreglers. */
+    targetLabel: string;
+    /** Der Knopf, der den Tag zusammenstellt. */
+    solve: string;
+    /** Was der Lauf geprüft hat. `{n}` und `{ms}` werden ersetzt. */
+    solveNote: string;
+    /** Steht, wenn keine Zusammenstellung unter das Ziel passt. */
+    noFit: string;
+    /** Wie weit die Zusammenstellung unter dem Ziel bleibt. `{n}` wird ersetzt. */
+    below: string;
     note: string;
   };
 

@@ -1,275 +1,673 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Content } from "@/content/types";
 
 /**
- * Die Gebetszeit-Rechnung aus Salati, im Browser des Besuchers.
+ * Ein Jahr Gebetszeiten, im Browser des Besuchers gerechnet.
  *
  * Kein Video, kein Bildschirmfoto, keine Nachbildung: Diese Kachel lädt
  * dieselbe Bibliothek, die in der ausgelieferten App rechnet (`adhan`, MIT),
  * und setzt dieselben Werte, die dort voreingestellt sind: Methode 13
- * (Diyanet), Schule 0 (schafiitisch), Ort Berlin. Nachgelesen in
- * `apps/mobile/src/features/prayer-times/calc.ts` und `DEFAULT_SETTINGS`.
+ * (Diyanet), Schule 0 (schafiitisch). Nachgelesen in
+ * `apps/mobile/src/features/prayer-times/calc.ts`.
  *
- * Warum das hier steht: Vier Systeme in Produktion, alle privat. Wer die Seite
- * liest, kann bis hierher nichts davon anfassen. Das ist der eine Teil, der
- * sich herauslösen und vorführen lässt, ohne etwas zu behaupten.
+ * Der erste Anlauf zeigte einen einzelnen Tag: sechs Uhrzeiten und einen Bogen
+ * darunter. Das war richtig gerechnet und trotzdem nichts wert — sechs Zahlen
+ * anzuzeigen ist keine Leistung, die man vorführt, und wer sie sieht, kann
+ * nicht unterscheiden, ob dahinter eine Bibliothek oder eine Textdatei steckt.
  *
- * Gezeigt wird, was der Hauptbildschirm der App zeigt: welches Gebet als
- * Nächstes ansteht und wie weit der Tag ist. Der Tagesbogen ist dabei keine
- * Zierde, sondern die Ansicht, an der man auf einen Blick sieht, wo man steht.
+ * Diese Fassung zeigt das ganze Jahr auf einmal und dazu die Stelle, an der die
+ * Sache in Produktion wirklich schwierig wurde: Oberhalb von etwa 48° geht die
+ * Sonne im Sommer nie tief genug unter den Horizont, und Fadschr und Ischa sind
+ * nicht mehr eindeutig bestimmt. Es gibt drei übliche Regeln, sie liegen in
+ * Berlin am 21. Juni über zwei Stunden auseinander, und keine ist
+ * allgemeingültig richtig. Genau das ist hier umschaltbar, und das Band
+ * verformt sich sichtbar dabei.
  *
  * Vier Bedingungen bestimmen den Aufbau:
  *
  * - **Nichts über die Leitung.** Die Datenschutzerklärung sagt, dass diese
  *   Seite keine Verbindung nach außen aufbaut, und `check:privacy` misst das.
- *   Die Rechnung läuft deshalb vollständig hier, wie in der App ohne Netz.
+ *   Die Rechnung läuft vollständig hier, wie in der App ohne Netz.
  * - **Nicht im ersten Bündel.** `adhan` wird erst geladen, wenn diese Kachel
  *   gebraucht wird, damit die Startseite davon nichts merkt.
- * - **Keine springende Zeile.** Jeder Bereich hat seine Höhe, bevor die Zahlen
- *   da sind.
- * - **Im Minutentakt, nicht im Sekundentakt.** Die Restzeit steht in Minuten;
- *   jede Sekunde neu zu rechnen kostet Strom und zeigt dasselbe.
+ * - **Keine springende Zeile.** Das Band hat seine Höhe, bevor die Zahlen da
+ *   sind; der Wechsel von Ort oder Regel ändert daran nichts.
+ * - **Ohne Maus bedienbar.** Der Tag wird über einen Schieberegler gewählt und
+ *   nicht über die Zeigerposition. Das Band selbst ist Darstellung und für
+ *   Vorleseprogramme ausgeblendet — die sechs Zeiten stehen darunter als Text.
  */
 
-/** Die vier Orte. Koordinaten wie in der Ortsliste der App. */
+/** Die Orte. Der letzte ist der Grenzfall, und er steht bewusst dabei. */
 const ORTE = [
   { name: "Berlin", lat: 52.52, lon: 13.405 },
-  { name: "Hamburg", lat: 53.5511, lon: 9.9937 },
-  { name: "München", lat: 48.1351, lon: 11.582 },
-  { name: "Köln", lat: 50.9375, lon: 6.9603 },
+  { name: "Istanbul", lat: 41.0082, lon: 28.9784 },
+  { name: "Kairo", lat: 30.0444, lon: 31.2357, en: "Cairo" },
+  { name: "Tromsø", lat: 69.6496, lon: 18.956 },
 ] as const;
 
 /** Die fünf Pflichtgebete plus Sonnenaufgang, in der Reihenfolge des Tages. */
 const GEBETE = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as const;
 type Gebet = (typeof GEBETE)[number];
 
-type Zeiten = { name: Gebet; zeit: Date }[];
+/**
+ * Die Regeln für hohe Breiten, in der Reihenfolge der Schaltflächen.
+ *
+ * `auto` ist keine eigene Regel der Bibliothek, sondern die Entscheidung der
+ * App: oberhalb von 48° die winkelbasierte, darunter die Standardrechnung.
+ */
+const REGELN = ["auto", "angle", "seventh", "middle"] as const;
+type Regel = (typeof REGELN)[number];
 
-/** Anteil des Tages, den dieser Zeitpunkt erreicht hat. 0 = 00:00, 1 = 24:00. */
-function tagesAnteil(d: Date) {
-  return (d.getHours() * 60 + d.getMinutes()) / (24 * 60);
+/** Ein Tag: sechs Zeitpunkte als Minuten seit Mitternacht, `null` = keine. */
+type Tag = (number | null)[];
+
+/** Das Band zeigt ein volles Jahr. Der Schalttag bleibt außen vor. */
+const TAGE = 365;
+const MINUTEN = 24 * 60;
+
+/**
+ * Die sechs Flächen zwischen den Zeiten, von der Nacht aufwärts gelesen.
+ *
+ * Die Farben sind der Tageslauf und keine Palette: Nacht dunkel, Dämmerung
+ * violett, Tag neutral hell. Dadurch entsteht die Sanduhrform, an der man die
+ * Jahreszeiten sieht, ohne dass eine Beschriftung es sagen müsste.
+ *
+ * Der Tag war zuerst grün, aus der Akzentfarbe der Seite. Grün mit niedriger
+ * Deckung auf Schwarz ergibt Oliv, und das ganze Band wirkte trüb. Die
+ * Akzentfarbe gehört den Linien: Flächen tragen die Tageszeit, Linien die
+ * Aussage.
+ */
+const FLAECHEN = [
+  { von: "isha", bis: "fajr", farbe: "var(--color-void)", deckung: 0.92 },
+  { von: "fajr", bis: "sunrise", farbe: "var(--color-violet)", deckung: 0.45 },
+  { von: "sunrise", bis: "dhuhr", farbe: "var(--color-ink)", deckung: 0.1 },
+  { von: "dhuhr", bis: "asr", farbe: "var(--color-ink)", deckung: 0.17 },
+  { von: "asr", bis: "maghrib", farbe: "var(--color-ink)", deckung: 0.1 },
+  { von: "maghrib", bis: "isha", farbe: "var(--color-violet)", deckung: 0.4 },
+] as const;
+
+/** Höhe des Bandes im Koordinatensystem. Ein Tag ist eine Einheit breit. */
+const HOEHE = 190;
+
+/**
+ * Der erste Tag jedes Monats, im Nicht-Schaltjahr.
+ *
+ * Ohne Raster ist das Band ein hübsches Bild und keine Ablesung: Man sieht,
+ * dass sich etwas verändert, aber nicht wann. Zwölf Beschriftungen wären zu
+ * viel — die Striche stehen für alle Monate, die Zahlen nur an den Quartalen.
+ */
+const MONATSANFANG = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+
+/** Die Anfangsbuchstaben der Monate, deutsch wie englisch gleich bis auf zwei. */
+const MONATE = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
+
+const uhrzeit = (m: number | null, fehlt: string) =>
+  m === null
+    ? fehlt
+    : `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+
+/** "2 h 34 min" statt "154 min": Als Spanne ist das sofort greifbar. */
+function spanne(m: number) {
+  const h = Math.floor(m / 60);
+  return h ? `${h} h ${m % 60} min` : `${m} min`;
+}
+
+/** Der laufende Tag des Jahres, von 0 an gezählt. */
+function tagDesJahres(d: Date) {
+  return Math.round(
+    (d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86_400_000,
+  );
 }
 
 export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   const demo = inhalt.demoSalati;
   const [ort, setOrt] = useState(0);
-  const [zeiten, setZeiten] = useState<Zeiten | null>(null);
-  const [fehler, setFehler] = useState(false);
+  const [regel, setRegel] = useState<Regel>("auto");
 
-  /* Die Uhr als externe Quelle, nicht als Zustand in einem Effekt.
-
-     Auf dem Server gibt es keine Ortszeit des Besuchers; ein Wert aus dem
-     Bau wäre beim Aufruf falsch. `useSyncExternalStore` ist genau dafür da:
-     Der Server liefert null, der Browser die angebrochene Minute. Ein
-     `setState` im Effekt löst stattdessen eine zweite Renderrunde aus, und
-     die Regel react-hooks/set-state-in-effect verbietet es zu Recht.
-
-     Aufgelöst wird auf Minuten: Die Restzeit steht in Minuten, und jede
-     Sekunde neu zu rechnen kostet Strom und zeigt dasselbe. */
-  const minute = useSyncExternalStore(
-    (melden) => {
-      const takt = setInterval(melden, 60_000);
-      return () => clearInterval(takt);
-    },
-    () => Math.floor(Date.now() / 60_000),
-    () => null,
+  /* Der heutige Tag als fester Wert für diesen Aufruf.
+     Nicht über die Uhr getaktet: Das Band ändert sich innerhalb einer Sitzung
+     nicht, und ein Minutentakt würde nur dieselbe Zahl neu setzen. */
+  const heuteNr = useMemo(() => tagDesJahres(new Date()), []);
+  const [tag, setTag] = useState(() =>
+    Math.min(TAGE - 1, tagDesJahres(new Date())),
   );
-  const jetzt = minute === null ? null : new Date(minute * 60_000);
+
+  /**
+   * Das Jahr, alle vier Regeln nebeneinander.
+   *
+   * Alle auf einmal, weil die Spanne zwischen ihnen die eigentliche Aussage
+   * ist. Gemessen kostet das zusammen etwa 20 ms — billiger, als beim
+   * Umschalten jedes Mal neu zu rechnen, und ohne Ruckeln beim Klick.
+   */
+  const [jahr, setJahr] = useState<Record<Regel, Tag[]> | null>(null);
+  const [dauer, setDauer] = useState<number | null>(null);
+  const [fehler, setFehler] = useState(false);
 
   useEffect(() => {
     let abgebrochen = false;
 
-    async function rechnen() {
+    (async () => {
       try {
         const adhan = await import("adhan");
         if (abgebrochen) return;
 
         const { lat, lon } = ORTE[ort];
-        // Methode 13 und Schule 0 sind die Voreinstellung der App.
-        const p = adhan.CalculationMethod.Turkey();
-        p.madhab = adhan.Madhab.Shafi;
-        const t = new adhan.PrayerTimes(
-          new adhan.Coordinates(lat, lon),
-          new Date(),
-          p,
-        );
+        const koordinaten = new adhan.Coordinates(lat, lon);
+        const jahrZahl = new Date().getFullYear();
 
-        setZeiten(GEBETE.map((name) => ({ name, zeit: t[name] })));
+        const nachRegel = {
+          angle: adhan.HighLatitudeRule.TwilightAngle,
+          seventh: adhan.HighLatitudeRule.SeventhOfTheNight,
+          middle: adhan.HighLatitudeRule.MiddleOfTheNight,
+          // Die Entscheidung der App, nachgebaut wie `resolveHighLatitudeRule`.
+          auto:
+            lat > 48
+              ? adhan.HighLatitudeRule.TwilightAngle
+              : adhan.HighLatitudeRule.MiddleOfTheNight,
+        } satisfies Record<Regel, unknown>;
+
+        const beginn = performance.now();
+        const aus = {} as Record<Regel, Tag[]>;
+
+        for (const r of REGELN) {
+          const p = adhan.CalculationMethod.Turkey();
+          p.madhab = adhan.Madhab.Shafi;
+          p.highLatitudeRule = nachRegel[r];
+
+          const tage: Tag[] = [];
+          for (let i = 0; i < TAGE; i++) {
+            const zeiten = new adhan.PrayerTimes(
+              koordinaten,
+              new Date(jahrZahl, 0, 1 + i),
+              p,
+            );
+            tage.push(
+              GEBETE.map((g) => {
+                const d = zeiten[g];
+                return d instanceof Date && !Number.isNaN(d.getTime())
+                  ? d.getHours() * 60 + d.getMinutes()
+                  : null;
+              }),
+            );
+          }
+          aus[r] = tage;
+        }
+
+        if (abgebrochen) return;
+        setDauer(Math.round(performance.now() - beginn));
+        setJahr(aus);
       } catch {
-        // Lieber eine ehrliche Zeile als eine leere Kachel.
         if (!abgebrochen) setFehler(true);
       }
-    }
+    })();
 
-    rechnen();
     return () => {
       abgebrochen = true;
     };
   }, [ort]);
 
-  const sprache = inhalt.lang === "de" ? "de-DE" : "en-GB";
-  const uhrzeit = (d: Date) =>
-    d.toLocaleTimeString(sprache, { hour: "2-digit", minute: "2-digit" });
+  const tage = jahr?.[regel] ?? null;
+  const heutiger = tage?.[tag] ?? null;
 
-  const heute = new Date().toLocaleDateString(sprache, {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  /**
+   * Die Flächen als Pfade.
+   *
+   * Jede Fläche wird in Stücke zerlegt, sobald ein Tag keine Zeit hat: In
+   * Tromsø sind das 117 von 365 Tagen, und ein durchgezogener Pfad würde
+   * quer über die Lücke laufen und eine Zeit behaupten, die es nicht gibt.
+   */
+  const pfade = useMemo(() => {
+    if (!tage) return null;
 
-  /* Das nächste Gebet und die Minuten bis dahin. Nach Ischa ist der Tag
-     durch; die App zeigt dann Fadschr des Folgetags, hier bleibt die Zeile
-     leer statt eine Zahl zu zeigen, die aus einem anderen Tag stammt. */
-  const naechstes =
-    zeiten && jetzt ? zeiten.find((z) => z.zeit > jetzt) : undefined;
-  const restMinuten = naechstes
-    ? Math.max(
-        0,
-        Math.round((naechstes.zeit.getTime() - jetzt!.getTime()) / 60000),
-      )
-    : null;
+    const y = (m: number) => HOEHE - (m / MINUTEN) * HOEHE;
+    const spalte = (g: string) => GEBETE.indexOf(g as Gebet);
+
+    /** Aus oberer und unterer Kante ein geschlossenes Stück machen. */
+    const stueck = (oben: string[], unten: string[]) =>
+      oben.length > 1
+        ? `M ${oben.join(" L ")} L ${[...unten].reverse().join(" L ")} Z`
+        : "";
+
+    return FLAECHEN.map((f) => {
+      const stuecke: string[] = [];
+      let oben: string[] = [];
+      let unten: string[] = [];
+
+      // Die Nacht läuft über Mitternacht und zerfällt deshalb in zwei Bänder:
+      // von Ischa bis zum oberen Rand und vom unteren Rand bis Fadschr.
+      const ueberNacht = f.von === "isha";
+
+      for (let i = 0; i < TAGE; i++) {
+        const a = tage[i][spalte(f.von)];
+        const b = tage[i][spalte(f.bis)];
+        if (a === null || b === null) {
+          stuecke.push(stueck(oben, unten));
+          oben = [];
+          unten = [];
+          continue;
+        }
+        oben.push(`${i} ${ueberNacht ? y(a) : y(b)}`);
+        unten.push(`${i} ${ueberNacht ? 0 : y(a)}`);
+      }
+      stuecke.push(stueck(oben, unten));
+
+      if (ueberNacht) {
+        oben = [];
+        unten = [];
+        for (let i = 0; i < TAGE; i++) {
+          const fajr = tage[i][spalte("fajr")];
+          if (fajr === null) {
+            stuecke.push(stueck(oben, unten));
+            oben = [];
+            unten = [];
+            continue;
+          }
+          oben.push(`${i} ${HOEHE}`);
+          unten.push(`${i} ${y(fajr)}`);
+        }
+        stuecke.push(stueck(oben, unten));
+      }
+
+      return { ...f, d: stuecke.filter(Boolean).join(" ") };
+    });
+  }, [tage]);
+
+  /** Aus einem Jahr die sechs Linienzuege machen. */
+  const linienAus = useCallback((quelle: Tag[] | null) => {
+    if (!quelle) return null;
+    const y = (m: number) => HOEHE - (m / MINUTEN) * HOEHE;
+
+    return GEBETE.map((g, spalte) => {
+      const stuecke: string[] = [];
+      let punkte: string[] = [];
+      for (let i = 0; i < TAGE; i++) {
+        const m = quelle[i][spalte];
+        if (m === null) {
+          if (punkte.length > 1) stuecke.push(`M ${punkte.join(" L ")}`);
+          punkte = [];
+          continue;
+        }
+        punkte.push(`${i} ${y(m)}`);
+      }
+      if (punkte.length > 1) stuecke.push(`M ${punkte.join(" L ")}`);
+      return { name: g, d: stuecke.join(" ") };
+    });
+  }, []);
+
+  /** Die Linien der sechs Zeiten, damit die Kanten scharf bleiben. */
+  const linien = useMemo(() => linienAus(tage), [tage, linienAus]);
+
+  /**
+   * Die beiden anderen Regeln als feine Geisterlinien.
+   *
+   * Der eigentliche Befund ist nicht, wo Fadschr liegt, sondern wie weit die
+   * Regeln auseinanderliegen — und das sah man vorher erst, wenn man auf jede
+   * Schaltflaeche einzeln klickte und sich das Bild merkte. Mit den Geistern
+   * steht die Spanne im Bild: Im Winter fallen die Linien zusammen, ab Mai
+   * laufen sie auf ueber zwei Stunden auseinander. Nur Fadschr und Ischa,
+   * weil nur die beiden von der Regel abhaengen.
+   */
+  const geister = useMemo(() => {
+    if (!jahr) return null;
+    const andere = (["angle", "seventh", "middle"] as const).filter(
+      (r) => jahr[r] !== jahr[regel],
+    );
+    return andere
+      .map((r) => linienAus(jahr[r]))
+      .filter(Boolean)
+      .flatMap((l) => l!.filter((x) => x.name === "fajr" || x.name === "isha"));
+  }, [jahr, regel, linienAus]);
+
+  /** Wie weit die drei Regeln an diesem Tag bei Fadschr auseinanderliegen. */
+  const abstand = useMemo(() => {
+    if (!jahr) return null;
+    const werte = (["angle", "seventh", "middle"] as const)
+      .map((r) => jahr[r][tag]?.[0])
+      .filter((m): m is number => typeof m === "number");
+    if (werte.length < 2) return null;
+    return Math.max(...werte) - Math.min(...werte);
+  }, [jahr, tag]);
+
+  /**
+   * Die Tage, an denen die Rechnung an diesem Ort kein Ergebnis liefert.
+   *
+   * Als zusammenhaengende Bereiche und nicht als Zahl: In Tromsø sind es 117
+   * Tage am Stück, und ohne Markierung sieht die Stelle im Band wie ein
+   * Zeichenfehler aus. Markiert ist sie die Aussage — dort gibt es die Nacht
+   * nicht, auf die sich die Rechnung bezieht.
+   */
+  const luecken = useMemo(() => {
+    if (!tage) return [];
+    const raus: { von: number; bis: number }[] = [];
+    let offen: number | null = null;
+    for (let i = 0; i < TAGE; i++) {
+      const leer = tage[i].some((m) => m === null);
+      if (leer && offen === null) offen = i;
+      if (!leer && offen !== null) {
+        raus.push({ von: offen, bis: i });
+        offen = null;
+      }
+    }
+    if (offen !== null) raus.push({ von: offen, bis: TAGE });
+    return raus;
+  }, [tage]);
+
+  const lueckenTage = useMemo(
+    () => luecken.reduce((n, l) => n + (l.bis - l.von), 0),
+    [luecken],
+  );
+
+  const datum = useMemo(
+    () =>
+      new Date(new Date().getFullYear(), 0, 1 + tag).toLocaleDateString(
+        inhalt.lang === "de" ? "de-DE" : "en-GB",
+        { day: "numeric", month: "long" },
+      ),
+    [tag, inhalt.lang],
+  );
+
+  const ortName = (o: (typeof ORTE)[number]) =>
+    inhalt.lang === "en" && "en" in o ? o.en : o.name;
 
   return (
-    <div className="lit rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
+    /* `no-print`: Eine Vorführung, die man anfassen muss, gehört nicht auf
+       Papier. Gemessen kam sie dort auch nicht an: `check:print` lädt frisch
+       und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
+       durch — auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
+       Aussage trägt, steht in der Fallstudie darüber. */
+    <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-base font-semibold tracking-tight text-ink">
           {demo.title}
         </h3>
-        <p className="font-mono text-[11px] text-ink-faint">{heute}</p>
+        {/* Die gemessene Rechenzeit steht dabei, weil sie die Aussage trägt:
+            Was hier passiert, ist Rechnen und kein Abrufen. */}
+        <p className="font-mono text-[11px] text-ink-faint tabular-nums">
+          {dauer === null ? " " : demo.speed.replace("{ms}", String(dauer))}
+        </p>
       </div>
 
-      <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-ink-dim text-pretty">
+      <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
         {demo.lede}
       </p>
 
-      <div
-        role="group"
-        aria-label={demo.placeLabel}
-        className="mt-5 flex flex-wrap gap-1.5"
-      >
-        {ORTE.map((o, i) => (
-          <button
-            key={o.name}
-            type="button"
-            onClick={() => setOrt(i)}
-            aria-pressed={i === ort}
-            className={
-              i === ort
-                ? "rounded-full border border-acid/50 bg-acid/10 px-3.5 py-1.5 font-mono text-[11px] text-ink"
-                : "rounded-full border border-line px-3.5 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
-            }
-          >
-            {o.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Was als Nächstes ansteht. Die Zeile hat ihre Höhe auch dann, wenn
-          noch nichts gerechnet ist. */}
-      <p className="mt-6 flex min-h-[2rem] flex-wrap items-baseline gap-x-3 gap-y-1">
-        {naechstes && restMinuten !== null ? (
-          <>
-            <span className="text-eyebrow">{demo.next}</span>
-            <span className="text-lg font-semibold tracking-tight text-ink">
-              {demo.prayers[naechstes.name]}
-            </span>
-            <span className="font-mono text-sm text-acid tabular-nums">
-              {uhrzeit(naechstes.zeit)}
-            </span>
-            <span className="font-mono text-[11px] text-ink-faint">
-              {restMinuten >= 60
-                ? `${Math.floor(restMinuten / 60)} h ${restMinuten % 60} min`
-                : `${restMinuten} min`}
-            </span>
-          </>
-        ) : (
-          <span className="text-eyebrow text-ink-faint">
-            {zeiten ? demo.dayDone : "···"}
-          </span>
-        )}
-      </p>
-
-      {/* Der Tagesbogen: 00:00 links, 24:00 rechts, sechs Marken und der
-          Stand von jetzt. Kein Diagramm, eine Achse — und die einzige Stelle,
-          an der man ohne Rechnen sieht, wo der Tag steht. */}
-      <div
-        className="relative mt-3 h-9"
-        role="img"
-        aria-label={
-          zeiten
-            ? zeiten
-                .map((z) => `${demo.prayers[z.name]} ${uhrzeit(z.zeit)}`)
-                .join(", ")
-            : demo.placeLabel
-        }
-      >
-        <span className="absolute top-4 right-0 left-0 h-px bg-line" />
-        {zeiten?.map(({ name, zeit }) => {
-          const x = tagesAnteil(zeit) * 100;
-          const vorbei = jetzt ? zeit <= jetzt : false;
-          return (
-            <span
-              key={name}
-              style={{ left: `${x}%` }}
-              className="absolute top-0 flex -translate-x-1/2 flex-col items-center"
+      <div className="mt-5 flex flex-wrap gap-x-8 gap-y-4">
+        <div
+          role="group"
+          aria-label={demo.placeLabel}
+          className="flex flex-wrap gap-1.5"
+        >
+          {ORTE.map((o, i) => (
+            <button
+              key={o.name}
+              type="button"
+              onClick={() => setOrt(i)}
+              aria-pressed={ort === i}
+              className={
+                ort === i
+                  ? "rounded-full border border-acid/50 bg-acid/10 px-3 py-1.5 text-[12px] text-ink"
+                  : "rounded-full border border-line px-3 py-1.5 text-[12px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
+              }
             >
-              <span
-                className={
-                  vorbei
-                    ? "size-1.5 rounded-full bg-ink-faint"
-                    : "size-1.5 rounded-full bg-acid"
-                }
-              />
-              <span className="mt-[0.55rem] font-mono text-[9px] whitespace-nowrap text-ink-faint">
-                {uhrzeit(zeit)}
-              </span>
-            </span>
-          );
-        })}
-        {jetzt ? (
-          <span
-            style={{ left: `${tagesAnteil(jetzt) * 100}%` }}
-            className="absolute top-0 z-10 h-[1.15rem] w-px -translate-x-1/2 bg-ink shadow-[0_0_0_1px_rgba(0,0,0,0.6)]"
-          />
-        ) : null}
+              {ortName(o)}
+            </button>
+          ))}
+        </div>
+
+        <div
+          role="group"
+          aria-label={demo.ruleLabel}
+          className="flex flex-wrap gap-1.5"
+        >
+          {REGELN.map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setRegel(r)}
+              aria-pressed={regel === r}
+              className={
+                regel === r
+                  ? "rounded-full border border-violet/50 bg-violet/10 px-3 py-1.5 text-[12px] text-ink"
+                  : "rounded-full border border-line px-3 py-1.5 text-[12px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
+              }
+            >
+              {demo.rules[r]}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <dl className="mt-6 grid min-h-[9.5rem] grid-cols-2 gap-x-8 gap-y-2 sm:min-h-[5rem] sm:grid-cols-3">
-        {(zeiten ?? GEBETE.map((name) => ({ name, zeit: null }))).map(
-          ({ name, zeit }) => {
-            const vorbei = zeit && jetzt ? zeit <= jetzt : false;
-            return (
-              <div
-                key={name}
-                className="flex items-baseline justify-between border-b border-line/60 pb-1.5"
-              >
-                <dt
-                  className={
-                    vorbei ? "text-sm text-ink-faint" : "text-sm text-ink-dim"
-                  }
-                >
-                  {demo.prayers[name]}
-                </dt>
-                <dd
-                  className={
-                    zeit
-                      ? vorbei
-                        ? "font-mono text-sm text-ink-faint tabular-nums"
-                        : "font-mono text-sm text-ink tabular-nums"
-                      : "font-mono text-sm text-ink-faint"
-                  }
-                >
-                  {zeit ? uhrzeit(zeit) : fehler ? demo.failed : "···"}
-                </dd>
-              </div>
-            );
-          },
-        )}
+      {/* Feste Hoehe: Der Wechsel von Ort oder Regel darf nichts verschieben.
+          Links bleibt Platz fuer die Stundenskala, unten fuer die Monate. Beide
+          stehen als Text daneben und nicht im Bild: `preserveAspectRatio` ist
+          "none", die Breite wird also gestreckt, und ein `<text>` im SVG kaeme
+          dadurch verzerrt heraus. */}
+      <div className="relative mt-5 pb-5 pl-8">
+        <div className="relative h-[190px] overflow-hidden rounded-xl border border-line bg-base">
+          {pfade && linien ? (
+            <svg
+              viewBox={`0 0 ${TAGE} ${HOEHE}`}
+              preserveAspectRatio="none"
+              aria-hidden
+              className="size-full"
+            >
+              {pfade.map((f) => (
+                <path
+                  key={f.von}
+                  d={f.d}
+                  fill={f.farbe}
+                  fillOpacity={f.deckung}
+                />
+              ))}
+
+              {/* Wo nichts gerechnet werden kann, steht auch nichts — aber
+                  sichtbar. */}
+              {luecken.map((l) => (
+                <rect
+                  key={l.von}
+                  x={l.von}
+                  y={0}
+                  width={l.bis - l.von}
+                  height={HOEHE}
+                  fill="var(--color-warn)"
+                  fillOpacity={0.13}
+                />
+              ))}
+
+              {/* Das Raster liegt ueber den Flaechen und unter den Linien:
+                  darunter verschwindet es in der Nacht, darueber zerschneidet
+                  es die Gebetszeiten. */}
+              {MONATSANFANG.slice(1).map((t) => (
+                <line
+                  key={t}
+                  x1={t}
+                  x2={t}
+                  y1={0}
+                  y2={HOEHE}
+                  stroke="var(--color-ink)"
+                  strokeOpacity={0.09}
+                  strokeWidth={1}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+              {[6, 12, 18].map((h) => (
+                <line
+                  key={h}
+                  x1={0}
+                  x2={TAGE}
+                  y1={HOEHE - (h / 24) * HOEHE}
+                  y2={HOEHE - (h / 24) * HOEHE}
+                  stroke="var(--color-ink)"
+                  strokeOpacity={0.09}
+                  strokeWidth={1}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+
+              {/* Die anderen Regeln, so leise, dass sie nur als Spanne wirken. */}
+              {geister?.map((g, i) => (
+                <path
+                  key={i}
+                  d={g.d}
+                  fill="none"
+                  stroke="var(--color-violet)"
+                  strokeOpacity={0.3}
+                  strokeWidth={1}
+                  strokeDasharray="2 3"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+
+              {/* Fadschr und Ischa kraeftiger als der Rest: Sie sind die beiden
+                  Zeiten, die von der Regel abhaengen, und damit das, worauf die
+                  Schaltflaechen darueber wirken. */}
+              {linien.map((l) => {
+                const betroffen = l.name === "fajr" || l.name === "isha";
+                return (
+                  <path
+                    key={l.name}
+                    d={l.d}
+                    fill="none"
+                    stroke={
+                      betroffen ? "var(--color-violet)" : "var(--color-acid)"
+                    }
+                    strokeOpacity={betroffen ? 0.95 : 0.45}
+                    strokeWidth={betroffen ? 1.4 : 1}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                );
+              })}
+
+              {/* Zwei Striche, zwei Bedeutungen: Der gestrichelte steht fest
+                  auf heute, der durchgezogene folgt dem Regler. */}
+              <line
+                x1={heuteNr}
+                x2={heuteNr}
+                y1={0}
+                y2={HOEHE}
+                stroke="var(--color-ink-faint)"
+                strokeWidth={1}
+                strokeDasharray="3 4"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1={tag}
+                x2={tag}
+                y1={0}
+                y2={HOEHE}
+                stroke="var(--color-acid)"
+                strokeWidth={1.5}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          ) : (
+            <div className="grid size-full place-items-center">
+              <p className="font-mono text-[11px] text-ink-faint">
+                {fehler ? demo.failed : " "}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Stunden links, Monate unten. Als Text, damit sie in jeder Breite
+            gleich gross bleiben. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-0 left-0 flex h-[190px] w-7 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint/80"
+        >
+          <span>24</span>
+          <span>18</span>
+          <span>12</span>
+          <span>06</span>
+          <span>00</span>
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-0 bottom-0 left-8 flex justify-between pt-1 font-mono text-[9px] text-ink-faint/80"
+        >
+          {MONATE.map((m, i) => (
+            <span key={i}>{m}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Der Regler ist die Bedienung, nicht das Band: mit der Tastatur
+          erreichbar, und ein Vorleseprogramm sagt das Datum statt „180". */}
+      <label className="mt-4 block">
+        <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <span className="text-eyebrow">{demo.dayLabel}</span>
+          <span className="font-mono text-[11px] text-ink tabular-nums">
+            {datum}
+            {tag === heuteNr ? ` · ${demo.today}` : ""}
+          </span>
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={TAGE - 1}
+          value={tag}
+          onChange={(e) => setTag(Number(e.target.value))}
+          aria-valuetext={datum}
+          className="mt-2 w-full accent-acid"
+        />
+      </label>
+
+      <dl className="mt-4 grid min-h-[4.5rem] grid-cols-2 gap-x-6 gap-y-3 min-[420px]:grid-cols-3 sm:grid-cols-6">
+        {GEBETE.map((g, i) => (
+          <div key={g}>
+            <dt className="font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+              {demo.prayers[g]}
+            </dt>
+            <dd className="mt-1 font-mono text-lg text-ink tabular-nums">
+              {heutiger ? uhrzeit(heutiger[i], demo.failed) : " "}
+            </dd>
+          </div>
+        ))}
       </dl>
 
-      <p className="mt-5 border-t border-line pt-4 font-mono text-[11px] leading-relaxed text-ink-faint">
+      {/* Die Spanne ist der Befund, nicht die Uhrzeit darüber. Sie steht
+          deshalb als Wert und nicht als Nebensatz. */}
+      <div className="mt-4 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-4">
+        <p className="flex flex-wrap items-baseline gap-x-2">
+          <span className="text-eyebrow">{demo.spread}</span>
+          <span className="font-mono text-base text-violet tabular-nums">
+            {/* Solange nichts gerechnet ist, steht hier nichts. Ein
+                Platzhalterstrich war zuerst da und wurde von
+                `check:typography` zu Recht als Gedankenstrich im englischen
+                Text gemeldet: Auf /en steht dieses Zeichen nicht. */}
+            {abstand === null ? " " : spanne(abstand)}
+          </span>
+        </p>
+        {lueckenTage > 0 ? (
+          <p className="font-mono text-[11px] text-warn">
+            {demo.gap.replace("{n}", String(lueckenTage))}
+          </p>
+        ) : null}
+
+        {/* Legende zu den Linien im Band. Ohne sie sind die gestrichelten
+            Linien ein Rätsel, und ein Rätsel ist keine Vorführung. */}
+        <p
+          aria-hidden
+          className="flex basis-full items-center gap-4 font-mono text-[10px] text-ink-faint sm:ml-auto sm:basis-auto"
+        >
+          <span className="flex items-center gap-1.5">
+            <span className="h-px w-5 bg-violet" />
+            {demo.legend.active}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-px w-5 bg-violet/40 [background-image:repeating-linear-gradient(90deg,currentColor_0_2px,transparent_2px_5px)]" />
+            {demo.legend.others}
+          </span>
+        </p>
+      </div>
+
+      <p className="mt-3 max-w-[68ch] text-[13px] leading-relaxed text-ink-dim text-pretty">
+        {demo.hardPart}
+      </p>
+
+      <p className="mt-3 font-mono text-[11px] leading-relaxed text-ink-faint">
         {demo.note}
       </p>
     </div>
