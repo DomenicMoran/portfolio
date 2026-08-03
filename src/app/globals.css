@@ -53,6 +53,15 @@ html {
      the element into a scroll container, so `position: sticky` keeps working
      (the skills meters and the workflow terminal rely on it). */
   overflow-x: clip;
+  /* Der Platz der Bildlaufleiste bleibt reserviert, auch wo nichts scrollt.
+     Zwei Dinge haengen daran. Erstens die Sperre hinter Palette und
+     Telefonmenue (`useScrollSperre`): Ohne reservierten Platz verschwindet
+     beim Sperren die Leiste, der Inhalt rueckt um ihre Breite nach rechts,
+     und die feste Kopfleiste bleibt stehen. Zweitens der Wechsel zwischen
+     einer langen und einer kurzen Seite — auf Systemen mit klassischer
+     Leiste (Windows, ~15 px) sprang dabei das ganze Layout. Auf Systemen mit
+     ueberlagerter Leiste kostet die Regel nichts, dort ist sie 0 px breit. */
+  scrollbar-gutter: stable;
 }
 
 body {
