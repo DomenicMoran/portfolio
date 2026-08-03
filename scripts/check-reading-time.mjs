@@ -69,14 +69,25 @@ for (const datei of readdirSync(ORDNER)) {
 
 befunde.sort((a, b) => b.woerter - a.woerter);
 for (const b of befunde) {
-  const marke = b.abweichung > 1 ? "  <-- weicht ab" : "";
+  const marke = b.abweichung > 0 ? "  <-- weicht ab" : "";
   console.log(
     `${b.datei.padEnd(22)} ${String(b.woerter).padStart(5)} Wörter | ` +
       `angegeben ${String(b.angegeben).padStart(2)} | berechnet ${String(b.berechnet).padStart(2)}${marke}`,
   );
 }
 
-const schief = befunde.filter((b) => b.abweichung > 1);
+/*
+   Keine Toleranz mehr.
+
+   Erlaubt war eine Minute Unterschied, und genau darin verschwand ein
+   Befund: `de-ota` und `de-shaper` gaben vier Minuten an, gerechnet waren es
+   fünf — und dieselben beiden Texte nannten auf Englisch fünf. Derselbe
+   Artikel sagte dem deutschen Leser vier und dem englischen fünf.
+
+   Die Zahl wird gerechnet, nicht geschätzt. Wenn sie gerechnet ist, gibt es
+   keinen Grund, warum die angezeigte eine andere sein sollte. Wer den Text
+   ändert, ruft `--setzen` — derselbe Handgriff wie beim Kurzprofil. */
+const schief = befunde.filter((b) => b.abweichung > 0);
 if (schief.length && !setzen) {
   console.error(`\n${schief.length} Artikel mit falscher Lesezeit. Beheben: --setzen`);
   process.exit(1);
