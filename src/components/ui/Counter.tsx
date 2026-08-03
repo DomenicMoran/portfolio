@@ -10,7 +10,13 @@ import { useEffect, useRef, useState } from "react";
  * im führenden Zahlenteil animiert; der Rest bleibt wörtlich stehen. So bleibt
  * die Inhaltsdatei lesbar, statt jeden Wert in {Zahl, Suffix} zu zerlegen.
  */
-export function Counter({ value, className }: { value: string; className?: string }) {
+export function Counter({
+  value,
+  className,
+}: {
+  value: string;
+  className?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
 
   const match = value.match(/^([\d.,]+)(.*)$/);
@@ -18,7 +24,9 @@ export function Counter({ value, className }: { value: string; className?: strin
   const suffix = match?.[2] ?? "";
 
   // Deutsche Schreibweise: "." gruppiert Tausender, "," ist das Dezimaltrennzeichen.
-  const decimals = numericPart.includes(",") ? numericPart.split(",")[1].length : 0;
+  const decimals = numericPart.includes(",")
+    ? numericPart.split(",")[1].length
+    : 0;
   const target = Number(numericPart.replace(/\./g, "").replace(",", "."));
   const animatable = match !== null && Number.isFinite(target);
 

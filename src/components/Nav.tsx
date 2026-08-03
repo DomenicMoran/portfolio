@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { mailAdresse } from "@/lib/mailto";
 import { useMemo, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
 import Link from "next/link";
@@ -267,7 +268,7 @@ export function Nav({
               </ul>
 
               <a
-                href={`mailto:${site.email}`}
+                href={mailAdresse(site.email, site.mailSubject)}
                 className="mt-auto rounded-full border border-transparent bg-acid py-4 text-center font-medium text-void"
               >
                 {site.email}

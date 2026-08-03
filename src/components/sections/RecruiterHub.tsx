@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { mailAdresse } from "@/lib/mailto";
 import { ArrowRight, ArrowUpRight, FileDown, Mail } from "lucide-react";
 import { CopyEmail } from "@/components/ui/CopyEmail";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -144,7 +145,7 @@ export function RecruiterHub() {
 
                 <Magnetic>
                   <a
-                    href={`mailto:${site.email}`}
+                    href={mailAdresse(site.email, site.mailSubject)}
                     className="group inline-flex items-center gap-2 rounded-full border border-line bg-base px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-faint"
                   >
                     <Mail className="size-4" aria-hidden />

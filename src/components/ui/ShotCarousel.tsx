@@ -55,7 +55,9 @@ export function ShotCarousel({
       let naechstes = 0;
       let abstand = Infinity;
       [...el.children].forEach((kind, i) => {
-        const d = Math.abs((kind as HTMLElement).getBoundingClientRect().left - kante);
+        const d = Math.abs(
+          (kind as HTMLElement).getBoundingClientRect().left - kante,
+        );
         if (d < abstand) {
           abstand = d;
           naechstes = i;
@@ -83,7 +85,8 @@ export function ShotCarousel({
     if (!ziel) return;
     // Über die Rechtecke statt über offsetLeft: Das gilt unabhängig davon,
     // welches Element gerade der Bezugspunkt für die Position ist.
-    const versatz = ziel.getBoundingClientRect().left - el.getBoundingClientRect().left;
+    const versatz =
+      ziel.getBoundingClientRect().left - el.getBoundingClientRect().left;
     el.scrollTo({
       left: el.scrollLeft + versatz,
       behavior: wenigerBewegung ? "auto" : "smooth",
@@ -116,7 +119,11 @@ export function ShotCarousel({
               height={shot.height}
               label={shot.label}
               variant={shot.variant}
-              className={shot.variant === "screen" ? "w-[34rem] max-w-[80vw]" : "w-[15rem]"}
+              className={
+                shot.variant === "screen"
+                  ? "w-[34rem] max-w-[80vw]"
+                  : "w-[15rem]"
+              }
             />
           </li>
         ))}

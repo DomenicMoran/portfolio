@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpen, FileText, Mail, Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -104,7 +105,7 @@ export function CommandPalette({
         icon: Mail,
         run: () => {
           onClose();
-          window.location.href = `mailto:${site.email}`;
+          window.location.href = mailAdresse(site.email, site.mailSubject);
         },
       },
     ];

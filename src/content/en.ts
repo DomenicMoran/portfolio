@@ -1,5 +1,10 @@
 import verified from "./verified.json";
-import { asWord, grossErstes, jahreZwischen, monateZwischen } from "@/lib/zeitspanne";
+import {
+  asWord,
+  grossErstes,
+  jahreZwischen,
+  monateZwischen,
+} from "@/lib/zeitspanne";
 import type { Content } from "./types";
 
 /**
@@ -77,6 +82,7 @@ export const en: Content = {
     ogTagline:
       "Four systems in production: mobile, SaaS, infrastructure, compliance. All built solo.",
     email: "domenicmoran@gmail.com",
+    mailSubject: "Enquiry via domenicmoran.de",
     availability: {
       label: "Open to a permanent role",
       detail: "Berlin · remote in the EU · hybrid",
@@ -141,7 +147,10 @@ export const en: Content = {
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     proof: [
       { value: "4", label: "systems in production" },
-      { value: verified.commitsHead.replace(".", ","), label: "commits since March 2026" },
+      {
+        value: verified.commitsHead.replace(".", ","),
+        label: "commits since March 2026",
+      },
       { value: "1,276", label: "API routes (MenuCloud)" },
       { value: "7,437", label: "test cases (MenuCloud)" },
     ],
@@ -170,7 +179,8 @@ export const en: Content = {
       id: "salati",
       index: "01",
       name: "Salati",
-      tagline: "Prayer and Quran platform for German speakers, with AI that runs offline",
+      tagline:
+        "Prayer and Quran platform for German speakers, with AI that runs offline",
       year: "2026",
       role: "Sole developer · product, code, stores, licensing",
       statusLabel: "Live on the App Store",
@@ -195,10 +205,44 @@ export const en: Content = {
         "AI answers cite their source and carry an EU AI Act Art. 50 disclosure",
       ],
       stack: [
-        { group: "Mobile", items: ["React Native 0.86", "Expo SDK 57", "Expo Router", "Reanimated 4", "TypeScript"] },
-        { group: "On-device AI", items: ["Custom retrieval", "whisper.rn", "Curated corpus", "Prompt conditioning"] },
-        { group: "Backend & delivery", items: ["Supabase", "Cloudflare R2", "EAS Build & Update", "Vercel", "Turborepo"] },
-        { group: "Native", items: ["Android TV (Leanback)", "Wear OS", "Live Activities", "App Widgets"] },
+        {
+          group: "Mobile",
+          items: [
+            "React Native 0.86",
+            "Expo SDK 57",
+            "Expo Router",
+            "Reanimated 4",
+            "TypeScript",
+          ],
+        },
+        {
+          group: "On-device AI",
+          items: [
+            "Custom retrieval",
+            "whisper.rn",
+            "Curated corpus",
+            "Prompt conditioning",
+          ],
+        },
+        {
+          group: "Backend & delivery",
+          items: [
+            "Supabase",
+            "Cloudflare R2",
+            "EAS Build & Update",
+            "Vercel",
+            "Turborepo",
+          ],
+        },
+        {
+          group: "Native",
+          items: [
+            "Android TV (Leanback)",
+            "Wear OS",
+            "Live Activities",
+            "App Widgets",
+          ],
+        },
       ],
       metrics: [
         { value: "4", label: "device classes" },
@@ -208,7 +252,11 @@ export const en: Content = {
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-        { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
+        {
+          label: "Instagram",
+          href: "https://instagram.com/salatibox",
+          kind: "social",
+        },
         // The German page linked the App Store listing, the English one did
         // not — the same shipped app, invisible to half the readers.
         {
@@ -228,42 +276,66 @@ export const en: Content = {
         {
           src: "/shots/salati/shot-prayer.png",
           alt: "The prayer-times view: above the list an image of the Kaaba with the current time and a countdown to the next prayer, below it the five daily times with the next one highlighted and the Hijri date.",
-          width: 720, height: 1600, label: "Prayer times · computed locally", variant: "phone",
+          width: 720,
+          height: 1600,
+          label: "Prayer times · computed locally",
+          variant: "phone",
         },
         {
           src: "/shots/salati/shot-quran.png",
           alt: "The Quran reader on the phone: the Arabic verse set large, transliteration and German translation below it.",
-          width: 720, height: 1600, label: "Mushaf reader · offline", variant: "phone",
+          width: 720,
+          height: 1600,
+          label: "Mushaf reader · offline",
+          variant: "phone",
         },
         {
           src: "/shots/salati/shot-ki.png",
           alt: "The question-answering model replies with its source named and a note that the answer is AI-assisted.",
-          width: 720, height: 1600, label: "AI on the device · with source", variant: "phone",
+          width: 720,
+          height: 1600,
+          label: "AI on the device · with source",
+          variant: "phone",
         },
         {
           src: "/shots/salati/shot-qibla.png",
           alt: "The Qibla compass shows the prayer direction with the bearing in degrees and the distance to Mecca.",
-          width: 720, height: 1600, label: "Qibla · sensor and location", variant: "phone",
+          width: 720,
+          height: 1600,
+          label: "Qibla · sensor and location",
+          variant: "phone",
         },
         {
           src: "/shots/salati/shot-study.png",
           alt: "The study area with courses and a progress indicator per lesson.",
-          width: 720, height: 1477, label: "Study area", variant: "phone",
+          width: 720,
+          height: 1477,
+          label: "Study area",
+          variant: "phone",
         },
         {
           src: "/shots/salati/shot-tracker.png",
           alt: "Prayer tracking: a tick per day and prayer, with the streak of consecutive days above.",
-          width: 720, height: 1600, label: "Tracking · streak", variant: "phone",
+          width: 720,
+          height: 1600,
+          label: "Tracking · streak",
+          variant: "phone",
         },
         {
           src: "/shots/salati/tv-quran.png",
           alt: "The Quran reader on a television: the Arabic verse set large, transliteration and translation below, remote-control hints at the bottom.",
-          width: 1280, height: 720, label: "Android TV · Leanback", variant: "screen",
+          width: 1280,
+          height: 720,
+          label: "Android TV · Leanback",
+          variant: "screen",
         },
         {
           src: "/shots/salati/tv-home.png",
           alt: "The television home screen with tiles for prayer times, Quran and the study area, one of them showing the focus ring.",
-          width: 1280, height: 720, label: "Android TV · focus navigation", variant: "screen",
+          width: 1280,
+          height: 720,
+          label: "Android TV · focus navigation",
+          variant: "screen",
         },
       ],
     },
@@ -271,7 +343,8 @@ export const en: Content = {
       id: "menucloud",
       index: "02",
       name: "MenuCloud Berlin",
-      tagline: "Multi-tenant SaaS for restaurants, including statutory fiscal signing",
+      tagline:
+        "Multi-tenant SaaS for restaurants, including statutory fiscal signing",
       year: "2026",
       role: "Founder & sole developer",
       statusLabel: "Live in production",
@@ -338,9 +411,35 @@ export const en: Content = {
         ],
       },
       stack: [
-        { group: "Frontend", items: ["Next.js 16 App Router", "React 19 RSC", "TypeScript", "Tailwind"] },
-        { group: "Backend & data", items: ["Supabase / Postgres", "Row Level Security", "Stripe Connect", "Fiskaly"] },
-        { group: "Infrastructure", items: ["Hetzner", "Coolify", "Cloudflare", "Docker", "Mailcow", "n8n"] },
+        {
+          group: "Frontend",
+          items: [
+            "Next.js 16 App Router",
+            "React 19 RSC",
+            "TypeScript",
+            "Tailwind",
+          ],
+        },
+        {
+          group: "Backend & data",
+          items: [
+            "Supabase / Postgres",
+            "Row Level Security",
+            "Stripe Connect",
+            "Fiskaly",
+          ],
+        },
+        {
+          group: "Infrastructure",
+          items: [
+            "Hetzner",
+            "Coolify",
+            "Cloudflare",
+            "Docker",
+            "Mailcow",
+            "n8n",
+          ],
+        },
         {
           group: "Quality",
           items: [
@@ -360,10 +459,26 @@ export const en: Content = {
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
-        { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },
-        { label: "Status page", href: "https://menucloud-berlin.de/status", kind: "live" },
-        { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
-        { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
+        {
+          label: "menucloud-berlin.de",
+          href: "https://menucloud-berlin.de",
+          kind: "live",
+        },
+        {
+          label: "Status page",
+          href: "https://menucloud-berlin.de/status",
+          kind: "live",
+        },
+        {
+          label: "Instagram",
+          href: "https://instagram.com/menucloudberlin",
+          kind: "social",
+        },
+        {
+          label: "YouTube",
+          href: "https://youtube.com/@menucloudberlin",
+          kind: "social",
+        },
         // The English page carried no app links at all, while the German one
         // carried two of four. All four checked on 2 August 2026: status 200
         // and the expected title.
@@ -411,7 +526,8 @@ export const en: Content = {
       id: "wohnungsjaeger",
       index: "03",
       name: "WohnungsJäger",
-      tagline: "An autonomous agent that reads the Berlin rental market faster than a human can",
+      tagline:
+        "An autonomous agent that reads the Berlin rental market faster than a human can",
       year: "2026",
       role: "Sole developer",
       statusLabel: "In personal use",
@@ -433,9 +549,22 @@ export const en: Content = {
         "Multi-instance operation for parallel accounts, distributable package without personal data",
       ],
       stack: [
-        { group: "Runtime", items: ["Node.js 22", "TypeScript", "Fastify", "Server-Sent Events"] },
-        { group: "Automation", items: ["Playwright", "Persistent browser profiles", "Cron scheduler"] },
-        { group: "Data & AI", items: ["node:sqlite", "Anthropic API", "Rule-based fallback"] },
+        {
+          group: "Runtime",
+          items: ["Node.js 22", "TypeScript", "Fastify", "Server-Sent Events"],
+        },
+        {
+          group: "Automation",
+          items: [
+            "Playwright",
+            "Persistent browser profiles",
+            "Cron scheduler",
+          ],
+        },
+        {
+          group: "Data & AI",
+          items: ["node:sqlite", "Anthropic API", "Rule-based fallback"],
+        },
       ],
       metrics: [
         { value: "5", label: "portals watched" },
@@ -451,7 +580,8 @@ export const en: Content = {
       id: "nouri",
       index: "04",
       name: "NOURI",
-      tagline: "Fitness and nutrition platform with a web app, a mobile app and its own API",
+      tagline:
+        "Fitness and nutrition platform with a web app, a mobile app and its own API",
       year: "2026",
       role: "Sole developer",
       statusLabel: "Beta",
@@ -472,8 +602,14 @@ export const en: Content = {
         "Explicit failure states instead of silent 500s",
       ],
       stack: [
-        { group: "Apps", items: ["Next.js", "Expo", "TypeScript", "Turborepo"] },
-        { group: "Services", items: ["Fastify", "Supabase", "Postgres", "RLS"] },
+        {
+          group: "Apps",
+          items: ["Next.js", "Expo", "TypeScript", "Turborepo"],
+        },
+        {
+          group: "Services",
+          items: ["Fastify", "Supabase", "Postgres", "RLS"],
+        },
         { group: "Delivery", items: ["Vercel", "pnpm workspaces"] },
       ],
       metrics: [
@@ -482,7 +618,11 @@ export const en: Content = {
         { value: "12", label: "migrations" },
       ],
       links: [
-        { label: "nouri-fitness.vercel.app", href: "https://nouri-fitness.vercel.app", kind: "live" },
+        {
+          label: "nouri-fitness.vercel.app",
+          href: "https://nouri-fitness.vercel.app",
+          kind: "live",
+        },
       ],
       architecture: "nouri",
       shots: [
@@ -508,10 +648,18 @@ export const en: Content = {
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
-      { value: verified.commitsHead.replace(".", ","), label: "commits since March 2026", note: "alongside a full-time job" },
+      {
+        value: verified.commitsHead.replace(".", ","),
+        label: "commits since March 2026",
+        note: "alongside a full-time job",
+      },
       { value: "4", label: "systems in production", note: "all built alone" },
       { value: "2", label: "app stores", note: "iOS and Android, live" },
-      { value: "2022", label: "self-taught since", note: "Meta & Udemy certificates" },
+      {
+        value: "2022",
+        label: "self-taught since",
+        note: "Meta & Udemy certificates",
+      },
     ],
     statsHinweis: `Measured on ${verified.date} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub — local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
@@ -570,7 +718,10 @@ export const en: Content = {
     certificates: {
       label: "Certificates",
       note: "Every entry opens the issuer's verification page.",
-      noteHref: { label: "All ten also kept as PDFs", href: "https://github.com/DomenicMoran/Zertifikate" },
+      noteHref: {
+        label: "All ten also kept as PDFs",
+        href: "https://github.com/DomenicMoran/Zertifikate",
+      },
       groups: [
         {
           issuer: "Meta, via Coursera",
@@ -650,7 +801,11 @@ export const en: Content = {
         n: "01",
         title: "Context as versioned code",
         body: "Every project carries its conventions as a file in the repository: import rules, test patterns, design tokens, security defaults. Plus a memory that persists across sessions: every lesson becomes an entry with its reasoning, not a note in a chat log that is gone tomorrow. An agent is only as good as the context it reliably finds.",
-        artifacts: ["A conventions file per repo", "Persistent memory", "Append-only project log"],
+        artifacts: [
+          "A conventions file per repo",
+          "Persistent memory",
+          "Append-only project log",
+        ],
       },
       {
         n: "02",
@@ -662,33 +817,66 @@ export const en: Content = {
         n: "03",
         title: "Verification instead of trust",
         body: "“Should work now” is not a result. Every claim about system state needs evidence: an HTTP response, a database query, a Playwright screenshot, a received email, an actual cron execution. This rule has repeatedly surfaced bugs in my own projects that had slipped through green test suites, because the tests were checking the wrong thing.",
-        artifacts: ["Playwright against production", "Screenshot diffs", "Live database checks"],
+        artifacts: [
+          "Playwright against production",
+          "Screenshot diffs",
+          "Live database checks",
+        ],
       },
       {
         n: "04",
         title: "Recurring fixes become automation",
         body: "When I do the same thing a third time, it becomes a workflow. Cron-aware watchdogs monitor services, heal known failures themselves, and report to Slack. Always with guardrails: a cooldown, a cap, an alert on every intervention. A watchdog that repairs blindly does more damage than it prevents.",
-        artifacts: ["n8n workflows with self-healing", "Cooldown and cap", "Slack ops alerts"],
+        artifacts: [
+          "n8n workflows with self-healing",
+          "Cooldown and cap",
+          "Slack ops alerts",
+        ],
       },
       {
         n: "05",
         title: "Compliance as definition of done",
         body: "Every customer-facing feature passes the same gate: is there a lawful basis under GDPR? Does outreach respect German unfair-competition law? EU AI Act Art. 50: is the AI labelled as such? Does the site promise anything we do not deliver? For consumer products in the EU that is not an extra; it is part of the product.",
-        artifacts: ["GDPR Art. 30", "Automated processing agreements", "AI Act disclosure"],
+        artifacts: [
+          "GDPR Art. 30",
+          "Automated processing agreements",
+          "AI Act disclosure",
+        ],
       },
     ],
     demo: {
       label: "A real bug, re-enacted:",
       note: "A replay, not a live session. Cause, file and change are in commit bce08f5e.",
       lines: [
-        { kind: "prompt", text: "Widget shows stale prayer times on the phone" },
-        { kind: "think", text: "Tests green, typecheck green, not reproducible in the emulator" },
-        { kind: "run", text: "Instrumented the headless task: WIDGET_UPDATE fires, finds no handler" },
+        {
+          kind: "prompt",
+          text: "Widget shows stale prayer times on the phone",
+        },
+        {
+          kind: "think",
+          text: "Tests green, typecheck green, not reproducible in the emulator",
+        },
+        {
+          kind: "run",
+          text: "Instrumented the headless task: WIDGET_UPDATE fires, finds no handler",
+        },
         { kind: "warn", text: "registerWidgetTaskHandler never runs" },
-        { kind: "think", text: "Android is loading index.js instead of index.android.js" },
-        { kind: "think", text: "Metro skips platform resolution for \"main\" when the extension is spelled out" },
-        { kind: "run", text: "package.json: \"main\": \"index.js\" becomes \"index\"" },
-        { kind: "ok", text: "Widget updates in the background · commit bce08f5e" },
+        {
+          kind: "think",
+          text: "Android is loading index.js instead of index.android.js",
+        },
+        {
+          kind: "think",
+          text: 'Metro skips platform resolution for "main" when the extension is spelled out',
+        },
+        {
+          kind: "run",
+          text: 'package.json: "main": "index.js" becomes "index"',
+        },
+        {
+          kind: "ok",
+          text: "Widget updates in the background · commit bce08f5e",
+        },
       ],
     },
     speed: {
@@ -718,62 +906,125 @@ export const en: Content = {
 
   skills: {
     eyebrow: "Capabilities",
-    title: "Broad enough for the whole product, deep enough for the hard parts.",
+    title:
+      "Broad enough for the whole product, deep enough for the hard parts.",
     lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the system it came from.",
     domains: [
       {
         id: "frontend",
         title: "Frontend & product",
-        summary: "Interfaces that work as well on a five-year-old Android as on a studio display.",
+        summary:
+          "Interfaces that work as well on a five-year-old Android as on a studio display.",
         skills: [
-          { name: "React / Next.js App Router", evidence: "Next.js 16 RSC in production" },
-          { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, four device types" },
-          { name: "TypeScript", evidence: "Strict everywhere, 0 errors as a merge gate" },
-          { name: "Motion & interaction", evidence: "Reanimated 4, Framer Motion" },
+          {
+            name: "React / Next.js App Router",
+            evidence: "Next.js 16 RSC in production",
+          },
+          {
+            name: "React Native / Expo",
+            evidence: "Expo SDK 57, RN 0.86, four device types",
+          },
+          {
+            name: "TypeScript",
+            evidence: "Strict everywhere, 0 errors as a merge gate",
+          },
+          {
+            name: "Motion & interaction",
+            evidence: "Reanimated 4, Framer Motion",
+          },
           {
             name: "Core Web Vitals",
-            evidence: "Lighthouse cron against production, per-route bundle budget",
+            evidence:
+              "Lighthouse cron against production, per-route bundle budget",
           },
-          { name: "Accessibility", evidence: "TV focus navigation, reduced motion" },
+          {
+            name: "Accessibility",
+            evidence: "TV focus navigation, reduced motion",
+          },
         ],
       },
       {
         id: "backend",
         title: "Backend & data",
-        summary: "Multi-tenant systems with real money, real tax law and real consequences when they fail.",
+        summary:
+          "Multi-tenant systems with real money, real tax law and real consequences when they fail.",
         skills: [
-          { name: "Postgres / Supabase", evidence: "59-table schema, RLS, migrations" },
-          { name: "API design", evidence: "Fastify, route handlers, Zod validation" },
+          {
+            name: "Postgres / Supabase",
+            evidence: "59-table schema, RLS, migrations",
+          },
+          {
+            name: "API design",
+            evidence: "Fastify, route handlers, Zod validation",
+          },
           { name: "Payments", evidence: "Stripe Connect destination charges" },
-          { name: "Multi-tenancy", evidence: "RLS plus per-tenant provisioning" },
-          { name: "Mail infrastructure", evidence: "Self-hosted stack with a fallback chain" },
-          { name: "Compliance systems", evidence: "§ 146a AO signing, GDPR Art. 30" },
+          {
+            name: "Multi-tenancy",
+            evidence: "RLS plus per-tenant provisioning",
+          },
+          {
+            name: "Mail infrastructure",
+            evidence: "Self-hosted stack with a fallback chain",
+          },
+          {
+            name: "Compliance systems",
+            evidence: "§ 146a AO signing, GDPR Art. 30",
+          },
         ],
       },
       {
         id: "cloud",
         title: "Cloud, delivery & operations",
-        summary: "I run what I build, including the night shift when something falls over.",
+        summary:
+          "I run what I build, including the night shift when something falls over.",
         skills: [
           { name: "Vercel / edge", evidence: "Static exports, rewrites, ISR" },
-          { name: "Docker / Coolify / Hetzner", evidence: "Own VPS stack in production" },
+          {
+            name: "Docker / Coolify / Hetzner",
+            evidence: "Own VPS stack in production",
+          },
           { name: "CI/CD", evidence: "GitHub Actions, Turborepo, EAS Build" },
-          { name: "Store delivery", evidence: "App Store & Play, including OTA updates" },
-          { name: "Observability", evidence: "Sentry, Uptime Kuma, Slack alerts" },
+          {
+            name: "Store delivery",
+            evidence: "App Store & Play, including OTA updates",
+          },
+          {
+            name: "Observability",
+            evidence: "Sentry, Uptime Kuma, Slack alerts",
+          },
           { name: "Automation", evidence: "n8n workflows with self-healing" },
         ],
       },
       {
         id: "ai",
         title: "AI integration",
-        summary: "From the agent pipeline in my editor to the answer the user's phone finds without a network.",
+        summary:
+          "From the agent pipeline in my editor to the answer the user's phone finds without a network.",
         skills: [
-          { name: "Agent orchestration", evidence: "Sub-agents, tool pipelines, loops" },
-          { name: "On-device inference", evidence: "whisper.rn, speech recognition without a network" },
-          { name: "RAG & retrieval", evidence: "Own corpus, granularity measured" },
-          { name: "Prompt engineering", evidence: "Verse conditioning beats model size" },
-          { name: "Evaluation", evidence: "Local iteration against the same Whisper model" },
-          { name: "AI regulation (EU AI Act)", evidence: "Art. 50 disclosure as a gate" },
+          {
+            name: "Agent orchestration",
+            evidence: "Sub-agents, tool pipelines, loops",
+          },
+          {
+            name: "On-device inference",
+            evidence: "whisper.rn, speech recognition without a network",
+          },
+          {
+            name: "RAG & retrieval",
+            evidence: "Own corpus, granularity measured",
+          },
+          {
+            name: "Prompt engineering",
+            evidence: "Verse conditioning beats model size",
+          },
+          {
+            name: "Evaluation",
+            evidence: "Local iteration against the same Whisper model",
+          },
+          {
+            name: "AI regulation (EU AI Act)",
+            evidence: "Art. 50 disclosure as a gate",
+          },
         ],
       },
     ],
@@ -793,13 +1044,20 @@ export const en: Content = {
       { label: "Focus", value: "Product end to end, AI-assisted delivery" },
       {
         label: "Looking for",
-        value: "A product team where I take a feature all the way into production",
+        value:
+          "A product team where I take a feature all the way into production",
       },
       { label: "Location", value: "Berlin · remote in the EU · hybrid" },
-      { label: "Available", value: "Open to talk now · start after notice period" },
+      {
+        label: "Available",
+        value: "Open to talk now · start after notice period",
+      },
       { label: "Languages", value: "German (native) · English" },
       { label: "Model", value: "Permanent employment" },
-      { label: "Source code", value: "Open source on GitHub · production repos on request" },
+      {
+        label: "Source code",
+        value: "Open source on GitHub · production repos on request",
+      },
     ],
     strengths: [
       {
@@ -922,5 +1180,9 @@ export const en: Content = {
     report: "Found something broken?",
   },
 
-  languageSwitch: { to: "de", label: "Deutsch", aria: "Diese Seite auf Deutsch" },
+  languageSwitch: {
+    to: "de",
+    label: "Deutsch",
+    aria: "Diese Seite auf Deutsch",
+  },
 };

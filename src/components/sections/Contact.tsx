@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Copy, Check } from "lucide-react";
+import { mailAdresse } from "@/lib/mailto";
 import { useState } from "react";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
@@ -72,7 +73,7 @@ export function Contact() {
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic strength={0.15}>
                   <a
-                    href={`mailto:${site.email}`}
+                    href={mailAdresse(site.email, site.mailSubject)}
                     className="group inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all text-ink transition-colors hover:text-acid sm:text-4xl"
                   >
                     {site.email}

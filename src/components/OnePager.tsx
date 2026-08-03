@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { mailAdresse } from "@/lib/mailto";
 import Link from "next/link";
 import type { Content } from "@/content/types";
 import { SOCIALS } from "@/content/types";
@@ -190,7 +191,7 @@ export function OnePager({
           <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
             <p>{site.location}</p>
             <p>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <a href={mailAdresse(site.email, site.mailSubject)}>{site.email}</a>
             </p>
             {SOCIALS.github ? (
               <p>
