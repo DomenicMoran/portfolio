@@ -92,6 +92,8 @@ export function OnePager({
   sprache: "de" | "en";
 }) {
   const { about, caseStudies, skills, site, onepager } = inhalt;
+  /* Das englische Blatt zeigt und verlinkt `domenicmoran.de/en`. */
+  const heimatAdresse = sprache === "de" ? site.url : `${site.url}/en`;
   // Die ersten vier je Bereich. Die Reihenfolge in der Inhaltsdatei ist
   // bewusst gewählt, es gibt keine Rangzahl mehr, nach der sortiert würde.
   /**
@@ -379,8 +381,14 @@ export function OnePager({
         <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
           <span>
             {onepager.fullCaseStudies}{" "}
-            <a href={site.url} className="text-inherit no-underline">
-              {site.url.replace("https://", "")}
+            {/* Die Adresse fuehrt in die Sprache des Blattes.
+                Auf dem englischen Blatt stand die Wurzel, und die ist
+                deutsch: Wer das PDF an eine englischsprachige fachliche
+                Fuehrung weiterreicht, schickt sie damit auf eine Seite, die
+                sie nicht lesen kann. Es ist der einzige Verweis auf die Seite
+                im ganzen Dokument. */}
+            <a href={heimatAdresse} className="text-inherit no-underline">
+              {heimatAdresse.replace("https://", "")}
             </a>
           </span>
           <span>
@@ -423,6 +431,7 @@ export function OnePager({
         </span>
         <Link
           href="/impressum"
+          hrefLang="de"
           className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
         >
           {inhalt.footer.impressum}
@@ -432,6 +441,7 @@ export function OnePager({
         </span>
         <Link
           href="/datenschutz"
+          hrefLang="de"
           className="-my-2 inline-block py-2 text-sm text-[#4a4a55] underline underline-offset-4"
         >
           {inhalt.footer.datenschutz}

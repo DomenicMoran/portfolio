@@ -43,7 +43,9 @@ export function NotFoundPage({
       <div className="mx-auto w-full max-w-2xl">
         <p className="text-eyebrow mb-6">{notFound.eyebrow}</p>
 
-        <h1 className="text-headline text-ink text-balance">{notFound.title}</h1>
+        <h1 className="text-headline text-ink text-balance">
+          {notFound.title}
+        </h1>
 
         <p className="mt-6 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
           {notFound.body}
@@ -107,12 +109,14 @@ export function NotFoundPage({
         <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
           <Link
             href="/impressum"
+            hrefLang="de"
             className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
           >
             {content.footer.impressum}
           </Link>
           <Link
             href="/datenschutz"
+            hrefLang="de"
             className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
           >
             {content.footer.datenschutz}
