@@ -41,10 +41,14 @@ const eigenerHost = new URL(basis).host;
 const pfade = gebauteSeiten();
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const ctx = await browser.newContext({
+  viewport: { width: 1440, height: 900 },
+});
 const seite = await ctx.newPage();
 
 const funde = new Map();
+/* Was die Seite auf dem Gerät ablegt — Cookies, localStorage, sessionStorage. */
+const speicher = new Set();
 seite.on("request", (anfrage) => {
   const adresse = anfrage.url();
   if (adresse.startsWith("data:") || adresse.startsWith("blob:")) return;
@@ -55,7 +59,9 @@ seite.on("request", (anfrage) => {
 });
 
 for (const pfad of pfade) {
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (!antwort || antwort.status() >= 500) continue;
 
   /*
@@ -75,18 +81,66 @@ for (const pfad of pfade) {
 
     // Jede Registerkarte einmal wählen, jeden Knopf einmal drücken, der
     // nichts verlässt oder verschickt.
-    for (const reiter of document.querySelectorAll('[role="tab"]')) reiter.click();
+    for (const reiter of document.querySelectorAll('[role="tab"]'))
+      reiter.click();
     for (const knopf of document.querySelectorAll("button")) {
-      const name = (knopf.getAttribute("aria-label") || knopf.innerText || "").toLowerCase();
+      const name = (
+        knopf.getAttribute("aria-label") ||
+        knopf.innerText ||
+        ""
+      ).toLowerCase();
       if (/druck|print|schließ|close/.test(name)) continue;
       knopf.click();
     }
   });
   await seite.waitForTimeout(900);
+
+  /*
+     Und nichts auf dem Gerät ablegen.
+
+     Die Erklärung sagt: „Diese Website setzt keine Cookies, weder eigene noch
+     fremde." § 25 TTDSG meint mehr als Cookies — er meint jedes Speichern von
+     Informationen auf dem Endgerät, also auch `localStorage` und
+     `sessionStorage`. Ein gemerkter Reiter oder eine gemerkte Sprachwahl wäre
+     technisch eine Kleinigkeit und würde die Erklärung still falsch machen.
+
+     Gemessen nach dem Bedienen, nicht davor: Beim bloßen Aufruf legt kaum
+     etwas ab, beim Klicken schon.
+  */
+  const abgelegt = await seite.evaluate(() => ({
+    lokal: Object.keys(localStorage),
+    sitzung: Object.keys(sessionStorage),
+    kekse: document.cookie,
+  }));
+  for (const schluessel of abgelegt.lokal) {
+    speicher.add(`${pfad}: localStorage["${schluessel}"]`);
+  }
+  for (const schluessel of abgelegt.sitzung) {
+    speicher.add(`${pfad}: sessionStorage["${schluessel}"]`);
+  }
+  if (abgelegt.kekse)
+    speicher.add(`${pfad}: Cookie ${abgelegt.kekse.slice(0, 60)}`);
+}
+
+/* Auch die Cookies, die der Server setzt: Die stehen nicht in
+   `document.cookie`, wenn sie `HttpOnly` tragen. */
+for (const keks of await seite.context().cookies()) {
+  speicher.add(`Cookie vom Server: ${keks.name}`);
 }
 
 await browser.close();
 beenden();
+
+if (speicher.size > 0) {
+  console.error("Auf dem Gerät abgelegt:\n");
+  for (const eintrag of speicher) console.error(`  ${eintrag}`);
+  console.error(
+    `\nDie Datenschutzerklärung sagt, dass diese Seite nichts ablegt, und ` +
+      `§ 25 TTDSG meint damit nicht nur Cookies. Entweder das Ablegen ` +
+      `entfernen oder die Erklärung ändern.`,
+  );
+  process.exit(1);
+}
 
 if (funde.size > 0) {
   console.error("Verbindungen zu fremden Hosts:\n");
@@ -99,6 +153,6 @@ if (funde.size > 0) {
 }
 
 console.log(
-  `Keine Verbindung nach außen: ${pfade.length} Seiten geladen und bedient, ` +
-    `alle Anfragen gingen an ${eigenerHost}.`,
+  `Keine Verbindung nach außen und nichts auf dem Gerät: ${pfade.length} Seiten ` +
+    `geladen und bedient, alle Anfragen gingen an ${eigenerHost}.`,
 );
