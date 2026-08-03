@@ -51,7 +51,10 @@ export function Cursor() {
   if (!enabled) return null;
 
   return (
-    <div aria-hidden className="no-print pointer-events-none fixed inset-0 z-[10000]">
+    <div
+      aria-hidden
+      className="no-print pointer-events-none fixed inset-0 z-[10000]"
+    >
       <motion.div
         className="absolute size-1.5 rounded-full bg-acid"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}

@@ -87,7 +87,10 @@ export function Hero() {
           </div>
 
           {/* Überschrift: Jedes Wort steigt aus seiner eigenen Maske auf */}
-          <h1 id="top-titel" className="text-display max-w-[18ch] text-balance text-ink">
+          <h1
+            id="top-titel"
+            className="text-display max-w-[18ch] text-balance text-ink"
+          >
             {hero.headline.map((word, i) => (
               // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken,
               // nicht in einer: Innerhalb eines inline-block mit overflow:hidden

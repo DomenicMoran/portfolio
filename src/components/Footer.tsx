@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { mailAdresse } from "@/lib/mailto";
 import { ArrowUpRight } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { PrintNote } from "@/components/ui/PrintNote";
@@ -54,7 +55,7 @@ export function Footer({
             <p className="text-sm text-ink">{site.role}</p>
             <p className="text-sm text-ink-dim">{site.location}</p>
             <a
-              href={`mailto:${site.email}`}
+              href={mailAdresse(site.email, site.mailSubject)}
               className="-my-1 w-fit py-1 text-sm break-all text-ink-dim transition-colors hover:text-acid"
             >
               {site.email}

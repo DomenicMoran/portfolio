@@ -60,6 +60,7 @@ export const de: Content = {
     location: siteDe.location,
     ogTagline: siteDe.ogTagline,
     email: siteDe.email,
+    mailSubject: siteDe.mailSubject,
     availability: {
       label: siteDe.availability.label,
       detail: siteDe.availability.detail,
@@ -173,7 +174,8 @@ export const de: Content = {
 
   skills: {
     eyebrow: "Fähigkeiten",
-    title: "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
+    title:
+      "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
     lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist.",
     domains: skillDomains,
   },

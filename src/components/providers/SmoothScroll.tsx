@@ -65,7 +65,8 @@ export function SmoothScroll() {
         gegen die laufende Bewegung von Lenis arbeitet.
       */
       const ziel = target as HTMLElement;
-      if (ziel.tabIndex < 0 && !ziel.hasAttribute("tabindex")) ziel.tabIndex = -1;
+      if (ziel.tabIndex < 0 && !ziel.hasAttribute("tabindex"))
+        ziel.tabIndex = -1;
       ziel.focus({ preventScroll: true });
     };
 

@@ -65,6 +65,13 @@ export type Content = {
     role: string;
     location: string;
     email: string;
+    /**
+     * Vorbelegter Betreff jeder Mail von dieser Seite.
+     *
+     * Ohne ihn oeffnet sich ein leeres Fenster. Mit ihm steht die Herkunft
+     * schon drin, bevor jemand tippt — aenderbar wie jeder Betreff.
+     */
+    mailSubject: string;
     availability: { label: string; detail: string };
     meta: { title: string; description: string };
     /** Ein Satz auf der Social-Vorschaukarte, je Sprache eigener Text. */
@@ -126,7 +133,12 @@ export type Content = {
       architecture: string;
       stack: string;
     };
-    labels: { problem: string; solution: string; hardPart: string; readOn: string };
+    labels: {
+      problem: string;
+      solution: string;
+      hardPart: string;
+      readOn: string;
+    };
   };
 
   caseStudies: readonly CaseStudy[];
@@ -157,7 +169,12 @@ export type Content = {
     openSource: {
       label: string;
       lede: string;
-      items: readonly { name: string; href: string; body: string; meta: string }[];
+      items: readonly {
+        name: string;
+        href: string;
+        body: string;
+        meta: string;
+      }[];
     };
     certificates: {
       label: string;

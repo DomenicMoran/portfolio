@@ -1,6 +1,11 @@
 import verified from "./verified.json";
 import type { CaseStudy } from "./types";
-import { alsWort, grossErstes, jahreZwischen, monateZwischen } from "@/lib/zeitspanne";
+import {
+  alsWort,
+  grossErstes,
+  jahreZwischen,
+  monateZwischen,
+} from "@/lib/zeitspanne";
 
 /**
  * Wie lange die vier Systeme in Produktion entstehen — gerechnet, nicht getippt.
@@ -54,6 +59,7 @@ export const site = {
   locale: "de-DE",
 
   email: "domenicmoran@gmail.com",
+  mailSubject: "Anfrage über domenicmoran.de",
   // Kein Telefon und keine Privatanschrift in dieser Datei: das Repo ist
   // öffentlich, und beides wird aus öffentlichen Repos zuverlässig
   // abgegriffen. Beides steht im Lebenslauf unter docs/, also außerhalb des Repos.
@@ -110,10 +116,18 @@ export const about = {
   ],
   // Am 31.07.2026 gegen `git log` und die Repositories geprüft.
   stats: [
-    { value: verified.commitsHead, label: "Commits seit März 2026", note: "neben einem Vollzeitjob" },
+    {
+      value: verified.commitsHead,
+      label: "Commits seit März 2026",
+      note: "neben einem Vollzeitjob",
+    },
     { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "2", label: "App Stores", note: "iOS und Android, live" },
-    { value: "2022", label: "Autodidakt seit", note: "Meta- & Udemy-Zertifikate" },
+    {
+      value: "2022",
+      label: "Autodidakt seit",
+      note: "Meta- & Udemy-Zertifikate",
+    },
   ],
   /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
@@ -196,7 +210,10 @@ export const about = {
   certificates: {
     label: "Zertifikate",
     note: "Jeder Eintrag führt zur Bestätigungsseite des Ausstellers.",
-    noteHref: { label: "Alle zehn zusätzlich als PDF", href: "https://github.com/DomenicMoran/Zertifikate" },
+    noteHref: {
+      label: "Alle zehn zusätzlich als PDF",
+      href: "https://github.com/DomenicMoran/Zertifikate",
+    },
     groups: [
       {
         issuer: "Meta, über Coursera",
@@ -324,7 +341,8 @@ export const caseStudies: CaseStudy[] = [
     id: "salati",
     index: "01",
     name: "Salati",
-    tagline: "Gebets- und Koran-App für den DACH-Raum mit KI, die offline läuft",
+    tagline:
+      "Gebets- und Koran-App für den DACH-Raum mit KI, die offline läuft",
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
     statusLabel: "Live im App Store",
@@ -351,19 +369,41 @@ export const caseStudies: CaseStudy[] = [
     stack: [
       {
         group: "Mobile",
-        items: ["React Native 0.86", "Expo SDK 57", "Expo Router", "Reanimated 4", "TypeScript"],
+        items: [
+          "React Native 0.86",
+          "Expo SDK 57",
+          "Expo Router",
+          "Reanimated 4",
+          "TypeScript",
+        ],
       },
       {
         group: "KI on-device",
-        items: ["Eigenes Retrieval", "whisper.rn", "Kuratierter Korpus", "Prompt-Konditionierung"],
+        items: [
+          "Eigenes Retrieval",
+          "whisper.rn",
+          "Kuratierter Korpus",
+          "Prompt-Konditionierung",
+        ],
       },
       {
         group: "Backend & Delivery",
-        items: ["Supabase", "Cloudflare R2", "EAS Build & Update", "Vercel", "Turborepo"],
+        items: [
+          "Supabase",
+          "Cloudflare R2",
+          "EAS Build & Update",
+          "Vercel",
+          "Turborepo",
+        ],
       },
       {
         group: "Native",
-        items: ["Android TV (Leanback)", "Wear OS", "Live Activities", "App Widgets"],
+        items: [
+          "Android TV (Leanback)",
+          "Wear OS",
+          "Live Activities",
+          "App Widgets",
+        ],
       },
     ],
     metrics: [
@@ -374,7 +414,11 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-      { label: "Instagram", href: "https://instagram.com/salatibox", kind: "social" },
+      {
+        label: "Instagram",
+        href: "https://instagram.com/salatibox",
+        kind: "social",
+      },
       // Nachgeprüft am 01.08.2026: Der App-Store-Eintrag existiert unter
       // id6791867298, zuletzt Version 1.46.0. Auf Google Play gibt es unter dem
       // Paketnamen de.salatibox.de keinen öffentlichen Eintrag, und eine
@@ -398,42 +442,66 @@ export const caseStudies: CaseStudy[] = [
       {
         src: "/shots/salati/shot-prayer.png",
         alt: "Die Gebetszeiten-Ansicht: über der Liste ein Bild der Kaaba mit der aktuellen Uhrzeit und dem Countdown bis zum nächsten Gebet, darunter die fünf Zeiten des Tages mit hervorgehobenem nächsten Gebet und dem Hijri-Datum.",
-        width: 720, height: 1600, label: "Gebetszeiten · lokal berechnet", variant: "phone",
+        width: 720,
+        height: 1600,
+        label: "Gebetszeiten · lokal berechnet",
+        variant: "phone",
       },
       {
         src: "/shots/salati/shot-quran.png",
         alt: "Der Koran-Reader auf dem Telefon: arabischer Vers groß gesetzt, darunter Umschrift und deutsche Übersetzung.",
-        width: 720, height: 1600, label: "Mushaf-Reader · offline", variant: "phone",
+        width: 720,
+        height: 1600,
+        label: "Mushaf-Reader · offline",
+        variant: "phone",
       },
       {
         src: "/shots/salati/shot-ki.png",
         alt: "Die Fragen-Antwort-KI beantwortet eine Frage mit Quellenangabe und einem Hinweis, dass die Antwort KI-gestützt ist.",
-        width: 720, height: 1600, label: "KI auf dem Gerät · mit Quelle", variant: "phone",
+        width: 720,
+        height: 1600,
+        label: "KI auf dem Gerät · mit Quelle",
+        variant: "phone",
       },
       {
         src: "/shots/salati/shot-qibla.png",
         alt: "Der Qibla-Kompass zeigt die Gebetsrichtung mit Gradzahl und Entfernung nach Mekka.",
-        width: 720, height: 1600, label: "Qibla · Sensor und Standort", variant: "phone",
+        width: 720,
+        height: 1600,
+        label: "Qibla · Sensor und Standort",
+        variant: "phone",
       },
       {
         src: "/shots/salati/shot-study.png",
         alt: "Der Lernbereich mit Kursen und Fortschrittsanzeige je Lektion.",
-        width: 720, height: 1477, label: "Lernbereich", variant: "phone",
+        width: 720,
+        height: 1477,
+        label: "Lernbereich",
+        variant: "phone",
       },
       {
         src: "/shots/salati/shot-tracker.png",
         alt: "Die Gebetsverfolgung: je Tag und Gebet ein Häkchen, darüber die Strähne aufeinanderfolgender Tage.",
-        width: 720, height: 1600, label: "Verfolgung · Strähne", variant: "phone",
+        width: 720,
+        height: 1600,
+        label: "Verfolgung · Strähne",
+        variant: "phone",
       },
       {
         src: "/shots/salati/tv-quran.png",
         alt: "Der Koran-Reader auf dem Fernseher: der arabische Vers groß gesetzt, darunter Umschrift und Übersetzung, unten die Hinweise für die Fernbedienung.",
-        width: 1280, height: 720, label: "Android TV · Leanback", variant: "screen",
+        width: 1280,
+        height: 720,
+        label: "Android TV · Leanback",
+        variant: "screen",
       },
       {
         src: "/shots/salati/tv-home.png",
         alt: "Die Startseite auf dem Fernseher mit den Kacheln für Gebetszeiten, Koran und Lernbereich, eine davon im Fokusrahmen.",
-        width: 1280, height: 720, label: "Android TV · Fokus-Navigation", variant: "screen",
+        width: 1280,
+        height: 720,
+        label: "Android TV · Fokus-Navigation",
+        variant: "screen",
       },
     ],
   },
@@ -441,7 +509,8 @@ export const caseStudies: CaseStudy[] = [
     id: "menucloud",
     index: "02",
     name: "MenuCloud Berlin",
-    tagline: "Multi-Tenant-SaaS für Gastronomie, inklusive gesetzlicher Fiskalisierung",
+    tagline:
+      "Multi-Tenant-SaaS für Gastronomie, inklusive gesetzlicher Fiskalisierung",
     year: "2026",
     role: "Gründer & alleiniger Entwickler",
     statusLabel: "Live in Produktion",
@@ -511,11 +580,21 @@ export const caseStudies: CaseStudy[] = [
     stack: [
       {
         group: "Frontend",
-        items: ["Next.js 16 App Router", "React 19 RSC", "TypeScript", "Tailwind"],
+        items: [
+          "Next.js 16 App Router",
+          "React 19 RSC",
+          "TypeScript",
+          "Tailwind",
+        ],
       },
       {
         group: "Backend & Daten",
-        items: ["Supabase / Postgres", "Row Level Security", "Stripe Connect", "Fiskaly TSE"],
+        items: [
+          "Supabase / Postgres",
+          "Row Level Security",
+          "Stripe Connect",
+          "Fiskaly TSE",
+        ],
       },
       {
         group: "Infrastruktur",
@@ -548,10 +627,26 @@ export const caseStudies: CaseStudy[] = [
       // leer statt ungefähr.
     ],
     links: [
-      { label: "menucloud-berlin.de", href: "https://menucloud-berlin.de", kind: "live" },
-      { label: "Status-Page", href: "https://menucloud-berlin.de/status", kind: "live" },
-      { label: "Instagram", href: "https://instagram.com/menucloudberlin", kind: "social" },
-      { label: "YouTube", href: "https://youtube.com/@menucloudberlin", kind: "social" },
+      {
+        label: "menucloud-berlin.de",
+        href: "https://menucloud-berlin.de",
+        kind: "live",
+      },
+      {
+        label: "Status-Page",
+        href: "https://menucloud-berlin.de/status",
+        kind: "live",
+      },
+      {
+        label: "Instagram",
+        href: "https://instagram.com/menucloudberlin",
+        kind: "social",
+      },
+      {
+        label: "YouTube",
+        href: "https://youtube.com/@menucloudberlin",
+        kind: "social",
+      },
       // Vier Store-Einträge, alle am 02.08.2026 einzeln aufgerufen und mit
       // Status 200 und dem erwarteten Titel bestätigt. Die beiden
       // App-Store-Einträge fehlten hier: Der Kommentar darüber sagte "in
@@ -609,7 +704,8 @@ export const caseStudies: CaseStudy[] = [
     id: "wohnungsjaeger",
     index: "03",
     name: "WohnungsJäger",
-    tagline: "Autonomer Agent, der den Berliner Wohnungsmarkt schneller liest als ein Mensch",
+    tagline:
+      "Autonomer Agent, der den Berliner Wohnungsmarkt schneller liest als ein Mensch",
     year: "2026",
     role: "Alleiniger Entwickler",
     statusLabel: "Im Eigenbetrieb",
@@ -631,9 +727,18 @@ export const caseStudies: CaseStudy[] = [
       "Mehrinstanz-Betrieb für parallele Accounts, Weitergabe-Paket ohne persönliche Daten",
     ],
     stack: [
-      { group: "Runtime", items: ["Node.js 22", "TypeScript", "Fastify", "Server-Sent Events"] },
-      { group: "Automation", items: ["Playwright", "Persistente Browser-Profile", "Cron-Scheduler"] },
-      { group: "Daten & KI", items: ["node:sqlite", "Anthropic API", "Regelbasierter Fallback"] },
+      {
+        group: "Runtime",
+        items: ["Node.js 22", "TypeScript", "Fastify", "Server-Sent Events"],
+      },
+      {
+        group: "Automation",
+        items: ["Playwright", "Persistente Browser-Profile", "Cron-Scheduler"],
+      },
+      {
+        group: "Daten & KI",
+        items: ["node:sqlite", "Anthropic API", "Regelbasierter Fallback"],
+      },
     ],
     metrics: [
       { value: "5", label: "Überwachte Portale" },
@@ -649,7 +754,8 @@ export const caseStudies: CaseStudy[] = [
     id: "nouri",
     index: "04",
     name: "NOURI",
-    tagline: "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und eigener API",
+    tagline:
+      "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und eigener API",
     year: "2026",
     role: "Alleiniger Entwickler",
     statusLabel: "Beta",
@@ -680,7 +786,11 @@ export const caseStudies: CaseStudy[] = [
       { value: "12", label: "Migrationen" },
     ],
     links: [
-      { label: "nouri-fitness.vercel.app", href: "https://nouri-fitness.vercel.app", kind: "live" },
+      {
+        label: "nouri-fitness.vercel.app",
+        href: "https://nouri-fitness.vercel.app",
+        kind: "live",
+      },
     ],
     architecture: "nouri",
     shots: [
@@ -710,7 +820,11 @@ export const workflow = {
       n: "01",
       title: "Kontext als versionierter Code",
       body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
-      artifacts: ["CLAUDE.md pro Repo", "Persistentes Memory", "Append-only Projektlog"],
+      artifacts: [
+        "CLAUDE.md pro Repo",
+        "Persistentes Memory",
+        "Append-only Projektlog",
+      ],
     },
     {
       n: "02",
@@ -722,13 +836,21 @@ export const workflow = {
       n: "03",
       title: "Verifikation statt Vertrauen",
       body: "„Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Behauptung über den Systemzustand braucht einen Beleg: HTTP-Response, DB-Query, Playwright-Screenshot, empfangene E-Mail, echte Cron-Execution. Diese Regel hat in meinen eigenen Projekten mehrfach Bugs aufgedeckt, die durch grüne Test-Suites gerutscht waren, weil die Tests das Falsche geprüft haben.",
-      artifacts: ["Playwright gegen Produktion", "Screenshot-Diffs", "Live-DB-Verifikation"],
+      artifacts: [
+        "Playwright gegen Produktion",
+        "Screenshot-Diffs",
+        "Live-DB-Verifikation",
+      ],
     },
     {
       n: "04",
       title: "Wiederkehrende Fixes werden Automatisierung",
       body: "Wenn ich denselben Handgriff zum dritten Mal mache, wird er ein Workflow. Cron-bewusste Watchdogs überwachen Dienste, heilen bekannte Ausfälle selbst und melden nach Slack. Immer mit Schutzgeländer: Cooldown, Obergrenze, Alarm bei jedem Eingriff. Ein Watchdog, der blind repariert, richtet mehr Schaden an als er verhindert.",
-      artifacts: ["n8n-Workflows mit Self-Healing", "Cooldown und Obergrenze", "Slack-Ops-Alerts"],
+      artifacts: [
+        "n8n-Workflows mit Self-Healing",
+        "Cooldown und Obergrenze",
+        "Slack-Ops-Alerts",
+      ],
     },
     {
       n: "05",
@@ -749,14 +871,29 @@ export const workflow = {
   demo: {
     label: "Ein echter Fehler, nachgezeichnet:",
     lines: [
-      { kind: "prompt", text: "Widget zeigt auf dem Telefon veraltete Gebetszeiten" },
-      { kind: "think", text: "Tests grün, Typecheck grün, im Emulator nicht reproduzierbar" },
-      { kind: "run", text: "Headless-Task instrumentiert: WIDGET_UPDATE feuert, findet keinen Handler" },
+      {
+        kind: "prompt",
+        text: "Widget zeigt auf dem Telefon veraltete Gebetszeiten",
+      },
+      {
+        kind: "think",
+        text: "Tests grün, Typecheck grün, im Emulator nicht reproduzierbar",
+      },
+      {
+        kind: "run",
+        text: "Headless-Task instrumentiert: WIDGET_UPDATE feuert, findet keinen Handler",
+      },
       { kind: "warn", text: "registerWidgetTaskHandler läuft nie" },
       { kind: "think", text: "Android lädt index.js statt index.android.js" },
-      { kind: "think", text: "Metro löst \"main\" nicht plattformspezifisch auf, wenn die Endung dabeisteht" },
-      { kind: "run", text: "package.json: \"main\": \"index.js\" wird zu \"index\"" },
-      { kind: "ok", text: "Widget aktualisiert im Hintergrund · Commit bce08f5e" },
+      {
+        kind: "think",
+        text: 'Metro löst "main" nicht plattformspezifisch auf, wenn die Endung dabeisteht',
+      },
+      { kind: "run", text: 'package.json: "main": "index.js" wird zu "index"' },
+      {
+        kind: "ok",
+        text: "Widget aktualisiert im Hintergrund · Commit bce08f5e",
+      },
     ],
   },
 } as const;
@@ -781,9 +918,18 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Interfaces, die auf einem Fünf-Jahre-alten Android genauso funktionieren wie auf einem Studio-Display.",
     skills: [
-      { name: "React / Next.js App Router", evidence: "Next.js 16 RSC in Produktion" },
-      { name: "React Native / Expo", evidence: "Expo SDK 57, RN 0.86, vier Gerätetypen" },
-      { name: "TypeScript", evidence: "Strict überall, 0 Fehler als Merge-Gate" },
+      {
+        name: "React / Next.js App Router",
+        evidence: "Next.js 16 RSC in Produktion",
+      },
+      {
+        name: "React Native / Expo",
+        evidence: "Expo SDK 57, RN 0.86, vier Gerätetypen",
+      },
+      {
+        name: "TypeScript",
+        evidence: "Strict überall, 0 Fehler als Merge-Gate",
+      },
       { name: "Motion & Interaction", evidence: "Reanimated 4, Framer Motion" },
       // Der Beleg nennt jetzt, was es wirklich gibt. "LCP/CLS/INP-Budgets im
       // CI" stand hier und trug keine Entsprechung: Der Workflow von MenuCloud
@@ -794,7 +940,10 @@ export const skillDomains: SkillDomain[] = [
         name: "Core Web Vitals",
         evidence: "Lighthouse-Cron gegen Produktion, Bundle-Budget je Route",
       },
-      { name: "Barrierefreiheit", evidence: "TV-Fokus-Navigation, Reduced-Motion" },
+      {
+        name: "Barrierefreiheit",
+        evidence: "TV-Fokus-Navigation, Reduced-Motion",
+      },
     ],
   },
   {
@@ -803,23 +952,42 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Mandantenfähige Systeme mit echtem Geld, echten Steuern und echten Konsequenzen bei Fehlern.",
     skills: [
-      { name: "Postgres / Supabase", evidence: "59-Tabellen-Schema, RLS, Migrationen" },
-      { name: "API-Design", evidence: "Fastify, Route Handlers, Zod-Validierung" },
+      {
+        name: "Postgres / Supabase",
+        evidence: "59-Tabellen-Schema, RLS, Migrationen",
+      },
+      {
+        name: "API-Design",
+        evidence: "Fastify, Route Handlers, Zod-Validierung",
+      },
       { name: "Zahlungen", evidence: "Stripe Connect Destination-Charge" },
       { name: "Multi-Tenancy", evidence: "RLS + per-Tenant-Provisionierung" },
-      { name: "E-Mail-Infrastruktur", evidence: "Self-hosted Mailcow + Fallback-Kette" },
-      { name: "Compliance-Systeme", evidence: "KassenSichV-TSE, DSGVO Art. 30" },
+      {
+        name: "E-Mail-Infrastruktur",
+        evidence: "Self-hosted Mailcow + Fallback-Kette",
+      },
+      {
+        name: "Compliance-Systeme",
+        evidence: "KassenSichV-TSE, DSGVO Art. 30",
+      },
     ],
   },
   {
     id: "cloud",
     title: "Cloud, Delivery & Betrieb",
-    summary: "Ich betreibe, was ich baue, inklusive der Nachtschicht, wenn etwas ausfällt.",
+    summary:
+      "Ich betreibe, was ich baue, inklusive der Nachtschicht, wenn etwas ausfällt.",
     skills: [
       { name: "Vercel / Edge", evidence: "Statische Exports, Rewrites, ISR" },
-      { name: "Docker / Coolify / Hetzner", evidence: "Eigener VPS-Stack in Produktion" },
+      {
+        name: "Docker / Coolify / Hetzner",
+        evidence: "Eigener VPS-Stack in Produktion",
+      },
       { name: "CI/CD", evidence: "GitHub Actions, Turborepo, EAS Build" },
-      { name: "Store-Auslieferung", evidence: "App Store & Play, inkl. OTA-Updates" },
+      {
+        name: "Store-Auslieferung",
+        evidence: "App Store & Play, inkl. OTA-Updates",
+      },
       { name: "Observability", evidence: "Sentry, Uptime-Kuma, Slack-Alerts" },
       { name: "Automatisierung", evidence: "n8n-Workflows mit Self-Healing" },
     ],
@@ -830,12 +998,30 @@ export const skillDomains: SkillDomain[] = [
     summary:
       "Von der Agenten-Pipeline in meinem Editor bis zur Antwort, die das Telefon des Nutzers ohne Netz findet.",
     skills: [
-      { name: "Agenten-Orchestrierung", evidence: "Sub-Agenten, Tool-Pipelines, Loops" },
-      { name: "On-Device-Inferenz", evidence: "whisper.rn, Spracherkennung ohne Netz" },
-      { name: "RAG & Retrieval", evidence: "Eigener Korpus, Granularität gemessen" },
-      { name: "Prompt-Engineering", evidence: "Vers-Konditionierung schlägt Modellgröße" },
-      { name: "Evaluation", evidence: "Lokale Iteration gegen dasselbe Whisper-Modell" },
-      { name: "KI-Recht (EU AI Act)", evidence: "Kennzeichnung nach Art. 50 als Gate" },
+      {
+        name: "Agenten-Orchestrierung",
+        evidence: "Sub-Agenten, Tool-Pipelines, Loops",
+      },
+      {
+        name: "On-Device-Inferenz",
+        evidence: "whisper.rn, Spracherkennung ohne Netz",
+      },
+      {
+        name: "RAG & Retrieval",
+        evidence: "Eigener Korpus, Granularität gemessen",
+      },
+      {
+        name: "Prompt-Engineering",
+        evidence: "Vers-Konditionierung schlägt Modellgröße",
+      },
+      {
+        name: "Evaluation",
+        evidence: "Lokale Iteration gegen dasselbe Whisper-Modell",
+      },
+      {
+        name: "KI-Recht (EU AI Act)",
+        evidence: "Kennzeichnung nach Art. 50 als Gate",
+      },
     ],
   },
 ];
@@ -850,7 +1036,10 @@ export const recruiter = {
   lede: "Kein Anschreiben nötig. Hier steht, was ich kann, was ich suche und wie du mich erreichst.",
   facts: [
     { label: "Rolle", value: "AI Product Engineer / Fullstack" },
-    { label: "Schwerpunkt", value: "Produkt end-to-end, KI-gestützte Lieferung" },
+    {
+      label: "Schwerpunkt",
+      value: "Produkt end-to-end, KI-gestützte Lieferung",
+    },
     // Der Anriss darüber verspricht "was ich suche". Ohne diese Zeile blieb
     // das Versprechen offen: Rolle und Modell sagen, was ich bin, nicht was
     // ich will.
@@ -862,17 +1051,24 @@ export const recruiter = {
       // Anforderungsliste an den Arbeitgeber, und wer bewirbt sich, sortiert
       // damit Teams aus, bevor er sie kennt. Der Zuschnitt der Aufgabe ist
       // das, worauf es ankommt.
-      value: "Produktteam, in dem ich ein Feature bis in die Produktion begleite",
+      value:
+        "Produktteam, in dem ich ein Feature bis in die Produktion begleite",
     },
     { label: "Standort", value: "Berlin · remote in der EU · hybrid" },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
-    { label: "Verfügbar", value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist" },
+    {
+      label: "Verfügbar",
+      value: "Gespräche jederzeit · Eintritt nach Kündigungsfrist",
+    },
     { label: "Sprachen", value: "Deutsch (Muttersprache) · Englisch" },
     { label: "Modell", value: "Festanstellung" },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
     // Entscheidung statt als Lücke.
-    { label: "Quellcode", value: "Open Source auf GitHub · Produktivrepos auf Anfrage" },
+    {
+      label: "Quellcode",
+      value: "Open Source auf GitHub · Produktivrepos auf Anfrage",
+    },
   ],
   strengths: [
     {

@@ -40,9 +40,12 @@ export function CopyEmail({
   const [stand, setStand] = useState<"ruhe" | "kopiert" | "fehler">("ruhe");
   const uhr = useRef<number | null>(null);
 
-  useEffect(() => () => {
-    if (uhr.current) window.clearTimeout(uhr.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (uhr.current) window.clearTimeout(uhr.current);
+    },
+    [],
+  );
 
   const kopieren = async () => {
     try {

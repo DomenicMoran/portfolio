@@ -2,7 +2,11 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ContentProvider } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
-import { andereSprache, type Article, type ArticleChrome } from "@/content/articles";
+import {
+  andereSprache,
+  type Article,
+  type ArticleChrome,
+} from "@/content/articles";
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
 import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
@@ -58,7 +62,9 @@ export function ArticlePage({
    * wer über eine Suchmaschine im Whisper-Text landete, las von Salati, ohne
    * zu erfahren, dass es die App in zwei Stores gibt.
    */
-  const system = content.caseStudies.find((study) => study.articles?.includes(article.slug));
+  const system = content.caseStudies.find((study) =>
+    study.articles?.includes(article.slug),
+  );
 
   // Ein Artikel ist ein Werk, kein Personenprofil. Schema.org unterscheidet
   // das, und Suchmaschinen wie Antwortmaschinen lesen es aus.
@@ -118,16 +124,23 @@ export function ArticlePage({
 
   return (
     <ContentProvider content={content}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: json }}
+      />
       <ConsoleGreeting />
 
       <SkipLink text={content.skipToContent} />
       <SiteShell otherHref={otherHref} hashBase={heim} />
 
-      <main id={INHALT_ID} tabIndex={-1} className="flex-1 px-6 pt-32 pb-24 sm:pt-40">
+      <main
+        id={INHALT_ID}
+        tabIndex={-1}
+        className="flex-1 px-6 pt-32 pb-24 sm:pt-40"
+      >
         {/* 38,5 rem sind 616 px. Gemessen ergibt das im Fließtext 73 Zeichen
               pro Zeile; bei den vorherigen 768 px waren es 91. */}
-          <article className="mx-auto w-full max-w-[38.5rem]">
+        <article className="mx-auto w-full max-w-[38.5rem]">
           {/* Der Kopf läuft als CSS-Animation, nicht über Reveal: Er steht
               über der Falz, und als JS-Animation wäre die Überschrift bis
               zur Hydration unsichtbar und damit das späte LCP-Element. */}
@@ -245,7 +258,10 @@ export function ArticlePage({
                   trägt `text-transform: uppercase`, und der Name folgt dem
                   gerenderten Text — gemessen kam "ARTIKEL" heraus. Manche
                   Vorleseprogramme buchstabieren Grossbuchstaben. */}
-              <nav aria-label={chrome.allArticles} className="mt-14 border-t border-line pt-10">
+              <nav
+                aria-label={chrome.allArticles}
+                className="mt-14 border-t border-line pt-10"
+              >
                 <h2 className="text-eyebrow mb-6">{chrome.allArticles}</h2>
                 <ul className="flex flex-col gap-3">
                   {weitere.map((a) => (

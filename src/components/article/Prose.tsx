@@ -61,10 +61,7 @@ export function Prose({
           case "list": {
             const List = block.ordered ? "ol" : "ul";
             return (
-              <List
-                key={i}
-                className="mb-6 flex flex-col gap-3 pl-1"
-              >
+              <List key={i} className="mb-6 flex flex-col gap-3 pl-1">
                 {block.items.map((item, j) => (
                   <li
                     key={j}
@@ -110,7 +107,9 @@ export function Prose({
                   aria-label={block.caption ?? codeLabel}
                   className="lit scroll-hint overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
                 >
-                  <code className={`language-${block.lang} font-mono text-ink-dim`}>
+                  <code
+                    className={`language-${block.lang} font-mono text-ink-dim`}
+                  >
                     {block.code}
                   </code>
                 </pre>
@@ -164,7 +163,10 @@ export function Prose({
                     </thead>
                     <tbody>
                       {block.rows.map((row, r) => (
-                        <tr key={r} className="border-b border-line last:border-b-0">
+                        <tr
+                          key={r}
+                          className="border-b border-line last:border-b-0"
+                        >
                           {row.map((cell, c) => (
                             <td
                               key={c}

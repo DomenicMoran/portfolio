@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { mailAdresse } from "@/lib/mailto";
 import type { Content } from "@/content/types";
 
 /**
@@ -87,7 +88,7 @@ export function NotFoundPage({
         <p className="mt-10 border-t border-line pt-6 text-sm text-ink-faint">
           {notFound.report}{" "}
           <a
-            href={`mailto:${site.email}`}
+            href={mailAdresse(site.email, site.mailSubject)}
             className="-my-1 py-1 text-acid underline underline-offset-4"
           >
             {site.email}
