@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { ogSchriften } from "@/lib/fonts";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { Marke } from "@/lib/mark";
@@ -187,6 +188,6 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
         </div>
       </div>
     ),
-    ogSize,
+    { ...ogSize, fonts: ogSchriften },
   );
 }
