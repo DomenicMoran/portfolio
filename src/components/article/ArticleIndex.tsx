@@ -83,6 +83,19 @@ export function ArticleIndex({
 
           <ul className="mt-16 flex flex-col gap-4">
             {articles.map((article, i) => {
+              /* Das System, aus dem der Artikel stammt — abgeleitet aus der
+                 Fallstudie, die ihn führt, und nicht am Artikel notiert.
+
+                 Warum es in der Übersicht steht und nicht nur im Artikel:
+                 Die Liste ist die Stelle, an der jemand entscheidet, ob er
+                 überhaupt einen der fünf öffnet. Ohne die Angabe liest sie
+                 sich wie fünf Blogeinträge; mit ihr sieht man in derselben
+                 Zeile, dass vier aus einer App in zwei Stores kommen und
+                 einer aus einer SaaS mit Fiskalisierung. */
+              const system = content.caseStudies.find((studie) =>
+                studie.articles?.includes(article.slug),
+              );
+
               // Die ersten beiden Karten stehen auf einem Telefon über der
               // Falz. Als JS-Animation wären sie bis zur Hydration
               // unsichtbar; gemessen war die erste damit das LCP-Element und
@@ -114,6 +127,16 @@ export function ArticleIndex({
                     <time dateTime={article.date}>{datum(article.date, lang)}</time>
                     <span aria-hidden>·</span>
                     <span>{chrome.readingTime(article.minutes)}</span>
+                    {system ? (
+                      <>
+                        <span aria-hidden>·</span>
+                        {/* Kein eigener Verweis: Die ganze Karte führt in den
+                            Artikel, und ein Verweis in einem Verweis ist im
+                            Barrierefreiheitsbaum zweimal dasselbe Ziel mit
+                            zwei Namen. Der Weg ins System steht im Artikel. */}
+                        <span className="text-ink-dim">{system.name}</span>
+                      </>
+                    ) : null}
                   </div>
 
                   <h2 className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl">
