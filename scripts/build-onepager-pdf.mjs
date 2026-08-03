@@ -27,6 +27,7 @@
  */
 
 import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { quellstand } from "./lib/onepager-quellstand.mjs";
 import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
 
@@ -40,8 +41,20 @@ import { starteServer } from "./lib/local-server.mjs";
  * Inhaltsdatei.
  */
 const BLAETTER = [
-  { route: "/onepager", sprache: "de", ziel: "public/domenic-moran-kurzprofil.pdf", betreff: "Kurzprofil: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite" },
-  { route: "/en/onepager", sprache: "en", ziel: "public/domenic-moran-one-pager.pdf", betreff: "One-page profile: four systems in production, path and contact on a single page" },
+  {
+    route: "/onepager",
+    sprache: "de",
+    ziel: "public/domenic-moran-kurzprofil.pdf",
+    betreff:
+      "Kurzprofil: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite",
+  },
+  {
+    route: "/en/onepager",
+    sprache: "en",
+    ziel: "public/domenic-moran-one-pager.pdf",
+    betreff:
+      "One-page profile: four systems in production, path and contact on a single page",
+  },
 ];
 const vorgegebeneBasis = process.argv[2];
 
@@ -62,7 +75,9 @@ let fehler = 0;
 for (const blatt of BLAETTER) {
   const seite = await browser.newPage();
 
-  const antwort = await seite.goto(`${basis}${blatt.route}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${blatt.route}`, {
+    waitUntil: "networkidle",
+  });
   if (!antwort || antwort.status() !== 200) {
     throw new Error(`${blatt.route} antwortete mit ${antwort?.status()}`);
   }
@@ -120,6 +135,22 @@ for (const blatt of BLAETTER) {
   doc.setCreator("domenicmoran.de");
 
   /*
+    Der Stand der Quellen, aus denen das Blatt entstanden ist.
+
+    Die Datei wird von Hand erzeugt und nicht vom Bau: Auf Vercel gibt es
+    kein Chromium, also kann `next build` nicht drucken. Damit ist sie die
+    einzige ausgelieferte Datei dieser Seite, die veralten kann, ohne dass
+    es jemand merkt — und sie ist ausgerechnet die, die ein Recruiter
+    weiterreicht.
+
+    Die Kennung ist die Prüfsumme über die Dateien, aus denen das Blatt
+    entsteht. `check-onepager-pdf.mjs` rechnet sie neu und vergleicht. Ändert
+    sich eine der Quellen, ohne dass jemand `npm run onepager:pdf` aufruft,
+    schlägt der Lauf fehl statt still ein altes Blatt auszuliefern.
+  */
+  doc.getInfoDict().set(PDFName.of("Quellstand"), PDFString.of(quellstand()));
+
+  /*
     Die Sprache des Dokuments, im Katalog.
 
     Ein Vorleseprogramm entscheidet daran, mit welcher Aussprache es liest.
@@ -156,7 +187,8 @@ for (const blatt of BLAETTER) {
     const annots = pdfSeite.node.get(PDFName.of("Annots"));
     for (const ref of annots?.asArray?.() ?? []) {
       const eintrag = doc.context.lookup(ref);
-      if (eintrag?.get?.(PDFName.of("Subtype"))?.toString?.() !== "/Link") continue;
+      if (eintrag?.get?.(PDFName.of("Subtype"))?.toString?.() !== "/Link")
+        continue;
       const aktion = doc.context.lookup(eintrag.get(PDFName.of("A")));
       const ziel = aktion?.get?.(PDFName.of("URI"));
       if (ziel) verweise.push(String(ziel).replace(/^\(|\)$/g, ""));
@@ -168,7 +200,8 @@ for (const blatt of BLAETTER) {
      eine Suche im Rohtext findet sie dort nicht, genau wie bei den Verweisen. */
   const fertig = await PDFDocument.load(readFileSync(blatt.ziel));
   const sprache = fertig.catalog.get(PDFName.of("Lang"));
-  const spracheOk = sprache instanceof PDFString && sprache.asString() === blatt.sprache;
+  const spracheOk =
+    sprache instanceof PDFString && sprache.asString() === blatt.sprache;
 
   const kb = Math.round(statSync(blatt.ziel).size / 1024);
   console.log(

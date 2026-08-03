@@ -100,3 +100,17 @@ jobs:
       # Masken-Reveals, weil die Zeilenbox knapper war als die Schrift.
       - name: Unterlängen
         run: npm run check:headings
+
+      # Die beiden PDFs entstehen nicht beim Bau — dafür bräuchte der Lauf ein
+      # Chromium mit Druckfunktion. Sie werden von Hand gedruckt, und ein
+      # Schritt von Hand wird irgendwann vergessen. Ausgerechnet diese Datei
+      # reicht ein Recruiter weiter.
+      - name: Stand des Kurzprofils
+        run: npm run check:onepager
+
+      # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
+      # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
+      # Kette, damit die Liste vollständig ist und niemand ihn für vergessen
+      # hält.
+      - name: Genannte Technik
+        run: npm run check:stack

@@ -227,6 +227,7 @@ npm run check:privacy # keine Seite baut eine Verbindung nach außen auf
 npm run check:links   # kein Anker und keine interne Adresse zeigt ins Leere
 npm run check:parity  # beide Sprachfassungen zeigen gleich viel
 npm run check:stack   # jede genannte Technik steht wirklich im Produktivrepo
+npm run check:onepager # das ausgelieferte PDF stammt aus dem aktuellen Inhalt
 npm run check:headers # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
@@ -245,3 +246,9 @@ kein Beleg dafür, dass etwas gut aussieht.
 
 Der One-Pager muss **eine** Seite bleiben: nach Inhaltsänderungen die
 Druckansicht gegenprüfen (`.onepager`-Höhe < ~1040 px bei 794 px Breite).
+
+Und er muss **neu gedruckt** werden: `npm run build && npm run onepager:pdf`.
+Die beiden PDFs entstehen nicht beim Bau — dafür bräuchte Vercel ein Chromium.
+Sie sind damit die einzigen ausgelieferten Dateien, die veralten können, und
+ausgerechnet die, die weitergereicht werden. `npm run check:onepager` hält den
+Quellstand im Dokument gegen die Quellen und scheitert sonst.
