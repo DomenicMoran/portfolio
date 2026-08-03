@@ -62,6 +62,14 @@ export type ArticleChrome = {
   codeLabel: string;
   /** Name der Tabelle für Vorleseprogramme, wenn sie keine Bildunterschrift hat. */
   tableLabel: string;
+  /**
+   * Beschriftung der Sprungmarke neben jeder Zwischenüberschrift.
+   *
+   * Sichtbar steht dort nur ein Doppelkreuz. Das allein ergibt vorgelesen
+   * „Nummernzeichen, Link" und sagt nichts darüber, wohin er führt, deshalb
+   * bekommt er den Namen der Überschrift dahinter.
+   */
+  anchorLabel: string;
   publishedLabel: string;
   /**
    * Beschriftung des Rückwegs vom Artikel in die Fallstudie.
