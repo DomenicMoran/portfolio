@@ -228,6 +228,8 @@ export const de: Content = {
       maghrib: "Maghrib",
       isha: "Ischa",
     },
+    next: "Als Nächstes",
+    dayDone: "Für heute sind alle Zeiten vorbei",
     failed: "nicht berechnet",
     note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. Alles im Browser, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
   },

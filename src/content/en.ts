@@ -161,7 +161,7 @@ export const en: Content = {
         label: "commits since March 2026",
       },
       { value: "1,276", label: "API routes (MenuCloud)" },
-      { value: "7,437", label: "test cases (MenuCloud)" },
+      { value: "7,464", label: "test cases (MenuCloud)" },
     ],
   },
 
@@ -371,7 +371,7 @@ export const en: Content = {
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
-        "7,437 test cases (7,263 unit, 174 end-to-end), the end-to-end suite running against production",
+        "7,464 test cases (7,290 unit, 174 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         "Self-hosted mail stack with a three-stage fallback chain",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
@@ -464,7 +464,7 @@ export const en: Content = {
       metrics: [
         { value: "1,276", label: "API routes" },
         { value: "812", label: "DB migrations" },
-        { value: "7,437", label: "test cases" },
+        { value: "7,464", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
@@ -1180,6 +1180,8 @@ export const en: Content = {
       maghrib: "Maghrib",
       isha: "Isha",
     },
+    next: "Up next",
+    dayDone: "All of today has passed",
     failed: "not computed",
     note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. All in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
   },

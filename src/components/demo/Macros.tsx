@@ -237,15 +237,20 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
       <dl className="mt-6 grid min-h-[5.5rem] grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-5">
         {(
           [
-            ["kcal", summe.kcal, demo.units.kcal],
-            ["p", summe.p, demo.units.protein],
-            ["k", summe.k, demo.units.carbs],
-            ["f", summe.f, demo.units.fat],
-            ["b", summe.b, demo.units.fiber],
+            ["kcal", summe.kcal, demo.units.kcal, "text-ink-faint"],
+            ["p", summe.p, demo.units.protein, "text-acid"],
+            ["k", summe.k, demo.units.carbs, "text-cyan"],
+            ["f", summe.f, demo.units.fat, "text-violet"],
+            ["b", summe.b, demo.units.fiber, "text-ink-faint"],
           ] as const
-        ).map(([schluessel, wert, label]) => (
+        ).map(([schluessel, wert, label, farbe]) => (
           <div key={schluessel}>
-            <dt className="font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+            {/* Die drei Makros tragen die Farbe ihres Balkenabschnitts. Ohne
+                das braucht der Balken darunter eine Legende, und eine Legende
+                für drei Werte ist eine Zeile zu viel. */}
+            <dt
+              className={`font-mono text-[10px] tracking-[0.14em] uppercase ${farbe}`}
+            >
               {label}
             </dt>
             <dd className="mt-1 font-mono text-xl text-ink tabular-nums">
