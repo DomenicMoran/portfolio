@@ -91,7 +91,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen zehn Prüfungen, die den Bau nicht ersetzen. Sieben davon
+Nach dem Bau laufen elf Prüfungen, die den Bau nicht ersetzen. Sieben davon
 messen an der gebauten Seite und nicht am Quelltext; `check:headers` misst an
 der Auslieferung, weil `vercel.json` vom Bau gar nicht gelesen wird — und läuft
 deshalb auf Pull Requests nicht mit. Derselbe Workflow führt sie bei jedem Push
@@ -104,6 +104,7 @@ npm run check:links     # kein Anker und keine interne Adresse zeigt ins Leere
 npm run check:parity    # beide Sprachfassungen zeigen gleich viel
 npm run check:stack     # jede genannte Technik steht wirklich im Produktivrepo
 npm run check:onepager  # das ausgelieferte PDF stammt aus dem aktuellen Inhalt
+npm run check:typography # jede Sprachfassung setzt ihre eigenen Zeichen
 npm run check:headers   # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab

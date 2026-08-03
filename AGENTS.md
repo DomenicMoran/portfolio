@@ -228,6 +228,7 @@ npm run check:links   # kein Anker und keine interne Adresse zeigt ins Leere
 npm run check:parity  # beide Sprachfassungen zeigen gleich viel
 npm run check:stack   # jede genannte Technik steht wirklich im Produktivrepo
 npm run check:onepager # das ausgelieferte PDF stammt aus dem aktuellen Inhalt
+npm run check:typography # jede Sprachfassung setzt ihre eigenen Zeichen
 npm run check:headers # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print   # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings # keine abgeschnittene Unterlänge
