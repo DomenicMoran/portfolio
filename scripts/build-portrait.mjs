@@ -2,14 +2,14 @@
 /**
  * Erzeugt alle Fassungen des Porträts aus einem Original.
  *
- * Dasselbe Gesicht liegt an drei Stellen: gross auf der Seite, klein auf dem
- * One-Pager, winzig und eingebettet in der Vorschaukarte. Bis hierher waren
- * das drei von Hand erzeugte Dateien ohne gemeinsame Quelle im Repo — genau
- * die Lage, die `build-favicon.mjs` fuer das Zeichen schon einmal aufgeloest
- * hat. Eine Binaerdatei liest nicht mit: Wer das Foto tauscht und eine der
- * drei vergisst, sieht den Fehler erst, wenn jemand die Seite teilt.
+ * Dasselbe Gesicht liegt an vier Stellen: gross auf der Seite, klein auf dem
+ * One-Pager, winzig und eingebettet in der Vorschaukarte, und im Briefkopf des
+ * Lebenslaufs. Bis hierher waren das von Hand erzeugte Dateien ohne
+ * gemeinsame Quelle — genau die Lage, die `build-favicon.mjs` fuer das Zeichen schon einmal aufgeloest
+ * hat. Eine Binaerdatei liest nicht mit: Wer das Foto tauscht und eine
+ * davon vergisst, sieht den Fehler erst, wenn jemand die Seite teilt.
  *
- * Deshalb ein Lauf, der alle drei schreibt. Wer das Original tauscht, ruft ihn
+ * Deshalb ein Lauf, der alle vier schreibt. Wer das Original tauscht, ruft ihn
  * auf, und danach gibt es kein altes Bild mehr, das noch irgendwo lebt.
  *
  * Die Originale liegen ausserhalb des Repos, unter `../assets/pb/`, wie die
@@ -68,6 +68,26 @@ const FASSUNGEN = [
     guete: 82,
     zweck: "Vorschaukarte, eingebettet als Datenadresse",
   },
+  /*
+     Die vierte Stelle, und die einzige außerhalb dieses Repos.
+
+     Der Lebenslauf setzt sein Bild als Datenadresse in den Briefkopf und lag
+     dafür als eigene Datei in `../docs`. Genau die Lage, die dieser Lauf für
+     die anderen drei aufgelöst hat: Wer das Foto tauscht und diese vergisst,
+     verschickt einen Lebenslauf mit dem alten Gesicht — und merkt es nie,
+     weil der Lebenslauf nicht öffentlich ist und niemand die beiden
+     nebeneinander sieht.
+
+     420 px, weil der Briefkopf 66 pt zeigt und bei 300 dpi rund 275 Pixel
+     braucht.
+  */
+  {
+    quelle: "portrait-master.png",
+    ziel: "../docs/lebenslauf-portrait.jpg",
+    kante: 420,
+    guete: 86,
+    zweck: "Briefkopf des Lebenslaufs",
+  },
 ];
 
 const fehlend = [...new Set(FASSUNGEN.map((f) => f.quelle))].filter(
@@ -93,5 +113,7 @@ for (const { quelle, ziel, kante, guete, zweck } of FASSUNGEN) {
     .toFile(ziel);
 
   const kb = Math.round(statSync(ziel).size / 1024);
-  console.log(`${ziel.padEnd(24)} ${kante}px  ${String(kb).padStart(3)} kB  ${zweck}`);
+  console.log(
+    `${ziel.padEnd(24)} ${kante}px  ${String(kb).padStart(3)} kB  ${zweck}`,
+  );
 }
