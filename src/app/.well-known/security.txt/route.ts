@@ -15,7 +15,10 @@ import { site } from "@/content/site";
  * läuft sie nach sechs Monaten aus, was genau die richtige Aussage ist.
  *
  * RFC 9116 verlangt einen Zeitpunkt weniger als ein Jahr in der Zukunft und
- * das Format nach RFC 3339. `toISOString()` liefert genau das.
+ * das Format nach RFC 3339. `toISOString()` liefert genau das — mitsamt
+ * Millisekunden, und die stehen in einem Ablaufdatum wie eine Zahl, die
+ * jemand vergessen hat abzuschneiden. RFC 3339 erlaubt sie, verlangt sie aber
+ * nicht. Wer diese Datei liest, sucht nach Schlamperei; sie gehört weg.
  */
 export const dynamic = "force-static";
 
@@ -32,7 +35,7 @@ export function GET() {
     `Contact: mailto:${site.email}`,
     "Preferred-Languages: de, en",
     `Canonical: ${site.url}/.well-known/security.txt`,
-    `Expires: ${gueltigBis.toISOString()}`,
+    `Expires: ${gueltigBis.toISOString().replace(/\.\d{3}Z$/, "Z")}`,
     "",
   ];
 
