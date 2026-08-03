@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { ogSchriften } from "@/lib/fonts";
 import { artikelDe, artikelNach } from "@/content/articles";
 import { site } from "@/content/site";
 
@@ -87,7 +88,7 @@ export default async function Image({
               background: "#d4ff45",
               color: "#08080a",
               fontSize: 24,
-              fontWeight: 700,
+              fontWeight: 600,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -174,6 +175,6 @@ export default async function Image({
         </div>
       </div>
     ),
-    size,
+    { ...size, fonts: ogSchriften },
   );
 }

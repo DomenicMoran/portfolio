@@ -146,6 +146,18 @@ Vorher gab es zwei Marken: dunkler Buchstabe auf grüner Fläche in der
 Kopfleiste, grüner auf dunkler im Lesezeichen. So entsteht das — nicht durch
 eine Entscheidung, sondern durch eine zweite Stelle.
 
+## Die Schrift der Vorschaubilder
+
+`next/og` bringt genau einen Schnitt mit: Geist Regular. Satori erfindet keine
+Fettung — ein `fontWeight`, für den kein Schnitt registriert ist, rendert still
+als 400. Kein Fehler, keine Warnung, und im Bild sieht man es erst im direkten
+Vergleich. Gemessen an den ausgelieferten Karten verlangten alle drei Erzeuger
+600 oder 700 und bekamen 400.
+
+Wer ein neues Gewicht benutzt, legt den Schnitt nach `src/lib/fonts/` und
+trägt ihn in `ogSchriften` ein. `src/lib/fonts/fonts.test.ts` hält beides
+gegeneinander und schlägt sonst fehl.
+
 ## Das Porträt
 
 Dasselbe in Grün, nur mit einem Foto: Es liegt an drei Stellen — groß auf der
