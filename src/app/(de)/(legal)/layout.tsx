@@ -13,15 +13,24 @@ export default function LegalLayout({
 }) {
   return (
     <div className="mx-auto flex min-h-svh w-full max-w-3xl flex-col px-6 py-16">
-      {/* Gemessen 11 px hoch. Die Trefferflaeche waechst auf 27 px, die
-          optische Position bleibt. */}
-      <Link
-        href="/"
-        className="text-eyebrow -my-2 w-fit py-2 transition-colors hover:text-ink-dim"
-      >
-        ← {site.name}
-      </Link>
+      {/* Der Rückweg ist eine Navigation, kein loser Verweis.
 
+          Die beiden Rechtsseiten hatten im Barrierefreiheitsbaum genau eine
+          Landmarke: den Hauptbereich. Wer die Landmarkenliste benutzt, fand
+          weder den Weg zurück noch die Fußzeile — auf jeder anderen Seite
+          dieser Webseite gibt es beide, und ausgerechnet hier landet jemand,
+          der eine Anschrift oder eine Rechtsgrundlage sucht.
+
+          Gemessen 11 px hoch. Die Trefferflaeche waechst auf 27 px, die
+          optische Position bleibt. */}
+      <nav aria-label={de.a11y.legalNav}>
+        <Link
+          href="/"
+          className="text-eyebrow -my-2 w-fit py-2 transition-colors hover:text-ink-dim"
+        >
+          ← {site.name}
+        </Link>
+      </nav>
 
       <div className="prose-legal mt-10 flex-1">{children}</div>
 
@@ -32,7 +41,7 @@ export default function LegalLayout({
           fehlte der Verweis ausgerechnet auf diesen beiden: Wer auf der
           Datenschutzerklärung stand, kam nur über den Umweg über die
           Startseite zum Impressum. */}
-      <p className="mt-16 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-6 font-mono text-[11px] text-ink-faint">
+      <footer className="mt-16 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-6 font-mono text-[11px] text-ink-faint">
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
@@ -52,7 +61,7 @@ export default function LegalLayout({
         >
           {de.footer.datenschutz}
         </Link>
-      </p>
+      </footer>
     </div>
   );
 }

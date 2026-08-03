@@ -108,6 +108,8 @@ export const en: Content = {
     toTop: "Back to top",
     mainNav: "Main navigation",
     footerNav: "Footer navigation",
+    legalNav: "Back to the site",
+    onepagerNav: "Print, download, switch language",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     commandPalette: "Open command palette",

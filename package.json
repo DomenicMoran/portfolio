@@ -20,6 +20,7 @@
     "check:print": "node scripts/check-print.mjs",
     "check:reading": "node scripts/check-reading-time.mjs",
     "check:headings": "node scripts/check-headings.mjs",
+    "check:landmarks": "node scripts/check-landmarks.mjs",
     "check:separators": "node scripts/check-separators.mjs",
     "check:nbsp": "node scripts/check-nbsp.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",

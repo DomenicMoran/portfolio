@@ -125,6 +125,14 @@ jobs:
       - name: Unterlängen
         run: npm run check:headings
 
+      # Wer mit einem Vorleseprogramm arbeitet, springt durch Landmarken.
+      # Dreimal fehlte eine, jedes Mal von Hand gefunden: der Belegblock der
+      # Artikel, die Artikelliste, zuletzt die Rechtsseiten und beide
+      # Kurzprofile. axe prüft, ob eine vorhandene Landmarke richtig gebaut
+      # ist, nicht, ob sie da ist.
+      - name: Landmarken
+        run: npm run check:landmarks
+
       # Ein Mittelpunkt, der beim Umbruch am Zeilenende hängen bleibt, trennt
       # nichts mehr. Auf zehn Artikelseiten und dem Kurzprofil war das so;
       # gesehen hat es keiner der anderen Läufe, weil es weder ein Verstoß

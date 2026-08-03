@@ -92,7 +92,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen sechzehn Prüfungen, die den Bau nicht ersetzen. Acht davon
+Nach dem Bau laufen siebzehn Prüfungen, die den Bau nicht ersetzen. Neun davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -111,6 +111,7 @@ npm run check:exports   # jede Ausfuhr aus src/ hat einen Abnehmer
 npm run check:headers   # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
+npm run check:landmarks # jede Seite bietet Hauptbereich, Navigation und Fußzeile
 npm run check:separators # kein Trennzeichen bleibt beim Umbruch am Zeilenende
 npm run check:nbsp      # keine Rechtsangabe bricht zwischen Kürzel und Ziffer um
 npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand
@@ -192,6 +193,7 @@ scripts/
 │  Am Browser gemessen — diese sieben laden die gebaute Seite wirklich:
 ├─ check-a11y.mjs                 axe-core gegen jede gebaute Seite, zwei Breiten
 ├─ check-headings.mjs             keine Überschrift schneidet ihre Unterlängen ab
+├─ check-landmarks.mjs            jede Seite bietet Hauptbereich, Navigation und Fußzeile
 ├─ check-links.mjs                kein Anker und keine interne Adresse zeigt ins Leere
 ├─ check-nbsp.mjs                 keine Rechtsangabe bricht zwischen Kürzel und Ziffer um
 ├─ check-parity.mjs               beide Sprachfassungen zeigen gleich viel
