@@ -1390,6 +1390,72 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die Abzeichen im README nennen die Fassungen, die installiert sind
+   ---------------------------------------------------------------------------
+
+   Oben im README stehen vier Abzeichen: Next.js 16.2, React 19.2, TypeScript
+   strict, Tailwind v4. Sie sind von Hand gesetzte Bilder, keine Abfrage — und
+   damit die einzige Stelle im Repo, an der eine Fassungsangabe stehen bleibt,
+   wenn die Abhängigkeit weiterzieht. Wer ein Repo aufmacht und im ersten Bild
+   eine Fassung liest, die `package.json` widerspricht, hat den ersten Zweifel
+   in der ersten Zeile.
+
+   Verglichen wird auf zwei Stellen genau: Ein Abzeichen, das "16.2" sagt,
+   passt zu 16.2.12; eines, das "16.1" sagt, nicht mehr.
+
+   Das Abzeichen des Prüflaufs bleibt außen vor: Es kommt live von GitHub und
+   kann gar nicht veralten. */
+{
+  const readme = readFileSync("README.md", "utf8");
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const alle = { ...manifest.dependencies, ...manifest.devDependencies };
+
+  const ABZEICHEN = [
+    ["Next.js", "next"],
+    ["React", "react"],
+    ["Tailwind", "tailwindcss"],
+  ];
+
+  const funde = [];
+  let geprueft = 0;
+
+  for (const [beschriftung, paket] of ABZEICHEN) {
+    /* `String.raw`, weil eine Vorlage `\d` zu `d` auflöst, bevor `RegExp` es
+       sieht. Der erste Anlauf suchte damit nach `[d.]+` und fand nie eine
+       Fassung — und ein Lauf, der nichts findet, meldet nichts. */
+    const muster = new RegExp(
+      String.raw`badge/${beschriftung.replace(".", String.raw`\.`)}-v?([\d.]+)`,
+    );
+    const imAbzeichen = readme.match(muster)?.[1];
+    if (!imAbzeichen) continue;
+
+    const installiert = (alle[paket] ?? "").replace(/^[\^~]/, "");
+    if (!installiert) {
+      funde.push(`${beschriftung}: ${paket} steht in keiner package.json`);
+      continue;
+    }
+    geprueft++;
+
+    /* Auf so viele Stellen vergleichen, wie das Abzeichen nennt. */
+    const stellen = imAbzeichen.split(".").length;
+    const kurz = installiert.split(".").slice(0, stellen).join(".");
+    if (kurz !== imAbzeichen) {
+      funde.push(`${beschriftung}: Abzeichen sagt ${imAbzeichen}, installiert ist ${installiert}`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Abzeichen mit falscher Fassung:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft > 0) {
+    zeilen.push(
+      `  ok  Abzeichen im README ${String(geprueft).padStart(6)} Fassungen stimmen mit package.json`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jede Seite mit eigener Vorschaukarte
    ---------------------------------------------------------------------------
 

@@ -7,6 +7,7 @@
 Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
 Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
 
+[![Prüfen](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml/badge.svg)](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-000?logo=nextdotjs)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19.2-087ea4?logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript)](https://typescriptlang.org)
