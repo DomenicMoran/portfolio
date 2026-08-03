@@ -21,16 +21,45 @@ export function PrintButton({
   hinweis,
   beschriftung,
   datei,
+  sprache,
 }: {
   hinweis: string;
   beschriftung: string;
   /** Die fertige Datei: Adresse und Beschriftung, je Sprache. */
   datei: { href: string; label: string };
+  /**
+   * Der Weg zum Blatt in der anderen Sprache.
+   *
+   * Das Kurzprofil ist die einzige Seite ohne Kopfleiste — und damit war es
+   * die einzige ohne Sprachwechsel. Maschinenlesbar stand er da
+   * (`link rel=alternate`), sichtbar nicht: Wer die deutsche Fassung offen
+   * hatte und die englische brauchte, musste die Adresse von Hand ändern.
+   */
+  sprache: { href: string; label: string; aria: string };
 }) {
   return (
     <div className="no-print sticky top-0 z-10 border-b border-[#e4e4ea] bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-[820px] flex-wrap items-center justify-between gap-x-4 gap-y-3 px-8 py-3">
-        <span className="text-sm text-[#4a4a55]">{hinweis}</span>
+        <div className="flex min-w-0 items-center gap-3">
+          {/* Der Hinweis erklärt den Druckknopf, also die zweite von zwei
+              Möglichkeiten. Auf schmalen Geräten steht er nicht: Gemessen bei
+              390 px brach die Leiste auf zwei Zeilen um und der Satz endete
+              als „im Druckdialog „Als…" — ein abgeschnittener Satz sieht aus
+              wie ein Fehler, und die fertige Datei daneben braucht keine
+              Erklärung. */}
+          <span className="hidden truncate text-sm text-[#4a4a55] sm:inline">
+            {hinweis}
+          </span>
+          <a
+            href={sprache.href}
+            hrefLang={sprache.href.startsWith("/en") ? "en" : "de"}
+            lang={sprache.href.startsWith("/en") ? "en" : "de"}
+            aria-label={sprache.aria}
+            className="-my-2 shrink-0 py-2 text-sm text-[#4a4a55] underline underline-offset-4 transition-colors hover:text-[#101014]"
+          >
+            {sprache.label}
+          </a>
+        </div>
         <div className="flex shrink-0 items-center gap-2">
           {/* `download` und kein neuer Tab: Die Datei soll im Ordner landen,
               aus dem sie weitergereicht wird, nicht in einem Betrachter. */}
