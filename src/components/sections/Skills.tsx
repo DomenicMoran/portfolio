@@ -80,7 +80,20 @@ function DomainCard({
             className="flex flex-col gap-0.5 border-t border-line py-3 first:border-t-0 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
           >
             <dt className="text-sm text-ink">{skill.name}</dt>
-            <dd className="font-mono text-[11px] leading-snug text-ink-faint sm:max-w-[55%] sm:text-right">
+            {/* `text-balance` verteilt den Beleg auf gleich lange Zeilen.
+
+                Rechtsbündig und zweizeilig sah er vorher aus, als wäre etwas
+                abgerissen: Die zweite Zeile trug oft nur ein Wort. Gemessen an
+                der ausgelieferten Seite bei 1024 px endeten 13 von 24 Zellen
+                auf Deutsch so und 10 von 24 auf Englisch — „Strict überall,
+                0 Fehler / als Merge-Gate", „whisper.rn, Spracherkennung /
+                ohne Netz".
+
+                `text-balance` statt `text-pretty`: Letzteres verhindert nur
+                das einzelne Wort am Ende, hier stehen aber ohnehin nie mehr
+                als drei Zeilen, und zwei gleich lange lesen sich neben der
+                linken Spalte ruhiger als eine lange und ein Rest. */}
+            <dd className="font-mono text-[11px] leading-snug text-ink-faint text-balance sm:max-w-[55%] sm:text-right">
               {skill.evidence}
             </dd>
           </div>

@@ -935,7 +935,7 @@ export const en: Content = {
           {
             name: "Core Web Vitals",
             evidence:
-              "Lighthouse cron against production, per-route bundle budget",
+              "Lighthouse cron against production, per‑route bundle budget",
           },
           {
             name: "Accessibility",

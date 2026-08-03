@@ -1000,7 +1000,7 @@ export const skillDomains: SkillDomain[] = [
     skills: [
       {
         name: "Agenten-Orchestrierung",
-        evidence: "Sub-Agenten, Tool-Pipelines, Loops",
+        evidence: "Sub‑Agenten, Tool‑Pipelines, Loops",
       },
       {
         name: "On-Device-Inferenz",
