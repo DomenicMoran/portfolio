@@ -37,7 +37,9 @@ function untergrenze(zahl: string, sprache: "de" | "en"): string {
   // Beide Trennzeichen entfernen: Deutsch schreibt 4.094, Englisch 4,094.
   const roh = Number(zahl.replace(/[.,]/g, ""));
   if (!Number.isFinite(roh) || roh < 1000) {
-    throw new Error(`Kennzahl "${zahl}" lässt sich nicht auf Tausender abrunden.`);
+    throw new Error(
+      `Kennzahl "${zahl}" lässt sich nicht auf Tausender abrunden.`,
+    );
   }
   return `${Math.floor(roh / 1000)}${sprache === "de" ? ".000" : ",000"}`;
 }
@@ -130,7 +132,11 @@ export function OnePager({
       style={{ colorScheme: "light" }}
       className="min-h-svh bg-white text-[#101014] print:min-h-0 print:bg-white"
     >
-      <PrintButton hinweis={onepager.printHint} beschriftung={onepager.printButton} />
+      <PrintButton
+        hinweis={onepager.printHint}
+        beschriftung={onepager.printButton}
+        datei={inhalt.recruiter.cta.pdf}
+      />
 
       <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
         {/* Header */}
@@ -157,7 +163,9 @@ export function OnePager({
               />
             ) : null}
             <div>
-              <h1 className="text-4xl font-semibold tracking-tight">{site.name}</h1>
+              <h1 className="text-4xl font-semibold tracking-tight">
+                {site.name}
+              </h1>
               <p className="mt-1.5 text-lg text-[#3a3a44]">{site.role}</p>
             </div>
           </div>
@@ -191,16 +199,22 @@ export function OnePager({
           <div className="text-right text-sm leading-[26px] text-[#4a4a55] [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
             <p>{site.location}</p>
             <p>
-              <a href={mailAdresse(site.email, site.mailSubject)}>{site.email}</a>
+              <a href={mailAdresse(site.email, site.mailSubject)}>
+                {site.email}
+              </a>
             </p>
             {SOCIALS.github ? (
               <p>
-                <a href={SOCIALS.github}>{SOCIALS.github.replace("https://", "")}</a>
+                <a href={SOCIALS.github}>
+                  {SOCIALS.github.replace("https://", "")}
+                </a>
               </p>
             ) : null}
             {SOCIALS.linkedin ? (
               <p>
-                <a href={SOCIALS.linkedin}>{SOCIALS.linkedin.replace("https://", "")}</a>
+                <a href={SOCIALS.linkedin}>
+                  {SOCIALS.linkedin.replace("https://", "")}
+                </a>
               </p>
             ) : null}
             <p className="mt-1 font-medium text-[#101014]">
@@ -263,7 +277,12 @@ export function OnePager({
                     </span>
                   </h3>
                   <span className="font-mono text-[10px] text-[#6a6a76]">
-                    {study.metrics.map((m) => `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`).join("  ·  ")}
+                    {study.metrics
+                      .map(
+                        (m) =>
+                          `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`,
+                      )
+                      .join("  ·  ")}
                   </span>
                 </div>
                 <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
@@ -283,12 +302,17 @@ export function OnePager({
                       hergibt. */}
                   <strong className="font-semibold">
                     {study.hardPart.title}
-                    {firstSentence(study.hardPart.body).includes(":") ? "." : ":"}
+                    {firstSentence(study.hardPart.body).includes(":")
+                      ? "."
+                      : ":"}
                   </strong>{" "}
                   {firstSentence(study.hardPart.body)}
                 </p>
                 <p className="mt-1 font-mono text-[10.5px] leading-snug text-[#6a6a76]">
-                  {study.stack.flatMap((g) => g.items).slice(0, 7).join(" · ")}
+                  {study.stack
+                    .flatMap((g) => g.items)
+                    .slice(0, 7)
+                    .join(" · ")}
                 </p>
               </div>
             ))}
@@ -361,10 +385,13 @@ export function OnePager({
           </span>
           <span>
             {onepager.asOf}{" "}
-            {new Date().toLocaleDateString(sprache === "de" ? "de-DE" : "en-GB", {
-              month: "long",
-              year: "numeric",
-            })}
+            {new Date().toLocaleDateString(
+              sprache === "de" ? "de-DE" : "en-GB",
+              {
+                month: "long",
+                year: "numeric",
+              },
+            )}
           </span>
         </footer>
       </article>
