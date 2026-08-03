@@ -253,7 +253,7 @@ const UNTERGRENZEN = [
   },
 ];
 
-for (const datei of ["../docs/LEBENSLAUF.md", "../docs/CAREER-LAUNCHPAD.md"]) {
+for (const datei of ["../docs/LEBENSLAUF.md", "../docs/BEWERBUNG.md"]) {
   if (!existsSync(datei)) {
     zeilen.push(`  --  ${datei} nicht vorhanden, übersprungen`);
     continue;
