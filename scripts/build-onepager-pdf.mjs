@@ -69,7 +69,8 @@ if (!basis) {
 
 const browser = await chromium.launch();
 const gebauteId = readFileSync(".next/BUILD_ID", "utf8").trim();
-const { PDFDocument, PDFName, PDFString } = await import("pdf-lib");
+const { PDFDocument, PDFHexString, PDFName, PDFString } =
+  await import("pdf-lib");
 let fehler = 0;
 
 for (const blatt of BLAETTER) {
@@ -124,13 +125,26 @@ for (const blatt of BLAETTER) {
   // ohne Autor ist im Archiv eines Unternehmens eine Datei ohne Absender.
   doc.setAuthor("Domenic Moran");
   doc.setSubject(blatt.betreff);
+  /*
+    Schlagwörter mit Komma, nicht mit Leerzeichen.
+
+    `setKeywords` nimmt eine Liste und fügt sie mit Leerzeichen zusammen. Im
+    fertigen Dokument stand damit „AI Product Engineer Fullstack TypeScript
+    React Native Next.js Berlin" — ein einziger Wortstrom. Ein
+    Bewerbermanagement-System, das dieses Feld ausliest, macht daraus zehn
+    falsche Schlagwörter statt sechs richtigen: „React Native" zerfällt in
+    „React" und „Native", „AI Product Engineer" in drei Wörter, von denen
+    keines der Titel ist.
+  */
   doc.setKeywords([
-    "AI Product Engineer",
-    "Fullstack",
-    "TypeScript",
-    "React Native",
-    "Next.js",
-    "Berlin",
+    [
+      "AI Product Engineer",
+      "Fullstack",
+      "TypeScript",
+      "React Native",
+      "Next.js",
+      "Berlin",
+    ].join(", "),
   ]);
   doc.setCreator("domenicmoran.de");
 
@@ -202,6 +216,43 @@ for (const blatt of BLAETTER) {
   const sprache = fertig.catalog.get(PDFName.of("Lang"));
   const spracheOk =
     sprache instanceof PDFString && sprache.asString() === blatt.sprache;
+
+  /*
+    Die Dokumenteigenschaften aus dem fertigen Blatt zurücklesen.
+
+    Sie werden oben gesetzt, und ob sie ankommen, hat bisher niemand geprüft —
+    genau dort ist schon einmal etwas verlorengegangen. Gelesen wird über
+    `pdf-lib`, weil die Eigenschaften beim Speichern in einem Objektstrom
+    landen und als UTF-16 kodiert werden; im Rohtext steht dort nichts
+    Lesbares.
+  */
+  const eigenschaft = (name) => {
+    const wert = fertig.getInfoDict().get(PDFName.of(name));
+    if (wert instanceof PDFHexString) return wert.decodeText();
+    if (wert instanceof PDFString) return wert.asString();
+    return "";
+  };
+
+  const fehlend = ["Title", "Author", "Subject", "Keywords"].filter(
+    (name) => eigenschaft(name).trim() === "",
+  );
+  if (fehlend.length > 0) {
+    console.error(
+      `${blatt.route}: Dokumenteigenschaften fehlen: ${fehlend.join(", ")}. ` +
+        `Eine PDF ohne Absender ist im Archiv eines Unternehmens eine Datei ` +
+        `ohne Herkunft.`,
+    );
+    fehler++;
+  }
+
+  if (!eigenschaft("Keywords").includes(",")) {
+    console.error(
+      `${blatt.route}: Die Schlagwörter stehen ohne Komma im Dokument ` +
+        `(„${eigenschaft("Keywords")}"). So gelesen zerfällt „React Native" ` +
+        `in zwei Begriffe und „AI Product Engineer" in drei.`,
+    );
+    fehler++;
+  }
 
   const kb = Math.round(statSync(blatt.ziel).size / 1024);
   console.log(
