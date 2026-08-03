@@ -1148,6 +1148,21 @@ export const en: Content = {
     printNote: `Printed from domenicmoran.de. Domenic Moran, Berlin. Every figure on this page is verified against the repositories, as of ${dateLong(verified.date)}.`,
   },
 
+  demoSalati: {
+    title: "Prayer times, computed right here",
+    lede: "Not a screenshot and not a re-creation: this panel loads the same library that runs in the shipped app, with the same values it ships with.",
+    placeLabel: "Choose a city",
+    prayers: {
+      fajr: "Fajr",
+      sunrise: "Sunrise",
+      dhuhr: "Dhuhr",
+      asr: "Asr",
+      maghrib: "Maghrib",
+      isha: "Isha",
+    },
+    failed: "not computed",
+    note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. All in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
+  },
   onepager: {
     title: "One-pager",
     description:

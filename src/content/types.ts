@@ -317,11 +317,39 @@ export type Content = {
   };
 
   /**
+   * Die Vorführung der Gebetszeit-Rechnung aus Salati.
+   *
+   * Vier Systeme in Produktion, alle privat. Wer die Seite liest, kann bis
+   * dahin nichts davon anfassen. Dies ist der eine Teil, der sich herauslösen
+   * und im Browser rechnen lässt, mit derselben Bibliothek und denselben
+   * Voreinstellungen wie in der ausgelieferten App.
+   */
+  demoSalati: {
+    title: string;
+    lede: string;
+    /** Name der Ortswahl für Vorleseprogramme. */
+    placeLabel: string;
+    /** Die sechs Zeiten des Tages, in der Sprache der Fassung. */
+    prayers: {
+      fajr: string;
+      sunrise: string;
+      dhuhr: string;
+      asr: string;
+      maghrib: string;
+      isha: string;
+    };
+    /** Steht statt einer Zeit, wenn die Rechnung nicht zustande kam. */
+    failed: string;
+    /** Woher die Rechnung stammt und was sie nicht tut. */
+    note: string;
+  };
+
+  /**
    * Die Beschriftungen des Kurzprofils.
    *
    * Bis eben stand der One-Pager nur auf Deutsch, und die englische Fußzeile
    * verlinkte trotzdem darauf: Wer „One-pager as PDF" anklickte, bekam ein
-   * deutsches Dokument — ausgerechnet das Blatt, das weitergereicht wird.
+   * deutsches Dokument, ausgerechnet das Blatt, das weitergereicht wird.
    */
   onepager: {
     /** Seitentitel und Beschreibung für die Metadaten. */

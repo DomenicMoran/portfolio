@@ -7,17 +7,12 @@ import {
   TafelStack,
 } from "@/components/sections/case-study/Tafeln";
 import { useState, type KeyboardEvent } from "react";
-import {
-  ArrowUpRight,
-  Bot,
-  Layers,
-  Smartphone,
-  Workflow,
-} from "lucide-react";
+import { ArrowUpRight, Bot, Layers, Smartphone, Workflow } from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
+import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
 import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
@@ -88,7 +83,8 @@ export function CaseStudies() {
 }
 
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
-  const { work, a11y, lang } = useContent();
+  const inhalt = useContent();
+  const { work, a11y, lang } = inhalt;
   const [tab, setTab] = useState<TabId>("highlights");
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
@@ -290,6 +286,23 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           </p>
         </div>
       </Reveal>
+
+      {/* Die Rechnung aus der App, im Browser des Lesers.
+
+          Nur bei Salati: Es ist das eine Stück der vier Systeme, das sich
+          herauslösen lässt, ohne Kundendaten oder lizenzierte Inhalte
+          mitzunehmen. Die anderen drei bleiben Fallstudien.
+
+          Steht hinter der harten Stelle und vor den Reitern: Wer bis hierher
+          gelesen hat, weiß, worum es geht, und die Reiter darunter sind der
+          Beleg dazu. */}
+      {study.id === "salati" ? (
+        <Reveal delay={0.05}>
+          <div className="mt-12">
+            <PrayerTimesDemo inhalt={inhalt} />
+          </div>
+        </Reveal>
+      ) : null}
 
       {/* Tabs */}
       <Reveal delay={0.05}>

@@ -202,6 +202,21 @@ export const de: Content = {
     printNote: `Gedruckt von domenicmoran.de. Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
   },
 
+  demoSalati: {
+    title: "Gebetszeiten, hier gerechnet",
+    lede: "Kein Bildschirmfoto und keine Nachbildung: Diese Kachel lädt dieselbe Bibliothek, die in der ausgelieferten App rechnet, und setzt dieselben Werte, die dort voreingestellt sind.",
+    placeLabel: "Ort wählen",
+    prayers: {
+      fajr: "Fadschr",
+      sunrise: "Sonnenaufgang",
+      dhuhr: "Dhuhr",
+      asr: "Asr",
+      maghrib: "Maghrib",
+      isha: "Ischa",
+    },
+    failed: "nicht berechnet",
+    note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. Alles im Browser, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
+  },
   onepager: {
     title: "Kurzprofil",
     description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
