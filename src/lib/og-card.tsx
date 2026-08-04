@@ -68,7 +68,7 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
           position: "relative",
         }}
       >
-        {/* Ambient glow */}
+        {/* Der Lichtschein hinter der Karte, oben violett, unten grün. */}
         <div
           style={{
             position: "absolute",

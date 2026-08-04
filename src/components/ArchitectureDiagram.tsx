@@ -656,7 +656,7 @@ export function ArchitectureDiagram({
           whileInView="visible"
           viewport={viewportOnce}
         >
-          {/* Lane labels + rules */}
+          {/* Spurenüberschriften und Trennlinien */}
           {diagram.lanes.map((lane) => (
             <g key={lane.label}>
               <text
@@ -677,7 +677,7 @@ export function ArchitectureDiagram({
             </g>
           ))}
 
-          {/* Connectors draw themselves */}
+          {/* Die Verbinder zeichnen sich selbst */}
           {diagram.edges.map((edge, i) => {
             const from = byId.get(edge.from);
             const to = byId.get(edge.to);
@@ -707,7 +707,7 @@ export function ArchitectureDiagram({
             );
           })}
 
-          {/* Nodes */}
+          {/* Die Knoten */}
           {diagram.nodes.map((node, i) => {
             const tone = TONE[node.tone ?? "neutral"];
             const h = node.h ?? NODE_H;

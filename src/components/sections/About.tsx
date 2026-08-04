@@ -48,7 +48,7 @@ export function About() {
         />
 
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-20">
-          {/* Narrative */}
+          {/* Der Fließtext */}
           <div className="flex flex-col gap-6">
             {/* Porträt und erster Absatz stehen nebeneinander.
                 Darunter stand das Bild allein in der linken Spalte, mit einer
@@ -96,7 +96,7 @@ export function About() {
                 </Reveal>
               ))}
 
-            {/* Stats */}
+            {/* Die Kennzahlen */}
             <motion.dl
               initial="hidden"
               whileInView="visible"
@@ -145,11 +145,11 @@ export function About() {
             </Reveal>
           </div>
 
-          {/* Timeline */}
+          {/* Der Zeitstrahl */}
           <div className="lg:pt-2">
             <h3 className="text-eyebrow mb-8">{about.timelineLabel}</h3>
             <ol className="relative flex flex-col">
-              {/* Spine */}
+              {/* Die Linie, an der die Stationen hängen */}
               <span
                 aria-hidden
                 className="absolute top-1.5 bottom-2 left-[5px] w-px bg-line"

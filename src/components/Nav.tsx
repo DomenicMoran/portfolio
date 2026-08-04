@@ -214,7 +214,7 @@ export function Nav({
         </nav>
       </motion.header>
 
-      {/* Mobile sheet */}
+      {/* Die Schublade auf dem Telefon */}
       <AnimatePresence>
         {menuOpen ? (
           <motion.div

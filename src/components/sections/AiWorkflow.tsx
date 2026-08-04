@@ -35,7 +35,7 @@ export function AiWorkflow() {
         />
 
         <div className="mt-20 grid gap-14 lg:grid-cols-[1fr_minmax(0,26rem)] lg:gap-16">
-          {/* Principles */}
+          {/* Die Grundsätze */}
           <ol className="flex flex-col">
             {workflow.principles.map((principle, i) => (
               <Reveal
@@ -71,7 +71,7 @@ export function AiWorkflow() {
             ))}
           </ol>
 
-          {/* Terminal */}
+          {/* Das Terminalfenster */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
               <AgentTerminal />

@@ -156,7 +156,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
   return (
     <article id={`case-${study.id}`} className="scroll-mt-28">
-      {/* Header */}
+      {/* Kopf */}
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">
           <div className="flex items-baseline gap-5">
@@ -190,7 +190,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
       </Reveal>
 
-      {/* Live screenshots: visual proof before the prose argument.
+      {/* Die Bildschirmfotos zuerst: der Beleg vor dem Argument.
           Ab drei Bildern wird daraus eine blätterbare Strecke. Nebeneinander
           gelegt schrumpft bei acht Bildern jedes auf eine Breite, auf der man
           nichts mehr erkennt, und die Fallstudie wird doppelt so lang. */}
@@ -247,7 +247,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </Reveal>
       ) : null}
 
-      {/* Problem / solution */}
+      {/* Problem und Lösung */}
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
         <Reveal>
           <h4 className="text-eyebrow mb-4">{work.labels.problem}</h4>
@@ -316,7 +316,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </Reveal>
       ) : null}
 
-      {/* Tabs */}
+      {/* Die Reiter */}
       <Reveal delay={0.05}>
         <div className="mt-12">
           <div
