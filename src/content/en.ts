@@ -1280,6 +1280,10 @@ export const en: Content = {
     onward: "Continue to",
     home: "Home",
     report: "Found something broken?",
+    otherLanguage: {
+      text: "This address does not exist.",
+      link: "Continue on the English version",
+    },
   },
 
   languageSwitch: {
