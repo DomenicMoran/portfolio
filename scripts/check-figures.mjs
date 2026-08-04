@@ -2265,6 +2265,95 @@ const BRAUCHT_KIND = {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Jede Adresse, die nach draußen zeigt, antwortet noch
+   ---------------------------------------------------------------------------
+
+   `check:links` prüft die eigenen Adressen und lässt die fremden aus, mit
+   gutem Grund: Ein Lauf in der CI, der rot wird, weil ein Store gerade
+   langsam ist, wird abgeschaltet statt gelesen. Hier ist der richtige Ort,
+   denn dieser Lauf misst ohnehin gegen die Wirklichkeit und läuft von Hand.
+
+   Und die Ziele sind keine Zierde. "Live im App Store", "Live in Produktion"
+   — die Fallstudien behaupten das, und der Verweis daneben ist der einzige
+   Beleg. Verschwindet eine Store-Seite oder geht ein System vom Netz, steht
+   die Behauptung weiter da.
+
+   Zwei Ziele antworten einer Maschine grundsätzlich anders als einem
+   Menschen: LinkedIn mit 999 und der Udemy-Kurznachweis mit 403, beide aus
+   Bot-Abwehr. Sie stehen als benannte Ausnahme hier, nicht als stille
+   Sonderbehandlung im Vergleich. */
+{
+  const AUSNAHMEN = new Map([
+    ["www.linkedin.com", 999],
+    ["ude.my", 403],
+  ]);
+
+  const gebaut = join(".next", "server", "app");
+  const dateien = [];
+  const sammle = (ordner) => {
+    if (!existsSync(ordner)) return;
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const voll = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) sammle(voll);
+      else if (eintrag.name.endsWith(".html")) dateien.push(voll);
+    }
+  };
+  sammle(gebaut);
+
+  const ziele = new Set();
+  for (const datei of dateien) {
+    const html = readFileSync(datei, "utf8");
+    for (const treffer of html.matchAll(/href="(https?:\/\/[^"]+)"/g)) {
+      const adresse = treffer[1];
+      if (adresse.includes("domenicmoran.de")) continue;
+      if (adresse.includes("schema.org")) continue;
+      if (adresse.includes("coursera.org/verify")) continue;
+      ziele.add(adresse.replace(/&amp;/g, "&"));
+    }
+  }
+
+  if (!dateien.length) {
+    zeilen.push("  --  Äußere Verweise: kein Bau vorhanden, übersprungen");
+  } else {
+    const funde = [];
+    let geprueft = 0;
+    let uebersprungen = 0;
+
+    for (const adresse of [...ziele].sort()) {
+      const host = new URL(adresse).host;
+      try {
+        const antwort = await fetch(adresse, {
+          redirect: "follow",
+          headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
+          signal: AbortSignal.timeout(20000),
+        });
+        geprueft++;
+        const erlaubt = AUSNAHMEN.get(host);
+        if (antwort.status === 200) continue;
+        if (erlaubt !== undefined && antwort.status === erlaubt) continue;
+        funde.push(`${adresse}: Status ${antwort.status}`);
+      } catch {
+        uebersprungen++;
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} äußere(r) Verweis(e) auffällig:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (uebersprungen) {
+      zeilen.push(
+        `  --  Äußere Verweise: ${uebersprungen} nicht erreichbar, übersprungen`,
+      );
+    } else {
+      zeilen.push(
+        `  ok  Äußere Verweise      ${String(geprueft).padStart(6)} Ziele antworten`,
+      );
+    }
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
