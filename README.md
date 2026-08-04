@@ -92,7 +92,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen siebzehn Prüfungen, die den Bau nicht ersetzen. Neun davon
+Nach dem Bau laufen achtzehn Prüfungen, die den Bau nicht ersetzen. Zehn davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -115,6 +115,7 @@ npm run check:landmarks # jede Seite bietet Hauptbereich, Navigation und Fußzei
 npm run check:separators # kein Trennzeichen bleibt beim Umbruch am Zeilenende
 npm run check:nbsp      # keine Rechtsangabe bricht zwischen Kürzel und Ziffer um
 npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand
+npm run check:vitals    # LCP und CLS auf einem gedrosselten Telefon, gegen Budgets
 npm run check:docs      # die Zahlen in dieser Datei und in AGENTS.md stimmen noch
 ```
 
@@ -210,6 +211,7 @@ scripts/
 ├─ check-reading-time.mjs         Lesezeiten aus dem Wortbestand statt von Hand
 ├─ check-stack.mjs                jede genannte Technik steht wirklich im Produktivrepo
 ├─ check-typography.mjs           jede Sprachfassung setzt ihre eigenen Zeichen
+├─ check-vitals.mjs               LCP und CLS auf einem gedrosselten Telefon
 │
 │  An der Auslieferung und an den Nachbar-Repos:
 ├─ check-headers.mjs              die ausgelieferte Seite trägt die Schutz-Kopfzeilen

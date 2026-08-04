@@ -29,13 +29,16 @@ const geistMono = Geist_Mono({
  * erst in der Ersatzschrift und tauscht dann: Die Überschrift wird höher, und
  * alles darunter rutscht.
  *
- * Gemessen auf einem vierfach gedrosselten Telefon bei 1,6 Mbit/s: CLS 0,05,
- * die Verschiebung um 1.495 ms, als Quelle die Wortmasken der Überschrift und
- * die beiden Absätze darunter. Mit `optional` wartet der Browser kurz und
- * verwendet die Schrift nur, wenn sie rechtzeitig da ist. Für eine
- * Auszeichnung, die drei Wörter betrifft, ist das der richtige Tausch: Die
- * Seite steht sofort still, und beim zweiten Aufruf liegt die Schrift im
- * Zwischenspeicher.
+ * Mit `swap` wurde daraus CLS 0,05 auf einem vierfach gedrosselten Telefon bei
+ * 1,6 Mbit/s, die Verschiebung um 1.495 ms, als Quelle die Wortmasken der
+ * Überschrift und die beiden Absätze darunter. `optional` lässt den Browser
+ * kurz warten und die Schrift nur verwenden, wenn sie rechtzeitig da ist. Für
+ * eine Auszeichnung, die drei Wörter betrifft, ist das der richtige Tausch.
+ *
+ * Nachgemessen an der ausgelieferten Seite, fünf kalte Läufe unter denselben
+ * Bedingungen: CLS 0,0000 ohne eine einzige Verschiebung, LCP im Median
+ * 1.892 ms bei einer Spanne von 1.884 bis 1.900. Beim zweiten Aufruf liegt die
+ * Schrift ohnehin im Zwischenspeicher.
  */
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
