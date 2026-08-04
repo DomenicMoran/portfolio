@@ -38,7 +38,7 @@ if (!basis) {
 const PAARE = [
   { de: "/", en: "/en", name: "Startseite" },
   { de: "/artikel", en: "/en/articles", name: "Artikelübersicht" },
-  { de: "/onepager", en: "/en/onepager", name: "One-Pager" },
+  { de: "/onepager", en: "/en/onepager", name: "One-Pager", zahlen: true },
   /* Alle fünf Artikel, nicht mehr einer als Stichprobe.
      Sie sind der Teil der Seite, der einzeln geteilt wird und den ein CTO
      zuerst liest — und der einzige, bei dem beide Fassungen unabhängig
@@ -73,7 +73,7 @@ const PAARE = [
 const browser = await chromium.launch();
 
 /** Was ein Leser sieht, in Zahlen. */
-async function zaehle(pfad) {
+async function zaehle(pfad, mitZahlen = false) {
   const seite = await browser.newPage({
     viewport: { width: 1440, height: 1000 },
   });
@@ -90,7 +90,7 @@ async function zaehle(pfad) {
     window.scrollTo(0, 0);
   });
 
-  const werte = await seite.evaluate(() => ({
+  const werte = await seite.evaluate((mitZahlen) => ({
     Abschnitte: [...document.querySelectorAll("section[id]")]
       .map((s) => s.id)
       .join(","),
@@ -101,7 +101,30 @@ async function zaehle(pfad) {
     Reiter: document.querySelectorAll('[role="tab"]').length,
     Kennzahlen: document.querySelectorAll("dt").length,
     Listeneinträge: document.querySelectorAll("li").length,
-  }));
+
+    /* Und die Zahlen selbst.
+       Bis hierher wurde gezählt, wie viele Kennzahlen dastehen, nicht welche.
+       Eine aktualisierte Zahl, die nur in einer Fassung nachgezogen wird,
+       ergibt zwei verschiedene öffentliche Aussagen über denselben Gegenstand
+       — und beide Seiten bleiben zählgleich.
+
+       Verglichen wird ohne Trennzeichen: Dieselbe Zahl heißt „4.318" und
+       „4,318", und genau dieser Unterschied ist gewollt. Datumsangaben
+       fallen heraus, weil sie in beiden Sprachen anders geschrieben werden;
+       ihren Gleichstand prüft `check:legal-date`. */
+    Zahlen: [
+      ...new Set(
+        (document.body.innerText.match(/\b\d[\d.,]*\b/g) ?? [])
+          .filter((z) => z.length > 2)
+          .filter((z) => !/^\d{1,2}[.,]\d{1,2}[.,]\d{2,4}$/.test(z))
+          .map((z) => z.replace(/[.,](?=\d{3}\b)/g, "")),
+      ),
+    ]
+      .sort()
+      .join(" "),
+  }), mitZahlen);
+
+  if (!mitZahlen) delete werte.Zahlen;
 
   await seite.close();
   return werte;
@@ -111,8 +134,8 @@ const funde = [];
 let verglichen = 0;
 
 for (const paar of PAARE) {
-  const de = await zaehle(paar.de);
-  const en = await zaehle(paar.en);
+  const de = await zaehle(paar.de, paar.zahlen === true);
+  const en = await zaehle(paar.en, paar.zahlen === true);
 
   for (const schluessel of Object.keys(de)) {
     verglichen++;
