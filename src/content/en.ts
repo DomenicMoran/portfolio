@@ -1149,7 +1149,7 @@ export const en: Content = {
   contact: {
     eyebrow: "Contact",
     title: "Let’s build something",
-    lede: "A concrete role, a question about one of the projects, or just a technical question: I reply within 24 hours.",
+    lede: "A concrete role, a question about one of the projects, or just a technical question: I usually reply within 24 hours.",
     hinweis:
       "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither, and you keep a copy of your message in your own sent folder.",
     copy: "Copy address",

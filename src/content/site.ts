@@ -1160,7 +1160,7 @@ export const recruiter = {
 export const contact = {
   eyebrow: "Kontakt",
   title: "Lass uns etwas bauen",
-  lede: "Ob konkrete Rolle, Rückfrage zu einem der Projekte oder einfach eine technische Frage: Ich antworte innerhalb von 24 Stunden.",
+  lede: "Ob konkrete Rolle, Rückfrage zu einem der Projekte oder einfach eine technische Frage: Ich antworte in der Regel innerhalb von 24 Stunden.",
   hinweis:
     "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht. Und du behältst deine Nachricht im eigenen Postausgang.",
   checkliste: {
