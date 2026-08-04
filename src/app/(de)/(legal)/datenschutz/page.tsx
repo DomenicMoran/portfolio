@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
+import { ANBIETER, ANSCHRIFT_EINZEILIG } from "../provider";
 import { site } from "@/content/site";
 import { STAND } from "../stand";
 
@@ -61,9 +62,9 @@ export default function Datenschutz() {
       <EnglishNote />
 
       <Section title="Verantwortlicher">
-        Domenic Moran
+        {ANBIETER}
         <br />
-        Heidelberger Straße 36, 12059 Berlin, Deutschland
+        {ANSCHRIFT_EINZEILIG}
         <br />
         E-Mail:{" "}
         <a

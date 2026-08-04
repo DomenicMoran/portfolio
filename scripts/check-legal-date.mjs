@@ -24,6 +24,7 @@
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { ANBIETER, ANSCHRIFT } from "../src/app/(de)/(legal)/provider.ts";
 const STAND_DATEI = join("src", "app", "(de)", "(legal)", "stand.ts");
 
 /* Gelesen und nicht importiert: `stand.ts` ist TypeScript, und Node müsste
@@ -369,6 +370,53 @@ const FRISTEN = new Map([
           `  ok  Tarif „${tarif}": Protokolle ${genannteFrist}, wie im Text.`,
         );
       }
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Beide Rechtsseiten nennen dieselbe Anschrift.
+
+   Sie stand zweimal fest im Quelltext: unter „Angaben gemäß § 5 DDG" im
+   Impressum und unter „Verantwortlicher" in der Datenschutzerklärung. Seit
+   `app/(de)/(legal)/provider.ts` gibt es eine Quelle — dieser Block hält das
+   Ergebnis dagegen, an den ausgelieferten Seiten und nicht am Quelltext. Wer
+   die Angabe an einer Seite wieder von Hand einträgt, fällt hier auf.
+
+   Verglichen wird ohne Zeilenumbrüche und ohne Kommas: Das Impressum setzt die
+   Anschrift untereinander, die Erklärung in eine Zeile. Gemeint ist dieselbe.
+   ------------------------------------------------------------------------ */
+{
+  const flach = (s) =>
+    s
+      .replace(/<script[\s\S]*?<\/script>/g, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/[,\s]+/g, " ")
+      .trim();
+
+  const anschrift = ANSCHRIFT.join(" ");
+  for (const name of ["impressum", "datenschutz"]) {
+    const datei = join(".next", "server", "app", `${name}.html`);
+    let inhalt;
+    try {
+      inhalt = flach(readFileSync(datei, "utf8"));
+    } catch {
+      console.error(`${name}.html fehlt im Bau. Erst bauen, dann prüfen.`);
+      process.exitCode = 1;
+      continue;
+    }
+    if (!inhalt.includes(anschrift)) {
+      console.error(
+        `/${name} nennt nicht die Anschrift aus provider.ts („${anschrift}").`,
+      );
+      process.exitCode = 1;
+    }
+    if (!inhalt.includes(ANBIETER)) {
+      console.error(
+        `/${name} nennt nicht den Anbieter aus provider.ts („${ANBIETER}").`,
+      );
+      process.exitCode = 1;
     }
   }
 }
