@@ -411,6 +411,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 // die Tastatur vom Reiter direkt zum nächsten Reiter und
                 // überspringt genau den Inhalt, den man gerade gewählt hat.
                 tabIndex={0}
+                data-reveal=""
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
@@ -462,6 +463,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               // Siehe Hero: Eine <dl> darf nur dt/dd-Paare enthalten, deshalb
               // steht die Beschriftung im <dt> und die sichtbare Reihenfolge
               // kommt von flex-col-reverse.
+              data-reveal=""
               className="flex flex-col-reverse gap-1"
             >
               <dt className="text-xs text-ink-faint">{metric.label}</dt>

@@ -30,6 +30,9 @@ export function Reveal({
   return (
     <Component
       className={cn(className)}
+      /* Das Merkmal ist der Griff für den Rückfall ohne JavaScript. Siehe die
+         `noscript`-Regel in RootDocument. */
+      data-reveal=""
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportOnce}
@@ -94,6 +97,7 @@ export function RevealWords({
   return (
     <motion.span
       className={cn("inline", className)}
+      data-reveal=""
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}

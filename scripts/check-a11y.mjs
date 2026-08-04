@@ -158,6 +158,61 @@ for (const breite of BREITEN) {
 }
 
 /* ---------------------------------------------------------------------------
+   Lesbar ohne JavaScript
+
+   Die Einblendungen unterhalb der Falz starten mit `opacity: 0` und werden von
+   Framer Motion sichtbar gemacht, sobald der Abschnitt ins Bild kommt. Läuft
+   kein JavaScript, passiert das nie: Gemessen an der gebauten Startseite
+   blieben nach vollständigem Durchscrollen 160 von 181 Überschriften und
+   Faktenzeilen unsichtbar. Der Text steht im HTML, er wird nur nicht gezeigt.
+
+   Betroffen sind Firmennetze, die Skripte filtern, und alles, was eine Seite
+   liest, ohne sie auszuführen. Für einen Recruiter, der die Seite im
+   Unternehmensnetz öffnet, ist das der Unterschied zwischen einem Portfolio
+   und einer fast leeren Seite.
+
+   Geprüft wird die Startseite, weil dort jedes Bewegungsmuster der Seite
+   mindestens einmal vorkommt. */
+const ohneSkript = [];
+
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    javaScriptEnabled: false,
+  });
+  const seite = await kontext.newPage();
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+
+  const versteckt = await seite.evaluate(() => {
+    const wichtig = [
+      ...document.querySelectorAll("h1, h2, h3, dt, dd, p, li, a"),
+    ];
+    const raus = [];
+    for (const element of wichtig) {
+      let knoten = element;
+      let deckung = 1;
+      while (knoten && knoten !== document.body) {
+        deckung *= parseFloat(getComputedStyle(knoten).opacity || "1");
+        knoten = knoten.parentElement;
+      }
+      if (deckung < 0.5) {
+        raus.push((element.textContent ?? "").trim().slice(0, 40));
+      }
+    }
+    return raus;
+  });
+
+  if (versteckt.length) {
+    ohneSkript.push(
+      `${versteckt.length} Textelemente bleiben ohne JavaScript unsichtbar`,
+      ...versteckt.slice(0, 5).map((t) => `    „${t}“`),
+    );
+  }
+
+  await kontext.close();
+}
+
+/* ---------------------------------------------------------------------------
    Wartezeit, die nur aus einer Animation kommt
 
    `prefers-reduced-motion` nimmt die Bewegung heraus — die Zeit nimmt es nicht
@@ -219,6 +274,13 @@ const wartefunde = [];
   await kontext.close();
 }
 
+if (ohneSkript.length > 0) {
+  console.error(`
+${ohneSkript[0]}:
+`);
+  for (const f of ohneSkript.slice(1)) console.error(`  ${f}`);
+}
+
 if (wartefunde.length > 0) {
   console.error(
     `\n${wartefunde.length} ${wartefunde.length === 1 ? "Stelle" : "Stellen"} ` +
@@ -241,10 +303,12 @@ if (verstoesse > 0) {
   );
 }
 
-if (verstoesse > 0 || wartefunde.length > 0) process.exit(1);
+if (verstoesse > 0 || wartefunde.length > 0 || ohneSkript.length > 0)
+  process.exit(1);
 
 console.log(
   `Keine Verstöße gegen WCAG 2.2 AA: ${geprueft} Seitenaufrufe ` +
     `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
-    `Keine Wartezeit aus einer Animation bei reduzierter Bewegung.`,
+    `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
+    `nichts unsichtbar ohne JavaScript.`,
 );
