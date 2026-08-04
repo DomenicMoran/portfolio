@@ -142,6 +142,7 @@ export const en: Content = {
     empty: "Nothing found.",
     jump: "Jump to",
     pdf: { label: "One-pager as PDF", hint: "Print-ready summary" },
+    onepagerWeb: { label: "One-pager in the browser", hint: "The same summary as a page" },
     mail: "Write an email",
     github: "Source code and profile",
     linkedin: "Professional background",
@@ -1118,6 +1119,7 @@ export const en: Content = {
     ],
     cta: {
       pdf: { label: "One-pager as PDF", href: "/domenic-moran-one-pager.pdf" },
+      web: { label: "or read it in the browser", href: "/en/onepager" },
       mail: { label: "Email me" },
       copy: {
         label: "Copy address",

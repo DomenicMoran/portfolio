@@ -117,6 +117,18 @@ export function CommandPalette({
           window.open(recruiter.cta.pdf.href, "_blank", "noopener,noreferrer");
         },
       },
+      /* Die Kurzfassung als Seite gehört ebenso hinein.
+         Die Palette führt jede Seite dieser Site, bis hin zu Impressum und
+         Datenschutz — nur den One-Pager kannte sie ausschließlich als Datei
+         zum Herunterladen. Wer ihn lesen und nicht speichern will, hatte hier
+         keinen Eintrag, und verlinkt war die Seite bis eben nirgends. */
+      {
+        id: "onepager-web",
+        label: palette.onepagerWeb.label,
+        hint: palette.onepagerWeb.hint,
+        icon: FileText,
+        run: goto(recruiter.cta.web.href),
+      },
       /* Der Kontaktbereich stand nicht in der Liste.
          Die Kopfleiste bietet ihn als eigenen Knopf an, die Palette bildet
          aber nur `navItems` ab, und dort steht er nicht. Wer „Kontakt" tippte,
