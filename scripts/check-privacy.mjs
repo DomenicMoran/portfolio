@@ -24,7 +24,10 @@
  */
 
 import { chromium } from "playwright";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
+import {
+  gebauteSeiten,
+  veroeffentlichteSeiten,
+} from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const vorgegebeneBasis = process.argv[2];
@@ -37,8 +40,16 @@ if (!basis) {
 
 const eigenerHost = new URL(basis).host;
 
-/** Jede gebaute Seite, ohne die Bau-Interna. */
-const pfade = gebauteSeiten();
+/**
+ * Welche Seiten geprüft werden.
+ *
+ * Am eigenen Server jede gebaute, gegen eine vorgegebene Adresse die
+ * veröffentlichten aus der Sitemap: Dort gibt es keinen Bau, aus dem sich die
+ * Liste lesen ließe, und die Sitemap nennt genau das, was ausgeliefert wird.
+ */
+const pfade = vorgegebeneBasis
+  ? await veroeffentlichteSeiten(basis)
+  : gebauteSeiten();
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({
