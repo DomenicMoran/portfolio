@@ -17,7 +17,7 @@
  * Wer den Text ändert, ändert beide Zeilen mit. Der Lauf sagt, welche
  * Prüfsumme hineingehört.
  */
-export const STAND = "4. August 2026";
+export const STAND = "5. August 2026";
 
 /** sha256 über den sichtbaren Text von `/datenschutz`, ohne den Abschnitt „Stand". */
-export const TEXT_PRUEFSUMME = "5d8bcd0b5c334fbd";
+export const TEXT_PRUEFSUMME = "8c88240a18a9362d";

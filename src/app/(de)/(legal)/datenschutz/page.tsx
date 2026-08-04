@@ -138,9 +138,11 @@ export default function Datenschutz() {
       <Section title="Keine weiteren Datenempfänger">
         Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website lädt
         keine Skripte, Schriften, Karten, Videos oder Analysedienste von fremden
-        Servern nach, weder beim Aufruf noch bei einer Interaktion. Sämtliche
-        Seiten werden vorab erzeugt und als fertige Dateien ausgeliefert; es
-        gibt keinen Endpunkt, der Eingaben entgegennimmt.
+        Servern nach, weder beim Aufruf noch bei einer Interaktion. Alle Seiten
+        mit Inhalt werden vorab erzeugt und als fertige Dateien ausgeliefert.
+        Einzige Ausnahme ist die Fehlerseite: Sie wird bei der Anfrage
+        zusammengesetzt, um in der Sprache zu antworten, unter der du gekommen
+        bist. Es gibt keinen Endpunkt, der Eingaben entgegennimmt.
       </Section>
 
       <Section title="Deine Rechte">
