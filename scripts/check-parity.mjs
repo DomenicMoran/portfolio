@@ -70,6 +70,15 @@ const PAARE = [
   },
 ];
 
+/**
+ * Wie weit die Textmenge zweier Fassungen auseinanderliegen darf.
+ *
+ * Gemessen liegt der englische Fließtext bei 91 bis 96 Prozent des deutschen.
+ * 0,8 lässt jeder Formulierung Luft und fängt trotzdem den Fall, um den es
+ * geht: einen Absatz, der in einer Fassung fehlt.
+ */
+const ANTEIL_MINDESTENS = 0.8;
+
 const browser = await chromium.launch();
 
 /** Was ein Leser sieht, in Zahlen. */
@@ -128,6 +137,17 @@ async function zaehle(pfad, mitZahlen = false) {
     ]
       .sort()
       .join(" "),
+
+    /* Die Textmenge, nicht als Vergleichswert, sondern als Verhältnis.
+
+       Alles bisher Gezählte ist Struktur: Abschnitte, Überschriften, Verweise,
+       Kennzahlen. Ein Absatz, der in einer Fassung fehlt, ändert nichts davon —
+       er hat keine eigene Marke, die hier vorkäme. Gemessen liegt der englische
+       Fließtext durchweg bei 91 bis 96 Prozent des deutschen, weil Englisch
+       kompakter ist; ein fehlender Absatz fiele deutlich darunter. */
+    Zeichen: (document.querySelector("main")?.innerText ?? "")
+      .replace(/\s+/g, " ")
+      .trim().length,
   }));
 
   /* Die Zahlen werden immer eingesammelt und hier verworfen, statt den Schalter
@@ -146,6 +166,23 @@ let verglichen = 0;
 for (const paar of PAARE) {
   const de = await zaehle(paar.de, paar.zahlen === true);
   const en = await zaehle(paar.en, paar.zahlen === true);
+
+  /* Die Textmenge wird als Verhältnis geprüft und nicht auf Gleichstand: Zwei
+     Sprachen sind nie gleich lang. Die Grenze liegt großzügig bei 80 Prozent,
+     weit unter den gemessenen 91 bis 96 — sie soll einen fehlenden Absatz
+     fangen, nicht eine knappere Formulierung. */
+  verglichen++;
+  const anteil = de.Zeichen ? en.Zeichen / de.Zeichen : 1;
+  if (anteil < ANTEIL_MINDESTENS || anteil > 1 / ANTEIL_MINDESTENS) {
+    funde.push(
+      `${paar.name}: Textmenge — deutsch ${de.Zeichen} Zeichen, englisch ` +
+        `${en.Zeichen} (${Math.round(anteil * 100)} %, erwartet zwischen ` +
+        `${Math.round(ANTEIL_MINDESTENS * 100)} und ` +
+        `${Math.round((1 / ANTEIL_MINDESTENS) * 100)} %)`,
+    );
+  }
+  delete de.Zeichen;
+  delete en.Zeichen;
 
   for (const schluessel of Object.keys(de)) {
     verglichen++;
