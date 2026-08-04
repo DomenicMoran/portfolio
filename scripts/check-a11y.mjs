@@ -76,11 +76,15 @@ let verstoesse = 0;
 let geprueft = 0;
 
 for (const breite of BREITEN) {
-  const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 900 },
+  });
   await seite.addInitScript({ content: axeQuelle });
 
   for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "domcontentloaded",
+    });
     if (!antwort || antwort.status() >= 500) continue;
 
     // Die erfundene Adresse muss mit 404 antworten. Ein 200 hiesse, dass eine
@@ -126,7 +130,10 @@ for (const breite of BREITEN) {
     await seite.waitForTimeout(500);
 
     const ergebnis = await seite.evaluate(
-      (regelwerke) => window.axe.run(document, { runOnly: { type: "tag", values: regelwerke } }),
+      (regelwerke) =>
+        window.axe.run(document, {
+          runOnly: { type: "tag", values: regelwerke },
+        }),
       REGELWERKE,
     );
 
@@ -142,25 +149,102 @@ for (const breite of BREITEN) {
         const grund = knoten.failureSummary?.split("\n").filter(Boolean)[1];
         if (grund) console.log(`          ${grund.trim().slice(0, 110)}`);
       }
-      if (v.nodes.length > 3) console.log(`          … und ${v.nodes.length - 3} weitere Stellen`);
+      if (v.nodes.length > 3)
+        console.log(`          … und ${v.nodes.length - 3} weitere Stellen`);
     }
   }
 
   await seite.close();
 }
 
+/* ---------------------------------------------------------------------------
+   Wartezeit, die nur aus einer Animation kommt
+
+   `prefers-reduced-motion` nimmt die Bewegung heraus — die Zeit nimmt es nicht
+   mit. Bei den Reitern der Fallstudien blendet `AnimatePresence mode="wait"`
+   die alte Tafel aus, bevor die neue kommt; gemessen dauerte der Wechsel mit
+   der Einstellung 452 ms und ohne sie 439. Wer Bewegung abstellt, wartete also
+   genauso lang auf eine Animation, die er gar nicht sieht.
+
+   Geprueft wird das Ergebnis und nicht die Umsetzung: Nach dem Klick auf einen
+   Reiter muss die zugehoerige Tafel da sein, und zwar schnell. Die Grenze ist
+   grosszuegig — sie soll eine halbe Sekunde Animation finden, nicht ein paar
+   Millisekunden Renderzeit. */
+const GRENZE_MS = 200;
+const wartefunde = [];
+
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    reducedMotion: "reduce",
+  });
+  const seite = await kontext.newPage();
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+
+  for (const liste of await seite.locator("[role=tablist]").all()) {
+    const name = (await liste.getAttribute("aria-label")) ?? "?";
+    const reiter = await liste.locator("[role=tab]").all();
+    if (reiter.length < 2) continue;
+
+    await liste.scrollIntoViewIfNeeded();
+    const zweiter = reiter[1];
+    const kennung = await zweiter.getAttribute("id");
+    const beginn = Date.now();
+    await zweiter.click();
+
+    let dauer = null;
+    for (let versuch = 0; versuch < 40; versuch++) {
+      const jetzt = await seite.evaluate(
+        (id) =>
+          document
+            .querySelector(`[role="tabpanel"][aria-labelledby="${id}"]`)
+            ?.getAttribute("aria-labelledby") ?? null,
+        kennung,
+      );
+      if (jetzt === kennung) {
+        dauer = Date.now() - beginn;
+        break;
+      }
+      await seite.waitForTimeout(25);
+    }
+
+    if (dauer === null || dauer > GRENZE_MS) {
+      wartefunde.push(
+        `${name}: die Tafel steht erst nach ${dauer ?? "über 1.000"} ms, ` +
+          `Grenze ${GRENZE_MS} ms bei reduzierter Bewegung`,
+      );
+    }
+  }
+
+  await kontext.close();
+}
+
+if (wartefunde.length > 0) {
+  console.error(
+    `\n${wartefunde.length} ${wartefunde.length === 1 ? "Stelle" : "Stellen"} ` +
+      `mit Wartezeit, die nur aus einer Animation kommt:\n`,
+  );
+  for (const f of wartefunde) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
+/* Getrennt gezählt und getrennt benannt: WCAG 2.2 AA kennt keine Regel gegen
+   Wartezeit, und ein Befund unter falscher Flagge ist schwerer zu beurteilen
+   als einer unter eigener. Rot wird der Lauf trotzdem. */
 if (verstoesse > 0) {
   console.error(
-    `\n${verstoesse} Verstoß${verstoesse === 1 ? "" : "e"} gegen WCAG 2.2 AA. ` +
-      `Gemessen an der gebauten Seite im Browser, nicht am Quelltext.`,
+    `\n${verstoesse} ${verstoesse === 1 ? "Verstoß" : "Verstöße"} gegen ` +
+      `WCAG 2.2 AA. Gemessen an der gebauten Seite im Browser, nicht am ` +
+      `Quelltext.`,
   );
-  process.exit(1);
 }
+
+if (verstoesse > 0 || wartefunde.length > 0) process.exit(1);
 
 console.log(
   `Keine Verstöße gegen WCAG 2.2 AA: ${geprueft} Seitenaufrufe ` +
-    `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft.`,
+    `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
+    `Keine Wartezeit aus einer Animation bei reduzierter Bewegung.`,
 );

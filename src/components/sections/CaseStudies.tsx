@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   TafelAutomation,
   TafelHighlights,
@@ -87,6 +87,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
   const inhalt = useContent();
   const { work, a11y, lang } = inhalt;
   const [tab, setTab] = useState<TabId>("highlights");
+  /* `MotionConfig reducedMotion="user"` nimmt die Bewegung heraus, nicht die
+     Zeit. Für den Wechsel der Tafeln wird beides gebraucht. */
+  const wenigerBewegung = useReducedMotion();
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
   /* Titel und Adresse kommen aus derselben Liste, aus der die Artikelseite
@@ -386,6 +389,17 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           </div>
 
           <div className="pt-8">
+            {/* `mode="wait"` blendet die alte Tafel erst aus und die neue dann
+                ein. Das sieht ruhiger aus und kostet die Summe beider Zeiten.
+
+                Bei `prefers-reduced-motion` ist genau das falsch: `MotionConfig`
+                nimmt die Bewegung heraus, die Wartezeit bleibt. Gemessen an der
+                gebauten Seite dauerte der Wechsel mit der Einstellung 452 ms und
+                ohne sie 439 — wer Bewegung abstellt, wartete also genauso lang
+                auf eine Animation, die er gar nicht sieht.
+
+                Mit Dauer null ist `wait` sofort durch, und die Reihenfolge
+                bleibt dieselbe. */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={tab}
@@ -400,7 +414,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35, ease: ease.expo }}
+                transition={
+                  wenigerBewegung
+                    ? { duration: 0 }
+                    : { duration: 0.35, ease: ease.expo }
+                }
               >
                 {tab === "highlights" ? (
                   <TafelHighlights punkte={study.highlights} akzent={accent} />
