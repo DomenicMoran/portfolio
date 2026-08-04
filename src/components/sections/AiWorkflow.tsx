@@ -187,6 +187,7 @@ function AgentTerminal() {
           return (
             <motion.p
               key={`${runId}-${i}`}
+              data-reveal=""
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.35, ease: ease.expo }}
@@ -245,6 +246,7 @@ export function DeliverySpeed() {
                 // flex-col-reverse: In der DOM-Reihenfolge steht dt vor dd,
                 // wie ein <dl> es verlangt. Optisch steht die Zahl trotzdem
                 // oben.
+                data-reveal=""
                 className="flex flex-col-reverse gap-1.5"
               >
                 <dt className="flex flex-col gap-1">

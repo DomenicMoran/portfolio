@@ -102,6 +102,29 @@ export function RootDocument({
           href="/llms.txt"
           title="Facts for language models"
         />
+        {/*
+          Der Rückfall für Browser ohne JavaScript.
+
+          Die Einblendungen unterhalb der Falz starten mit `opacity: 0` und
+          werden von Framer Motion sichtbar gemacht, sobald der Abschnitt ins
+          Bild kommt. Läuft kein JavaScript, passiert das nie: Gemessen an der
+          gebauten Startseite blieben nach vollständigem Durchscrollen 160 von
+          181 Überschriften und Faktenzeilen unsichtbar — mit JavaScript keine
+          einzige.
+
+          Der Text steht im HTML, er wird nur nicht gezeigt. Betroffen sind
+          Firmennetze, die Skripte filtern, und alles, was eine Seite liest,
+          ohne sie auszuführen. Für einen Recruiter, der die Seite im
+          Unternehmensnetz öffnet, ist das der Unterschied zwischen einem
+          Portfolio und einer fast leeren Seite.
+
+          `noscript` im Body ist der einzige Weg, der ohne JavaScript wirkt und
+          mit JavaScript nichts kostet: Der Browser wertet den Inhalt gar nicht
+          erst aus, wenn Skripte laufen.
+        */}
+        <noscript>
+          <style>{`[data-reveal],.animate-fade-rise,.animate-word-rise{opacity:1!important;transform:none!important;animation:none!important}`}</style>
+        </noscript>
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

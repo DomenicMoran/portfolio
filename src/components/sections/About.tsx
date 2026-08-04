@@ -118,6 +118,7 @@ export function About() {
                   // Eine <dl> darf nur dt/dd-Paare enthalten: Beschriftung und
                   // Anmerkung stehen zusammen im <dt>, die Zahl im <dd>, und
                   // flex-col-reverse stellt die Zahl optisch wieder nach oben.
+                  data-reveal=""
                   className="flex flex-col-reverse gap-1"
                 >
                   <dt className="flex flex-col gap-0.5">

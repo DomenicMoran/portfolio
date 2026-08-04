@@ -83,6 +83,10 @@ export function Nav({
       />
 
       <motion.header
+        /* Ohne JavaScript bliebe die Leiste unsichtbar, und mit ihr die
+           Navigation der ganzen Seite. Siehe die `noscript`-Regel in
+           RootDocument. */
+        data-reveal=""
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease: ease.expo, delay: 0.9 }}
