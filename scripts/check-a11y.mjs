@@ -440,14 +440,26 @@ const uhrfunde = [];
     const laenge = () =>
       seite.evaluate(() => document.body.innerText.replace(/\s+/g, " ").length);
 
+    /* In Schritten statt einmal acht Sekunden warten.
+       Eine zeitgesteuerte Folge rückt regelmäßig nach, die erste Änderung
+       kommt lange vor dem Ende — beim Terminalkasten nach 620 ms. Wer bis
+       zum Schluss wartet, misst dasselbe und kostet auf zwanzig Seiten
+       160 Sekunden. Der Lauf hört auf, sobald er etwas gefunden hat, und
+       nach spätestens drei. Gegengeprüft mit dem Terminalkasten vor seinem
+       Eingriff: Er rückte alle 620 ms nach und wurde in der ersten Sekunde
+       gefunden. */
     await seite.waitForTimeout(400);
     const vorher = await laenge();
-    await seite.waitForTimeout(8000);
-    const nachher = await laenge();
+    let nachher = vorher;
+    for (let schritt = 0; schritt < 3; schritt++) {
+      await seite.waitForTimeout(1000);
+      nachher = await laenge();
+      if (nachher - vorher > WACHSTUM) break;
+    }
 
     if (nachher - vorher > WACHSTUM) {
       uhrfunde.push(
-        `${pfad}: ${nachher - vorher} Zeichen kamen in acht Sekunden von allein dazu ` +
+        `${pfad}: ${nachher - vorher} Zeichen kamen von allein dazu ` +
           `(${vorher} → ${nachher})`,
       );
     }
