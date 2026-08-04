@@ -25,6 +25,7 @@
  *   node scripts/check-public-dir.mjs
  */
 
+import { execSync } from "node:child_process";
 import { readdirSync, readFileSync, lstatSync, realpathSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { join, extname, resolve, sep } from "node:path";
@@ -51,9 +52,21 @@ const FREIGEGEBEN = new Set([
  * ausdrücklich in FREIGEGEBEN stehen.
  */
 const UNBEDENKLICH = new Set([
-  ".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif", ".svg", ".ico",
-  ".woff", ".woff2", ".ttf", ".otf",
-  ".webmanifest", ".xml", ".txt",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".avif",
+  ".gif",
+  ".svg",
+  ".ico",
+  ".woff",
+  ".woff2",
+  ".ttf",
+  ".otf",
+  ".webmanifest",
+  ".xml",
+  ".txt",
 ]);
 
 /** Namensteile, die nie im öffentlichen Ordner auftauchen dürfen. */
@@ -109,14 +122,15 @@ function verbotenerBegriff(inhalt) {
     .filter(Boolean);
 
   for (let i = 0; i < woerter.length; i++) {
-    if (VERBOTENE_HASHES.has(kurzHash(woerter[i].slice(0, PRAEFIX)))) return true;
+    if (VERBOTENE_HASHES.has(kurzHash(woerter[i].slice(0, PRAEFIX))))
+      return true;
     if (i + 1 < woerter.length) {
-      if (VERBOTENE_HASHES.has(kurzHash(`${woerter[i]} ${woerter[i + 1]}`))) return true;
+      if (VERBOTENE_HASHES.has(kurzHash(`${woerter[i]} ${woerter[i + 1]}`)))
+        return true;
     }
   }
   return false;
 }
-
 
 const befunde = [];
 
@@ -139,7 +153,8 @@ function durchgehen(ordner) {
         // Zeigt ins Leere. Trotzdem ein Befund: Verknüpfungen haben hier
         // nichts zu suchen.
       }
-      const drinnen = ziel !== "unauflösbar" && (ziel + sep).startsWith(WURZEL + sep);
+      const drinnen =
+        ziel !== "unauflösbar" && (ziel + sep).startsWith(WURZEL + sep);
       befunde.push(
         `${relativ}: Verknüpfung auf ${ziel}${drinnen ? "" : ", also aus dem öffentlichen Ordner hinaus"}`,
       );
@@ -183,17 +198,81 @@ function durchgehen(ordner) {
     // Der Befund nennt das Wort nicht. Wer die Meldung sieht, weiss ohnehin,
     // was gemeint ist; wer sie in einem Protokoll findet, nicht.
     if (verbotenerBegriff(inhalt)) {
-      befunde.push(`${relativ}: enthält einen Begriff, der nicht öffentlich werden darf`);
+      befunde.push(
+        `${relativ}: enthält einen Begriff, der nicht öffentlich werden darf`,
+      );
     }
   }
 }
 
 durchgehen(OEFFENTLICH);
 
+/* ---------------------------------------------------------------------------
+   Binärdateien wachsen in der Historie, nicht im Baum
+
+   Eine gelöschte Datei ist aus dem Arbeitsbaum weg und aus dem Repository
+   nicht: Git hält jede Fassung. Gemessen wiegt dieses Repository 18,9 MiB
+   gepackt, und die größten Brocken darin sind Bildschirmfotos, die längst
+   durch WebP ersetzt wurden — 1,4 MiB für eine einzige alte PNG. Dazu eine
+   Arbeitsdatei namens `_kontrast.png`, die einmal versehentlich mitkam.
+
+   Die Historie lässt sich nicht mehr aufräumen, ohne Schaden anzurichten: Die
+   Artikel belegen ihre Aussagen mit Commit-Kennungen, und die ändern sich
+   dabei alle. Was bleibt, ist zu verhindern, dass es weiter wächst.
+
+   Die Grenze liegt bei 300 KiB. Alles, was diese Seite ausliefert, ist
+   darunter: die größte WebP-Aufnahme wiegt 130 KiB, das Porträt 96, die
+   beiden Blätter je rund 200. Wer eine größere Datei braucht, soll das
+   entscheiden und nicht versehentlich tun. */
+const GRENZE = 300 * 1024;
+const ERLAUBT_GROSS = new Set([
+  "public/domenic-moran-kurzprofil.pdf",
+  "public/domenic-moran-one-pager.pdf",
+]);
+
+const grosse = [];
+const gezaehlt = [];
+{
+  const bekannt = execSync("git ls-files", { encoding: "utf8" })
+    .split("\n")
+    .filter(Boolean);
+  for (const datei of bekannt) {
+    let groesse;
+    try {
+      groesse = lstatSync(datei).size;
+    } catch {
+      continue;
+    }
+    gezaehlt.push(datei);
+    if (groesse > GRENZE && !ERLAUBT_GROSS.has(datei)) {
+      grosse.push(`${datei}: ${Math.round(groesse / 1024)} KiB`);
+    }
+  }
+}
+
+if (grosse.length) {
+  console.error(
+    `${grosse.length} Datei über ${Math.round(GRENZE / 1024)} KiB im Repository:\n`,
+  );
+  for (const g of grosse) console.error(`  ${g}`);
+  console.error(
+    `\nEine einmal eingecheckte Datei bleibt in der Historie, auch wenn sie ` +
+      `später gelöscht wird. Bilder gehören als WebP nach public/, Originale ` +
+      `später gelöscht wird. Bilder gehören als WebP nach public/, Originale ` +
+      `neben das Repository. Ausnahmen stehen in ERLAUBT_GROSS.`,
+  );
+  process.exit(1);
+}
+
 if (befunde.length) {
-  console.error(`Nichts Privates gehört nach ${OEFFENTLICH}/. ${befunde.length} Befunde:\n`);
+  console.error(
+    `Nichts Privates gehört nach ${OEFFENTLICH}/. ${befunde.length} Befunde:\n`,
+  );
   for (const b of befunde) console.error(`  ${b}`);
   process.exit(1);
 }
 
-console.log(`${OEFFENTLICH}/ ist sauber: keine private Datei, kein verbotener Inhalt.`);
+console.log(
+  `${OEFFENTLICH}/ ist sauber: keine private Datei, kein verbotener Inhalt. ` +
+    `${gezaehlt.length} verzeichnete Dateien, keine über ${Math.round(GRENZE / 1024)} KiB.`,
+);
