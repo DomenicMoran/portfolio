@@ -38,7 +38,15 @@ export function Writing() {
           lede={chrome.home.lede}
         />
 
-        <ul className="mt-14 grid gap-4 md:grid-cols-3">
+        {/* Zwei Spalten vor drei.
+
+            Bei 768 px standen hier drei Karten nebeneinander, jede 176 px
+            breit: rund 24 Zeichen je Zeile, und die Titel gingen auf vier
+            Zeilen. Dieselbe Beobachtung wie im Recruiter-Bereich, wo drei
+            Karten neben dem Faktenblatt auf 27 Zeichen fielen. Zwei Spalten
+            geben der Karte auf dieser Breite rund 340 px; drei erst ab
+            1024 px. */}
+        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {artikel.map((a, i) => (
             <Reveal as="li" key={a.slug} delay={i * 0.06}>
               <Link
@@ -49,7 +57,15 @@ export function Writing() {
                   {chrome.readingTime(a.minutes)}
                 </span>
 
-                <h3 className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance">
+                {/* Zwei Zeilen Platz, auch wenn der Titel nur eine braucht:
+                    Sonst beginnt der Anriss der Nachbarkarte 22 px höher und
+                    die Reihe steht schief. Gemessen bei 768 px auf Deutsch,
+                    bei 1280 und 1440 px auf Englisch. `check:cards` hält es
+                    offen.
+
+                    Gemessen an allen vier geprüften Breiten in beiden
+                    Sprachen. */}
+                <h3 className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[2lh]">
                   {a.title}
                   <ArrowUpRight
                     className="mt-0.5 size-3.5 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
