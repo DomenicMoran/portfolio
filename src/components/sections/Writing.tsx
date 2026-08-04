@@ -63,9 +63,15 @@ export function Writing() {
                     bei 1280 und 1440 px auf Englisch. `check:cards` hält es
                     offen.
 
-                    Gemessen an allen vier geprüften Breiten in beiden
-                    Sprachen. */}
-                <h3 className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[2lh]">
+                    Drei Zeilen und nicht zwei, obwohl zwei örtlich reichten:
+                    Auf dem Linux-Läufer der CI brechen dieselben Titel bei
+                    1024 px anders um als unter Windows — dort meldete
+                    `check:cards` 22 px Versatz, während hier alles bündig
+                    stand. Ein Wert, der von den Schriftmetriken des
+                    Betriebssystems abhängt, ist kein Wert. Drei Zeilen decken
+                    beide Fälle; die Karten bekommen dafür gleichmäßig etwas
+                    Luft, was niemand als Fehler sieht. */}
+                <h3 className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[3lh]">
                   {a.title}
                   <ArrowUpRight
                     className="mt-0.5 size-3.5 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
