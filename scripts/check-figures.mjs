@@ -2555,6 +2555,93 @@ const ANGABEN = [
 
 }
 
+/* ---------------------------------------------------------------------------
+   Was die READMEs der Pakete importieren, muss es auch geben.
+
+   Diese vier Dateien sind das Erste, was jemand öffnet, der den Code sehen
+   will — auf npm stehen sie über dem Paket, auf GitHub unter der Dateiliste.
+   Ein Beispiel darin, das nicht läuft, ist teurer als eine fehlende Zeile:
+   Wer es kopiert, bekommt einen Fehler und schließt daraus auf das Paket.
+
+   Geprüft wird die Verbindung zwischen beiden Seiten: Jeder Name, den ein
+   `import { … } from "<paket>"` im README nennt, muss aus `src/index.ts`
+   ausgeführt werden. Umbenennen bricht damit sichtbar, statt still.
+--------------------------------------------------------------------------- */
+
+{
+  const readmefunde = [];
+  let geprueft = 0;
+  let ausgefallen = 0;
+
+  for (const [name] of PAKETE) {
+    const wurzel = join(OSS, name);
+    const readme = join(wurzel, "README.md");
+    const einstieg = join(wurzel, "src", "index.ts");
+
+    if (!existsSync(readme)) {
+      ausgefallen++;
+      continue;
+    }
+
+    const text = readFileSync(readme, "utf8");
+
+    /* Ein Paket ohne Importe im README hat hier nichts zu prüfen, und das ist
+       kein Ausfall: `verified-done` liefert Skill-Dateien und keinen Einstieg,
+       den man importieren könnte. Fehlt dagegen `src/index.ts`, obwohl das
+       README daraus importiert, ist genau das der Fund. */
+    if (!/import\s*\{[^}]+\}\s*from\s*["']/.test(text)) continue;
+
+    if (!existsSync(einstieg)) {
+      readmefunde.push(
+        `${name}: README zeigt Importe, es gibt aber kein src/index.ts`,
+      );
+      continue;
+    }
+
+    const quelle = readFileSync(einstieg, "utf8");
+
+    /* Nur Importe aus dem Paket selbst. Beispiele importieren auch aus `node:`
+       und aus fremden Paketen, und die gehen diesen Lauf nichts an. */
+    const namen = new Set();
+    for (const treffer of text.matchAll(
+      /import\s*\{([^}]+)\}\s*from\s*["']([^"']+)["']/g,
+    )) {
+      if (!treffer[2].startsWith(name)) continue;
+      for (const roh of treffer[1].split(",")) {
+        const sauber = roh.replace(/\s+as\s+\w+/, "").trim();
+        if (sauber) namen.add(sauber);
+      }
+    }
+
+    for (const bezeichner of namen) {
+      geprueft++;
+      const muster = new RegExp(
+        `export\\s+(?:async\\s+)?(?:function|const|let|class|type|interface|enum)\\s+${bezeichner}\\b`,
+      );
+      const reExport = new RegExp(`export\\s*\\{[^}]*\\b${bezeichner}\\b`);
+      if (!muster.test(quelle) && !reExport.test(quelle)) {
+        readmefunde.push(
+          `${name}: README importiert „${bezeichner}", src/index.ts führt es nicht aus`,
+        );
+      }
+    }
+  }
+
+  if (readmefunde.length) {
+    abweichungen += readmefunde.length;
+    zeilen.push(`  !!  ${readmefunde.length} Beispiel(e) in einem README zeigen ins Leere:`);
+    for (const f of readmefunde) zeilen.push(`        ${f}`);
+  } else if (ausgefallen) {
+    zeilen.push(
+      `  --  README-Beispiele: ${ausgefallen} Paket(e) ohne README oder Einstieg, übersprungen`,
+    );
+  } else {
+    zeilen.push(
+      `  ok  README-Beispiele   ${String(geprueft).padStart(6)} Bezeichner werden ausgeführt`,
+    );
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
