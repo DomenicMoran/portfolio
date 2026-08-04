@@ -60,6 +60,7 @@ const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
+let sitemapzeilen = 0;
 let anker = 0;
 /** Die im Kopf angemeldeten Nebendateien, je einmal geprüft. */
 const nebendateien = [];
@@ -398,6 +399,69 @@ for (const w of weiterleitungen) {
   }
 }
 
+/* ------------------------------------------------------------------
+   Sitemap und `robots` müssen dasselbe sagen.
+
+   Zwei Fehler gehören zusammen und fallen beide nicht auf:
+
+   - Eine Seite, die indexiert werden soll, steht nicht in der Sitemap. Sie
+     wird trotzdem gefunden, nur später und schlechter — und wer die Sitemap
+     pflegt, merkt nichts, denn eine Auslassung sieht aus wie Absicht.
+   - Eine Seite mit `noindex` steht in der Sitemap. Dann bittet die eine
+     Datei um Aufnahme, was die andere verbietet. Suchmaschinen behandeln das
+     als Widerspruch und melden es in ihren Werkzeugen.
+
+   Gemessen zum Zeitpunkt des Einbaus: 18 gebaute Seiten, 14 in der Sitemap,
+   und genau die vier fehlenden tragen `noindex` — Impressum, Datenschutz und
+   die beiden One-Pager. Der Stand ist richtig, er stand nur nirgends fest.
+------------------------------------------------------------------ */
+
+{
+  const sitemapAntwort = await fetch(`${basis}/sitemap.xml`);
+  const sitemapText = await sitemapAntwort.text();
+  const inSitemap = new Set(
+    [...sitemapText.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
+      new URL(m[1]).pathname.replace(/\/$/, ""),
+    ),
+  );
+
+  const sitemapfunde = [];
+
+  for (const pfad of pfade) {
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+    const robots = await seite.evaluate(
+      () =>
+        document
+          .querySelector('meta[name="robots"]')
+          ?.getAttribute("content") ?? "",
+    );
+    const indexierbar = !/noindex/i.test(robots);
+    const gelistet = inSitemap.has(pfad === "/" ? "" : pfad);
+
+    if (indexierbar && !gelistet) {
+      sitemapfunde.push(
+        `${pfad}: indexierbar (robots „${robots || "ohne Angabe"}“), fehlt aber in der Sitemap`,
+      );
+    }
+    if (!indexierbar && gelistet) {
+      sitemapfunde.push(
+        `${pfad}: steht in der Sitemap, trägt aber „${robots}“`,
+      );
+    }
+  }
+
+  /* Und der umgekehrte Weg: eine Adresse in der Sitemap, die es nicht gibt. */
+  for (const eintrag of inSitemap) {
+    const pfad = eintrag === "" ? "/" : eintrag;
+    if (!pfade.includes(pfad)) {
+      sitemapfunde.push(`${pfad}: steht in der Sitemap, wird aber nicht gebaut`);
+    }
+  }
+
+  for (const f of sitemapfunde) funde.push(f);
+  sitemapzeilen = inSitemap.size;
+}
+
 await browser.close();
 beenden();
 
@@ -415,5 +479,6 @@ console.log(
     `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt, ` +
     `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel, ` +
     `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp, ` +
-    `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar.`,
+    `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar, ` +
+    `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben.`,
 );

@@ -289,6 +289,112 @@ if (wartefunde.length > 0) {
   for (const f of wartefunde) console.error(`  ${f}`);
 }
 
+/* ------------------------------------------------------------------
+   Zielgröße auf dem Telefon, WCAG 2.2 Erfolgskriterium 2.5.8 (AA).
+
+   Warum das hier von Hand steht, obwohl axe oben läuft: axe prüft die Regel
+   nicht. Sie verlangt Geometrie über den ganzen Baum hinweg — Größe eines
+   Ziels und Abstand zum nächsten —, und genau das kann ein Regelwerk, das
+   Knoten einzeln ansieht, nicht entscheiden.
+
+   Gemessen wird bei 390 px, weil die Regel für Zeigegeräte gilt und der
+   Finger das gröbste davon ist. Beide Ausnahmen der Norm sind abgebildet:
+
+   - **Inline.** Ein Verweis mitten in einem Satz darf klein sein; der Satz
+     bestimmt seine Größe, nicht der Gestalter.
+   - **Abstand.** Ein kleines Ziel ist zulässig, solange ein Kreis von 24 px
+     Durchmesser um seinen Mittelpunkt kein anderes Ziel schneidet. Ein
+     einzelner kleiner Knopf mit Luft ringsum ist also in Ordnung, zwei
+     kleine nebeneinander sind es nicht.
+
+   Zum Zeitpunkt des Einbaus gemessen: sechs Seiten, kein Verstoß. Die
+   kleinsten Ziele im Recruiter-Bereich sind 37 px hoch und liegen damit über
+   der Grenze — die Prüfung steht hier, damit das so bleibt.
+------------------------------------------------------------------ */
+
+const ZIELGROESSE = 24;
+const zielfunde = [];
+
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const seite = await kontext.newPage();
+
+  for (const pfad of pfade) {
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+
+    /* Durchscrollen, bevor gemessen wird: Was `whileInView` einblendet, hat
+       vorher die Höhe null und käme als Verstoß heraus. */
+    const hoehe = await seite.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < hoehe; y += 600) {
+      await seite.evaluate((y) => scrollTo(0, y), y);
+      await seite.waitForTimeout(40);
+    }
+    await seite.waitForTimeout(300);
+
+    const funde = await seite.evaluate((grenze) => {
+      const ziele = [
+        ...document.querySelectorAll(
+          "a[href], button, input, select, textarea, [role=button], [role=tab], [role=option], [tabindex='0']",
+        ),
+      ].filter((e) => {
+        const r = e.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      });
+
+      const raus = [];
+      for (const e of ziele) {
+        const r = e.getBoundingClientRect();
+        if (r.width >= grenze && r.height >= grenze) continue;
+
+        const eltern = e.parentElement;
+        const imSatz =
+          eltern &&
+          /^(P|LI|SPAN|TD|H1|H2|H3|H4|H5|H6)$/.test(eltern.tagName) &&
+          eltern.innerText.trim().length >
+            (e.innerText?.trim().length ?? 0) + 8;
+        if (imSatz) continue;
+
+        const mitte = { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+        const eng = ziele.some((a) => {
+          if (a === e) return false;
+          const b = a.getBoundingClientRect();
+          const dx = Math.max(b.left - mitte.x, 0, mitte.x - b.right);
+          const dy = Math.max(b.top - mitte.y, 0, mitte.y - b.bottom);
+          return Math.hypot(dx, dy) < grenze / 2;
+        });
+        if (!eng) continue;
+
+        const name = (
+          e.innerText ||
+          e.getAttribute("aria-label") ||
+          e.getAttribute("title") ||
+          e.tagName
+        )
+          .trim()
+          .slice(0, 30);
+        raus.push(`„${name}" ${Math.round(r.width)}×${Math.round(r.height)} px`);
+      }
+      return [...new Set(raus)];
+    }, ZIELGROESSE);
+
+    for (const f of funde) zielfunde.push(`${pfad}: ${f}`);
+  }
+
+  await kontext.close();
+}
+
+if (zielfunde.length > 0) {
+  console.error(
+    `\n${zielfunde.length} ${zielfunde.length === 1 ? "Ziel" : "Ziele"} unter ` +
+      `${ZIELGROESSE}×${ZIELGROESSE} px ohne genügend Abstand (WCAG 2.5.8), gemessen auf 390 px:\n`,
+  );
+  for (const f of zielfunde) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -303,12 +409,17 @@ if (verstoesse > 0) {
   );
 }
 
-if (verstoesse > 0 || wartefunde.length > 0 || ohneSkript.length > 0)
+if (
+  verstoesse > 0 ||
+  wartefunde.length > 0 ||
+  ohneSkript.length > 0 ||
+  zielfunde.length > 0
+)
   process.exit(1);
 
 console.log(
   `Keine Verstöße gegen WCAG 2.2 AA: ${geprueft} Seitenaufrufe ` +
     `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
     `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
-    `nichts unsichtbar ohne JavaScript.`,
+    `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand.`,
 );
