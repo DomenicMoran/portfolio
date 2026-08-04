@@ -218,9 +218,25 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
             tage.push(
               GEBETE.map((g) => {
                 const d = zeiten[g];
-                return d instanceof Date && !Number.isNaN(d.getTime())
-                  ? Math.round((d.getTime() - tagesBeginn) / 60000)
-                  : null;
+                if (!(d instanceof Date) || Number.isNaN(d.getTime()))
+                  return null;
+                const m = Math.round((d.getTime() - tagesBeginn) / 60000);
+                /* Was mehr als einen halben Tag vor dem Tag oder mehr als
+                   sechs Stunden nach dem folgenden Mitternacht liegt, ist
+                   keine Zeit dieses Tages mehr.
+
+                   Gemessen: In Tromsø liefert `adhan` am 19. Januar für Asr
+                   2.925 Minuten — 48 Stunden und 45 Minuten, also übermorgen.
+                   Am Rand der Polarnacht erreicht die Sonne die Bedingung an
+                   diesem Tag nie, und die Bibliothek rutscht auf den nächsten
+                   Tag, an dem sie es tut. Die Nachbartage liegen bei 842 und
+                   884. Gezeichnet ergab dieser eine Punkt einen senkrechten
+                   Strich quer durch das ganze Band, der aussah wie ein
+                   Zeichenfehler. Als Lücke ist er die Aussage: An diesem Tag
+                   gibt es die Zeit nicht. Ischa um 00:02 des Folgetags
+                   (1.442) und Fadschr um 23:53 des Vortags (−7) bleiben
+                   davon unberührt. */
+                return m < -720 || m > 1800 ? null : m;
               }),
             );
           }
@@ -351,14 +367,25 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
    */
   const geister = useMemo(() => {
     if (!jahr) return null;
+
+    /* Welche der drei Regeln gerade wirklich rechnet.
+       `auto` ist keine eigene Rechnung, sondern die Entscheidung der App: über
+       48° die winkelbasierte, darunter Mitte der Nacht. Verglichen wurde hier
+       vorher `jahr[r] !== jahr[regel]` — zwei verschiedene Felder, also nie
+       gleich. In Tromsø mit „wie in der App" lag deshalb eine gestrichelte
+       Geisterlinie Punkt für Punkt auf der durchgezogenen: sechs Geisterpfade
+       statt vier, die Legende sprach von „den beiden anderen", und ein Wechsel
+       der Regel veränderte das Bild scheinbar nicht. */
+    const wirksam =
+      regel === "auto" ? (ORTE[ort].lat > 48 ? "angle" : "middle") : regel;
     const andere = (["angle", "seventh", "middle"] as const).filter(
-      (r) => jahr[r] !== jahr[regel],
+      (r) => r !== wirksam,
     );
     return andere
       .map((r) => linienAus(jahr[r]))
       .filter(Boolean)
       .flatMap((l) => l!.filter((x) => x.name === "fajr" || x.name === "isha"));
-  }, [jahr, regel, linienAus]);
+  }, [jahr, ort, regel, linienAus]);
 
   /** Wie weit die drei Regeln an diesem Tag bei Fadschr auseinanderliegen. */
   const abstand = useMemo(() => {
@@ -417,7 +444,16 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
        und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
        durch — auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
        Aussage trägt, steht in der Fallstudie darüber. */
-    <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
+    <div
+      /* Ein Merkmal, an dem eine Prüfung erkennt, dass die Kachel fertig
+         gerechnet hat. Ohne das misst jeder Lauf einen Zustand, den kein
+         Besucher je sieht: leere Felder. Genau daran ging eine schwarze Zahl
+         auf schwarzem Grund durch die Barrierefreiheitsprüfung — zur Messzeit
+         stand dort noch kein Text, und was nicht dasteht, hat auch keinen
+         Kontrast. */
+      data-demo-fertig={jahr ? "" : undefined}
+      className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
+    >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-base font-semibold tracking-tight text-ink">
           {demo.title}
@@ -546,14 +582,17 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                 />
               ))}
 
-              {/* Die anderen Regeln, so leise, dass sie nur als Spanne wirken. */}
+              {/* Die anderen Regeln, so leise, dass sie nur als Spanne wirken.
+                  Dieselbe Farbe wie die gewählte Regel, nur gestrichelt und
+                  blass: Es ist dieselbe Größe unter einer anderen Annahme, und
+                  eine zweite Farbe hätte behauptet, es sei etwas anderes. */}
               {geister?.map((g, i) => (
                 <path
                   key={i}
                   d={g.d}
                   fill="none"
-                  stroke="var(--color-violet)"
-                  strokeOpacity={0.3}
+                  stroke="var(--color-acid)"
+                  strokeOpacity={0.38}
                   strokeWidth={1}
                   strokeDasharray="2 3"
                   vectorEffect="non-scaling-stroke"
@@ -562,7 +601,15 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
 
               {/* Fadschr und Ischa kraeftiger als der Rest: Sie sind die beiden
                   Zeiten, die von der Regel abhaengen, und damit das, worauf die
-                  Schaltflaechen darueber wirken. */}
+                  Schaltflaechen darueber wirken.
+
+                  Gruen und nicht violett, obwohl violett hier die Farbe der
+                  Daemmerung ist — und genau deshalb: Die beiden Daemmerungs-
+                  flaechen sind in Tromsø im Sommer fast das halbe Bild, und
+                  eine violette Linie darin war nicht mehr zu finden. Jetzt
+                  traegt Violett die Tageszeit, Gruen die Aussage: Was gruen
+                  ist, haengt am Schalter. Die vier uebrigen Zeiten stehen
+                  neutral daneben, sie aendern sich nie. */}
               {linien.map((l) => {
                 const betroffen = l.name === "fajr" || l.name === "isha";
                 return (
@@ -571,9 +618,9 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                     d={l.d}
                     fill="none"
                     stroke={
-                      betroffen ? "var(--color-violet)" : "var(--color-acid)"
+                      betroffen ? "var(--color-acid)" : "var(--color-ink)"
                     }
-                    strokeOpacity={betroffen ? 0.95 : 0.45}
+                    strokeOpacity={betroffen ? 0.95 : 0.4}
                     strokeWidth={betroffen ? 1.4 : 1}
                     vectorEffect="non-scaling-stroke"
                   />
@@ -677,7 +724,14 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       <div className="mt-4 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-4">
         <p className="flex flex-wrap items-baseline gap-x-2">
           <span className="text-eyebrow">{demo.spread}</span>
-          <span className="font-mono text-base text-violet tabular-nums">
+          {/* `text-[1rem]` und nicht `text-base`: In diesem Farbsystem gibt es
+              ein Token `--color-base`, und Tailwind erzeugt daraus neben der
+              Schriftgröße auch eine Farbe. In der Reihenfolge der Stilvorlage
+              steht `.text-base` hinter `.text-acid` und gewinnt — die Zahl kam
+              in der Farbe des Hintergrunds heraus, gemessen 1,01:1. Mit
+              `text-violet` fiel das nie auf, weil „violet" alphabetisch hinter
+              „base" liegt. */}
+          <span className="font-mono text-[1rem] text-acid tabular-nums">
             {/* Solange nichts gerechnet ist, steht hier nichts. Ein
                 Platzhalterstrich war zuerst da und wurde von
                 `check:typography` zu Recht als Gedankenstrich im englischen
@@ -698,11 +752,11 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           className="flex basis-full items-center gap-4 font-mono text-[10px] text-ink-faint sm:ml-auto sm:basis-auto"
         >
           <span className="flex items-center gap-1.5">
-            <span className="h-px w-5 bg-violet" />
+            <span className="h-px w-5 bg-acid" />
             {demo.legend.active}
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-px w-5 bg-violet/40 [background-image:repeating-linear-gradient(90deg,currentColor_0_2px,transparent_2px_5px)]" />
+            <span className="h-px w-5 bg-acid/40 [background-image:repeating-linear-gradient(90deg,currentColor_0_2px,transparent_2px_5px)]" />
             {demo.legend.others}
           </span>
         </p>
