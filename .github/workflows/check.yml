@@ -179,6 +179,18 @@ jobs:
       - name: Handbuch gegen das Repo
         run: npm run check:docs
 
+      # Ladeverhalten verschlechtert sich in kleinen Schritten, jeder fuer sich
+      # vertretbar. Der Lauf misst auf einem gedrosselten Telefon und haelt LCP
+      # und CLS gegen ihre Budgets. Er steht am Ende, weil er als einziger
+      # Zeit braucht: vier Seiten mal drei kalte Laeufe.
+      #
+      # Auf einem geteilten Runner streuen solche Messungen staerker als auf
+      # einem ruhigen Rechner. Die Budgets sind deshalb die ueblichen Schwellen
+      # und nicht enger: Ein Lauf, der bei jeder zweiten Auslieferung rot wird,
+      # wird abgeschaltet statt gelesen.
+      - name: Kernwerte auf dem Telefon
+        run: npm run check:vitals
+
       # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
       # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
       # Kette, damit die Liste vollständig ist und niemand ihn für vergessen

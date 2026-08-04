@@ -33,6 +33,7 @@
     "check:parity": "node scripts/check-parity.mjs",
     "check:stack": "node scripts/check-stack.mjs",
     "check:onepager": "node scripts/check-onepager-pdf.mjs",
+    "check:vitals": "node scripts/check-vitals.mjs",
     "check:typography": "node scripts/check-typography.mjs",
     "check:legal": "node scripts/check-legal-date.mjs",
     "check:exports": "node scripts/check-exports.mjs",

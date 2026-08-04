@@ -220,10 +220,10 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-Neun der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+Zehn der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
 Seite: `check:a11y`, `check:headings`, `check:links`, `check:parity`,
-`check:print`, `check:privacy` und `check:separators`. Sie sind der eigentliche
-Beweis.
+`check:print`, `check:privacy`, `check:separators` und `check:vitals`. Sie sind
+der eigentliche Beweis.
 
 Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare Ausgabe:
 `src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate“ oder „fünf Monate“
@@ -256,6 +256,7 @@ npm run check:landmarks # jede Seite bietet ihre Landmarken an
 npm run check:separators # kein Trennzeichen am Zeilenende
 npm run check:nbsp     # keine Rechtsangabe bricht vor ihrer Ziffer um
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
+npm run check:vitals   # LCP und CLS auf einem gedrosselten Telefon
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 ```
 
