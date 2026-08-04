@@ -142,6 +142,19 @@ for (const pfad of SEITEN) {
 
     messungen.push(werte);
     await kontext.close();
+
+    /* Eine Pause zwischen den Läufen, wenn gegen die Live-Adresse gemessen
+       wird.
+
+       Vier Aufrufe je Seite mal fünf Seiten, jeder mit allen Bildern und
+       Bündeln, kommen in weniger als einer Minute von derselben Adresse — für
+       Vercels Schutz sieht das aus wie ein Angriff. Am 04.08.2026 hat er
+       daraufhin für einige Minuten jede Anfrage mit einem „Security
+       Checkpoint" beantwortet, Status 403, auch im gewöhnlichen Browser. Wer
+       die Seite in dem Moment geöffnet hat, sah sie nicht.
+
+       Örtlich gibt es das Problem nicht, deshalb kostet die Pause dort nichts. */
+    if (vorgegebeneBasis) await new Promise((r) => setTimeout(r, 1500));
   }
 
   const median = (zahlen) =>
