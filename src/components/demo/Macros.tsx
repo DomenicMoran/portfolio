@@ -255,8 +255,20 @@ function suchraum() {
 
 export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const demo = inhalt.demoNouri;
-  // Ein Frühstück und ein Mittagessen als Start: Eine leere Tabelle zeigt nichts.
-  const [gewaehlt, setGewaehlt] = useState<number[]>([1, 0]);
+  /* Der Anfangszustand ist das Ergebnis des Laufs, nicht eine Handauswahl.
+     Vorher standen dort zwei Gerichte, 925 kcal und 72 g Eiweiß — bei
+     demselben Ziel sind 198 g möglich. Wer die Karte nur überfliegt, sah
+     also einen Punkt weit unter der Grenze und darunter „1.275 kcal unter
+     dem Ziel". Die Vorführung widersprach ihrer eigenen Behauptung, solange
+     niemand den Knopf drückte.
+
+     Gerechnet statt eingetragen, und ohne `useEffect`: Das Ergebnis hängt nur
+     an den zwölf Gerichten und am Startziel, beides Konstanten. Server und
+     Browser kommen damit auf dieselbe Auswahl, und es gibt kein Bild, das
+     nach der Übernahme umspringt. */
+  const [gewaehlt, setGewaehlt] = useState<number[]>(
+    () => besterTag(ZIEL.start).auswahl,
+  );
   const [ziel, setZiel] = useState<number>(ZIEL.start);
   const [lauf, setLauf] = useState<{ geprueft: number; dauer: number } | null>(
     null,
@@ -265,13 +277,23 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
   /* Der Suchraum hängt nur an den zwölf Gerichten: einmal rechnen, nicht bei
      jedem Zug am Regler. */
   const { punkte, front } = useMemo(() => suchraum(), []);
+
+  /* Gezeichnet wird nur, was der Regler erreichen kann.
+     Über alle Zusammenstellungen reicht der Raum bis 5.770 kcal — alle zwölf
+     Gerichte an einem Tag. Der Regler endet bei 3.400, jenseits davon ist
+     nichts wählbar. Auf die volle Breite gezeichnet drängte sich deshalb der
+     gesamte brauchbare Teil in das linke Drittel, und die dichte Mitte war
+     ein Fleck. Zugeschnitten liegen 2.897 der 4.017 Punkte im Bild, und die
+     Wolke ist 1,7-mal so breit. */
   const RAUM = useMemo(() => {
-    const maxKcal = Math.max(...punkte.map((p) => p.kcal));
-    const maxEiweiss = Math.max(...punkte.map((p) => p.eiweiss));
+    const maxKcal = ZIEL.max;
+    const maxEiweiss = Math.max(
+      ...punkte.filter((p) => p.kcal <= maxKcal).map((p) => p.eiweiss),
+    );
     return { breite: 600, hoehe: 150, maxKcal, maxEiweiss };
   }, [punkte]);
 
-  const xVon = (kcal: number) => Math.min(1, kcal / RAUM.maxKcal) * RAUM.breite;
+  const xVon = (kcal: number) => (kcal / RAUM.maxKcal) * RAUM.breite;
   const yVon = (eiweiss: number) =>
     RAUM.hoehe - (eiweiss / RAUM.maxEiweiss) * RAUM.hoehe;
 
@@ -283,6 +305,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
     const unter: string[] = [];
     const ueber: string[] = [];
     for (const punkt of punkte) {
+      if (punkt.kcal > RAUM.maxKcal) continue;
       const strich = `M ${xVon(punkt.kcal).toFixed(1)} ${yVon(punkt.eiweiss).toFixed(1)} h 1`;
       (punkt.kcal <= ziel ? unter : ueber).push(strich);
     }
@@ -294,6 +317,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
     () =>
       "M " +
       front
+        .filter((p) => p.kcal <= RAUM.maxKcal)
         .map((p) => `${xVon(p.kcal).toFixed(1)} ${yVon(p.eiweiss).toFixed(1)}`)
         .join(" L "),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -557,7 +581,9 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           <span>
             {demo.field.y} g · {demo.field.x} →
           </span>
-          <span>{RAUM.maxKcal} kcal</span>
+          <span>
+            {zahl(RAUM.maxKcal)} {demo.units.kcal}
+          </span>
         </div>
       </div>
 
