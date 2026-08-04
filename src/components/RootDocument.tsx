@@ -1,64 +1,5 @@
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { MotionProvider } from "@/components/providers/MotionProvider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/**
- * Vorgeladen, obwohl sie nur Labels und Eyebrows trägt.
- *
- * Zuerst stand hier `preload: false`, mit einer guten Begründung: Drei
- * gleichzeitig vorgeladene Schriften (68 KiB) konkurrieren im kritischen Pfad,
- * und diese setzt kein Element, das für den Largest Contentful Paint zählt.
- *
- * Der Preis stand in der anderen Kennzahl. Weil sie erst nach dem Stylesheet
- * entdeckt wird, kam sie auf einer schmalen Leitung spät: gemessen an der
- * ausgelieferten Artikelseite bei 0,8 Mbit/s und sechsfach gedrosseltem
- * Prozessor um 3.576 ms, und 75 ms später verschob sich alles, was sie setzt —
- * Lesezeit, Themen-Chips, der Verweis auf das System. CLS 0,0587, dreimal
- * gleich reproduziert; auf dem CI-Runner 0,0582, auf einem ruhigen Rechner
- * null. Genau die Art Wert, die nur eine Messung findet.
- *
- * 23 KiB früher im Pfad gegen eine Verschiebung, die ein Sechstel des Budgets
- * kostet: Der LCP hat die Luft dafür, und `check:vitals` misst beides bei
- * jedem Push.
- */
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/** Nur für Akzentwörter. Ein Schnitt, ein Stil, mehr braucht es nicht. */
-/**
- * Die Auszeichnungsschrift der Überschrift, mit `optional` statt `swap`.
- *
- * Sie setzt nur die kursiven Wörter der Hauptüberschrift, und deren Höhe
- * unterscheidet sich von der Ersatzschrift. Bei `swap` erscheint die Zeile
- * erst in der Ersatzschrift und tauscht dann: Die Überschrift wird höher, und
- * alles darunter rutscht.
- *
- * Mit `swap` wurde daraus CLS 0,05 auf einem vierfach gedrosselten Telefon bei
- * 1,6 Mbit/s, die Verschiebung um 1.495 ms, als Quelle die Wortmasken der
- * Überschrift und die beiden Absätze darunter. `optional` lässt den Browser
- * kurz warten und die Schrift nur verwenden, wenn sie rechtzeitig da ist. Für
- * eine Auszeichnung, die drei Wörter betrifft, ist das der richtige Tausch.
- *
- * Nachgemessen an der ausgelieferten Seite, fünf kalte Läufe unter denselben
- * Bedingungen: CLS 0,0000 ohne eine einzige Verschiebung, LCP im Median
- * 1.892 ms bei einer Spanne von 1.884 bis 1.900. Beim zweiten Aufruf liegt die
- * Schrift ohnehin im Zwischenspeicher.
- */
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-  display: "optional",
-});
+import { schriftKlassen } from "@/lib/schriften";
 
 /**
  * Das Dokument-Gerüst, geteilt von beiden Wurzel-Layouts.
@@ -81,7 +22,7 @@ export function RootDocument({
       // Next 16 hebt weiches Scrollen bei der Navigation nur noch auf, wenn
       // dieses Attribut gesetzt ist.
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${schriftKlassen} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
         {/*
