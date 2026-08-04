@@ -468,6 +468,15 @@ export type Content = {
     onward: string;
     home: string;
     report: string;
+    /**
+     * Der Hinweis für den, der in der anderen Sprache gekommen ist.
+     *
+     * Zusammengesetzt aus `title` und `home` stand dort „This page does not
+     * exist. Home" — zwei Fragmente, und der Verweis hieß „Home". Als eigener
+     * Satz sagt er, wohin er führt, und der Verweis trägt die Beschreibung
+     * statt eines Worts.
+     */
+    otherLanguage: { text: string; link: string };
   };
 
   /** Verweist jeweils auf die andere Sprachfassung. */

@@ -302,6 +302,10 @@ export const de: Content = {
     onward: "Weiter zu",
     home: "Startseite",
     report: "Etwas kaputt gefunden?",
+    otherLanguage: {
+      text: "Diese Adresse gibt es nicht.",
+      link: "Weiter auf der deutschen Fassung",
+    },
   },
 
   languageSwitch: { to: "en", label: "English", aria: "This page in English" },

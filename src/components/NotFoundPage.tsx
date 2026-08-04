@@ -128,13 +128,14 @@ export function NotFoundPage({
 
           {zweitsprache ? (
             <p lang={zweitsprache.lang} className="mt-8 text-sm text-ink-faint">
-              {zweitsprache.notFound.title}{" "}
+              {zweitsprache.notFound.otherLanguage.text}{" "}
               <Link
                 href={zweitsprache.lang === "en" ? "/en" : "/"}
                 className="-my-1 py-1 text-acid underline underline-offset-4"
               >
-                {zweitsprache.notFound.home}
+                {zweitsprache.notFound.otherLanguage.link}
               </Link>
+              .
             </p>
           ) : null}
         </div>
