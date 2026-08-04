@@ -285,6 +285,57 @@ for (const [pfad, angemeldet] of nebendateien) {
 }
 
 /* ---------------------------------------------------------------------------
+   Veröffentlichte Adressen bleiben erreichbar
+
+   Ein Artikel wird geteilt: in einer Nachricht, in einem Beitrag, in einer
+   Bewerbung. Diese Adresse gehört danach nicht mehr dem Repository — sie
+   liegt in fremden Postfächern und Lesezeichen. Ändert jemand den Slug, weil
+   die Überschrift besser klingt, stirbt der geteilte Verweis lautlos: keine
+   Warnung, kein roter Lauf, nur eine 404 bei jemandem, der etwas lesen
+   wollte.
+
+   Die Liste ist deshalb keine Ableitung aus dem Inhalt, sondern eine
+   Festlegung: Was hier steht, war einmal veröffentlicht. Fällt eine Adresse
+   weg, verlangt der Lauf eine Weiterleitung in `vercel.json` — dieselbe
+   Antwort, die auch `/cv` und `/blog` bekommen. */
+const VEROEFFENTLICHT = [
+  "/artikel/kassensichv-in-der-praxis",
+  "/artikel/published-ist-kein-beleg",
+  "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
+  "/artikel/kleineres-whisper-modell",
+  "/artikel/widget-leer-trotz-gruener-tests",
+  "/en/articles/german-till-law-in-practice",
+  "/en/articles/published-is-not-proof",
+  "/en/articles/the-dotted-circle-was-not-the-font",
+  "/en/articles/a-smaller-whisper-model",
+  "/en/articles/green-tests-empty-widget",
+  "/artikel",
+  "/en/articles",
+  "/onepager",
+  "/en/onepager",
+  "/impressum",
+  "/datenschutz",
+  "/artikel/feed.xml",
+  "/en/articles/feed.xml",
+  "/domenic-moran-kurzprofil.pdf",
+  "/domenic-moran-one-pager.pdf",
+];
+
+let veroeffentlicht = 0;
+for (const adresse of VEROEFFENTLICHT) {
+  veroeffentlicht++;
+  const antwort = await fetch(`${basis}${adresse}`).catch(() => null);
+  if (!antwort || antwort.status !== 200) {
+    funde.push(
+      `${adresse} war veröffentlicht und antwortet jetzt mit ` +
+        `${antwort ? antwort.status : "gar nicht"}. Wer sie geteilt hat, ` +
+        `landet auf der Fehlerseite — eine Weiterleitung in vercel.json hält ` +
+        `den Verweis am Leben.`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Abkürzungen aus vercel.json
 
    `/cv`, `/blog`, `/en/resume` — Adressen, die niemand verlinkt und die
@@ -363,5 +414,6 @@ console.log(
   `Kein toter Verweis: ${anker} Verweise auf ${pfade.length} Seiten, ` +
     `${adressen} interne Adressen abgerufen, ${bilder} Bilder mit Inhalt, ` +
     `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel, ` +
-    `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp.`,
+    `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp, ` +
+    `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar.`,
 );
