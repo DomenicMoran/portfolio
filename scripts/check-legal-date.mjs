@@ -191,6 +191,96 @@ if (dynamische.length || schreibend.length) {
   process.exit(1);
 }
 
+/* ---------------------------------------------------------------------------
+   Die Zertifizierung, auf die sich die Datenschutzerklärung stützt.
+
+   Sie nennt als Rechtsgrundlage für die Übermittlung in die USA den
+   Angemessenheitsbeschluss vom 10. Juli 2023 und dazu, dass der Hoster nach
+   dem EU-US-Datenschutzrahmen zertifiziert sei. Das ist keine Formulierung,
+   sondern eine Tatsachenbehauptung über ein fremdes Unternehmen, und sie kann
+   ohne Zutun falsch werden: Eine Zertifizierung läuft jährlich aus und wird
+   nicht immer erneuert. Steht sie nicht mehr, fehlt der Übermittlung ihre
+   Grundlage — und im Rechtstext steht dann etwas Unwahres.
+
+   Geprüft wird gegen die Teilnehmerliste des US-Handelsministeriums, gefiltert
+   auf `Status: Active`. Die Suchmaske der Website selbst übergibt den
+   Suchbegriff nicht (sie schickt `"Search": ""` und meldet dann „no results
+   found"); die Schnittstelle dahinter nimmt ihn an.
+
+   Ohne Netz wird der Schritt übersprungen und sagt das. Ein Lauf, der bei
+   Netzproblemen rot wird, wird abgeschaltet statt gelesen.
+--------------------------------------------------------------------------- */
+
+const DPF = "https://dpfapi.azurewebsites.net/api/participants";
+
+{
+  /* Der Name kommt aus dem ausgelieferten Text, nicht aus einer Konstante:
+     Wechselt der Hoster, wechselt die Prüfung mit. */
+  const genannt = text.match(/bei der ([A-Z][\w.\- ]+?) gehostet/)?.[1]?.trim();
+
+  if (!genannt) {
+    console.log(
+      "  --  Kein Hoster in der Erklärung genannt, DPF-Prüfung entfällt.",
+    );
+  } else if (!/Datenschutzrahmen zertifiziert/.test(text)) {
+    console.log(
+      `  --  Die Erklärung beruft sich nicht auf den Datenschutzrahmen, Prüfung entfällt.`,
+    );
+  } else {
+    let liste = null;
+    try {
+      const antwort = await fetch(DPF, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          DataCovered: [],
+          Frameworks: [],
+          Industries: [],
+          PageNumber: 0,
+          RecourseMechanisms: [],
+          StatutoryBody: [],
+          RowsPerPage: 10,
+          Search: genannt.replace(/\s+Inc\.?$/i, ""),
+          StartLetter: "",
+          Status: "Active",
+          States: [],
+          VerificationMethod: "",
+        }),
+        signal: AbortSignal.timeout(20000),
+      });
+      if (antwort.ok) liste = await antwort.json();
+    } catch {
+      liste = null;
+    }
+
+    if (!liste) {
+      console.log(
+        "  --  Die Teilnehmerliste war nicht erreichbar, DPF-Prüfung übersprungen.",
+      );
+    } else {
+      const treffer = (liste.Items ?? []).filter((e) =>
+        new RegExp(genannt.replace(/\s+Inc\.?$/i, ""), "i").test(
+          e.OrganizationPublicDisplayName ?? "",
+        ),
+      );
+      if (treffer.length === 0) {
+        console.error(
+          `\nDie Erklärung nennt „${genannt}" als nach dem EU-US-Datenschutzrahmen\n` +
+            `zertifiziert. In der Teilnehmerliste des US-Handelsministeriums steht\n` +
+            `unter den aktiven Einträgen niemand dieses Namens.\n\n` +
+            `Ohne gültige Zertifizierung fehlt der Übermittlung in die USA ihre\n` +
+            `Grundlage, und der Absatz „Hosting" behauptet etwas Unwahres.`,
+        );
+        process.exit(1);
+      }
+      console.log(
+        `  ok  ${treffer[0].OrganizationPublicDisplayName} steht aktiv in der ` +
+          `Teilnehmerliste des EU-US-Datenschutzrahmens.`,
+      );
+    }
+  }
+}
+
 console.log(
   `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
     `Stand ${STAND}. Alle Seiten vorab erzeugt, kein Endpunkt nimmt Eingaben entgegen.`,
