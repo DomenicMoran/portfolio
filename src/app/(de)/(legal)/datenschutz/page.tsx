@@ -94,7 +94,15 @@ export default function Datenschutz() {
           Die Stunde ist keine Schätzung: Vercel nennt in der eigenen
           Dokumentation zu den Laufzeitprotokollen je Tarif eine
           Aufbewahrungszeit, und für den hier genutzten Tarif steht dort eine
-          Stunde. Wer den Tarif wechselt, muss diesen Satz nachziehen. */}
+          Stunde. Wer den Tarif wechselt, muss diesen Satz nachziehen.
+
+          Zur Rechtsgrundlage des Drittlandtransfers stand hier nur die
+          Standardvertragsklausel. Das ist nicht falsch, aber es ist die
+          nachrangige: Vercel erklärt in der eigenen Datenschutzerklärung,
+          nach dem EU-US-Datenschutzrahmen zertifiziert zu sein, und für
+          zertifizierte Empfänger ist seit dem 10. Juli 2023 der
+          Angemessenheitsbeschluss nach Art. 45 DSGVO die vorrangige
+          Grundlage. Beide zu nennen ist genauer als eine. */}
       <Section title="Hosting">
         Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
         technisch notwendige Server-Logdaten verarbeitet (IP-Adresse, Zeitpunkt,
@@ -102,8 +110,10 @@ export default function Datenschutz() {
         Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
         stabilen Betrieb. Der Hoster hält diese Protokolle eine Stunde lang vor
         und löscht sie danach automatisch; eine eigene Speicherung, Auswertung
-        oder Weitergabe findet nicht statt. Die Übermittlung in die USA erfolgt
-        auf Grundlage der EU-Standardvertragsklauseln.
+        oder Weitergabe findet nicht statt. Vercel ist nach dem
+        EU-US-Datenschutzrahmen zertifiziert; die Übermittlung in die USA stützt
+        sich damit auf den Angemessenheitsbeschluss der Europäischen Kommission
+        vom 10. Juli 2023 und ergänzend auf die EU-Standardvertragsklauseln.
       </Section>
 
       <Section title="Cookies und Tracking">
