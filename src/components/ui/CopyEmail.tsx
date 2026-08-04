@@ -69,6 +69,11 @@ export function CopyEmail({
         // sagt, welche. Vorgelesen steht die Sektion sonst voller Verweise auf
         // ein "es", das nirgends benannt ist.
         aria-label={`${label}: ${email}`}
+        // Dieser Knopf darf drucken, und zwar als einziger: Seine Beschriftung
+        // ist die Adresse selbst. Versteckt man ihn wie die übrigen
+        // Bedienelemente, steht auf dem Ausdruck der Startseite keine
+        // Kontaktadresse mehr. `check:print` liest das Merkmal aus.
+        data-druckbar=""
         className="group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
       >
         {stand === "kopiert" ? (

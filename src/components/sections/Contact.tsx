@@ -87,7 +87,10 @@ export function Contact() {
                 <button
                   type="button"
                   onClick={kopieren}
-                  className="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                  // `no-print`: Die Adresse steht schon im Verweis darüber,
+                  // dieser Knopf trägt nur seine Aufforderung. Auf Papier
+                  // bliebe „Adresse kopieren" ohne alles, was darauf antwortet.
+                  className="no-print inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                 >
                   {kopiert ? (
                     <>
