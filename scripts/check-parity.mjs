@@ -50,7 +50,9 @@ const browser = await chromium.launch();
 
 /** Was ein Leser sieht, in Zahlen. */
 async function zaehle(pfad) {
-  const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const seite = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+  });
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
 
   /* Erst durchscrollen: Was auf das Hineinscrollen wartet, hängt sich sonst
@@ -65,7 +67,9 @@ async function zaehle(pfad) {
   });
 
   const werte = await seite.evaluate(() => ({
-    Abschnitte: [...document.querySelectorAll("section[id]")].map((s) => s.id).join(","),
+    Abschnitte: [...document.querySelectorAll("section[id]")]
+      .map((s) => s.id)
+      .join(","),
     Überschriften2: document.querySelectorAll("h2").length,
     Überschriften3: document.querySelectorAll("h3").length,
     Verweise: document.querySelectorAll("a[href]").length,
@@ -96,6 +100,40 @@ for (const paar of PAARE) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Die Sprachangaben im Kopf
+
+   Zwei Fassungen sind nur dann zwei Fassungen, wenn eine Suchmaschine sie
+   auseinanderhalten kann. Dafür braucht jede Seite drei Angaben: `de`, `en`
+   und `x-default` — die letzte sagt, welche Fassung jemand bekommt, dessen
+   Sprache in keiner der beiden vorkommt.
+
+   Gemessen an der ausgelieferten Seite fehlte `x-default` auf beiden
+   Kurzprofilen. Jede andere Seite nannte sie; die zwei nicht, und keine
+   Prüfung sah hin. */
+const sprachSeite = await browser.newPage();
+for (const paar of PAARE) {
+  for (const pfad of [paar.de, paar.en]) {
+    await sprachSeite.goto(`${basis}${pfad}`, {
+      waitUntil: "domcontentloaded",
+    });
+    const sprachen = await sprachSeite.evaluate(() =>
+      [...document.querySelectorAll("link[rel=alternate][hreflang]")].map((l) =>
+        l.getAttribute("hreflang"),
+      ),
+    );
+    verglichen++;
+    for (const erwartet of ["de", "en", "x-default"]) {
+      if (!sprachen.includes(erwartet)) {
+        funde.push(
+          `${paar.name} (${pfad}): keine Sprachangabe „${erwartet}“ im Kopf`,
+        );
+      }
+    }
+  }
+}
+await sprachSeite.close();
+
 /*
   Die Architekturdiagramme, jedes einzeln aufgeklappt.
 
@@ -113,7 +151,9 @@ const NUR_DEUTSCH =
   /(?:^|\s)(?:und|oder|nicht|eine|mit|Zugänge|Betrieb|Anwendung|Freigabe|Quellen|Versand|Persistenz|Oberflächen|Geteilte|Geteilter|Bestellung|QR-Bestellung|Konten|Inhalte|Mensch|entscheidet|Leanback-Fokus|Hash-Kette|Gebetszeiten|Verträge|Rezepte|Tabellen|Migrationen|Regeln|Suche|Natives|Vermieter-Sites|Kriterien-Filter)(?=\s|$)/g;
 
 {
-  const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const seite = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+  });
   const funde2 = [];
   let bilder = 0;
 
@@ -149,9 +189,15 @@ const NUR_DEUTSCH =
     if (texte.length === 0) continue;
     bilder++;
 
-    const deutsch = [...new Set([...texte.join(" ").matchAll(NUR_DEUTSCH)].map((m) => m[0].trim()))];
+    const deutsch = [
+      ...new Set(
+        [...texte.join(" ").matchAll(NUR_DEUTSCH)].map((m) => m[0].trim()),
+      ),
+    ];
     if (deutsch.length > 0) {
-      funde2.push(`Architekturbild ${id} auf /en: ${deutsch.slice(0, 6).join(", ")}`);
+      funde2.push(
+        `Architekturbild ${id} auf /en: ${deutsch.slice(0, 6).join(", ")}`,
+      );
     }
   }
 
@@ -170,14 +216,18 @@ Die Beschriftung fehlt in src/content/architecture-en.ts. Ohne Eintrag ` +
     );
     process.exit(1);
   }
-  console.log(`${bilder} Architekturbilder auf /en ohne deutsche Beschriftung.`);
+  console.log(
+    `${bilder} Architekturbilder auf /en ohne deutsche Beschriftung.`,
+  );
 }
 
 await browser.close();
 beenden();
 
 if (funde.length > 0) {
-  console.error(`${funde.length} Abweichung(en) zwischen den Sprachfassungen:\n`);
+  console.error(
+    `${funde.length} Abweichung(en) zwischen den Sprachfassungen:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   console.error(
     `\nBeide Fassungen sollen dasselbe zeigen. Entweder fehlt der einen etwas, ` +
@@ -188,5 +238,5 @@ if (funde.length > 0) {
 
 console.log(
   `Beide Sprachfassungen zeigen dasselbe: ${PAARE.length} Seitenpaare, ` +
-    `${verglichen} Vergleiche ohne Abweichung.`,
+    `${verglichen} Vergleiche ohne Abweichung, jede Seite mit de, en und x-default.`,
 );

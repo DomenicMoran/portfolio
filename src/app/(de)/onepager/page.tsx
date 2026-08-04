@@ -24,6 +24,10 @@ export const metadata: Metadata = {
     languages: {
       de: `${site.url}/onepager`,
       en: `${site.url}/en/onepager`,
+      // Ohne x-default hat eine Suchmaschine keine Angabe, welche Fassung sie
+      // jemandem zeigen soll, dessen Sprache in keiner der beiden vorkommt.
+      // Jede andere Seite der Seite nennt sie; diese beiden nicht.
+      "x-default": `${site.url}/onepager`,
     },
   },
 };
