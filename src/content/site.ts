@@ -60,9 +60,11 @@ export const site = {
 
   email: "domenicmoran@gmail.com",
   mailSubject: "Anfrage über domenicmoran.de",
-  // Kein Telefon und keine Privatanschrift in dieser Datei: das Repo ist
-  // öffentlich, und beides wird aus öffentlichen Repos zuverlässig
-  // abgegriffen. Beides steht im Lebenslauf unter docs/, also außerhalb des Repos.
+  // Kein Telefon in dieser Datei, und keine Anschrift: Was hier steht, landet
+  // auf der Seite, in llms.txt, in humans.txt und auf den Vorschaukarten. Die
+  // Telefonnummer steht im Lebenslauf unter docs/, also außerhalb des Repos;
+  // die ladungsfähige Anschrift gehört auf genau zwei Seiten und steht dort,
+  // wo sie hingehört: in `app/(de)/(legal)/provider.ts`.
 
   // Als einfache Zeichenketten getippt, nicht als Literale: Die Komponenten
   // verzweigen danach, ob hier etwas steht, und `as const` würde "" so eng

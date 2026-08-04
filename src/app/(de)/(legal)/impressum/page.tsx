@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
+import { ANBIETER, ANSCHRIFT } from "../provider";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -51,13 +52,13 @@ export default function Impressum() {
           Angaben gemäß § 5 DDG
         </h2>
         <address className="text-sm leading-relaxed text-ink-dim not-italic">
-          Domenic Moran
-          <br />
-          Heidelberger Straße 36
-          <br />
-          12059 Berlin
-          <br />
-          Deutschland
+          {ANBIETER}
+          {ANSCHRIFT.map((zeile) => (
+            <span key={zeile}>
+              <br />
+              {zeile}
+            </span>
+          ))}
         </address>
       </section>
 
