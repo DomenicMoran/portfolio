@@ -271,7 +271,7 @@ const DPF = "https://dpfapi.azurewebsites.net/api/participants";
             `Ohne gültige Zertifizierung fehlt der Übermittlung in die USA ihre\n` +
             `Grundlage, und der Absatz „Hosting" behauptet etwas Unwahres.`,
         );
-        process.exit(1);
+        process.exitCode = 1;
       }
       console.log(
         `  ok  ${treffer[0].OrganizationPublicDisplayName} steht aktiv in der ` +
@@ -281,10 +281,112 @@ const DPF = "https://dpfapi.azurewebsites.net/api/participants";
   }
 }
 
-console.log(
-  `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
-    `Stand ${STAND}. Alle Seiten vorab erzeugt, kein Endpunkt nimmt Eingaben entgegen.`,
-);
+/* ---------------------------------------------------------------------------
+   Die Aufbewahrungsfrist, die der Text nennt, hängt am Tarif.
+
+   Die Erklärung sagt: „Der Hoster hält diese Protokolle eine Stunde lang vor
+   und löscht sie danach automatisch." Das ist keine Formulierung, sondern eine
+   Frist — und sie gilt genau für einen Tarif. Vercel hält Laufzeitprotokolle
+   auf Hobby eine Stunde, auf Pro einen Tag, mit Observability Plus dreißig
+   Tage. Ein Tarifwechsel ist ein Klick, und danach steht im Rechtstext eine
+   Frist, die nicht mehr stimmt.
+
+   Geprüft wird gegen die Vercel-API. Ohne Zugangsdaten wird übersprungen und
+   das gesagt: Im Prüfworkflow gibt es keinen Token, und ein Lauf, der dort rot
+   wird, ohne dass jemand etwas falsch gemacht hat, wird abgeschaltet.
+--------------------------------------------------------------------------- */
+
+const FRISTEN = new Map([
+  ["hobby", "eine Stunde"],
+  ["pro", "einen Tag"],
+  ["enterprise", "drei Tage"],
+]);
+
+{
+  const genannteFrist = text.match(
+    /Protokolle (eine Stunde|einen Tag|drei Tage|dreißig Tage) lang vor/,
+  )?.[1];
+
+  if (!genannteFrist) {
+    console.log("  --  Keine Aufbewahrungsfrist im Text, Tarifprüfung entfällt.");
+  } else {
+    let token = null;
+    try {
+      token = JSON.parse(
+        readFileSync(
+          join(
+            process.env.HOME ?? process.env.USERPROFILE ?? "",
+            "AppData",
+            "Roaming",
+            "com.vercel.cli",
+            "Data",
+            "auth.json",
+          ),
+          "utf8",
+        ),
+      ).token;
+    } catch {
+      token = process.env.VERCEL_TOKEN ?? null;
+    }
+
+    if (!token) {
+      console.log(
+        `  --  Kein Vercel-Zugang, die Frist „${genannteFrist}" bleibt ungeprüft.`,
+      );
+    } else {
+      let tarif = null;
+      try {
+        const antwort = await fetch(
+          "https://api.vercel.com/v2/teams/team_glutztTQtWq7Te7NQiJC8KbM",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            signal: AbortSignal.timeout(20000),
+          },
+        );
+        if (antwort.ok) tarif = (await antwort.json()).billing?.plan ?? null;
+      } catch {
+        tarif = null;
+      }
+
+      if (!tarif) {
+        console.log(
+          "  --  Der Tarif war nicht abrufbar, die Frist bleibt ungeprüft.",
+        );
+      } else if (FRISTEN.get(tarif) !== genannteFrist) {
+        console.error(
+          `\nDie Datenschutzerklärung nennt „${genannteFrist}" als Aufbewahrungsfrist\n` +
+            `der Server-Protokolle. Das Projekt läuft auf dem Tarif „${tarif}", und\n` +
+            `dort hält Vercel sie ${FRISTEN.get(tarif) ?? "eine andere Zeit"} vor.\n\n` +
+            `Eine Frist im Rechtstext, die nicht stimmt, ist schlechter als keine.`,
+        );
+        /* Nur den Rückgabewert setzen und auslaufen lassen: Ein `process.exit`
+           direkt nach einem `fetch` bricht Node mitten in einer offenen
+           Verbindung ab und schreibt eine Assertion hinter den Befund. Wer den
+           Lauf liest, sieht dann einen Absturz statt einer Meldung. */
+        process.exitCode = 1;
+      } else {
+        console.log(
+          `  ok  Tarif „${tarif}": Protokolle ${genannteFrist}, wie im Text.`,
+        );
+      }
+    }
+  }
+}
+
+/* Die Schlusszeile nur, wenn nichts gefunden wurde.
+
+   Die beiden Prüfungen über fremde Quellen setzen den Rückgabewert, statt
+   sofort abzubrechen: Ein `process.exit` unmittelbar nach einem `fetch` reißt
+   Node aus einer offenen Verbindung und schreibt eine Assertion hinter den
+   Befund. Ohne diese Abfrage stand danach aber „Die Datenschutzerklärung passt
+   zu ihrem Stand" unter einer Fehlermeldung — Erfolg gemeldet, obwohl etwas
+   nicht stimmt, und genau das ist der Fehler, den dieser Lauf sonst sucht. */
+if (!process.exitCode) {
+  console.log(
+    `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
+      `Stand ${STAND}. Alle Seiten vorab erzeugt, kein Endpunkt nimmt Eingaben entgegen.`,
+  );
+}
 
 /** Alle Dateien unter einem Ordner, rekursiv. */
 function dateienUnter(ordner) {
