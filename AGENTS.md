@@ -257,6 +257,7 @@ npm run check:separators # kein Trennzeichen am Zeilenende
 npm run check:nbsp     # keine Rechtsangabe bricht vor ihrer Ziffer um
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
 npm run check:vitals   # LCP und CLS auf einem gedrosselten Telefon
+npm run check:bundle   # JavaScript je Seite gegen Budgets
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 ```
