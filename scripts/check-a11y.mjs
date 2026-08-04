@@ -75,6 +75,113 @@ const browser = await chromium.launch();
 let verstoesse = 0;
 let geprueft = 0;
 
+/* ---------------------------------------------------------------------------
+   Nichts, was dasteht, darf unsichtbar sein.
+
+   axe prüft Kontrast, aber es gibt genau dort auf, wo dieses Layout arbeitet:
+   Bei halbdurchsichtigen Flächen wie `bg-surface/50` kann es den Untergrund
+   nicht bestimmen und meldet „unvollständig" statt „Verstoß". Der Lauf blieb
+   dadurch grün, während in der Gebetszeiten-Kachel eine Zahl in der Farbe des
+   Hintergrunds stand: `text-base` ist in diesem Farbsystem nicht nur eine
+   Schriftgröße, sondern auch die Farbe `--color-base`, und in der Reihenfolge
+   der Stilvorlage gewinnt sie gegen `text-acid`. Gemessen 1,04:1.
+
+   Eine absichtlich stumpfe Grenze: Was unter 2:1 liegt, ist nicht schwer
+   lesbar, sondern nicht vorhanden. Alles darüber bleibt axes Sache — diese
+   Prüfung soll nicht zweimal dasselbe entscheiden.
+   ------------------------------------------------------------------------ */
+const UNSICHTBAR_AB = 2;
+const unsichtbar = [];
+
+/**
+ * Misst eine Seite, die bereits geladen, durchgescrollt und ausanimiert ist.
+ *
+ * Läuft in der Hauptschleife mit, statt die zwanzig Seiten ein zweites Mal zu
+ * laden. Der eigene Durchgang wiederholte Aufruf, Scrollen und Warten, was
+ * oben ohnehin geschieht, und kostete davon rund siebzig der 213 Sekunden
+ * Laufzeit.
+ */
+async function unsichtbarPruefen(seite, pfad) {
+  const funde = await seite.evaluate((grenze) => {
+    // Farben über einen Canvas auflösen: Der kennt jeden Farbraum, den auch
+    // die Stilvorlage benutzen darf, und liefert immer RGBA.
+    const flaeche = document.createElement("canvas");
+    flaeche.width = flaeche.height = 1;
+    const stift = flaeche.getContext("2d", { willReadFrequently: true });
+    const zuRgba = (farbe) => {
+      stift.clearRect(0, 0, 1, 1);
+      stift.fillStyle = farbe;
+      stift.fillRect(0, 0, 1, 1);
+      const d = stift.getImageData(0, 0, 1, 1).data;
+      return [d[0], d[1], d[2], d[3] / 255];
+    };
+    const ueber = (vorne, hinten) =>
+      [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3]));
+    const helligkeit = ([r, g, b]) => {
+      const f = (x) => {
+        x /= 255;
+        return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+      };
+      return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+    };
+    const untergrund = (el) => {
+      const stapel = [];
+      for (let n = el; n; n = n.parentElement) {
+        stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
+      }
+      let unten = [8, 8, 10];
+      for (let i = stapel.length - 1; i >= 0; i--) unten = ueber(stapel[i], unten);
+      return unten;
+    };
+
+    const raus = [];
+    for (const el of document.querySelectorAll("body *")) {
+      const eigen = [...el.childNodes]
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.textContent.trim())
+        .join(" ")
+        .trim();
+      if (!eigen) continue;
+
+      const stil = getComputedStyle(el);
+      if (stil.display === "none" || stil.visibility === "hidden") continue;
+      if (el.getBoundingClientRect().width === 0) continue;
+      // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das greift
+      // die Regel „nichts unsichtbar ohne JavaScript" weiter unten.
+      let deckung = 1;
+      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        deckung *= parseFloat(getComputedStyle(n).opacity);
+      }
+      if (deckung < 0.95) continue;
+      if (el.closest("[aria-hidden='true'], .sr-only")) continue;
+
+      const vorne = zuRgba(stil.color);
+      if (vorne[3] < 0.95) continue;
+      const hinten = untergrund(el);
+      const a = helligkeit(ueber(vorne, hinten));
+      const b = helligkeit(hinten);
+      const verhaeltnis = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+      if (verhaeltnis < grenze) {
+        raus.push({
+          text: eigen.slice(0, 40),
+          farbe: stil.color,
+          grund: `rgb(${hinten.map(Math.round).join(", ")})`,
+          wert: Math.round(verhaeltnis * 100) / 100,
+          klasse: String(el.className).slice(0, 60),
+        });
+      }
+    }
+    return raus;
+  }, UNSICHTBAR_AB);
+
+  for (const f of funde) {
+    unsichtbar.push(
+      `${pfad}: „${f.text}" steht in ${f.farbe} auf ${f.grund} — ` +
+        `${f.wert}:1 (class="${f.klasse}")`,
+    );
+  }
+}
+
 for (const breite of BREITEN) {
   const seite = await browser.newPage({
     viewport: { width: breite, height: 900 },
@@ -153,6 +260,11 @@ for (const breite of BREITEN) {
       }
     });
     await seite.waitForTimeout(500);
+
+    /* Der Kontrastblock läuft hier mit, an derselben fertigen Seite. Nur auf
+       einer Breite: Farbe und Untergrund hängen nicht am Layout, und ein
+       zweiter Durchgang fände dieselben Stellen noch einmal. */
+    if (breite === BREITEN[0]) await unsichtbarPruefen(seite, pfad);
 
     const ergebnis = await seite.evaluate(
       (regelwerke) =>
@@ -595,137 +707,6 @@ if (diagrammfunde.length > 0) {
       `${SCHRIFTGRENZE} px auf 390 px:\n`,
   );
   for (const f of diagrammfunde) console.error(`  ${f}`);
-}
-
-/* ---------------------------------------------------------------------------
-   Nichts, was dasteht, darf unsichtbar sein.
-
-   axe prüft Kontrast, aber es gibt genau dort auf, wo dieses Layout arbeitet:
-   Bei halbdurchsichtigen Flächen wie `bg-surface/50` kann es den Untergrund
-   nicht bestimmen und meldet „unvollständig" statt „Verstoß". Der Lauf blieb
-   dadurch grün, während in der Gebetszeiten-Kachel eine Zahl in der Farbe des
-   Hintergrunds stand: `text-base` ist in diesem Farbsystem nicht nur eine
-   Schriftgröße, sondern auch die Farbe `--color-base`, und in der Reihenfolge
-   der Stilvorlage gewinnt sie gegen `text-acid`. Gemessen 1,04:1.
-
-   Deshalb hier eine eigene, absichtlich stumpfe Grenze: Was unter 2:1 liegt,
-   ist nicht schwer lesbar, sondern nicht vorhanden. Alles darüber bleibt axes
-   Sache — diese Prüfung soll nicht zweimal dasselbe entscheiden.
-   ------------------------------------------------------------------------ */
-const UNSICHTBAR_AB = 2;
-const unsichtbar = [];
-{
-  const kontext = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-  });
-  const seite = await kontext.newPage();
-
-  for (const pfad of pfade) {
-    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
-    await seite.evaluate(async () => {
-      const hoehe = document.documentElement.scrollHeight;
-      for (let y = 0; y < hoehe; y += 600) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 40));
-      }
-      window.scrollTo(0, 0);
-    });
-    if (await seite.locator("[data-demo-fertig], .lit input[type=range]").count()) {
-      await seite.waitForSelector("[data-demo-fertig]", { timeout: 15_000 });
-    }
-    await seite.evaluate(() => {
-      for (const b of document.getAnimations()) {
-        try {
-          b.finish();
-        } catch {
-          /* Endlosschleifen haben kein Ende. */
-        }
-      }
-    });
-    await seite.waitForTimeout(300);
-
-    const funde = await seite.evaluate((grenze) => {
-      // Farben über einen Canvas auflösen: Der kennt jeden Farbraum, den auch
-      // die Stilvorlage benutzen darf, und liefert immer RGBA.
-      const flaeche = document.createElement("canvas");
-      flaeche.width = flaeche.height = 1;
-      const stift = flaeche.getContext("2d", { willReadFrequently: true });
-      const zuRgba = (farbe) => {
-        stift.clearRect(0, 0, 1, 1);
-        stift.fillStyle = farbe;
-        stift.fillRect(0, 0, 1, 1);
-        const d = stift.getImageData(0, 0, 1, 1).data;
-        return [d[0], d[1], d[2], d[3] / 255];
-      };
-      const ueber = (vorne, hinten) =>
-        [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3]));
-      const helligkeit = ([r, g, b]) => {
-        const f = (x) => {
-          x /= 255;
-          return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
-        };
-        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
-      };
-      const untergrund = (el) => {
-        const stapel = [];
-        for (let n = el; n; n = n.parentElement) {
-          stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
-        }
-        let unten = [8, 8, 10];
-        for (let i = stapel.length - 1; i >= 0; i--) unten = ueber(stapel[i], unten);
-        return unten;
-      };
-
-      const raus = [];
-      for (const el of document.querySelectorAll("body *")) {
-        const eigen = [...el.childNodes]
-          .filter((n) => n.nodeType === 3)
-          .map((n) => n.textContent.trim())
-          .join(" ")
-          .trim();
-        if (!eigen) continue;
-
-        const stil = getComputedStyle(el);
-        if (stil.display === "none" || stil.visibility === "hidden") continue;
-        if (el.getBoundingClientRect().width === 0) continue;
-        // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das
-        // greift die Regel „nichts unsichtbar ohne JavaScript" weiter oben.
-        let deckung = 1;
-        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
-          deckung *= parseFloat(getComputedStyle(n).opacity);
-        }
-        if (deckung < 0.95) continue;
-        if (el.closest("[aria-hidden='true'], .sr-only")) continue;
-
-        const vorne = zuRgba(stil.color);
-        if (vorne[3] < 0.95) continue;
-        const hinten = untergrund(el);
-        const a = helligkeit(ueber(vorne, hinten));
-        const b = helligkeit(hinten);
-        const verhaeltnis =
-          (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
-        if (verhaeltnis < grenze) {
-          raus.push({
-            text: eigen.slice(0, 40),
-            farbe: stil.color,
-            grund: `rgb(${hinten.map(Math.round).join(", ")})`,
-            wert: Math.round(verhaeltnis * 100) / 100,
-            klasse: String(el.className).slice(0, 60),
-          });
-        }
-      }
-      return raus;
-    }, UNSICHTBAR_AB);
-
-    for (const f of funde) {
-      unsichtbar.push(
-        `${pfad}: „${f.text}" steht in ${f.farbe} auf ${f.grund} — ` +
-          `${f.wert}:1 (class="${f.klasse}")`,
-      );
-    }
-  }
-
-  await kontext.close();
 }
 
 if (unsichtbar.length > 0) {
