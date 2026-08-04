@@ -265,7 +265,8 @@ Dazu, außerhalb der CI, weil er die Nachbar-Repos braucht:
 ```bash
 node scripts/check-figures.mjs  # jede Zahl der Seite gegen die Repos, aus
                                 # denen sie stammt — dazu Lebenslauf,
-                                # Bewerbungsunterlagen und Lernplattform
+                                # Bewerbungsunterlagen, Lernplattform und
+                                # jede Adresse, die nach außen zeigt
 ```
 
 `check:print` gehört dazu, weil der Ausdruck ein eigener Auslieferungsweg ist,
