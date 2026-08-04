@@ -15,7 +15,7 @@ import type { Content } from "./types";
  * Faktenblatt gegen die neue Zeile auf dem Blatt. Zwei Sätze für dieselbe
  * Sache sind die nächste Stelle, an der einer veraltet.
  */
-const ENTRY = "Open to talk now · start after my notice period";
+const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
 
 /**
