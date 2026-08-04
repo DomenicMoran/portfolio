@@ -82,7 +82,7 @@ export const site = {
     // ausschließlich im Faktenblatt der Startseite, das nicht mitgedruckt
     // wird und niemanden erreicht, der nur das Blatt bekommt.
     detail: "Berlin · remote in der EU · hybrid",
-    entry: "Gespräche jederzeit · Eintritt nach Kündigungsfrist",
+    entry: "Gespräche jederzeit · Eintritt nach bis zu drei Monaten",
     languages: "Deutsch (Muttersprache) · Englisch",
   },
 

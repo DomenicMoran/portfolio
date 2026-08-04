@@ -103,10 +103,24 @@ const MONATSANFANG = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 /** Die Anfangsbuchstaben der Monate, deutsch wie englisch gleich bis auf zwei. */
 const MONATE = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 
-const uhrzeit = (m: number | null, fehlt: string) =>
-  m === null
-    ? fehlt
-    : `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+/**
+ * Minuten seit Tagesbeginn als Uhrzeit.
+ *
+ * Die Werte können außerhalb eines Tages liegen: Mit der Regel „Mitte der
+ * Nacht“ fällt Ischa in Berlin auf 00:02 des Folgetags (1.442) und Fadschr in
+ * Tromsø auf 23:53 des Vortags (−7). Die Uhrzeit ist trotzdem die richtige,
+ * sie gehört nur zu einem anderen Kalendertag — deshalb wird auf 24 Stunden
+ * zurückgerechnet und der Tagesversatz als Zusatz genannt, statt ihn
+ * wegzulassen.
+ */
+const uhrzeit = (m: number | null, fehlt: string) => {
+  if (m === null) return fehlt;
+  const tage = Math.floor(m / 1440);
+  const rest = ((m % 1440) + 1440) % 1440;
+  const zeit = `${String(Math.floor(rest / 60)).padStart(2, "0")}:${String(rest % 60).padStart(2, "0")}`;
+  if (tage === 0) return zeit;
+  return `${zeit} ${tage > 0 ? "+" : "−"}${Math.abs(tage)}`;
+};
 
 /** "2 h 34 min" statt "154 min": Als Spanne ist das sofort greifbar. */
 function spanne(m: number) {
@@ -183,11 +197,29 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
               new Date(jahrZahl, 0, 1 + i),
               p,
             );
+            /* Minuten seit Mitternacht DIESES Tages, nicht seit Mitternacht.
+
+               `adhan` liefert echte Zeitpunkte, und die fallen an hohen
+               Breiten auf den Nachbartag: Mit der Regel „Mitte der Nacht“
+               steht Ischa in Berlin ab Mai um 00:02 — am Tag danach. Fadschr
+               fällt in Tromsø umgekehrt auf 23:53 des Vortags.
+
+               `getHours()` wirft das Datum weg. Ein Ischa um 00:02 landete
+               damit als Zwei-Minuten-Wert am unteren Bildrand statt oben, und
+               die Linie sprang durch das ganze Band. Gemessen an 365 Tagen:
+               74 solcher Sprünge in Berlin, 99 in Tromsø.
+
+               Die Differenz zum Tagesbeginn hält die Reihenfolge: Ischa
+               bekommt 1.442 Minuten, Fadschr −7. Beides liegt außerhalb des
+               gezeigten Tages und wird am Rand beschnitten — genau das ist die
+               Aussage. Die Uhrzeiten in der Tafel darunter kommen weiterhin
+               aus `getHours()` und stimmen. */
+            const tagesBeginn = new Date(jahrZahl, 0, 1 + i).getTime();
             tage.push(
               GEBETE.map((g) => {
                 const d = zeiten[g];
                 return d instanceof Date && !Number.isNaN(d.getTime())
-                  ? d.getHours() * 60 + d.getMinutes()
+                  ? Math.round((d.getTime() - tagesBeginn) / 60000)
                   : null;
               }),
             );
@@ -221,7 +253,15 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   const pfade = useMemo(() => {
     if (!tage) return null;
 
-    const y = (m: number) => HOEHE - (m / MINUTEN) * HOEHE;
+    /* Die Flächen werden auf den gezeigten Tag geklemmt.
+
+       Seit die Minuten den Tagesversatz mitführen, liegt Ischa an hohen
+       Breiten über 1.440 und Fadschr unter 0. Eine Fläche, die dorthin
+       läuft, wäre oben und unten offen; geklemmt endet sie am Rand, und
+       genau dort geht sie ja auch in den Nachbartag über. Die Linien darunter
+       bleiben ungeklemmt — sie sollen das Bild verlassen. */
+    const y = (m: number) =>
+      HOEHE - (Math.min(Math.max(m, 0), MINUTEN) / MINUTEN) * HOEHE;
     const spalte = (g: string) => GEBETE.indexOf(g as Gebet);
 
     /** Aus oberer und unterer Kante ein geschlossenes Stück machen. */
