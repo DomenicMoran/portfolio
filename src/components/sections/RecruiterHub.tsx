@@ -209,7 +209,13 @@ export function RecruiterHub() {
                     Alternative für alle, die lieber lesen als herunterladen. */}
                 <Link
                   href={recruiter.cta.web.href}
-                  className="self-center text-sm text-ink-faint underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-ink-faint"
+                  /* Die Fassung ohne Herunterladen, und sie war die blasseste
+                     Angabe im ganzen Kasten: `ink-faint` neben zwei kräftigen
+                     Knöpfen, 143 × 20 px. Wer auf einem Firmenrechner oder am
+                     Telefon liest, will genau diese und nicht das PDF. Jetzt
+                     `ink-dim` und über den Innenabstand 32 px hoch; die
+                     negativen Außenabstände halten die optische Position. */
+                  className="-my-1.5 self-center py-1.5 text-sm text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
                 >
                   {recruiter.cta.web.label}
                 </Link>
