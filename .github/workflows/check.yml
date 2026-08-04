@@ -191,6 +191,12 @@ jobs:
       - name: Kernwerte auf dem Telefon
         run: npm run check:vitals
 
+      # Das Budget schlägt früher an als die Kernwerte: Es meldet den Zuwachs,
+      # nicht erst die Folge. Braucht nur den Bau, kein Netz, keinen Browser —
+      # und stand nach dem Anlegen trotzdem in keinem Workflow.
+      - name: Bündelbudget je Seite
+        run: npm run check:bundle
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
