@@ -42,7 +42,7 @@ export function DeviceFrame({
         )}
       >
         <div className="relative overflow-hidden rounded-[1.5rem] bg-void">
-          {/* Notch */}
+          {/* Die Aussparung am oberen Rand */}
           <span
             aria-hidden
             className="absolute top-1.5 left-1/2 z-10 h-4 w-16 -translate-x-1/2 rounded-full bg-void"
@@ -93,7 +93,7 @@ export function DeviceFrame({
         className,
       )}
     >
-      {/* Chrome */}
+      {/* Der Fensterrahmen */}
       <div className="flex items-center gap-2 border-b border-line px-3 py-2.5">
         <span aria-hidden className="flex gap-1.5">
           <span className="size-2.5 rounded-full bg-line" />

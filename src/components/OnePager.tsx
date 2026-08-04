@@ -151,7 +151,7 @@ export function OnePager({
 
       <main>
         <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
-          {/* Header */}
+          {/* Kopf */}
           <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
             <div className="flex items-center gap-5">
               {/* Das Porträt kostet keine Zeile.
@@ -240,14 +240,14 @@ export function OnePager({
             </div>
           </header>
 
-          {/* Positioning */}
+          {/* Wofür ich stehe */}
           <section className="mt-7 print:mt-4">
             <p className="text-[14px] leading-snug text-[#25252e]">
               {positionierung}
             </p>
           </section>
 
-          {/* Projects */}
+          {/* Die Projekte */}
           <section className="mt-8 print:mt-4">
             <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
               {onepager.projects}
