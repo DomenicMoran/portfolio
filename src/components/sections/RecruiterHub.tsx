@@ -189,6 +189,16 @@ export function RecruiterHub() {
                     {recruiter.cta.mail.label}
                   </a>
                 </Magnetic>
+
+                {/* Kein dritter Knopf, sondern ein Verweis: Der Weg zur
+                    Kurzfassung ist der PDF-Knopf daneben, dies ist nur seine
+                    Alternative für alle, die lieber lesen als herunterladen. */}
+                <Link
+                  href={recruiter.cta.web.href}
+                  className="self-center text-sm text-ink-faint underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-ink-faint"
+                >
+                  {recruiter.cta.web.label}
+                </Link>
               </div>
 
               {/* Die Trennlinie wandert mit der Anordnung: waagerecht, solange

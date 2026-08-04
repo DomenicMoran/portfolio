@@ -1138,6 +1138,12 @@ export const recruiter = {
   ],
   cta: {
     pdf: { label: "Kurzprofil als PDF", href: "/domenic-moran-kurzprofil.pdf" },
+    /* Dieselbe Kurzfassung als Seite. Es gab sie längst, sie war nur von
+       nirgends verlinkt: gezählt an der ausgelieferten Seite kein einziger
+       Verweis auf `/onepager`, auf keiner der zwanzig Seiten. Auf einem
+       Telefon ist ein PDF der schlechtere Weg — es öffnet in einem Betrachter,
+       lässt sich nicht durchsuchen und bricht die Zeilen für DIN A4. */
+    web: { label: "oder im Browser lesen", href: "/onepager" },
     mail: { label: "Direkt schreiben" },
     copy: {
       label: "Adresse kopieren",

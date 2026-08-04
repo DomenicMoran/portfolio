@@ -127,6 +127,7 @@ export type Content = {
     empty: string;
     jump: string;
     pdf: { label: string; hint: string };
+    onepagerWeb: { label: string; hint: string };
     mail: string;
     github: string;
     linkedin: string;
@@ -292,6 +293,8 @@ export type Content = {
     }[];
     cta: {
       pdf: { label: string; href: string };
+      /** Dieselbe Kurzfassung als Seite, für alle, die lieber lesen als laden. */
+      web: { label: string; href: string };
       mail: { label: string };
       /** Der Knopf, der die Adresse in die Zwischenablage legt. */
       copy: { label: string; done: string; failed: string };
