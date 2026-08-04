@@ -110,6 +110,22 @@ if (!angezeigt.includes(STAND)) {
   process.exit(1);
 }
 
+/* Die Ausnahme muss im Text stehen, solange es sie gibt.
+
+   Der Lauf lässt `/_not-found` als einzige dynamische Route durchgehen. Damit
+   das keine stille Absprache zwischen zwei Dateien bleibt, muss die Erklärung
+   die Ausnahme selbst benennen: Wer den Absatz umformuliert und den Satz dabei
+   verliert, behauptet wieder etwas, das der Bau nicht hält. */
+if (!/Ausnahme ist die Fehlerseite/.test(text)) {
+  console.error(
+    `Die Datenschutzerklärung benennt die Fehlerseite nicht mehr als Ausnahme ` +
+      `von „vorab erzeugt". Sie ist die einzige Seite, die bei der Anfrage ` +
+      `zusammengesetzt wird — entweder steht das im Text, oder die Ausnahme ` +
+      `gehört aus diesem Lauf heraus.`,
+  );
+  process.exit(1);
+}
+
 const gerechnet = createHash("sha256").update(text).digest("hex").slice(0, 16);
 
 if (gerechnet !== TEXT_PRUEFSUMME) {
@@ -140,7 +156,11 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
    was der Bau daraus macht.
 
    Die interne Not-found-Route bleibt draußen: Next erzeugt sie immer als
-   dynamisch, und sie beantwortet nur Adressen, die es nicht gibt. */
+   dynamisch, weil sie eine Kopfzeile liest, um in der Sprache zu antworten,
+   unter der jemand gekommen ist. Diese Ausnahme stand hier still im Code,
+   während die Erklärung „sämtliche Seiten" behauptete — eine Zeile, die man
+   einmal einträgt und dann vergisst. Sie steht jetzt auch im Text der
+   Erklärung, und der Block darunter hält sie dort fest. */
 const AUSNAHMEN = new Set(["/_not-found"]);
 const SCHREIBENDE =
   /export\s+(?:async\s+)?function\s+(POST|PUT|PATCH|DELETE)\b/;
@@ -432,7 +452,8 @@ const FRISTEN = new Map([
 if (!process.exitCode) {
   console.log(
     `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
-      `Stand ${STAND}. Alle Seiten vorab erzeugt, kein Endpunkt nimmt Eingaben entgegen.`,
+      `Stand ${STAND}. Alle Seiten mit Inhalt vorab erzeugt, die Fehlerseite als ` +
+      `benannte Ausnahme, kein Endpunkt nimmt Eingaben entgegen.`,
   );
 }
 
