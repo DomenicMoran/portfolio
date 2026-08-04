@@ -8,16 +8,28 @@ const geistSans = Geist({
 });
 
 /**
- * Nicht vorgeladen: Geist Mono trägt nur Labels und Eyebrows, kein Element,
- * das für den Largest Contentful Paint zählt. Gemessen konkurrierten drei
- * gleichzeitig vorgeladene Schriften (68 KiB) im kritischen Pfad, diese hier
- * lädt jetzt nach und gibt die Bandbreite an die Headline-Schriften ab.
+ * Vorgeladen, obwohl sie nur Labels und Eyebrows trägt.
+ *
+ * Zuerst stand hier `preload: false`, mit einer guten Begründung: Drei
+ * gleichzeitig vorgeladene Schriften (68 KiB) konkurrieren im kritischen Pfad,
+ * und diese setzt kein Element, das für den Largest Contentful Paint zählt.
+ *
+ * Der Preis stand in der anderen Kennzahl. Weil sie erst nach dem Stylesheet
+ * entdeckt wird, kam sie auf einer schmalen Leitung spät: gemessen an der
+ * ausgelieferten Artikelseite bei 0,8 Mbit/s und sechsfach gedrosseltem
+ * Prozessor um 3.576 ms, und 75 ms später verschob sich alles, was sie setzt —
+ * Lesezeit, Themen-Chips, der Verweis auf das System. CLS 0,0587, dreimal
+ * gleich reproduziert; auf dem CI-Runner 0,0582, auf einem ruhigen Rechner
+ * null. Genau die Art Wert, die nur eine Messung findet.
+ *
+ * 23 KiB früher im Pfad gegen eine Verschiebung, die ein Sechstel des Budgets
+ * kostet: Der LCP hat die Luft dafür, und `check:vitals` misst beides bei
+ * jedem Push.
  */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
-  preload: false,
 });
 
 /** Nur für Akzentwörter. Ein Schnitt, ein Stil, mehr braucht es nicht. */
