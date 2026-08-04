@@ -35,8 +35,21 @@ import { starteServer } from "./lib/local-server.mjs";
 /** Die Schwellen, ab denen ein Wert nicht mehr „gut" heißt. */
 const BUDGET = { lcp: 2500, cls: 0.1 };
 
-/** Was gemessen wird. Mehr Seiten kosten je einen Durchgang von acht Sekunden. */
-const SEITEN = ["/", "/en", "/artikel", "/onepager"];
+/**
+ * Was gemessen wird. Mehr Seiten kosten je einen Durchgang von acht Sekunden.
+ *
+ * Die Artikelseite steht dabei, obwohl sie nicht die Startseite ist: Sie ist
+ * die Seite, die geteilt wird, und damit für viele Leser die erste. Sie trägt
+ * als einzige lange Fließtexte, Codeblöcke und eine Tabelle — also genau die
+ * Bauteile, an denen sich Ladeverhalten zuerst verschlechtert.
+ */
+const SEITEN = [
+  "/",
+  "/en",
+  "/artikel",
+  "/artikel/kassensichv-in-der-praxis",
+  "/onepager",
+];
 
 const LAEUFE = 3;
 /** So lange wartet jeder Lauf auf Nachzügler, bevor er die Werte abholt. */
@@ -122,7 +135,7 @@ for (const pfad of SEITEN) {
 
   const marke = lcp > BUDGET.lcp || cls > BUDGET.cls ? "  <-- über Budget" : "";
   zeilen.push(
-    `${pfad.padEnd(12)} LCP ${String(lcp).padStart(5)} ms   CLS ${cls.toFixed(4)}${marke}`,
+    `${pfad.padEnd(36)} LCP ${String(lcp).padStart(5)} ms   CLS ${cls.toFixed(4)}${marke}`,
   );
 
   if (lcp > BUDGET.lcp) {
