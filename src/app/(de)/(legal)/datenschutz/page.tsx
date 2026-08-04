@@ -3,6 +3,7 @@ import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
+import { STAND } from "../stand";
 
 export const metadata: Metadata = {
   title: "Datenschutz",
@@ -41,23 +42,16 @@ export const metadata: Metadata = {
  * jeden Morgen selbst neu datiert, sagt nichts darüber aus, was sich geändert
  * hat.
  */
-/**
- * Das Datum der letzten inhaltlichen Änderung dieser Erklärung, von Hand
- * gepflegt.
- *
- * Hier stand `new Date()`. Damit trug die Erklärung das Datum des letzten
- * Bauvorgangs — und der läuft täglich, weil ein Automat die Commit-Zahlen
- * auffrischt. Die Seite datierte sich also jeden Morgen neu, ohne dass sich ein
- * Wort geändert hatte. Der Kommentar über dieser Datei hat das immer schon
- * ausgeschlossen; der Code tat das Gegenteil.
- *
- * Belegt: Der sichtbare Text wurde zuletzt am 01.08.2026 geändert, als die
- * Anschrift des Verantwortlichen dazukam (`git log -S "Heidelberger"`).
- *
- * Wer den Text ändert, ändert diese Zeile mit. Eine Erklärung, die sich selbst
- * neu datiert, sagt nichts darüber aus, was sich geändert hat.
- */
-const STAND = "3. August 2026";
+/* Das Datum steht in `stand.ts`, hier stand es ein zweites Mal.
+
+   Beide Stellen hießen STAND, und die lokale gewann: `check:legal` prüfte
+   den Wert aus `stand.ts` gegen den ausgelieferten Text, die Seite zeigte
+   den anderen. Gemessen an der ausgelieferten Seite standen dort der
+   3. August und in der Datei der 4. — der Lauf war grün, weil er die Zeile
+   gar nicht ansah, die ein Leser vor sich hat.
+
+   Eine Quelle: Wer den Text ändert, ändert Datum und Prüfsumme in
+   `stand.ts`, und der Lauf hält beides gegen das Blatt. */
 
 export default function Datenschutz() {
   return (
