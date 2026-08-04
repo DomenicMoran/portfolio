@@ -142,6 +142,16 @@
       "permanent": true
     },
     {
+      "source": "/recruiter",
+      "destination": "/#hire",
+      "permanent": true
+    },
+    {
+      "source": "/en/recruiter",
+      "destination": "/en#hire",
+      "permanent": true
+    },
+    {
       "source": "/kontakt",
       "destination": "/#contact",
       "permanent": true
