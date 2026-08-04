@@ -67,6 +67,23 @@ const zeilen = [];
 for (const pfad of SEITEN) {
   const messungen = [];
 
+  /* Ein Aufruf zum Aufwärmen, der nicht gewertet wird.
+     Der erste Abruf einer Adresse ist regelmäßig der langsamste: örtlich, weil
+     der Server die Seite zum ersten Mal ausliefert, und an der Live-Adresse,
+     weil der Zwischenspeicher am Rand des Netzes nach einer Auslieferung leer
+     ist. Gemessen unmittelbar nach einem Deploy lag das Kurzprofil bei
+     2.652 ms und fünf Läufe später im Median bei 1.564 — derselbe Stand,
+     dieselbe Leitung. Ein Median aus drei Werten fängt das nicht ab, wenn zwei
+     davon kalt sind. */
+  {
+    const kontext = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+    });
+    const seite = await kontext.newPage();
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "load" });
+    await kontext.close();
+  }
+
   for (let lauf = 0; lauf < LAEUFE; lauf++) {
     /* Jeder Lauf mit eigenem Kontext: Ein zweiter Aufruf im selben Profil
        findet Schriften und Bündel im Zwischenspeicher und misst dann die
@@ -165,6 +182,6 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `\nAlle Kernwerte im Budget: ${SEITEN.length} Seiten × ${LAEUFE} kalte Läufe ` +
+  `\nAlle Kernwerte im Budget: ${SEITEN.length} Seiten × ${LAEUFE} Läufe nach dem Aufwärmen ` +
     `auf einem gedrosselten Telefon, LCP unter ${BUDGET.lcp} ms, CLS unter ${BUDGET.cls}.`,
 );
