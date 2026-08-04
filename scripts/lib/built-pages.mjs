@@ -37,3 +37,34 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
   suchen(bauOrdner);
   return pfade.sort();
 }
+
+/**
+ * Die Adressen der veröffentlichten Seiten, aus der Sitemap der Live-Adresse.
+ *
+ * Für Läufe gegen Produktion gibt es keinen Bau, aus dem sich die Liste lesen
+ * ließe: Der tägliche Lauf checkt aus und misst, ohne zu bauen. Gemessen an
+ * `.next/server/app` scheitert er mit ENOENT — und ein Wächter, der wegen
+ * seiner Seitenliste stirbt, prüft gar nichts.
+ *
+ * Die Sitemap ist für diesen Fall auch die richtige Quelle: Sie nennt genau
+ * das, was veröffentlicht ist. Der Bau kennt daneben Seiten, die bewusst nicht
+ * indexiert werden.
+ */
+export async function veroeffentlichteSeiten(basis) {
+  const antwort = await fetch(`${basis}/sitemap.xml`);
+  if (!antwort.ok) {
+    throw new Error(
+      `${basis}/sitemap.xml antwortet mit ${antwort.status}. Ohne sie gibt es ` +
+        `keine Liste der veröffentlichten Seiten.`,
+    );
+  }
+  const xml = await antwort.text();
+  const pfade = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
+    .map((treffer) => treffer[1].replace(basis, "") || "/")
+    .filter((pfad) => pfad.startsWith("/"));
+
+  if (pfade.length === 0) {
+    throw new Error(`${basis}/sitemap.xml nennt keine Adresse.`);
+  }
+  return [...new Set(pfade)].sort();
+}
