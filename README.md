@@ -139,8 +139,11 @@ npm run build:portrait  # alle drei Porträt-Fassungen aus einem Original
 ```
 
 `scripts/check-figures.mjs` prüft zusätzlich jede Zahl auf der Seite gegen die
-Repositories, aus denen sie stammt. Der Lauf braucht die Nachbar-Repos und
-läuft deshalb nicht in der CI, sondern beim Zahlen-Automaten.
+Repositories, aus denen sie stammt, und ruft jede Adresse ab, die nach außen
+zeigt: Store-Seiten, Live-Systeme, Zertifikatsnachweise. Der Lauf braucht die
+Nachbar-Repos und das Netz und läuft deshalb nicht in der CI, sondern beim
+Zahlen-Automaten — eine Prüfung, die rot wird, weil ein Store gerade langsam
+ist, würde abgeschaltet statt gelesen.
 
 Voraussetzung: Node.js ≥ 20.9.
 
