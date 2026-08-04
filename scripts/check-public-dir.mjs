@@ -233,9 +233,29 @@ const ERLAUBT_GROSS = new Set([
 const grosse = [];
 const gezaehlt = [];
 {
-  const bekannt = execSync("git ls-files", { encoding: "utf8" })
-    .split("\n")
-    .filter(Boolean);
+  /* Ohne Git kein Verzeichnis der Dateien.
+
+     Dieser Lauf ist `prebuild`, läuft also auch bei Vercel — und dort liegt
+     kein Repository, der Code kommt als Archiv an. `git ls-files` scheitert
+     dann, und ein Bau, der daran stirbt, wäre die Seite. Gemessen: Der erste
+     Deploy nach dieser Prüfung endete mit "Command failed: git ls-files".
+
+     Übersprungen und gesagt, nicht stillschweigend bestanden. Der Ort, an dem
+     die Prüfung zählt, ist ohnehin der Rechner und die CI: Dort entsteht der
+     Commit, den sie verhindern soll. */
+  let bekannt = [];
+  try {
+    bekannt = execSync("git ls-files", {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+      .split("\n")
+      .filter(Boolean);
+  } catch {
+    console.log(
+      "  --  Dateigrößen: kein Git-Verzeichnis, übersprungen (Bau ohne Repository)",
+    );
+  }
   for (const datei of bekannt) {
     let groesse;
     try {
@@ -274,5 +294,7 @@ if (befunde.length) {
 
 console.log(
   `${OEFFENTLICH}/ ist sauber: keine private Datei, kein verbotener Inhalt. ` +
-    `${gezaehlt.length} verzeichnete Dateien, keine über ${Math.round(GRENZE / 1024)} KiB.`,
+    (gezaehlt.length
+      ? `${gezaehlt.length} verzeichnete Dateien, keine über ${Math.round(GRENZE / 1024)} KiB.`
+      : ""),
 );
