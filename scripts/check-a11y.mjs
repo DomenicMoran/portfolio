@@ -476,6 +476,102 @@ if (uhrfunde.length > 0) {
   for (const f of uhrfunde) console.error(`  ${f}`);
 }
 
+/* ------------------------------------------------------------------
+   Die Beschriftungen der Architekturbilder müssen lesbar bleiben.
+
+   Sie stehen in einem SVG mit `viewBox`, rechnen also in eigenen Einheiten:
+   Was dort „10" heißt, wird auf dem Bildschirm zu 10 mal dem Faktor, mit dem
+   das Bild skaliert. Der Faktor hängt an der Breite des Kastens, und der
+   ändert sich mit dem Fenster — eine Schriftgröße, die am Desktop stimmt,
+   kann auf einem Telefon unter jede Lesbarkeit fallen, ohne dass im Quelltext
+   irgendetwas anders aussieht.
+
+   Genau das war der Fall: bei 720 px Mindestbreite standen auf einem Telefon
+   16 der 29 Beschriftungen unter 9 px, die kleinste bei 7,8. Am Desktop waren
+   es 12,5 px und keine darunter. Kein Regelwerk schlägt hier an — WCAG kennt
+   keine Mindestschriftgröße —, und gesehen hätte es nur jemand, der das Bild
+   auf einem Telefon aufklappt.
+
+   Geprüft wird bei 390 px an allen vier Bildern der Startseite. Sie stehen
+   hinter einem Reiter und sind im ausgelieferten HTML nicht enthalten; der
+   Lauf klappt sie auf.
+------------------------------------------------------------------ */
+
+const SCHRIFTGRENZE = 9;
+const diagrammfunde = [];
+
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const seite = await kontext.newPage();
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+
+  const hoehe = await seite.evaluate(() => document.body.scrollHeight);
+  for (let y = 0; y < hoehe; y += 600) {
+    await seite.evaluate((y) => scrollTo(0, y), y);
+    await seite.waitForTimeout(40);
+  }
+  await seite.waitForTimeout(300);
+
+  for (const reiter of await seite.locator('[id$="-tab-architecture"]').all()) {
+    const kennung = (await reiter.getAttribute("id")) ?? "?";
+    const fall = kennung.replace("-tab-architecture", "");
+    await reiter.click();
+    await seite.waitForTimeout(350);
+
+    const messung = await seite.evaluate((fall) => {
+      const svg = document.getElementById(`${fall}-panel`)?.querySelector("svg");
+      if (!svg) return null;
+      const breite = svg.getBoundingClientRect().width;
+      const einheiten = Number(svg.getAttribute("viewBox")?.split(" ")[2] ?? 0);
+      if (!breite || !einheiten) return null;
+      const faktor = breite / einheiten;
+      const groessen = [...svg.querySelectorAll("text")].map(
+        (t) => parseFloat(getComputedStyle(t).fontSize) * faktor,
+      );
+      return {
+        kleinste: Math.min(...groessen),
+        anzahl: groessen.length,
+      };
+    }, fall);
+
+    if (!messung) continue;
+    if (messung.kleinste < SCHRIFTGRENZE) {
+      const klein = await seite.evaluate(
+        ([fall, grenze]) => {
+          const svg = document
+            .getElementById(`${fall}-panel`)
+            .querySelector("svg");
+          const faktor =
+            svg.getBoundingClientRect().width /
+            Number(svg.getAttribute("viewBox").split(" ")[2]);
+          return [...svg.querySelectorAll("text")].filter(
+            (t) => parseFloat(getComputedStyle(t).fontSize) * faktor < grenze,
+          ).length;
+        },
+        [fall, SCHRIFTGRENZE],
+      );
+      diagrammfunde.push(
+        `${fall}: kleinste Beschriftung ${messung.kleinste.toFixed(1)} px, ` +
+          `${klein} von ${messung.anzahl} unter ${SCHRIFTGRENZE} px`,
+      );
+    }
+  }
+
+  await kontext.close();
+}
+
+if (diagrammfunde.length > 0) {
+  console.error(
+    `\n${diagrammfunde.length} Architekturbild(er) mit Beschriftungen unter ` +
+      `${SCHRIFTGRENZE} px auf 390 px:\n`,
+  );
+  for (const f of diagrammfunde) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -495,7 +591,8 @@ if (
   wartefunde.length > 0 ||
   ohneSkript.length > 0 ||
   zielfunde.length > 0 ||
-  uhrfunde.length > 0
+  uhrfunde.length > 0 ||
+  diagrammfunde.length > 0
 )
   process.exit(1);
 
@@ -504,5 +601,6 @@ console.log(
     `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
     `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
     `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand, ` +
-    `nichts füllt sich bei reduzierter Bewegung von allein nach.`,
+    `nichts füllt sich bei reduzierter Bewegung von allein nach, ` +
+    `keine Diagrammbeschriftung unter ${SCHRIFTGRENZE} px auf dem Telefon.`,
 );

@@ -647,9 +647,22 @@ export function ArchitectureDiagram({
         aria-label={t(diagram.title)}
         className="scroll-hint overflow-x-auto [--deckfarbe:var(--color-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
       >
+        {/* Mindestbreite 1150 statt 720, und das ist eine Lesbarkeitsfrage.
+
+            Das Bild rechnet in einem 920 Einheiten breiten Koordinatensystem;
+            die kleinste Beschriftung misst darin 10 Einheiten. Bei 720 px
+            Mindestbreite ergibt das einen Faktor von 0,78 — gemessen an der
+            ausgelieferten Seite standen damit auf einem Telefon 16 der 29
+            Beschriftungen unter 9 px, die kleinste bei 7,8. Am Desktop, wo das
+            Bild 1152 px breit wird, sind es 12,5 px und keine darunter.
+
+            Der Kasten scrollt ohnehin waagerecht, sobald das Bild breiter ist
+            als das Fenster — bei 720 px tat er das auf einem Telefon bereits.
+            Mehr Breite kostet also Scrollweg, den es schon gab, und bringt
+            dieselbe Schrift wie am Desktop. */}
         <motion.svg
           viewBox={`0 0 920 ${diagram.height}`}
-          className="h-auto w-full min-w-[720px]"
+          className="h-auto w-full min-w-[1150px]"
           role="img"
           aria-label={`${t(diagram.title)}. ${t(diagram.caption)}`}
           initial="hidden"
