@@ -53,7 +53,10 @@ export function PrintButton({
               als „im Druckdialog „Als…" — ein abgeschnittener Satz sieht aus
               wie ein Fehler, und die fertige Datei daneben braucht keine
               Erklärung. */}
-          <span className="hidden truncate text-sm text-[#4a4a55] sm:inline">
+          <span
+            id="druck-hinweis"
+            className="hidden truncate text-sm text-[#4a4a55] sm:inline"
+          >
             {hinweis}
           </span>
           <a
@@ -80,6 +83,12 @@ export function PrintButton({
           <button
             type="button"
             onClick={() => window.print()}
+            /* Die Zuordnung stand bisher nur im Kommentar darüber: Auf dem
+               Bildschirm liegen zwischen Hinweis und Knopf die halbe Leiste
+               und der Sprachwechsler, und vorgelesen war der Satz ein loser
+               Text am Anfang der Navigation. Ist der Hinweis ausgeblendet —
+               unter 640 px —, greift die Beschreibung von selbst nicht. */
+            aria-describedby="druck-hinweis"
             className="inline-flex items-center gap-2 rounded-full border border-[#c9c9d2] px-4 py-2 text-sm font-medium text-[#101014] transition-colors hover:border-[#101014]"
           >
             <Printer className="size-4" aria-hidden />
