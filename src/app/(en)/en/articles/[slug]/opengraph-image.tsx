@@ -34,6 +34,23 @@ export function generateStaticParams() {
   return artikelEn.map((a) => ({ slug: a.slug }));
 }
 
+/** Siehe die deutsche Entsprechung: der Titel gehört in den Alternativtext. */
+export function generateImageMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const artikel = artikelNach("en", params.slug);
+  return [
+    {
+      id: "karte",
+      alt: artikel ? `${artikel.title}. Article by ${site.name}` : alt,
+      size,
+      contentType,
+    },
+  ];
+}
+
 export default async function Image({
   params,
 }: {

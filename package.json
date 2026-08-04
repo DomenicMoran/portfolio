@@ -38,7 +38,8 @@
     "check:legal": "node scripts/check-legal-date.mjs",
     "check:exports": "node scripts/check-exports.mjs",
     "check:docs": "node scripts/check-docs.mjs",
-    "build:shots": "node scripts/build-shots.mjs"
+    "build:shots": "node scripts/build-shots.mjs",
+    "check:lighthouse": "node scripts/check-lighthouse.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",
@@ -59,6 +60,7 @@
     "axe-core": "^4.12.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
+    "lighthouse": "^12.8.2",
     "marked": "^18.0.7",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.62.1",
