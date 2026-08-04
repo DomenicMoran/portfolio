@@ -268,7 +268,38 @@ async function messen() {
         }
       }
 
-      return { schwach, abgeschnitten, festgeheftet, ungeladen };
+      /*
+        Bedienelemente, die auf Papier nichts tun.
+
+        Ein Knopf im Ausdruck ist eine Zusage, die das Blatt nicht halten kann.
+        Gemessen an der gedruckten Artikelseite standen drei „Kopieren" neben
+        Codekästen, dazu auf der Startseite ein Knopf „Ablauf erneut abspielen".
+
+        Zwei Ausnahmen, beide begründet und nicht geraten:
+        - `role="tab"`: Die Reiter beschriften, was darunter steht. Ohne sie
+          stünde auf dem Papier ein Textblock ohne Aufschrift.
+        - `[data-druckbar]`: Der Kontaktknopf trägt die E-Mail-Adresse als
+          Beschriftung. Versteckt man ihn, verliert der Ausdruck die Adresse.
+
+        Alles andere gehört mit `no-print` ausgeblendet. Wer ein neues
+        Bedienelement einbaut, entscheidet hier bewusst, statt es zu vergessen.
+      */
+      const toteKnoepfe = [...document.querySelectorAll('button, [role="button"]')]
+        .filter((el) => {
+          const stil = getComputedStyle(el);
+          if (stil.display === "none" || stil.visibility === "hidden") return false;
+          if (el.getBoundingClientRect().width === 0) return false;
+          if (el.getAttribute("role") === "tab") return false;
+          return !el.closest("[data-druckbar]");
+        })
+        .map((el) => ({
+          name: (el.textContent || el.getAttribute("aria-label") || "?")
+            .trim()
+            .slice(0, 40),
+          klasse: String(el.className).slice(0, 50),
+        }));
+
+      return { schwach, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe };
     },
     { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
   );
@@ -376,7 +407,8 @@ for (const pfad of gepruefteSeiten) {
     }
   });
   await seite.waitForTimeout(50);
-  const { schwach, abgeschnitten, festgeheftet, ungeladen } = await messen();
+  const { schwach, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe } =
+    await messen();
   const textImDruck = await textEinsammeln();
   await seite.emulateMedia({ media: "screen" });
 
@@ -407,7 +439,8 @@ for (const pfad of gepruefteSeiten) {
     abgeschnitten.length === 0 &&
     festgeheftet.length === 0 &&
     fehlend.length === 0 &&
-    ungeladen.length === 0
+    ungeladen.length === 0 &&
+    toteKnoepfe.length === 0
   ) {
     console.log(`  ok ${pfad}`);
     continue;
@@ -428,6 +461,12 @@ for (const pfad of gepruefteSeiten) {
   for (const s of ungeladen) {
     console.log(
       `        Bild nicht geladen (loading="${s.laden}"), druckt als leerer Rahmen: „${s.alt}"`,
+    );
+  }
+  for (const s of toteKnoepfe) {
+    console.log(
+      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}" (class="${s.klasse}") — `
+        + `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
     );
   }
   for (const s of festgeheftet) {

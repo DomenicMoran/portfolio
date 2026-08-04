@@ -55,7 +55,10 @@ export function CopyCode({
   const meldung = stand === "kopiert" ? done : stand === "fehler" ? failed : "";
 
   return (
-    <div className="mb-2 flex items-center justify-end gap-3">
+    /* `no-print`: Auf Papier ist der Knopf ein totes Bedienelement. Gemessen
+       am gedruckten Kassen-Artikel standen drei „Kopieren" neben Kästen, die
+       niemand anklicken kann. */
+    <div className="no-print mb-2 flex items-center justify-end gap-3">
       {meldung ? (
         <span
           aria-hidden

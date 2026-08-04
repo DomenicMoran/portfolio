@@ -197,7 +197,7 @@ function AgentTerminal() {
         <button
           type="button"
           onClick={() => setRunId((n) => n + 1)}
-          className="-mr-1.5 grid size-8 place-items-center rounded-md text-ink-faint transition-colors hover:bg-raised hover:text-ink"
+          className="no-print -mr-1.5 grid size-8 place-items-center rounded-md text-ink-faint transition-colors hover:bg-raised hover:text-ink"
           aria-label={a11y.replay}
         >
           <RotateCcw className="size-3.5" aria-hidden />
