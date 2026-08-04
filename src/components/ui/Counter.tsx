@@ -2,6 +2,8 @@
 
 import { animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useContent } from "@/content/ContentProvider";
+import { schreibe, zerlege } from "@/lib/zahlwert";
 
 /**
  * Zählt beim Sichtbarwerden hoch.
@@ -19,28 +21,23 @@ export function Counter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
 
-  const match = value.match(/^([\d.,]+)(.*)$/);
-  const numericPart = match?.[1] ?? "";
-  const suffix = match?.[2] ?? "";
+  /* Die Schreibweise hängt an der Sprache der Seite.
 
-  // Deutsche Schreibweise: "." gruppiert Tausender, "," ist das Dezimaltrennzeichen.
-  const decimals = numericPart.includes(",")
-    ? numericPart.split(",")[1].length
-    : 0;
-  const target = Number(numericPart.replace(/\./g, "").replace(",", "."));
-  const animatable = match !== null && Number.isFinite(target);
+     Sie stand hier fest auf Deutsch: "." gruppiert, "," trennt die
+     Nachkommastelle, ausgegeben mit `toLocaleString("de-DE")`. Auf der
+     englischen Fassung las der Zähler „1,276" damit als eins Komma zwei sieben
+     sechs. Sichtbar stimmte es trotzdem, weil eine deutsche Dezimalzahl mit
+     drei Nachkommastellen zeichengleich mit einer englischen Tausendergruppe
+     ist — richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
+     Dreiergruppe hat. Die Zerlegung steht jetzt in `lib/zahlwert.ts` mit
+     Tests daneben; hier bleibt die Bewegung. */
+  const { lang } = useContent();
+  const form = zerlege(value, lang);
+  const target = form.zahl;
+  const animatable = target !== null;
+  const suffix = form.zusatz;
 
-  // Tausender nur gruppieren, wenn die Quelle es tat, sonst würde eine
-  // Jahreszahl wie "2018" als "2.018" erscheinen.
-  const useGrouping = numericPart.includes(".");
-
-  const endwert = animatable
-    ? target.toLocaleString("de-DE", {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-        useGrouping,
-      })
-    : value;
+  const endwert = target !== null ? schreibe(target, form, lang) + suffix : value;
 
   /**
    * Der Endwert steht von Anfang an da, die Animation kommt obendrauf.
@@ -101,15 +98,11 @@ export function Counter({
       controls = animate(0, target, {
         duration: 1.4,
         ease: [0.16, 1, 0.3, 1],
-        onUpdate: (latest) => {
-          setDisplay(
-            latest.toLocaleString("de-DE", {
-              minimumFractionDigits: decimals,
-              maximumFractionDigits: decimals,
-              useGrouping,
-            }),
-          );
-        },
+        /* Der Zusatz gehört mit: „100" ohne das Prozentzeichen ist eine andere
+           Aussage, und er stand während der Animation eine Sekunde lang nicht
+           da. */
+        onUpdate: (latest) =>
+          setDisplay(schreibe(latest, form, lang) + suffix),
       });
     };
 
@@ -191,11 +184,16 @@ export function Counter({
       druck.removeEventListener("change", beiDruck);
       controls?.stop();
     };
-  }, [animatable, target, decimals, useGrouping, endwert]);
+    /* `form` ist bei jedem Rendern ein neues Objekt und gehört deshalb nicht in
+       die Liste: Es entsteht aus `value` und `lang`, und die beiden stehen
+       hier. Mit `form` liefe der Effekt bei jedem Rendern neu an und die
+       Animation begänne von vorn. */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animatable, target, endwert, lang, value]);
 
   return (
     <span ref={ref} className={className}>
-      {animatable ? `${display}${suffix}` : value}
+      {display}
     </span>
   );
 }
