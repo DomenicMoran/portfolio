@@ -210,6 +210,49 @@ function besterTag(ziel: number) {
   };
 }
 
+/**
+ * Alle Zusammenstellungen als Punkte, dazu die Grenze des Möglichen.
+ *
+ * Das Ergebnis allein zeigt nur eine Zahl. Erst der Suchraum zeigt, was daran
+ * eine Leistung ist: 4.096 Möglichkeiten, und die gewählte liegt genau auf
+ * der Kante, an der bei dieser Kalorienzahl kein Gramm Eiweiß mehr geht.
+ *
+ * Die Kante ist eine Pareto-Front: Für jeden Kalorienwert das erreichbare
+ * Maximum an Eiweiß, monoton steigend. Wer eine kennt, sieht sofort, dass die
+ * Wahl nicht geraten ist.
+ *
+ * Gerechnet wird einmal beim Aufbau, nicht bei jedem Zug am Regler: Der Raum
+ * hängt nur an den zwölf Gerichten, nicht am Ziel.
+ */
+function suchraum() {
+  const punkte: { kcal: number; eiweiss: number; anzahl: number }[] = [];
+  for (let muster = 1; muster < 1 << GERICHTE.length; muster++) {
+    let kcal = 0;
+    let eiweiss = 0;
+    let anzahl = 0;
+    for (let i = 0; i < GERICHTE.length; i++) {
+      if (!(muster & (1 << i))) continue;
+      kcal += GERICHTE[i].kcal;
+      eiweiss += GERICHTE[i].p;
+      anzahl++;
+    }
+    if (anzahl >= 3) punkte.push({ kcal, eiweiss, anzahl });
+  }
+
+  /* Die Front: nach Kalorien sortiert, dann das laufende Maximum. */
+  const sortiert = [...punkte].sort((a, b) => a.kcal - b.kcal);
+  const front: { kcal: number; eiweiss: number }[] = [];
+  let hoechstes = -1;
+  for (const punkt of sortiert) {
+    if (punkt.eiweiss > hoechstes) {
+      hoechstes = punkt.eiweiss;
+      front.push({ kcal: punkt.kcal, eiweiss: punkt.eiweiss });
+    }
+  }
+
+  return { punkte, front };
+}
+
 export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const demo = inhalt.demoNouri;
   // Ein Frühstück und ein Mittagessen als Start: Eine leere Tabelle zeigt nichts.
@@ -217,6 +260,44 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const [ziel, setZiel] = useState<number>(ZIEL.start);
   const [lauf, setLauf] = useState<{ geprueft: number; dauer: number } | null>(
     null,
+  );
+
+  /* Der Suchraum hängt nur an den zwölf Gerichten: einmal rechnen, nicht bei
+     jedem Zug am Regler. */
+  const { punkte, front } = useMemo(() => suchraum(), []);
+  const RAUM = useMemo(() => {
+    const maxKcal = Math.max(...punkte.map((p) => p.kcal));
+    const maxEiweiss = Math.max(...punkte.map((p) => p.eiweiss));
+    return { breite: 600, hoehe: 150, maxKcal, maxEiweiss };
+  }, [punkte]);
+
+  const xVon = (kcal: number) => Math.min(1, kcal / RAUM.maxKcal) * RAUM.breite;
+  const yVon = (eiweiss: number) =>
+    RAUM.hoehe - (eiweiss / RAUM.maxEiweiss) * RAUM.hoehe;
+
+  /* Zwei Wolken statt einer: Was unter dem Ziel liegt, kommt infrage, der Rest
+     nicht. Die Trennung hängt am Regler und macht ihn zur eigentlichen
+     Vorführung — man sieht den Suchraum schrumpfen und die Grenze des
+     Möglichen mitwandern. */
+  const [wolkeUnter, wolkeUeber] = useMemo(() => {
+    const unter: string[] = [];
+    const ueber: string[] = [];
+    for (const punkt of punkte) {
+      const strich = `M ${xVon(punkt.kcal).toFixed(1)} ${yVon(punkt.eiweiss).toFixed(1)} h 1`;
+      (punkt.kcal <= ziel ? unter : ueber).push(strich);
+    }
+    return [unter.join(" "), ueber.join(" ")];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [punkte, RAUM, ziel]);
+
+  const frontPfad = useMemo(
+    () =>
+      "M " +
+      front
+        .map((p) => `${xVon(p.kcal).toFixed(1)} ${yVon(p.eiweiss).toFixed(1)}`)
+        .join(" L "),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [front, RAUM],
   );
 
   const summe = useMemo(() => {
@@ -389,6 +470,111 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           </div>
         ))}
       </dl>
+
+      {/* Der Suchraum, in dem die Wahl liegt.
+
+          Eine Zahl allein zeigt nicht, was daran eine Leistung ist. Hier
+          steht jede der 4.096 Zusammenstellungen als Punkt: waagerecht ihre
+          Kalorien, senkrecht ihr Eiweiß. Die Linie darüber ist die Grenze des
+          Möglichen — für jeden Kalorienwert das erreichbare Maximum. Der
+          gewählte Tag liegt darauf, unmittelbar links vom Ziel.
+
+          Ein einziger Pfad statt 4.096 Elementen: Ein `circle` je Punkt wäre
+          ein DOM, das die Seite spürbar lähmt. Die Punkte sind Striche von
+          einem halben Nutzer-Einheit, das reicht bei dieser Dichte.
+
+          Kein Canvas: Die Konvention dieser Seite verbietet es, und ein SVG
+          skaliert ohnehin schärfer. */}
+      <div className="mt-6 pb-5 pl-9">
+        <div className="relative h-[150px] overflow-hidden rounded-xl border border-line bg-base">
+          <svg
+            viewBox={`0 0 ${RAUM.breite} ${RAUM.hoehe}`}
+            preserveAspectRatio="none"
+            aria-hidden
+            className="size-full"
+          >
+            <path
+              d={wolkeUeber}
+              stroke="var(--color-ink)"
+              strokeOpacity={0.12}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+              fill="none"
+            />
+            <path
+              d={wolkeUnter}
+              stroke="var(--color-acid)"
+              strokeOpacity={0.45}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+              fill="none"
+            />
+            <path
+              d={frontPfad}
+              stroke="var(--color-ink)"
+              strokeOpacity={0.7}
+              strokeWidth={1.2}
+              vectorEffect="non-scaling-stroke"
+              fill="none"
+            />
+            <line
+              x1={xVon(ziel)}
+              x2={xVon(ziel)}
+              y1={0}
+              y2={RAUM.hoehe}
+              stroke="var(--color-acid)"
+              strokeOpacity={0.5}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+            />
+            {summe.kcal > 0 ? (
+              <circle
+                cx={xVon(summe.kcal)}
+                cy={yVon(summe.p)}
+                r={4}
+                fill="var(--color-acid)"
+                stroke="var(--color-void)"
+                strokeWidth={1.5}
+                vectorEffect="non-scaling-stroke"
+              />
+            ) : null}
+          </svg>
+
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-0 flex h-[150px] w-8 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint/80"
+          >
+            <span>{RAUM.maxEiweiss}</span>
+            <span>0</span>
+          </div>
+          <p className="sr-only">{demo.fieldLabel}</p>
+        </div>
+
+        <div
+          aria-hidden
+          className="flex justify-between pt-1 pl-9 font-mono text-[9px] text-ink-faint/80"
+        >
+          <span>
+            {demo.field.y} g · {demo.field.x} →
+          </span>
+          <span>{RAUM.maxKcal} kcal</span>
+        </div>
+      </div>
+
+      <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-ink-faint">
+        <span className="flex items-center gap-1.5">
+          <span className="size-1.5 rounded-full bg-acid" />
+          {demo.field.chosen}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-px w-5 bg-ink-faint/60" />
+          {demo.field.best}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-3 w-px bg-acid/60" />
+          {demo.field.target}
+        </span>
+      </p>
 
       {/* Der Balken ist die einzige Grafik: drei Anteile, kein Diagramm. */}
       <div

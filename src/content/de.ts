@@ -221,6 +221,15 @@ export const de: Content = {
     solveNote: "{n} Zusammenstellungen geprüft in {ms} ms",
     noFit: "Unter diesem Ziel passt keine Mahlzeit",
     below: "{n} kcal unter dem Ziel",
+    fieldLabel:
+      "Alle 4.096 Zusammenstellungen, waagerecht die Kalorien, senkrecht das Eiweiß",
+    field: {
+      x: "Kalorien",
+      y: "Eiweiß",
+      best: "das Beste, was bei dieser Kalorienzahl möglich ist",
+      chosen: "gewählt",
+      target: "Ziel",
+    },
     note: "Werte aus dem NOURI-Katalog (11.892 Rezepte, hier die zwölf handkuratierten). Energieverteilung über 4/4/9 kcal je Gramm. Das Ziel setzt der Besucher: In der App hängt es am Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.",
   },
   demoSalati: {

@@ -411,6 +411,10 @@ export type Content = {
     noFit: string;
     /** Wie weit die Zusammenstellung unter dem Ziel bleibt. `{n}` wird ersetzt. */
     below: string;
+    /** Beschriftung der Punktwolke für Vorleseprogramme. */
+    fieldLabel: string;
+    /** Die drei Achsen- und Legendenwörter der Punktwolke. */
+    field: { x: string; y: string; best: string; chosen: string; target: string };
     note: string;
   };
 
