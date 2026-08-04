@@ -295,7 +295,21 @@ export function OnePager({
                         {study.statusLabel} · {study.year}
                       </span>
                     </h3>
-                    <span className="font-mono text-[10px] text-[#6a6a76]">
+                    {/* `ml-auto`: Die Kennzahlen schließen rechts ab, auch
+                        wenn sie in eine eigene Zeile rutschen.
+
+                        Bei MenuCloud tun sie das — „1.276 API-Routen · 812
+                        DB-Migrationen · 7.464 Testfälle · EU Hosting &
+                        Datenhaltung" passt am Bildschirm nicht neben den
+                        Titel. Ohne `ml-auto` beginnt die umbrochene Zeile
+                        links, weil `justify-between` ein einzelnes Element an
+                        den Anfang setzt: Gemessen bei 1440 px in beiden
+                        Sprachen 258 beziehungsweise 246 px Abstand zum rechten
+                        Rand, während die drei anderen Projekte bündig
+                        abschlossen. Vier gleich gebaute Blöcke, einer davon
+                        anders ausgerichtet — im Druck fällt es nicht auf, dort
+                        passt die Zeile. */}
+                    <span className="ml-auto font-mono text-[10px] text-[#6a6a76]">
                       {study.metrics
                         .map(
                           (m) =>
@@ -422,6 +436,29 @@ export function OnePager({
                       Setzung in einem deutschen Dokument. */}
                   <span className="text-[#6a6a76]">
                     : {onepager.openSourceNote}
+                    {/* Die Adresse stand hier als reiner Text, während dieselbe
+                        Adresse im Kopf ein Verweis ist. Auf Papier ist das
+                        gleich; im HTML und in der PDF war genau die Stelle
+                        tot, an der jemand fragt „wo liegen die vier?". Die
+                        Adresse kommt aus derselben Quelle wie oben, damit es
+                        nicht zwei Schreibweisen gibt. */}
+                    {SOCIALS.github ? (
+                      <>
+                        {" "}
+                        {/* Unterstrichen, anders als die Verweise im Kopf:
+                            Dieser steht mitten in einem Satz, und dort ist
+                            Farbe allein kein Unterschied. Gemessen 2,1:1
+                            gegenüber dem umgebenden Text, WCAG 1.4.1 verlangt
+                            3:1 — `check:a11y` meldete es auf beiden
+                            Sprachfassungen und beiden Breiten. */}
+                        <a
+                          href={SOCIALS.github}
+                          className="underline underline-offset-2"
+                        >
+                          {alsAnzeige(SOCIALS.github)}
+                        </a>
+                      </>
+                    ) : null}
                   </span>
                 </p>
               </div>

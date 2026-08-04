@@ -1264,7 +1264,7 @@ export const en: Content = {
       "The evidence is four systems in production.",
     openSource: "Published",
     openSourceNote:
-      "all with tests, CI and an MIT licence on github.com/DomenicMoran",
+      "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
     back: "← Back to the site",
