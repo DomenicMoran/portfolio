@@ -45,7 +45,8 @@ export function Hero() {
       aria-labelledby="top-titel"
       className="relative flex min-h-svh flex-col justify-end overflow-x-clip pb-10"
     >
-      {/* Ambient light. Three blurred orbs, GPU-composited, no canvas.
+      {/* Das Umgebungslicht: drei weiche Kreise, von der Grafikkarte gesetzt,
+          ohne Zeichenfläche.
           Diese Hülle beschneidet zusätzlich senkrecht, damit die Kreise nicht
           in den nächsten Abschnitt hängen. Sie enthält nur Deko, hier schneidet
           der Beschnitt also nie Text. */}
@@ -67,9 +68,9 @@ export function Hero() {
 
       <div className="w-full">
         <div className="mx-auto w-full max-w-6xl px-6 pt-32">
-          {/* Availability pill */}
+          {/* Die Verfügbarkeitsmarke */}
           <div
-            style={{ animationDelay: "0.1s" }}
+            style={{ animationDelay: "0.05s" }}
             className="animate-fade-rise mb-10 flex flex-wrap items-center gap-3"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 backdrop-blur">
@@ -121,7 +122,7 @@ export function Hero() {
                       "animate-word-rise inline-block",
                       word.accent && "font-editorial text-acid",
                     )}
-                    style={{ animationDelay: `${0.06 + i * 0.045}s` }}
+                    style={{ animationDelay: `${0.05 + i * 0.025}s` }}
                   >
                     {word.text}
                   </span>
@@ -136,9 +137,15 @@ export function Hero() {
             Hydration unsichtbar; auf einem gedrosselten Telefon war er damit
             das LCP-Element und erschien erst nach 4,6 Sekunden. Die
             Überschrift daneben stand zu dem Zeitpunkt schon seit 1,35
-            Sekunden da. */}
+            Sekunden da.
+
+            Er ist weiterhin das LCP-Element — deshalb ist die Staffelung im
+            ganzen Hero gestaucht: 0,42 s Verzug waren 0,42 s, in denen der
+            wichtigste Satz der Seite nicht dasteht. Die Reihenfolge Marke,
+            Überschrift, Absatz, Knöpfe, Belegleiste bleibt sichtbar, sie
+            läuft nur schneller ab. */}
           <p
-            style={{ animationDelay: "0.42s" }}
+            style={{ animationDelay: "0.2s" }}
             className="animate-fade-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
           >
             {hero.lede}
@@ -165,9 +172,9 @@ export function Hero() {
             {hero.tryIt.after}
           </p>
 
-          {/* CTAs */}
+          {/* Die beiden Handlungsaufforderungen */}
           <div
-            style={{ animationDelay: "0.55s" }}
+            style={{ animationDelay: "0.3s" }}
             className="animate-fade-rise mt-8 flex flex-wrap items-center gap-3"
           >
             <Magnetic>
@@ -206,9 +213,9 @@ export function Hero() {
             </Magnetic>
           </div>
 
-          {/* Proof strip */}
+          {/* Die Belegleiste */}
           <dl
-            style={{ animationDelay: "0.68s" }}
+            style={{ animationDelay: "0.4s" }}
             className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
           >
             {hero.proof.map((item) => (
