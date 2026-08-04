@@ -396,7 +396,15 @@ export function OnePager({
                 <h3 className="font-mono text-[10.5px] tracking-[0.16em] text-[#5a5a66] uppercase">
                   {onepager.openSource}
                 </h3>
-                <p className="mt-1 text-[11.5px] leading-snug text-[#3a3a44]">
+                {/* `overflow-wrap: anywhere`: Die Kette der Paketnamen ist bei
+                    320 px breiter als ihre Spalte, und Namen wie
+                    "whisper-ggml-header" bieten dem Browser keinen Punkt, an
+                    dem er ohne diese Regel umbricht. Gemessen auf dem
+                    CI-Runner: 152 px nötig, 107 sichtbar — auf dem eigenen
+                    Rechner ging es knapp durch, weil die Schrift dort schmaler
+                    rät. Das Blatt ist ein Druckdokument; am Bildschirm bei
+                    320 px soll es trotzdem lesbar bleiben. */}
+                <p className="mt-1 text-[11.5px] leading-snug [overflow-wrap:anywhere] text-[#3a3a44]">
                   {about.openSource.items
                     .filter((paket) => paket.name !== "portfolio")
                     .map((paket) => paket.name)
