@@ -73,6 +73,25 @@ const geistMono = Geist_Mono({
  * Bedingungen: CLS 0,0000 ohne eine einzige Verschiebung, LCP im Median
  * 1.892 ms bei einer Spanne von 1.884 bis 1.900. Beim zweiten Aufruf liegt die
  * Schrift ohnehin im Zwischenspeicher.
+ *
+ * Und ohne Vorladen, was auf den ersten Blick widersinnig aussieht.
+ *
+ * Vorgeladen wird alles gleichzeitig angefordert, und auf einer schmalen
+ * Leitung teilen sich die Dateien die Bandbreite. Gemessen an der
+ * ausgelieferten englischen Startseite, 390 px und 1,6 Mbit/s: Drei Schriften
+ * mit zusammen 68 KiB starteten zeitgleich mit dem Stylesheet, und dieses
+ * 13 KiB kleine Blatt war erst nach 1.378 ms da. Bis dahin steht die Seite
+ * ohne jede Auszeichnung — die Überschrift 32 px statt 44, ohne Höchstbreite,
+ * auf Englisch zwei Zeilen statt drei. Beim Eintreffen des Stylesheets sprang
+ * alles darunter um 50 px, und der Beobachter zählte einen neuen Kandidaten:
+ * LCP 3.304 ms auf `/en` gegen 2.072 ms auf `/`.
+ *
+ * Diese Schrift setzt drei kursive Wörter und steht auf `optional`. Ohne ihre
+ * 29 KiB im kritischen Pfad ist das Stylesheet nach 706 ms da. Drei Läufe mit
+ * abgeschaltetem Zwischenspeicher: LCP 1.472, 1.472 und 1.488 ms, und die
+ * kursiven Wörter stehen in jedem davon in Instrument Serif — `optional`
+ * heißt nicht, dass die Schrift wegfällt, sondern dass der Browser auf sie
+ * nicht wartet.
  */
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
@@ -80,6 +99,7 @@ const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: "italic",
   display: "optional",
+  preload: false,
 });
 
 /** Die Klassen fürs `<html>`-Element. Dieselben auf jeder Seite, auch auf den beiden, die ihr eigenes Dokument mitbringen. */
