@@ -100,14 +100,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       // Und die Karte hat eine Sprache: Beide Fassungen zeigten auf dieselbe
       // deutsche, wer /en teilte bekam eine Vorschau mit "BERLIN,
       // DEUTSCHLAND". Jede Sprache hat jetzt ihre eigene Route.
-      images: [
-        {
-          url: ogBild,
-          width: 1200,
-          height: 630,
-          alt: `${site.name} – ${site.role}`,
-        },
-      ],
+      images: ogBildFuer(lang),
     },
     twitter: {
       card: "summary_large_image",
@@ -162,4 +155,27 @@ export function feedFuer(lang: "de" | "en") {
       },
     ],
   };
+}
+
+/**
+ * Die Vorschaukarte einer Sprache, wie sie `openGraph.images` erwartet.
+ *
+ * Als Funktion, weil sechs Seiten ihr `openGraph` vollständig selbst setzen:
+ * Next ersetzt das geerbte Objekt, statt es zu mischen, und ein fehlendes
+ * `images` heißt dann kein Bild. Genau das stand hier schon einmal im
+ * Kommentar — für die Wurzel-Layouts gelöst, an den Unterseiten wiederholt.
+ *
+ * Gemessen an der ausgelieferten Seite trugen /artikel, /onepager,
+ * /impressum, /datenschutz und ihre englischen Entsprechungen kein
+ * `og:image`. Es sind die Seiten, die man weiterreicht.
+ */
+export function ogBildFuer(lang: "de" | "en") {
+  return [
+    {
+      url: lang === "de" ? "/opengraph-image" : "/en/opengraph-image",
+      width: 1200,
+      height: 630,
+      alt: `${site.name} – ${site.role}`,
+    },
+  ];
 }

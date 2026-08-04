@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedFuer } from "@/lib/metadata";
+import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { site } from "@/content/site";
@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
   openGraph: {
+    // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
+    // statt es zu mischen.
+    images: ogBildFuer("de"),
     title: "Datenschutz",
     locale: "de_DE",
   },
