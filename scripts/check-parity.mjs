@@ -90,7 +90,7 @@ async function zaehle(pfad, mitZahlen = false) {
     window.scrollTo(0, 0);
   });
 
-  const werte = await seite.evaluate((mitZahlen) => ({
+  const werte = await seite.evaluate(() => ({
     Abschnitte: [...document.querySelectorAll("section[id]")]
       .map((s) => s.id)
       .join(","),
@@ -101,6 +101,12 @@ async function zaehle(pfad, mitZahlen = false) {
     Reiter: document.querySelectorAll('[role="tab"]').length,
     Kennzahlen: document.querySelectorAll("dt").length,
     Listeneinträge: document.querySelectorAll("li").length,
+
+    /* Knöpfe zählen mit, weil die Bedienung selbst zum Inhalt gehört: Der
+       Kopierknopf über jedem Codeblock hängt an einer Beschriftung je Sprache,
+       und eine, die nur auf einer Seite gesetzt ist, nimmt der anderen die
+       Funktion, ohne dass ein Text fehlt. */
+    Knöpfe: document.querySelectorAll("button").length,
 
     /* Und die Zahlen selbst.
        Bis hierher wurde gezählt, wie viele Kennzahlen dastehen, nicht welche.
@@ -122,8 +128,12 @@ async function zaehle(pfad, mitZahlen = false) {
     ]
       .sort()
       .join(" "),
-  }), mitZahlen);
+  }));
 
+  /* Die Zahlen werden immer eingesammelt und hier verworfen, statt den Schalter
+     in den Browser zu reichen: Der Aufruf im Seitenkontext kostet nichts, und
+     ein Argument, das drüben nur eine Verzweigung steuert, war schon einmal
+     die Stelle, an der ein unbenutzter Parameter stehen blieb. */
   if (!mitZahlen) delete werte.Zahlen;
 
   await seite.close();

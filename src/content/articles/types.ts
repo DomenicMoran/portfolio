@@ -62,6 +62,8 @@ export type ArticleChrome = {
   codeLabel: string;
   /** Name der Tabelle für Vorleseprogramme, wenn sie keine Bildunterschrift hat. */
   tableLabel: string;
+  /** Beschriftung und Rückmeldungen des Knopfes, der einen Codeblock kopiert. */
+  copyCode: { label: string; done: string; failed: string };
   /**
    * Beschriftung der Sprungmarke neben jeder Zwischenüberschrift.
    *

@@ -216,6 +216,7 @@ export function ArticlePage({
             <Prose
               blocks={article.blocks}
               codeLabel={chrome.codeLabel}
+              kopieren={chrome.copyCode}
               tabelleLabel={chrome.tableLabel}
               sprungmarkeLabel={chrome.anchorLabel}
             />
