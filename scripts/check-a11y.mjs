@@ -116,6 +116,31 @@ for (const breite of BREITEN) {
       window.scrollTo(0, 0);
     });
 
+    /*
+      Auf gerechnete Kacheln warten, bevor gemessen wird.
+
+      Die Gebetszeiten-Kachel lädt ihre Bibliothek erst beim Hineinscrollen und
+      füllt ihre Felder danach. Wer vorher misst, misst leere Felder — und
+      leerer Text hat keinen Kontrast. Genau so ging eine Zahl in der Farbe des
+      Hintergrunds durch diesen Lauf: `text-base` ist in diesem Farbsystem
+      nicht nur eine Schriftgröße, sondern auch eine Farbe (`--color-base`),
+      und sie gewann gegen `text-acid`. Auf dem Bildschirm stand die Spanne
+      damit unsichtbar da, und hier hieß es „keine Verstöße".
+
+      `data-demo-fertig` setzt die Kachel selbst, sobald gerechnet ist. Fehlt
+      sie auf einer Seite, wartet niemand.
+    */
+    if (await seite.locator("[data-demo-fertig], .lit input[type=range]").count()) {
+      await seite
+        .waitForSelector("[data-demo-fertig]", { timeout: 15_000 })
+        .catch(() => {
+          throw new Error(
+            `${pfad}: Die Vorführung hat nach 15 s nicht gerechnet. ` +
+              `Gemessen würde eine Kachel mit leeren Feldern.`,
+          );
+        });
+    }
+
     // Endliche Animationen ans Ende setzen: Ein Element mitten im Auftritt hat
     // eine andere Deckkraft, und daran hängt die Kontrastmessung.
     await seite.evaluate(() => {
@@ -572,6 +597,145 @@ if (diagrammfunde.length > 0) {
   for (const f of diagrammfunde) console.error(`  ${f}`);
 }
 
+/* ---------------------------------------------------------------------------
+   Nichts, was dasteht, darf unsichtbar sein.
+
+   axe prüft Kontrast, aber es gibt genau dort auf, wo dieses Layout arbeitet:
+   Bei halbdurchsichtigen Flächen wie `bg-surface/50` kann es den Untergrund
+   nicht bestimmen und meldet „unvollständig" statt „Verstoß". Der Lauf blieb
+   dadurch grün, während in der Gebetszeiten-Kachel eine Zahl in der Farbe des
+   Hintergrunds stand: `text-base` ist in diesem Farbsystem nicht nur eine
+   Schriftgröße, sondern auch die Farbe `--color-base`, und in der Reihenfolge
+   der Stilvorlage gewinnt sie gegen `text-acid`. Gemessen 1,04:1.
+
+   Deshalb hier eine eigene, absichtlich stumpfe Grenze: Was unter 2:1 liegt,
+   ist nicht schwer lesbar, sondern nicht vorhanden. Alles darüber bleibt axes
+   Sache — diese Prüfung soll nicht zweimal dasselbe entscheiden.
+   ------------------------------------------------------------------------ */
+const UNSICHTBAR_AB = 2;
+const unsichtbar = [];
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
+  const seite = await kontext.newPage();
+
+  for (const pfad of pfade) {
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    await seite.evaluate(async () => {
+      const hoehe = document.documentElement.scrollHeight;
+      for (let y = 0; y < hoehe; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 40));
+      }
+      window.scrollTo(0, 0);
+    });
+    if (await seite.locator("[data-demo-fertig], .lit input[type=range]").count()) {
+      await seite.waitForSelector("[data-demo-fertig]", { timeout: 15_000 });
+    }
+    await seite.evaluate(() => {
+      for (const b of document.getAnimations()) {
+        try {
+          b.finish();
+        } catch {
+          /* Endlosschleifen haben kein Ende. */
+        }
+      }
+    });
+    await seite.waitForTimeout(300);
+
+    const funde = await seite.evaluate((grenze) => {
+      // Farben über einen Canvas auflösen: Der kennt jeden Farbraum, den auch
+      // die Stilvorlage benutzen darf, und liefert immer RGBA.
+      const flaeche = document.createElement("canvas");
+      flaeche.width = flaeche.height = 1;
+      const stift = flaeche.getContext("2d", { willReadFrequently: true });
+      const zuRgba = (farbe) => {
+        stift.clearRect(0, 0, 1, 1);
+        stift.fillStyle = farbe;
+        stift.fillRect(0, 0, 1, 1);
+        const d = stift.getImageData(0, 0, 1, 1).data;
+        return [d[0], d[1], d[2], d[3] / 255];
+      };
+      const ueber = (vorne, hinten) =>
+        [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3]));
+      const helligkeit = ([r, g, b]) => {
+        const f = (x) => {
+          x /= 255;
+          return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+        };
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      };
+      const untergrund = (el) => {
+        const stapel = [];
+        for (let n = el; n; n = n.parentElement) {
+          stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
+        }
+        let unten = [8, 8, 10];
+        for (let i = stapel.length - 1; i >= 0; i--) unten = ueber(stapel[i], unten);
+        return unten;
+      };
+
+      const raus = [];
+      for (const el of document.querySelectorAll("body *")) {
+        const eigen = [...el.childNodes]
+          .filter((n) => n.nodeType === 3)
+          .map((n) => n.textContent.trim())
+          .join(" ")
+          .trim();
+        if (!eigen) continue;
+
+        const stil = getComputedStyle(el);
+        if (stil.display === "none" || stil.visibility === "hidden") continue;
+        if (el.getBoundingClientRect().width === 0) continue;
+        // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das
+        // greift die Regel „nichts unsichtbar ohne JavaScript" weiter oben.
+        let deckung = 1;
+        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+          deckung *= parseFloat(getComputedStyle(n).opacity);
+        }
+        if (deckung < 0.95) continue;
+        if (el.closest("[aria-hidden='true'], .sr-only")) continue;
+
+        const vorne = zuRgba(stil.color);
+        if (vorne[3] < 0.95) continue;
+        const hinten = untergrund(el);
+        const a = helligkeit(ueber(vorne, hinten));
+        const b = helligkeit(hinten);
+        const verhaeltnis =
+          (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+        if (verhaeltnis < grenze) {
+          raus.push({
+            text: eigen.slice(0, 40),
+            farbe: stil.color,
+            grund: `rgb(${hinten.map(Math.round).join(", ")})`,
+            wert: Math.round(verhaeltnis * 100) / 100,
+            klasse: String(el.className).slice(0, 60),
+          });
+        }
+      }
+      return raus;
+    }, UNSICHTBAR_AB);
+
+    for (const f of funde) {
+      unsichtbar.push(
+        `${pfad}: „${f.text}" steht in ${f.farbe} auf ${f.grund} — ` +
+          `${f.wert}:1 (class="${f.klasse}")`,
+      );
+    }
+  }
+
+  await kontext.close();
+}
+
+if (unsichtbar.length > 0) {
+  console.error(
+    `\n${unsichtbar.length} Stelle(n) mit Text unter ${UNSICHTBAR_AB}:1, ` +
+      `also praktisch unsichtbar:\n`,
+  );
+  for (const f of unsichtbar) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -592,7 +756,8 @@ if (
   ohneSkript.length > 0 ||
   zielfunde.length > 0 ||
   uhrfunde.length > 0 ||
-  diagrammfunde.length > 0
+  diagrammfunde.length > 0 ||
+  unsichtbar.length > 0
 )
   process.exit(1);
 
@@ -602,5 +767,6 @@ console.log(
     `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
     `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand, ` +
     `nichts füllt sich bei reduzierter Bewegung von allein nach, ` +
-    `keine Diagrammbeschriftung unter ${SCHRIFTGRENZE} px auf dem Telefon.`,
+    `keine Diagrammbeschriftung unter ${SCHRIFTGRENZE} px auf dem Telefon, ` +
+    `nichts unter ${UNSICHTBAR_AB}:1 gegen seinen Untergrund.`,
 );

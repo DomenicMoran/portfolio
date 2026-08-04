@@ -1243,7 +1243,7 @@ export const en: Content = {
     today: "today",
     note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. 2,190 points in time, computed in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
     hardPart:
-      "Above roughly 48° the sun never drops far enough below the horizon in summer, and Fajr and Isha are no longer well defined. The three common rules then drift apart: in Berlin, in June, by more than two hours. A user report saying “the prayer times are wrong” led exactly here. The app picks the twilight-angle rule, not because it is more correct, but because it matches what users compare against. In Tromsø even that leaves 117 days without a result: the night the calculation refers to does not happen there.",
+      "Above roughly 48° the sun never drops far enough below the horizon in summer, and Fajr and Isha are no longer well defined. The three common rules then drift apart: in Berlin, in June, by more than two hours. A user report saying “the prayer times are wrong” led exactly here. The app picks the twilight-angle rule, not because it is more correct, but because it matches what users compare against. In Tromsø even that leaves the days shown above without a result: the night the calculation refers to does not happen there.",
   },
   onepager: {
     title: "One-pager",
