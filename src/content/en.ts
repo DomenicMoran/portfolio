@@ -1181,6 +1181,15 @@ export const en: Content = {
     solveNote: "{n} combinations checked in {ms} ms",
     noFit: "No meal fits under this target",
     below: "{n} kcal below the target",
+    fieldLabel:
+      "All 4,096 combinations, calories across, protein up",
+    field: {
+      x: "Calories",
+      y: "Protein",
+      best: "the best possible at that calorie count",
+      chosen: "chosen",
+      target: "Target",
+    },
     note: "Values from the NOURI catalogue (11,892 recipes, these twelve are the curated ones). Energy split via the standard 4/4/9 kcal per gram. The target is the visitor’s: in the app it comes from the profile, and one invented here would be the only figure on this site without evidence.",
   },
   demoSalati: {
