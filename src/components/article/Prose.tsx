@@ -1,5 +1,6 @@
 import type { Block } from "@/content/articles";
 import { RichText } from "@/components/ui/InlineCode";
+import { CopyCode } from "@/components/ui/CopyCode";
 import { alsSprungmarke } from "@/lib/slug";
 
 /**
@@ -21,11 +22,13 @@ export function Prose({
   codeLabel,
   tabelleLabel,
   sprungmarkeLabel,
+  kopieren,
 }: {
   blocks: readonly Block[];
   codeLabel: string;
   tabelleLabel: string;
   sprungmarkeLabel: string;
+  kopieren: { label: string; done: string; failed: string };
 }) {
   return (
     <div className="flex flex-col">
@@ -144,6 +147,12 @@ export function Prose({
                     Der Rahmen trägt einen Namen, weil ein anspringbarer
                     Bereich ohne Namen nur als "Bereich" angesagt wird. Die
                     Bildunterschrift ist der bessere Name, wo es eine gibt. */}
+                <CopyCode
+                  code={block.code}
+                  label={kopieren.label}
+                  done={kopieren.done}
+                  failed={kopieren.failed}
+                />
                 <pre
                   tabIndex={0}
                   role="region"

@@ -39,6 +39,11 @@ export const chromeDe: ArticleChrome = {
   evidenceLabel: "Belege",
   codeLabel: "Codebeispiel",
   tableLabel: "Tabelle",
+  copyCode: {
+    label: "Kopieren",
+    done: "Kopiert",
+    failed: "Kopieren ging nicht",
+  },
   anchorLabel: "Verweis auf diesen Abschnitt",
   publishedLabel: "Veröffentlicht",
   fromSystem: "Aus dem System",
@@ -62,6 +67,11 @@ export const chromeEn: ArticleChrome = {
   evidenceLabel: "Evidence",
   codeLabel: "Code sample",
   tableLabel: "Table",
+  copyCode: {
+    label: "Copy",
+    done: "Copied",
+    failed: "Copying failed",
+  },
   anchorLabel: "Link to this section",
   publishedLabel: "Published",
   fromSystem: "From the system",
