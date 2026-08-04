@@ -39,10 +39,34 @@ const PAARE = [
   { de: "/", en: "/en", name: "Startseite" },
   { de: "/artikel", en: "/en/articles", name: "Artikelübersicht" },
   { de: "/onepager", en: "/en/onepager", name: "One-Pager" },
+  /* Alle fünf Artikel, nicht mehr einer als Stichprobe.
+     Sie sind der Teil der Seite, der einzeln geteilt wird und den ein CTO
+     zuerst liest — und der einzige, bei dem beide Fassungen unabhängig
+     geschrieben sind statt übersetzt. Vier von fünf Paaren waren ungeprüft. */
   {
     de: "/artikel/published-ist-kein-beleg",
     en: "/en/articles/published-is-not-proof",
-    name: "Artikel (Stichprobe)",
+    name: "Artikel: Published",
+  },
+  {
+    de: "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
+    en: "/en/articles/the-dotted-circle-was-not-the-font",
+    name: "Artikel: Kreis",
+  },
+  {
+    de: "/artikel/widget-leer-trotz-gruener-tests",
+    en: "/en/articles/green-tests-empty-widget",
+    name: "Artikel: Widget",
+  },
+  {
+    de: "/artikel/kassensichv-in-der-praxis",
+    en: "/en/articles/german-till-law-in-practice",
+    name: "Artikel: KassenSichV",
+  },
+  {
+    de: "/artikel/kleineres-whisper-modell",
+    en: "/en/articles/a-smaller-whisper-model",
+    name: "Artikel: Whisper",
   },
 ];
 
