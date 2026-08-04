@@ -1,6 +1,6 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { schriftKlassen } from "@/lib/schriften";
 import { Marke } from "@/lib/mark";
 import { mailAdresse } from "@/lib/mailto";
 import { de } from "@/content/de";
@@ -30,21 +30,6 @@ import "./globals.css";
  *   auf, ohne die Seite neu zu laden; gelingt das nicht, führt der Verweis
  *   daneben zur Startseite.
  */
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/* Wie im Hauptdokument: Die Festbreitenschrift trägt nur Beschriftungen und
-   wird deshalb nicht vorgeladen. */
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-
 export default function GlobalError({
   unstable_retry,
 }: {
@@ -58,7 +43,7 @@ export default function GlobalError({
   return (
     <html
       lang="de"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${schriftKlassen} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
         <main className="flex flex-1 items-center px-6 py-14 sm:py-20">

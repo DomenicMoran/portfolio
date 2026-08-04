@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
+import { schriftKlassen } from "@/lib/schriften";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
@@ -31,9 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
  * ungestylte Standardseite, weil Next bei zwei Wurzel-Layouts nicht wählen
  * kann, in welchem es rendern soll.
  *
- * Nur zwei Schriften statt drei, und keine Bewegungs-Provider: Wer hier
- * landet, hat sich verlaufen und soll schnell weiterkommen. Die Kursivschrift
- * für Akzentwörter kommt auf dieser Seite nicht vor.
+ * Keine Bewegungs-Provider: Wer hier landet, hat sich verlaufen und soll
+ * schnell weiterkommen. Die Schriften kommen aus `@/lib/schriften` — eine
+ * eigene Deklaration erzeugte einen zweiten Satz Dateien, den der Browser
+ * zusätzlich lud, auf jeder Seite.
  *
  * Diese Seite beantwortet jede Adresse, die auf gar keine Route passt — auch
  * `/en/irgendwas`. Welche Sprache gemeint war, weiß sie als einzige Seite
@@ -50,30 +51,6 @@ export async function generateMetadata(): Promise<Metadata> {
  * aber kein `lang`, keine Überschrift, nichts. Dasselbe gilt für
  * `dynamicParams = true` auf den Artikelrouten.
  */
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/**
- * Nicht vorgeladen, wie im Hauptdokument auch.
- *
- * `RootDocument` setzt für dieselbe Schrift seit einer Messung `preload: false`:
- * Geist Mono trägt nur Beschriftungen, nie das Element, das für den Largest
- * Contentful Paint zählt. Diese Datei bringt ihr eigenes Dokument mit und hatte
- * die Entscheidung nie übernommen — gemessen meldete der Browser auf jeder
- * 404-Seite "preloaded using link preload but not used", also eine Schriftdatei,
- * die geladen und nicht gebraucht wird. Auf einer Seite, auf der niemand
- * bleiben soll, ist das die falsche Ladung.
- */
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-
 export default async function GlobalNotFound() {
   const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
   const inhalt = englisch ? en : de;
@@ -82,7 +59,7 @@ export default async function GlobalNotFound() {
   return (
     <html
       lang={inhalt.lang}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${schriftKlassen} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
         <NotFoundPage
