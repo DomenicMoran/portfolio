@@ -375,7 +375,10 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
                 das braucht der Balken darunter eine Legende, und eine Legende
                 für drei Werte ist eine Zeile zu viel. */}
             <dt
-              className={`font-mono text-[10px] tracking-[0.14em] uppercase ${farbe}`}
+              /* `break-words`: „KOHLENHYDRATE“ und „BALLASTSTOFFE“ sind je ein
+                 Wort und mit gesperrten Versalien breiter als die Spalte bei
+                 320 px. Ohne Umbruchpunkt schneidet der Browser ab. */
+              className={`font-mono text-[10px] tracking-[0.14em] break-words uppercase ${farbe}`}
             >
               {label}
             </dt>

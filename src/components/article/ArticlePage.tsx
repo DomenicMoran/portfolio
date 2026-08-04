@@ -244,9 +244,16 @@ export function ArticlePage({
                 {article.evidence.map((item) => {
                   const text = typeof item === "string" ? item : item.text;
                   return (
+                    /* `overflow-wrap: anywhere`: Ein Beleg ist meist ein Dateipfad oder
+                       eine Adresse, also ein Wort ohne Leerzeichen. Gemessen an
+                       der gebauten Seite bei 320 px brauchte
+                       "apps/mobile/src/features/..." 345 px in einer 212 px
+                       breiten Spalte — der Browser schnitt ab, statt umzubrechen,
+                       und ausgerechnet der Beleg war nicht zu Ende lesbar. `break-words`
+                       reicht dafür nicht: Ein Pfad hat keine Wortgrenze. */
                     <li
                       key={text}
-                      className="flex gap-2.5 font-mono text-[12px] leading-relaxed text-ink-faint"
+                      className="flex gap-2.5 font-mono text-[12px] leading-relaxed [overflow-wrap:anywhere] text-ink-faint"
                     >
                       <span
                         aria-hidden

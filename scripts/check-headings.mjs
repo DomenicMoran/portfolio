@@ -47,10 +47,14 @@ let fehler = 0;
 let nichtMessbar = 0;
 
 for (const breite of BREITEN) {
-  const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 900 },
+  });
 
   for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "domcontentloaded",
+    });
     if (!antwort || antwort.status() !== 200) continue;
 
     // Einmal durchscrollen: Die Überschriften unterhalb der Falz erscheinen
@@ -156,7 +160,11 @@ for (const breite of BREITEN) {
           if (stil.transform !== "none") {
             const werte = /^matrix\(([^)]+)\)$/.exec(stil.transform);
             const zahlen = werte ? werte[1].split(",").map(Number) : null;
-            if (!zahlen || Math.abs(zahlen[0] - 1) > 0.001 || Math.abs(zahlen[3] - 1) > 0.001) {
+            if (
+              !zahlen ||
+              Math.abs(zahlen[0] - 1) > 0.001 ||
+              Math.abs(zahlen[3] - 1) > 0.001
+            ) {
               unruhig.push(`${wort.trim().slice(0, 20)} (${stil.transform})`);
               continue;
             }
@@ -175,7 +183,8 @@ for (const breite of BREITEN) {
             (kind.getBoundingClientRect().bottom - versatzY);
           const groesse = parseFloat(stil.fontSize);
           const zeile = parseFloat(stil.lineHeight) || groesse;
-          const inDerZeile = Math.max(0, (zeile - groesse) / 2) + groesse * 0.07;
+          const inDerZeile =
+            Math.max(0, (zeile - groesse) / 2) + groesse * 0.07;
 
           if (unterKante + inDerZeile < tinte) {
             raus.push({
@@ -193,7 +202,8 @@ for (const breite of BREITEN) {
     if (unruhig.length > 0) {
       nichtMessbar += unruhig.length;
       console.log(`  NICHT MESSBAR ${pfad} bei ${breite} px`);
-      for (const u of unruhig) console.log(`        ${u} stand noch verschoben`);
+      for (const u of unruhig)
+        console.log(`        ${u} stand noch verschoben`);
     }
 
     if (funde.length > 0) {
@@ -207,6 +217,67 @@ for (const breite of BREITEN) {
     }
   }
 
+  await seite.close();
+}
+
+/* ---------------------------------------------------------------------------
+   Waagerecht abgeschnittener Text
+
+   Die Unterlänge oben ist die senkrechte Hälfte des Problems. Die waagerechte
+   trifft dieselbe Sorte Element: Ein einzelnes langes Wort ohne Umbruchpunkt
+   passt nicht in seine Spalte, und der Browser schneidet ab, statt umzubrechen.
+
+   Gemessen an der gebauten Seite bei 320 px: „SONNENAUFGANG“,
+   „KOHLENHYDRATE“ und „BALLASTSTOFFE“ — gesperrte Versalien in einer 94 px
+   breiten Spalte, die 96 bräuchten. Bei 768 px blieb eines davon übrig. Kein
+   Lauf sah hin, weil beide Breiten zwischen den geprüften 390 und 1440 liegen.
+
+   Elemente mit eigenem Bildlauf bleiben draußen: Ein Codeblock oder eine
+   Tabelle darf breiter sein als ihr Rahmen, dafür scrollt sie. */
+const SCHMALE_BREITEN = [320, 768];
+const beschnitten = [];
+
+for (const breite of SCHMALE_BREITEN) {
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 900 },
+  });
+  for (const pfad of pfade) {
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    await seite.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 700) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    });
+    await seite.waitForTimeout(300);
+    const funde = await seite.evaluate(() =>
+      [...document.querySelectorAll("h1, h2, h3, h4, dt, dd, li, p")]
+        .filter((e) => {
+          if (e.scrollWidth <= e.clientWidth + 1) return false;
+          const s = getComputedStyle(e);
+          if (s.overflowX !== "visible" || s.overflow !== "visible")
+            return false;
+          /* `scrollWidth > clientWidth` allein genügt nicht: Auch ein Absatz,
+             der sauber umbricht, meldet das, weil sein längstes unteilbares
+             Wort breiter ist als die Spalte. Gemessen am Kurzprofil bei
+             320 px waren vier von fünf Meldungen genau das — der Text stand
+             lesbar da, nur eben umgebrochen.
+
+             Weg ist er erst, wenn er über den rechten Fensterrand hinausragt:
+             Dort schneidet das `overflow-x: clip` an html und body ab, und
+             waagerecht scrollen kann niemand. */
+          const rand = e.getBoundingClientRect().left + e.scrollWidth;
+          return rand > document.documentElement.clientWidth + 1;
+        })
+        .map(
+          (e) =>
+            `${e.tagName} „${(e.textContent ?? "").trim().slice(0, 26)}“: ` +
+            `${e.clientWidth} px sichtbar, ${e.scrollWidth} nötig`,
+        ),
+    );
+    for (const f of new Set(funde))
+      beschnitten.push(`${pfad} bei ${breite} px: ${f}`);
+  }
   await seite.close();
 }
 
@@ -229,8 +300,23 @@ if (nichtMessbar > 0) {
   );
 }
 
-if (fehler > 0 || nichtMessbar > 0) process.exit(1);
+if (beschnitten.length > 0) {
+  console.error(
+    `
+${beschnitten.length} waagerecht abgeschnittene Stelle(n):
+`,
+  );
+  for (const f of beschnitten) console.error(`  ${f}`);
+  console.error(
+    `
+Ein langes Wort ohne Umbruchpunkt braucht \`break-words\`. Wer den Text ` +
+      `abschneiden will, sagt das mit einem eigenen Bildlauf.`,
+  );
+}
+
+if (fehler > 0 || nichtMessbar > 0 || beschnitten.length > 0) process.exit(1);
 
 console.log(
-  `Keine abgeschnittene Unterlänge: ${pfade.length} Seiten × ${BREITEN.length} Breiten geprüft.`,
+  `Keine abgeschnittene Unterlänge: ${pfade.length} Seiten × ${BREITEN.length} Breiten geprüft, ` +
+    `nichts waagerecht beschnitten bei ${SCHMALE_BREITEN.join(" und ")} px.`,
 );

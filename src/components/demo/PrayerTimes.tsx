@@ -617,7 +617,12 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       <dl className="mt-4 grid min-h-[4.5rem] grid-cols-2 gap-x-6 gap-y-3 min-[420px]:grid-cols-3 sm:grid-cols-6">
         {GEBETE.map((g, i) => (
           <div key={g}>
-            <dt className="font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+            {/* `break-words`, weil die Beschriftung ein einziges Wort sein
+                kann: „SONNENAUFGANG“ mit gesperrten Versalien ist 96 px breit,
+                und bei 320 px hat die Spalte 94. Ohne Umbruchpunkt schneidet
+                der Browser ab, statt umzubrechen — gemessen an der gebauten
+                Seite bei 320 und 768 px. */}
+            <dt className="font-mono text-[10px] tracking-[0.14em] break-words text-ink-faint uppercase">
               {demo.prayers[g]}
             </dt>
             <dd className="mt-1 font-mono text-lg text-ink tabular-nums">
