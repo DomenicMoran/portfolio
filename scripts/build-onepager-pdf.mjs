@@ -147,6 +147,16 @@ for (const blatt of BLAETTER) {
     ].join(", "),
   ]);
   doc.setCreator("domenicmoran.de");
+  /*
+    Auch der Erzeuger, nicht nur der Ersteller.
+
+    `pdf-lib` trägt sich ungefragt als "pdf-lib (https://github.com/Hopding/
+    pdf-lib)" ein. In den Dokumenteigenschaften eines Bewerbungsblattes steht
+    damit ein fremder Werkzeugname mit fremdem Verweis — die einzige Stelle im
+    ganzen Auftritt, an der etwas steht, das niemand ausgesucht hat. Wer die
+    Eigenschaften öffnet, tut das nicht zufällig.
+  */
+  doc.setProducer("domenicmoran.de");
 
   /*
     Der Stand der Quellen, aus denen das Blatt entstanden ist.
