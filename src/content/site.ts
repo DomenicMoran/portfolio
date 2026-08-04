@@ -787,9 +787,29 @@ export const caseStudies: CaseStudy[] = [
       "Explizite Fehlerzustände statt stiller 500er",
     ],
     stack: [
-      { group: "Apps", items: ["Next.js", "Expo", "TypeScript", "Turborepo"] },
-      { group: "Services", items: ["Fastify", "Supabase", "Postgres", "RLS"] },
-      { group: "Delivery", items: ["Vercel", "pnpm Workspaces"] },
+      {
+        group: "Apps",
+        items: [
+          "Next.js 16 App Router",
+          "React 19",
+          "Expo SDK 54",
+          "React Native 0.81",
+          "TypeScript 5.9",
+        ],
+      },
+      {
+        group: "Services",
+        items: [
+          "Fastify 5",
+          "Zod 4",
+          "Supabase / Postgres",
+          "Row Level Security",
+        ],
+      },
+      {
+        group: "Delivery",
+        items: ["Vercel", "Turborepo", "pnpm 10 Workspaces"],
+      },
     ],
     metrics: [
       { value: "11.892", label: "Rezepte im Katalog" },

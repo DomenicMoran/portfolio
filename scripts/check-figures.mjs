@@ -2354,6 +2354,193 @@ const BRAUCHT_KIND = {
   }
 }
 
+/* ------------------------------------------------------------------
+   Die Versionsangaben in den Tech-Stacks gegen die Repos.
+
+   Eine Zahl wie „React Native 0.86" ist eine Behauptung wie jede andere,
+   nur altert sie schneller: Sie ändert sich, wenn in einem ganz anderen
+   Verzeichnis `pnpm up` läuft, und niemand denkt dabei an das Portfolio.
+   Ein Bewerber, der eine überholte Version nennt, sieht aus, als hätte er
+   das Projekt zuletzt vor einem Jahr angefasst — von allen Fehlern auf
+   dieser Seite der unnötigste.
+
+   Geprüft wird gegen die `package.json` des jeweiligen Projekts, auf so
+   viele Stellen, wie die Seite nennt: „Fastify 5" gegen die Hauptversion,
+   „React Native 0.86" gegen zwei Stellen.
+
+   Die Tabelle ist bewusst ausgeschrieben statt geraten. Ein Parser, der
+   sich aus „Next.js 16 App Router" den Paketnamen zusammensucht, hätte
+   drei Sonderfälle und einen stillen Fehlschlag, sobald ein vierter kommt.
+------------------------------------------------------------------ */
+
+const ANGABEN = [
+  {
+    text: "React Native 0.86",
+    datei: "../../SalatiTech/apps/mobile/package.json",
+    paket: "react-native",
+    stellen: 2,
+  },
+  {
+    text: "Expo SDK 57",
+    datei: "../../SalatiTech/apps/mobile/package.json",
+    paket: "expo",
+    stellen: 1,
+  },
+  {
+    text: "Reanimated 4",
+    datei: "../../SalatiTech/apps/mobile/package.json",
+    paket: "react-native-reanimated",
+    stellen: 1,
+  },
+  {
+    text: "Next.js 16 App Router",
+    datei: "../../MenuCloud/package.json",
+    paket: "next",
+    stellen: 1,
+  },
+  {
+    text: "React 19 RSC",
+    datei: "../../MenuCloud/package.json",
+    paket: "react",
+    stellen: 1,
+  },
+  {
+    text: "Next.js 16 App Router",
+    datei: "../../NOURI/apps/web/package.json",
+    paket: "next",
+    stellen: 1,
+  },
+  {
+    text: "React 19",
+    datei: "../../NOURI/apps/web/package.json",
+    paket: "react",
+    stellen: 1,
+  },
+  {
+    text: "Expo SDK 54",
+    datei: "../../NOURI/apps/mobile/package.json",
+    paket: "expo",
+    stellen: 1,
+  },
+  {
+    text: "React Native 0.81",
+    datei: "../../NOURI/apps/mobile/package.json",
+    paket: "react-native",
+    stellen: 2,
+  },
+  {
+    text: "TypeScript 5.9",
+    datei: "../../NOURI/apps/mobile/package.json",
+    paket: "typescript",
+    stellen: 2,
+  },
+  {
+    text: "Fastify 5",
+    datei: "../../NOURI/services/api/package.json",
+    paket: "fastify",
+    stellen: 1,
+  },
+  {
+    text: "Zod 4",
+    datei: "../../NOURI/services/api/package.json",
+    paket: "zod",
+    stellen: 1,
+  },
+  {
+    text: "pnpm 10 Workspaces",
+    datei: "../../NOURI/package.json",
+    feld: "packageManager",
+    stellen: 1,
+  },
+  /* WohnungsJäger legt keine `engines` fest — die Anforderung steht im README,
+     dreimal, und dort liest sie auch der Nutzer, der die Anwendung aufsetzt.
+     Also wird gegen den Text geprüft statt gegen ein Feld, das es nicht gibt.
+     Der Beleg ist damit derselbe, den ein Fremder finden würde. */
+  {
+    text: "Node.js 22",
+    datei: "../../KIWohnung/README.md",
+    text_muster: /Node\.js (\d+)\+/,
+    stellen: 1,
+  },
+];
+
+{
+  const stackBloecke = [
+    ...quelle.matchAll(/group: "[^"]+",\s*items: \[([^\]]*)\]/g),
+  ];
+  const aufDerSeite = new Set();
+  for (const block of stackBloecke) {
+    for (const eintrag of block[1].matchAll(/"([^"]+)"/g)) {
+      /* Eine Versionsnummer steht für sich, mit Leerzeichen davor. Ohne diese
+         Bedingung hielt der Lauf „Cloudflare R2" und „n8n" für Versionen und
+         verlangte einen Beleg für eine Zahl, die zum Namen gehört. */
+      if (/(?:^|\s)\d+(?:\.\d+)*(?:\s|$)/.test(eintrag[1])) {
+        aufDerSeite.add(eintrag[1]);
+      }
+    }
+  }
+
+  const funde = [];
+  let geprueft = 0;
+  let ausgefallen = 0;
+
+  for (const angabe of ANGABEN) {
+    if (!aufDerSeite.has(angabe.text)) {
+      funde.push(`„${angabe.text}" steht nicht mehr auf der Seite`);
+      continue;
+    }
+    const pfad = resolve(angabe.datei);
+    if (!existsSync(pfad)) {
+      ausgefallen++;
+      continue;
+    }
+    let roh;
+    if (angabe.text_muster) {
+      roh = readFileSync(pfad, "utf8").match(angabe.text_muster)?.[1] ?? "";
+    } else {
+      const json = JSON.parse(readFileSync(pfad, "utf8"));
+      roh = angabe.feld
+        ? json[angabe.feld]
+        : ({ ...json.dependencies, ...json.devDependencies }[angabe.paket] ??
+          "");
+    }
+    const echt = String(roh).replace(/^[^\d]*/, "");
+    const genannt = angabe.text.match(/(\d+(?:\.\d+)*)/)?.[1] ?? "";
+    const kurz = (v) => v.split(".").slice(0, angabe.stellen).join(".");
+
+    geprueft++;
+    if (kurz(echt) !== kurz(genannt)) {
+      funde.push(
+        `„${angabe.text}" — im Repo ${angabe.feld ?? angabe.paket} ${echt}`,
+      );
+    }
+  }
+
+  /* Der umgekehrte Weg: Was auf der Seite steht und hier nicht vorkommt,
+     wird ausgeliefert, ohne dass es jemand nachhält. */
+  const bekannt = new Set(ANGABEN.map((a) => a.text));
+  for (const text of [...aufDerSeite].sort()) {
+    if (!bekannt.has(text)) {
+      funde.push(`„${text}" steht auf der Seite, wird aber nirgends geprüft`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Versionsangabe(n) auffällig:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (ausgefallen) {
+    zeilen.push(
+      `  --  Versionsangaben: ${ausgefallen} Repo(s) nicht vorhanden, übersprungen`,
+    );
+  } else {
+    zeilen.push(
+      `  ok  Versionsangaben     ${String(geprueft).padStart(6)} Angaben stimmen mit den Repos`,
+    );
+  }
+
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {

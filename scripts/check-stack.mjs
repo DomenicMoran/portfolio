@@ -132,15 +132,20 @@ const ALS_PAKET = {
   TypeScript: "typescript",
 };
 
-/** „Supabase / Postgres" nennt zwei Dinge, „React Native 0.86" eines mit Version. */
+/**
+ * „Supabase / Postgres" nennt zwei Dinge, „React Native 0.86" eines mit Version.
+ *
+ * Die Version wird überall entfernt, nicht nur am Ende: „pnpm 10 Workspaces"
+ * trägt sie in der Mitte, und mit ihr im Suchbegriff findet sich nichts.
+ */
 function suchbegriffe(eintrag) {
   return eintrag
     .split("/")
     .map((teil) =>
       teil
-        .replace(/\s+\d+(\.\d+)*$/, "")
+        .replace(/\s+\d+(\.\d+)*(?=\s|$)/g, "")
         .replace(/\s*\(.*\)\s*/g, " ")
-        .replace(/\s+(SDK|API)\s*\d*$/i, "")
+        .replace(/\s+(SDK|API)\s*\d*(?=\s|$)/gi, "")
         .trim(),
     )
     .filter(Boolean);
@@ -257,13 +262,26 @@ for (const [id, repo] of Object.entries(REPOS)) {
       continue;
     }
 
-    const begriffe = ANDERS_IM_CODE[eintrag]
-      ? [ANDERS_IM_CODE[eintrag]]
-      : suchbegriffe(eintrag);
+    /* Der Nachschlag greift auch auf den Begriff ohne Version. Sonst müsste
+       die Tabelle jede Schreibweise einzeln führen: „pnpm Workspaces" stand
+       dort längst, „pnpm 10 Workspaces" lief trotzdem ins Leere. */
+    const begriffe = (
+      ANDERS_IM_CODE[eintrag] ? [ANDERS_IM_CODE[eintrag]] : suchbegriffe(eintrag)
+    ).map((b) => ANDERS_IM_CODE[b] ?? b);
 
     const treffer = begriffe.every((begriff) => {
       const klein = begriff.toLowerCase();
-      if ([...pakete].some((p) => p.includes(klein.replace(/[\s.]/g, "")) || p.includes(klein))) {
+      /* Ein Paketname trennt mit Bindestrich, die Seite schreibt ihn aus:
+         „React Native" gegen `react-native`. Ohne diese Schreibweise fiel der
+         Vergleich auf die Quelltextsuche zurück und war dann schon mit einer
+         beiläufigen Erwähnung in einer Notizdatei zufrieden — geprüft wurde
+         damit nicht mehr die Abhängigkeit, sondern das Vorkommen des Wortes. */
+      const varianten = [
+        klein,
+        klein.replace(/[\s.]/g, ""),
+        klein.replace(/\s+/g, "-"),
+      ];
+      if ([...pakete].some((p) => varianten.some((v) => p.includes(v)))) {
         return true;
       }
       /* Zweite Quelle: der Quelltext. Vieles ist kein Paket. */
