@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedFuer } from "@/lib/metadata";
+import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { OnePager } from "@/components/OnePager";
 import { de } from "@/content/de";
 import { site } from "@/content/site";
@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description: de.onepager.description,
   robots: { index: false, follow: true },
   openGraph: {
+    // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
+    // statt es zu mischen.
+    images: ogBildFuer("de"),
     title: de.onepager.title,
     description: de.onepager.description,
     locale: "de_DE",

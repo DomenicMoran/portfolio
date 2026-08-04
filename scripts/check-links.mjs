@@ -188,6 +188,37 @@ for (const pfad of pfade) {
     nebendateien.push([pfad, [eintrag]]);
   }
 
+  /* Die Vorschaukarte ist ein Verweis wie jeder andere, nur sieht ihn niemand
+     auf der Seite.
+
+     Sie erscheint erst beim Teilen — in LinkedIn, Slack, WhatsApp —, und wenn
+     sie fehlt, merkt das ausgerechnet der, dem man den Link geschickt hat.
+     Gemessen an der ausgelieferten Seite trugen sechs Seiten kein `og:image`:
+     Artikelübersicht, Kurzprofil und die beiden Rechtsseiten, dazu die
+     englischen Entsprechungen. Alle sechs setzen ihr `openGraph` selbst, und
+     Next ersetzt das geerbte Objekt, statt es zu mischen. */
+  const vorschau = await seite.evaluate(() =>
+    [...document.querySelectorAll("meta[property='og:image']")].map((m) =>
+      m.getAttribute("content"),
+    ),
+  );
+  if (!vorschau.length) {
+    funde.push(`${pfad}: keine Vorschaukarte (og:image)`);
+  }
+  for (const adresse of vorschau) {
+    const ohneDomain = (adresse ?? "").replace("https://domenicmoran.de", "");
+    if (!ohneDomain.startsWith("/")) continue;
+    if (gesehen.has(ohneDomain)) continue;
+    const status = (await seite.request.get(`${basis}${ohneDomain}`)).status();
+    gesehen.set(ohneDomain, status);
+    adressen++;
+    if (status >= 400) {
+      funde.push(
+        `${pfad}: Vorschaukarte ${ohneDomain} antwortet mit ${status}`,
+      );
+    }
+  }
+
   /* Und er muss überall stehen: Auf den Seiten, die ihr `alternates` selbst
      setzen, fiel er ersatzlos weg, weil Next das geerbte Objekt ersetzt statt
      es zu mischen. Gemessen betraf das Kurzprofil, Impressum und
