@@ -237,7 +237,24 @@ const ERLAUBT_GROSS = new Set([
 ]);
 
 const grosse = [];
+/** Was in der Wurzel des Repositorys stehen darf. Der Rest fällt auf. */
+const ERLAUBT_IN_DER_WURZEL = new Set([
+  ".gitignore",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "LICENSE",
+  "README.md",
+  "eslint.config.mjs",
+  "next.config.ts",
+  "package-lock.json",
+  "package.json",
+  "postcss.config.mjs",
+  "tsconfig.json",
+  "vercel.json",
+]);
+
 const gezaehlt = [];
+const wurzelfunde = [];
 {
   /* Ohne Git kein Verzeichnis der Dateien.
 
@@ -274,6 +291,23 @@ const gezaehlt = [];
       grosse.push(`${datei}: ${Math.round(groesse / 1024)} KiB`);
     }
   }
+
+  /* Die Wurzel ist das Erste, was jemand sieht.
+
+     Wer das Repository öffnet, liest zuerst die Dateiliste, und dort steht
+     alles nebeneinander: die Konfiguration, die Dokumentation und, wenn es
+     schiefgeht, ein Überbleibsel. Am 04.08.2026 lag `ar-tmp.mjs` in der
+     Wurzel — ein Messskript aus einer früheren Runde, mit `git add -A` in
+     einen Commit geraten, der von etwas anderem handelte.
+
+     Erlaubnisliste und keine Verbotsliste, aus demselben Grund wie oben: Eine
+     Verbotsliste hält bis zum nächsten Namen, den niemand vorhergesehen hat. */
+  for (const datei of bekannt) {
+    if (datei.includes("/")) continue;
+    if (!ERLAUBT_IN_DER_WURZEL.has(datei)) {
+      wurzelfunde.push(datei);
+    }
+  }
 }
 
 if (grosse.length) {
@@ -284,8 +318,21 @@ if (grosse.length) {
   console.error(
     `\nEine einmal eingecheckte Datei bleibt in der Historie, auch wenn sie ` +
       `später gelöscht wird. Bilder gehören als WebP nach public/, Originale ` +
-      `später gelöscht wird. Bilder gehören als WebP nach public/, Originale ` +
       `neben das Repository. Ausnahmen stehen in ERLAUBT_GROSS.`,
+  );
+  process.exit(1);
+}
+
+if (wurzelfunde.length) {
+  console.error(
+    `${wurzelfunde.length} unerwartete Datei in der Wurzel des Repositorys:\n`,
+  );
+  for (const w of wurzelfunde) console.error(`  ${w}`);
+  console.error(
+    `\nDie Wurzel ist die erste Seite, die jemand vom Repository sieht. ` +
+      `Messskripte gehören in den Zwischenspeicher, dauerhafte Läufe nach ` +
+      `scripts/. Gehört die Datei wirklich dorthin, steht sie in ` +
+      `ERLAUBT_IN_DER_WURZEL.`,
   );
   process.exit(1);
 }
@@ -301,6 +348,7 @@ if (befunde.length) {
 console.log(
   `${OEFFENTLICH}/ ist sauber: keine private Datei, kein verbotener Inhalt. ` +
     (gezaehlt.length
-      ? `${gezaehlt.length} verzeichnete Dateien, keine über ${Math.round(GRENZE / 1024)} KiB.`
+      ? `${gezaehlt.length} verzeichnete Dateien, keine über ${Math.round(GRENZE / 1024)} KiB, ` +
+        `${ERLAUBT_IN_DER_WURZEL.size} in der Wurzel und nichts darüber hinaus.`
       : ""),
 );
