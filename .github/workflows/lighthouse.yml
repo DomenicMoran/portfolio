@@ -1,6 +1,8 @@
-name: Lighthouse gegen Produktion
+name: Produktion messen
 
-# Warum dieser Lauf zeitgesteuert ist und nicht nur bei einem Push:
+# Zwei Messungen an der ausgelieferten Seite, einmal am Tag.
+#
+# Warum zeitgesteuert und nicht nur bei einem Push:
 #
 # Die Seite nennt unter „Core Web Vitals" einen Lighthouse-Cron gegen
 # Produktion. Bis hierher gab es ihn nicht — `check:lighthouse` lief im
@@ -9,9 +11,10 @@ name: Lighthouse gegen Produktion
 # Die ausgelieferte Seite verschlechtert sich, ohne dass jemand sie anfasst,
 # weil ein Browser eine Regel verschärft oder eine Bewertung sich verschiebt.
 #
-# Gemessen wird deshalb an der Live-Adresse, einmal am Tag, ohne Bau. Der Lauf
-# hält die Zahl „Lighthouse 100 Barrierefreiheit" gegen einen echten Lauf und
-# liest sie aus dem Inhalt, statt sie zu wiederholen.
+# Gemessen wird deshalb an der Live-Adresse, einmal am Tag, ohne Bau. Der erste
+# Schritt hält die Zahl „Lighthouse 100 Barrierefreiheit" gegen einen echten
+# Lauf und liest sie aus dem Inhalt, statt sie zu wiederholen. Der zweite prüft
+# die Zusage der Datenschutzerklärung dort, wo sie gilt.
 
 on:
   schedule:
@@ -42,3 +45,13 @@ jobs:
 
       - name: Lighthouse gegen die Live-Adresse
         run: npm run check:lighthouse
+
+      # Die Datenschutzerklärung sagt: keine Cookies, keine fremden Skripte,
+      # keine Verbindung nach außen. `check:privacy` belegte das bisher nur am
+      # eigenen Server — und genau dort kann es nicht schiefgehen. Was auf der
+      # Auslieferung dazukommt, sieht dieser Lauf nicht: Vercels Web Analytics
+      # und Speed Insights lassen sich im Dashboard einschalten und werden dann
+      # ohne Änderung am Repository in jede Seite geschrieben. Ein Klick, und
+      # die Erklärung wäre falsch, ohne dass ein Commit es verrät.
+      - name: Datenschutz an der Live-Adresse
+        run: npm run check:privacy https://domenicmoran.de
