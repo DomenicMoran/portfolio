@@ -63,6 +63,18 @@ function textOhneStand() {
   return stelle > 0 ? text.slice(0, stelle).trim() : text;
 }
 
+/** Wie `textOhneStand`, aber mit dem Abschnitt „Stand“. */
+function textMitStand() {
+  const html = readFileSync(SEITE, "utf8");
+  const nurInhalt = html.slice(html.indexOf("<main"), html.indexOf("</main>"));
+  return nurInhalt
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 let text;
 try {
   text = textOhneStand();
@@ -71,6 +83,30 @@ try {
     "  --  Datenschutzerklärung: kein Bau vorhanden, übersprungen (npm run build)",
   );
   process.exit(0);
+}
+
+/* Steht das Datum aus `stand.ts` auch wirklich auf dem Blatt?
+
+   Die Seite hatte eine eigene Konstante desselben Namens, und die gewann:
+   Geprüft wurde der Wert aus `stand.ts`, angezeigt der andere. Gemessen an
+   der ausgelieferten Seite standen dort der 3. August und in der Datei der
+   4. — der Lauf war grün, weil er die Zeile gar nicht ansah, die ein Leser
+   vor sich hat. */
+const angezeigt = textMitStand();
+if (!angezeigt.includes(STAND)) {
+  console.error(
+    `Die Datenschutzerklärung zeigt nicht den Stand aus stand.ts.
+
+` +
+      `  in stand.ts:   ${STAND}
+` +
+      `  ausgeliefert:  ${angezeigt.slice(angezeigt.lastIndexOf("Stand"), angezeigt.lastIndexOf("Stand") + 40).trim()}
+
+` +
+      `Beide Angaben gehören zusammen. Eine zweite Stelle für dasselbe Datum ` +
+      `ist eine Stelle, an der es veraltet.`,
+  );
+  process.exit(1);
 }
 
 const gerechnet = createHash("sha256").update(text).digest("hex").slice(0, 16);
