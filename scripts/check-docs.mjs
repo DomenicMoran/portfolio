@@ -60,8 +60,16 @@ const ZAHLWORT = {
   zwanzig: 20,
 };
 /** Zahlwort zu Zahl, Groß- und Kleinschreibung egal: Am Satzanfang steht
-    „Sieben“, mitten im Satz „sieben“. */
-const alsZahl = (wort) => ZAHLWORT[wort.toLowerCase()];
+    „Sieben“, mitten im Satz „sieben“.
+
+    Ziffern zählen mit, und das ist keine Bequemlichkeit: Die Tabelle endet bei
+    zwanzig, weil Zahlen darüber ausgeschrieben schwer lesbar werden. Als der
+    einundzwanzigste Prüflauf dazukam, schlug dieser Lauf „21“ vor und fand
+    seinen eigenen Vorschlag danach nicht wieder — der Satz galt als
+    verschwunden. */
+const alsZahl = (wort) =>
+  ZAHLWORT[wort.toLowerCase()] ??
+  (/^[0-9]+$/.test(wort) ? Number(wort) : undefined);
 const alsWort = (n) =>
   Object.keys(ZAHLWORT).find((w) => ZAHLWORT[w] === n) ?? String(n);
 
@@ -103,7 +111,7 @@ for (const [datei, text] of [
 }
 
 /* Und die Zahl im Fließtext davor. */
-const anzahlSatz = readme.match(/laufen (\p{L}+) Prüfungen/u);
+const anzahlSatz = readme.match(/laufen ([\p{L}0-9]+) Prüfungen/u);
 geprueft++;
 if (!anzahlSatz) {
   melde(
@@ -118,7 +126,7 @@ if (!anzahlSatz) {
   );
 }
 
-const browserSatz = readme.match(/(\p{L}+) davon\s+öffnen einen Browser/u);
+const browserSatz = readme.match(/([\p{L}0-9]+) davon\s+öffnen einen Browser/u);
 geprueft++;
 if (!browserSatz) {
   melde(
@@ -133,7 +141,9 @@ if (!browserSatz) {
   );
 }
 
-const agentsSatz = agents.match(/(\p{L}+) der Prüfläufe öffnen einen Browser/u);
+const agentsSatz = agents.match(
+  /([\p{L}0-9]+) der Prüfläufe öffnen einen Browser/u,
+);
 geprueft++;
 if (!agentsSatz) {
   melde(

@@ -70,7 +70,21 @@ export function RecruiterHub() {
                 data-schein
                 className="lit flex h-full flex-col rounded-2xl border border-line bg-surface/50 p-6"
               >
-                <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance">
+                {/* Zwei Zeilen Platz, auch wenn der Titel nur eine braucht.
+
+                    Die Karten einer Reihe sind gleich hoch, ihre Überschriften
+                    nicht: „Ich kenne den Weg durch die Stores" passt bei
+                    1440 px in eine Zeile, „Ich behandle Regulierung als Teil
+                    des Produkts" daneben braucht zwei. Der Fließtext begann
+                    dadurch 22 px versetzt — gemessen bei 1280 und 1440 px auf
+                    Deutsch, bei 768 und 1280 px auf Englisch.
+
+                    `min-h-[2lh]` und nicht `min-h-[3rem]`: Die Einheit `lh`
+                    ist die Zeilenhöhe dieses Elements. Ändert sich Schriftgrad
+                    oder `leading`, stimmt der Wert weiter. Erst ab `sm`, weil
+                    einspaltig keine Reihe existiert, die etwas ausrichten
+                    müsste. */}
+                <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[2lh]">
                   {item.title}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">

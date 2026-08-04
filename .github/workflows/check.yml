@@ -197,6 +197,12 @@ jobs:
       - name: Bündelbudget je Seite
         run: npm run check:bundle
 
+      # Karten in einem Raster sind gleich hoch, ihre Überschriften nicht.
+      # Braucht eine zwei Zeilen und die daneben eine, beginnt der Text 22 px
+      # versetzt. Auf einem Bildschirmfoto sieht man es sofort, in keinem Log.
+      - name: Kartenreihen auf einer Höhe
+        run: npm run check:cards
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
