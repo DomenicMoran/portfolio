@@ -228,6 +228,12 @@ const GRENZE = 300 * 1024;
 const ERLAUBT_GROSS = new Set([
   "public/domenic-moran-kurzprofil.pdf",
   "public/domenic-moran-one-pager.pdf",
+  /* Die Sperrdatei wächst mit den Abhängigkeiten und gehört ins Repository —
+     ohne sie installiert jeder Bau andere Fassungen. Diese Prüfung zielt auf
+     Bilder und Binärdateien, die einmal hineingeraten und für immer in der
+     Historie bleiben; eine Sperrdatei ist beides nicht. Sie überschritt die
+     Grenze, als Lighthouse für `check:lighthouse` dazukam. */
+  "package-lock.json",
 ]);
 
 const grosse = [];
