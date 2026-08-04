@@ -395,6 +395,75 @@ if (zielfunde.length > 0) {
   for (const f of zielfunde) console.error(`  ${f}`);
 }
 
+/* ------------------------------------------------------------------
+   Bei reduzierter Bewegung darf kein Inhalt auf eine Uhr warten.
+
+   `prefers-reduced-motion` heißt nicht „langsamer", sondern „zeig mir das
+   Ergebnis, nicht den Weg dorthin". Wer die Einstellung setzt, tut das oft
+   nicht aus Geschmack: Bewegung kann Schwindel und Übelkeit auslösen.
+
+   Die Regel oben prüft die Reiterleisten, also eine Wartezeit nach einem
+   Klick. Hier geht es um die stillere Hälfte: Text, der von allein nachrückt.
+   Der Terminalkasten im Abschnitt „Arbeitsweise" füllte sich Zeile für Zeile,
+   alle 620 ms eine — gemessen 6,7 Sekunden bis zum Endstand, und bei
+   abgeschalteter Bewegung genauso lange. Nach dem Eingriff: 218 ms.
+
+   Gemessen wird die Textmenge zweimal, mit acht Sekunden Abstand, nachdem die
+   Seite einmal durchgescrollt wurde. Bleibt sie gleich, wartet nichts.
+------------------------------------------------------------------ */
+
+const WACHSTUM = 40;
+const uhrfunde = [];
+
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    reducedMotion: "reduce",
+  });
+  const seite = await kontext.newPage();
+
+  for (const pfad of pfade) {
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+
+    /* Einmal durch, damit alles eingehängt ist, was auf das Hineinscrollen
+       wartet — sonst misst der Lauf eine Seite, die noch gar nicht angefangen
+       hat. */
+    await seite.evaluate(async () => {
+      const hoehe = document.documentElement.scrollHeight;
+      for (let y = 0; y < hoehe; y += 700) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 30));
+      }
+      window.scrollTo(0, 0);
+    });
+
+    const laenge = () =>
+      seite.evaluate(() => document.body.innerText.replace(/\s+/g, " ").length);
+
+    await seite.waitForTimeout(400);
+    const vorher = await laenge();
+    await seite.waitForTimeout(8000);
+    const nachher = await laenge();
+
+    if (nachher - vorher > WACHSTUM) {
+      uhrfunde.push(
+        `${pfad}: ${nachher - vorher} Zeichen kamen in acht Sekunden von allein dazu ` +
+          `(${vorher} → ${nachher})`,
+      );
+    }
+  }
+
+  await kontext.close();
+}
+
+if (uhrfunde.length > 0) {
+  console.error(
+    `\n${uhrfunde.length} ${uhrfunde.length === 1 ? "Seite" : "Seiten"} ` +
+      `füllen sich bei reduzierter Bewegung weiterhin zeitgesteuert:\n`,
+  );
+  for (const f of uhrfunde) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -413,7 +482,8 @@ if (
   verstoesse > 0 ||
   wartefunde.length > 0 ||
   ohneSkript.length > 0 ||
-  zielfunde.length > 0
+  zielfunde.length > 0 ||
+  uhrfunde.length > 0
 )
   process.exit(1);
 
@@ -421,5 +491,6 @@ console.log(
   `Keine Verstöße gegen WCAG 2.2 AA: ${geprueft} Seitenaufrufe ` +
     `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
     `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
-    `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand.`,
+    `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand, ` +
+    `nichts füllt sich bei reduzierter Bewegung von allein nach.`,
 );

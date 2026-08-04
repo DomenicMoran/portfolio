@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
@@ -117,8 +117,25 @@ function AgentTerminal() {
     setShown(0);
   }
 
+  /**
+   * Bei reduzierter Bewegung steht die Aufzeichnung sofort vollständig da.
+   *
+   * Der Kasten füllt sich Zeile für Zeile, alle 620 ms eine. Gemessen an der
+   * ausgelieferten Seite braucht er damit 6,6 Sekunden bis zum Endstand — und
+   * zwar genauso lange, wenn jemand Bewegung abgeschaltet hat. Die Einstellung
+   * heißt aber nicht „langsamer", sondern „zeig mir das Ergebnis, nicht den
+   * Weg dorthin". Wer sie setzt, tut das oft nicht aus Geschmack: Bewegung
+   * kann Schwindel und Übelkeit auslösen, und eine Zeile, die alle 620 ms
+   * nachrückt, verschiebt den Text darunter 51-mal.
+   *
+   * Der Wiederholen-Knopf bleibt, er ist eine bewusste Handlung.
+   */
+  const wenigerBewegung = useReducedMotion();
+
   useEffect(() => {
     if (!inView) return;
+
+    if (wenigerBewegung) return;
 
     let index = 0;
     const timer = window.setInterval(() => {
@@ -128,7 +145,7 @@ function AgentTerminal() {
     }, 620);
 
     return () => window.clearInterval(timer);
-  }, [inView, lines.length, runId]);
+  }, [inView, lines.length, runId, wenigerBewegung]);
 
   /**
    * Im Ausdruck stehen alle Zeilen sofort da.
@@ -138,6 +155,12 @@ function AgentTerminal() {
    * Papier steht ein leerer Terminalrahmen mit Überschrift — die Stelle, an
    * der die Seite ihre Arbeitsweise zeigt, ausgerechnet leer.
    */
+  /* Abgeleitet statt im Effekt gesetzt: Ein `setShown` direkt im Effekt
+     stößt einen zweiten Renderdurchgang an, und React beanstandet das zu
+     Recht. Der Endstand ist hier keine Zustandsänderung, sondern eine
+     Rechnung aus zwei Angaben. */
+  const sichtbar = wenigerBewegung && inView ? lines.length : shown;
+
   useEffect(() => {
     const druck = window.matchMedia("print");
     const alleZeigen = () => setShown(lines.length);
@@ -182,7 +205,7 @@ function AgentTerminal() {
       </div>
 
       <div className="min-h-[19rem] p-4 font-mono text-[12px] leading-relaxed sm:min-h-[21rem]">
-        {lines.slice(0, shown).map((line, i) => {
+        {lines.slice(0, sichtbar).map((line, i) => {
           const style = LINE_STYLE[line.kind as keyof typeof LINE_STYLE];
           return (
             <motion.p
@@ -199,7 +222,7 @@ function AgentTerminal() {
           );
         })}
 
-        {shown < lines.length ? (
+        {sichtbar < lines.length ? (
           <span className="inline-block h-3.5 w-1.5 animate-caret bg-acid align-middle" />
         ) : null}
       </div>
