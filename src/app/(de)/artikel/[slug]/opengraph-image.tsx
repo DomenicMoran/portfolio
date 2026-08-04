@@ -44,6 +44,31 @@ export function generateStaticParams() {
   return artikelDe.map((a) => ({ slug: a.slug }));
 }
 
+/**
+ * Der Alternativtext je Karte, mit dem Titel darin.
+ *
+ *  ist ein fester Wert und stand deshalb unter jeder der
+ * fünf Karten gleich: „Artikel von Domenic Moran". Er ist das, was ein
+ * Vorleseprogramm ansagt, wenn die Karte in einem Verlauf auftaucht — und
+ * damit dasselbe Argument wie beim Titel im Bild: Ohne ihn erfährt jemand
+ * nur, dass es um dieses Portfolio geht, nicht worum es geht.
+ */
+export function generateImageMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const artikel = artikelNach("de", params.slug);
+  return [
+    {
+      id: "karte",
+      alt: artikel ? `${artikel.title}. Artikel von ${site.name}` : alt,
+      size,
+      contentType,
+    },
+  ];
+}
+
 export default async function Image({
   params,
 }: {

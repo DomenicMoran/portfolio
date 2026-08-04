@@ -223,6 +223,33 @@ for (const route of gebauteSeiten()) {
     );
   }
 
+  /* Und dieselbe Regel für das, was nicht auf der Seite steht.
+
+     Titel, Beschreibung und der Alternativtext der Vorschaukarte erscheinen
+     im Reiter des Browsers, im Suchergebnis und in jedem geteilten Verlauf —
+     also genau dort, wo jemand die Seite zum ersten Mal sieht. Der Lauf las
+     bis hierher nur den sichtbaren Text, und ein Gedankenstrich in einer
+     dieser Zeilen kam durch. Genau so einer stand seit heute in den fünf
+     Artikelkarten, bis er von Hand auffiel.
+
+     Der Halbgeviertstrich bleibt erlaubt: „Datenschutz – Domenic Moran" ist
+     die übliche Trennung im Titel und kein Stilmittel im Satz. */
+  const rohesHtml = readFileSync(datei, "utf8");
+  const metafelder = [
+    ...rohesHtml.matchAll(/<title>([^<]*)<\/title>/g),
+    ...rohesHtml.matchAll(
+      /<meta[^>]+(?:name|property)="((?:og:|twitter:)?(?:title|description|image:alt))"[^>]+content="([^"]*)"/g,
+    ),
+  ];
+  for (const feld of metafelder) {
+    const wert = feld[2] ?? feld[1];
+    const name = feld[2] ? feld[1] : "<title>";
+    if (!wert.includes("—")) continue;
+    funde.push(
+      `${route}: Gedankenstrich in „${name}" — „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
+    );
+  }
+
   const [auf, zu] = PAAR[sprache];
   const folge = [...text].filter(
     (z) => z === UNTEN || z === OBEN || z === OBEN_RECHTS,

@@ -191,6 +191,13 @@ jobs:
       - name: Kernwerte auf dem Telefon
         run: npm run check:vitals
 
+      # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
+      # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
+      # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
+      # eine Aussage über die Live-Adresse gehört auch dort geprüft.
+      - name: Lighthouse gegen die Live-Adresse
+        run: npm run check:lighthouse
+
       # Die genannte Technik gegen die Produktivrepos. Hier laufen die nicht
       # mit, der Schritt meldet das und überspringt — er steht trotzdem in der
       # Kette, damit die Liste vollständig ist und niemand ihn für vergessen
