@@ -230,18 +230,18 @@ const NUR_DEUTSCH =
   if (funde2.length > 0) {
     await browser.close();
     beenden();
-    console.error(`${funde2.length} Architekturbild(er) mit deutschen Beschriftungen:
-`);
+    console.error(
+      `${funde2.length} Architekturbild(er) mit deutschen Beschriftungen:\n`,
+    );
     for (const f of funde2) console.error(`  ${f}`);
     console.error(
-      `
-Die Beschriftung fehlt in src/content/architecture-en.ts. Ohne Eintrag ` +
-        `bleibt der deutsche Text stehen.`,
+      `\nDie Beschriftung fehlt in src/content/architecture-en.ts. Ohne ` +
+        `Eintrag bleibt der deutsche Text stehen.`,
     );
     process.exit(1);
   }
   console.log(
-    `${bilder} Architekturbilder auf /en ohne deutsche Beschriftung.`,
+    `${bilder} Architekturbilder auf /en, alle mit englischer Beschriftung.`,
   );
 }
 
