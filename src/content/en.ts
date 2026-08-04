@@ -142,7 +142,10 @@ export const en: Content = {
     empty: "Nothing found.",
     jump: "Jump to",
     pdf: { label: "One-pager as PDF", hint: "Print-ready summary" },
-    onepagerWeb: { label: "One-pager in the browser", hint: "The same summary as a page" },
+    onepagerWeb: {
+      label: "One-pager in the browser",
+      hint: "The same summary as a page",
+    },
     mail: "Write an email",
     github: "Source code and profile",
     linkedin: "Professional background",
@@ -627,13 +630,27 @@ export const en: Content = {
       stack: [
         {
           group: "Apps",
-          items: ["Next.js", "Expo", "TypeScript", "Turborepo"],
+          items: [
+            "Next.js 16 App Router",
+            "React 19",
+            "Expo SDK 54",
+            "React Native 0.81",
+            "TypeScript 5.9",
+          ],
         },
         {
           group: "Services",
-          items: ["Fastify", "Supabase", "Postgres", "RLS"],
+          items: [
+            "Fastify 5",
+            "Zod 4",
+            "Supabase / Postgres",
+            "Row Level Security",
+          ],
         },
-        { group: "Delivery", items: ["Vercel", "pnpm workspaces"] },
+        {
+          group: "Delivery",
+          items: ["Vercel", "Turborepo", "pnpm 10 workspaces"],
+        },
       ],
       metrics: [
         { value: "11,892", label: "recipes in the catalogue" },
@@ -1183,8 +1200,7 @@ export const en: Content = {
     solveNote: "{n} combinations checked in {ms} ms",
     noFit: "No meal fits under this target",
     below: "{n} kcal below the target",
-    fieldLabel:
-      "All 4,096 combinations, calories across, protein up",
+    fieldLabel: "All 4,096 combinations, calories across, protein up",
     field: {
       x: "Calories",
       y: "Protein",
@@ -1226,7 +1242,8 @@ export const en: Content = {
     speed: "{ms} ms",
     today: "today",
     note: "adhan 4.4.4 (MIT), method 13 Diyanet, school 0 Shafi. 2,190 points in time, computed in the browser, without a single request leaving it. This is exactly how the app computes when there is no network.",
-    hardPart: "Above roughly 48° the sun never drops far enough below the horizon in summer, and Fajr and Isha are no longer well defined. The three common rules then drift apart: in Berlin, in June, by more than two hours. A user report saying “the prayer times are wrong” led exactly here. The app picks the twilight-angle rule, not because it is more correct, but because it matches what users compare against. In Tromsø even that leaves 117 days without a result: the night the calculation refers to does not happen there.",
+    hardPart:
+      "Above roughly 48° the sun never drops far enough below the horizon in summer, and Fajr and Isha are no longer well defined. The three common rules then drift apart: in Berlin, in June, by more than two hours. A user report saying “the prayer times are wrong” led exactly here. The app picks the twilight-angle rule, not because it is more correct, but because it matches what users compare against. In Tromsø even that leaves 117 days without a result: the night the calculation refers to does not happen there.",
   },
   onepager: {
     title: "One-pager",
