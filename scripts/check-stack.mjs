@@ -66,9 +66,6 @@ const KEINE_TECHNIK = new Set([
   "Eigenes Retrieval",
   "Persistente Browser-Profile",
   "Regelbasierter Fallback",
-  "Lighthouse-Budgets",
-  "Bundle-Budget",
-  "Lighthouse-Cron",
   "Cron-Scheduler",
   "App Widgets",
   "Live Activities",
@@ -85,6 +82,13 @@ const KEINE_TECHNIK = new Set([
    liegt — ein Fehlalarm, und ein Wächter mit Fehlalarmen wird abgeschaltet.
 */
 const ANDERS_IM_CODE = {
+  /* Diese beiden standen in KEINE_TECHNIK und wurden damit von niemandem
+     geprüft — ein Zirkelschluss: Die Seite nennt für MenuCloud einen
+     Lighthouse-Cron und ein Bundle-Budget, und die Prüfung nahm genau diese
+     beiden Angaben von der Prüfung aus. Beide gibt es, sie heißen im Repo nur
+     anders:  und . */
+  "Lighthouse-Cron": "lighthouse-audit",
+  "Bundle-Budget": "bundle-size-budget",
   Turborepo: "turbo.json",
   "pnpm Workspaces": "pnpm-workspace",
   "React 19 RSC": "react",
@@ -238,7 +242,16 @@ for (const [id, repo] of Object.entries(REPOS)) {
   };
   sammle(repo);
 
-  const namen = [...block[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  /* Ohne die Kommentare im Block.
+     Gelesen wird ein Stück Quelltext von `stack: [` bis zur schließenden
+     Klammer, und darin stehen auch Erklärungen. Eine davon nennt in
+     Anführungszeichen einen Namen, der früher einmal dastand
+     („Lighthouse-Budgets") — der Lauf hielt ihn für einen Eintrag und
+     verlangte einen Beleg für etwas, das auf der Seite gar nicht mehr steht. */
+  const ohneKommentare = block[1]
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/^\s*\/\/.*$/gm, " ");
+  const namen = [...ohneKommentare.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
 
   for (const eintrag of namen) {
     if (KEINE_TECHNIK.has(eintrag)) continue;

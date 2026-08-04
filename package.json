@@ -39,7 +39,8 @@
     "check:exports": "node scripts/check-exports.mjs",
     "check:docs": "node scripts/check-docs.mjs",
     "build:shots": "node scripts/build-shots.mjs",
-    "check:lighthouse": "node scripts/check-lighthouse.mjs"
+    "check:lighthouse": "node scripts/check-lighthouse.mjs",
+    "check:bundle": "node scripts/check-bundle.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",

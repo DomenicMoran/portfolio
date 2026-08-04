@@ -1,0 +1,44 @@
+name: Lighthouse gegen Produktion
+
+# Warum dieser Lauf zeitgesteuert ist und nicht nur bei einem Push:
+#
+# Die Seite nennt unter „Core Web Vitals" einen Lighthouse-Cron gegen
+# Produktion. Bis hierher gab es ihn nicht — `check:lighthouse` lief im
+# Prüfworkflow, also nur, wenn jemand etwas ändert. Genau das ist aber der
+# Fall, in dem ohnehin gemessen wird. Interessant ist die andere Richtung:
+# Die ausgelieferte Seite verschlechtert sich, ohne dass jemand sie anfasst,
+# weil ein Browser eine Regel verschärft oder eine Bewertung sich verschiebt.
+#
+# Gemessen wird deshalb an der Live-Adresse, einmal am Tag, ohne Bau. Der Lauf
+# hält die Zahl „Lighthouse 100 Barrierefreiheit" gegen einen echten Lauf und
+# liest sie aus dem Inhalt, statt sie zu wiederholen.
+
+on:
+  schedule:
+    # Täglich um 05:37 UTC, nach dem Auffrischen der Zahlen und zu einer
+    # Minute, die sonst niemand nimmt.
+    - cron: "37 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  messen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten
+        run: npm ci
+
+      # Lighthouse startet Chrome selbst; der Lauf reicht ihm den von
+      # Playwright mitgebrachten Browser.
+      - name: Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Lighthouse gegen die Live-Adresse
+        run: npm run check:lighthouse
