@@ -83,6 +83,13 @@ export function ArticlePage({
     },
     publisher: { "@type": "Person", name: content.site.name },
     mainEntityOfPage: `${content.site.url}${chrome.base}/${article.slug}`,
+    /* Kein `image`, und das ist gemessen statt vergessen: Jeder Artikel hat
+       eine Karte, aber Next liefert sie nur unter einer Adresse mit Prüfsumme
+       aus — `…/opengraph-image` allein antwortet mit 404. Diese Adresse
+       entsteht erst beim Bau und steht einer Serverkomponente nicht zur
+       Verfügung. Eine geratene Adresse hier wäre ein toter Verweis in den
+       strukturierten Daten, also steht das Bild dort, wo Next es selbst
+       einträgt: in `og:image`. */
     /* Wovon der Text handelt, als Angabe und nicht nur als Wort im Fließtext.
        Antwortmaschinen verbinden darüber den Artikel mit dem Produkt; ohne
        das steht hier ein Text über Whisper und daneben, unverbunden, eine App

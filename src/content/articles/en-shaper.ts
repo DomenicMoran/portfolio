@@ -24,7 +24,7 @@ export const shaperEn: Article = {
     },
     {
       kind: "p",
-      text: "The app was showing a dashed circle with a dot in it, in the middle of verses. Not everywhere, but often enough to be immediately obvious.",
+      text: "The app was showing a dashed circle with a dot in it, in the middle of verses, here in this sentence: `◌ۛ`. Not everywhere, but often enough to be immediately obvious. The circle is real, and it is not part of the text.",
     },
     { kind: "h2", text: "The obvious explanation, and the wrong one" },
     {
