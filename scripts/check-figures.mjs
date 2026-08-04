@@ -205,7 +205,21 @@ if (existsSync(MENUCLOUD)) {
     aufSeite?.[1] ?? "",
   );
   if (vitest.numFailedTests > 0) {
+    /* Mit Namen. „2 Unit-Tests scheitern" ist eine Zahl, mit der man nichts
+       anfangen kann: Der Lauf steht im Portfolio, die Tests liegen in einem
+       anderen Repo, und wer den Bericht liest, weiß nicht einmal, in welcher
+       Datei er suchen soll. Der Bericht liegt als JSON bereits vor. */
     zeilen.push(`  !!  ${vitest.numFailedTests} Unit-Tests scheitern`);
+    for (const datei of vitest.testResults ?? []) {
+      for (const fall of datei.assertionResults ?? []) {
+        if (fall.status !== "failed") continue;
+        const kurz = String(datei.name ?? "")
+          .replace(MENUCLOUD, "")
+          .replace(/\\/g, "/")
+          .replace(/^\//, "");
+        zeilen.push(`        ${kurz}: ${fall.fullName ?? fall.title}`);
+      }
+    }
     abweichungen++;
   }
 } else {
@@ -2544,9 +2558,41 @@ const ANGABEN = [
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
+  /* Die Funde noch einmal am Ende.
+     Der Bericht ist knapp sechzig Zeilen lang, und die Schlusszeile nannte
+     bisher nur die Anzahl. Wer den Lauf in der Actions-Ansicht rot sieht,
+     bekam damit eine Zahl und musste im Protokoll nach oben suchen — beim
+     ersten Mal in dieser Runde stand die Fundzeile außerhalb dessen, was
+     ausgegeben war, und die Abweichung war aus dem Bericht allein nicht mehr
+     zu benennen. */
+  /* Mit den eingerückten Folgezeilen: Ein Fund wie „2 Versionsangaben
+     auffällig" steht in einer Kopfzeile, und was genau auffiel, in den
+     Zeilen darunter. Ohne sie wiederholt die Zusammenfassung die Überschrift
+     und lässt den Befund weg. */
+  const auffaellig = [];
+  let sammelnd = false;
+  for (const z of zeilen) {
+    if (/^\s{2}(!=|!!)/.test(z)) {
+      auffaellig.push(z);
+      sammelnd = true;
+    } else if (sammelnd && /^\s{6}\S/.test(z)) {
+      auffaellig.push(z);
+    } else {
+      sammelnd = false;
+    }
+  }
   console.error(
-    `\n${abweichungen} Abweichung${abweichungen === 1 ? "" : "en"} zwischen Seite und Wirklichkeit.`,
+    `\n${abweichungen} Abweichung${abweichungen === 1 ? "" : "en"} zwischen Seite und Wirklichkeit:\n`,
   );
+  for (const z of auffaellig) console.error(z);
+  /* Wenn hier nichts steht, hat eine Prüfung den Zähler erhöht, ohne eine
+     Zeile zu hinterlassen. Das ist ein Fehler im Lauf und muss es auch sagen —
+     ein stummes Rot ist schlimmer als gar keine Prüfung. */
+  if (auffaellig.length === 0) {
+    console.error(
+      "  (keine Fundzeile im Bericht — eine Prüfung zählt, ohne zu melden)",
+    );
+  }
   process.exit(1);
 }
 /*

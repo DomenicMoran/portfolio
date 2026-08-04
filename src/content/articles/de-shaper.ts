@@ -28,7 +28,7 @@ export const shaperDe: Article = {
     },
     {
       kind: "p",
-      text: "In der App stand ein gestrichelter Kreis mit einem Punkt darin mitten in Versen. Nicht überall, aber häufig genug, dass es sofort auffiel.",
+      text: "In der App stand ein gestrichelter Kreis mit einem Punkt darin mitten in Versen, hier im Satz: `◌ۛ`. Nicht überall, aber häufig genug, dass es sofort auffiel. Der Kreis ist echt und gehört nicht zum Text.",
     },
     { kind: "h2", text: "Die naheliegende und falsche Erklärung" },
     {
