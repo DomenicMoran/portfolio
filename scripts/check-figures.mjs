@@ -2642,6 +2642,88 @@ const ANGABEN = [
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Die Verweise im Profil-README, gegen die Wirklichkeit.
+
+   Diese Datei ist die Startseite des GitHub-Kontos: das Erste, was jemand
+   sieht, der den Namen aus einer Bewerbung in die Suche eingibt. Sie verweist
+   auf die Seite, auf die fünf Artikel und auf sechs Repositories — und keiner
+   dieser Verweise wurde je nachgesehen. Ein Artikel, der eine neue Adresse
+   bekommt, hinterlässt hier ein 404, und zwar an der sichtbarsten Stelle
+   überhaupt.
+
+   Geprüft wird die Vorlage unter `docs/`, aus der die veröffentlichte Fassung
+   entsteht. Sie liegt außerhalb dieses Repos; fehlt sie, wird übersprungen und
+   das gesagt.
+--------------------------------------------------------------------------- */
+
+{
+  const vorlage = "../docs/GITHUB-PROFILE-README.md";
+  if (!existsSync(vorlage)) {
+    zeilen.push(`  --  ${vorlage} nicht vorhanden, Verweise übersprungen`);
+  } else {
+    const text = readFileSync(vorlage, "utf8");
+    const ziele = [
+      ...new Set(
+        [...text.matchAll(/\]\((https?:\/\/[^)]+)\)/g)].map((m) => m[1]),
+      ),
+    ];
+
+    const tot = [];
+    let erreicht = 0;
+    let stumm = 0;
+
+    for (const ziel of ziele) {
+      const host = new URL(ziel).host;
+      try {
+        const antwort = await fetch(ziel, {
+          redirect: "follow",
+          headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
+          signal: AbortSignal.timeout(20000),
+        });
+        if (antwort.status === 200) {
+          erreicht++;
+          continue;
+        }
+        /* Dieselben Ausnahmen wie bei den Verweisen der Seite: Manche Dienste
+           antworten Werkzeugen grundsätzlich anders als einem Browser. */
+        if (AUSNAHMEN.get(host) === antwort.status) {
+          erreicht++;
+          continue;
+        }
+        tot.push(`${ziel}: Status ${antwort.status}`);
+      } catch {
+        /* Bei der eigenen Adresse ist „antwortet nicht" kein Grund zum
+           Überspringen, sondern der Fund selbst: Genau so verhält sich ein
+           Verweis auf einen Artikel, den es nicht mehr gibt. Übersprungen
+           wird nur, was fremden Diensten gehört — die antworten Werkzeugen
+           regelmäßig anders als einem Browser. */
+        if (host.endsWith("domenicmoran.de")) {
+          tot.push(`${ziel}: keine Antwort`);
+        } else {
+          stumm++;
+        }
+      }
+    }
+
+    if (tot.length) {
+      abweichungen += tot.length;
+      zeilen.push(
+        `  !!  ${tot.length} Verweis(e) im Profil-README führen ins Leere:`,
+      );
+      for (const t of tot) zeilen.push(`        ${t}`);
+    } else if (stumm) {
+      zeilen.push(
+        `  --  Profil-README: ${stumm} Ziel(e) nicht erreichbar, übersprungen`,
+      );
+    } else {
+      zeilen.push(
+        `  ok  Profil-README        ${String(erreicht).padStart(6)} Verweise antworten`,
+      );
+    }
+  }
+}
+
 console.log(zeilen.join("\n"));
 
 if (abweichungen) {
