@@ -30,6 +30,11 @@ ${a.tags.map((t) => `    <category term="${xml(t)}"/>`).join("\n")}
     })
     .join("\n");
 
+  /* `<icon>`: Ohne das Zeichen zeigt ein Feedleser die Einträge ohne
+     Absender, und in einer Liste mit zwanzig Quellen ist genau das der
+     Unterschied zwischen wiedererkannt und übersehen. Dieselbe Adresse
+     wie im Dokumentkopf; die Begründung steht hier und nicht in der
+     ausgelieferten Datei, die ein Leseprogramm auswertet. */
   const feed = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <title>${xml(chromeEn.title)}</title>
@@ -38,6 +43,7 @@ ${a.tags.map((t) => `    <category term="${xml(t)}"/>`).join("\n")}
   <link href="${basis}${chromeEn.base}"/>
   <id>${basis}${chromeEn.base}</id>
   <updated>${neuestes}T12:00:00Z</updated>
+  <icon>${basis}/icon</icon>
   <author><name>${xml(site.name)}</name></author>
 ${eintraege}
 </feed>
