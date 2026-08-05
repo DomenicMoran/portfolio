@@ -337,6 +337,83 @@ for (const adresse of VEROEFFENTLICHT) {
 }
 
 /* ---------------------------------------------------------------------------
+   Die Feeds führen, was sie führen sollen
+
+   Bisher stand nur ihre Adresse in der Liste oben, und die prüft ein HTTP 200.
+   Das ist bei einem Feed die schwächste aller Aussagen: Ein leeres, ein
+   veraltetes und ein vollständiges Atom-Dokument antworten alle mit 200.
+
+   Abonnenten sind dabei der stillste Kanal dieser Seite. Wer über den Feed
+   liest, kommt nie wieder vorbei, um nachzusehen, ob etwas fehlt — er hört
+   einfach nichts mehr, und niemand meldet das zurück. Ein sechster Artikel,
+   der es nicht in den Feed schafft, bleibt für diese Leser unsichtbar.
+
+   Geprüft wird gegen die Artikel, die weiter oben ohnehin schon als
+   veröffentlicht geführt werden: dieselbe Quelle, keine zweite Liste.
+   ------------------------------------------------------------------------ */
+{
+  const FEEDS = [
+    { pfad: "/artikel/feed.xml", praefix: "/artikel/", fremd: "/en/articles/" },
+    {
+      pfad: "/en/articles/feed.xml",
+      praefix: "/en/articles/",
+      fremd: "/artikel/",
+    },
+  ];
+
+  for (const feed of FEEDS) {
+    const antwort = await fetch(`${basis}${feed.pfad}`).catch(() => null);
+    if (!antwort || antwort.status !== 200) continue; // oben schon gemeldet
+    const xml = await antwort.text();
+
+    const eintraege = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(
+      (t) => t[1],
+    );
+    /* Die Artikel dieser Sprache aus der Liste oben, ohne die Übersicht. */
+    const erwartet = VEROEFFENTLICHT.filter(
+      (a) => a.startsWith(feed.praefix) && !a.endsWith("feed.xml"),
+    );
+
+    if (eintraege.length !== erwartet.length) {
+      funde.push(
+        `${feed.pfad}: ${eintraege.length} Einträge, aber ${erwartet.length} ` +
+          `veröffentlichte Artikel. Wer den Feed abonniert hat, sieht die ` +
+          `Differenz nie.`,
+      );
+    }
+
+    for (const artikel of erwartet) {
+      if (!xml.includes(artikel)) {
+        funde.push(`${feed.pfad}: ${artikel} fehlt im Feed.`);
+      }
+    }
+
+    /* Kein Eintrag der anderen Sprachfassung: Sonst bekommt ein englischer
+       Leser deutsche Artikel ins Lesegerät, und zwar ohne es zu merken. */
+    if (xml.includes(`${basis}${feed.fremd}`) || xml.includes(feed.fremd)) {
+      funde.push(
+        `${feed.pfad} führt Einträge aus ${feed.fremd} — die Sprachfassungen ` +
+          `mischen sich im Lesegerät.`,
+      );
+    }
+
+    /* Jeder Eintrag braucht Titel, Adresse und Datum. Ohne Datum sortiert
+       ein Lesegerät nach Zufall, ohne Titel steht dort die Adresse. */
+    for (const [i, eintrag] of eintraege.entries()) {
+      for (const [feld, muster] of [
+        ["Titel", /<title[^>]*>[\s\S]*?<\/title>/],
+        ["Adresse", /<link[^>]*href="[^"]+"/],
+        ["Datum", /<updated>[^<]+<\/updated>/],
+      ]) {
+        if (!muster.test(eintrag)) {
+          funde.push(`${feed.pfad}: Eintrag ${i + 1} ohne ${feld}.`);
+        }
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Abkürzungen aus vercel.json
 
    `/cv`, `/blog`, `/en/resume` — Adressen, die niemand verlinkt und die
