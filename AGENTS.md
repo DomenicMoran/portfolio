@@ -266,6 +266,7 @@ npm run check:focus    # der Tastaturfokus bleibt sichtbar
 npm run check:panels   # jede Tafel hinter einem Reiter zeigt ihren Inhalt
 npm run check:language # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo     # die Demo auf der Startseite rechnet nachprüfbar richtig
+npm run check:code     # jeder Codeblock in den Artikeln geht syntaktisch auf
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 ```
