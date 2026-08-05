@@ -481,8 +481,53 @@ for (const pfad of gepruefteSeiten) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Das Kurzprofil passt noch auf ein Blatt
+
+   `check:onepager` merkt eine zweite Seite erst am fertigen PDF, und das
+   entsteht von Hand. Wer eine Zeile ergänzt, sieht bis dahin nichts: Am
+   Bildschirm scrollt die Seite einfach weiter.
+
+   Gemessen wird die Höhe von `.onepager` im Druckmodus bei 794 px Papier-
+   breite. Die Grenze liegt bei 1040 px — A4 sind 1123 px bei 96 dpi, davon
+   gehen die Druckränder ab. Aktuell stehen dort 894 px auf Deutsch und
+   863 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht. */
+const BLATTGRENZE = 1040;
+const blattfunde = [];
+
+for (const pfad of ["/onepager", "/en/onepager"]) {
+  const seite = await browser.newPage({
+    viewport: { width: PAPIERBREITE, height: PAPIERHOEHE },
+  });
+  await seite.emulateMedia({ media: "print" });
+  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  if (antwort?.status() === 200) {
+    await seite.waitForTimeout(600);
+    const hoehe = await seite.evaluate(() => {
+      const el = document.querySelector(".onepager");
+      return el ? Math.round(el.getBoundingClientRect().height) : null;
+    });
+    if (hoehe === null) blattfunde.push(`${pfad}: kein Element mit .onepager`);
+    else if (hoehe > BLATTGRENZE) {
+      blattfunde.push(
+        `${pfad}: ${hoehe} px hoch, ${BLATTGRENZE} sind das Blatt. ` +
+          `Gedruckt wären das zwei Seiten.`,
+      );
+    } else {
+      console.log(`  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`);
+    }
+  }
+  await seite.close();
+}
+
 await browser.close();
 beenden();
+
+if (blattfunde.length > 0) {
+  console.error(`\nDas Kurzprofil passt nicht mehr auf ein Blatt:`);
+  for (const f of blattfunde) console.error(`  ${f}`);
+  process.exit(1);
+}
 
 if (fehler > 0) {
   console.error(
