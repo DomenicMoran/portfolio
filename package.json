@@ -49,7 +49,8 @@
     "check:language": "node scripts/check-language.mjs",
     "check:demo": "node scripts/check-demo-math.mjs",
     "check:code": "node scripts/check-code-blocks.mjs",
-    "check:schema": "node scripts/check-structured-data.mjs"
+    "check:schema": "node scripts/check-structured-data.mjs",
+    "check:palette": "node scripts/check-palette.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",

@@ -220,12 +220,12 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-Achtzehn der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+Neunzehn der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
 Seite: `check:a11y`, `check:cards`, `check:demo`, `check:focus`,
 `check:font-size`, `check:headings`, `check:language`, `check:lighthouse`,
-`check:links`, `check:panels`, `check:parity`, `check:print`,
-`check:privacy`, `check:schema`, `check:separators` und `check:vitals`.
-Sie sind der eigentliche Beweis.
+`check:links`, `check:palette`, `check:panels`, `check:parity`,
+`check:print`, `check:privacy`, `check:schema`, `check:separators` und
+`check:vitals`. Sie sind der eigentliche Beweis.
 
 Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare Ausgabe:
 `src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate“ oder „fünf Monate“
@@ -268,6 +268,7 @@ npm run check:language # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo     # die Demo auf der Startseite rechnet nachprüfbar richtig
 npm run check:code     # jeder Codeblock in den Artikeln geht syntaktisch auf
 npm run check:schema   # die strukturierten Daten decken sich mit der Seite
+npm run check:palette  # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 ```

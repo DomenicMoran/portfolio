@@ -92,7 +92,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 28 Prüfungen, die den Bau nicht ersetzen. Achtzehn davon
+Nach dem Bau laufen 29 Prüfungen, die den Bau nicht ersetzen. Neunzehn davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -125,6 +125,7 @@ npm run check:language  # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo      # die Demo auf der Startseite rechnet nachprüfbar richtig
 npm run check:code      # jeder Codeblock in den Artikeln geht syntaktisch auf
 npm run check:schema    # die strukturierten Daten decken sich mit der Seite
+npm run check:palette   # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs      # die Zahlen in dieser Datei und in AGENTS.md stimmen noch
 ```
@@ -233,6 +234,7 @@ scripts/
 ├─ check-demo-math.mjs            die Demo auf der Startseite rechnet nachprüfbar richtig
 ├─ check-code-blocks.mjs          jeder Codeblock in den Artikeln geht syntaktisch auf
 ├─ check-structured-data.mjs      die strukturierten Daten decken sich mit der Seite
+├─ check-palette.mjs              die Befehlspalette findet und führt hin
 ├─ check-lighthouse.mjs           die Zahl „Lighthouse 100" gegen einen echten Lauf
 ├─ check-vitals.mjs               LCP und CLS auf einem gedrosselten Telefon
 │

@@ -256,6 +256,14 @@ jobs:
       - name: Strukturierte Daten gegen die Seite
         run: npm run check:schema
 
+      # Die Befehlspalette ist das einzige Bedienelement, das die ganze
+      # Seite erschließt — und die Sorte Bauteil, die stumm versagt: Ihre
+      # Liste kommt aus dem Inhalt, und verschiebt sich dort ein Schlüssel,
+      # meldet sie „Nichts gefunden." Das sieht aus wie eine Antwort und
+      # ist keine.
+      - name: Die Befehlspalette findet
+        run: npm run check:palette
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
