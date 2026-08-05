@@ -154,7 +154,21 @@ export function NotFoundPage({
           darueber — gemessen an der ausgelieferten Seite bei 1440 px. */}
       <footer className="relative px-6 pb-10">
         <div className="mx-auto w-full max-w-2xl">
-          <p className="border-t border-line pt-6 text-sm text-ink-faint">
+          {/* Zwei Zeilen Platz, auch wenn eine reicht.
+
+              Diese Zeile bricht bei 390 px um, sobald sie in der Ersatzschrift
+              gesetzt wird, und wird einzeilig, sobald Geist eintrifft. Die
+              Fußzeile schrumpft dabei von 133 auf 118 px, und weil der Inhalt
+              darüber senkrecht zentriert steht, rutscht mit ihr die ganze
+              Seite: gemessen in der CI CLS 0,1626 bei einem Budget von 0,1 —
+              der Inhaltsblock 8 px, die Fußzeile 16 px, in allen drei Läufen
+              gleich. Örtlich entsteht der Umbruch nicht, weil Windows eine
+              schmalere Ersatzschrift stellt als der Linux-Läufer.
+
+              `min-h-[2lh]` hält beide Zustände auf derselben Höhe. Damit ist
+              es gleichgültig, wann die Schrift eintrifft und wie breit die
+              Ersatzschrift ist. */}
+          <p className="min-h-[2lh] border-t border-line pt-6 text-sm text-ink-faint">
             {notFound.report}{" "}
             <a
               href={mailAdresse(site.email, site.mailSubject)}
