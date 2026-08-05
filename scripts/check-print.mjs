@@ -387,8 +387,36 @@ for (const pfad of gepruefteSeiten) {
   // das tut jemand, der die Seite weiterreichen will. Ohne das Neuladen wären
   // die Zähler vom ersten Durchgang längst am Endwert und die Prüfung bliebe
   // grün, während der Ausdruck „0" zeigt.
-  await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
   await seite.emulateMedia({ media: "print" });
+
+  /* Auf die Hydration warten, nicht auf eine Wartezeit.
+   *
+   * Der Terminalkasten der Startseite füllt sich erst, wenn sein Effekt
+   * läuft: Am Bildschirm Zeile für Zeile, im Druck sofort vollständig. Bis
+   * dahin steht dort die Serverfassung mit null Zeilen. Der Lauf lud mit
+   * `domcontentloaded` und maß 50 ms später — auf dieser Maschine reichte
+   * das, auf der langsameren in der CI nicht: Dort fehlten im Ausdruck von
+   * `/` dreizehn und von `/en` vierzehn Wörter, alle aus diesem Kasten,
+   * während derselbe Lauf hier zweimal grün blieb.
+   *
+   * Gewartet wird deshalb auf den Zustand selbst und nicht auf eine Zahl von
+   * Millisekunden: Sobald der Kasten Zeilen trägt, ist der Effekt gelaufen.
+   * Seiten ohne Kasten warten nicht. */
+  await seite
+    .waitForFunction(
+      () => {
+        const kasten = document.querySelector("[data-agent-session]");
+        return !kasten || kasten.children.length > 0;
+      },
+      undefined,
+      { timeout: 10000 },
+    )
+    .catch(() => {
+      /* Läuft der Kasten nicht an, meldet die Textprüfung darunter das
+         Fehlende — mit den Wörtern, die fehlen. Das ist die bessere
+         Fehlermeldung als ein Zeitüberlauf hier. */
+    });
 
   // Die Seite in ihren Ruhezustand zwingen, statt auf ihn zu warten.
   //
