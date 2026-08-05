@@ -69,7 +69,7 @@ export function PrintButton({
             {sprache.label}
           </a>
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center justify-end gap-2">
           {/* `download` und kein neuer Tab: Die Datei soll im Ordner landen,
               aus dem sie weitergereicht wird, nicht in einem Betrachter. */}
           <a

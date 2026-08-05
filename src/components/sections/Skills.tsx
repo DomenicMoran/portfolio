@@ -63,7 +63,7 @@ function DomainCard({
         <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-raised text-acid transition-colors duration-500 group-hover:border-acid/40">
           <Icon className="size-4.5" aria-hidden />
         </span>
-        <div>
+        <div className="min-w-0">
           <h3 className="text-lg font-semibold tracking-tight text-ink">
             {domain.title}
           </h3>

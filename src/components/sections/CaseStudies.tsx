@@ -163,7 +163,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             <span className={cn("font-mono text-sm", accent.text)}>
               {study.index}
             </span>
-            <h3 className="text-title text-ink">{study.name}</h3>
+            <h3 className="text-title min-w-0 text-ink">{study.name}</h3>
           </div>
           <div className="flex items-center gap-3">
             <span

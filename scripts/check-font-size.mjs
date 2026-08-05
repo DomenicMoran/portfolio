@@ -24,13 +24,17 @@
  * Kante, bis zu 63 px weit — Überschriften, Fließtext, Kennzahlen. Bei 16 px
  * war dieselbe Messung leer, deshalb sah kein bestehender Lauf etwas.
  *
- * Stand 05.08.2026: Der Lauf meldet noch 24 Stellen und steht deshalb nicht in
- * der CI. Behoben sind die grossen Muster — `overflow-wrap` als Grundregel,
- * `min-w-0` an den Flex- und Grid-Kindern, `max-w-full` an den
- * `w-fit`-Verweisen, `flex-wrap` an den Schaltflaechenreihen; das nahm 88
- * Stellen auf 24. Offen sind der Kopfbereich des Kurzprofils, drei
- * Kartenueberschriften und zwei Belegzeilen. Der Lauf gehoert in die CI,
- * sobald er leer ist — vorher wuerde er dort nur Laerm erzeugen.
+ * Behoben wurden dabei fuenf Muster, keine 88 Einzelfaelle: `overflow-wrap`
+ * als Grundregel fuer Textelemente, `min-w-0` an Flex- und Grid-Kindern,
+ * deren `min-width: auto` sie nicht unter ihre Inhaltsbreite schrumpfen
+ * laesst, `max-w-full` an `w-fit`-Verweisen, `flex-wrap` ohne `shrink-0` an
+ * Schaltflaechenreihen und `break-all` an Adressen.
+ *
+ * Der letzte Fall ist der lehrreiche: `overflow-wrap: break-word` half der
+ * LinkedIn-Adresse im Kurzprofil nicht. Es aendert die Mindestbreite eines
+ * Elements nicht, und ein `inline-block` misst sich genau daran — eine
+ * Adresse ohne Leerzeichen bleibt damit so breit wie sie ist. Erst
+ * `break-all` bricht sie.
  *
  * Aufruf nach `npm run build`:
  *

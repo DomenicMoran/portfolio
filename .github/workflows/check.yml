@@ -203,6 +203,15 @@ jobs:
       - name: Kartenreihen auf einer Höhe
         run: npm run check:cards
 
+      # Chrome bietet 20 und 24 px als Standardschrift in seinen Einstellungen
+      # an. Anders als Zoom vergrößert das nur `rem` und `em`: Die Spalten
+      # bleiben, die Wörter wachsen. Was dabei über die rechte Kante ragt,
+      # klemmt `overflow-x: clip` ab — es entsteht keine Bildlaufleiste, der
+      # Text ist weg. Gemessen waren es einmal 88 Stellen, sichtbar für
+      # niemanden, der mit 16 px prüft.
+      - name: Größere Grundschrift verträgt die Seite
+        run: npm run check:font-size
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
