@@ -62,6 +62,23 @@ for (const pfad of BLAETTER) {
     );
     continue;
   }
+
+  /* Ein Kurzprofil ist eine Seite.
+     ------------------------------
+     Das steht als Regel in AGENTS.md und war der einzige Handgriff daran, den
+     niemand nachgezählt hat: „nach Inhaltsänderungen die Druckansicht
+     gegenprüfen". Wer eine Zeile ergänzt und neu druckt, bekommt ein zweites
+     Blatt — und sieht es nur, wenn er die Datei öffnet.
+     Die zweite Seite trüge dann drei Zeilen Rest, und genau so kommt sie beim
+     Empfänger an. */
+  const seiten = doc.getPageCount();
+  if (seiten !== 1) {
+    funde.push(
+      `${pfad} hat ${seiten} Seiten. Ein Kurzprofil ist eine Seite: ` +
+        `Inhalt kürzen, dann neu drucken.`,
+    );
+    continue;
+  }
   geprueft++;
 }
 

@@ -219,6 +219,13 @@ jobs:
       - name: Der Tastaturfokus bleibt sichtbar
         run: npm run check:focus
 
+      # Die Fallstudien legen ihren Inhalt auf vier Reiter, sichtbar ist
+      # immer nur einer. Ein Diagramm, dessen Schlüssel nicht mehr passt,
+      # rendert nichts, und der Reiter darüber verspricht es weiter — der
+      # Typecheck sieht das nicht, gemessen an einem verbogenen Schlüssel.
+      - name: Tafeln hinter den Reitern
+        run: npm run check:panels
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
