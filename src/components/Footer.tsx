@@ -84,7 +84,7 @@ export function Footer({
                 <a
                   key={item.href}
                   href={`${hashBase}${item.href}`}
-                  className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                  className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
                 >
                   {item.label}
                 </a>
@@ -99,7 +99,7 @@ export function Footer({
               <a
                 href={recruiter.cta.pdf.href}
                 download
-                className="group flex w-fit items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="group flex w-fit max-w-full items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.onepager}
                 <ArrowUpRight
@@ -127,7 +127,7 @@ export function Footer({
                 href={sprachZiel}
                 hrefLang={languageSwitch.to}
                 lang={languageSwitch.to}
-                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {languageSwitch.label}
               </Link>
@@ -147,14 +147,14 @@ export function Footer({
               <Link
                 href="/impressum"
                 hrefLang="de"
-                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.impressum}
               </Link>
               <Link
                 href="/datenschutz"
                 hrefLang="de"
-                className="w-fit py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.datenschutz}
               </Link>
@@ -162,7 +162,7 @@ export function Footer({
                 href={footer.sourceHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex w-fit items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="group flex w-fit max-w-full items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
                 {footer.sourceLabel}
                 <ArrowUpRight

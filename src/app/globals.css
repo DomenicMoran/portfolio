@@ -72,6 +72,48 @@ body {
   overflow-x: clip;
 }
 
+/* Ein Wort, das nicht passt, bricht — es laeuft nicht hinaus.
+   ----------------------------------------------------------
+   Der Standardwert `normal` laesst ein Wort ohne Umbruchpunkt aus seiner
+   Spalte laufen. Am Bildschirm faellt das lange nicht auf, weil `html` und
+   `body` oben `overflow-x: clip` tragen: Es entsteht kein Seitwaertsscrollen,
+   der Text ist einfach weg.
+
+   Sichtbar wird es, sobald jemand die Standardschriftgroesse seines Browsers
+   hochstellt. Chrome bietet dafuer 20 und 24 px in den Einstellungen an, und
+   anders als Zoom vergroessert das nur Laengen in `rem`/`em` — die Spalten
+   bleiben, die Woerter wachsen. Gemessen bei 24 px Grundschrift und 320 px
+   Breite, der Bezugsbreite von WCAG 1.4.10: 58 Elemente der Startseite ragten
+   ueber die rechte Kante, bis zu 63 px weit, darunter Ueberschriften und
+   Fliesstext. Bei 16 px war dieselbe Messung leer.
+
+   Nur `break-word` und nicht `anywhere`: `anywhere` zieht die Mindestbreite
+   des Elements auf null und laesst Text auch dort umbrechen, wo daneben noch
+   Platz waere. Fuer `pre` steht `anywhere` weiter unten im Druckteil, dort ist
+   es richtig.
+
+   Und ausdruecklich in `@layer base`: Eine Elementregel ausserhalb jedes
+   Layers schlaegt saemtliche Utility-Klassen, unabhaengig von der
+   Spezifitaet. Ohne den Layer hat diese Regel das `wrap-anywhere` der
+   Beleglisten ueberschrieben und damit genau die Zeilen verschlechtert, die
+   sie schuetzen soll — gemessen an `/en/articles/published-is-not-proof` bei
+   320 px: `overflow-wrap` fiel von `anywhere` auf `normal` zurueck. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dt,
+  dd,
+  a,
+  figcaption,
+  blockquote {
+    overflow-wrap: break-word;
+  }
+}
+
 ::selection {
   background-color: var(--color-acid);
   color: var(--color-void);

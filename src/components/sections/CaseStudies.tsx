@@ -159,7 +159,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       {/* Kopf */}
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">
-          <div className="flex items-baseline gap-5">
+          <div className="flex min-w-0 items-baseline gap-5">
             <span className={cn("font-mono text-sm", accent.text)}>
               {study.index}
             </span>

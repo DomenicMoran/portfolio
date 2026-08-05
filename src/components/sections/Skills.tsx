@@ -38,7 +38,7 @@ export function Skills() {
           lede={skills.lede}
         />
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-2">
+        <div className="mt-16 grid gap-5 [&>*]:min-w-0 lg:grid-cols-2">
           {skills.domains.map((domain, i) => (
             <Reveal key={domain.id} delay={i * 0.06}>
               <DomainCard domain={domain} />
