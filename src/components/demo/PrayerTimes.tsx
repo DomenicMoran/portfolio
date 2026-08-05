@@ -41,11 +41,54 @@ import type { Content } from "@/content/types";
 
 /** Die Orte. Der letzte ist der Grenzfall, und er steht bewusst dabei. */
 const ORTE = [
-  { name: "Berlin", lat: 52.52, lon: 13.405 },
-  { name: "Istanbul", lat: 41.0082, lon: 28.9784 },
-  { name: "Kairo", lat: 30.0444, lon: 31.2357, en: "Cairo" },
-  { name: "Tromsø", lat: 69.6496, lon: 18.956 },
+  { name: "Berlin", lat: 52.52, lon: 13.405, zone: "Europe/Berlin" },
+  { name: "Istanbul", lat: 41.0082, lon: 28.9784, zone: "Europe/Istanbul" },
+  { name: "Kairo", lat: 30.0444, lon: 31.2357, en: "Cairo", zone: "Africa/Cairo" },
+  { name: "Tromsø", lat: 69.6496, lon: 18.956, zone: "Europe/Oslo" },
 ] as const;
+
+/**
+ * Die Zeitzone gehört zum Ort, nicht zum Betrachter.
+ *
+ * `adhan` liefert echte Zeitpunkte. Wer sie mit `getHours()` ausliest, bekommt
+ * sie in der Zone des Browsers — und damit sah dieselbe Auswahl je nach
+ * Standort des Lesers anders aus. Gemessen an der ausgelieferten Seite für
+ * Tromsø am 5. August: aus Berlin „01:34 · 02:42 · 12:55 · 17:25 · 22:53 ·
+ * 23:57", aus New York „19:34 −1 · 20:42 −1 · 06:55 …", aus Tokio „08:37 ·
+ * 09:48 · 19:55 · 00:24 +1 …" und Ischa gar nicht mehr berechenbar, weil der
+ * Wert aus dem Tagesfenster fiel.
+ *
+ * Gerechnet wird deshalb in Ortszeit: Der Zeitpunkt wird über `Intl` in der
+ * Zone des Ortes zerlegt, und die Minuten zählen ab dessen Mitternacht. Genau
+ * so rechnet die App, die auf dem Gerät im Ort steht.
+ */
+function minutenImOrt(zeitpunkt: Date, zone: string, bezugstag: string) {
+  const teile = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: zone,
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+      .formatToParts(zeitpunkt)
+      .map((t) => [t.type, t.value]),
+  );
+  const tag = `${teile.year}-${teile.month}-${teile.day}`;
+  const minuten = Number(teile.hour) * 60 + Number(teile.minute);
+  const tagesversatz = Math.round(
+    (Date.parse(`${tag}T00:00:00Z`) - Date.parse(`${bezugstag}T00:00:00Z`)) /
+      86_400_000,
+  );
+  return minuten + tagesversatz * 1440;
+}
+
+/** "2026-08-05" für den i-ten Tag des Jahres. */
+function alsTagesschluessel(jahr: number, tagImJahr: number) {
+  return new Date(Date.UTC(jahr, 0, 1 + tagImJahr)).toISOString().slice(0, 10);
+}
 
 /** Die fünf Pflichtgebete plus Sonnenaufgang, in der Reihenfolge des Tages. */
 const GEBETE = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as const;
@@ -194,7 +237,9 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           for (let i = 0; i < TAGE; i++) {
             const zeiten = new adhan.PrayerTimes(
               koordinaten,
-              new Date(jahrZahl, 0, 1 + i),
+              /* Mittag in UTC statt Mitternacht in der Browserzone: So fällt
+                 der gemeinte Kalendertag in jeder Zone der Welt zusammen. */
+              new Date(Date.UTC(jahrZahl, 0, 1 + i, 12)),
               p,
             );
             /* Minuten seit Mitternacht DIESES Tages, nicht seit Mitternacht.
@@ -214,13 +259,13 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                gezeigten Tages und wird am Rand beschnitten — genau das ist die
                Aussage. Die Uhrzeiten in der Tafel darunter kommen weiterhin
                aus `getHours()` und stimmen. */
-            const tagesBeginn = new Date(jahrZahl, 0, 1 + i).getTime();
+            const bezugstag = alsTagesschluessel(jahrZahl, i);
             tage.push(
               GEBETE.map((g) => {
                 const d = zeiten[g];
                 if (!(d instanceof Date) || Number.isNaN(d.getTime()))
                   return null;
-                const m = Math.round((d.getTime() - tagesBeginn) / 60000);
+                const m = minutenImOrt(d, ORTE[ort].zone, bezugstag);
                 /* Was mehr als einen halben Tag vor dem Tag oder mehr als
                    sechs Stunden nach dem folgenden Mitternacht liegt, ist
                    keine Zeit dieses Tages mehr.
