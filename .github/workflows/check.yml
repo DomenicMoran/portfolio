@@ -234,6 +234,13 @@ jobs:
       - name: Bindung der Sprachfassungen
         run: npm run check:language
 
+      # Die Demo auf der Startseite behauptet etwas Nachprüfbares: sie prüfe
+      # jede der 4.096 Zusammenstellungen und nehme die beste. Eine Demo, die
+      # daneben liegt, sagt über den Erbauer das Gegenteil dessen, wofür sie
+      # dasteht — und die Zahlen sehen in jedem Fall plausibel aus.
+      - name: Die Demo rechnet nach
+        run: npm run check:demo
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
