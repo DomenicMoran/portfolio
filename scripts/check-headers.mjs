@@ -44,6 +44,25 @@ if (!fuerAlles?.length) {
 */
 const adressen = ["/", "/en", "/diese-adresse-gibt-es-nicht", "/robots.txt"];
 
+/* Der Statuscode gehört zur Antwort wie die Kopfzeilen.
+
+   Geprüft war an der Fehlerseite bisher, was auf ihr steht: dass sie
+   zugänglich ist, dass sie druckt, dass sie in der Sprache antwortet, unter
+   der jemand gekommen ist. Womit sie antwortet, prüfte niemand.
+
+   Eine Fehlerseite, die mit 200 ausgeliefert wird, ist der Fehler, den man
+   nicht sieht: Im Browser steht dieselbe Seite, und ein Mensch merkt nichts.
+   Eine Suchmaschine merkt es sofort und nimmt jede erfundene Adresse als
+   gültige Seite in den Index — mit dem Titel „Diese Seite gibt es nicht".
+   Die 404 ist hier ausserdem die einzige Route, die bei der Anfrage entsteht,
+   also die einzige, deren Status überhaupt von Code abhängt. */
+const ERWARTETER_STATUS = {
+  "/": 200,
+  "/en": 200,
+  "/diese-adresse-gibt-es-nicht": 404,
+  "/robots.txt": 200,
+};
+
 const funde = [];
 let geprueft = 0;
 
@@ -57,6 +76,17 @@ for (const pfad of adressen) {
   } catch (fehler) {
     console.error(`${basis}${pfad} ist nicht erreichbar: ${fehler.message}`);
     process.exit(1);
+  }
+
+  const sollStatus = ERWARTETER_STATUS[pfad];
+  if (sollStatus !== undefined && antwort.status !== sollStatus) {
+    funde.push(
+      `${pfad}: HTTP ${antwort.status} statt ${sollStatus}` +
+        (sollStatus === 404
+          ? `\n        Eine Fehlerseite mit ${antwort.status} sieht im Browser richtig aus` +
+            `\n        und wird von Suchmaschinen als gültige Seite indexiert.`
+          : ""),
+    );
   }
 
   for (const { key, value } of fuerAlles) {
@@ -168,8 +198,11 @@ if (funde.length > 0) {
   process.exit(1);
 }
 
+const statusGeprueft = Object.keys(ERWARTETER_STATUS).length;
+
 console.log(
   `Alle ${fuerAlles.length} Schutz-Kopfzeilen, ${zwischenspeicher} ` +
     `Zwischenspeicher-Regeln und ${umleitungen} Weiterleitungen stimmen: ` +
-    `${geprueft + umleitungen} Prüfungen auf ${basis}.`,
+    `${geprueft + umleitungen + statusGeprueft} Prüfungen auf ${basis}. ` +
+    `Die unbekannte Adresse antwortet mit 404, nicht mit 200.`,
 );
