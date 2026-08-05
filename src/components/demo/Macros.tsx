@@ -412,7 +412,12 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
               setZiel(Number(e.target.value));
               setLauf(null);
             }}
-            className="mt-2 w-full accent-acid"
+            /* 24 px hoch statt 16, über `py-1` mit ausgleichendem `-my-1`:
+            Die sichtbare Spur bleibt schlank, die Trefferfläche erreicht das
+            Maß aus WCAG 2.5.8. Nötig war das nicht — der Regler steht allein,
+            und damit greift die Abstandsausnahme der Norm. Am Finger ist der
+            Unterschied trotzdem zu spüren, und es kostet nichts. */
+            className="mt-2 -my-1 w-full py-1 accent-acid"
           />
         </label>
 
