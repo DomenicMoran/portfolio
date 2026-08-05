@@ -49,6 +49,15 @@ const SEITEN = [
   "/artikel",
   "/artikel/kassensichv-in-der-praxis",
   "/onepager",
+  /* Die Fehlerseite gehört dazu, gerade weil niemand sie plant.
+
+     Sie ist die einzige Seite, die bei der Anfrage zusammengesetzt wird — im
+     Bau liegt keine fertige Datei, und jeder Aufruf trifft den Server statt
+     den Zwischenspeicher. Wer hier landet, hat sich verlaufen und will
+     schnell weiter; eine langsame Fehlerseite verlängert genau den Moment,
+     in dem jemand aufgibt. Erreicht wird sie über eine erfundene Adresse,
+     wie in `check:a11y` und `check:print`. */
+  "/diese-adresse-gibt-es-nicht",
 ];
 
 const LAEUFE = 3;
