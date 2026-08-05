@@ -379,6 +379,20 @@ export function CommandPalette({
               </kbd>
             </div>
 
+            {/* Die Trefferzahl wird angesagt, nicht nur gezeigt.
+
+                Das Combobox-Muster liest die aktive Option vor; wie viele es
+                davon gibt, sagt es nicht, und bei null Treffern gibt es keine
+                aktive — dann steht sichtbar „Nichts gefunden." da und ein
+                Vorleseprogramm schweigt. Der Bereich hängt von Anfang an im
+                Baum, weil ein Bereich, der erst mit seinem Inhalt erscheint,
+                von einem Teil der Programme verschluckt wird. */}
+            <p role="status" aria-live="polite" className="sr-only">
+              {query.trim()
+                ? palette.results.replace("{n}", String(results.length))
+                : ""}
+            </p>
+
             <ul
               id={LISTEN_ID}
               role="listbox"

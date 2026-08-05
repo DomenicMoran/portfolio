@@ -125,6 +125,23 @@ export type Content = {
     searchLabel: string;
     placeholder: string;
     empty: string;
+    /**
+     * Die Zahl der Treffer, für die Ansage beim Tippen.
+     *
+     * Die Liste filtert live von 23 Einträgen auf einen. Wer sie sieht, merkt
+     * das sofort; wer sie sich vorlesen lässt, hörte nichts — das
+     * Combobox-Muster sagt nur die aktive Option an, und bei null Treffern
+     * gibt es keine.
+     *
+     * Als Zeichenkette mit `{n}` und nicht als Funktion: Die Palette ist eine
+     * Client-Komponente, und eine Funktion lässt sich nicht dorthin reichen —
+     * der Bau bricht mit „Functions cannot be passed directly to Client
+     * Components" ab. Dieselbe Form wie bei `demoSalati.gap`.
+     *
+     * Die Zahl steht hinten, damit keine zweite Fassung für den Singular nötig
+     * ist: „1 results" wäre falsch, „Results: 1" ist es nicht.
+     */
+    results: string;
     jump: string;
     pdf: { label: string; hint: string };
     onepagerWeb: { label: string; hint: string };

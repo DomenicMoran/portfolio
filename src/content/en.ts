@@ -146,6 +146,7 @@ export const en: Content = {
     searchLabel: "Search",
     placeholder: "Search or jump …",
     empty: "Nothing found.",
+    results: "Results: {n}",
     jump: "Jump to",
     pdf: { label: "One-pager as PDF", hint: "Print-ready summary" },
     onepagerWeb: {

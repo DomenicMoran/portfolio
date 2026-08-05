@@ -104,6 +104,7 @@ export const de: Content = {
     searchLabel: "Suche",
     placeholder: "Suchen oder springen …",
     empty: "Nichts gefunden.",
+    results: "Treffer: {n}",
     jump: "Springen",
     pdf: { label: "One-Pager als PDF", hint: "Druckfertige Kurzfassung" },
     onepagerWeb: { label: "Kurzprofil im Browser", hint: "Dieselbe Kurzfassung als Seite" },
