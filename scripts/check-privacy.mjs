@@ -23,6 +23,8 @@
  *   npm run check:privacy
  */
 
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { chromium } from "playwright";
 import {
   gebauteSeiten,
@@ -163,7 +165,107 @@ if (funde.size > 0) {
   process.exit(1);
 }
 
+/* ---------------------------------------------------------------------------
+   Die drei übrigen Tatsachen aus derselben Erklärung
+
+   Der Netzverkehr oben deckt zwei ihrer Aussagen ab. Drei weitere stehen dort
+   ebenso als Tatsache und wurden von nichts geprüft:
+
+     „Alle Seiten mit Inhalt werden vorab erzeugt und als fertige Dateien
+      ausgeliefert. Einzige Ausnahme ist die Fehlerseite."
+     „Diese Website hat kein Kontaktformular."
+     „Es gibt keinen Endpunkt, der Eingaben entgegennimmt."
+
+   Alle drei brechen durch eine gewöhnliche Änderung: ein `export const dynamic`
+   in einer Seite, ein Formular in einem neuen Bauteil, ein Route Handler für
+   irgendeine Kleinigkeit. Nichts davon sieht beim Ansehen verdächtig aus, und
+   ab diesem Commit stünde in einem Rechtsdokument eine falsche Aussage.
+
+   Geprüft wird gegen den Bau, nicht gegen den Quelltext — was ausgeliefert
+   wird, entscheidet. Nur bei einer vorgegebenen Adresse fällt der Teil aus:
+   Dort gibt es keinen Bau zu lesen. */
+if (!vorgegebeneBasis) {
+  const zusagen = [];
+
+  /* Welche Route kommt nicht fertig aus dem Bau? Die Fehlerseite darf das,
+     sie setzt sich bei der Anfrage zusammen, um in der Sprache zu antworten,
+     unter der jemand gekommen ist. */
+  const vorab = new Set(
+    Object.keys(
+      JSON.parse(readFileSync(join(".next", "prerender-manifest.json"), "utf8")).routes ?? {},
+    ),
+  );
+  const routen = Object.values(
+    JSON.parse(readFileSync(join(".next", "app-path-routes-manifest.json"), "utf8")),
+  );
+  /* Muster mit `[slug]` stehen im Routen-Verzeichnis, ihre fertigen Seiten im
+     Vorab-Verzeichnis. Gemeint sind hier die Ausgaben, also zählt, ob es zu
+     einem Muster überhaupt vorab erzeugte Seiten gibt. */
+  const AUSNAHMEN = ["/_not-found"];
+  for (const route of routen) {
+    if (AUSNAHMEN.includes(route)) continue;
+    if (route.includes("[__metadata_id__]")) continue;
+    const sauber = route.replace(/\/$/, "") || "/";
+    if (vorab.has(sauber) || vorab.has(route)) continue;
+    if (sauber.includes("[")) {
+      const vorne = sauber.slice(0, sauber.indexOf("["));
+      if ([...vorab].some((r) => r.startsWith(vorne))) continue;
+    }
+    zusagen.push(
+      `${route} kommt nicht fertig aus dem Bau. Die Erklärung nennt als ` +
+        `einzige Ausnahme die Fehlerseite.`,
+    );
+  }
+
+  /* Ein Formular in einer ausgelieferten Seite. */
+  for (const datei of gebauteSeiten()) {
+    const html = readFileSync(
+      join(".next", "server", "app", datei === "/" ? "index.html" : `${datei.slice(1)}.html`),
+      "utf8",
+    );
+    if (/<form[\s>]/i.test(html)) {
+      zusagen.push(`${datei} enthält ein Formular. Die Erklärung sagt, es gebe keines.`);
+    }
+  }
+
+  /* Ein Endpunkt, der etwas entgegennimmt. */
+  const VERBEN = ["POST", "PUT", "PATCH", "DELETE"];
+  const suchen = (ordner) => {
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) suchen(pfad);
+      else if (/^route\.(ts|tsx|js|mjs)$/.test(eintrag.name)) {
+        const quelle = readFileSync(pfad, "utf8");
+        for (const verb of VERBEN) {
+          if (new RegExp(`export\\s+(async\\s+)?(function|const)\\s+${verb}\\b`).test(quelle)) {
+            zusagen.push(
+              `${pfad} nimmt ${verb} entgegen. Die Erklärung sagt, es gebe ` +
+                `keinen Endpunkt, der Eingaben annimmt.`,
+            );
+          }
+        }
+      }
+    }
+  };
+  suchen(join("src", "app"));
+
+  if (zusagen.length > 0) {
+    console.error("Die Datenschutzerklärung sagt etwas anderes als der Bau:\n");
+    for (const z of zusagen) console.error(`  ${z}`);
+    console.error(
+      `\nEntweder die Änderung zurücknehmen oder den Text anpassen. Ein ` +
+        `Rechtsdokument, das eine überholte Tatsache behauptet, ist schlechter ` +
+        `als eines, das nichts behauptet.`,
+    );
+    process.exit(1);
+  }
+}
+
 console.log(
   `Keine Verbindung nach außen und nichts auf dem Gerät: ${pfade.length} Seiten ` +
-    `geladen und bedient, alle Anfragen gingen an ${eigenerHost}.`,
+    `geladen und bedient, alle Anfragen gingen an ${eigenerHost}.` +
+    (vorgegebeneBasis
+      ? ""
+      : `\nUnd was die Erklärung sonst behauptet, stimmt: alles vorab erzeugt ` +
+        `außer der Fehlerseite, kein Formular, kein Endpunkt für Eingaben.`),
 );
