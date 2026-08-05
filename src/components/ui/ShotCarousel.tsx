@@ -63,7 +63,22 @@ export function ShotCarousel({
           naechstes = i;
         }
       });
-      setAktiv(naechstes);
+
+      /* Am rechten Anschlag zählt das letzte Bild, egal wo seine Kante liegt.
+         --------------------------------------------------------------------
+         Die Messung oben sucht das Bild, dessen linke Kante der Kante der Spur
+         am nächsten ist — richtig, denn dort rastet der Bildlauf ein. Nur das
+         letzte Bild rastet nie ein: Die Spur ist vorher zu Ende, und es bleibt
+         rechts stehen.
+
+         Gemessen bei 1440 px über acht Aufnahmen: Nach dem sechsten Klick war
+         die Spur am Anschlag, das achte Bild vollständig zu sehen — und der
+         Zähler blieb bei „7 von 8". Der Weiter-Knopf blieb dabei aktiv, weil
+         er auf `aktiv === shots.length - 1` prüft, und tat bei jedem weiteren
+         Druck nichts. Ein Knopf, der sichtbar zu haben ist und nichts bewirkt,
+         ist die unangenehmere Hälfte davon. */
+      const amEnde = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+      setAktiv(amEnde ? el.children.length - 1 : naechstes);
     };
 
     const planen = () => {
