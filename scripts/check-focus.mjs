@@ -183,6 +183,102 @@ for (const breite of BREITEN) {
   await seite.close();
 }
 
+/* ---------------------------------------------------------------------------
+   Die beiden Überlagerer halten den Fokus fest
+
+   Ein Kasten, der die Seite verdeckt, muss den Fokus behalten, solange er
+   offen ist. Sonst tabbt jemand aus dem sichtbaren Bereich hinaus und bedient
+   Verweise, die er nicht sieht.
+
+   Beide Fälle standen einmal offen und wurden einzeln gefunden, jeder beim
+   Bedienen: die Befehlspalette am 03.08.2026, das Telefonmenü am 05.08. Zwei
+   Bauteile mit demselben Fehler und zwei Monaten dazwischen sind ein Muster,
+   kein Zufall — deshalb steht die Prüfung hier und nicht bei einem von beiden.
+
+   Geprüft wird, was ein Nutzer merkt: Der Fokus liegt nach dem Öffnen im
+   Kasten, bleibt über eine ganze Runde Tabulator darin, Escape schließt, und
+   danach steht er wieder auf dem Knopf, der geöffnet hat. */
+const UEBERLAGERER = [
+  { name: "Befehlspalette", breite: 1440, taste: "Control+k", knopf: 'button[aria-label*="efehlspalette"], button[aria-label*="ommand palette"]' },
+  { name: "Telefonmenü", breite: 390, taste: null, knopf: 'button[aria-label*="enü öffnen"], button[aria-label*="pen menu"]' },
+];
+
+for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
+  /* Jedes Bauteil bei der Breite, bei der es bedient wird: Das Telefonmenü
+     gibt es nur unterhalb von , und der Knopf der Palette ist dort
+     ausgeblendet. Ein verstecktes Element kann den Fokus nicht
+     zurückbekommen — der erste Anlauf maß beides bei 390 px und meldete für
+     die Palette einen Fehler, den es bei ihrer Bedienbreite nicht gibt. */
+  const seite = await browser.newPage({ viewport: { width: breite, height: 844 } });
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  await seite.waitForTimeout(900);
+
+  const knopf = await seite.$(auswahl);
+  if (!knopf) {
+    funde.push(`${name}: kein Knopf zum Öffnen gefunden`);
+    await seite.close();
+    continue;
+  }
+
+  await knopf.focus();
+  if (taste) await seite.keyboard.press(taste);
+  else await knopf.click();
+  await seite.waitForTimeout(700);
+
+  const drin = () =>
+    seite.evaluate(() => {
+      const el = document.activeElement;
+      const kasten = document.querySelector('[role="dialog"]');
+      return {
+        offen: Boolean(kasten),
+        innen: Boolean(kasten && el && kasten.contains(el)),
+        wo: `${el?.tagName} „${(el?.getAttribute("aria-label") || el?.textContent || "").trim().slice(0, 24)}"`,
+      };
+    });
+
+  const nachOeffnen = await drin();
+  if (!nachOeffnen.offen) {
+    funde.push(`${name}: öffnet nicht`);
+    await seite.close();
+    continue;
+  }
+  if (!nachOeffnen.innen) {
+    funde.push(
+      `${name}: nach dem Öffnen steht der Fokus auf ${nachOeffnen.wo}, außerhalb`,
+    );
+  }
+
+  /* Eine ganze Runde: Wer hinausläuft, tut es meist nach einigen Schritten,
+     nicht beim ersten. */
+  let entwichen = null;
+  for (let i = 0; i < 15 && !entwichen; i++) {
+    await seite.keyboard.press("Tab");
+    await seite.waitForTimeout(90);
+    const stand = await drin();
+    if (!stand.innen) entwichen = `${stand.wo} nach ${i + 1} Schritten`;
+  }
+  if (entwichen) {
+    funde.push(`${name}: der Fokus entweicht zu ${entwichen}`);
+  }
+
+  await seite.keyboard.press("Escape");
+  await seite.waitForTimeout(600);
+  const nachEscape = await seite.evaluate(() => ({
+    offen: Boolean(document.querySelector('[role="dialog"]')),
+    wo: document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName,
+  }));
+  if (nachEscape.offen) funde.push(`${name}: Escape schließt nicht`);
+  else if (!/efehlspalette|ommand palette|enü öffnen|pen menu/.test(String(nachEscape.wo))) {
+    funde.push(
+      `${name}: nach dem Schließen steht der Fokus auf „${nachEscape.wo}" ` +
+        `statt auf dem Knopf, der geöffnet hat`,
+    );
+  }
+
+  stationen += 4;
+  await seite.close();
+}
+
 await browser.close();
 beenden();
 
