@@ -787,6 +787,84 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
   for (const f of ANSAGEFUNDE) console.error(`  ${f}`);
 }
 
+/* ---------------------------------------------------------------------------
+   Ein Bereich mit eigenem Bildlauf braucht Tastatur und Namen
+
+   Die Artikel zeigen Code, und Code ist breiter als ein Telefon: Gemessen bei
+   390 px sind von den Blöcken zwischen 53 und 100 Prozent zu sehen, der Rest
+   liegt hinter einem eigenen Bildlauf. Wer keine Maus benutzt, kommt nur
+   heran, wenn der Bereich den Fokus annehmen kann — sonst fehlt ihm die
+   Hälfte des Belegs, um den es im Artikel geht.
+
+   Und er braucht einen Namen. Ein Vorleseprogramm sagt sonst „Region" und
+   lässt offen, was darin steht; mit Namen sagt es „food-orders/route.ts: Kein
+   Abschluss ohne Signatur". axe prüft die Fokussierbarkeit solcher Bereiche
+   (`scrollable-region-focusable`), den Namen nicht.
+
+   Zum Zeitpunkt des Einbaus gemessen: 14 Bereiche über beide Sprachfassungen,
+   alle mit `tabindex` und Namen. Die Prüfung steht hier, damit das so
+   bleibt — ein neuer Codeblock ohne Beschriftung fiele sonst niemandem auf. */
+const BILDLAUFFUNDE = [];
+
+{
+  const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+
+  for (const pfad of pfade) {
+    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    if (!antwort || antwort.status() !== 200) continue;
+
+    await seite.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    });
+    await seite.waitForTimeout(300);
+
+    const funde = await seite.evaluate(() => {
+      const raus = [];
+      for (const el of document.querySelectorAll("body *")) {
+        const stil = getComputedStyle(el);
+        const waagerecht =
+          (stil.overflowX === "auto" || stil.overflowX === "scroll") &&
+          el.scrollWidth > el.clientWidth + 4;
+        const senkrecht =
+          (stil.overflowY === "auto" || stil.overflowY === "scroll") &&
+          el.scrollHeight > el.clientHeight + 4;
+        if (!waagerecht && !senkrecht) continue;
+
+        const name =
+          el.getAttribute("aria-label") ??
+          (el.getAttribute("aria-labelledby")
+            ? (document.getElementById(el.getAttribute("aria-labelledby"))?.textContent ?? "")
+            : "");
+        const kennung =
+          `${el.tagName.toLowerCase()}` +
+          `${el.className ? "." + el.className.toString().split(" ")[0] : ""}`;
+
+        if (el.tabIndex < 0) {
+          raus.push(`${kennung} nimmt den Fokus nicht an`);
+        } else if (!name.trim()) {
+          raus.push(`${kennung} hat keinen Namen`);
+        }
+      }
+      return [...new Set(raus)];
+    });
+
+    for (const f of funde) BILDLAUFFUNDE.push(`${pfad}: ${f}`);
+  }
+
+  await seite.close();
+}
+
+if (BILDLAUFFUNDE.length > 0) {
+  console.error(
+    `\n${BILDLAUFFUNDE.length} Bereich(e) mit eigenem Bildlauf sind ohne Maus ` +
+      `nicht zu erreichen oder ohne Namen:\n`,
+  );
+  for (const f of BILDLAUFFUNDE) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -809,7 +887,8 @@ if (
   uhrfunde.length > 0 ||
   diagrammfunde.length > 0 ||
   unsichtbar.length > 0 ||
-  ANSAGEFUNDE.length > 0
+  ANSAGEFUNDE.length > 0 ||
+  BILDLAUFFUNDE.length > 0
 )
   process.exit(1);
 
@@ -821,5 +900,6 @@ console.log(
     `nichts füllt sich bei reduzierter Bewegung von allein nach, ` +
     `keine Diagrammbeschriftung unter ${SCHRIFTGRENZE} px auf dem Telefon, ` +
     `nichts unter ${UNSICHTBAR_AB}:1 gegen seinen Untergrund, ` +
-    `und was sich beim Bedienen ändert, wird angesagt.`,
+    `was sich beim Bedienen ändert, wird angesagt, ` +
+    `und jeder Bereich mit eigenem Bildlauf ist ohne Maus erreichbar und benannt.`,
 );
