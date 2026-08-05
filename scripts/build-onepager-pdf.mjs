@@ -106,10 +106,24 @@ for (const blatt of BLAETTER) {
   await seite.emulateMedia({ media: "print" });
   await seite.waitForTimeout(400);
 
+  /* `tagged` gibt dem PDF eine Struktur.
+   *
+   * Ohne das Flag druckt Chromium eine Fläche aus Textfragmenten: Überschrift,
+   * Absatz und Listeneintrag sehen darin gleich aus, und die Reihenfolge, in
+   * der ein Screenreader sie vorliest, ist die Zeichenreihenfolge im Strom,
+   * nicht die des Dokuments. Gemessen an beiden ausgelieferten Dateien fehlte
+   * `/MarkInfo` im Katalog, das Kennzeichen für genau diese Struktur.
+   *
+   * Es ist die Datei, die weitergereicht wird, und die einzige, die den
+   * Empfänger ohne Browser erreicht. Eine Seite, die ihre eigene Zugänglichkeit
+   * an 29 Prüfläufen misst, darf ihr wichtigstes Blatt nicht ungetaggt
+   * verschicken. Die Sprache steht schon im Katalog, die Struktur fehlte.
+   */
   await seite.pdf({
     path: blatt.ziel,
     format: "A4",
     printBackground: true,
+    tagged: true,
     margin: { top: "0mm", bottom: "0mm", left: "0mm", right: "0mm" },
   });
   await seite.close();
