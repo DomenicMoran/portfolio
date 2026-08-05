@@ -32,7 +32,7 @@ an dem man nicht drumherum kam.
 
 | Bereich | Wahl | Warum |
 |---|---|---|
-| Framework | Next.js 16, App Router | Jede Route wird vorab erzeugt; kein Serverprozess, kein Endpunkt |
+| Framework | Next.js 16, App Router | Jede Seite mit Inhalt wird vorab erzeugt; kein Serverprozess, kein Endpunkt |
 | Sprache | TypeScript, strict | 0 Fehler ist Merge-Gate, nicht Zielvorgabe |
 | Styling | Tailwind v4 | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config |
 | Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
@@ -42,10 +42,15 @@ an dem man nicht drumherum kam.
 
 ## Architektur-Entscheidungen
 
-**Jede Route ist statisch.** Alle Seiten entstehen zur Build-Zeit und liegen
-danach als fertige Dateien am CDN-Rand. Es gibt keinen Endpunkt, der Eingaben
-entgegennimmt, keine Datenbank und keinen Serverprozess. Eine Seite, die keine
-Laufzeit braucht, kann auch nicht zur Laufzeit ausfallen.
+**Jede Seite mit Inhalt ist statisch.** Sie alle entstehen zur Build-Zeit und
+liegen danach als fertige Dateien am CDN-Rand. Es gibt keinen Endpunkt, der
+Eingaben entgegennimmt, keine Datenbank und keinen Serverprozess. Eine Seite,
+die keine Laufzeit braucht, kann auch nicht zur Laufzeit ausfallen.
+
+Einzige Ausnahme ist die Fehlerseite. Sie wird bei der Anfrage zusammengesetzt,
+weil sie in der Sprache antworten soll, unter der jemand gekommen ist, und
+diese Sprache erst die Adresse verrät. Die Datenschutzerklärung nennt dieselbe
+Ausnahme; wer hier etwas ändert, zieht sie dort nach.
 
 Der Kontakt läuft deshalb über eine Mailadresse statt über ein Formular. Ein
 Formular hätte einen Versanddienst als Auftragsverarbeiter gebraucht, den die

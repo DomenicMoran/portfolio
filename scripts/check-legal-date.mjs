@@ -162,6 +162,41 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
    einmal einträgt und dann vergisst. Sie steht jetzt auch im Text der
    Erklärung, und der Block darunter hält sie dort fest. */
 const AUSNAHMEN = new Set(["/_not-found"]);
+
+/* Dieselbe Zusage steht auch im README, und dort stand sie falsch.
+
+   Die Erklärung nannte die Fehlerseite als Ausnahme, das README behauptete
+   zweimal ausnahmslos „Jede Route ist statisch" und „Jede Route wird vorab
+   erzeugt": zwei öffentliche Dokumente desselben Projekts, verschiedene
+   Aussagen über dieselbe Tatsache. Gemessen am Bau hatte das README unrecht,
+   eine App-Route von 26 wird nicht vorgerendert, und es ist die Fehlerseite.
+
+   Der Block oben hielt nur die Erklärung fest. Ein Wächter, der eine von zwei
+   Fundstellen prüft, deckt die ungeprüfte zu: Die Erklärung blieb richtig,
+   gerade weil jemand sie bewacht hat, das README daneben nicht. Die Prüfung
+   greift, solange es überhaupt eine Ausnahme gibt. */
+{
+  const readme = readFileSync("README.md", "utf8");
+  const absolut = /Jede Route (?:ist statisch|wird vorab erzeugt)/.exec(readme);
+  if (AUSNAHMEN.size && absolut) {
+    console.error(
+      `README.md sagt „${absolut[0]}" ohne Einschränkung. Die Fehlerseite ` +
+        `wird bei der Anfrage zusammengesetzt; „jede Seite mit Inhalt" ist ` +
+        `die Formulierung, die der Bau trägt.`,
+    );
+    process.exit(1);
+  }
+  if (AUSNAHMEN.size && !/Ausnahme ist die Fehlerseite/.test(readme)) {
+    console.error(
+      `README.md benennt die Fehlerseite nicht als Ausnahme von „vorab ` +
+        `erzeugt". Die Datenschutzerklärung tut es, der Bau gibt ihr recht. ` +
+        `Zwei Dokumente derselben Seite dürfen nicht Verschiedenes über ` +
+        `dieselbe Tatsache sagen.`,
+    );
+    process.exit(1);
+  }
+}
+
 const SCHREIBENDE =
   /export\s+(?:async\s+)?function\s+(POST|PUT|PATCH|DELETE)\b/;
 
