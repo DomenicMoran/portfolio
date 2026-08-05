@@ -8,7 +8,7 @@ import {
 } from "framer-motion";
 import { useScrollSperre } from "@/lib/scroll-lock";
 import { mailAdresse } from "@/lib/mailto";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
 import Link from "next/link";
 import { Marke } from "@/lib/mark";
@@ -44,6 +44,9 @@ export function Nav({
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   useScrollSperre(menuOpen);
+  const schublade = useRef<HTMLDivElement | null>(null);
+  const schliessKnopf = useRef<HTMLButtonElement | null>(null);
+  const menuKnopf = useRef<HTMLButtonElement | null>(null);
   const { scrollY } = useScroll();
 
   // Aus "#work" wird "work". useMemo, weil useActiveSection das Array als
@@ -58,6 +61,56 @@ export function Nav({
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 40);
   });
+
+  /*
+    Der Fokus gehört in die Schublade, solange sie offen ist.
+
+    Gemessen an der ausgelieferten Seite bei 390 px: Nach dem Öffnen stand er
+    weiter auf dem Menüknopf, der jetzt verdeckt ist — wer die Tastatur
+    benutzt, musste sich erst hineintabben. Und nach neun Schritten führte der
+    Weg wieder hinaus, zu „Projekte ansehen" und „Für Recruiter": Verweise,
+    die sichtbar verdeckt sind und trotzdem erreichbar blieben.
+
+    Dieselbe Lösung wie bei der Befehlspalette, aus demselben Grund dort:
+    beobachten, wo der Fokus landet, statt eine Liste der erreichbaren
+    Elemente zu führen. Ein Auswahlausdruck übersieht Scrollbereiche, die
+    Chrome von sich aus fokussierbar macht.
+  */
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    /* Der auslösende Knopf wird beim Betreten festgehalten: In der
+       Aufräumfunktion wäre `menuKnopf.current` schon ein anderer Wert, und
+       eslint weist zu Recht darauf hin. */
+    const ausloeser = menuKnopf.current;
+    const hinein = window.setTimeout(() => schliessKnopf.current?.focus(), 60);
+
+    const zurueckholen = (ereignis: FocusEvent) => {
+      const ziel = ereignis.target as Node | null;
+      if (!ziel || schublade.current?.contains(ziel)) return;
+      schliessKnopf.current?.focus();
+    };
+
+    /* Escape schließt — bei einem Dialog erwartet das jeder, und die
+       Befehlspalette macht es seit ihrem Einbau. Hier fehlte es: Die
+       Schublade ließ sich nur über ihren eigenen Knopf schließen. Sichtbar
+       wurde das erst, als `aria-expanded` den Zustand mitführte; vorher sah
+       ein Test nach dem Tastendruck dasselbe wie davor. */
+    const beiTaste = (ereignis: KeyboardEvent) => {
+      if (ereignis.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("focusin", zurueckholen);
+    window.addEventListener("keydown", beiTaste);
+    return () => {
+      window.clearTimeout(hinein);
+      document.removeEventListener("focusin", zurueckholen);
+      window.removeEventListener("keydown", beiTaste);
+      /* Und beim Schließen dorthin zurück, wo er herkam. Ohne das landet er
+         auf `body`, und der Weg durch die Seite beginnt von vorn. */
+      ausloeser?.focus();
+    };
+  }, [menuOpen]);
 
   return (
     <>
@@ -204,8 +257,12 @@ export function Nav({
 
             <button
               type="button"
+              ref={menuKnopf}
               onClick={() => setMenuOpen(true)}
               className="grid size-9 place-items-center rounded-full border border-line text-ink-dim lg:hidden"
+              /* Der Zustand gehört an den Knopf: Ein Vorleseprogramm sagte
+                 sonst „Menü öffnen" und verschwieg, dass es offen ist. */
+              aria-expanded={menuOpen}
               aria-label={a11y.openMenu}
             >
               <Menu className="size-4" aria-hidden />
@@ -224,6 +281,17 @@ export function Nav({
             /* Wie bei der Palette: Lenis reicht Radbewegungen sonst an die
                Seite dahinter weiter, gemessen 0 auf 655 px. */
             data-lenis-prevent
+            /* Ein Überlagerer, der die Seite verdeckt, ist ein Dialog — und
+               muss sich auch so verhalten. Gemessen an der ausgelieferten
+               Seite bei 390 px: Nach neun Tabulatorschritten führte der Weg
+               aus der Schublade hinaus zu „Projekte ansehen" und „Für
+               Recruiter", also zu Verweisen, die sichtbar verdeckt sind. Für
+               die Befehlspalette war derselbe Fehler am 03.08.2026 behoben
+               worden; hier blieb er stehen. */
+            ref={schublade}
+            role="dialog"
+            aria-modal="true"
+            aria-label={a11y.mainNav}
             className="fixed inset-0 z-[9995] bg-void/95 backdrop-blur-xl lg:hidden"
           >
             <div className="flex h-full flex-col p-6">
@@ -239,6 +307,7 @@ export function Nav({
                 </Link>
                 <button
                   type="button"
+                  ref={schliessKnopf}
                   onClick={() => setMenuOpen(false)}
                   className="grid size-10 place-items-center rounded-full border border-line text-ink"
                   aria-label={a11y.closeMenu}
