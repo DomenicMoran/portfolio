@@ -15,6 +15,9 @@ import type { Content } from "./types";
  * Faktenblatt gegen die neue Zeile auf dem Blatt. Zwei Sätze für dieselbe
  * Sache sind die nächste Stelle, an der einer veraltet.
  */
+/** Dieselbe Zahl wie in `site.ts`, aus demselben Grund an einer Stelle. */
+const REPLY_HOURS = 24;
+
 const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
 
@@ -1149,7 +1152,7 @@ export const en: Content = {
   contact: {
     eyebrow: "Contact",
     title: "Let’s build something",
-    lede: "A concrete role, a question about one of the projects, or just a technical question: I usually reply within 24 hours.",
+    lede: `A concrete role, a question about one of the projects, or just a technical question: I usually reply within ${REPLY_HOURS} hours.`,
     hinweis:
       "Deliberately no form: that would need a delivery service as a data processor and an endpoint that can fail. A mail address can do neither, and you keep a copy of your message in your own sent folder.",
     copy: "Copy address",
@@ -1164,7 +1167,7 @@ export const en: Content = {
       ],
     },
     fakten: [
-      { label: "Response time", wert: "Usually under 24 hours" },
+      { label: "Response time", wert: `Usually under ${REPLY_HOURS} hours` },
       { label: "Languages", wert: "German · English" },
       { label: "Location", wert: "Berlin · remote EU" },
     ],
