@@ -797,12 +797,28 @@ export function ArchitectureDiagram({
               (k) => k.y >= bahn.y && (!naechste || k.y < naechste.y),
             );
             if (drin.length === 0) return null;
+            /* Auch hier durch `t()`, wie überall sonst in dieser Datei.
+
+               Die Zeichnung übersetzte ihre Beschriftungen, die Liste
+               darunter nicht: Auf der englischen Seite zeigte das Diagramm
+               „Surfaces / Persistence / 11,892 recipes", und vorgelesen wurde
+               „Oberflächen / Persistenz / 11.892 Rezepte". Gemessen an der
+               ausgelieferten Seite fehlten so in allen vier Fallstudien
+               zwischen 8 und 17 der Beschriftungen in der Fassung, die ein
+               Vorleseprogramm benutzt — bei NOURI 8 von 17, bei MenuCloud
+               17 von 30.
+
+               Wer sehen kann, merkt davon nichts: Beide Fassungen sind für
+               sich vollständig, und die deutsche stimmt. Sichtbar wird es
+               genau für den, für den die Liste überhaupt existiert. */
             return (
               <div key={bahn.label}>
-                <dt>{bahn.label}</dt>
+                <dt>{t(bahn.label)}</dt>
                 <dd>
                   {drin
-                    .map((k) => (k.sub ? `${k.label} (${k.sub})` : k.label))
+                    .map((k) =>
+                      k.sub ? `${t(k.label)} (${t(k.sub)})` : t(k.label),
+                    )
                     .join(", ")}
                   .
                 </dd>

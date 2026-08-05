@@ -105,6 +105,37 @@ for (const pfad of SEITEN) {
                   hoehe: Math.round(groesstes.r.height),
                   texte: groesstes.e.querySelectorAll("text").length,
                   reicht: groesstes.e.querySelectorAll("text").length >= mindestTexte,
+                  /* Die Textfassung muss dasselbe sagen wie die Zeichnung.
+
+                     Das Diagramm trägt `role="img"`, und damit liest ein
+                     Screenreader seine Beschriftungen nicht vor — das ist der
+                     Sinn der Rolle. Vorgelesen wird stattdessen die
+                     `sr-only`-Definitionsliste daneben, die dieselbe
+                     Architektur in Worten aufführt.
+
+                     Zwei Darstellungen derselben Sache laufen auseinander,
+                     sobald jemand nur eine davon anfasst: Wer einen Knoten in
+                     die Zeichnung setzt und die Liste vergisst, liefert einem
+                     blinden Leser eine Architektur, in der dieser Knoten
+                     nicht vorkommt. Sichtbar wird das nie, denn beide Fassungen
+                     sehen für sich vollständig aus. */
+                  fehlendeInText: (() => {
+                    const liste = groesstes.e
+                      .closest("figure")
+                      ?.querySelector(".sr-only");
+                    if (!liste) return ["(keine sr-only-Fassung)"];
+                    const gesagt = liste.textContent
+                      .replace(/\s+/g, " ")
+                      .toLowerCase();
+                    const fehlen = [];
+                    for (const knoten of groesstes.e.querySelectorAll("text")) {
+                      const wort = knoten.textContent.trim();
+                      if (wort.length < 3) continue;
+                      if (!gesagt.includes(wort.replace(/\s+/g, " ").toLowerCase()))
+                        fehlen.push(wort.slice(0, 34));
+                    }
+                    return fehlen;
+                  })(),
                 }
               : null,
           };
@@ -128,6 +159,15 @@ for (const pfad of SEITEN) {
           funde.push(
             `${wo}: Diagramm ${stand.diagramm.breite}×${stand.diagramm.hoehe} px ` +
               `mit ${stand.diagramm.texte} Beschriftungen — eine leere Fläche`,
+          );
+        } else if (stand.diagramm.fehlendeInText.length) {
+          funde.push(
+            `${wo}: ${stand.diagramm.fehlendeInText.length} von ` +
+              `${stand.diagramm.texte} Beschriftungen stehen nicht in der ` +
+              `Textfassung — ` +
+              `${stand.diagramm.fehlendeInText.slice(0, 6).join(", ")}` +
+              `\n        Wer das Diagramm nicht sehen kann, bekommt eine ` +
+              `Architektur ohne diese Knoten.`,
           );
         }
       }
