@@ -45,6 +45,7 @@ const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
 let tafeln = 0;
+let strecken = 0;
 
 for (const pfad of SEITEN) {
   const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
@@ -134,6 +135,78 @@ for (const pfad of SEITEN) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Und die Bildstrecke erreicht ihr letztes Bild
+
+   Eine Bildstrecke muss man durchklicken, und genau deshalb sah sie kein Lauf:
+   `check:links` prüft Adressen, `check:a11y` den Barrierefreiheitsbaum, dieser
+   hier die Reiter. Gefunden wurde der Fehler beim Bedienen — der Zähler blieb
+   bei „7 von 8", weil das letzte Bild am rechten Anschlag nie einrastet, und
+   der Weiter-Knopf blieb dabei aktiv, ohne noch etwas zu bewirken.
+
+   Geprüft wird auf beiden Breiten, denn sie verhalten sich verschieden: Bei
+   1440 px sind mehrere Aufnahmen gleichzeitig zu sehen und der Anschlag kommt
+   früher, bei 390 px rückt jeder Druck genau eine weiter. Am Ende muss der
+   Zähler die letzte Nummer zeigen und der Knopf abgeschaltet sein. */
+for (const breite of [390, 1440]) {
+  const streckenseite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+  await streckenseite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  await streckenseite.evaluate(async () => {
+    for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 30));
+    }
+  });
+  await streckenseite.waitForTimeout(700);
+
+  for (const studie of await streckenseite.$$("article[id^='case-']")) {
+    const weiter = await studie.$('button[aria-label="Nächstes Bild"]');
+    if (!weiter) continue; // Nicht jede Fallstudie hat eine Strecke.
+
+    const kennung = await studie.evaluate((el) => el.id);
+    const zaehlerLesen = () =>
+      studie.evaluate((el) => {
+        const text = [...el.querySelectorAll("span")]
+          .map((s) => s.textContent.trim())
+          .find((t) => /^\d+\s+\S+\s+\d+$/.test(t));
+        const teile = text?.match(/^(\d+)\s+\S+\s+(\d+)$/);
+        return teile ? { bei: Number(teile[1]), von: Number(teile[2]) } : null;
+      });
+
+    const start = await zaehlerLesen();
+    if (!start) {
+      funde.push(`${kennung} bei ${breite} px: kein Zähler an der Bildstrecke`);
+      continue;
+    }
+
+    /* Ein Druck mehr als Bilder: Wer am Ende ist, kommt über den
+       deaktivierten Knopf nicht weiter, und die Schleife endet von selbst. */
+    let drucke = 0;
+    for (let i = 0; i < start.von + 1; i++) {
+      if (await weiter.isDisabled()) break;
+      await weiter.click();
+      drucke++;
+      await streckenseite.waitForTimeout(600);
+    }
+
+    const ende = await zaehlerLesen();
+    if (ende?.bei !== start.von) {
+      funde.push(
+        `${kennung} bei ${breite} px: nach ${drucke} Druck steht der Zähler auf ` +
+          `${ende?.bei ?? "?"} von ${start.von}. Das letzte Bild ist nicht erreichbar.`,
+      );
+    } else if (!(await weiter.isDisabled())) {
+      funde.push(
+        `${kennung} bei ${breite} px: am letzten Bild bleibt „Nächstes Bild" ` +
+          `anklickbar und bewirkt nichts.`,
+      );
+    } else {
+      strecken++;
+    }
+  }
+  await streckenseite.close();
+}
+
 await browser.close();
 beenden();
 
@@ -144,5 +217,6 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `Jede Tafel zeigt ihren Inhalt: ${tafeln} Reiter über ${SEITEN.length} Sprachfassungen.`,
+  `Jede Tafel zeigt ihren Inhalt: ${tafeln} Reiter über ${SEITEN.length} Sprachfassungen, ` +
+    `${strecken} Bildstrecke bis zum letzten Bild durchgeklickt.`,
 );
