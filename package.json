@@ -46,7 +46,8 @@
     "check:focus": "node scripts/check-focus.mjs",
     "check:panels": "node scripts/check-panels.mjs",
     "check:language": "node scripts/check-language.mjs",
-    "check:demo": "node scripts/check-demo-math.mjs"
+    "check:demo": "node scripts/check-demo-math.mjs",
+    "check:code": "node scripts/check-code-blocks.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",

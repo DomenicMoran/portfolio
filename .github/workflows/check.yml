@@ -241,6 +241,13 @@ jobs:
       - name: Die Demo rechnet nach
         run: npm run check:demo
 
+      # Die Artikel zeigen Code als Beleg. Wer sie liest, liest Code — ein
+      # Tippfehler in einem Ausschnitt wiegt für diesen Leser mehr als jede
+      # Kennzahl daneben. Geprüft wird nur die Syntax: Die Blöcke sind
+      # Ausschnitte ohne Importe, ein Typecheck fände dort nichts Echtes.
+      - name: Codeblöcke der Artikel
+        run: npm run check:code
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
