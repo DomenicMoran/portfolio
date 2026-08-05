@@ -85,11 +85,6 @@ function minutenImOrt(zeitpunkt: Date, zone: string, bezugstag: string) {
   return minuten + tagesversatz * 1440;
 }
 
-/** "2026-08-05" für den i-ten Tag des Jahres. */
-function alsTagesschluessel(jahr: number, tagImJahr: number) {
-  return new Date(Date.UTC(jahr, 0, 1 + tagImJahr)).toISOString().slice(0, 10);
-}
-
 /** Die fünf Pflichtgebete plus Sonnenaufgang, in der Reihenfolge des Tages. */
 const GEBETE = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as const;
 type Gebet = (typeof GEBETE)[number];
@@ -171,10 +166,24 @@ function spanne(m: number) {
   return h ? `${h} h ${m % 60} min` : `${m} min`;
 }
 
-/** Der laufende Tag des Jahres, von 0 an gezählt. */
-function tagDesJahres(d: Date) {
+/**
+ * Der laufende Tag des Jahres im gewählten Ort, von 0 an gezählt.
+ *
+ * „Heute" ist der Tag dort, nicht der beim Leser: Wer aus Auckland Berlin
+ * wählt, sieht Berliner Zeiten und soll das Berliner Datum dazu bekommen.
+ * Beim Wechsel des Ortes kann der Tag deshalb springen — genau dann, wenn er
+ * es auch in Wirklichkeit tut.
+ */
+function tagDesJahresImOrt(zone: string, jetzt = new Date()) {
+  const heute = new Intl.DateTimeFormat("en-CA", {
+    timeZone: zone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(jetzt);
+  const jahr = Number(heute.slice(0, 4));
   return Math.round(
-    (d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86_400_000,
+    (Date.parse(`${heute}T00:00:00Z`) - Date.UTC(jahr, 0, 1)) / 86_400_000,
   );
 }
 
@@ -186,10 +195,21 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   /* Der heutige Tag als fester Wert für diesen Aufruf.
      Nicht über die Uhr getaktet: Das Band ändert sich innerhalb einer Sitzung
      nicht, und ein Minutentakt würde nur dieselbe Zahl neu setzen. */
-  const heuteNr = useMemo(() => tagDesJahres(new Date()), []);
-  const [tag, setTag] = useState(() =>
-    Math.min(TAGE - 1, tagDesJahres(new Date())),
+  const heuteNr = useMemo(
+    () => Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[ort].zone)),
+    [ort],
   );
+  const [tag, setTag] = useState(() =>
+    Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[0].zone)),
+  );
+
+  /* Beim Ortswechsel auf dessen heutigen Tag springen, solange der Regler noch
+     auf „heute" stand. Wer den Tag von Hand gewählt hat, behält ihn. */
+  const [vorherHeute, setVorherHeute] = useState(heuteNr);
+  if (heuteNr !== vorherHeute) {
+    if (tag === vorherHeute) setTag(heuteNr);
+    setVorherHeute(heuteNr);
+  }
 
   /**
    * Das Jahr, alle vier Regeln nebeneinander.
@@ -237,9 +257,14 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           for (let i = 0; i < TAGE; i++) {
             const zeiten = new adhan.PrayerTimes(
               koordinaten,
-              /* Mittag in UTC statt Mitternacht in der Browserzone: So fällt
-                 der gemeinte Kalendertag in jeder Zone der Welt zusammen. */
-              new Date(Date.UTC(jahrZahl, 0, 1 + i, 12)),
+              /* Mitternacht in der Browserzone, und das mit Absicht:
+                 `adhan` liest aus dem Datum die Kalenderwerte des laufenden
+                 Systems. Ein UTC-Mittag fällt in Auckland schon auf den
+                 nächsten Tag — gemessen kam von dort für Tromsø „Fadschr
+                 02:56 +1, Ischa nicht berechnet" heraus. So bleibt der
+                 gemeinte Kalendertag überall derselbe; in welcher Zone seine
+                 Uhrzeiten stehen, entscheidet `minutenImOrt`. */
+              new Date(jahrZahl, 0, 1 + i),
               p,
             );
             /* Minuten seit Mitternacht DIESES Tages, nicht seit Mitternacht.
@@ -259,7 +284,8 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                gezeigten Tages und wird am Rand beschnitten — genau das ist die
                Aussage. Die Uhrzeiten in der Tafel darunter kommen weiterhin
                aus `getHours()` und stimmen. */
-            const bezugstag = alsTagesschluessel(jahrZahl, i);
+            const d0 = new Date(jahrZahl, 0, 1 + i);
+            const bezugstag = `${d0.getFullYear()}-${String(d0.getMonth() + 1).padStart(2, "0")}-${String(d0.getDate()).padStart(2, "0")}`;
             tage.push(
               GEBETE.map((g) => {
                 const d = zeiten[g];
