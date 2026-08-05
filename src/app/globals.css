@@ -112,6 +112,27 @@ body {
   blockquote {
     overflow-wrap: break-word;
   }
+
+  /* Kinder von Flex- und Rasterkaesten duerfen schrumpfen.
+     ------------------------------------------------------
+     Sie tragen von sich aus `min-width: auto` und gehen damit nie unter ihre
+     Inhaltsbreite. Passt der Inhalt nicht, waechst das Kind aus dem Kasten
+     heraus statt umzubrechen — und `overflow-x: clip` an `html`/`body`
+     schneidet es ab, ohne Bildlaufleiste.
+
+     Die Regel stand vorher einzeln an sechs Stellen, und in jeder Runde kam
+     eine siebte dazu: zuletzt das Raster aus Problem und Loesung, das auf dem
+     Bauserver 6 px ueberstand und hier keinen einzigen. Linux setzt gesperrte
+     Versalien breiter als Windows — eine Klasse Fehler, die man oertlich nicht
+     sieht und einzeln nie fertig behebt.
+
+     `:where` haelt die Spezifitaet auf null: Jedes `min-w-*` aus einer
+     Utility-Klasse schlaegt diese Regel. Und `flex-shrink: 0` bleibt
+     unberuehrt — was nicht schrumpfen soll, schrumpft weiterhin nicht, denn
+     die beiden Eigenschaften steuern Verschiedenes. */
+  :where(.flex, .grid, .inline-flex) > * {
+    min-width: 0;
+  }
 }
 
 ::selection {

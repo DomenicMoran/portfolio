@@ -153,7 +153,7 @@ export function OnePager({
         <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
           {/* Kopf */}
           <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
-            <div className="flex min-w-0 items-center gap-5">
+            <div className="flex items-center gap-5">
               {/* Das Porträt kostet keine Zeile.
                 Die Kontaktspalte rechts ist sechs Zeilen hoch, gemessen
                 156 px; das Bild bleibt darunter, und das Blatt bleibt eine
@@ -174,7 +174,7 @@ export function OnePager({
                   className="size-[6.875rem] shrink-0 rounded-lg object-cover"
                 />
               ) : null}
-              <div className="min-w-0">
+              <div>
                 <h1 className="text-4xl font-semibold tracking-tight">
                   {site.name}
                 </h1>
@@ -215,7 +215,7 @@ export function OnePager({
                 Kante mehr, an der er sich ausrichtet: „Gespräche jederzeit ·
                 Eintritt nach bis zu drei Monaten" endete mit einem einzelnen
                 Wort in der zweiten Zeile, rechts angeschlagen. */}
-            <div className="min-w-0 text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:break-all [&_a]:no-underline">
+            <div className="text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:break-all [&_a]:no-underline">
               <p>{site.location}</p>
               <p>
                 <a href={mailAdresse(site.email, site.mailSubject)}>

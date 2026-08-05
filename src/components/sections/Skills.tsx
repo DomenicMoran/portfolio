@@ -38,7 +38,7 @@ export function Skills() {
           lede={skills.lede}
         />
 
-        <div className="mt-16 grid gap-5 [&>*]:min-w-0 lg:grid-cols-2">
+        <div className="mt-16 grid gap-5 lg:grid-cols-2">
           {skills.domains.map((domain, i) => (
             <Reveal key={domain.id} delay={i * 0.06}>
               <DomainCard domain={domain} />
@@ -63,7 +63,7 @@ function DomainCard({
         <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-raised text-acid transition-colors duration-500 group-hover:border-acid/40">
           <Icon className="size-4.5" aria-hidden />
         </span>
-        <div className="min-w-0">
+        <div>
           <h3 className="text-lg font-semibold tracking-tight text-ink">
             {domain.title}
           </h3>
