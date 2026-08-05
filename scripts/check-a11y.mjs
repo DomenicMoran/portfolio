@@ -717,6 +717,76 @@ if (unsichtbar.length > 0) {
   for (const f of unsichtbar) console.error(`  ${f}`);
 }
 
+/* ---------------------------------------------------------------------------
+   Was sich beim Bedienen ändert, wird angesagt.
+
+   Drei Stellen auf dieser Seite tauschen beim Tippen oder Klicken ihre Werte,
+   ohne dass sich das Layout ändert: die Befehlspalette filtert von 23
+   Einträgen herunter, die Tagesbilanz rechnet ihre Summe neu, und die
+   Gebetszeiten wechseln Ort und Regel. Wer sieht, merkt es sofort; wer sich
+   vorlesen lässt, hört ohne Live-Region gar nichts — bei der Palette nicht
+   einmal, dass nichts mehr übrig ist.
+
+   Alle drei sind versorgt. Dieser Block hält es fest: Eine Region, die jemand
+   beim Umbauen verliert, fällt sonst erst auf, wenn sich jemand beschwert.
+   ------------------------------------------------------------------------ */
+const ANSAGEFUNDE = [];
+{
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+  });
+  const seite = await kontext.newPage();
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  await seite.evaluate(async () => {
+    const hoehe = document.documentElement.scrollHeight;
+    for (let y = 0; y < hoehe; y += 600) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+  });
+  await seite.waitForTimeout(600);
+
+  /* Die Tagesbilanz: eine Ansage mit Zahl, sobald ein Gericht abgewählt ist. */
+  const bilanz = await seite.evaluate(() => {
+    const kachel = [...document.querySelectorAll("div.lit")].find((k) =>
+      k.querySelector('[aria-pressed]'),
+    );
+    if (!kachel) return "Kachel nicht gefunden";
+    const st = kachel.querySelector('[role="status"]');
+    return st ? st.textContent.trim() : "keine Region";
+  });
+  if (!/\d/.test(bilanz)) {
+    ANSAGEFUNDE.push(`Tagesbilanz: ${bilanz}`);
+  }
+
+  /* Die Befehlspalette: eine Ansage, auch wenn nichts übrig bleibt. */
+  await seite.keyboard.press("Control+k");
+  await seite.waitForTimeout(400);
+  await seite.keyboard.type("xyzq");
+  await seite.waitForTimeout(400);
+  const palette = await seite.evaluate(() => {
+    const dlg = document.querySelector('[role="dialog"]');
+    if (!dlg) return "Palette öffnet nicht";
+    const st = dlg.querySelector('[role="status"]');
+    return st ? st.textContent.trim() : "keine Region";
+  });
+  if (!/\d/.test(palette)) {
+    ANSAGEFUNDE.push(`Befehlspalette: ${palette}`);
+  }
+
+  await kontext.close();
+}
+
+if (ANSAGEFUNDE.length > 0) {
+  console.error(
+    `
+${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
+      `es anzusagen:
+`,
+  );
+  for (const f of ANSAGEFUNDE) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -738,7 +808,8 @@ if (
   zielfunde.length > 0 ||
   uhrfunde.length > 0 ||
   diagrammfunde.length > 0 ||
-  unsichtbar.length > 0
+  unsichtbar.length > 0 ||
+  ANSAGEFUNDE.length > 0
 )
   process.exit(1);
 
@@ -749,5 +820,6 @@ console.log(
     `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand, ` +
     `nichts füllt sich bei reduzierter Bewegung von allein nach, ` +
     `keine Diagrammbeschriftung unter ${SCHRIFTGRENZE} px auf dem Telefon, ` +
-    `nichts unter ${UNSICHTBAR_AB}:1 gegen seinen Untergrund.`,
+    `nichts unter ${UNSICHTBAR_AB}:1 gegen seinen Untergrund, ` +
+    `und was sich beim Bedienen ändert, wird angesagt.`,
 );

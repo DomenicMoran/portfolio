@@ -701,6 +701,19 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
         />
       </label>
 
+      {/* Was der Wechsel ändert, wird angesagt.
+
+          Ort, Regel und Tag tauschen sechs Uhrzeiten und die Spanne aus, ohne
+          dass sich am Aufbau etwas ändert. Wer sieht, merkt es sofort; wer
+          sich vorlesen lässt, hörte nichts. Angesagt werden der Ort und die
+          beiden Zeiten, an denen die Regel hängt — sechs Uhrzeiten
+          hintereinander sind eine Liste, die niemand behält. */}
+      <p role="status" aria-live="polite" className="sr-only">
+        {heutiger
+          ? `${ortName(ORTE[ort])}, ${datum}: ${demo.prayers.fajr} ${uhrzeit(heutiger[0], demo.failed)}, ${demo.prayers.isha} ${uhrzeit(heutiger[5], demo.failed)}`
+          : ""}
+      </p>
+
       <dl className="mt-4 grid min-h-[4.5rem] grid-cols-2 gap-x-6 gap-y-3 min-[420px]:grid-cols-3 sm:grid-cols-6">
         {GEBETE.map((g, i) => (
           <div key={g}>
