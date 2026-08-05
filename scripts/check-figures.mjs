@@ -1878,6 +1878,92 @@ const BRAUCHT_KIND = {
       zeilen.push("  --  Profil-README: GitHub nicht erreichbar, übersprungen");
     }
 
+    /* Die Kurzbeschreibung des Repos nennt zwei Zahlen.
+       ------------------------------------------------
+       „Vier Fallstudien zu Produktionssystemen, fünf Fachartikel" steht als
+       Beschreibung am Repo und damit in jeder Repo-Liste, in jeder Suche und
+       über jedem Klon-Befehl. Es ist die erste Zeile, die jemand über diese
+       Arbeit liest, und sie stand bisher außerhalb jeder Prüfung: Alle
+       Wächter dieses Laufs sehen in Dateien, keiner in die Angaben, die
+       GitHub selbst führt.
+
+       Ein sechster Artikel ändert die Seite, die Sitemap, den Feed und die
+       Lesezeiten — die Beschreibung ändert er nicht, weil sie in keinem
+       Verzeichnis liegt. Genau daran veraltet so ein Satz, ohne dass jemand
+       ihn anfasst. */
+    const ZAHLWORT = new Map([
+      ["eine", 1],
+      ["zwei", 2],
+      ["drei", 3],
+      ["vier", 4],
+      ["fünf", 5],
+      ["sechs", 6],
+      ["sieben", 7],
+      ["acht", 8],
+      ["neun", 9],
+      ["zehn", 10],
+    ]);
+    try {
+      const antwort = await fetch(
+        "https://api.github.com/repos/DomenicMoran/portfolio",
+        {
+          headers: { accept: "application/vnd.github+json" },
+          signal: AbortSignal.timeout(20000),
+        },
+      );
+      if (!antwort.ok) throw new Error(String(antwort.status));
+      const beschreibung = (await antwort.json()).description ?? "";
+
+      const quelle = readFileSync(join("src", "content", "site.ts"), "utf8");
+      const von = quelle.indexOf("export const caseStudies");
+      const bis = quelle.indexOf("\nexport const", von + 10);
+      const fallstudien = (
+        quelle.slice(von, bis < 0 ? quelle.length : bis).match(/id:\s*"/g) ?? []
+      ).length;
+      const artikel = readdirSync(join("src", "content", "articles")).filter(
+        (f) => /^de-.*\.ts$/.test(f),
+      ).length;
+
+      /* Gelesen wird das Zahlwort vor dem Substantiv, nicht die Zahl: Der
+         Satz schreibt „Vier Fallstudien", nicht „4 Fallstudien". */
+      const gelesen = (wort) => {
+        const treffer = new RegExp(
+          `(\\d+|[A-Za-zÄÖÜäöüß]+)\\s+${wort}`,
+          "i",
+        ).exec(beschreibung);
+        if (!treffer) return null;
+        const roh = treffer[1].toLowerCase();
+        return /^\d+$/.test(roh) ? Number(roh) : (ZAHLWORT.get(roh) ?? null);
+      };
+
+      for (const [wort, ist] of [
+        ["Fallstudien", fallstudien],
+        ["Fachartikel", artikel],
+      ]) {
+        const behauptet = gelesen(wort);
+        if (behauptet === null) {
+          abweichungen++;
+          zeilen.push(
+            `  !!  Repo-Beschreibung nennt keine Zahl vor „${wort}" (${ist} vorhanden)`,
+          );
+        } else if (behauptet !== ist) {
+          abweichungen++;
+          zeilen.push(
+            `  !!  Repo-Beschreibung sagt ${behauptet} ${wort}, es sind ${ist}`,
+          );
+          zeilen.push(`        auf GitHub: ${beschreibung.slice(0, 90)}`);
+        } else {
+          zeilen.push(
+            `  ok  Repo-Beschreibung   ${String(ist).padStart(6)} ${wort} wie im Inhalt`,
+          );
+        }
+      }
+    } catch {
+      zeilen.push(
+        "  --  Repo-Beschreibung: GitHub nicht erreichbar, übersprungen",
+      );
+    }
+
     /* Die Testzahlen und die Abhängigkeitsfreiheit je Paket. */
     const funde = [];
     let gezaehlt = 0;
