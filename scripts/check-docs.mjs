@@ -25,6 +25,7 @@
  */
 
 import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 
 const funde = [];
 let geprueft = 0;
@@ -183,6 +184,60 @@ if (erfunden.length > 0) {
   melde(
     "README.md",
     `der Verzeichnisbaum nennt Skripte, die es nicht gibt: ${erfunden.join(", ")}`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 2b. Jedes Skript hat einen Aufrufweg, jeder Prüflauf steht in der CI
+// ---------------------------------------------------------------------------
+
+/* Ein Prüflauf, der nirgends aufgerufen wird, prüft nichts — und sieht
+   trotzdem nach Prüfung aus. Das ist die stillste Art, eine Zusage zu
+   verlieren: Der Lauf liegt im Repo, steht im Handbuch, und die CI kennt ihn
+   nicht.
+
+   Gefunden hat das nicht dieser Lauf, sondern ein Blick auf die Skriptliste:
+   `build-linkedin-images.mjs` stand im Verzeichnisbaum und hatte als einziger
+   der vier Erzeuger kein npm-Skript. Aufrufbar war es nur, wer den Dateinamen
+   kannte. */
+const wortlaut = [
+  ...Object.values(paket.scripts),
+  /* Ein Befehl im Handbuch zählt auch: `check-figures` läuft bewusst
+     außerhalb der CI, weil er die Nachbar-Repos braucht, und steht in
+     AGENTS.md als vollständiger Aufruf. Gesucht wird der Befehl, nicht der
+     bloße Dateiname — im Verzeichnisbaum steht jeder Name, und danach wäre
+     diese Prüfung wirkungslos. */
+  ...[readme, agents].flatMap((t) =>
+    [...t.matchAll(/node scripts\/[\w-]+\.mjs/g)].map((m) => m[0]),
+  ),
+  ...readdirSync(join(".github", "workflows"))
+    .filter((d) => d.endsWith(".yml"))
+    .map((d) => readFileSync(join(".github", "workflows", d), "utf8")),
+].join("\n");
+
+/* Hilfsdateien werden importiert, nicht aufgerufen. */
+const HILFSDATEIEN = ["local-server.mjs", "built-pages.mjs", "onepager-quellstand.mjs"];
+
+const ohneAufruf = vorhanden.filter(
+  (d) => !HILFSDATEIEN.includes(d) && !wortlaut.includes(d),
+);
+geprueft += vorhanden.length;
+if (ohneAufruf.length > 0) {
+  melde(
+    "package.json",
+    `${ohneAufruf.length} Skript(e) haben keinen Aufrufweg: ${ohneAufruf.join(", ")}. ` +
+      `Wer sie braucht, muss den Dateinamen kennen.`,
+  );
+}
+
+const ciText = readFileSync(join(".github", "workflows", "check.yml"), "utf8");
+const nichtInDerCi = laeufe.filter((lauf) => !ciText.includes(`npm run ${lauf}`));
+geprueft += laeufe.length;
+if (nichtInDerCi.length > 0) {
+  melde(
+    ".github/workflows/check.yml",
+    `${nichtInDerCi.length} Prüflauf/-läufe stehen nicht in der CI: ` +
+      `${nichtInDerCi.join(", ")}. Ein Lauf, den niemand aufruft, prüft nichts.`,
   );
 }
 
