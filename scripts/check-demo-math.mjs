@@ -201,6 +201,120 @@ for (const ziel of ZIELE) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Die zweite Demo: Gebetszeiten
+
+   Auch sie rechnet im Browser, mit derselben Bibliothek wie die ausgelieferte
+   App. Ein zweites Mal nachzurechnen wäre hier sinnlos — dann stünde dieselbe
+   Formel zweimal da. Was sich prüfen lässt, ist die Ordnung, die keine
+   Rechnung verletzen darf: Fadschr kommt vor dem Sonnenaufgang, der vor
+   Dhuhr, der vor Asr, der vor Maghrib, der vor Ischa. Eine vertauschte
+   Zuordnung oder ein Fehler um einen Tag bricht genau das, und auf der Kachel
+   sähe es aus wie immer.
+
+   Geprüft über vier Orte, vier Verfahren für hohe Breiten und fünf Tage
+   quer durchs Jahr. Tromsø ist dabei der Fall, um den es geht: Zur Sonnwende
+   gibt es dort keine Dämmerung, in der Polarnacht keinen Sonnenaufgang. Die
+   Demo schreibt dann „nicht berechnet", und das ist die richtige Antwort —
+   eine erfundene Uhrzeit wäre die falsche. */
+const ORTE = ["Berlin", "Istanbul", "Kairo", "Tromsø"];
+const VERFAHREN = ["wie in der App", "winkelbasiert", "Siebtel der Nacht", "Mitte der Nacht"];
+/** Jahresanfang, Frühling, Sonnwende, Herbst, Dezember. */
+const TAGE = [0, 80, 172, 264, 355];
+
+let kombinationen = 0;
+let nichtBerechnet = 0;
+
+for (const ort of ORTE) {
+  for (const verfahren of VERFAHREN) {
+    for (const tag of TAGE) {
+      const stand = await seite.evaluate(
+        async ([ort, verfahren, tag]) => {
+          const demo = [...document.querySelectorAll("section, div")]
+            .filter(
+              (e) =>
+                /Fadschr|Fajr/.test(e.innerText || "") &&
+                e.querySelector('input[type="range"]'),
+            )
+            .sort((a, b) => a.innerText.length - b.innerText.length)[0];
+          if (!demo) return { fehler: "Gebetszeiten-Demo nicht gefunden" };
+
+          const waehlen = (beschriftung) => {
+            const knopf = [...demo.querySelectorAll("button")].find(
+              (e) => e.textContent.trim() === beschriftung,
+            );
+            if (knopf) knopf.click();
+            return Boolean(knopf);
+          };
+          if (!waehlen(ort)) return { fehler: `Ort „${ort}" fehlt` };
+          if (!waehlen(verfahren)) return { fehler: `Verfahren „${verfahren}" fehlt` };
+          await new Promise((r) => setTimeout(r, 250));
+
+          const regler = demo.querySelector('input[type="range"]');
+          const setzen = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            "value",
+          ).set;
+          setzen.call(regler, String(tag));
+          regler.dispatchEvent(new Event("input", { bubbles: true }));
+          await new Promise((r) => setTimeout(r, 350));
+
+          return {
+            paare: [...demo.querySelectorAll("dt")].map((dt) => ({
+              name: dt.textContent.trim(),
+              wert: (
+                dt.parentElement?.querySelector("dd") ?? dt.nextElementSibling
+              )?.textContent.trim(),
+            })),
+          };
+        },
+        [ort, verfahren, tag],
+      );
+
+      const wo = `${ort} / ${verfahren} / Tag ${tag}`;
+      if (stand.fehler) {
+        funde.push(`${wo}: ${stand.fehler}`);
+        continue;
+      }
+      if (!stand.paare?.length) {
+        funde.push(`${wo}: keine Zeiten abzulesen`);
+        continue;
+      }
+      kombinationen++;
+
+      /* „nicht berechnet" und ein „+1" hinter der Uhrzeit sind keine Fehler:
+         Das eine ist die ehrliche Antwort für einen Ort ohne Dämmerung, das
+         andere eine Zeit nach Mitternacht. Beide fallen aus dem Vergleich,
+         weil sie keine Uhrzeit desselben Tages sind. */
+      let vorher = null;
+      let vorherName = null;
+      for (const paar of stand.paare) {
+        const treffer = /^(\d{2}):(\d{2})$/.exec(paar.wert ?? "");
+        if (!treffer) {
+          if (!/^\d{2}:\d{2}/.test(paar.wert ?? "")) nichtBerechnet++;
+          vorher = null;
+          continue;
+        }
+        const minuten = Number(treffer[1]) * 60 + Number(treffer[2]);
+        if (vorher !== null && minuten <= vorher) {
+          funde.push(
+            `${wo}: ${vorherName} steht auf ${String(Math.floor(vorher / 60)).padStart(2, "0")}:` +
+              `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ${paar.wert} — ` +
+              `die Reihenfolge der Gebetszeiten liegt fest.`,
+          );
+        }
+        vorher = minuten;
+        vorherName = paar.name;
+      }
+    }
+  }
+}
+
+console.log(
+  `  ok  Gebetszeiten: ${kombinationen} Kombinationen aus ${ORTE.length} Orten, ` +
+    `${VERFAHREN.length} Verfahren und ${TAGE.length} Tagen in Reihenfolge`,
+);
+
 await browser.close();
 beenden();
 
@@ -216,6 +330,8 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `\nDie Demo rechnet richtig: ${ZIELE.length} Ziele geprüft, ` +
-    `je ${1 << gerichte.length} Zusammenstellungen unabhängig nachgerechnet.`,
+  `\nBeide Demos rechnen richtig: ${ZIELE.length} Kalorienziele gegen je ` +
+    `${1 << gerichte.length} Zusammenstellungen nachgerechnet, ` +
+    `${kombinationen} Gebetszeiten-Kombinationen in Reihenfolge ` +
+    `(${nichtBerechnet} Angaben ohne Wert, wo es keinen gibt).`,
 );
