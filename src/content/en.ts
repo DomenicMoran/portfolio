@@ -1079,7 +1079,7 @@ export const en: Content = {
 
   recruiter: {
     eyebrow: "For recruiters & CTOs",
-    title: "The essentials in 60 seconds",
+    title: "The essentials in two minutes",
     lede: "No cover letter needed. Here is what I can do, what I am looking for, and how to reach me.",
     facts: [
       // Titelschreibung wie überall sonst auf der englischen Fassung. Als

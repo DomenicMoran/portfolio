@@ -55,7 +55,43 @@ for (const breite of BREITEN) {
   for (const pfad of pfade) {
     const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
     if (!antwort || antwort.status() !== 200) continue;
-    await seite.waitForTimeout(500);
+
+    /* Erst messen, wenn nichts mehr fährt.
+
+       Die Kopfleiste kommt von `y: -80` herein, mit 0,9 s Verzögerung und
+       0,9 s Dauer. Eine feste Wartezeit von 500 ms traf mitten hinein: Der
+       Lauf meldete auf /en bei 390 px drei Bedienelemente „außerhalb des
+       Sichtfelds, oben -53" — die Leiste war schlicht noch unterwegs. Auf /
+       ging derselbe Lauf durch, weil die Zeit dort knapp reichte. Ein
+       Wächter, der je nach Seite etwas anderes meldet, ist keiner.
+
+       Dieselbe Bedingung wie in check-headings: beenden, was endlich ist,
+       und weitermachen, wenn nichts mehr läuft. */
+    await seite
+      .waitForFunction(
+        () => {
+          for (const bewegung of document.getAnimations()) {
+            try {
+              bewegung.finish();
+            } catch {
+              // Endlos, also ohne Endwert.
+            }
+          }
+          return document.getAnimations().every((bewegung) => {
+            if (bewegung.playState !== "running") return true;
+            // Marquee und Puls laufen absichtlich weiter.
+            return bewegung.effect?.getComputedTiming().iterations === Infinity;
+          });
+        },
+        null,
+        { timeout: 20000, polling: 200 },
+      )
+      .catch(() => {
+        // Auch dann messen: Was steht, wird geprüft.
+      });
+    // Rest für das, was die Animationsbibliothek über requestAnimationFrame
+    // fährt und was `getAnimations` deshalb nicht kennt.
+    await seite.waitForTimeout(1400);
     geprueft++;
 
     let vorher = "";

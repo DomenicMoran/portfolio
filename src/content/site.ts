@@ -1065,7 +1065,7 @@ export const skillDomains: SkillDomain[] = [
 
 export const recruiter = {
   eyebrow: "Für Recruiter & CTOs",
-  title: "Das Wichtigste in 60 Sekunden",
+  title: "Das Wichtigste in zwei Minuten",
   lede: "Kein Anschreiben nötig. Hier steht, was ich kann, was ich suche und wie du mich erreichst.",
   facts: [
     { label: "Rolle", value: "AI Product Engineer / Fullstack" },
