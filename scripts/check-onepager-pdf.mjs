@@ -21,8 +21,15 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { inflateSync } from "node:zlib";
+import { join } from "node:path";
 import { PDFDocument, PDFName, PDFString } from "pdf-lib";
 import { QUELLEN, quellstand } from "./lib/onepager-quellstand.mjs";
+
+/** Welches gebaute Blatt zu welcher PDF gehört. */
+const SEITEN = {
+  "public/domenic-moran-kurzprofil.pdf": join(".next", "server", "app", "onepager.html"),
+  "public/domenic-moran-one-pager.pdf": join(".next", "server", "app", "en", "onepager.html"),
+};
 
 const BLAETTER = [
   "public/domenic-moran-kurzprofil.pdf",
@@ -84,15 +91,56 @@ const KERNANGABEN = [
   "MenuCloud",
 ];
 
+/**
+ * Welche Zeichen auf einem Blatt stehen — aus der gebauten Seite, nicht aus
+ * dem PDF.
+ *
+ * Eine Schrift bettet nur ein, was gebraucht wird: Auf dem englischen Blatt
+ * kommt kein „ß" vor, also fehlt es dort zu Recht. Ein fester Katalog meldet
+ * genau solche Zeichen als Lücke, die keine ist. Die Quelle ist deshalb das
+ * ausgelieferte HTML desselben Blattes.
+ */
+function zeichenAufDemBlatt(html) {
+  const nurInhalt = html.slice(html.indexOf("<main"), html.indexOf("</main>"));
+  const text = nurInhalt
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+  return new Set([...text].filter((z) => /[\p{L}\p{N}]/u.test(z)));
+}
+
 for (const pfad of BLAETTER) {
   if (!existsSync(pfad)) continue;
-  const text = textAusPdf(readFileSync(pfad));
+  const daten = readFileSync(pfad);
+  const text = textAusPdf(daten);
   const fehlend = KERNANGABEN.filter((b) => !text.includes(b));
   if (fehlend.length) {
     funde.push(
       `${pfad}: aus ${text.length} lesbaren Zeichen fehlen ` +
         fehlend.map((f) => `„${f}“`).join(", "),
     );
+  }
+
+  /* Jedes Zeichen des Blattes muss eine Zuordnung haben.
+
+     Ohne ToUnicode-Eintrag kann kein Extraktor es lesen, egal wie gut er ist —
+     und ein Kurzprofil wird eingelesen, bevor ein Mensch es sieht. Geprüft
+     wird gegen das ausgelieferte HTML desselben Blattes, also gegen eine
+     Quelle außerhalb des PDF. */
+  const blatt = SEITEN[pfad];
+  if (blatt && existsSync(blatt)) {
+    const abgebildet = abgebildeteZeichen(daten);
+    const ohne = [...zeichenAufDemBlatt(readFileSync(blatt, "utf8"))].filter(
+      (z) => !abgebildet.has(z),
+    );
+    if (ohne.length) {
+      funde.push(
+        `${pfad}: ${ohne.length} Zeichen ohne Zuordnung — ` +
+          `${ohne.map((z) => `„${z}“`).join(", ")}. Ohne ToUnicode-Eintrag ` +
+          `kann kein Extraktor sie lesen.`,
+      );
+    }
   }
 }
 
@@ -119,7 +167,8 @@ console.log(
  * dann die Hex-Strings vor `Tj` abbilden. Chromium schreibt die Zeichen als
  * Hex, nicht in Klammern.
  */
-function textAusPdf(daten) {
+/** Alle entpackten Ströme einer Datei als ein Text. */
+function stroeme(daten) {
   const teile = [];
   let stelle = 0;
   while (true) {
@@ -143,8 +192,44 @@ function textAusPdf(daten) {
     }
     stelle = ende + 1;
   }
+  return Buffer.concat(teile).toString("latin1");
+}
 
-  const alle = Buffer.concat(teile).toString("latin1");
+/**
+ * Jedes Zeichen, für das die Datei eine Zuordnung mitbringt.
+ *
+ * Ohne ToUnicode-Eintrag kann kein Extraktor ein Zeichen lesen, egal wie gut
+ * er ist. Diese Menge beantwortet damit die Frage, die für ein
+ * Bewerbermanagementsystem zählt — und sie hängt nicht daran, ob die
+ * Zusammensetzung unten die Schriften auseinanderhält.
+ */
+function abgebildeteZeichen(daten) {
+  const alle = stroeme(daten);
+  const zeichen = new Set();
+  for (const abschnitt of alle.matchAll(/beginbfchar([\s\S]*?)endbfchar/g)) {
+    for (const paar of abschnitt[1].matchAll(
+      /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g,
+    )) {
+      zeichen.add(String.fromCharCode(parseInt(paar[2].slice(0, 4), 16)));
+    }
+  }
+  for (const abschnitt of alle.matchAll(/beginbfrange([\s\S]*?)endbfrange/g)) {
+    for (const reihe of abschnitt[1].matchAll(
+      /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g,
+    )) {
+      const start = parseInt(reihe[1], 16);
+      const schluss = Math.min(parseInt(reihe[2], 16), start + 400);
+      const ziel = parseInt(reihe[3].slice(0, 4), 16);
+      for (let i = start; i <= schluss; i++) {
+        zeichen.add(String.fromCharCode(ziel + i - start));
+      }
+    }
+  }
+  return zeichen;
+}
+
+function textAusPdf(daten) {
+  const alle = stroeme(daten);
   const zuordnung = new Map();
 
   for (const abschnitt of alle.matchAll(/beginbfchar([\s\S]*?)endbfchar/g)) {
