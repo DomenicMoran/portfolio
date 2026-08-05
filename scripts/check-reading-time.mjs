@@ -16,7 +16,7 @@
  *   node scripts/check-reading-time.mjs --setzen  Werte korrigieren
  */
 
-import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const ORDNER = "src/content/articles";
@@ -114,3 +114,87 @@ else
 Jede Lesezeit stimmt mit dem Wortbestand: ${befunde.length} Artikel gezählt, ` +
       `${befunde.reduce((n, b) => n + b.woerter, 0).toLocaleString("de-DE")} Wörter.`,
   );
+
+/* ---------------------------------------------------------------------------
+   Die Zeitangabe über dem Recruiter-Bereich
+
+   Sie stand dort als Überschrift und war die einzige Lesezeit der Seite, die
+   niemand nachgerechnet hat: "Das Wichtigste in 60 Sekunden". Gemessen mit
+   denselben 180 Wörtern je Minute wie oben brauchte allein der Fließtext
+   82 Sekunden, mit den Eckdaten 113.
+
+   Das ist die unglücklichste Stelle für eine ungeprüfte Zahl: Zwei Absätze
+   darunter steht "Ich weise nach, statt zu behaupten".
+
+   Gezählt wird aus der gebauten Seite und nicht aus `site.ts`: Der Bereich
+   ist dort durch `id="hire"` eindeutig begrenzt und enthält genau das, was
+   der Leser sieht. Der erste Anlauf schnitt den Block aus dem Quelltext und
+   kam auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt — die Grenzen
+   eines Objektliterals sind mit einem Regex nicht zuverlässig zu finden. */
+const ZAHLWORT = {
+  de: { 1: "einer Minute", 2: "zwei Minuten", 3: "drei Minuten", 4: "vier Minuten" },
+  en: { 1: "one minute", 2: "two minutes", 3: "three minutes", 4: "four minutes" },
+};
+
+const bereiche = [
+  { sprache: "de", datei: join(".next", "server", "app", "index.html") },
+  { sprache: "en", datei: join(".next", "server", "app", "en.html") },
+];
+
+/** Der Abschnitt mit `id="hire"`, samt seiner verschachtelten Abschnitte. */
+function abschnitt(html) {
+  const start = html.indexOf('id="hire"');
+  if (start < 0) return null;
+  const von = html.lastIndexOf("<section", start);
+  if (von < 0) return null;
+  let tiefe = 0;
+  const muster = /<section\b|<\/section>/g;
+  muster.lastIndex = von;
+  for (let t; (t = muster.exec(html)); ) {
+    tiefe += t[0] === "</section>" ? -1 : 1;
+    if (tiefe === 0) return html.slice(von, t.index);
+  }
+  return null;
+}
+
+const zeitfunde = [];
+for (const { sprache, datei } of bereiche) {
+  if (!existsSync(datei)) {
+    zeitfunde.push(`${datei} fehlt — erst npm run build`);
+    continue;
+  }
+  const block = abschnitt(readFileSync(datei, "utf8"));
+  if (!block) {
+    zeitfunde.push(`${datei}: kein Abschnitt mit id="hire"`);
+    continue;
+  }
+  const text = block
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&(?:#\d+|[a-z]+);/g, "");
+  const woerter = text.split(/\s+/).filter(Boolean).length;
+  const minuten = Math.max(1, Math.round(woerter / WOERTER_JE_MINUTE));
+  const erwartet = ZAHLWORT[sprache][minuten];
+  const titel = /<h2[^>]*>([\s\S]*?)<\/h2>/.exec(block)?.[1].replace(/<[^>]+>/g, "").trim() ?? "";
+
+  if (!erwartet) {
+    zeitfunde.push(`${datei}: ${woerter} Wörter sind ${minuten} Minuten, dafür fehlt das Zahlwort`);
+  } else if (!titel.includes(erwartet)) {
+    zeitfunde.push(
+      `${datei}: „${titel}" bei ${woerter} Wörtern — gerechnet sind das ${erwartet}`,
+    );
+  }
+}
+
+if (zeitfunde.length && !setzen) {
+  console.error(`\n${zeitfunde.length} Zeitangabe stimmt nicht mit dem Text darunter:`);
+  for (const f of zeitfunde) console.error(`  ${f}`);
+  process.exit(1);
+}
+if (!setzen) {
+  console.log(
+    `Die Zeitangabe über dem Recruiter-Bereich stimmt in beiden Sprachfassungen.`,
+  );
+}
