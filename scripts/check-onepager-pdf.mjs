@@ -79,6 +79,30 @@ for (const pfad of BLAETTER) {
     );
     continue;
   }
+
+  /* Das Blatt trägt eine Struktur, nicht nur Zeichen.
+     -------------------------------------------------
+     Ohne `tagged: true` druckt Chromium eine Fläche aus Textfragmenten:
+     Überschrift, Absatz und Listeneintrag sind darin nicht unterscheidbar,
+     und ein Screenreader liest sie in der Reihenfolge des Zeichenstroms vor
+     statt in der des Dokuments. Der Katalog beider Dateien trug `/Lang`, aber
+     kein `/MarkInfo` — die Sprache stand also fest, die Gliederung nicht.
+
+     Die Option steht auf `false`, wenn niemand sie setzt. Sie fällt damit
+     genau so weg, wie sie entstanden ist: unbemerkt beim nächsten Umbau des
+     Druckskripts. Deshalb steht sie hier und nicht nur dort. */
+  const markInfo = doc.catalog.get(PDFName.of("MarkInfo"));
+  const struktur = doc.catalog.get(PDFName.of("StructTreeRoot"));
+  if (!markInfo || !struktur) {
+    funde.push(
+      `${pfad} ist nicht getaggt (MarkInfo ${markInfo ? "da" : "fehlt"}, ` +
+        `StructTreeRoot ${struktur ? "da" : "fehlt"}). Ein Screenreader muss ` +
+        `die Lesereihenfolge dann raten. In build-onepager-pdf.mjs gehört ` +
+        `\`tagged: true\` in die pdf()-Optionen, danach neu drucken.`,
+    );
+    continue;
+  }
+
   geprueft++;
 }
 
