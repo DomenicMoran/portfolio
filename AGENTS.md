@@ -276,7 +276,7 @@ npm run check:landmarks # jede Seite bietet ihre Landmarken an
 npm run check:separators # kein Trennzeichen am Zeilenende
 npm run check:nbsp     # keine Rechtsangabe bricht vor ihrer Ziffer um
 npm run check:reading  # Lesezeiten stimmen mit dem Wortbestand
-npm run check:vitals   # LCP und CLS auf einem gedrosselten Telefon
+npm run check:vitals   # LCP, CLS und INP auf einem gedrosselten Telefon
 npm run check:bundle   # JavaScript je Seite gegen Budgets
 npm run check:cards    # Kartenreihen beginnen auf einer Höhe
 npm run check:font-size # kein Text geht bei größerer Grundschrift verloren
