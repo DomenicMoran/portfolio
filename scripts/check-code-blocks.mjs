@@ -51,9 +51,23 @@ function bloeckeAus(quelle) {
     }
     /* Die letzte Sprachangabe vor diesem Block gehört dazu. */
     const davor = sprachen.filter((s) => s.stelle < treffer.index);
+
+    /* Die Maskierung des Template-Literals auflösen.
+       -----------------------------------------------
+       In der Quelle steht `\\s`, auf der Seite steht `\s`. Wer die Rohfassung
+       parst, prüft nicht den Code, den der Leser sieht: `/\\s+/` ist ein
+       gültiger Ausdruck und bedeutet etwas anderes als `/\s+/`. Gefunden beim
+       Abgleich der geprüften Blöcke gegen die ausgelieferte Seite, wo genau
+       diese Stelle als einziger Unterschied übrig blieb. */
+    const sichtbar = quelle
+      .slice(anfang, ende)
+      .replace(/\\`/g, "`")
+      .replace(/\\\$\{/g, "${")
+      .replace(/\\\\/g, "\\");
+
     bloecke.push({
       sprache: davor.length ? davor[davor.length - 1].sprache : "?",
-      code: quelle.slice(anfang, ende),
+      code: sichtbar,
       zeile: quelle.slice(0, treffer.index).split("\n").length,
     });
   }
