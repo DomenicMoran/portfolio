@@ -38,6 +38,21 @@ import { starteServer } from "./lib/local-server.mjs";
 const NUR_DEUTSCH = ["/impressum", "/datenschutz"];
 
 /**
+ * Die Fehlerseite, unter zwei erfundenen Adressen.
+ *
+ * Sie steht in keiner Seitenliste des Baus — sie entsteht erst bei der
+ * Anfrage, denn sie soll in der Sprache antworten, unter der jemand gekommen
+ * ist. Damit fiel ausgerechnet die einzige Seite aus diesem Lauf, deren
+ * Sprache überhaupt zur Laufzeit entschieden wird.
+ *
+ * Sie trägt kein `hreflang` und braucht auch keines: Sie ist `noindex`, es
+ * gibt keine Entsprechung, die eine Suchmaschine kennen müsste. Geprüft wird
+ * deshalb nur, was für den Leser zählt — die richtige Dokumentsprache, der
+ * ausgezeichnete Satz in der anderen Sprache und der Weg dorthin.
+ */
+const FEHLERSEITEN = ["/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist"];
+
+/**
  * Eigennamen tragen ihre Umlaute in jede Sprache mit. WCAG 3.1.2 nimmt sie
  * ausdrücklich aus, und eine Auszeichnung würde die Aussprache eher
  * verschlechtern als verbessern.
@@ -49,7 +64,7 @@ let beenden = () => {};
 let basis = vorgegebeneBasis;
 if (!basis) ({ basis, beenden } = await starteServer());
 
-const pfade = gebauteSeiten();
+const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
 const funde = [];
 
 const browser = await chromium.launch();
@@ -60,7 +75,12 @@ const stand = new Map();
 
 for (const pfad of pfade) {
   const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
-  if (!antwort || antwort.status() !== 200) continue;
+  // Die Fehlerseite antwortet mit 404, und das ist ihr richtiger Status.
+  const erwarteterStatus = FEHLERSEITEN.includes(pfad) ? 404 : 200;
+  if (!antwort || antwort.status() !== erwarteterStatus) {
+    funde.push(`${pfad}: HTTP ${antwort?.status()} statt ${erwarteterStatus}`);
+    continue;
+  }
 
   const daten = await seite.evaluate((eigennamenQuelle) => {
     const eigennamen = new RegExp(eigennamenQuelle);
@@ -78,13 +98,21 @@ for (const pfad of pfade) {
       (e) => e.getAttribute("href") === "/en",
     );
 
-    /* Deutscher Text ohne Auszeichnung. Umlaute und ß sind der verlässliche
-       Marker: Ein englischer Satz hat keine. */
+    /* Deutscher Text ohne Auszeichnung.
+
+       Umlaute und ß allein reichen nicht: Der Hinweis auf der englischen
+       Fehlerseite lautet „Diese Adresse gibt es nicht. Weiter auf der
+       deutschen Fassung." und trägt keinen einzigen. Gefunden hat das der
+       Gegentest zur Fehlerseite, nicht der Entwurf. Deshalb zusätzlich ein
+       paar Wörter, die in englischem Text nicht vorkommen. */
+    const DEUTSCHE_WOERTER =
+      /\b(Diese|Adresse|gibt|nicht|Weiter|deutschen|Fassung|Seite|Impressum|Datenschutz|über|und|oder)\b/;
     const deutsch = [];
     const lauf = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     for (let knoten; (knoten = lauf.nextNode()); ) {
       const text = knoten.textContent.trim();
-      if (!text || !/[äöüßÄÖÜ]/.test(text)) continue;
+      if (!text) continue;
+      if (!/[äöüßÄÖÜ]/.test(text) && !DEUTSCHE_WOERTER.test(text)) continue;
       if (eigennamen.test(text)) continue;
       const el = knoten.parentElement;
       if (!el || !el.offsetParent) continue;
@@ -92,12 +120,41 @@ for (const pfad of pfade) {
       deutsch.push(text.slice(0, 44));
     }
 
+    /* Und englischer Text auf einer deutschen Seite — dieselbe Regel in die
+       andere Richtung. Sie greift nur auf der Fehlerseite, weil sonst keine
+       deutsche Seite einen englischen Satz trägt; dort steht einer, und zwar
+       genau der, der zur englischen Fassung führt. */
+    const englischerText = [];
+    const lauf2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let knoten; (knoten = lauf2.nextNode()); ) {
+      const text = knoten.textContent.trim();
+      if (text.length < 12) continue;
+      if (!/\b(does not exist|Continue on the|This page|This address)\b/.test(text)) continue;
+      const el = knoten.parentElement;
+      if (!el || !el.offsetParent) continue;
+      if (el.closest('[lang="en"]')) continue;
+      englischerText.push(text.slice(0, 44));
+    }
+
+    /* Die Rechtsseiten gibt es nur auf Deutsch. Wer von einer englischen
+       Seite dorthin verweist, sagt das mit `hreflang` — sonst kündigt der
+       Verweis eine englische Seite an und liefert eine deutsche, und ein
+       Vorleseprogramm wechselt die Aussprache nicht. */
+    const rechtsverweise = [...document.querySelectorAll("a")]
+      .filter((e) => ["/impressum", "/datenschutz"].includes(e.getAttribute("href")))
+      .map((e) => ({
+        ziel: e.getAttribute("href"),
+        hreflang: e.getAttribute("hreflang"),
+      }));
+
     return {
       lang: document.documentElement.lang,
       alternativen,
       wechsel: [...new Set(wechsel)],
       rueckweg,
       deutsch: [...new Set(deutsch)],
+      englischerText: [...new Set(englischerText)],
+      rechtsverweise,
     };
   }, EIGENNAMEN.source);
 
@@ -118,6 +175,41 @@ for (const [pfad, daten] of stand) {
   const erwartet = englisch ? "en" : "de";
   if (daten.lang !== erwartet) {
     funde.push(`${pfad}: <html lang="${daten.lang}">, erwartet "${erwartet}"`);
+  }
+
+  /* Auf einer englischen Seite kündigt jeder Verweis auf die Rechtsseiten
+     an, dass dahinter Deutsch steht. */
+  if (englisch) {
+    for (const verweis of daten.rechtsverweise) {
+      if (verweis.hreflang !== "de") {
+        funde.push(
+          `${pfad}: der Verweis auf ${verweis.ziel} trägt hreflang=` +
+            `${verweis.hreflang ?? "nichts"}. Dahinter steht eine deutsche Seite.`,
+        );
+      }
+    }
+  }
+
+  if (FEHLERSEITEN.includes(pfad)) {
+    /* Kein hreflang, keine Gegenfassung im Verzeichnis — sie ist `noindex`.
+       Was zählt, ist der Weg weiter und der ausgezeichnete Satz dorthin. */
+    const zielAndereFassung = englisch ? "/" : "/en";
+    if (!daten.wechsel.some((z) => alsPfad(z) === zielAndereFassung) && !daten.rueckweg) {
+      funde.push(`${pfad}: kein Weg zur anderen Sprachfassung`);
+    }
+    if (englisch && daten.deutsch.length > 0) {
+      funde.push(
+        `${pfad}: deutscher Text ohne lang="de" — ` +
+          daten.deutsch.map((t) => `„${t}"`).join(", "),
+      );
+    }
+    if (!englisch && daten.englischerText.length > 0) {
+      funde.push(
+        `${pfad}: englischer Text ohne lang="en" — ` +
+          daten.englischerText.map((t) => `„${t}"`).join(", "),
+      );
+    }
+    continue;
   }
 
   if (NUR_DEUTSCH.includes(pfad)) {
