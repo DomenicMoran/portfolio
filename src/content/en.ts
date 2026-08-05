@@ -18,6 +18,9 @@ import type { Content } from "./types";
 /** Dieselbe Zahl wie in `site.ts`, aus demselben Grund an einer Stelle. */
 const REPLY_HOURS = 24;
 
+/** Eine Formulierung für den Standort, wie bei Eintritt und Sprachen. */
+const LOCATION = "Berlin · remote in the EU · hybrid";
+
 const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
 
@@ -99,7 +102,7 @@ export const en: Content = {
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
       label: "Open to a permanent role",
-      detail: "Berlin · remote in the EU · hybrid",
+      detail: LOCATION,
       entry: ENTRY,
       languages: LANGUAGES,
     },
@@ -1090,7 +1093,7 @@ export const en: Content = {
         value:
           "A product team where I take a feature all the way into production",
       },
-      { label: "Location", value: "Berlin · remote in the EU · hybrid" },
+      { label: "Location", value: LOCATION },
       { label: "Available", value: ENTRY },
       { label: "Languages", value: LANGUAGES },
       { label: "Model", value: "Permanent employment" },
@@ -1169,7 +1172,7 @@ export const en: Content = {
     fakten: [
       { label: "Response time", wert: `Usually under ${REPLY_HOURS} hours` },
       { label: "Languages", wert: "German · English" },
-      { label: "Location", wert: "Berlin · remote EU" },
+      { label: "Location", wert: LOCATION },
     ],
   },
 

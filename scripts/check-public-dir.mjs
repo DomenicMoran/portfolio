@@ -251,6 +251,7 @@ const ERLAUBT_IN_DER_WURZEL = new Set([
   "postcss.config.mjs",
   "tsconfig.json",
   "vercel.json",
+  "vitest.config.ts",
 ]);
 
 const gezaehlt = [];
