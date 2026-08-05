@@ -248,6 +248,14 @@ jobs:
       - name: Codeblöcke der Artikel
         run: npm run check:code
 
+      # Die strukturierten Daten sind die einzige Stelle, an der die
+      # Kernangaben ein zweites Mal stehen — und die einzige, die niemand
+      # sieht. Wer eine Fallstudie umbenennt oder ein Bild verschiebt, merkt
+      # hier nichts, und die Seite erzählt einer Suchmaschine ab dann etwas
+      # anderes als ihrem Leser.
+      - name: Strukturierte Daten gegen die Seite
+        run: npm run check:schema
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —

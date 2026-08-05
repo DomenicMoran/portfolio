@@ -47,7 +47,8 @@
     "check:panels": "node scripts/check-panels.mjs",
     "check:language": "node scripts/check-language.mjs",
     "check:demo": "node scripts/check-demo-math.mjs",
-    "check:code": "node scripts/check-code-blocks.mjs"
+    "check:code": "node scripts/check-code-blocks.mjs",
+    "check:schema": "node scripts/check-structured-data.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",
