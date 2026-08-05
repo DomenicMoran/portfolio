@@ -49,9 +49,22 @@ const SEITEN = [
   "/artikel",
   "/artikel/kassensichv-in-der-praxis",
   "/onepager",
+  /* Die Fehlerseite, wieder aufgenommen — diesmal um zu messen, nicht um zu
+     bestehen.
+
+     Sie riss als einzige Seite das CLS-Budget: 0,1626 gegen 0,1, und zwar nur
+     unter der Drosselung der CI. Örtlich bleibt der Wert bei 0,0009, auch mit
+     denselben Einstellungen: 390 px, dreifache Pixeldichte, 1,6 Mbit/s,
+     150 ms Latenz, Prozessor vierfach gedrosselt. Zwei Vermutungen sind
+     gemessen und widerlegt — der fehlende Vorlade-Verweis für die Schriften
+     und eine Höhenänderung des Sichtfensters.
+
+     Der Lauf gibt die Verschiebungen jetzt mit Wert, Zeitpunkt und Höhe aus.
+     Was örtlich nicht entsteht, muss dort beschrieben werden, wo es entsteht. */
+  "/diese-adresse-gibt-es-nicht",
 ];
 
-/* Die Fehlerseite steht hier noch nicht, und der Grund gehört dazu.
+/* Der frühere Grund für das Weglassen, zur Einordnung.
 
    Aufgenommen und gemessen war sie: LCP 784 ms, der beste Wert aller Seiten,
    aber CLS 0,1626 bei einem Budget von 0,1 — der einzige Wert über Budget.
@@ -139,8 +152,20 @@ for (const pfad of SEITEN) {
               for (const quelle of eintrag.sources ?? []) {
                 const knoten = quelle.node;
                 if (!knoten) continue;
+                /* Mit Wert, Zeitpunkt und Höhe, nicht nur mit dem Namen.
+
+                   Der Name allein sagt „der Inhaltsblock ist gerutscht" — das
+                   war er auf der Fehlerseite, zusammen mit Fußzeile und
+                   Glühkreis, also alles auf einmal. Was ihn schiebt, steht
+                   erst in den Zahlen: Wann es passiert, wie weit, und ob sich
+                   dabei eine Höhe geändert hat. Örtlich ließ sich derselbe
+                   Wert nicht herstellen; die Zahlen müssen deshalb dort
+                   entstehen, wo er entsteht. */
                 aus.quellen.push(
-                  `${knoten.tagName ?? "?"}.${String(knoten.className ?? "").slice(0, 40)}`,
+                  `${knoten.tagName ?? "?"}.${String(knoten.className ?? "").slice(0, 40)}` +
+                    ` [${eintrag.value.toFixed(4)} bei ${Math.round(eintrag.startTime)} ms,` +
+                    ` oben ${Math.round(quelle.previousRect.top)}→${Math.round(quelle.currentRect.top)},` +
+                    ` hoch ${Math.round(quelle.previousRect.height)}→${Math.round(quelle.currentRect.height)}]`,
                 );
               }
             }
