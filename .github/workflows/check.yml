@@ -226,6 +226,14 @@ jobs:
       - name: Tafeln hinter den Reitern
         run: npm run check:panels
 
+      # Was die beiden Sprachfassungen zusammenhält, ist unsichtbar, solange
+      # es stimmt: hreflang-Paare, der sichtbare Sprachwechsel und der Weg
+      # zurück aus den Rechtsseiten, die es nur auf Deutsch gibt. Dazu
+      # WCAG 3.1.2 — deutscher Text auf einer englischen Seite braucht eine
+      # Auszeichnung, sonst spricht ein Vorleseprogramm ihn englisch aus.
+      - name: Bindung der Sprachfassungen
+        run: npm run check:language
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
