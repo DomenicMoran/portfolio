@@ -105,18 +105,30 @@ jobs:
             exit 0
           fi
 
-          # Der Fehlerfall braucht eine Anleitung, keine Fehlermeldung.
+          # Der Fehlerfall braucht eine Anleitung — aber die richtige.
           #
-          # Am 02.08.2026 lief dieser Schritt zweimal auf "The token provided
-          # via --token argument is not valid" — von Hand angestoßen und
-          # planmäßig. Die Zahlen lagen danach im Repository und nicht auf der
-          # Seite, und im Protokoll stand nur die Meldung der CLI. Wer den Lauf
-          # später ansieht, soll den Weg zur Behebung gleich mitlesen.
-          if ! npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"; then
-            echo ""
-            echo "::error::Die Auslieferung ist gescheitert. Die neue Zahl steht im Repository, aber nicht auf der Seite."
-            echo ""
-            echo "Wahrscheinlichste Ursache: VERCEL_TOKEN ist abgelaufen oder ungültig."
+          # Am 02.08.2026 scheiterte dieser Schritt zweimal an "The token
+          # provided via --token argument is not valid". Am 04.08. scheiterte er
+          # wieder, diesmal am Bau: `git ls-files` im prebuild findet bei Vercel
+          # kein Repository, weil der Code dort als Archiv ankommt. Die Meldung
+          # nannte trotzdem das Token, weil sie jeden Fehlschlag gleich behandelte.
+          # Eine Anleitung, die auf den falschen Grund zeigt, kostet mehr Zeit als
+          # gar keine: Sie wurde befolgt, und der Fehler blieb.
+          #
+          # Woran es lag, steht in der Ausgabe der CLI. Also wird sie gelesen.
+          set -o pipefail
+          if npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN" 2>&1 |
+              tee "$RUNNER_TEMP/auslieferung.log"; then
+            exit 0
+          fi
+
+          echo ""
+          echo "::error::Die Auslieferung ist gescheitert. Die neue Zahl steht im Repository, aber nicht auf der Seite."
+          echo ""
+
+          if grep -qiE 'token .*(not valid|invalid)|invalid token|not authori[sz]ed|forbidden' \
+              "$RUNNER_TEMP/auslieferung.log"; then
+            echo "Grund: Vercel hat die Anmeldung abgelehnt. VERCEL_TOKEN ist abgelaufen oder ungültig."
             echo ""
             echo "So wird es behoben, drei Minuten:"
             echo "  1. vercel.com öffnen, oben rechts aufs Kontobild, Account Settings, Tokens"
@@ -127,5 +139,13 @@ jobs:
             echo ""
             echo "Ein Token lässt sich nicht aus einer angemeldeten CLI-Sitzung erzeugen:"
             echo "Die Vercel-API antwortet darauf mit 403 Cannot create tokens for this app."
-            exit 1
+          else
+            echo "Grund: Die Anmeldung hat gereicht, der Bau bei Vercel ist gescheitert."
+            echo "Die Meldung steht oben im Protokoll dieses Schritts."
+            echo ""
+            echo "Bei Vercel liegt kein Repository — der Code kommt als Archiv an. Jeder"
+            echo "Schritt, der Git voraussetzt, scheitert deshalb dort und nur dort."
+            echo "Örtlich nachstellen, ohne Token und ohne Auslieferung:"
+            echo "  npm run build"
           fi
+          exit 1

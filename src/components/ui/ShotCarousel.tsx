@@ -129,7 +129,7 @@ export function ShotCarousel({
         ))}
       </ul>
 
-      <div className="no-print mt-4 flex items-center gap-4">
+      <div className="no-print mt-4 flex flex-wrap items-center gap-4">
         <div className="flex gap-1.5">
           <button
             type="button"

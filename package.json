@@ -41,7 +41,8 @@
     "build:shots": "node scripts/build-shots.mjs",
     "check:lighthouse": "node scripts/check-lighthouse.mjs",
     "check:bundle": "node scripts/check-bundle.mjs",
-    "check:cards": "node scripts/check-cards.mjs"
+    "check:cards": "node scripts/check-cards.mjs",
+    "check:font-size": "node scripts/check-font-size.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",
