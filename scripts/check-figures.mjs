@@ -79,6 +79,16 @@ function vitestLauf(repo) {
 const quelle = readFileSync(INHALT, "utf8");
 const zeilen = [];
 let abweichungen = 0;
+/**
+ * Hinweise auf Pflegebedarf, getrennt von Falschaussagen.
+ *
+ * „Die Zahl auf der Seite ist 89 Commits hinterher" ist kein Fehler: Sie trägt
+ * ihr Messdatum, und ein Automat frischt sie jede Nacht auf. Als Abweichung
+ * gezählt war der Lauf an jedem Morgen rot, bevor der Automat lief — und ein
+ * Rot, das man erwartet, liest niemand mehr. Gemeldet wird der Hinweis
+ * trotzdem, nur eben als das, was er ist.
+ */
+let hinweise = 0;
 
 function vergleiche(was, gemessen, aufDerSeite) {
   const gleich = String(gemessen) === String(aufDerSeite);
@@ -404,6 +414,7 @@ for (const datei of [
         zeilen.push(
           `  ~   ${name} — gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`,
         );
+        hinweise++;
         abweichungen++;
       } else {
         zeilen.push(`  ok  ${name.padEnd(42)} gemessen ${wirklich}`);
@@ -509,7 +520,7 @@ if (fehlendeRepos.length) {
       `  ~   Commits über alle Repos: ${deutsch(rueckstand)} hinterher ` +
         `(Seite ${deutsch(aufDerSeite)}, gemessen ${deutsch(head)}). Auffrischen.`,
     );
-    abweichungen++;
+    hinweise++;
   } else {
     zeilen.push(
       `  ok  Commits über alle Repos      gemessen ${String(head).padStart(6)}` +
@@ -2763,6 +2774,22 @@ if (abweichungen) {
     );
   }
   process.exit(1);
+}
+
+/* Hinweise stehen im Bericht, auch wenn der Lauf grün bleibt.
+
+   Sie sagen, dass etwas gepflegt gehört, nicht dass die Seite etwas Falsches
+   behauptet. Als Abweichung gezählt war der Lauf an jedem Morgen rot, bevor
+   der Zahlen-Automat lief. */
+if (hinweise) {
+  const zumPflegen = zeilen.filter((z) => /^\s{2}~/.test(z));
+  console.log(
+    `
+${hinweise} Hinweis${hinweise === 1 ? "" : "e"} auf Pflegebedarf, ` +
+      `keine Falschaussage:
+`,
+  );
+  for (const z of zumPflegen) console.log(z);
 }
 /*
   Die Schlusszeile darf keine Vollständigkeit behaupten, die es nicht gab.
