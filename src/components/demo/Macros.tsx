@@ -464,6 +464,21 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         })}
       </div>
 
+      {/* Die Summe wird angesagt, nicht nur angezeigt.
+
+          Wer ein Gericht an- oder abwählt, sieht die fünf Zahlen darunter
+          springen. Wer sich die Seite vorlesen lässt, hörte nichts: Die Knöpfe
+          melden ihren eigenen Zustand über `aria-pressed`, aber das Ergebnis
+          der Auswahl stand stumm daneben — und genau das Ergebnis ist die
+          Aussage dieser Kachel.
+
+          Nur die beiden Werte, um die es geht. „2.095 kcal, 198 g Eiweiß" ist
+          eine Ansage; fünf Zahlen hintereinander sind eine Liste, die niemand
+          im Kopf behält. Der Bereich hängt von Anfang an im Baum. */}
+      <p role="status" aria-live="polite" className="sr-only">
+        {`${zahl(summe.kcal)} ${demo.units.kcal}, ${zahl(summe.p)} g ${demo.units.protein}`}
+      </p>
+
       {/* Feste Höhe, damit das Umschalten die Zeile darunter nicht verschiebt. */}
       <dl className="mt-6 grid min-h-[5.5rem] grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-5">
         {(
