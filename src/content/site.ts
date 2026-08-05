@@ -1159,10 +1159,21 @@ export const recruiter = {
 /* Contact                                                                    */
 /* ========================================================================== */
 
+/**
+ * Wie schnell eine Antwort kommt — die Zahl steht einmal.
+ *
+ * Sie stand zweimal: im Vorspann als „innerhalb von 24 Stunden" und in der
+ * Faktenkachel als „In der Regel unter 24 Stunden". Zwei Formulierungen für
+ * dieselbe Zusage sind die nächste Stelle, an der eine veraltet — dieselbe
+ * Begründung, aus der die Eintrittsangabe und die Sprachen hier bereits als
+ * Konstante stehen.
+ */
+const ANTWORTZEIT_STUNDEN = 24;
+
 export const contact = {
   eyebrow: "Kontakt",
   title: "Lass uns etwas bauen",
-  lede: "Ob konkrete Rolle, Rückfrage zu einem der Projekte oder einfach eine technische Frage: Ich antworte in der Regel innerhalb von 24 Stunden.",
+  lede: `Ob konkrete Rolle, Rückfrage zu einem der Projekte oder einfach eine technische Frage: Ich antworte in der Regel innerhalb von ${ANTWORTZEIT_STUNDEN} Stunden.`,
   hinweis:
     "Bewusst kein Formular: Das bräuchte einen Mailversand-Dienst als Drittanbieter und einen Endpunkt, der ausfallen kann. Eine Mailadresse kann beides nicht. Und du behältst deine Nachricht im eigenen Postausgang.",
   checkliste: {
@@ -1175,7 +1186,10 @@ export const contact = {
     ],
   },
   fakten: [
-    { label: "Antwortzeit", wert: "In der Regel unter 24 Stunden" },
+    {
+      label: "Antwortzeit",
+      wert: `In der Regel unter ${ANTWORTZEIT_STUNDEN} Stunden`,
+    },
     { label: "Sprachen", wert: "Deutsch · Englisch" },
     { label: "Standort", wert: "Berlin · Remote EU" },
   ],
