@@ -120,7 +120,7 @@ npm run check:landmarks # jede Seite bietet Hauptbereich, Navigation und Fußzei
 npm run check:separators # kein Trennzeichen bleibt beim Umbruch am Zeilenende
 npm run check:nbsp      # keine Rechtsangabe bricht zwischen Kürzel und Ziffer um
 npm run check:reading   # die Lesezeit jedes Artikels stimmt mit dem Wortbestand
-npm run check:vitals    # LCP und CLS auf einem gedrosselten Telefon, gegen Budgets
+npm run check:vitals    # LCP, CLS und INP auf einem gedrosselten Telefon, gegen Budgets
 npm run check:bundle    # wie viel JavaScript jede Seite mitbringt, gegen Budgets
 npm run check:cards     # in einer Kartenreihe beginnt der Text auf gleicher Höhe
 npm run check:font-size # kein Text geht bei größerer Grundschrift verloren
