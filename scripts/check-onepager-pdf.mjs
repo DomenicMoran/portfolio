@@ -161,6 +161,46 @@ for (const pfad of BLAETTER) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Der Verweis auf der Seite führt zu genau diesem Blatt
+
+   Geprüft war bisher die Datei im Repository — ihr Quellstand, ihre
+   Seitenzahl, ihr lesbarer Text. Nicht geprüft war der Weg dorthin: Auf der
+   Seite steht ein Verweis mit `download`, und wenn jemand die Datei umbenennt
+   und den Verweis vergisst, bekommt ein Recruiter einen 404 an genau der
+   Stelle, an der er das Blatt haben will. Umgekehrt genauso — ein Verweis auf
+   eine Datei, die es nicht mehr gibt, sieht im Quelltext richtig aus.
+
+   Gelesen wird das gebaute HTML, nicht die Komponente: Was ausgeliefert wird,
+   entscheidet. */
+const VERWEISE = {
+  [join(".next", "server", "app", "onepager.html")]: "public/domenic-moran-kurzprofil.pdf",
+  [join(".next", "server", "app", "en", "onepager.html")]: "public/domenic-moran-one-pager.pdf",
+};
+
+for (const [blatt, datei] of Object.entries(VERWEISE)) {
+  if (!existsSync(blatt)) continue;
+  const html = readFileSync(blatt, "utf8");
+  const treffer = [...html.matchAll(/<a[^>]*href="([^"]+\.pdf)"[^>]*download/g)].map(
+    (t) => t[1],
+  );
+
+  if (treffer.length === 0) {
+    funde.push(`${blatt}: kein Verweis mit download auf ein PDF`);
+    continue;
+  }
+  for (const adresse of new Set(treffer)) {
+    const erwartet = `/${datei.replace(/^public\//, "")}`;
+    if (adresse !== erwartet) {
+      funde.push(
+        `${blatt}: der Verweis zeigt auf ${adresse}, ausgeliefert wird ${erwartet}`,
+      );
+    } else if (!existsSync(join("public", adresse.replace(/^\//, "")))) {
+      funde.push(`${blatt}: ${adresse} steht im Verweis, die Datei fehlt`);
+    }
+  }
+}
+
 if (funde.length > 0) {
   console.error(`${funde.length} Befund am ausgelieferten Blatt:\n`);
   for (const f of funde) console.error(`  ${f}`);
