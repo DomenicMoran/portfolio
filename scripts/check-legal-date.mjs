@@ -467,6 +467,74 @@ const FRISTEN = new Map([
       );
       process.exitCode = 1;
     }
+
+    /* Die Umsatzsteuer-Identifikationsnummer gegen das EU-Register.
+       ------------------------------------------------------------
+       § 5 Abs. 1 Nr. 6 DDG verlangt sie, sobald es eine gibt. Sie ist damit
+       Pflichtangabe — und die einzige Angabe im Impressum, die ohne Zutun
+       des Betreibers falsch werden kann: Wer die Kleinunternehmerregelung
+       aufgibt, das Gewerbe umstellt oder eine neue Nummer bekommt, hat auf
+       der Seite weiterhin die alte stehen. Name und Anschrift ändert man
+       bewusst, eine Steuernummer ändert das Finanzamt.
+
+       Geprüft wird gegen VIES, das Bestätigungsverfahren der EU-Kommission.
+       Dessen Antwort braucht Sorgfalt: `isValid` steht auch dann auf `false`,
+       wenn gar nicht geprüft werden konnte. Der deutsche Teildienst ist
+       regelmäßig nicht erreichbar und antwortet dann mit `MS_UNAVAILABLE` —
+       gemessen dreimal hintereinander beim Einbau. Wer nur `isValid` liest,
+       baut sich einen Wächter, der nachts eine gültige Nummer für ungültig
+       erklärt. Angeschlagen wird deshalb nur bei einer Antwort, die
+       tatsächlich über die Nummer urteilt. */
+    if (name === "impressum") {
+      const nummer = /USt-IdNr[^:]*:\s*([A-Z]{2}\d{6,12})/.exec(inhalt)?.[1];
+      if (!nummer) {
+        console.log(
+          "  --  Impressum nennt keine USt-IdNr, VIES-Prüfung entfällt.",
+        );
+      } else {
+        const land = nummer.slice(0, 2);
+        const rest = nummer.slice(2);
+        let antwort = null;
+        try {
+          const roh = await fetch(
+            `https://ec.europa.eu/taxation_customs/vies/rest-api/ms/${land}/vat/${rest}`,
+            {
+              headers: { accept: "application/json" },
+              signal: AbortSignal.timeout(25000),
+            },
+          );
+          if (roh.ok) antwort = await roh.json();
+        } catch {
+          antwort = null;
+        }
+
+        const ausfall = new Set([
+          "MS_UNAVAILABLE",
+          "SERVICE_UNAVAILABLE",
+          "TIMEOUT",
+          "MS_MAX_CONCURRENT_REQ",
+          "GLOBAL_MAX_CONCURRENT_REQ",
+        ]);
+        if (!antwort || ausfall.has(antwort.userError)) {
+          console.log(
+            `  --  VIES antwortet gerade nicht über ${nummer} ` +
+              `(${antwort?.userError ?? "nicht erreichbar"}), Prüfung übersprungen.`,
+          );
+        } else if (antwort.isValid !== true) {
+          console.error(
+            `\nDas Impressum nennt ${nummer} als Umsatzsteuer-Identifikations-\n` +
+              `nummer. Das Bestätigungsverfahren der EU-Kommission kennt sie\n` +
+              `nicht als gültig (${antwort.userError ?? "isValid=false"}).\n\n` +
+              `§ 5 Abs. 1 Nr. 6 DDG verlangt die Angabe, und eine falsche ist\n` +
+              `schlechter als keine: Sie steht öffentlich und lässt sich von\n` +
+              `jedem in derselben Sekunde nachprüfen.`,
+          );
+          process.exitCode = 1;
+        } else {
+          console.log(`  ok  ${nummer} ist im EU-Register gültig.`);
+        }
+      }
+    }
     if (!inhalt.includes(ANBIETER)) {
       console.error(
         `/${name} nennt nicht den Anbieter aus provider.ts („${ANBIETER}").`,
