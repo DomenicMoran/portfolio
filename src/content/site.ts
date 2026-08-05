@@ -1087,7 +1087,7 @@ export const recruiter = {
       value:
         "Produktteam, in dem ich ein Feature bis in die Produktion begleite",
     },
-    { label: "Standort", value: "Berlin · remote in der EU · hybrid" },
+    { label: "Standort", value: site.availability.detail },
     // "Nach Absprache" beantwortet die erste Frage jedes Recruiters nicht.
     // Diese Fassung schon: reden sofort, anfangen nach der Frist.
     { label: "Verfügbar", value: site.availability.entry },
@@ -1191,7 +1191,12 @@ export const contact = {
       wert: `In der Regel unter ${ANTWORTZEIT_STUNDEN} Stunden`,
     },
     { label: "Sprachen", wert: "Deutsch · Englisch" },
-    { label: "Standort", wert: "Berlin · Remote EU" },
+    /* Dieselbe Quelle wie im Recruiter-Bereich und auf dem Kurzprofil.
+       Hier stand „Berlin · Remote EU" und dort „Berlin · remote in der EU ·
+       hybrid" — zwei Formulierungen derselben Angabe, und nur eine nannte die
+       Bereitschaft zu hybrid. Wer beide liest, hält die knappere für eine
+       Einschränkung. */
+    { label: "Standort", wert: site.availability.detail },
   ],
 } as const;
 
