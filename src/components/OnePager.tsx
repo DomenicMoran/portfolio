@@ -215,7 +215,7 @@ export function OnePager({
                 Kante mehr, an der er sich ausrichtet: „Gespräche jederzeit ·
                 Eintritt nach bis zu drei Monaten" endete mit einem einzelnen
                 Wort in der zweiten Zeile, rechts angeschlagen. */}
-            <div className="text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:no-underline">
+            <div className="min-w-0 text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:break-all [&_a]:no-underline">
               <p>{site.location}</p>
               <p>
                 <a href={mailAdresse(site.email, site.mailSubject)}>

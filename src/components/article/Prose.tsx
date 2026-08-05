@@ -123,7 +123,7 @@ export function Prose({
                     >
                       {block.ordered ? String(j + 1).padStart(2, "0") : null}
                     </span>
-                    <span>
+                    <span className="min-w-0">
                       <RichText text={item} />
                     </span>
                   </li>
