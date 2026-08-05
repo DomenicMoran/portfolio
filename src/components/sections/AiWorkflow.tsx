@@ -204,7 +204,16 @@ function AgentTerminal() {
         </button>
       </div>
 
-      <div className="min-h-[19rem] p-4 font-mono text-[12px] leading-relaxed sm:min-h-[21rem]">
+      {/* `data-agent-session`: die Kennung, an der `check:print` erkennt, ob
+          dieser Kasten schon läuft. Er ist die einzige Stelle der Startseite,
+          deren Inhalt erst nach der Hydration entsteht — im Druck vollständig,
+          am Bildschirm Zeile für Zeile. Ohne ein Signal misst der Prüflauf die
+          Serverfassung mit null Zeilen und meldet fehlenden Text, sobald die
+          Maschine langsam genug ist. Eine Wartezeit dafür wäre eine Wette. */}
+      <div
+        data-agent-session=""
+        className="min-h-[19rem] p-4 font-mono text-[12px] leading-relaxed sm:min-h-[21rem]"
+      >
         {lines.slice(0, sichtbar).map((line, i) => {
           const style = LINE_STYLE[line.kind as keyof typeof LINE_STYLE];
           return (
