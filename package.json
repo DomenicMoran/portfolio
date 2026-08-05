@@ -44,7 +44,8 @@
     "check:cards": "node scripts/check-cards.mjs",
     "check:font-size": "node scripts/check-font-size.mjs",
     "check:focus": "node scripts/check-focus.mjs",
-    "check:panels": "node scripts/check-panels.mjs"
+    "check:panels": "node scripts/check-panels.mjs",
+    "check:language": "node scripts/check-language.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",
