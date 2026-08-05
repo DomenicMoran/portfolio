@@ -92,7 +92,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 22 Prüfungen, die den Bau nicht ersetzen. Dreizehn davon
+Nach dem Bau laufen 23 Prüfungen, die den Bau nicht ersetzen. Vierzehn davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -119,6 +119,7 @@ npm run check:vitals    # LCP und CLS auf einem gedrosselten Telefon, gegen Budg
 npm run check:bundle    # wie viel JavaScript jede Seite mitbringt, gegen Budgets
 npm run check:cards     # in einer Kartenreihe beginnt der Text auf gleicher Höhe
 npm run check:font-size # kein Text geht bei größerer Grundschrift verloren
+npm run check:focus     # der Tastaturfokus bleibt sichtbar
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs      # die Zahlen in dieser Datei und in AGENTS.md stimmen noch
 ```
@@ -221,6 +222,7 @@ scripts/
 ├─ check-bundle.mjs               wie viel JavaScript jede Seite mitbringt
 ├─ check-cards.mjs                in einer Kartenreihe beginnt der Text auf gleicher Höhe
 ├─ check-font-size.mjs            kein Text geht bei größerer Grundschrift verloren
+├─ check-focus.mjs                der Tastaturfokus bleibt sichtbar
 ├─ check-lighthouse.mjs           die Zahl „Lighthouse 100" gegen einen echten Lauf
 ├─ check-vitals.mjs               LCP und CLS auf einem gedrosselten Telefon
 │

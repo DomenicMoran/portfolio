@@ -212,6 +212,13 @@ jobs:
       - name: Größere Grundschrift verträgt die Seite
         run: npm run check:font-size
 
+      # WCAG 2.2 verlangt in 2.4.11, dass feste Bedienung den Fokus nicht
+      # verdeckt. Das steht in keinem Dokument, das axe lesen könnte: Wer
+      # tabbt, dem scrollt der Browser zum Ziel, ohne die feste Kopfleiste
+      # mitzurechnen. Das Element hat dann den Fokus und liegt darunter.
+      - name: Der Tastaturfokus bleibt sichtbar
+        run: npm run check:focus
+
       # Die eine Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt:
       # „Lighthouse 100 Barrierefreiheit" steht unter den quelloffenen Paketen.
       # Der Schritt misst gegen die ausgelieferte Seite, nicht gegen den Bau —
