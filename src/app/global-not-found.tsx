@@ -57,10 +57,7 @@ export default async function GlobalNotFound() {
   const zweitsprache = englisch ? de : en;
 
   return (
-    <html
-      lang={inhalt.lang}
-      className={`${schriftKlassen} h-full antialiased`}
-    >
+    <html lang={inhalt.lang} className={`${schriftKlassen} h-full antialiased`}>
       <body className="grain flex min-h-full flex-col">
         <NotFoundPage
           content={inhalt}

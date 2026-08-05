@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
+import { Rechtsfuss } from "../Rechtsfuss";
 import { ANBIETER, ANSCHRIFT } from "../provider";
 import { site } from "@/content/site";
 
@@ -42,40 +43,41 @@ export const metadata: Metadata = {
  */
 export default function Impressum() {
   return (
-    <main>
-      <h1 className="text-title mb-10 text-ink">Impressum</h1>
+    <>
+      <main>
+        <h1 className="text-title mb-10 text-ink">Impressum</h1>
 
-      <EnglishNote />
+        <EnglishNote />
 
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Angaben gemäß § 5 DDG
-        </h2>
-        <address className="text-sm leading-relaxed text-ink-dim not-italic">
-          {ANBIETER}
-          {ANSCHRIFT.map((zeile) => (
-            <span key={zeile}>
-              <br />
-              {zeile}
-            </span>
-          ))}
-        </address>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-3 text-lg font-semibold text-ink">
+            Angaben gemäß § 5 DDG
+          </h2>
+          <address className="text-sm leading-relaxed text-ink-dim not-italic">
+            {ANBIETER}
+            {ANSCHRIFT.map((zeile) => (
+              <span key={zeile}>
+                <br />
+                {zeile}
+              </span>
+            ))}
+          </address>
+        </section>
 
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">Kontakt</h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          E-Mail:{" "}
-          <a
-            href={mailAdresse(site.email, site.mailSubject)}
-            className="-my-1 py-1 text-acid underline underline-offset-4"
-          >
-            {site.email}
-          </a>
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-3 text-lg font-semibold text-ink">Kontakt</h2>
+          <p className="text-sm leading-relaxed text-ink-dim">
+            E-Mail:{" "}
+            <a
+              href={mailAdresse(site.email, site.mailSubject)}
+              className="-my-1 py-1 text-acid underline underline-offset-4"
+            >
+              {site.email}
+            </a>
+          </p>
+        </section>
 
-      {/*
+        {/*
         Die Angabe ist Pflicht, weil eine Kennung existiert.
 
         § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
@@ -87,50 +89,52 @@ export default function Impressum() {
         Beide Angaben gehören zusammen. Eine Kennung ohne den Hinweis auf § 19
         legt nahe, dass Umsatzsteuer ausgewiesen wird; sie wird es nicht.
       */}
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Umsatzsteuer-Identifikationsnummer
-        </h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          USt-IdNr. gemäß § 27a UStG: DE461628017
-          <br />
-          Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
-          berechnet.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-3 text-lg font-semibold text-ink">
+            Umsatzsteuer-Identifikationsnummer
+          </h2>
+          <p className="text-sm leading-relaxed text-ink-dim">
+            USt-IdNr. gemäß § 27a UStG: DE461628017
+            <br />
+            Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
+            berechnet.
+          </p>
+        </section>
 
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
-        </h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          {site.name}, Anschrift wie oben.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-3 text-lg font-semibold text-ink">
+            Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+          </h2>
+          <p className="text-sm leading-relaxed text-ink-dim">
+            {site.name}, Anschrift wie oben.
+          </p>
+        </section>
 
-      <section className="mb-10">
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Streitschlichtung
-        </h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          Ich bin nicht bereit und nicht verpflichtet, an
-          Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-          teilzunehmen.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-3 text-lg font-semibold text-ink">
+            Streitschlichtung
+          </h2>
+          <p className="text-sm leading-relaxed text-ink-dim">
+            Ich bin nicht bereit und nicht verpflichtet, an
+            Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+            teilzunehmen.
+          </p>
+        </section>
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-ink">
-          Haftung für Links
-        </h2>
-        <p className="text-sm leading-relaxed text-ink-dim">
-          Diese Seite verlinkt auf externe Websites, auf deren Inhalte ich
-          keinen Einfluss habe. Für diese fremden Inhalte ist stets der
-          jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung waren
-          keine Rechtsverstöße erkennbar. Bei Bekanntwerden von Rechtsverstößen
-          entferne ich entsprechende Links umgehend.
-        </p>
-      </section>
-    </main>
+        <section>
+          <h2 className="mb-3 text-lg font-semibold text-ink">
+            Haftung für Links
+          </h2>
+          <p className="text-sm leading-relaxed text-ink-dim">
+            Diese Seite verlinkt auf externe Websites, auf deren Inhalte ich
+            keinen Einfluss habe. Für diese fremden Inhalte ist stets der
+            jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung
+            waren keine Rechtsverstöße erkennbar. Bei Bekanntwerden von
+            Rechtsverstößen entferne ich entsprechende Links umgehend.
+          </p>
+        </section>
+      </main>
+      <Rechtsfuss hier="impressum" />
+    </>
   );
 }
