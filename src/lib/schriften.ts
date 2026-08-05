@@ -104,35 +104,3 @@ const instrumentSerif = Instrument_Serif({
 
 /** Die Klassen fürs `<html>`-Element. Dieselben auf jeder Seite, auch auf den beiden, die ihr eigenes Dokument mitbringen. */
 export const schriftKlassen = `${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`;
-
-/**
- * Dieselbe Schrift für die Fehlerseite, nur ohne Tausch.
- *
- * Die Fehlerseite bringt ihr eigenes Dokument mit und bekommt vom Layout
- * nichts vererbt — auch keinen `preload`. Gemessen an der ausgelieferten
- * Seite: jede andere Seite liefert zwei Vorlade-Verweise für ihre Schriften
- * aus, diese keinen einzigen. Mit `display: "swap"` erscheint der Text
- * deshalb erst in der Ersatzschrift und wird dann getauscht; auf einem
- * vierfach gedrosselten Telefon bei 1,6 Mbit/s verschob das den ganzen
- * Inhaltsblock samt Fußzeile. CLS 0,1626 bei einem Budget von 0,1 — der
- * einzige Wert über Budget auf der ganzen Seite.
- *
- * `display: "optional"` löst genau das: Ist die Schrift nicht rechtzeitig da,
- * bleibt es bei der Ersatzschrift, und nichts springt. Die Dateien sind
- * dieselben wie oben, nur die `@font-face`-Regel unterscheidet sich — es
- * entsteht kein zweiter Satz, der mitgeladen würde.
- */
-const geistSansOhneTausch = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "optional",
-});
-
-const geistMonoOhneTausch = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "optional",
-});
-
-/** Die Klassen für die Fehlerseite. */
-export const schriftKlassenFehlerseite = `${geistSansOhneTausch.variable} ${geistMonoOhneTausch.variable} ${instrumentSerif.variable}`;

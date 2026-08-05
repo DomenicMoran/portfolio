@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { schriftKlassenFehlerseite } from "@/lib/schriften";
+import { schriftKlassen } from "@/lib/schriften";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
@@ -59,7 +59,7 @@ export default async function GlobalNotFound() {
   return (
     <html
       lang={inhalt.lang}
-      className={`${schriftKlassenFehlerseite} h-full antialiased`}
+      className={`${schriftKlassen} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
         <NotFoundPage
