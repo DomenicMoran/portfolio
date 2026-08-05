@@ -154,21 +154,7 @@ export function NotFoundPage({
           darueber — gemessen an der ausgelieferten Seite bei 1440 px. */}
       <footer className="relative px-6 pb-10">
         <div className="mx-auto w-full max-w-2xl">
-          {/* Zwei Zeilen Platz, auch wenn eine reicht.
-
-              Diese Zeile bricht bei 390 px um, sobald sie in der Ersatzschrift
-              gesetzt wird, und wird einzeilig, sobald Geist eintrifft. Die
-              Fußzeile schrumpft dabei von 133 auf 118 px, und weil der Inhalt
-              darüber senkrecht zentriert steht, rutscht mit ihr die ganze
-              Seite: gemessen in der CI CLS 0,1626 bei einem Budget von 0,1 —
-              der Inhaltsblock 8 px, die Fußzeile 16 px, in allen drei Läufen
-              gleich. Örtlich entsteht der Umbruch nicht, weil Windows eine
-              schmalere Ersatzschrift stellt als der Linux-Läufer.
-
-              `min-h-[2lh]` hält beide Zustände auf derselben Höhe. Damit ist
-              es gleichgültig, wann die Schrift eintrifft und wie breit die
-              Ersatzschrift ist. */}
-          <p className="min-h-[2lh] border-t border-line pt-6 text-sm text-ink-faint">
+          <p className="border-t border-line pt-6 text-sm text-ink-faint">
             {notFound.report}{" "}
             <a
               href={mailAdresse(site.email, site.mailSubject)}
@@ -187,7 +173,19 @@ export function NotFoundPage({
             ihres Umfelds — rgb(132,132,143) auf rgb(132,132,143) — und
             keine Unterstreichung. Wer die Zeile liest, kann nicht
             erkennen, dass sie anklickbar ist. */}
-          <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
+          {/* Zwei Zeilen Platz, auch wenn eine reicht.
+
+              Die Fußzeile schrumpfte beim Eintreffen der Schrift von 133 auf
+              118 px, und weil der Inhalt darüber senkrecht zentriert steht,
+              rutschte mit ihr die ganze Seite: gemessen in der CI CLS 0,1626
+              bei einem Budget von 0,1, in allen drei Läufen gleich. Die 15 px
+              sind eine Zeile dieser Zeile — 11 px Schrift, rund 15 px hoch —
+              und nicht eine des Absatzes darüber, der mit 14 px auf 20 käme.
+              In der Ersatzschrift des Linux-Läufers brechen die beiden
+              Verweise um, mit Geist stehen sie nebeneinander.
+
+              `min-h-[2lh]` hält beide Zustände auf derselben Höhe. */}
+          <p className="mt-4 flex min-h-[2lh] flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
             <Link
               href="/impressum"
               hrefLang="de"
