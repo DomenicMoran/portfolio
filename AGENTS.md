@@ -127,11 +127,29 @@ Leerzeichen am Ende eines `inline-block` mit `overflow: hidden` wird
 zusammengefaltet. Die Wörter kleben dann aneinander. Betrifft `Hero` und
 `RevealWords`.
 
-**Dekorative Glüh-Kreise brauchen einen Clip, aber nicht am Sektions-Container.**
-Ein `glow-orb` ist breiter als das Viewport und erzeugt sonst horizontales
-Scrollen auf Telefonen. Der Clip gehört an die `absolute inset-0`-Hülle der
-Deko, nicht an die Sektion: Am Sektions-Container schneidet er auch den Inhalt
-ab, sobald eine Parallaxe ihn verschiebt. Im Hero hat das bei 320 px die untere
+**Dekorative Glüh-Kreise brauchen einen Clip.** Ein `glow-orb` ist breiter als
+das Viewport und erzeugt sonst horizontales Scrollen auf Telefonen.
+
+Hier stand, der Clip gehöre an die `absolute inset-0`-Hülle der Deko und nicht
+an die Sektion, weil er am Sektions-Container auch den Inhalt abschneidet,
+sobald eine Parallaxe ihn verschiebt. Der erste Teil ist gemessen falsch: Die
+Kreise sind selbst absolut positioniert, und ein `overflow-x: clip` an der
+Hülle hält sie nicht. Umgestellt und bei 390 px an der gebauten Seite
+nachgesehen, wuchs das Dokument von 380 px auf 1488 px — genau das Scrollen,
+das die Regel verhindern soll. Der Clip steht deshalb in allen fünf Sektionen
+an der Sektion, und das bleibt so.
+
+Der zweite Teil stimmt weiterhin und ist der Preis dafür: Was über die
+Sektionskante hinausragen soll, wird abgeschnitten. Wer dort eine Parallaxe
+einbaut, prüft das mit.
+
+Was dabei sichtbar wurde und offen bleibt: `overflow-hidden` macht die Sektion
+zum Scrollcontainer. `#hire` meldet bei 390 px 492 px Inhaltsbreite auf 380 px
+sichtbar, `#workflow` 460 und `#contact` 430. Das Dokument scrollt nicht, alle
+fokussierbaren Elemente liegen innerhalb, und der Überstand stammt
+ausschließlich aus der Deko — heute also ohne Wirkung. Wer einen Verweis so
+weit nach rechts setzt, dass er in diesen Bereich fällt, bekommt beim
+Fokussieren einen Versatz, der nicht zurückspringt. Im Hero hat das bei 320 px die untere
 Kennzahlenreihe waagerecht mitten durch die Ziffern getrennt. Zusätzlich
 `overflow-x: clip` an `html`/`body` als Netz.
 
