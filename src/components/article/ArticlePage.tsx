@@ -75,6 +75,12 @@ export function ArticlePage({
     description: article.dek,
     datePublished: article.date,
     inLanguage: lang,
+    /* Die Lesezeit auch maschinenlesbar.
+       Sie steht sichtbar über jedem Artikel, und `check:reading` hält sie
+       gegen den Wortbestand — in den strukturierten Daten fehlte sie, obwohl
+       Such- und Antwortmaschinen genau danach filtern. ISO-8601-Dauer, also
+       „PT8M" für acht Minuten; kein zweiter Wert, sondern derselbe. */
+    timeRequired: `PT${article.minutes}M`,
     keywords: article.tags.join(", "),
     author: {
       "@type": "Person",
