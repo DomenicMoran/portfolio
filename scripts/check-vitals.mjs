@@ -33,7 +33,7 @@ import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** Die Schwellen, ab denen ein Wert nicht mehr „gut" heißt. */
-const BUDGET = { lcp: 2500, cls: 0.1 };
+const BUDGET = { lcp: 2500, cls: 0.1, inp: 200 };
 
 /**
  * Was gemessen wird. Mehr Seiten kosten je einen Durchgang von acht Sekunden.
@@ -219,6 +219,99 @@ for (const pfad of SEITEN) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   INP: was die Seite tut, nachdem sie da ist
+
+   Der Kopf dieser Datei sprach von drei Werten, gemessen wurden zwei. LCP und
+   CLS beschreiben das Laden; INP beschreibt das Bedienen, und seit März 2024
+   ist es die dritte Kernmetrik. Bei einer Seite mit Bewegungsbibliothek,
+   eigenem Mauszeiger, Reitern, Reglern und einer Befehlspalette ist das genau
+   der Wert, der leise wandert: Ein Handler, der bei jedem Tastendruck etwas
+   nachrechnet, kostet kein Byte im Bündel und faellt in keiner anderen
+   Prüfung auf.
+
+   Gemessen wird auf der ruhigen Seite, sechs Sekunden nach `load`, und das
+   ist eine bewusste Entscheidung. Wer beim vierfach gedrosselten Prozessor
+   während der Hydration eine Taste drückt, wartet auf den Hauptthread:
+   gemessen 2.808 ms bei 0,3 Sekunden nach `load`, gegen 48 ms auf derselben
+   Seite nach sechs Sekunden. Der erste Wert sagt etwas über die Menge an
+   JavaScript beim Start, und dafür gibt es `check:bundle`. Dieser Lauf misst
+   die Reaktion auf eine Eingabe, und die soll er nicht mit der Ladephase
+   vermischen — sonst prüft er zweimal dasselbe und keins davon genau.
+   ------------------------------------------------------------------------ */
+{
+  const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const cdp = await seite.context().newCDPSession(seite);
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+
+  await seite.addInitScript(() => {
+    window.__inp = [];
+    new PerformanceObserver((liste) => {
+      for (const eintrag of liste.getEntries()) {
+        if (!eintrag.interactionId) continue;
+        window.__inp.push({
+          dauer: Math.round(eintrag.duration),
+          art: eintrag.name,
+          ziel: eintrag.target?.tagName ?? "?",
+        });
+      }
+    }).observe({ type: "event", buffered: true, durationThreshold: 16 });
+  });
+
+  await seite.goto(`${basis}/`, { waitUntil: "load" });
+  await seite.waitForTimeout(6000);
+
+  /* Bedient wird, was auf der Startseite wirklich anklickbar ist: Tastatur,
+     die Reiter der Fallstudien und die Regler der beiden Demos. */
+  await seite.keyboard.press("Tab").catch(() => {});
+  await seite.waitForTimeout(300);
+  await seite.keyboard.press("Tab").catch(() => {});
+  await seite.waitForTimeout(300);
+
+  const reiter = seite.locator('[role="tab"]');
+  for (let i = 0; i < Math.min(await reiter.count(), 3); i++) {
+    await reiter
+      .nth(i)
+      .click({ timeout: 5000 })
+      .catch(() => {});
+    await seite.waitForTimeout(300);
+  }
+
+  const regler = seite.locator('input[type="range"]');
+  for (let i = 0; i < Math.min(await regler.count(), 2); i++) {
+    await regler
+      .nth(i)
+      .click({ timeout: 5000 })
+      .catch(() => {});
+    await seite.waitForTimeout(300);
+  }
+  await seite.waitForTimeout(1200);
+
+  const gemessen = await seite.evaluate(() => window.__inp ?? []);
+  await seite.close();
+
+  if (gemessen.length === 0) {
+    funde.push(
+      "/: keine einzige Interaktion gemessen. Entweder reagiert nichts mehr, " +
+        "oder die Bauteile heißen anders als dieser Lauf annimmt.",
+    );
+  } else {
+    gemessen.sort((a, b) => b.dauer - a.dauer);
+    const schlechtester = gemessen[0];
+    zeilen.push(
+      `${"/ (Bedienung)".padEnd(36)} INP ${String(schlechtester.dauer).padStart(5)} ms   ` +
+        `aus ${gemessen.length} Interaktionen` +
+        (schlechtester.dauer > BUDGET.inp ? "  <-- über Budget" : ""),
+    );
+    if (schlechtester.dauer > BUDGET.inp) {
+      funde.push(
+        `/: INP ${schlechtester.dauer} ms, Budget ${BUDGET.inp} ms ` +
+          `(${schlechtester.art} auf ${schlechtester.ziel})`,
+      );
+    }
+  }
+}
+
 await browser.close();
 beenden();
 
@@ -236,5 +329,5 @@ if (funde.length > 0) {
 
 console.log(
   `\nAlle Kernwerte im Budget: ${SEITEN.length} Seiten × ${LAEUFE} Läufe nach dem Aufwärmen ` +
-    `auf einem gedrosselten Telefon, LCP unter ${BUDGET.lcp} ms, CLS unter ${BUDGET.cls}.`,
+    `auf einem gedrosselten Telefon, LCP unter ${BUDGET.lcp} ms, CLS unter ${BUDGET.cls}, INP unter ${BUDGET.inp} ms.`,
 );
