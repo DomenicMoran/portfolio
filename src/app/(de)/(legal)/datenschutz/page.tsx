@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { feedFuer, ogBildFuer } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
+import { Rechtsfuss } from "../Rechtsfuss";
 import { ANBIETER, ANSCHRIFT_EINZEILIG } from "../provider";
 import { site } from "@/content/site";
 import { STAND } from "../stand";
@@ -56,30 +57,31 @@ export const metadata: Metadata = {
 
 export default function Datenschutz() {
   return (
-    <main>
-      <h1 className="text-title mb-10 text-ink">Datenschutzerklärung</h1>
+    <>
+      <main>
+        <h1 className="text-title mb-10 text-ink">Datenschutzerklärung</h1>
 
-      <EnglishNote />
+        <EnglishNote />
 
-      <Section title="Verantwortlicher">
-        {ANBIETER}
-        <br />
-        {ANSCHRIFT_EINZEILIG}
-        <br />
-        E-Mail:{" "}
-        <a
-          href={mailAdresse(site.email, site.mailSubject)}
-          /* `-my-1 py-1`: Der Verweis maß 174 x 18 px und lag damit unter den
+        <Section title="Verantwortlicher">
+          {ANBIETER}
+          <br />
+          {ANSCHRIFT_EINZEILIG}
+          <br />
+          E-Mail:{" "}
+          <a
+            href={mailAdresse(site.email, site.mailSubject)}
+            /* `-my-1 py-1`: Der Verweis maß 174 x 18 px und lag damit unter den
              24 px aus WCAG 2.5.8. Das Impressum nebenan hatte den Ausgleich
              schon, diese Stelle nicht — dieselbe Regel, zwei Fassungen.
              Optisch ändert sich nichts. */
-          className="-my-1 py-1 text-acid underline underline-offset-4"
-        >
-          {site.email}
-        </a>
-      </Section>
+            className="-my-1 py-1 text-acid underline underline-offset-4"
+          >
+            {site.email}
+          </a>
+        </Section>
 
-      {/* Die Speicherdauer gehört hierher, nicht ins Ungefähre.
+        {/* Die Speicherdauer gehört hierher, nicht ins Ungefähre.
 
           Art. 13 Abs. 2 lit. a DSGVO verlangt die Dauer der Speicherung oder,
           wenn das nicht geht, die Kriterien dafür. Der Abschnitt nannte beides
@@ -98,63 +100,64 @@ export default function Datenschutz() {
           zertifizierte Empfänger ist seit dem 10. Juli 2023 der
           Angemessenheitsbeschluss nach Art. 45 DSGVO die vorrangige
           Grundlage. Beide zu nennen ist genauer als eine. */}
-      <Section title="Hosting">
-        Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
-        technisch notwendige Server-Logdaten verarbeitet (IP-Adresse, Zeitpunkt,
-        aufgerufene Ressource, User-Agent, Referrer). Rechtsgrundlage ist Art. 6
-        Abs. 1 lit. f DSGVO, also das berechtigte Interesse am sicheren und
-        stabilen Betrieb. Der Hoster hält diese Protokolle eine Stunde lang vor
-        und löscht sie danach automatisch; eine eigene Speicherung, Auswertung
-        oder Weitergabe findet nicht statt. Vercel ist nach dem
-        EU-US-Datenschutzrahmen zertifiziert; die Übermittlung in die USA stützt
-        sich damit auf den Angemessenheitsbeschluss der Europäischen Kommission
-        vom 10. Juli 2023 und ergänzend auf die EU-Standardvertragsklauseln.
-      </Section>
+        <Section title="Hosting">
+          Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
+          technisch notwendige Server-Logdaten verarbeitet (IP-Adresse,
+          Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer).
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte
+          Interesse am sicheren und stabilen Betrieb. Der Hoster hält diese
+          Protokolle eine Stunde lang vor und löscht sie danach automatisch;
+          eine eigene Speicherung, Auswertung oder Weitergabe findet nicht
+          statt. Vercel ist nach dem EU-US-Datenschutzrahmen zertifiziert; die
+          Übermittlung in die USA stützt sich damit auf den
+          Angemessenheitsbeschluss der Europäischen Kommission vom 10. Juli 2023
+          und ergänzend auf die EU-Standardvertragsklauseln.
+        </Section>
 
-      <Section title="Cookies und Tracking">
-        Diese Website setzt keine Cookies, weder eigene noch fremde, und bindet
-        keine Analyse- oder Werbedienste ein. Es gibt daher auch kein
-        Cookie-Banner, nicht aus Nachlässigkeit, sondern weil es nichts gibt,
-        worin man einwilligen könnte.
-      </Section>
+        <Section title="Cookies und Tracking">
+          Diese Website setzt keine Cookies, weder eigene noch fremde, und
+          bindet keine Analyse- oder Werbedienste ein. Es gibt daher auch kein
+          Cookie-Banner, nicht aus Nachlässigkeit, sondern weil es nichts gibt,
+          worin man einwilligen könnte.
+        </Section>
 
-      <Section title="Schriftarten">
-        Alle Schriftarten werden vom eigenen Server ausgeliefert. Beim Besuch
-        dieser Seite wird keine Verbindung zu Google Fonts oder einem anderen
-        Schriftanbieter aufgebaut.
-      </Section>
+        <Section title="Schriftarten">
+          Alle Schriftarten werden vom eigenen Server ausgeliefert. Beim Besuch
+          dieser Seite wird keine Verbindung zu Google Fonts oder einem anderen
+          Schriftanbieter aufgebaut.
+        </Section>
 
-      <Section title="Kontaktaufnahme">
-        Diese Website hat kein Kontaktformular. Sie nennt lediglich eine
-        E-Mail-Adresse. Es wird also nichts erhoben, nichts übertragen und
-        nichts gespeichert, wenn du Kontakt aufnimmst. Deine Nachricht geht
-        direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
-        daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
-        ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b bzw.
-        lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
-        gesetzliche Aufbewahrungsfrist entgegensteht.
-      </Section>
+        <Section title="Kontaktaufnahme">
+          Diese Website hat kein Kontaktformular. Sie nennt lediglich eine
+          E-Mail-Adresse. Es wird also nichts erhoben, nichts übertragen und
+          nichts gespeichert, wenn du Kontakt aufnimmst. Deine Nachricht geht
+          direkt von deinem Mailprogramm an mein Postfach, ohne dass diese Seite
+          daran beteiligt ist. Schreibst du mir, verarbeite ich deine Angaben
+          ausschließlich zur Bearbeitung deiner Anfrage (Art. 6 Abs. 1 lit. b
+          bzw. lit. f DSGVO) und lösche sie, sobald sie erledigt ist und keine
+          gesetzliche Aufbewahrungsfrist entgegensteht.
+        </Section>
 
-      <Section title="Keine weiteren Datenempfänger">
-        Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website lädt
-        keine Skripte, Schriften, Karten, Videos oder Analysedienste von fremden
-        Servern nach, weder beim Aufruf noch bei einer Interaktion. Alle Seiten
-        mit Inhalt werden vorab erzeugt und als fertige Dateien ausgeliefert.
-        Einzige Ausnahme ist die Fehlerseite: Sie wird bei der Anfrage
-        zusammengesetzt, um in der Sprache zu antworten, unter der du gekommen
-        bist. Es gibt keinen Endpunkt, der Eingaben entgegennimmt.
-      </Section>
+        <Section title="Keine weiteren Datenempfänger">
+          Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website
+          lädt keine Skripte, Schriften, Karten, Videos oder Analysedienste von
+          fremden Servern nach, weder beim Aufruf noch bei einer Interaktion.
+          Alle Seiten mit Inhalt werden vorab erzeugt und als fertige Dateien
+          ausgeliefert. Einzige Ausnahme ist die Fehlerseite: Sie wird bei der
+          Anfrage zusammengesetzt, um in der Sprache zu antworten, unter der du
+          gekommen bist. Es gibt keinen Endpunkt, der Eingaben entgegennimmt.
+        </Section>
 
-      <Section title="Deine Rechte">
-        Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16),
-        Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und
-        Datenübertragbarkeit (Art. 20 DSGVO). Eine formlose E-Mail an die oben
-        genannte Adresse genügt. Außerdem steht dir nach Art. 77 DSGVO ein
-        Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, etwa bei der
-        Berliner Beauftragten für Datenschutz und Informationsfreiheit.
-      </Section>
+        <Section title="Deine Rechte">
+          Du hast das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16),
+          Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und
+          Datenübertragbarkeit (Art. 20 DSGVO). Eine formlose E-Mail an die oben
+          genannte Adresse genügt. Außerdem steht dir nach Art. 77 DSGVO ein
+          Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, etwa bei
+          der Berliner Beauftragten für Datenschutz und Informationsfreiheit.
+        </Section>
 
-      {/* Das Widerspruchsrecht steht bewusst allein.
+        {/* Das Widerspruchsrecht steht bewusst allein.
 
           Art. 21 Abs. 4 DSGVO verlangt den Hinweis darauf „ausdrücklich und
           in einer verständlichen und von anderen Informationen getrennten
@@ -165,19 +168,22 @@ export default function Datenschutz() {
           Er greift hier auch wirklich: Die Server-Logdaten laufen über Art. 6
           Abs. 1 lit. f, und genau dieses berechtigte Interesse ist die
           Grundlage, gegen die sich ein Widerspruch richten kann. */}
-      <Section title="Widerspruchsrecht">
-        Soweit ich Daten auf Grundlage eines berechtigten Interesses verarbeite
-        (Art. 6 Abs. 1 lit. f DSGVO), hast du das Recht, aus Gründen, die sich
-        aus deiner besonderen Situation ergeben, jederzeit Widerspruch gegen
-        diese Verarbeitung einzulegen (Art. 21 Abs. 1 DSGVO). Auf dieser Seite
-        betrifft das die Server-Logdaten des Hosters. Eine formlose E-Mail an
-        die oben genannte Adresse genügt; ich verarbeite die betroffenen Daten
-        dann nicht mehr, es sei denn, ich kann zwingende schutzwürdige Gründe
-        nachweisen, die deine Interessen überwiegen.
-      </Section>
+        <Section title="Widerspruchsrecht">
+          Soweit ich Daten auf Grundlage eines berechtigten Interesses
+          verarbeite (Art. 6 Abs. 1 lit. f DSGVO), hast du das Recht, aus
+          Gründen, die sich aus deiner besonderen Situation ergeben, jederzeit
+          Widerspruch gegen diese Verarbeitung einzulegen (Art. 21 Abs. 1
+          DSGVO). Auf dieser Seite betrifft das die Server-Logdaten des Hosters.
+          Eine formlose E-Mail an die oben genannte Adresse genügt; ich
+          verarbeite die betroffenen Daten dann nicht mehr, es sei denn, ich
+          kann zwingende schutzwürdige Gründe nachweisen, die deine Interessen
+          überwiegen.
+        </Section>
 
-      <Section title="Stand">{STAND}</Section>
-    </main>
+        <Section title="Stand">{STAND}</Section>
+      </main>
+      <Rechtsfuss hier="datenschutz" />
+    </>
   );
 }
 

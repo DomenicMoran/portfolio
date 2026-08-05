@@ -41,10 +41,7 @@ export default function GlobalError({
   unstable_retry: () => void;
 }) {
   return (
-    <html
-      lang="de"
-      className={`${schriftKlassen} h-full antialiased`}
-    >
+    <html lang="de" className={`${schriftKlassen} h-full antialiased`}>
       <body className="grain flex min-h-full flex-col">
         <main className="flex flex-1 items-center px-6 py-14 sm:py-20">
           <div className="mx-auto w-full max-w-2xl">
