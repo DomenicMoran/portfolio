@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { schreibe, zerlege, type Sprache } from "./zahlwert";
+import { schreibe, zerlege, type Sprache } from "./number-format";
 
 /**
  * Was hier zählt, sieht man auf der Seite nicht.

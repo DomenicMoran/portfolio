@@ -9,7 +9,7 @@
  *
  * Deshalb liegt sie hier als reine Funktion und nicht als Rechnung mitten in
  * der Inhaltsdatei: Mit Ein- und Ausgabe lässt sie sich prüfen, siehe
- * `zeitspanne.test.ts`. Der Fall, der wirklich weh tut, ist der Monatswechsel
+ * `duration.test.ts`. Der Fall, der wirklich weh tut, ist der Monatswechsel
  * am Stichtag; er steht dort zweimal, einen Tag davor und einen Tag danach.
  */
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alsWort, asWord, grossErstes, jahreZwischen, monateZwischen } from "./zeitspanne";
+import { alsWort, asWord, grossErstes, jahreZwischen, monateZwischen } from "./duration";
 
 /*
    Der teure Fall steht zuerst: der Tag vor und der Tag nach dem Stichtag.

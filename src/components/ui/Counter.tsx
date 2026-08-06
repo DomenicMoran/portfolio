@@ -3,7 +3,7 @@
 import { animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useContent } from "@/content/ContentProvider";
-import { schreibe, zerlege } from "@/lib/zahlwert";
+import { schreibe, zerlege } from "@/lib/number-format";
 
 /**
  * Zählt beim Sichtbarwerden hoch.
@@ -29,7 +29,7 @@ export function Counter({
      sechs. Sichtbar stimmte es trotzdem, weil eine deutsche Dezimalzahl mit
      drei Nachkommastellen zeichengleich mit einer englischen Tausendergruppe
      ist — richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
-     Dreiergruppe hat. Die Zerlegung steht jetzt in `lib/zahlwert.ts` mit
+     Dreiergruppe hat. Die Zerlegung steht jetzt in `lib/number-format.ts` mit
      Tests daneben; hier bleibt die Bewegung. */
   const { lang } = useContent();
   const form = zerlege(value, lang);

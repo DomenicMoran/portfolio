@@ -5,7 +5,7 @@ import {
   grossErstes,
   jahreZwischen,
   monateZwischen,
-} from "@/lib/zeitspanne";
+} from "@/lib/duration";
 
 /**
  * Wie lange die vier Systeme in Produktion entstehen — gerechnet, nicht getippt.

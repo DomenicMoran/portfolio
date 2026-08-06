@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { mailAdresse } from "@/lib/mailto";
-import { alsAnzeige } from "@/lib/adresse";
+import { alsAnzeige } from "@/lib/url-display";
 import Link from "next/link";
 import type { Content } from "@/content/types";
 import { SOCIALS } from "@/content/types";
