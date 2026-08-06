@@ -2062,6 +2062,79 @@ const BRAUCHT_KIND = {
         `  ok  Paketzahlen im README ${String(gezaehlt).padStart(6)} Pakete: Tests und Abhängigkeiten stimmen`,
       );
     }
+
+    /* Die Themen der Paket-Repos gegen das, was im Klon steht.
+       ------------------------------------------------------
+       Themen sind die Schlagworte, nach denen auf GitHub gesucht wird, und
+       auf dem Profil stehen sie unter jedem Repo. Sie liegen in keiner Datei
+       und ändern sich nur, wenn jemand sie von Hand anfasst — also driften
+       sie.
+
+       Gefunden am 05.08.2026: `whisper-ggml-header` bestand zu vier Fünfteln
+       aus TypeScript und trug als einziges der drei TypeScript-Pakete nicht
+       das Thema. Am 06.08.2026 dasselbe eine Ebene weiter: `verified-done`
+       und `whisper-ggml-header` haben beide keine einzige Laufzeit-Abhängig-
+       keit, und `zero-dependencies` stand nur an den anderen zwei.
+
+       Geprüft wird gegen Tatsachen, nicht gegen eine Wunschliste: die Sprache,
+       die GitHub selbst aus dem Repo errechnet, und die `dependencies` aus der
+       `package.json` des Klons. Dazu eine Untergrenze — ein Aufruf, der die
+       Themen versehentlich überschreibt, lässt genau eines stehen, und ohne
+       diese Zeile fiele das niemandem auf. */
+    const themenFunde = [];
+    let geprueftePakete = 0;
+    for (const [paket] of PAKETE) {
+      const ordner = join(OSS, paket);
+      if (!existsSync(ordner)) continue;
+      let daten;
+      try {
+        const antwort = await fetch(
+          `https://api.github.com/repos/DomenicMoran/${paket}`,
+          {
+            headers: { accept: "application/vnd.github+json" },
+            signal: AbortSignal.timeout(20000),
+          },
+        );
+        if (!antwort.ok) throw new Error(String(antwort.status));
+        daten = await antwort.json();
+      } catch {
+        continue;
+      }
+      geprueftePakete++;
+      const themen = daten.topics ?? [];
+
+      if (themen.length < 4) {
+        themenFunde.push(
+          `${paket}: nur ${themen.length} Thema/Themen (${themen.join(", ") || "keins"})`,
+        );
+      }
+      if (daten.language === "TypeScript" && !themen.includes("typescript")) {
+        themenFunde.push(`${paket}: GitHub nennt TypeScript, das Thema fehlt`);
+      }
+      const manifest = JSON.parse(
+        readFileSync(join(ordner, "package.json"), "utf8"),
+      );
+      const laufzeit = Object.keys(manifest.dependencies ?? {}).length;
+      if (laufzeit === 0 && !themen.includes("zero-dependencies")) {
+        themenFunde.push(
+          `${paket}: keine Laufzeit-Abhängigkeit, das Thema zero-dependencies fehlt`,
+        );
+      }
+      if (laufzeit > 0 && themen.includes("zero-dependencies")) {
+        themenFunde.push(
+          `${paket}: Thema zero-dependencies, aber ${laufzeit} Abhängigkeit(en)`,
+        );
+      }
+    }
+    if (themenFunde.length) {
+      abweichungen += themenFunde.length;
+      zeilen.push(`  !!  ${themenFunde.length} Abweichung(en) bei den Repo-Themen:`);
+      for (const f of themenFunde) zeilen.push(`        ${f}`);
+    } else if (geprueftePakete > 0) {
+      zeilen.push(
+        `  ok  Repo-Themen         ${String(geprueftePakete).padStart(6)} Pakete: Sprache und Abhängigkeitsfreiheit verschlagwortet`,
+      );
+    }
   }
 }
 
