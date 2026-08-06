@@ -1098,6 +1098,9 @@ export const en: Content = {
       { label: "Available", value: ENTRY },
       { label: "Languages", value: LANGUAGES },
       { label: "Model", value: "Permanent employment" },
+      /* Siehe die Begründung in `site.ts`: Der Kontaktbereich bittet um den
+         Gehaltsrahmen, also nennt die Seite ihren eigenen. */
+      { label: "Salary", value: "€55–70k, depending on scope" },
       {
         label: "Source code",
         value: "Open source on GitHub · production repos on request",

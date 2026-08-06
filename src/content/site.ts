@@ -1093,6 +1093,19 @@ export const recruiter = {
     { label: "Verfügbar", value: site.availability.entry },
     { label: "Sprachen", value: site.availability.languages },
     { label: "Modell", value: "Festanstellung" },
+    /* Die Zahl steht hier, weil die Seite sie nebenan selbst verlangt.
+
+       Unter „Das hilft mir in der ersten Mail" bittet der Kontaktbereich um
+       den Gehaltsrahmen, „damit wir beide Zeit sparen". Eine Seite, die das
+       fordert und selbst schweigt, ist an genau der Stelle unglaubwürdig, an
+       der sie Offenheit verspricht.
+
+       55 bis 70 k€ ist die Einschätzung aus `docs/BEWERBUNG.md` für die erste
+       Anstellung; darüber steht dort ein zweiter Korridor für den Fall, dass
+       die Passung stimmt. Genannt wird der untere: Eine Spanne, die mit dem
+       besten Fall beginnt, filtert die Anfragen weg, die sie eigentlich
+       einladen soll. */
+    { label: "Gehalt", value: "55 – 70 k€, je nach Zuschnitt der Rolle" },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
     // Entscheidung statt als Lücke.
     {
