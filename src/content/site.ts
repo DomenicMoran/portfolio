@@ -1195,7 +1195,10 @@ export const contact = {
       "Worum es geht: Rolle, Projekt oder Frage",
       "Was ihr baut und womit",
       "Wie schnell es losgehen soll",
-      "Bei Rollen: Gehaltsrahmen, damit wir beide Zeit sparen",
+      // „Euer“ und nicht bloß „Gehaltsrahmen“: Seit die Faktenkachel darüber
+      // die eigene Spanne nennt, wäre die kürzere Fassung zweideutig — sie
+      // klingt, als solle der Absender die schon genannte Zahl wiederholen.
+      "Bei Rollen: euer Gehaltsrahmen, damit wir beide Zeit sparen",
     ],
   },
   fakten: [
