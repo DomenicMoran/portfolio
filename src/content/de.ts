@@ -306,6 +306,7 @@ export const de: Content = {
     onward: "Weiter zu",
     home: "Startseite",
     report: "Etwas kaputt gefunden?",
+    reportSubject: "Toter Verweis auf domenicmoran.de",
     otherLanguage: {
       text: "Diese Adresse gibt es nicht.",
       link: "Weiter auf der deutschen Fassung",

@@ -3,7 +3,11 @@ import type { NextRequest } from "next/server";
 import { SPRACH_KOPFZEILE } from "@/lib/language-header";
 
 /**
- * Reicht den angefragten Pfad an die 404-Seite weiter.
+ * Sagt der 404-Seite, dass die Anfrage unter `/en` kam.
+ *
+ * Hier stand „Reicht den angefragten Pfad an die 404-Seite weiter“. Gereicht
+ * wird kein Pfad, sondern eine Kopfzeile mit dem Wert `en` — der Pfad selbst
+ * steht nirgends, und der Filter unten lässt ohnehin nur `/en` durch.
  *
  * Diese Seite hat zwei Wurzel-Layouts, eines je Sprache. Für eine Adresse, die
  * zu gar keiner Route gehört, kann Next deshalb kein Layout wählen und liefert
