@@ -91,6 +91,73 @@ for (const pfad of BLAETTER) {
      Die Option steht auf `false`, wenn niemand sie setzt. Sie fällt damit
      genau so weg, wie sie entstanden ist: unbemerkt beim nächsten Umbau des
      Druckskripts. Deshalb steht sie hier und nicht nur dort. */
+  /* Die Verweise im Blatt zeigen dorthin, wo sie hingehören.
+     -------------------------------------------------------
+     Das Bau-Skript zählt sie und meldet „5 Verweis(e)". Eine Zahl sagt aber
+     nichts darüber, wohin sie führen, und dieses Dokument ist die einzige
+     Datei dieser Seite, die den Empfänger ohne Browser erreicht: Ist sie
+     einmal verschickt, lässt sich ein falsches Ziel nicht mehr korrigieren.
+
+     Zwei Fehler sind hier möglich, ohne dass jemand etwas Falsches tut. Das
+     englische Blatt kann auf die deutsche Startseite zeigen — dieselbe
+     Verwechslung, die es bei der Verknüpfung der beiden PDF schon einmal gab
+     und die im Bau-Skript oben dokumentiert ist. Und die Mailadresse steht
+     im Blatt als Verweisziel und nicht nur als Text, kann also von der
+     Adresse der Seite abweichen, ohne dass es jemand sieht.
+
+     Die Erreichbarkeit der fremden Ziele bleibt draußen: Die prüft
+     `check-figures` gegen alle Adressen der Seite, und LinkedIn antwortet
+     einem Prüflauf ohnehin mit 999 statt mit 200. */
+  {
+    const seiteEins = doc.getPage(0).node;
+    const annots = seiteEins.get(PDFName.of("Annots"));
+    const liste = annots ? doc.context.lookup(annots) : null;
+    const ziele = [];
+    if (liste?.asArray) {
+      for (const eintrag of liste.asArray()) {
+        const anmerkung = doc.context.lookup(eintrag);
+        const aktion = anmerkung?.get && doc.context.lookup(anmerkung.get(PDFName.of("A")));
+        const uri = aktion?.get && aktion.get(PDFName.of("URI"));
+        if (uri) ziele.push(String(uri).replace(/^\(|\)$/g, ""));
+      }
+    }
+
+    const englisch = pfad.includes("one-pager");
+    /* Nur echte Seitenadressen: Die Mailadresse trägt „domenicmoran.de" im
+       Betreff, und ein Filter über die Zeichenkette nimmt sie mit. */
+    const eigene = ziele.filter(
+      (z) => /^https?:\/\//.test(z) && z.includes("domenicmoran.de"),
+    );
+    if (eigene.length === 0) {
+      funde.push(`${pfad}: kein Verweis auf die eigene Seite.`);
+    } else {
+      /* Das deutsche Blatt zeigt auf die Startseite, das englische auf /en.
+         Geprüft wird der Pfad, nicht die Zeichenkette: „…de/en" enthält
+         „…de/" als Teil. */
+      const falsch = eigene.filter((z) => {
+        const pfadTeil = new URL(z).pathname.replace(/\/$/, "");
+        return englisch ? pfadTeil !== "/en" : pfadTeil !== "";
+      });
+      if (falsch.length) {
+        funde.push(
+          `${pfad}: verweist auf ${falsch.join(", ")}, erwartet wird die ` +
+            `${englisch ? "englische" : "deutsche"} Fassung. Wer das Blatt ` +
+            `weiterreicht, schickt den Empfänger in die falsche Sprache.`,
+        );
+      }
+    }
+
+    const post = ziele.find((z) => z.startsWith("mailto:"));
+    if (!post) {
+      funde.push(`${pfad}: keine Mailadresse als Verweis.`);
+    } else if (!post.includes("domenicmoran@gmail.com")) {
+      funde.push(
+        `${pfad}: der Mailverweis geht an ${post.slice(0, 60)}, nicht an die ` +
+          `Adresse der Seite.`,
+      );
+    }
+  }
+
   const markInfo = doc.catalog.get(PDFName.of("MarkInfo"));
   const struktur = doc.catalog.get(PDFName.of("StructTreeRoot"));
   if (!markInfo || !struktur) {
