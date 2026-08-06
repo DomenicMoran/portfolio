@@ -17,11 +17,16 @@ on:
 #
 # Ein Durchgang dauert rund 25 Minuten, weil neunzehn der Prüfläufe einen
 # Browser öffnen. Drei Commits kurz hintereinander stellen damit drei
-# Durchgänge in die Schlange, und am 06.08.2026 hat GitHub den mittleren nach
-# fünfzehn Minuten Wartezeit ohne Läufer abgebrochen: `runner_name` leer, null
-# Schritte gelaufen. In der Actions-Ansicht steht dann ein rotes „failure“,
-# das niemand verursacht hat — und ein Rot, das nichts bedeutet, ist teurer
-# als gar keine Anzeige.
+# Durchgänge in die Schlange — und bezahlt wird für alle drei, obwohl nur der
+# letzte ausgeliefert wird.
+#
+# Anlass war ein Fehlschluss: Am 06.08.2026 brachen mehrere Durchgänge ohne
+# zugeteilten Läufer ab, `runner_name` leer und null Schritte gelaufen, und
+# die Actions-Ansicht zeigte rote „failure“-Einträge. Die Schlange sah wie
+# der Grund aus. Nachgesehen auf der Statusseite von GitHub war es ein
+# Ausfall des Dienstes selbst („Actions: major_outage“). Die Einstellung hier
+# behebt das nicht und soll es nicht — sie steht für den Fall, für den sie
+# gedacht ist, und der bleibt richtig.
 #
 # `cancel-in-progress` bricht den älteren Durchgang jetzt absichtlich ab. Er
 # steht danach als abgebrochen und nicht als fehlgeschlagen da, und die
