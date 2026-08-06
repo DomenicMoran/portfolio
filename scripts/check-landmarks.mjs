@@ -74,22 +74,22 @@ await werkzeug.send("DOM.enable");
 
 const glatt = (text) => (text ?? "").replace(/\s+/g, " ").trim();
 
-async function ueberschriftenNamen() {
-  const { root } = await werkzeug.send("DOM.getDocument", { depth: -1 });
-  const { nodeIds } = await werkzeug.send("DOM.querySelectorAll", {
+async function ueberschriftenNamen(aufSeite = seite, mitWerkzeug = werkzeug) {
+  const { root } = await mitWerkzeug.send("DOM.getDocument", { depth: -1 });
+  const { nodeIds } = await mitWerkzeug.send("DOM.querySelectorAll", {
     nodeId: root.nodeId,
     selector: "h1, h2, h3, h4",
   });
   const raus = [];
   for (const [i, nodeId] of nodeIds.entries()) {
-    const { node } = await werkzeug.send("DOM.describeNode", { nodeId });
-    const { nodes } = await werkzeug.send("Accessibility.queryAXTree", {
+    const { node } = await mitWerkzeug.send("DOM.describeNode", { nodeId });
+    const { nodes } = await mitWerkzeug.send("Accessibility.queryAXTree", {
       backendNodeId: node.backendNodeId,
     });
     const ax = nodes.find((n) => n.role?.value === "heading");
     if (!ax) continue;
     const sichtbar = glatt(
-      await seite.evaluate(
+      await aufSeite.evaluate(
         (nr) => document.querySelectorAll("h1, h2, h3, h4")[nr].innerText,
         i,
       ),
@@ -242,6 +242,42 @@ for (const pfad of pfade) {
 }
 
 await seite.close();
+
+/* Und dasselbe noch einmal auf dem Telefon.
+
+   Der Fund, für den diese Messung gebaut wurde, hing an der Breite: Der
+   Abschnittsverweis in den Artikeln trägt `display: none` unterhalb von
+   1024 px und ging deshalb nur am Schreibtisch in den Namen der Überschrift
+   ein. Ein Lauf bei einer Breite hätte ihn genauso gut verfehlen können —
+   nächstes Mal in die andere Richtung, wenn etwas nur auf dem Telefon
+   erscheint.
+
+   Nur die Namen, nicht die Landmarken: Die hängen an keiner Breite. */
+{
+  const eng = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const engeSeite = await eng.newPage();
+  const engesWerkzeug = await eng.newCDPSession(engeSeite);
+  await engesWerkzeug.send("Accessibility.enable");
+  await engesWerkzeug.send("DOM.enable");
+
+  for (const pfad of pfade) {
+    const antwort = await engeSeite.goto(`${basis}${pfad}`, {
+      waitUntil: "domcontentloaded",
+    });
+    if (!antwort || antwort.status() !== 200) continue;
+    for (const h of await ueberschriftenNamen(engeSeite, engesWerkzeug)) {
+      if (h.name !== h.sichtbar) {
+        funde.push(
+          `${pfad} bei 390 px: Überschrift heißt im Baum anders, als sie dasteht —\n` +
+            `          sichtbar: „${h.sichtbar.slice(0, 60)}“\n` +
+            `          Name:     „${h.name.slice(0, 90)}“`,
+        );
+      }
+    }
+  }
+  await eng.close();
+}
+
 await browser.close();
 beenden();
 
@@ -259,5 +295,6 @@ if (funde.length > 0) {
 
 console.log(
   `Jede Seite bietet ihre Landmarken an: ${landmarken} auf ${geprueft} Seiten, ` +
-    `keine Rolle doppelt benannt.`,
+    `keine Rolle doppelt benannt. Jede Überschrift heißt im ` +
+    `Barrierefreiheitsbaum, wie sie dasteht — gemessen bei 1440 und 390 px.`,
 );
