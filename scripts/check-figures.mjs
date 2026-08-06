@@ -2001,6 +2001,30 @@ const BRAUCHT_KIND = {
       if (abh > 0)
         funde.push(`${paket}: README sagt null Abhängigkeiten, es sind ${abh}`);
 
+      /* Dieselbe Testzahl auf der Seite wie im README.
+         ----------------------------------------------
+         Geprüft wurde bisher die Tabelle im Profil-README. Dieselben Zahlen
+         stehen ein zweites Mal in `site.ts` als „TypeScript · 23 Tests · null
+         Abhängigkeiten" unter jedem Paket, und diese Fassung liest der
+         Besucher der Seite. Wer nur eine der beiden anfasst, hinterlässt zwei
+         Zahlen für dieselbe Sache — und der Lauf sah bisher nur eine davon an. */
+      const metaZeile = new RegExp(
+        `name:\\s*"${paket}"[\\s\\S]{0,400}?meta:\\s*"([^"]+)"`,
+      ).exec(quelle)?.[1];
+      if (metaZeile) {
+        const aufDerSeite = /(\d+)\s+Tests/.exec(metaZeile)?.[1];
+        if (aufDerSeite && String(echt) !== aufDerSeite) {
+          funde.push(
+            `${paket}: die Seite sagt ${aufDerSeite} Tests, gezählt ${echt}`,
+          );
+        }
+        if (/null Abhängigkeiten/.test(metaZeile) && abh > 0) {
+          funde.push(
+            `${paket}: die Seite sagt null Abhängigkeiten, es sind ${abh}`,
+          );
+        }
+      }
+
       /* Die Zahl der Skills, wo die Seite eine nennt.
          --------------------------------------------
          Für `verified-done` steht in `site.ts` „Claude Code · 4 Skills ·
