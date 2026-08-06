@@ -2090,6 +2090,25 @@ const BRAUCHT_KIND = {
           `  ok  Profil-README        ${String(glatt(oertlich).split("\n").length).padStart(6)} Zeilen wie auf GitHub`,
         );
       }
+
+      /* Und die Anführungszeichen schließen deutsch.
+         ------------------------------------------
+         Das Profil ist die meistgelesene öffentliche Fläche, und der
+         Artikelvergleich darunter kann das nicht sehen: Er macht aus jedem
+         Anführungszeichen dasselbe Zeichen, bevor er vergleicht — mit Absicht,
+         sonst meldet er eine Titelabweichung, wo nur die Schreibweise abweicht.
+
+         Gefunden am 06.08.2026: „Published" mit geradem Schlusszeichen, zwei
+         Zeilen weiter „Sollte jetzt funktionieren“ mit dem richtigen. Der
+         Artikel selbst setzt beide deutsch. */
+      const gemischt = veroeffentlicht.match(/„[^„“"\n]{1,60}"/g);
+      if (gemischt) {
+        abweichungen += gemischt.length;
+        zeilen.push(
+          `  !!  ${gemischt.length} Anführungszeichen im Profil-README schließen gerade:`,
+        );
+        for (const g of gemischt.slice(0, 5)) zeilen.push(`        ${g}`);
+      }
     } catch {
       zeilen.push("  --  Profil-README: GitHub nicht erreichbar, übersprungen");
     }
