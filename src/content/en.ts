@@ -220,7 +220,10 @@ export const en: Content = {
       tagline:
         "Prayer and Quran platform for German speakers, with AI that runs offline",
       year: "2026",
-      role: "Sole developer · product, code, stores, licensing",
+      // „legal“ und nicht „licensing“: Das deutsche „Recht“ meint hier
+      // Impressum, Datenschutz, Alterseinstufung und die Kennzeichnung nach
+      // EU AI Act Art. 50 — nicht Lizenzen.
+      role: "Sole developer · product, code, stores, legal",
       statusLabel: "Live on the App Store",
       accent: "acid",
       problem:
@@ -1208,10 +1211,15 @@ export const en: Content = {
     mealsLabel: "Choose dishes",
     units: {
       kcal: "kcal",
-      protein: "Protein",
-      carbs: "Carbs",
-      fat: "Fat",
-      fiber: "Fibre",
+      /* Kleingeschrieben, weil diese vier zweimal auftauchen: als
+         Beschriftung der Kacheln, die das Stylesheet ohnehin in
+         Großbuchstaben setzt, und mitten im Satz. Dort stand „198 g
+         Protein“ und „Protein 39 % · Carbs 42 %“ — deutsche Großschreibung
+         in englischem Fließtext. `kcal` machte es schon richtig. */
+      protein: "protein",
+      carbs: "carbs",
+      fat: "fat",
+      fiber: "fibre",
     },
     targetLabel: "Daily target",
     solve: "Put a day together",
