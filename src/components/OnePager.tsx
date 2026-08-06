@@ -162,7 +162,23 @@ export function OnePager({
               {about.portraitPrint ? (
                 <Image
                   src={about.portraitPrint}
-                  alt={site.name}
+                  /* Leerer Alternativtext, und das ist die Aussage.
+
+                     Hier stand der Name — derselbe, der einen Zentimeter
+                     weiter rechts als `h1` steht. Gemessen an der
+                     ausgelieferten Seite las ein Vorleseprogramm damit
+                     „Grafik Domenic Moran, Überschrift Ebene 1 Domenic
+                     Moran“: zweimal dieselbe Auskunft, und die erste ohne
+                     Zugewinn. Das Bild trägt auf diesem Blatt keine
+                     Information, die nicht danebensteht; ein leerer
+                     Alternativtext nimmt es aus der Ansage, statt es
+                     unbeschriftet zu lassen.
+
+                     Auf der Startseite bleibt der Name als Alternativtext:
+                     Dort steht das Porträt unter „Vier Jahre gelernt“, und
+                     wer nicht sieht, erfährt sonst nirgends, dass dort ein
+                     Foto ist und wen es zeigt. */
+                  alt=""
                   width={110}
                   height={110}
                   sizes="110px"
