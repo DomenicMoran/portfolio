@@ -99,7 +99,7 @@ ausschließlich das.
 
 ## Bewegung
 
-Vier Regeln, alle nicht verhandelbar:
+Fünf Regeln, alle nicht verhandelbar:
 
 1. **`prefers-reduced-motion` gilt für JS-Animationen genauso.** Die CSS-Regel
    in `globals.css` erreicht Framer Motion nicht: dafür ist `MotionProvider`
@@ -116,7 +116,16 @@ Vier Regeln, alle nicht verhandelbar:
    `RevealWords` nehmen dafür ein `css`-Flag. Unterhalb der Falz bleibt die
    JS-Variante richtig, weil die Bewegung dort erst beim Hineinscrollen
    laufen soll.
-4. **Performance schlägt Effekt.** Kein Canvas, kein WebGL, keine
+4. **Das LCP-Element blendet nicht ein.** Auch nicht als CSS-Animation.
+   Chrome zählt ein Element mit `opacity: 0` nicht als gemalt, also landet
+   jede Verzögerung plus ein Teil der Dauer unmittelbar im Kernwert. Gemessen
+   am Vorspann des Kopfes, dem größten Textstück über der Falz: mit
+   `animate-fade-rise` 2.232 bis 2.496 ms, während der Absatz darunter schon
+   bei 1.624 ms stand — 20 ms unter dem Budget von 2.500. Mit `animate-rise`,
+   derselben Bewegung ohne Blende, sind es 1.656 ms. Wer im Kopf ein neues
+   Textelement anlegt, prüft mit `npm run check:vitals`, ob es das
+   LCP-Element geworden ist.
+5. **Performance schlägt Effekt.** Kein Canvas, kein WebGL, keine
    Scroll-Handler ohne `passive`. Glüh-Effekte sind geblurrte Divs, Grain ist
    ein Inline-SVG, der Marquee läuft als CSS-Animation ohne rAF-Schleife.
 
