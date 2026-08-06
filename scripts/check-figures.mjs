@@ -1728,6 +1728,29 @@ const BRAUCHT_KIND = {
       if (seitentitel !== null && titel === seitentitel) {
         funde.push(`${route}: traegt den Kartentitel der Startseite`);
       }
+
+      /* Und die Karte heißt wie der Browsertitel.
+
+         Next hängt den Namen über `title.template` an, aber nur an
+         `<title>`. Wer für eine Seite ein eigenes `openGraph` setzt — und
+         das tun alle acht, die kein Bild erben —, bekommt dort den nackten
+         Seitentitel. Gemessen an der ausgelieferten Seite hieß die Karte des
+         Kurzprofils „Kurzprofil“ und die des Impressums „Impressum“: ohne
+         Namen, ohne Rolle, ohne Zusammenhang. Ausgerechnet das Kurzprofil
+         ist die Seite, die weitergereicht wird.
+
+         Verglichen wird gegen `<title>` und nicht gegen eine eigene Regel:
+         Die Artikel setzen ihren Titel absichtlich absolut, also ohne
+         Namenszusatz, und eine zweite Regel hier würde ihnen widersprechen.
+         Was im Browserreiter steht, steht auf der Karte. */
+      const browsertitel = readFileSync(pfad, "utf8").match(
+        /<title>([^<]*)<\/title>/,
+      )?.[1];
+      if (browsertitel && titel !== browsertitel) {
+        funde.push(
+          `${route}: Karte heißt „${titel}“, der Browsertitel „${browsertitel}“`,
+        );
+      }
     }
   };
 

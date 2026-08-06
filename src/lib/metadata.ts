@@ -169,6 +169,24 @@ export function feedFuer(lang: "de" | "en") {
  * /impressum, /datenschutz und ihre englischen Entsprechungen kein
  * `og:image`. Es sind die Seiten, die man weiterreicht.
  */
+/**
+ * Der Titel einer Vorschaukarte, wie ihn der Browsertitel auch bildet.
+ *
+ * Next hängt den Namen über `title.template` an — aber nur an `<title>`, nicht
+ * an `openGraph.title`. Wer für eine Seite ein eigenes `openGraph` setzt,
+ * bekommt dort deshalb den nackten Seitentitel. Gemessen an der
+ * ausgelieferten Seite hieß die Karte des Kurzprofils „Kurzprofil“, die des
+ * Impressums „Impressum“ — ohne Namen, ohne Rolle, ohne Zusammenhang.
+ *
+ * Ausgerechnet das Kurzprofil ist die Seite, die weitergereicht wird. Wer sie
+ * in einen Kanal stellt, stellt eine Karte hinein, auf der „Kurzprofil“ steht.
+ *
+ * Dieselbe Form wie die Vorlage, damit Karte und Browsertitel gleich heißen.
+ */
+export function kartenTitel(titel: string) {
+  return `${titel} – ${site.name}`;
+}
+
 export function ogBildFuer(lang: "de" | "en") {
   return [
     {

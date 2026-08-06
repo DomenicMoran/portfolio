@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelDe, chromeDe } from "@/content/articles";
 import { de } from "@/content/de";
-import { feedFuer, kurzbeschreibung, ogBildFuer } from "@/lib/metadata";
+import { feedFuer, kurzbeschreibung, ogBildFuer, kartenTitel } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: chromeDe.title,
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
     // statt es zu mischen.
     images: ogBildFuer("de"),
-    title: chromeDe.title,
+    title: kartenTitel(chromeDe.title),
     description: kurzbeschreibung(chromeDe.lede),
     locale: "de_DE",
   },
