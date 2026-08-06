@@ -141,8 +141,25 @@ export function ArticleIndex({
 
                 return (
                   <Karte key={article.slug}>
+                    {/* Der Name des Verweises ist der Titel, nicht die ganze
+                        Karte.
+
+                        Die Karte ist als Ganzes anklickbar, und das soll sie
+                        bleiben — aber damit wurde alles darin zum Namen des
+                        Verweises. Gemessen im Barrierefreiheitsbaum der
+                        ausgelieferten Seite: 44 bis 47 Wörter je Karte,
+                        beginnend mit „31. Juli 2026 5 Min. Lesezeit Salati“.
+                        In der Verweisliste eines Vorleseprogramms fingen alle
+                        fünf Einträge gleich an, und das Unterscheidende kam
+                        zuletzt.
+
+                        `aria-labelledby` auf die Überschrift lässt die Fläche,
+                        wie sie ist, und benennt den Verweis mit dem, was ein
+                        Sehender als Titel liest. Datum, Lesezeit und Vorspann
+                        bleiben im Lesemodus vollständig erreichbar. */}
                     <Link
                       href={`${chrome.base}/${article.slug}`}
+                      aria-labelledby={`artikel-${article.slug}`}
                       className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
                     >
                       {/* Kopfdaten links, Text rechts — aber erst ab `lg`.
@@ -192,7 +209,10 @@ export function ArticleIndex({
                       </div>
 
                       <div className="min-w-0">
-                        <h2 className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl lg:mt-0">
+                        <h2
+                          id={`artikel-${article.slug}`}
+                          className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl lg:mt-0"
+                        >
                           {article.title}
                           <ArrowUpRight
                             className="mt-1 size-4 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
