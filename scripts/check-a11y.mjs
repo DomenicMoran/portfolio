@@ -865,6 +865,69 @@ if (BILDLAUFFUNDE.length > 0) {
   for (const f of BILDLAUFFUNDE) console.error(`  ${f}`);
 }
 
+/* ---------------------------------------------------------------------------
+   Reflow bei 320 px, WCAG 2.2 Erfolgskriterium 1.4.10 (AA)
+
+   Das Kriterium nennt eine Zahl, und die ist nicht 390: Inhalt muss sich bei
+   320 CSS-Pixeln Breite darstellen lassen, ohne dass in zwei Richtungen
+   gescrollt werden muss. 320 px ist keine willkürliche Grenze, sondern ein
+   Telefon bei 400 % Zoom — also das, was jemand mit schwacher Sehkraft
+   tatsächlich vor sich hat.
+
+   Dieser Lauf misst 1440 und 390. Vier andere Läufe messen 320 (`check:nbsp`,
+   `check:separators`, `check:font-size`, `check:headings`), aber alle vier
+   prüfen dort Typografie, keiner das Scrollen. Ausgerechnet der Lauf, der
+   WCAG im Namen führt, sah die Breite nie an.
+
+   Geprüft wird genau das, was das Kriterium verlangt: dass das Dokument nicht
+   waagerecht scrollt. Nicht, ob einzelne Elemente über den Rand ragen — das
+   tun der Glühkreis und die Laufschrift mit Absicht, beide sind geclippt, und
+   eine Liste von Ausnahmen wäre eine Liste, die veraltet. Gemessen beim
+   Einbau: alle Seiten bei 310 px Inhaltsbreite auf 320 px Sichtfeld.
+   ------------------------------------------------------------------------ */
+const REFLOW_BREITE = 320;
+const reflowfunde = [];
+{
+  const seite = await browser.newPage({
+    viewport: { width: REFLOW_BREITE, height: 800 },
+  });
+  for (const pfad of pfade) {
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "networkidle",
+    });
+    if (!antwort) continue;
+    /* Einmal durchscrollen: Was erst beim Hineinscrollen erscheint, kann
+       auch erst dann in die Breite gehen. */
+    await seite.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 25));
+      }
+      window.scrollTo(0, 0);
+    });
+    await seite.waitForTimeout(300);
+    const masse = await seite.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      sicht: document.documentElement.clientWidth,
+    }));
+    if (masse.scroll > masse.sicht + 1) {
+      reflowfunde.push(
+        `${pfad}: ${masse.scroll} px Inhalt auf ${masse.sicht} px Sichtfeld — ` +
+          `waagerechtes Scrollen bei ${REFLOW_BREITE} px`,
+      );
+    }
+  }
+  await seite.close();
+}
+
+if (reflowfunde.length > 0) {
+  console.error(
+    `\n${reflowfunde.length} Seite(n) verlangen bei ${REFLOW_BREITE} px ` +
+      `Scrollen in zwei Richtungen (WCAG 1.4.10):\n`,
+  );
+  for (const f of reflowfunde) console.error(`  ${f}`);
+}
+
 await browser.close();
 beenden();
 
@@ -882,6 +945,7 @@ if (verstoesse > 0) {
 if (
   verstoesse > 0 ||
   wartefunde.length > 0 ||
+  reflowfunde.length > 0 ||
   ohneSkript.length > 0 ||
   zielfunde.length > 0 ||
   uhrfunde.length > 0 ||
@@ -894,7 +958,8 @@ if (
 
 console.log(
   `Keine Verstöße gegen WCAG 2.2 AA: ${geprueft} Seitenaufrufe ` +
-    `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft. ` +
+    `(${pfade.length} Seiten × ${BREITEN.length} Breiten) mit axe-core geprüft, ` +
+    `dazu ${pfade.length} Seiten bei ${REFLOW_BREITE} px ohne Scrollen in zwei Richtungen. ` +
     `Keine Wartezeit aus einer Animation bei reduzierter Bewegung, ` +
     `nichts unsichtbar ohne JavaScript, kein Ziel unter ${ZIELGROESSE} px ohne Abstand, ` +
     `nichts füllt sich bei reduzierter Bewegung von allein nach, ` +
