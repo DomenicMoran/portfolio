@@ -80,6 +80,15 @@ export type Content = {
       entry: string;
       /** In welchen Sprachen. */
       languages: string;
+      /**
+       * Die Gehaltsspanne, einmal für Faktenkachel und Kurzprofil.
+       *
+       * Sie stand nur in den Recruiter-Fakten und damit nur auf der Seite.
+       * Das Kurzprofil ist aber das Blatt, das weitergereicht wird, und es
+       * nennt Rolle, Ort, Eintritt und Sprachen — alles außer der Zahl, nach
+       * der als nächstes gefragt wird.
+       */
+      salary: string;
     };
     meta: { title: string; description: string };
     /** Ein Satz auf der Social-Vorschaukarte, je Sprache eigener Text. */

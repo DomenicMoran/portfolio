@@ -86,6 +86,15 @@ export const site = {
     detail: "Berlin · remote in der EU · hybrid",
     entry: "Gespräche jederzeit · Eintritt nach bis zu drei Monaten",
     languages: "Deutsch (Muttersprache) · Englisch",
+    /* Dieselbe Spanne wie in der Faktenkachel, hier als einzige Quelle.
+
+       Sie stand nur auf der Seite. Das Kurzprofil ist aber das Blatt, das
+       weitergereicht wird — und es nennt Rolle, Ort, Eintritt und Sprachen,
+       also alles außer der Zahl, nach der als nächstes gefragt wird. Wer nur
+       das Blatt bekommt, müsste danach zurückfragen; genau das soll es
+       ersparen. Neu veröffentlicht wird damit nichts, die Spanne steht
+       ohnehin öffentlich im Recruiter-Bereich. */
+    salary: "55 – 70 k€, je nach Zuschnitt der Rolle",
   },
 
   meta: {
@@ -1105,7 +1114,7 @@ export const recruiter = {
        die Passung stimmt. Genannt wird der untere: Eine Spanne, die mit dem
        besten Fall beginnt, filtert die Anfragen weg, die sie eigentlich
        einladen soll. */
-    { label: "Gehalt", value: "55 – 70 k€, je nach Zuschnitt der Rolle" },
+    { label: "Gehalt", value: site.availability.salary },
     // Nimmt die Frage „wo ist der Code?" vorweg und beantwortet sie als
     // Entscheidung statt als Lücke.
     {

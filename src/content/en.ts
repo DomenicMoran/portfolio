@@ -23,6 +23,7 @@ const LOCATION = "Berlin · remote in the EU · hybrid";
 
 const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
+const SALARY = "€55–70k, depending on scope";
 
 /**
  * Die englische Fassung.
@@ -105,6 +106,9 @@ export const en: Content = {
       detail: LOCATION,
       entry: ENTRY,
       languages: LANGUAGES,
+      // Siehe `site.ts`: dieselbe Spanne, hier als einzige Quelle für
+      // Faktenkachel und Kurzprofil.
+      salary: SALARY,
     },
     meta: {
       title: "Domenic Moran – AI Product Engineer",
@@ -1101,7 +1105,7 @@ export const en: Content = {
       { label: "Model", value: "Permanent employment" },
       /* Siehe die Begründung in `site.ts`: Der Kontaktbereich bittet um den
          Gehaltsrahmen, also nennt die Seite ihren eigenen. */
-      { label: "Salary", value: "€55–70k, depending on scope" },
+      { label: "Salary", value: SALARY },
       {
         label: "Source code",
         value: "Open source on GitHub · production repos on request",

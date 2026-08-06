@@ -244,6 +244,11 @@ export function OnePager({
               <p>{site.availability.detail}</p>
               <p>{site.availability.entry}</p>
               <p>{site.availability.languages}</p>
+              {/* Vierte Zeile, aus demselben Grund wie die drei darüber: Das
+                  Blatt soll die Rückfrage ersparen, und die nächste Rückfrage
+                  ist die nach dem Rahmen. Neu veröffentlicht wird nichts, die
+                  Spanne steht im Recruiter-Bereich der Seite. */}
+              <p>{site.availability.salary}</p>
             </div>
           </header>
 
