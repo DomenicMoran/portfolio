@@ -379,9 +379,11 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
        Aussage trägt, steht in der Fallstudie darüber. */
     <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="text-base font-semibold tracking-tight text-ink">
+        {/* `h4` aus demselben Grund wie in `PrayerTimes`: Die Kachel gehört
+            in die Fallstudie und nicht neben sie. */}
+        <h4 className="text-base font-semibold tracking-tight text-ink">
           {demo.title}
-        </h3>
+        </h4>
         <p className="font-mono text-[11px] text-ink-faint">
           {gewaehlt.length} / {GERICHTE.length}
         </p>
