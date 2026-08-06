@@ -104,9 +104,20 @@ for (const pfad of pfade) {
        Fehlerseite lautet „Diese Adresse gibt es nicht. Weiter auf der
        deutschen Fassung." und trägt keinen einzigen. Gefunden hat das der
        Gegentest zur Fehlerseite, nicht der Entwurf. Deshalb zusätzlich ein
-       paar Wörter, die in englischem Text nicht vorkommen. */
+       paar Wörter, die in englischem Text nicht vorkommen.
+
+       Die Liste war zu kurz, gemessen an vier Sätzen, wie sie beim Kopieren
+       aus der deutschen Fassung entstehen: „Jeder Mandant bekommt seine
+       eigene Signatureinheit“, „Das System wurde komplett selbst gebaut“,
+       „Die Daten liegen in der EU“, „Ein Beleg ist wichtiger als eine
+       Behauptung“ — keiner trägt einen Umlaut, keiner ein Wort der alten
+       Liste, alle vier wären durchgerutscht.
+
+       Aufgenommen sind nur Wörter, die es im Englischen nicht gibt. `die`,
+       `man`, `war`, `bin`, `hat` und `so` bleiben draußen: Sie sind englische
+       Wörter und würden auf jeder Seite anschlagen. */
     const DEUTSCHE_WOERTER =
-      /\b(Diese|Adresse|gibt|nicht|Weiter|deutschen|Fassung|Seite|Impressum|Datenschutz|über|und|oder)\b/;
+      /\b(Diese|Adresse|gibt|nicht|Weiter|deutschen|Fassung|Seite|Impressum|Datenschutz|über|und|oder|eine|einen|einem|eigene|jeder|jede|jedes|seine|ihre|wurde|wurden|wird|werden|sind|ist|sich|dass|weil|auch|durch|wenn|nach|kein|keine|selbst|schon|noch|immer|mehr|beim|vom|zum|zur|als|aus|bei|mit|von|für|der|den|dem)\b/;
     const deutsch = [];
     const lauf = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     for (let knoten; (knoten = lauf.nextNode()); ) {
