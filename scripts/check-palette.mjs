@@ -8,7 +8,7 @@
  *
  * Und sie ist die Sorte Bauteil, die stumm versagt. Ihre Liste kommt aus dem
  * Inhalt; verschiebt sich dort ein Schlüssel, liefert die Suche nichts mehr
- * und meldet „Nichts gefunden." — was aussieht wie eine Antwort und keine ist.
+ * und meldet „Nichts gefunden.“ — was aussieht wie eine Antwort und keine ist.
  * Kein anderer Lauf sieht sie: `check:a11y` prüft den geladenen Zustand,
  * `check:focus` die Reihenfolge beim Tabben, `check:links` die Adressen im
  * Dokument. Eine Palette muss man bedienen.
@@ -29,10 +29,10 @@ import { starteServer } from "./lib/local-server.mjs";
  * Was gesucht wird und wohin es führen muss, je Sprachfassung.
  *
  * Getrennt, weil die Titel es sind: Der Kassen-Artikel heißt auf Englisch
- * „German till law in practice", und „kassen" kommt dort in keinem Wort vor.
+ * „German till law in practice", und „kassen“ kommt dort in keinem Wort vor.
  * Der erste Entwurf suchte beidseitig danach und meldete auf `/en` einen
- * Fehler der Palette — es war einer des Suchworts. Der zweite nahm „till" und
- * traf damit auch „still" im Titel eines anderen Artikels: Die Suche geht
+ * Fehler der Palette — es war einer des Suchworts. Der zweite nahm „till“ und
+ * traf damit auch „still“ im Titel eines anderen Artikels: Die Suche geht
  * über Teilzeichenketten, und das Wort muss eindeutig sein.
  */
 const SUCHEN = {
@@ -117,7 +117,7 @@ for (const pfad of ["/", "/en"]) {
   });
 
   if (leer?.treffer !== 0) {
-    funde.push(`${pfad}: „${OHNE_TREFFER}" liefert ${leer?.treffer} Treffer`);
+    funde.push(`${pfad}: „${OHNE_TREFFER}“ liefert ${leer?.treffer} Treffer`);
   } else if (!leer.hatHinweis) {
     funde.push(
       `${pfad}: bei null Treffern steht nichts Sichtbares da. Eine Ansage ` +
@@ -136,7 +136,7 @@ for (const pfad of ["/", "/en"]) {
   if (nachEscape.dialog) funde.push(`${pfad}: Escape schließt die Palette nicht`);
   if (!/efehlspalette|ommand palette/.test(String(nachEscape.fokus))) {
     funde.push(
-      `${pfad}: nach dem Schließen steht der Fokus auf „${nachEscape.fokus}" ` +
+      `${pfad}: nach dem Schließen steht der Fokus auf „${nachEscape.fokus}“ ` +
         `statt auf dem Knopf, der die Palette geöffnet hat.`,
     );
   }

@@ -127,7 +127,7 @@ for (const grundschrift of GROESSEN) {
           if (drueber > 1) {
             treffer.push(
               `${el.tagName.toLowerCase()} ragt ${drueber} px über die Kante: ` +
-                `„${eigen.slice(0, 40)}"`,
+                `„${eigen.slice(0, 40)}“`,
             );
           }
         }

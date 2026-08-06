@@ -54,7 +54,7 @@ const ORTE = [
  * sie in der Zone des Browsers — und damit sah dieselbe Auswahl je nach
  * Standort des Lesers anders aus. Gemessen an der ausgelieferten Seite für
  * Tromsø am 5. August: aus Berlin „01:34 · 02:42 · 12:55 · 17:25 · 22:53 ·
- * 23:57", aus New York „19:34 −1 · 20:42 −1 · 06:55 …", aus Tokio „08:37 ·
+ * 23:57", aus New York „19:34 −1 · 20:42 −1 · 06:55 …“, aus Tokio „08:37 ·
  * 09:48 · 19:55 · 00:24 +1 …" und Ischa gar nicht mehr berechenbar, weil der
  * Wert aus dem Tagesfenster fiel.
  *
@@ -178,7 +178,7 @@ function spanne(m: number) {
 /**
  * Der laufende Tag des Jahres im gewählten Ort, von 0 an gezählt.
  *
- * „Heute" ist der Tag dort, nicht der beim Leser: Wer aus Auckland Berlin
+ * „Heute“ ist der Tag dort, nicht der beim Leser: Wer aus Auckland Berlin
  * wählt, sieht Berliner Zeiten und soll das Berliner Datum dazu bekommen.
  * Beim Wechsel des Ortes kann der Tag deshalb springen — genau dann, wenn er
  * es auch in Wirklichkeit tut.
@@ -213,7 +213,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   );
 
   /* Beim Ortswechsel auf dessen heutigen Tag springen, solange der Regler noch
-     auf „heute" stand. Wer den Tag von Hand gewählt hat, behält ihn. */
+     auf „heute“ stand. Wer den Tag von Hand gewählt hat, behält ihn. */
   const [vorherHeute, setVorherHeute] = useState(heuteNr);
   if (heuteNr !== vorherHeute) {
     if (tag === vorherHeute) setTag(heuteNr);
@@ -854,7 +854,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       </div>
 
       {/* Der Regler ist die Bedienung, nicht das Band: mit der Tastatur
-          erreichbar, und ein Vorleseprogramm sagt das Datum statt „180". */}
+          erreichbar, und ein Vorleseprogramm sagt das Datum statt „180“. */}
       <label className="mt-4 block">
         <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <span className="text-eyebrow">{demo.dayLabel}</span>
@@ -920,8 +920,8 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
               Schriftgröße auch eine Farbe. In der Reihenfolge der Stilvorlage
               steht `.text-base` hinter `.text-acid` und gewinnt — die Zahl kam
               in der Farbe des Hintergrunds heraus, gemessen 1,01:1. Mit
-              `text-violet` fiel das nie auf, weil „violet" alphabetisch hinter
-              „base" liegt. */}
+              `text-violet` fiel das nie auf, weil „violet“ alphabetisch hinter
+              „base“ liegt. */}
           <span className="font-mono text-[1rem] text-acid tabular-nums">
             {/* Solange nichts gerechnet ist, steht hier nichts. Ein
                 Platzhalterstrich war zuerst da und wurde von

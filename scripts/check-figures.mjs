@@ -358,7 +358,7 @@ const UNTERGRENZEN = [
    Es war als einziges der drei privaten Dokumente ungeprüft, und es ist das
    folgenreichste: Die Lernplattform zieht 280 Karten daraus, und was dort
    steht, wird auswendig gelernt. Gemessen am 03.08.2026 nannte es dreimal
-   „4.053 Commits" — gemessen waren es 4.224. Die Zahl ist jetzt eine
+   „4.053 Commits“ — gemessen waren es 4.224. Die Zahl ist jetzt eine
    Untergrenze, damit sie stimmt, solange sie wächst.
 */
 for (const datei of [
@@ -388,7 +388,7 @@ for (const datei of [
       imText.lastIndex = 0;
       if (imText.test(inhalt)) {
         zeilen.push(
-          `  !!  ${kurz}: „${was}" steht drin, ist aber nicht messbar.`,
+          `  !!  ${kurz}: „${was}“ steht drin, ist aber nicht messbar.`,
         );
         abweichungen++;
       }
@@ -853,7 +853,7 @@ function ghKonten() {
     if (!passt) abweichungen++;
     zeilen.push(
       `${passt ? "  ok " : "  != "} Podcastdauer                ${String(minuten).padStart(6)} Minuten ` +
-        `(${stunden.toFixed(1)} h, Seite sagt „gut zehn Stunden")`,
+        `(${stunden.toFixed(1)} h, Seite sagt „gut zehn Stunden“)`,
     );
   }
 }
@@ -1230,7 +1230,7 @@ const BRAUCHT_KIND = {
    ---------------------------------------------------------------------------
 
    Jeder Artikel nennt den Commit, an dem sich der Fix nachlesen lässt:
-   „Salati-Repo, Commit 427cd6c6 vom 31.07.2026". Das ist die konkreteste
+   „Salati-Repo, Commit 427cd6c6 vom 31.07.2026“. Das ist die konkreteste
    Angabe der ganzen Seite. Sie steht in einem privaten Repo, also kann sie
    niemand von außen prüfen — hier liegt es daneben, und damit lässt sie sich
    prüfen.
@@ -1422,11 +1422,11 @@ const BRAUCHT_KIND = {
 
    Diese eine Zahl stand als einzige ohne Nachzählung auf der Seite: Sie liegt
    in der Datenbank, und die Anwendung hat keinen Endpunkt, der sie herausgibt.
-   Sie hat aber eine Startseite, und dort steht sie — als „11892+" in der
+   Sie hat aber eine Startseite, und dort steht sie — als „11892+“ in der
    Kennzahlenreihe. Damit ist sie prüfbar, ohne dass jemand eine Abfrage
    ausführt.
 
-   Verglichen wird nach oben offen: Die Anwendung schreibt „11892+", der
+   Verglichen wird nach oben offen: Die Anwendung schreibt „11892+“, der
    Katalog wächst. Die Seite darf deshalb nicht mehr behaupten, als dort
    steht; weniger schon.
 
@@ -1711,7 +1711,7 @@ const BRAUCHT_KIND = {
         signal: AbortSignal.timeout(15000),
       });
       /*
-        Nur „weg" ist ein Befund.
+        Nur „weg“ ist ein Befund.
 
         Der erste Entwurf zählte jede Antwort ab 400 als kaputt. Damit ging
         der Lauf schon am selben Tag einmal rot, ohne dass etwas fehlte: Ein
@@ -1780,7 +1780,7 @@ const BRAUCHT_KIND = {
     ];
 
     /* Gesucht wird die Wortfolge „… Product Engineer" mit allem, was davor
-       ohne Leerzeichen daran hängt. So fällt „AI-Native" auf, ohne dass der
+       ohne Leerzeichen daran hängt. So fällt „AI-Native“ auf, ohne dass der
        Lauf jede Schreibweise vorher kennen muss. */
     const muster = /([\wÄÖÜäöüß-]+[ -])?Product Engineer/g;
 
@@ -1797,7 +1797,7 @@ const BRAUCHT_KIND = {
       geprueft++;
       if (gefunden.length > 0) {
         zeilen.push(
-          `  !!  Rolle in ${name}: „${[...new Set(gefunden)].join('", „')}" statt „${rolle}"`,
+          `  !!  Rolle in ${name}: „${[...new Set(gefunden)].join('“, „')}“ statt „${rolle}"`,
         );
         abweichungen++;
         abweichend++;
@@ -1925,7 +1925,7 @@ const BRAUCHT_KIND = {
       ).length;
 
       /* Gelesen wird das Zahlwort vor dem Substantiv, nicht die Zahl: Der
-         Satz schreibt „Vier Fallstudien", nicht „4 Fallstudien". */
+         Satz schreibt „Vier Fallstudien", nicht „4 Fallstudien“. */
       const gelesen = (wort) => {
         const treffer = new RegExp(
           `(\\d+|[A-Za-zÄÖÜäöüß]+)\\s+${wort}`,
@@ -2071,7 +2071,7 @@ const BRAUCHT_KIND = {
 
    Das Profil-README auf GitHub verlinkt die fünf Artikel mit ihrem Titel als
    Linktext. Zwei davon wichen ab: „was in der Dokumentation nicht steht" gegen
-   „was die Dokumentation auslässt" und „mein größeres geschlagen hat" gegen
+   „was die Dokumentation auslässt“ und „mein größeres geschlagen hat" gegen
    „mein größeres schlug". Wer dort klickt, landete auf einer Seite mit anderer
    Überschrift als versprochen — und das ist die erste Seite, die ein Leser des
    Profils überhaupt sieht.
@@ -2102,10 +2102,10 @@ const BRAUCHT_KIND = {
       if (!echt) {
         funde.push(`${slug}: im README verlinkt, gibt es als Artikel nicht`);
       } else if (
-        linktext.replace(/[“”„"]/g, '"') !== echt.replace(/[“”„"]/g, '"')
+        linktext.replace(/[“”„“]/g, '"') !== echt.replace(/[“”„“]/g, '"')
       ) {
         funde.push(
-          `${slug}: README sagt „${linktext}", der Artikel heißt „${echt}"`,
+          `${slug}: README sagt „${linktext}“, der Artikel heißt „${echt}“`,
         );
       }
     }
@@ -2149,8 +2149,8 @@ const BRAUCHT_KIND = {
 
   /* WohnungsJäger fehlt in der Zuordnung oben, weil das Verzeichnis keine
      Git-Historie hat — es gibt dort keinen ersten Commit, gegen den sich ein
-     Jahr halten ließe. Die Zahl unten nennt das ausdrücklich: „3 von 4" statt
-     „3", sonst liest sich die Zeile wie eine vollständige Prüfung. */
+     Jahr halten ließe. Die Zahl unten nennt das ausdrücklich: „3 von 4“ statt
+     „3“, sonst liest sich die Zeile wie eine vollständige Prüfung. */
   const anfang = quelle.indexOf("export const caseStudies");
   const fallstudienBlock = quelle.slice(
     anfang,
@@ -2343,7 +2343,7 @@ const BRAUCHT_KIND = {
    als ungültig — stillschweigend, es gibt keine Meldung.
 
    Die Datei lag als statische Kopie in public/ mit fest eingetragenem
-   „2027-07-31". Ein Datum ein Jahr voraus fällt niemandem auf, bis es vorbei
+   „2027-07-31“. Ein Datum ein Jahr voraus fällt niemandem auf, bis es vorbei
    ist. Sie entsteht jetzt beim Bauen mit sechs Monaten Vorlauf; geprüft wird
    das gebaute Ergebnis, nicht die Absicht. */
 {
@@ -2516,7 +2516,7 @@ const BRAUCHT_KIND = {
 /* ------------------------------------------------------------------
    Die Versionsangaben in den Tech-Stacks gegen die Repos.
 
-   Eine Zahl wie „React Native 0.86" ist eine Behauptung wie jede andere,
+   Eine Zahl wie „React Native 0.86“ ist eine Behauptung wie jede andere,
    nur altert sie schneller: Sie ändert sich, wenn in einem ganz anderen
    Verzeichnis `pnpm up` läuft, und niemand denkt dabei an das Portfolio.
    Ein Bewerber, der eine überholte Version nennt, sieht aus, als hätte er
@@ -2524,8 +2524,8 @@ const BRAUCHT_KIND = {
    dieser Seite der unnötigste.
 
    Geprüft wird gegen die `package.json` des jeweiligen Projekts, auf so
-   viele Stellen, wie die Seite nennt: „Fastify 5" gegen die Hauptversion,
-   „React Native 0.86" gegen zwei Stellen.
+   viele Stellen, wie die Seite nennt: „Fastify 5“ gegen die Hauptversion,
+   „React Native 0.86“ gegen zwei Stellen.
 
    Die Tabelle ist bewusst ausgeschrieben statt geraten. Ein Parser, der
    sich aus „Next.js 16 App Router" den Paketnamen zusammensucht, hätte
@@ -2631,7 +2631,7 @@ const ANGABEN = [
   for (const block of stackBloecke) {
     for (const eintrag of block[1].matchAll(/"([^"]+)"/g)) {
       /* Eine Versionsnummer steht für sich, mit Leerzeichen davor. Ohne diese
-         Bedingung hielt der Lauf „Cloudflare R2" und „n8n" für Versionen und
+         Bedingung hielt der Lauf „Cloudflare R2" und „n8n“ für Versionen und
          verlangte einen Beleg für eine Zahl, die zum Namen gehört. */
       if (/(?:^|\s)\d+(?:\.\d+)*(?:\s|$)/.test(eintrag[1])) {
         aufDerSeite.add(eintrag[1]);
@@ -2645,7 +2645,7 @@ const ANGABEN = [
 
   for (const angabe of ANGABEN) {
     if (!aufDerSeite.has(angabe.text)) {
-      funde.push(`„${angabe.text}" steht nicht mehr auf der Seite`);
+      funde.push(`„${angabe.text}“ steht nicht mehr auf der Seite`);
       continue;
     }
     const pfad = resolve(angabe.datei);
@@ -2670,7 +2670,7 @@ const ANGABEN = [
     geprueft++;
     if (kurz(echt) !== kurz(genannt)) {
       funde.push(
-        `„${angabe.text}" — im Repo ${angabe.feld ?? angabe.paket} ${echt}`,
+        `„${angabe.text}“ — im Repo ${angabe.feld ?? angabe.paket} ${echt}`,
       );
     }
   }
@@ -2680,7 +2680,7 @@ const ANGABEN = [
   const bekannt = new Set(ANGABEN.map((a) => a.text));
   for (const text of [...aufDerSeite].sort()) {
     if (!bekannt.has(text)) {
-      funde.push(`„${text}" steht auf der Seite, wird aber nirgends geprüft`);
+      funde.push(`„${text}“ steht auf der Seite, wird aber nirgends geprüft`);
     }
   }
 

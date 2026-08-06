@@ -25,7 +25,7 @@ export function Counter({
 
      Sie stand hier fest auf Deutsch: "." gruppiert, "," trennt die
      Nachkommastelle, ausgegeben mit `toLocaleString("de-DE")`. Auf der
-     englischen Fassung las der Zähler „1,276" damit als eins Komma zwei sieben
+     englischen Fassung las der Zähler „1,276“ damit als eins Komma zwei sieben
      sechs. Sichtbar stimmte es trotzdem, weil eine deutsche Dezimalzahl mit
      drei Nachkommastellen zeichengleich mit einer englischen Tausendergruppe
      ist — richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
@@ -98,7 +98,7 @@ export function Counter({
       controls = animate(0, target, {
         duration: 1.4,
         ease: [0.16, 1, 0.3, 1],
-        /* Der Zusatz gehört mit: „100" ohne das Prozentzeichen ist eine andere
+        /* Der Zusatz gehört mit: „100“ ohne das Prozentzeichen ist eine andere
            Aussage, und er stand während der Animation eine Sekunde lang nicht
            da. */
         onUpdate: (latest) =>

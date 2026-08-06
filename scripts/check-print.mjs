@@ -195,7 +195,7 @@ async function messen() {
         // Unsichtbares kann nicht schlecht aussehen. Das betrifft die
         // ausgeblendete Kopfleiste am Seitenanfang ebenso wie den
         // Sprunglink, der nur bei Tastaturfokus aus seinem 1-Pixel-Kasten
-        // heraustritt — dessen Inhalt ragte sonst als „abgeschnitten" in den
+        // heraustritt — dessen Inhalt ragte sonst als „abgeschnitten“ in den
         // Bericht.
         const deckkraft = geerbteDeckkraft(el);
         if (deckkraft === 0) continue;
@@ -257,7 +257,7 @@ async function messen() {
           schwach.push({
             text: eigenerText.slice(0, 40),
             farbe: stil.color,
-            // Die Fläche gehört in die Meldung: „zu blass" ist ohne sie nicht
+            // Die Fläche gehört in die Meldung: „zu blass“ ist ohne sie nicht
             // nachvollziehbar, weil derselbe Farbwert auf Weiß trägt und auf
             // Grau nicht.
             flaeche: `rgb(${hinten.slice(0, 3).map(Math.round).join(", ")})`,
@@ -322,7 +322,7 @@ function textEinsammeln() {
     // Der erste Anlauf klonte den Körper und las `textContent`. Das war
     // wertlos, und der Gegentest hat es bewiesen: Mit entfernter
     // Sichtbarkeitsregel im Druck — also bei einer Seite, die als fast leeres
-    // Papier herauskommt — meldete die Prüfung weiter „alles vollständig".
+    // Papier herauskommt — meldete die Prüfung weiter „alles vollständig“.
     // `textContent` kennt kein CSS. Für den Baum ist unsichtbarer Text
     // vorhanden; für den Drucker ist er weg.
     //
@@ -386,7 +386,7 @@ for (const pfad of gepruefteSeiten) {
   // Frisch laden und sofort drucken, ohne eine Zeile gelesen zu haben — genau
   // das tut jemand, der die Seite weiterreichen will. Ohne das Neuladen wären
   // die Zähler vom ersten Durchgang längst am Endwert und die Prüfung bliebe
-  // grün, während der Ausdruck „0" zeigt.
+  // grün, während der Ausdruck „0“ zeigt.
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
   await seite.emulateMedia({ media: "print" });
 
@@ -483,28 +483,28 @@ for (const pfad of gepruefteSeiten) {
   }
   for (const s of abgeschnitten) {
     console.log(
-      `        abgeschnitten: <${s.marke} class="${s.klasse}"> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}"`,
+      `        abgeschnitten: <${s.marke} class="${s.klasse}"> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
     );
   }
   for (const s of ungeladen) {
     console.log(
-      `        Bild nicht geladen (loading="${s.laden}"), druckt als leerer Rahmen: „${s.alt}"`,
+      `        Bild nicht geladen (loading="${s.laden}"), druckt als leerer Rahmen: „${s.alt}“`,
     );
   }
   for (const s of toteKnoepfe) {
     console.log(
-      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}" (class="${s.klasse}") — `
+      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}") — `
         + `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
     );
   }
   for (const s of festgeheftet) {
     console.log(
-      `        festgeheftet: <${s.marke} class="${s.klasse}"> ${s.groesse} px — landet gedruckt über der ersten Seite: „${s.text}"`,
+      `        festgeheftet: <${s.marke} class="${s.klasse}"> ${s.groesse} px — landet gedruckt über der ersten Seite: „${s.text}“`,
     );
   }
   for (const s of schwach) {
     console.log(
-      `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — ${s.farbe} auf ${s.flaeche}: „${s.text}"`,
+      `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — ${s.farbe} auf ${s.flaeche}: „${s.text}“`,
     );
   }
 }

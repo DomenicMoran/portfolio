@@ -282,7 +282,7 @@ for (const ort of ORTE) {
       }
       kombinationen++;
 
-      /* „nicht berechnet" und ein „+1" hinter der Uhrzeit sind keine Fehler:
+      /* „nicht berechnet" und ein „+1“ hinter der Uhrzeit sind keine Fehler:
          Das eine ist die ehrliche Antwort für einen Ort ohne Dämmerung, das
          andere eine Zeit nach Mitternacht. Beide fallen aus dem Vergleich,
          weil sie keine Uhrzeit desselben Tages sind. */
@@ -430,8 +430,6 @@ console.log(
    Angabe auf der Seite anzufassen.
    ------------------------------------------------------------------------ */
 {
-  const { createRequire } = await import("node:module");
-  const verlangt = createRequire(import.meta.url);
   const notiz = readFileSync("src/content/de.ts", "utf8");
   const zeile = /adhan [^"]*schafiitisch/.exec(notiz)?.[0] ?? "";
 

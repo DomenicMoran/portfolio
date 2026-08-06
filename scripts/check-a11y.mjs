@@ -80,7 +80,7 @@ let geprueft = 0;
 
    axe prüft Kontrast, aber es gibt genau dort auf, wo dieses Layout arbeitet:
    Bei halbdurchsichtigen Flächen wie `bg-surface/50` kann es den Untergrund
-   nicht bestimmen und meldet „unvollständig" statt „Verstoß". Der Lauf blieb
+   nicht bestimmen und meldet „unvollständig“ statt „Verstoß". Der Lauf blieb
    dadurch grün, während in der Gebetszeiten-Kachel eine Zahl in der Farbe des
    Hintergrunds stand: `text-base` ist in diesem Farbsystem nicht nur eine
    Schriftgröße, sondern auch die Farbe `--color-base`, und in der Reihenfolge
@@ -176,7 +176,7 @@ async function unsichtbarPruefen(seite, pfad) {
 
   for (const f of funde) {
     unsichtbar.push(
-      `${pfad}: „${f.text}" steht in ${f.farbe} auf ${f.grund} — ` +
+      `${pfad}: „${f.text}“ steht in ${f.farbe} auf ${f.grund} — ` +
         `${f.wert}:1 (class="${f.klasse}")`,
     );
   }
@@ -513,7 +513,7 @@ const zielfunde = [];
         )
           .trim()
           .slice(0, 30);
-        raus.push(`„${name}" ${Math.round(r.width)}×${Math.round(r.height)} px`);
+        raus.push(`„${name}“ ${Math.round(r.width)}×${Math.round(r.height)} px`);
       }
       return [...new Set(raus)];
     }, ZIELGROESSE);
@@ -617,7 +617,7 @@ if (uhrfunde.length > 0) {
    Die Beschriftungen der Architekturbilder müssen lesbar bleiben.
 
    Sie stehen in einem SVG mit `viewBox`, rechnen also in eigenen Einheiten:
-   Was dort „10" heißt, wird auf dem Bildschirm zu 10 mal dem Faktor, mit dem
+   Was dort „10“ heißt, wird auf dem Bildschirm zu 10 mal dem Faktor, mit dem
    das Bild skaliert. Der Faktor hängt an der Breite des Kastens, und der
    ändert sich mit dem Fenster — eine Schriftgröße, die am Desktop stimmt,
    kann auf einem Telefon unter jede Lesbarkeit fallen, ohne dass im Quelltext
@@ -796,7 +796,7 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
    heran, wenn der Bereich den Fokus annehmen kann — sonst fehlt ihm die
    Hälfte des Belegs, um den es im Artikel geht.
 
-   Und er braucht einen Namen. Ein Vorleseprogramm sagt sonst „Region" und
+   Und er braucht einen Namen. Ein Vorleseprogramm sagt sonst „Region“ und
    lässt offen, was darin steht; mit Namen sagt es „food-orders/route.ts: Kein
    Abschluss ohne Signatur". axe prüft die Fokussierbarkeit solcher Bereiche
    (`scrollable-region-focusable`), den Namen nicht.

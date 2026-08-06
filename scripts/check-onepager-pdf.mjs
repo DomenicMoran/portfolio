@@ -132,8 +132,8 @@ for (const pfad of BLAETTER) {
       funde.push(`${pfad}: kein Verweis auf die eigene Seite.`);
     } else {
       /* Das deutsche Blatt zeigt auf die Startseite, das englische auf /en.
-         Geprüft wird der Pfad, nicht die Zeichenkette: „…de/en" enthält
-         „…de/" als Teil. */
+         Geprüft wird der Pfad, nicht die Zeichenkette: „…de/en“ enthält
+         „…de/“ als Teil. */
       const falsch = eigene.filter((z) => {
         const pfadTeil = new URL(z).pathname.replace(/\/$/, "");
         return englisch ? pfadTeil !== "/en" : pfadTeil !== "";
@@ -204,7 +204,7 @@ const KERNANGABEN = [
  * dem PDF.
  *
  * Eine Schrift bettet nur ein, was gebraucht wird: Auf dem englischen Blatt
- * kommt kein „ß" vor, also fehlt es dort zu Recht. Ein fester Katalog meldet
+ * kommt kein „ß“ vor, also fehlt es dort zu Recht. Ein fester Katalog meldet
  * genau solche Zeichen als Lücke, die keine ist. Die Quelle ist deshalb das
  * ausgelieferte HTML desselben Blattes.
  */

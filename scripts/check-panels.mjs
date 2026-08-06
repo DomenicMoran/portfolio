@@ -149,7 +149,7 @@ for (const pfad of SEITEN) {
         continue;
       }
       if (stand.laenge < MINDESTTEXT) {
-        funde.push(`${wo}: nur ${stand.laenge} Zeichen — „${stand.text.slice(0, 30)}"`);
+        funde.push(`${wo}: nur ${stand.laenge} Zeichen — „${stand.text.slice(0, 30)}“`);
       }
       // Wo ein Diagramm steht, muss es beschriftet sein.
       if (/architek|architec/i.test(beschriftung)) {
@@ -181,7 +181,7 @@ for (const pfad of SEITEN) {
    Eine Bildstrecke muss man durchklicken, und genau deshalb sah sie kein Lauf:
    `check:links` prüft Adressen, `check:a11y` den Barrierefreiheitsbaum, dieser
    hier die Reiter. Gefunden wurde der Fehler beim Bedienen — der Zähler blieb
-   bei „7 von 8", weil das letzte Bild am rechten Anschlag nie einrastet, und
+   bei „7 von 8“, weil das letzte Bild am rechten Anschlag nie einrastet, und
    der Weiter-Knopf blieb dabei aktiv, ohne noch etwas zu bewirken.
 
    Geprüft wird auf beiden Breiten, denn sie verhalten sich verschieden: Bei
@@ -237,7 +237,7 @@ for (const breite of [390, 1440]) {
       );
     } else if (!(await weiter.isDisabled())) {
       funde.push(
-        `${kennung} bei ${breite} px: am letzten Bild bleibt „Nächstes Bild" ` +
+        `${kennung} bei ${breite} px: am letzten Bild bleibt „Nächstes Bild“ ` +
           `anklickbar und bewirkt nichts.`,
       );
     } else {

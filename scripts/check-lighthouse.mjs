@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Hält die Zahl „Lighthouse 100" auf der Seite gegen einen Lighthouse-Lauf.
+ * Hält die Zahl „Lighthouse 100“ auf der Seite gegen einen Lighthouse-Lauf.
  *
  * Unter den quelloffenen Paketen steht dieses Portfolio selbst, und daneben
  * die Angabe „TypeScript · Lighthouse 100 Barrierefreiheit". Das ist die

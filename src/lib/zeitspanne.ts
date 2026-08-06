@@ -16,12 +16,12 @@
 /**
  * Volle Monate zwischen zwei Tagen, mindestens einer.
  *
- * „Voll" heißt: Der 26. März zählt erst am 26. April als ein Monat, nicht
+ * „Voll“ heißt: Der 26. März zählt erst am 26. April als ein Monat, nicht
  * schon am 1. April. Ohne diese Bedingung sagt die Seite am Monatsersten
  * einen Monat mehr, als vergangen ist.
  *
  * Die Untergrenze von eins ist Absicht: Am ersten Tag steht dort „einem
- * Monat" statt „null Monaten". Eine Spanne von null Monaten wäre richtig
+ * Monat" statt „null Monaten“. Eine Spanne von null Monaten wäre richtig
  * gerechnet und trotzdem falsch geschrieben.
  */
 export function monateZwischen(start: Date, stand: Date): number {
@@ -69,7 +69,7 @@ const WOERTER_NOMINATIV = [
 /**
  * Kleine Zahlen als Wort, wie es im Fließtext üblich ist.
  *
- * Zwei Listen, weil der Fall unterschiedlich ist: „in **einem** Monat"
+ * Zwei Listen, weil der Fall unterschiedlich ist: „in **einem** Monat“
  * gegenüber „**ein** Monat ausgeliefert". Ab dreizehn steht die Ziffer da —
  * ausgeschriebene Zahlwörter werden dann länger als die Aussage.
  */

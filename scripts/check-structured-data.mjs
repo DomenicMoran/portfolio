@@ -129,7 +129,7 @@ for (const pfad of SEITEN) {
     const { jobTitle, email, image, sameAs, subjectOf } = stand.person;
 
     if (jobTitle && !stand.sichtbar.includes(jobTitle)) {
-      funde.push(`${pfad}: jobTitle „${jobTitle}" steht nirgends sichtbar auf der Seite`);
+      funde.push(`${pfad}: jobTitle „${jobTitle}“ steht nirgends sichtbar auf der Seite`);
     }
     const adresse = (email ?? "").replace(/^mailto:/, "");
     if (adresse && !stand.sichtbar.includes(adresse)) {
@@ -170,7 +170,7 @@ for (const pfad of SEITEN) {
     angaben++;
     if (stand.artikel.inLanguage !== stand.htmlLang) {
       funde.push(
-        `${pfad}: inLanguage ist „${stand.artikel.inLanguage}", das Dokument ist „${stand.htmlLang}"`,
+        `${pfad}: inLanguage ist „${stand.artikel.inLanguage}", das Dokument ist „${stand.htmlLang}“`,
       );
     }
   }

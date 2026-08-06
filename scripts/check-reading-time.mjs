@@ -183,7 +183,7 @@ for (const { sprache, datei } of bereiche) {
     zeitfunde.push(`${datei}: ${woerter} Wörter sind ${minuten} Minuten, dafür fehlt das Zahlwort`);
   } else if (!titel.includes(erwartet)) {
     zeitfunde.push(
-      `${datei}: „${titel}" bei ${woerter} Wörtern — gerechnet sind das ${erwartet}`,
+      `${datei}: „${titel}“ bei ${woerter} Wörtern — gerechnet sind das ${erwartet}`,
     );
   }
 }

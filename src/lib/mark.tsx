@@ -16,7 +16,7 @@
  * 64 px als Datei, 180 px auf dem Startbildschirm. Vier Fugenbreiten
  * nebeneinander gestellt; bei 3 Einheiten auf dem 64er-Raster bleibt die Fuge
  * bei 64 px sichtbar, und der Bogen ist bei 16 px noch dick genug, dass das
- * Zeichen ein D bleibt und kein „I)".
+ * Zeichen ein D bleibt und kein „I)“.
  *
  * Als Pfad und nicht als Schriftzeichen, weil eine Schriftart auf einem
  * anderen Rechner fehlen kann und ein Pfad überall derselbe ist.

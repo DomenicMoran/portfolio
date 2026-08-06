@@ -2,7 +2,7 @@
 /**
  * Prüft, dass kein Trennzeichen allein am Zeilenende steht.
  *
- * Kopfzeilen wie „31. Juli 2026 · 5 Min. Lesezeit · Salati" bestehen aus
+ * Kopfzeilen wie „31. Juli 2026 · 5 Min. Lesezeit · Salati“ bestehen aus
  * gleichrangigen Kästchen in einem umbrechenden Flexkasten. Wird es eng,
  * bricht die Zeile an irgendeiner Fuge — und die Fuge kann hinter dem Punkt
  * liegen. Dann steht am Ende der ersten Zeile ein Mittelpunkt, der nichts
@@ -187,7 +187,7 @@ for (const pfad of pfade) {
       fehler += funde.length;
       console.log(`  FEHLER ${pfad} bei ${breite} px`);
       for (const f of funde) {
-        console.log(`        „${f.zeichen}" am Zeilenende in: ${f.umgebung}`);
+        console.log(`        „${f.zeichen}“ am Zeilenende in: ${f.umgebung}`);
       }
     }
   }

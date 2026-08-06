@@ -53,7 +53,7 @@ const adressen = ["/", "/en", "/diese-adresse-gibt-es-nicht", "/robots.txt"];
    Eine Fehlerseite, die mit 200 ausgeliefert wird, ist der Fehler, den man
    nicht sieht: Im Browser steht dieselbe Seite, und ein Mensch merkt nichts.
    Eine Suchmaschine merkt es sofort und nimmt jede erfundene Adresse als
-   gültige Seite in den Index — mit dem Titel „Diese Seite gibt es nicht".
+   gültige Seite in den Index — mit dem Titel „Diese Seite gibt es nicht“.
    Die 404 ist hier ausserdem die einzige Route, die bei der Anfrage entsteht,
    also die einzige, deren Status überhaupt von Code abhängt. */
 const ERWARTETER_STATUS = {

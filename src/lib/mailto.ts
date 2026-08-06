@@ -19,7 +19,7 @@
  *
  * Kodiert wird der Betreff vollständig. `encodeURIComponent` lässt genau die
  * Zeichen stehen, die in einer Abfrage stehen dürfen; Umlaute, Leerzeichen und
- * kaufmännische Und werden zu Prozentfolgen. Ohne das bricht ein „&" im
+ * kaufmännische Und werden zu Prozentfolgen. Ohne das bricht ein „&“ im
  * Betreff die Adresse auseinander, und alles dahinter landet als eigenes Feld.
  */
 export function mailAdresse(email: string, betreff?: string): string {

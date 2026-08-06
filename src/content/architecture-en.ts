@@ -3,8 +3,8 @@
  *
  * Die Diagramme lagen mit ihrer Geometrie und ihren Texten in einem Bauteil,
  * und es gab sie nur einmal. Gemessen an der ausgelieferten Seite standen auf
- * `/en` deshalb deutsche Beschriftungen: „GETEILTE LOGIK", „ON-DEVICE-KI",
- * „DELIVERY & DATEN", „ZUGÄNGE", „DATEN & GELD", „QR-Bestellung". Also
+ * `/en` deshalb deutsche Beschriftungen: „GETEILTE LOGIK“, „ON-DEVICE-KI“,
+ * „DELIVERY & DATEN“, „ZUGÄNGE“, „DATEN & GELD“, „QR-Bestellung“. Also
  * ausgerechnet in dem Bild, das eine fachliche Führung als Erstes aufmacht.
  *
  * Aufgefallen ist es keinem Lauf: `check-parity` zählt Elemente, nicht Wörter,
@@ -14,7 +14,7 @@
  * Übersetzt wird über diese Zuordnung statt über eine zweite Datei mit
  * denselben Koordinaten. Die Geometrie ist in beiden Sprachen dieselbe; nur
  * die Wörter unterscheiden sich, und die stehen hier. Eigennamen fehlen
- * bewusst: „Supabase", „Stripe Connect", „whisper.rn" oder „packages/core"
+ * bewusst: „Supabase“, „Stripe Connect", „whisper.rn" oder „packages/core"
  * heißen in beiden Sprachen gleich, und ein Eintrag, der nichts ändert, wäre
  * eine Zeile, die jemand später pflegt, ohne dass sie etwas tut.
  *

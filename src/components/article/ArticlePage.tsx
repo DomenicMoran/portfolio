@@ -79,7 +79,7 @@ export function ArticlePage({
        Sie steht sichtbar über jedem Artikel, und `check:reading` hält sie
        gegen den Wortbestand — in den strukturierten Daten fehlte sie, obwohl
        Such- und Antwortmaschinen genau danach filtern. ISO-8601-Dauer, also
-       „PT8M" für acht Minuten; kein zweiter Wert, sondern derselbe. */
+       „PT8M“ für acht Minuten; kein zweiter Wert, sondern derselbe. */
     timeRequired: `PT${article.minutes}M`,
     keywords: article.tags.join(", "),
     author: {
@@ -242,7 +242,7 @@ export function ArticlePage({
 
                 `aria-label` und nicht `aria-labelledby`: Die Überschrift trägt
                 `text-transform: uppercase`, und der Name folgt dem gerenderten
-                Text — dann käme „BELEGE" heraus, und manche Vorleseprogramme
+                Text — dann käme „BELEGE“ heraus, und manche Vorleseprogramme
                 buchstabieren Großbuchstaben. Dieselbe Entscheidung wie bei der
                 Artikelnavigation darunter. */}
             <section

@@ -20,7 +20,7 @@
  * Seite lagen fünf Läufe zwischen 1.884 und 1.900 ms — die Streuung ist
  * gering, solange man den ersten nicht mitzählt.
  *
- * Die Budgets stehen unten und sind die üblichen Schwellen für „gut":
+ * Die Budgets stehen unten und sind die üblichen Schwellen für „gut“:
  * LCP unter 2,5 s, CLS unter 0,1. Sie sind bewusst nicht enger gesetzt als
  * die Norm, damit der Lauf eine Aussage über die Seite trifft und keine über
  * den Ehrgeiz dessen, der ihn geschrieben hat.
@@ -32,7 +32,7 @@
 import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
 
-/** Die Schwellen, ab denen ein Wert nicht mehr „gut" heißt. */
+/** Die Schwellen, ab denen ein Wert nicht mehr „gut“ heißt. */
 const BUDGET = { lcp: 2500, cls: 0.1, inp: 200 };
 
 /**

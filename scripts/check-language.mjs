@@ -233,13 +233,13 @@ for (const [pfad, daten] of stand) {
     if (englisch && daten.deutsch.length > 0) {
       funde.push(
         `${pfad}: deutscher Text ohne lang="de" — ` +
-          daten.deutsch.map((t) => `„${t}"`).join(", "),
+          daten.deutsch.map((t) => `„${t}“`).join(", "),
       );
     }
     if (!englisch && daten.englischerText.length > 0) {
       funde.push(
         `${pfad}: englischer Text ohne lang="en" — ` +
-          daten.englischerText.map((t) => `„${t}"`).join(", "),
+          daten.englischerText.map((t) => `„${t}“`).join(", "),
       );
     }
     continue;
@@ -305,7 +305,7 @@ for (const [pfad, daten] of stand) {
   if (englisch && daten.deutsch.length > 0) {
     funde.push(
       `${pfad}: deutscher Text ohne lang="de" — ` +
-        daten.deutsch.map((t) => `„${t}"`).join(", "),
+        daten.deutsch.map((t) => `„${t}“`).join(", "),
     );
   }
 

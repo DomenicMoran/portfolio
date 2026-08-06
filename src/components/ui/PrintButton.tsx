@@ -50,7 +50,7 @@ export function PrintButton({
           {/* Der Hinweis erklärt den Druckknopf, also die zweite von zwei
               Möglichkeiten. Auf schmalen Geräten steht er nicht: Gemessen bei
               390 px brach die Leiste auf zwei Zeilen um und der Satz endete
-              als „im Druckdialog „Als…" — ein abgeschnittener Satz sieht aus
+              als „im Druckdialog „Als…“ — ein abgeschnittener Satz sieht aus
               wie ein Fehler, und die fertige Datei daneben braucht keine
               Erklärung. */}
           <span

@@ -3,7 +3,7 @@ import Link from "next/link";
 /**
  * Ein Satz für den, der aus der englischen Fassung hierherkommt.
  *
- * Die Fußzeile auf /en verlinkt diese Seiten als „Legal notice" und „Privacy" —
+ * Die Fußzeile auf /en verlinkt diese Seiten als „Legal notice“ und „Privacy" —
  * richtig so, § 5 DDG verlangt, dass sie von jeder Seite aus unmittelbar
  * erreichbar sind. Wer dann aber auf einer deutschen Seite landet, sieht ohne
  * Erklärung eine Lücke statt einer Entscheidung.

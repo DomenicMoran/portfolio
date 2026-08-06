@@ -11,7 +11,7 @@
  * Von Hand gepflegt heißt aber auch: Es kann stehen bleiben, während der Text
  * weiterwandert. Deshalb steht die Prüfsumme daneben. `check:legal` liest den
  * ausgelieferten Text, rechnet sie neu und scheitert, wenn beide nicht mehr
- * zusammenpassen — der Abschnitt „Stand" selbst bleibt dabei außen vor, sonst
+ * zusammenpassen — der Abschnitt „Stand“ selbst bleibt dabei außen vor, sonst
  * änderte jedes neue Datum die Prüfsumme und der Lauf wäre eine Schleife.
  *
  * Wer den Text ändert, ändert beide Zeilen mit. Der Lauf sagt, welche
@@ -19,5 +19,5 @@
  */
 export const STAND = "5. August 2026";
 
-/** sha256 über den sichtbaren Text von `/datenschutz`, ohne den Abschnitt „Stand". */
+/** sha256 über den sichtbaren Text von `/datenschutz`, ohne den Abschnitt „Stand“. */
 export const TEXT_PRUEFSUMME = "8c88240a18a9362d";

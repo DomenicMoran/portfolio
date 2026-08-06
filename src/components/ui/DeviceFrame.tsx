@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  *
  * Der Rahmen leistet etwas: Eine nackte Aufnahme einer Website, auf eine andere
  * Website geklebt, wirkt wie ein verirrtes Bild. Dieselbe Aufnahme in einer
- * Adressleiste liest sich sofort als „das läuft". Der Rahmen ist reines CSS,
+ * Adressleiste liest sich sofort als „das läuft“. Der Rahmen ist reines CSS,
  * außer der Aufnahme selbst kommt keine Bilddatei dazu.
  */
 
