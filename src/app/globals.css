@@ -722,6 +722,26 @@ textarea:-webkit-autofill {
     overflow-wrap: anywhere;
   }
 
+  /* Dasselbe für das Architekturdiagramm, das an derselben Kante verlor.
+     Gemessen am 06.08.2026 bei 794 px Papierbreite mit dem Reiter
+     „Architektur“ vorn: Das Bild ist 1.150 px breit, der Kasten 736 — 414 px
+     und damit gut ein Drittel fehlten auf dem Papier, wieder ohne Lücke und
+     ohne Hinweis.
+
+     Die Mindestbreite ist am Bildschirm richtig: Sie hält die kleinste
+     Beschriftung bei 12,5 px, statt sie auf einem Telefon auf 7,8 px
+     schrumpfen zu lassen. Auf Papier gilt das Argument nicht — dort löst der
+     Druck viel feiner auf als ein Bildschirm, und ein SVG verliert beim
+     Verkleinern nichts. Ohne Mindestbreite passt das Bild vollständig auf die
+     Spalte; die kleinste Beschriftung misst dann 8 px, gedruckt etwa 6 pt. */
+  .scroll-hint {
+    overflow: visible !important;
+  }
+
+  .scroll-hint svg {
+    min-width: 0 !important;
+  }
+
   .no-print {
     display: none !important;
   }

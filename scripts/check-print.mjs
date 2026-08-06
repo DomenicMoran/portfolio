@@ -510,6 +510,87 @@ for (const pfad of gepruefteSeiten) {
 }
 
 /* ---------------------------------------------------------------------------
+   Was hinter den Reitern liegt, druckt auch
+
+   Der Lauf oben misst jede Seite in ihrem Auslieferungszustand. Bei den
+   Fallstudien heißt das: Von drei bis vier Tafeln je Projekt sieht er genau
+   eine, nämlich „Was drinsteckt“. Die übrigen entstehen erst, wenn jemand den
+   Reiter anfasst — und wer das getan hat, druckt genau die.
+
+   Gefunden am 06.08.2026 hinter „Architektur“: Das Diagramm ist 1.150 px
+   breit, die Papierspalte 736. Über ein Drittel fehlte im Ausdruck, ohne
+   Lücke und ohne Hinweis, also derselbe Fehler wie beim Codeblock im Artikel
+   — nur an einer Stelle, an die der Lauf nie kam.
+
+   Gemessen wird nur auf den beiden Startseiten: Nur dort stehen Reiter. Für
+   jede Tafel dieselbe Messung wie oben, mit dem Reiternamen in der Meldung.
+   --------------------------------------------------------------------- */
+const reiterfunde = [];
+for (const pfad of ["/", "/en"]) {
+  await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  await seite.evaluate(async () => {
+    const hoehe = document.documentElement.scrollHeight;
+    for (let y = 0; y < hoehe; y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+  });
+
+  const gruppen = await seite.evaluate(() =>
+    [...document.querySelectorAll('[role="tablist"]')].map((tl) => ({
+      name: tl.getAttribute("aria-label"),
+      reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) => t.textContent.trim()),
+    })),
+  );
+
+  for (const gruppe of gruppen) {
+    // Der erste Reiter ist der Auslieferungszustand und oben schon gemessen.
+    for (const reiter of gruppe.reiter.slice(1)) {
+      await seite.emulateMedia({ media: "screen" });
+      await seite
+        .locator(`[role="tablist"][aria-label="${gruppe.name}"]`)
+        .getByRole("tab", { name: reiter, exact: true })
+        .click();
+      /* Kurz warten, bevor gedruckt wird: Die Tafel blendet um, und in der
+         Gegenprobe stand deshalb der Name des nächsten Reiters an einem Fund
+         der vorigen Tafel. Der Fund war richtig, die Zuordnung nicht. */
+      await seite.waitForTimeout(400);
+      await seite.emulateMedia({ media: "print" });
+      await seite.evaluate(() => {
+        for (const bewegung of document.getAnimations()) {
+          try {
+            bewegung.finish();
+          } catch {
+            // Endlos, also ohne Endwert.
+          }
+        }
+      });
+      await seite.waitForTimeout(50);
+      const { schwach, abgeschnitten } = await messen();
+      for (const s of abgeschnitten) {
+        reiterfunde.push(
+          `${pfad} · ${gruppe.name} · ${reiter}: <${s.marke}> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
+        );
+      }
+      for (const s of schwach) {
+        reiterfunde.push(
+          `${pfad} · ${gruppe.name} · ${reiter}: Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — „${s.text}“`,
+        );
+      }
+    }
+  }
+  await seite.emulateMedia({ media: "screen" });
+}
+
+if (reiterfunde.length > 0) {
+  fehler += reiterfunde.length;
+  console.log(`  FEHLER hinter den Reitern (${reiterfunde.length}):`);
+  for (const f of reiterfunde) console.log(`        ${f}`);
+} else {
+  console.log("  ok  jede Tafel hinter einem Reiter druckt vollständig");
+}
+
+/* ---------------------------------------------------------------------------
    Das Kurzprofil passt noch auf ein Blatt
 
    `check:onepager` merkt eine zweite Seite erst am fertigen PDF, und das
