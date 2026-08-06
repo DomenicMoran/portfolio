@@ -10,6 +10,7 @@ export const otaEn: Article = {
   evidence: [
     "Salati repository, commit 71bd8d2b, 30 July 2026",
     "The check that exposed it: update list of both EAS projects, production channel, zero entries",
+    "apps/mobile/app.config.ts (one constant for version and runtimeVersion)",
     "Regression test: apps/mobile/src/__tests__/versionen-gleichlauf.test.ts",
     "After the fix: first update ever published, runtime 1.41.0, Android and iOS",
     {

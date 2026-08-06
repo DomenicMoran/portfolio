@@ -58,7 +58,7 @@ export const whisperDe: Article = {
       kind: "code",
       lang: "ts",
       caption: "whisperCheck.ts: Der erwartete Vers geht als Vorkontext mit.",
-      code: `const { promise } = ctx.transcribeData(pcm, {
+      code: `const handle = whisperContext.transcribe(path, {
   language: 'ar',
   ...(expectedText ? { prompt: expectedText } : {}),
 });`,

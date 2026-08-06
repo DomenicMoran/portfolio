@@ -1398,6 +1398,54 @@ const BRAUCHT_KIND = {
         funde.push(`${datei}: ${pfad} Zeile ${nummer} ist leer`);
       }
     }
+
+    /*
+      Die Codeblöcke selbst.
+
+      Die Zeilennummer oben zu prüfen reicht nicht. Gefunden am 06.08.2026 im
+      Whisper-Artikel: Die zitierte Zeile stimmte auf den Punkt, der gezeigte
+      Block darüber nicht mehr. Dort stand `const { promise } =
+      ctx.transcribeData(pcm, …)`, im Repo längst `const handle =
+      whisperContext.transcribe(path, …)`. Wer die Stelle aufschlägt, findet
+      andere Bezeichner als im Artikel — auf einer Seite, deren Argument die
+      Nachprüfbarkeit ist.
+
+      Geprüft wird ein Anker und nicht der ganze Block: Mindestens eine Zeile
+      von achtzehn Zeichen oder mehr muss in einer der Dateien stehen, die
+      derselbe Artikel als Beleg nennt. Kommentare zählen nicht, sie sind im
+      Artikel übersetzt. Verglichen wird über normalisierten Leerraum, denn
+      ein Block wird für die schmale Spalte umbrochen.
+
+      Ein Block ohne jede gemeinsame Zeile ist entweder veraltet oder zeigt
+      Code, den kein genannter Beleg enthält. Beides gehört gemeldet.
+    */
+    const normal = (s) => s.replace(/\s+/g, " ").trim();
+    const belegte = [];
+    for (const pfad of pfade) {
+      const voll = join(repo, pfad);
+      if (existsSync(voll)) {
+        belegte.push([pfad, normal(readFileSync(voll, "utf8"))]);
+      }
+    }
+    if (belegte.length > 0) {
+      for (const block of inhalt.matchAll(/code:\s*`([\s\S]*?)`/g)) {
+        const kandidaten = block[1]
+          .split("\n")
+          .map((z) => z.trim())
+          .filter((z) => z.length >= 18 && !/^(\/\/|--|#|\*)/.test(z));
+        if (kandidaten.length === 0) continue;
+        geprueft++;
+        const verankert = kandidaten.some((z) =>
+          belegte.some(([, text]) => text.includes(normal(z))),
+        );
+        if (!verankert) {
+          funde.push(
+            `${datei}: Codeblock ohne Entsprechung in den genannten Belegen — ` +
+              `„${kandidaten[0].slice(0, 50)}“`,
+          );
+        }
+      }
+    }
   }
 
   if (funde.length) {

@@ -49,7 +49,7 @@ export const whisperEn: Article = {
       lang: "ts",
       caption:
         "whisperCheck.ts: the expected verse rides along as prior context.",
-      code: `const { promise } = ctx.transcribeData(pcm, {
+      code: `const handle = whisperContext.transcribe(path, {
   language: 'ar',
   ...(expectedText ? { prompt: expectedText } : {}),
 });`,
