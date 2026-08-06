@@ -77,7 +77,30 @@ const SEITEN = [
    `"swap"` ändert den Wert um kein Tausendstel — gemessen in der CI, mit
    demselben 0,1626. Was den Block verschiebt, ist damit offen, und ein
    Budget, das dauerhaft reißt, macht den Lauf zu einem Rot, das niemand mehr
-   liest. Die Seite kommt zurück, sobald die Ursache steht. */
+   liest. Die Seite kommt zurück, sobald die Ursache steht.
+
+   Nachtrag: Sie steht.
+
+   Gemessen an der ausgelieferten Seite unter denselben Bedingungen liefert
+   die Fehlerseite dreimal hintereinander 0,0406, und die Verschiebung hat
+   genau eine nennenswerte Quelle: `div.mx-auto.w-full.max-w-2xl` wächst bei
+   1.639 ms von 575 auf 606 Pixel Höhe und rutscht dabei 15 Pixel nach oben.
+   Der Block ist senkrecht zentriert, also verteilt sich die Höhenzunahme auf
+   beide Seiten — daher die zweite, kleinere Quelle am Fußzeilen-Verweis.
+
+   Es ist nicht die Hydration: Mit und ohne JavaScript misst der Block
+   dieselben 599 px, dieselben sechs Kinder, dieselben 392 Zeichen. Es ist die
+   Schrift. Die Fehlerseite liefert null Vorlade-Verweise für ihre Schriften
+   aus, jede andere Seite zwei — `global-not-found` bringt sein eigenes
+   Dokument mit, und der Mechanismus von `next/font` greift dort nicht. Die
+   Schrift kommt deshalb erst nach dem ersten Bild, und der Text wird beim
+   Tausch um eine Zeile höher.
+
+   Behoben ist es damit nicht, und zwar mit Absicht: Der offensichtliche Griff
+   wäre ein Vorlade-Verweis, und genau der hat auf dieser Seite schon einmal
+   Schaden angerichtet — 68 KiB Schriften ließen 13 KiB CSS 1.378 ms warten,
+   LCP 3.304 statt 1.472 ms. Wer das angeht, misst LCP und CLS zusammen, nicht
+   nacheinander. Der Wert liegt im Budget, die Ursache ist benannt. */
 
 const LAEUFE = 3;
 /** So lange wartet jeder Lauf auf Nachzügler, bevor er die Werte abholt. */
