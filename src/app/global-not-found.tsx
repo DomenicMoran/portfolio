@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { schriftKlassen } from "@/lib/schriften";
+import { schriftKlassen } from "@/lib/web-fonts";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * kann, in welchem es rendern soll.
  *
  * Keine Bewegungs-Provider: Wer hier landet, hat sich verlaufen und soll
- * schnell weiterkommen. Die Schriften kommen aus `@/lib/schriften` — eine
+ * schnell weiterkommen. Die Schriften kommen aus `@/lib/web-fonts` — eine
  * eigene Deklaration erzeugte einen zweiten Satz Dateien, den der Browser
  * zusätzlich lud, auf jeder Seite.
  *

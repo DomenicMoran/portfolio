@@ -255,7 +255,7 @@ Seite: `check:a11y`, `check:cards`, `check:demo`, `check:focus`,
 `check:vitals`. Sie sind der eigentliche Beweis.
 
 Was sie **nicht** greifen, ist reine Rechenlogik ohne sichtbare Ausgabe:
-`src/lib/zeitspanne.ts` entscheidet, ob dort „vier Monate“ oder „fünf Monate“
+`src/lib/duration.ts` entscheidet, ob dort „vier Monate“ oder „fünf Monate“
 steht, und ein Fehler um eins sieht auf der Seite völlig normal aus. Solche
 Funktionen gehören in `src/lib/` mit einer `.test.ts` daneben.
 

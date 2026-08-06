@@ -1,6 +1,6 @@
 "use client";
 
-import { schriftKlassen } from "@/lib/schriften";
+import { schriftKlassen } from "@/lib/web-fonts";
 import { Marke } from "@/lib/mark";
 import { mailAdresse } from "@/lib/mailto";
 import { de } from "@/content/de";

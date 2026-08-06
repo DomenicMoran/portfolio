@@ -4,7 +4,7 @@ import {
   grossErstes,
   jahreZwischen,
   monateZwischen,
-} from "@/lib/zeitspanne";
+} from "@/lib/duration";
 import type { Content } from "./types";
 
 /**

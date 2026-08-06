@@ -1,5 +1,5 @@
 import { MotionProvider } from "@/components/providers/MotionProvider";
-import { schriftKlassen } from "@/lib/schriften";
+import { schriftKlassen } from "@/lib/web-fonts";
 
 /**
  * Das Dokument-Gerüst, geteilt von beiden Wurzel-Layouts.

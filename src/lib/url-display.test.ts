@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alsAnzeige } from "./adresse";
+import { alsAnzeige } from "./url-display";
 
 /**
  * Diese Funktion setzt Text auf ein Blatt, das weitergereicht wird.
