@@ -1209,6 +1209,40 @@ const BRAUCHT_KIND = {
           `${adresse} steht in der Sitemap und trägt zugleich "${treffer[1]}"`,
         );
       }
+
+      /* Und das `canonical` der Seite ist genau die Adresse, unter der sie in
+         der Sitemap steht.
+
+         Zwei Schreibweisen derselben Adresse sind für eine Suchmaschine zwei
+         Adressen. Gefunden am 06.08.2026 in der anderen Richtung: Die
+         Sitemap nannte die deutsche Startseite als `<loc>` ohne
+         Schrägstrich und im hreflang-Verweis auf sich selbst mit. */
+      const kanonisch = html.match(
+        /<link rel="canonical" href="([^"]+)"/,
+      )?.[1];
+      if (kanonisch && kanonisch !== adresse) {
+        funde.push(
+          `${adresse} steht in der Sitemap, die Seite nennt als canonical ${kanonisch}`,
+        );
+      }
+    }
+
+    /* Jede Sprachvariante der Sitemap kommt selbst als Adresse darin vor.
+
+       Ein hreflang-Verweis, der auf eine Schreibweise zeigt, die nirgends
+       sonst steht, lässt eine Suchmaschine die ganze Gruppe verwerfen. Für
+       die deutsche Startseite war genau das der Fall: `<loc>` ohne
+       Schrägstrich, `hreflang="de"` mit. */
+    const bekannt = new Set(adressen);
+    for (const stelle of xml.matchAll(
+      /<xhtml:link[^>]*hreflang="([^"]+)"[^>]*href="([^"]+)"/g,
+    )) {
+      const [, sprache, ziel] = stelle;
+      if (!bekannt.has(ziel)) {
+        funde.push(
+          `hreflang="${sprache}" zeigt auf ${ziel}, das so in keinem <loc> steht`,
+        );
+      }
     }
 
     if (funde.length) {

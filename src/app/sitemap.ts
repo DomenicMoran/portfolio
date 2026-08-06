@@ -36,6 +36,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
   const basis = site.url.replace(/\/$/, "");
 
+  /* Die Sprachvarianten schreiben dieselbe Adresse wie `url` und wie das
+     `canonical` der Seite.
+
+     Für die deutsche Startseite stand hier `"/"`, also
+     `https://domenicmoran.de/` mit Schrägstrich — während `<loc>` und das
+     `canonical` im Dokument `https://domenicmoran.de` ohne schreiben. Ein
+     hreflang-Verweis auf sich selbst, der nicht auf das Zeichen mit dem
+     Kanonischen übereinstimmt, lässt eine Suchmaschine die ganze Gruppe
+     verwerfen. Gemessen an der ausgelieferten Sitemap betraf das beide
+     Startseiten-Einträge. */
   const paar = (de: string, en: string) => ({
     languages: { de: `${basis}${de}`, en: `${basis}${en}` },
   });
@@ -46,14 +56,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: stempel,
       changeFrequency: "monthly",
       priority: 1,
-      alternates: paar("/", "/en"),
+      alternates: paar("", "/en"),
     },
     {
       url: `${basis}/en`,
       lastModified: stempel,
       changeFrequency: "monthly",
       priority: 0.9,
-      alternates: paar("/", "/en"),
+      alternates: paar("", "/en"),
     },
     {
       url: `${basis}/artikel`,
