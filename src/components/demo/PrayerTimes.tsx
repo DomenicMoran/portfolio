@@ -336,46 +336,57 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
              Seite über alle 365 Tage: 21 solcher Fälle in Tromsø, keiner in
              Berlin, Istanbul oder Kairo.
 
-             Welcher der beiden Werte weicht, ist keine Geschmacksfrage.
-             Sonnenaufgang, Dhuhr und Maghrib sind reine Sonnenstandsgeometrie
-             und an jedem Ort eindeutig; Fadschr, Asr und Ischa hängen an einem
-             Winkel oder einer Schattenlänge, die die Sonne verfehlen kann.
-             Verletzt ein bedingter Wert die Reihenfolge, ist er der falsche.
+             Gekappt wird auf den Sonnenuntergang, und zwar nicht nach eigenem
+             Gutdünken: Genau das tut die ausgelieferte App in
+             `apps/mobile/src/features/prayer-times/calc.ts`, und diese Kachel
+             behauptet, dieselbe Rechnung zu zeigen. Dort steht die Begründung
+             ausführlich — der Sonnenuntergang ist der Grenzwert der Formel,
+             frühestens dann wäre die Schattenlänge erreicht, und die
+             Reihenfolge Dhuhr < Asr ≤ Maghrib bleibt erhalten, auf die die
+             Benachrichtigungen der App bauen. Aladhan kappt in denselben
+             Fällen auf Dhuhr, was die Schattenbedingung eindeutig verletzt.
 
-             Der erste Anlauf strich stattdessen jeden Wert, der vor seinem
-             Vorgänger lag. Am 15. Januar traf das Maghrib statt Asr: Der
-             Sonnenuntergang verschwand, obwohl er berechenbar ist und Asr das
-             Problem war. */
+             Zwei Anläufe davor waren falsch. Der erste strich jeden Wert vor
+             seinem Vorgänger und traf am 15. Januar den Sonnenuntergang statt
+             Asr. Der zweite setzte Asr auf „nicht berechnet" — richtig
+             geordnet, aber eine dritte Variante neben App und Aladhan, und
+             damit eine Kachel, die etwas anderes zeigt als das Produkt, auf
+             das sie sich beruft.
+
+             Fadschr und Ischa bleiben unangetastet: Die App behandelt sie
+             nicht, und die 21 gemessenen Fälle waren ausnahmslos Asr. */
           const DHUHR = GEBETE.indexOf("dhuhr");
           const ASR = GEBETE.indexOf("asr");
           const MAGHRIB = GEBETE.indexOf("maghrib");
-          const SONNENAUFGANG = GEBETE.indexOf("sunrise");
+
           const FAJR = GEBETE.indexOf("fajr");
-          const ISHA = GEBETE.indexOf("isha");
+          const SONNENAUFGANG = GEBETE.indexOf("sunrise");
 
           for (const tag of tage) {
-            /* Asr gehört zwischen Sonnenhöchststand und Sonnenuntergang. */
-            if (
-              tag[ASR] !== null &&
-              ((tag[DHUHR] !== null && tag[ASR] < tag[DHUHR]) ||
-                (tag[MAGHRIB] !== null && tag[ASR] > tag[MAGHRIB]))
-            ) {
-              tag[ASR] = null;
+            const asr = tag[ASR];
+            const dhuhr = tag[DHUHR];
+            const maghrib = tag[MAGHRIB];
+            if (asr !== null) {
+              const gueltig =
+                (dhuhr === null || asr > dhuhr) &&
+                (maghrib === null || asr <= maghrib);
+              /* Ohne Sonnenuntergang gibt es nichts, worauf sich kappen ließe:
+                 In der Polarnacht ist Maghrib selbst unbestimmt, und ein
+                 gekappter Wert bräuchte einen Grenzwert. Dann bleibt nur die
+                 Lücke. Gemessen: Tromsø, 27. bis 30. November. */
+              if (!gueltig) tag[ASR] = maghrib;
             }
-            /* Fadschr vor dem Sonnenaufgang, Ischa nach dem Sonnenuntergang. */
-            if (
-              tag[FAJR] !== null &&
-              tag[SONNENAUFGANG] !== null &&
-              tag[FAJR] > tag[SONNENAUFGANG]
-            ) {
+
+            /* Fadschr nach dem Sonnenaufgang kappt die App nicht, weil sie
+               „Siebtel der Nacht" nicht anbietet — hier ist die Regel
+               wählbar, und sie liefert am 16. Mai in Tromsø Fadschr um 01:13
+               bei Sonnenaufgang um 01:10. Einen Grenzwert wie beim Schatten
+               gibt es hier nicht: Die Dämmerung beginnt entweder oder nicht.
+               Deshalb die Lücke und keine erfundene Uhrzeit. */
+            const fajr = tag[FAJR];
+            const aufgang = tag[SONNENAUFGANG];
+            if (fajr !== null && aufgang !== null && fajr > aufgang) {
               tag[FAJR] = null;
-            }
-            if (
-              tag[ISHA] !== null &&
-              tag[MAGHRIB] !== null &&
-              tag[ISHA] < tag[MAGHRIB]
-            ) {
-              tag[ISHA] = null;
             }
           }
 
