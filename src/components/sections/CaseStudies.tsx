@@ -501,11 +501,25 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         {visibleLinks.length > 0 ? (
           <Reveal className="flex flex-wrap gap-2">
             {visibleLinks.map((link) => (
+              /* Der Name trägt das Projekt, wo die Beschriftung allein nicht
+                 trägt.
+
+                 Die meisten Beschriftungen nennen ihr Ziel selbst
+                 („salati.pro“, „Status-Page“, „Restaurant-App (Play)“). Zwei
+                 tun das nicht: „Instagram“ steht bei Salati und bei MenuCloud,
+                 „YouTube“ könnte morgen dazukommen. Gemessen an der
+                 ausgelieferten Startseite: zwei Verweise mit dem Namen
+                 „Instagram“, zwei verschiedene Konten.
+
+                 Der sichtbare Text steht vorn, damit er im Namen enthalten
+                 bleibt — sonst sagt jemand per Sprache etwas anderes, als er
+                 liest. */
               <a
                 key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${link.label}: ${study.name}`}
                 className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
               >
                 {link.kind === "code" ? (

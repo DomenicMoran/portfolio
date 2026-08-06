@@ -12,12 +12,21 @@ export async function generateMetadata(): Promise<Metadata> {
   const inhalt = englisch ? en : de;
   return {
     title: `${inhalt.notFound.title} – ${inhalt.site.name}`,
-    // `metadataBase`, obwohl diese Seite kein Bild deklariert.
-    //
-    // Ohne die Angabe löst Next relative Adressen in Metadaten gegen
-    // http://localhost:3000 auf und warnt bei jedem Bau darauf hin — zweimal,
-    // für diese Seite und für die interne Not-found-Route. Zwei Warnungen in
-    // jedem grünen Lauf sind zwei, die man zu übersehen lernt.
+    /* `metadataBase`, obwohl diese Seite kein Bild deklariert: Sollte hier je
+       eine relative Adresse in den Metadaten stehen, löst sie gegen die
+       eigene Adresse auf statt gegen http://localhost:3000.
+
+       Hier stand, die Zeile bringe die beiden Bauwarnungen zum Schweigen, die
+       Next beim Erzeugen der statischen Seiten ausgibt. Nachgemessen stimmt
+       das nicht: Mit und ohne diese Zeile meldet der Bau dieselben zwei
+       Warnungen. Sie stammen aus Seiten, die Next selbst anlegt — die interne
+       Not-found-Route und `_global-error` —, und die hängen an keinem der
+       beiden Wurzel-Layouts, weil es hier bewusst kein gemeinsames
+       `app/layout.tsx` gibt.
+
+       Ausgeliefert wird davon nichts: Im ganzen Bauordner steht die
+       Zeichenkette `localhost:3000` null mal, und die 404 der Live-Adresse
+       trägt `og:image` mit vollständiger Adresse. */
     metadataBase: new URL(inhalt.site.url),
     robots: { index: false, follow: true },
   };
