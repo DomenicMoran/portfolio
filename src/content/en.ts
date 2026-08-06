@@ -1239,6 +1239,7 @@ export const en: Content = {
       seventh: "seventh of the night",
       middle: "middle of the night",
     },
+    autoIst: "“as the app ships” uses {regel} here",
     dayLabel: "Day of the year",
     spread: "Spread between the rules",
     gap: "{n} days without a result",

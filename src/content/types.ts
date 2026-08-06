@@ -383,6 +383,17 @@ export type Content = {
     ruleLabel: string;
     /** Die vier Regeln für hohe Breiten, in der Reihenfolge der Schaltflächen. */
     rules: { auto: string; angle: string; seventh: string; middle: string };
+    /**
+     * Welche Regel hinter „wie in der App" am gewählten Ort steckt. `{regel}`
+     * wird ersetzt.
+     *
+     * Ohne diesen Satz sind zwei der vier Schaltflächen für den Betrachter
+     * ununterscheidbar: Über 48° ist „wie in der App" dieselbe Rechnung wie
+     * „winkelbasiert", darunter greift keine der Ausweichregeln. Gemessen in
+     * Tromsø, Berlin und Kairo liefern die beiden überall dieselben Zeiten,
+     * und wer zwischen ihnen wechselt, sieht nichts geschehen.
+     */
+    autoIst: string;
     /** Beschriftung des Tagesreglers. */
     dayLabel: string;
     /** Vor der Spanne zwischen der frühesten und spätesten Regel. */

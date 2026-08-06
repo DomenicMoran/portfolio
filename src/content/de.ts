@@ -256,6 +256,7 @@ export const de: Content = {
       seventh: "Siebtel der Nacht",
       middle: "Mitte der Nacht",
     },
+    autoIst: "„wie in der App“ rechnet hier {regel}",
     dayLabel: "Tag im Jahr",
     spread: "Spanne zwischen den Regeln",
     gap: "{n} Tage ohne Ergebnis",
