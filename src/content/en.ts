@@ -1171,7 +1171,9 @@ export const en: Content = {
         "What it is about: role, project or question",
         "What you are building and with what",
         "How soon you want to start",
-        "For roles: the salary range, so we both save time",
+        // Siehe `site.ts`: „your“ statt nur „the“, seit die Kachel darüber
+        // die eigene Spanne nennt.
+        "For roles: your salary range, so we both save time",
       ],
     },
     fakten: [
