@@ -287,13 +287,21 @@ export function About() {
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {about.openSource.items.map((item, i) => (
               <Reveal as="li" key={item.name} delay={i * 0.05}>
+                {/* Wie bei den Artikelkarten: Der Name des Verweises ist der
+                    Paketname. Ohne `aria-labelledby` wurde die ganze Karte
+                    zum Namen — gemessen bis zu 32 Wörter, mit Beschreibung
+                    und Kennzeile. Die Fläche bleibt vollständig anklickbar. */}
                 <a
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-labelledby={`paket-${item.name}`}
                   className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
                 >
-                  <span className="flex items-center gap-1.5 font-mono text-sm text-acid">
+                  <span
+                    id={`paket-${item.name}`}
+                    className="flex items-center gap-1.5 font-mono text-sm text-acid"
+                  >
                     {item.name}
                     <ArrowUpRight
                       className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
