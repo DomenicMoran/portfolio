@@ -1913,6 +1913,67 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Das Faktenblatt sagt dasselbe wie der Lebenslauf
+   ---------------------------------------------------------------------------
+
+   Vier Angaben stehen zweimal: in der Tabelle des Lebenslaufs und in der
+   Faktenkachel des Recruiter-Bereichs. Es sind die vier, nach denen als
+   erstes gefragt wird — was gesucht ist, wo, ab wann, in welchen Sprachen.
+   Der Lebenslauf geht als PDF mit, die Kachel steht auf der Seite, und wer
+   beides nebeneinanderlegt, liest zwei Fassungen derselben Auskunft.
+
+   Geprüft wird auf Enthaltensein und nicht auf Gleichheit: Die Kachel ist an
+   zwei Stellen absichtlich kürzer — „Deutsch (Muttersprache) · Englisch“ ohne
+   den Zusatz „(verhandlungssicher in Fachkontext)“, und „Festanstellung“
+   steht dort als eigene Zeile statt im Satz über die gesuchte Rolle. Kürzer
+   ist erlaubt, anders nicht.
+   ------------------------------------------------------------------------ */
+{
+  const pfad = "../docs/LEBENSLAUF.md";
+  if (!existsSync(pfad)) {
+    zeilen.push("  --  Lebenslauf nicht da, Faktenblatt übersprungen");
+  } else {
+    const lebenslauf = readFileSync(pfad, "utf8").replace(/\s+/g, " ");
+    const quelle = readFileSync(join("src", "content", "site.ts"), "utf8");
+    const holen = (schluessel) =>
+      new RegExp(`${schluessel}:\\s*"([^"]+)"`).exec(quelle)?.[1];
+
+    const angaben = [
+      ["Standort", holen("detail")],
+      ["Verfügbar", holen("entry")],
+      ["Sprachen", holen("languages")],
+      [
+        "Gesucht",
+        /"Produktteam, in dem[^"]*"/.exec(quelle)?.[0]?.slice(1, -1),
+      ],
+    ];
+
+    const funde = [];
+    let geprueft = 0;
+    for (const [was, wert] of angaben) {
+      if (!wert) {
+        funde.push(`${was}: in site.ts nicht gefunden`);
+        continue;
+      }
+      geprueft++;
+      if (!lebenslauf.includes(wert.replace(/\s+/g, " "))) {
+        funde.push(`${was}: „${wert}“ steht so nicht im Lebenslauf`);
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Angabe(n) weichen vom Lebenslauf ab:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Faktenblatt        ${String(geprueft).padStart(6)} Angaben wie im Lebenslauf`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Das Profil-README, wie GitHub es zeigt
    ---------------------------------------------------------------------------
 
