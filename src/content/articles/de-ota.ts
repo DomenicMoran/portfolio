@@ -14,6 +14,7 @@ export const otaDe: Article = {
   evidence: [
     "Salati-Repo, Commit 71bd8d2b vom 30.07.2026",
     "Gegenprüfung: Update-Liste beider EAS-Projekte, Kanal production, null Einträge",
+    "apps/mobile/app.config.ts (eine Konstante für version und runtimeVersion)",
     "Regressionstest: apps/mobile/src/__tests__/versionen-gleichlauf.test.ts",
     "Nach dem Fix: erstes veröffentlichtes Update, Runtime 1.41.0, Android und iOS",
     {
