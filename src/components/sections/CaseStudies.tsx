@@ -86,6 +86,25 @@ export function CaseStudies() {
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
   const inhalt = useContent();
   const { work, a11y, lang } = inhalt;
+  /* Eine Tafel im Baum, nicht alle.
+   *
+   * Was das für den Ausdruck heißt, steht hier, weil es an keiner anderen
+   * Stelle auffällt: Gedruckt wird, was im Baum steht, und das ist die
+   * gewählte Tafel. Gemessen an der ausgelieferten Seite in der
+   * Druckdarstellung trägt jede Fallstudie dort genau eine von drei bis vier
+   * Tafeln — bei MenuCloud eine von vier, zwischen 303 und 710 Zeichen je
+   * Studie. Architektur und Tech-Stack fehlen auf Papier.
+   *
+   * Das bleibt so. Alle Tafeln zu rendern und die inaktiven per CSS
+   * auszublenden würde den Baum der Startseite um vier Architekturdiagramme
+   * mit je 17 bis 30 Knoten vergrößern, dazu ihre Textfassungen — bezahlt von
+   * jedem Besucher, damit ein Ausdruck vollständig ist, den die Seite gar
+   * nicht als Weg anbietet. Wer die Arbeit auf Papier braucht, bekommt sie
+   * über das Kurzprofil, und das ist dafür gebaut.
+   *
+   * `highlights` ist die Standardtafel und damit die, die gedruckt wird. Sie
+   * beantwortet „Was drinsteckt" — von den drei Fragen die, die ohne Bild
+   * auskommt. */
   const [tab, setTab] = useState<TabId>("highlights");
   /* `MotionConfig reducedMotion="user"` nimmt die Bewegung heraus, nicht die
      Zeit. Für den Wechsel der Tafeln wird beides gebraucht. */
