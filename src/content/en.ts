@@ -38,7 +38,7 @@ const LANGUAGES = "German (native) · English";
 /**
  * Tage seit dem ersten Salati-Commit, gerechnet statt getippt.
  *
- * Hier stand „107 days … until today". Am Tag des Schreibens richtig, am
+ * Hier stand „107 days … until today“. Am Tag des Schreibens richtig, am
  * nächsten Morgen 108 — dasselbe wandernde Fenster, das die Commit-Angabe
  * schon abgelegt hat („3.971 Commits in vier Monaten"). Eine Zahl, die sich
  * von allein bewegt, lässt sich von Hand nicht pflegen.
@@ -56,7 +56,7 @@ const salatiDays = Math.round(
 const SALATI_VERSIONS = 64;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
-/** „2026-08-01" als „1 August 2026". */
+/** „2026-08-01“ als „1 August 2026“. */
 function dateLong(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -71,7 +71,7 @@ function dateLong(iso: string) {
  * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
  * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
  * es: Die Aussage wird nicht falsch, sie wird still zu klein. Dasselbe
- * wandernde Maß wie „3.971 Commits in vier Monaten" und „107 Tage bis heute",
+ * wandernde Maß wie „3.971 Commits in vier Monaten" und „107 Tage bis heute“,
  * beide bereits abgelegt.
  */
 const FIRST_COMMIT = "2026-03-26";
@@ -89,7 +89,7 @@ const learningYears = grossErstes(
 export const en: Content = {
   lang: "en",
   site: {
-    // Der Ursprung, nicht der Pfad: buildMetadata hängt „/en" selbst an. Mit
+    // Der Ursprung, nicht der Pfad: buildMetadata hängt „/en“ selbst an. Mit
     // der vollständigen /en-Adresse an dieser Stelle kam als kanonische URL
     // „https://domenicmoran.de/en/en" heraus.
     url: "https://domenicmoran.de",
@@ -148,6 +148,7 @@ export const en: Content = {
     empty: "Nothing found.",
     results: "Results: {n}",
     jump: "Jump to",
+    modifier: "Ctrl",
     pdf: { label: "One-pager as PDF", hint: "Print-ready summary" },
     onepagerWeb: {
       label: "One-pager in the browser",

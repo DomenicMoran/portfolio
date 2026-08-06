@@ -103,7 +103,7 @@ export type Content = {
     /**
      * Name des Rückwegs auf den Rechtsseiten.
      *
-     * Nicht „Hauptnavigation": Dort steht ein einziger Verweis zurück auf die
+     * Nicht „Hauptnavigation“: Dort steht ein einziger Verweis zurück auf die
      * Startseite, und zwei Landmarken desselben Namens auf einer Webseite
      * helfen niemandem, der die Landmarkenliste benutzt.
      */
@@ -139,10 +139,20 @@ export type Content = {
      * Components" ab. Dieselbe Form wie bei `demoSalati.gap`.
      *
      * Die Zahl steht hinten, damit keine zweite Fassung für den Singular nötig
-     * ist: „1 results" wäre falsch, „Results: 1" ist es nicht.
+     * ist: „1 results" wäre falsch, „Results: 1“ ist es nicht.
      */
     results: string;
     jump: string;
+    /**
+     * Die Taste neben dem `K`, wenn kein Apple-Gerät davorsitzt.
+     *
+     * Das ⌘-Zeichen stand dort für alle, auch auf Windows und Linux, wo es
+     * auf keiner Tastatur liegt. Der Griff ist dort `Strg` beziehungsweise
+     * `Ctrl` — und weil beides schon immer funktionierte, fehlte nur das
+     * Wort. Für Apple bleibt das Zeichen; die Umschaltung macht
+     * `useApplePlatform`.
+     */
+    modifier: string;
     pdf: { label: string; hint: string };
     onepagerWeb: { label: string; hint: string };
     mail: string;
@@ -345,7 +355,7 @@ export type Content = {
      *
      * Ein ausgedrucktes Blatt verliert die Adresszeile des Browsers und damit
      * jeden Hinweis darauf, woher es stammt und wie alt es ist. Auf einer
-     * Seite, deren Argument „jede Zahl ist belegt" lautet, gehört beides
+     * Seite, deren Argument „jede Zahl ist belegt“ lautet, gehört beides
      * aufs Papier.
      */
     printNote: string;
@@ -500,7 +510,7 @@ export type Content = {
      * Der Hinweis für den, der in der anderen Sprache gekommen ist.
      *
      * Zusammengesetzt aus `title` und `home` stand dort „This page does not
-     * exist. Home" — zwei Fragmente, und der Verweis hieß „Home". Als eigener
+     * exist. Home" — zwei Fragmente, und der Verweis hieß „Home“. Als eigener
      * Satz sagt er, wohin er führt, und der Verweis trägt die Beschreibung
      * statt eines Worts.
      */

@@ -106,6 +106,7 @@ export const de: Content = {
     empty: "Nichts gefunden.",
     results: "Treffer: {n}",
     jump: "Springen",
+    modifier: "Strg",
     pdf: { label: "One-Pager als PDF", hint: "Druckfertige Kurzfassung" },
     onepagerWeb: { label: "Kurzprofil im Browser", hint: "Dieselbe Kurzfassung als Seite" },
     mail: "E-Mail schreiben",

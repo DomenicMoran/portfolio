@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Marke } from "@/lib/mark";
 import { useContent } from "@/content/ContentProvider";
 import { useActiveSection } from "@/lib/useActiveSection";
+import { useApplePlatform } from "@/lib/useApplePlatform";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,7 @@ export function Nav({
 }) {
   const c = useContent();
   const { nav: navItems, site, a11y } = c;
+  const istApple = useApplePlatform();
   const sprachZiel = otherHref ?? (c.lang === "de" ? "/en" : "/");
   const zuAnker = (href: string) => `${hashBase}${href}`;
   const [scrolled, setScrolled] = useState(false);
@@ -244,7 +246,14 @@ export function Nav({
               className="hidden items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim xl:flex"
               aria-label={a11y.commandPalette}
             >
-              <Command className="size-3" aria-hidden />
+              {/* Das ⌘-Zeichen nur dort, wo die Taste so heißt. Auf allen
+                  anderen Geräten steht der Griff ausgeschrieben da; die
+                  Kombination hört seit jeher auf beide. */}
+              {istApple ? (
+                <Command className="size-3" aria-hidden />
+              ) : (
+                <span>{c.palette.modifier}</span>
+              )}
               <span>K</span>
             </button>
 
@@ -261,7 +270,7 @@ export function Nav({
               onClick={() => setMenuOpen(true)}
               className="grid size-9 place-items-center rounded-full border border-line text-ink-dim lg:hidden"
               /* Der Zustand gehört an den Knopf: Ein Vorleseprogramm sagte
-                 sonst „Menü öffnen" und verschwieg, dass es offen ist. */
+                 sonst „Menü öffnen“ und verschwieg, dass es offen ist. */
               aria-expanded={menuOpen}
               aria-label={a11y.openMenu}
             >
