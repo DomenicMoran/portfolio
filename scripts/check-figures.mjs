@@ -2000,6 +2000,30 @@ const BRAUCHT_KIND = {
       const abh = Object.keys(manifest.dependencies ?? {}).length;
       if (abh > 0)
         funde.push(`${paket}: README sagt null Abhängigkeiten, es sind ${abh}`);
+
+      /* Die Zahl der Skills, wo die Seite eine nennt.
+         --------------------------------------------
+         Für `verified-done` steht in `site.ts` „Claude Code · 4 Skills ·
+         16 Tests · null Abhängigkeiten". Zwei der drei Zahlen prüft der Lauf
+         seit jeher, die erste nicht: Ein fünftes Verzeichnis unter `skills/`
+         ändert das Paket und nicht die Seite, und aufgefallen wäre es
+         niemandem.
+
+         Gezählt werden die Verzeichnisse mit einer `SKILL.md` — dieselbe
+         Einheit, die auch das Marketplace-Manifest als Skill führt. */
+      const skillOrdner = join(ordner, "skills");
+      if (existsSync(skillOrdner)) {
+        const skills = readdirSync(skillOrdner).filter((e) =>
+          existsSync(join(skillOrdner, e, "SKILL.md")),
+        ).length;
+        const genannt = /(\d+)\s+Skills/.exec(quelle)?.[1];
+        if (genannt && Number(genannt) !== skills) {
+          funde.push(
+            `${paket}: die Seite sagt ${genannt} Skills, im Klon sind es ${skills}`,
+          );
+        }
+      }
+
       gezaehlt++;
     }
 
