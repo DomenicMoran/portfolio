@@ -400,18 +400,6 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         <label className="basis-full sm:max-w-md">
           <span className="flex items-baseline justify-between gap-4">
             <span className="text-eyebrow">{demo.targetLabel}</span>
-            {/* Der Wert steht sichtbar hier und nicht im Namen des Reglers.
-
-                Beide gehören in dieses `label`, also bildete sich der Name
-                aus beidem: Gemessen im Barrierefreiheitsbaum hieß der Regler
-                „TAGESZIEL 2.200kcal“ — mit dem Wert darin, und ohne
-                Leerzeichen davor, weil zwei Elemente ohne Textknoten
-                aneinanderstoßen. Beim Ziehen ändert sich damit der Name des
-                Bedienelements, nicht nur sein Wert.
-
-                `aria-hidden` nimmt die Zahl aus dem Namen; angesagt wird sie
-                über `aria-valuetext` am Regler, wie beim Tagesregler der
-                Gebetszeiten-Kachel. */}
             <span
               aria-hidden
               className="font-mono text-sm text-ink tabular-nums"
@@ -419,9 +407,23 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
               {zahl(ziel)} {demo.units.kcal}
             </span>
           </span>
+          {/* Der Wert steht im Namen des Reglers, nicht in `aria-valuetext`.
+
+              Ohne Angabe liest ein Vorleseprogramm die rohe Zahl vor: „2200“.
+              Der naheliegende Weg wäre `aria-valuetext` — am nativen
+              Schieberegler übernimmt Chrome das nicht. Gemessen an der
+              ausgelieferten Seite meldete der Baum bei gesetztem
+              `aria-valuetext="2.200 kcal"` weiterhin `valuetext="2200"`.
+              Dieselbe Messung steht in `Abspielleiste.tsx` des Prüfstands.
+
+              Also als `aria-label`, den Chrome auswertet, und mit Komma
+              statt Leerzeichen: Ohne eigenes `aria-label` bildete sich der
+              Name aus den beiden Spans darüber und lautete „TAGESZIEL
+              2.200kcal“ — zwei Elemente ohne Textknoten dazwischen stoßen
+              ohne Leerzeichen aneinander. */}
           <input
             type="range"
-            aria-valuetext={`${zahl(ziel)} ${demo.units.kcal}`}
+            aria-label={`${demo.targetLabel}, ${zahl(ziel)} ${demo.units.kcal}`}
             min={ZIEL.min}
             max={ZIEL.max}
             step={ZIEL.schritt}

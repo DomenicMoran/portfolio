@@ -863,11 +863,10 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       <label className="mt-4 block">
         <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <span className="text-eyebrow">{demo.dayLabel}</span>
-          {/* Wie in der NOURI-Kachel: Der Wert gehört an `aria-valuetext`,
-              nicht in den Namen. Gemessen hieß der Regler „TAG IM JAHR
-              6. August · heute“, und beim Ziehen änderte sich damit der Name
-              des Bedienelements. Angesagt wird der Tag weiterhin, nur über
-              den Wert. */}
+          {/* Sichtbar hier, angesagt über das `aria-label` des Reglers: Chrome
+              wertet `aria-valuetext` am nativen Schieberegler nicht aus, die
+              Messung steht dort. `aria-hidden` verhindert nur, dass die Zahl
+              zweimal im Namen landet. */}
           <span
             aria-hidden
             className="font-mono text-[11px] text-ink tabular-nums"
@@ -882,7 +881,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           max={TAGE - 1}
           value={tag}
           onChange={(e) => setTag(Number(e.target.value))}
-          aria-valuetext={datum}
+          aria-label={`${demo.dayLabel}, ${datum}${tag === heuteNr ? ` · ${demo.today}` : ""}`}
           /* 24 px hoch statt 16, über `py-1` mit ausgleichendem `-my-1`:
           Die sichtbare Spur bleibt schlank, die Trefferfläche erreicht das
           Maß aus WCAG 2.5.8. Nötig war das nicht — der Regler steht allein,
