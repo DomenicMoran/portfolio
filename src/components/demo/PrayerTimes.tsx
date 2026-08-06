@@ -93,7 +93,16 @@ type Gebet = (typeof GEBETE)[number];
  * Die Regeln für hohe Breiten, in der Reihenfolge der Schaltflächen.
  *
  * `auto` ist keine eigene Regel der Bibliothek, sondern die Entscheidung der
- * App: oberhalb von 48° die winkelbasierte, darunter die Standardrechnung.
+ * App: oberhalb von 48° die winkelbasierte, darunter Mitte der Nacht. Hier
+ * stand „die Standardrechnung", und das war an derselben Zeile Code die
+ * zweite, andere Aussage — weiter unten steht sie richtig.
+ *
+ * Was das für die Schaltflächen heißt, ist nicht offensichtlich: An einem Ort
+ * über 48° liefern „wie in der App" und „winkelbasiert" zwangsläufig
+ * dieselben Zeiten, weil es dieselbe Rechnung ist. Gemessen in Tromsø, Berlin
+ * und Kairo stimmen sie an allen drei Orten überein — unterhalb von 48° aus
+ * einem anderen Grund: Dort wird der Dämmerungswinkel jeden Tag erreicht, und
+ * dann greift keine der Ausweichregeln.
  */
 const REGELN = ["auto", "angle", "seventh", "middle"] as const;
 type Regel = (typeof REGELN)[number];
