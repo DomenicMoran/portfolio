@@ -55,32 +55,52 @@ export function Prose({
                es passen würde. Die `id` trägt jede Breite: Ein geteilter
                Verweis springt auch auf dem Telefon an die richtige Stelle. */
             return (
-              <h2
-                key={i}
-                id={alsSprungmarke(block.text)}
-                className="group relative mt-14 mb-5 max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
-              >
-                {block.text}
+              <div key={i} className="group relative mt-14 mb-5">
+                <h2
+                  id={alsSprungmarke(block.text)}
+                  className="max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
+                >
+                  {block.text}
+                </h2>
                 {/* Das Doppelkreuz gehört nicht zur Überschrift.
 
                     Es stand als Text im `h2` und damit im Textinhalt: Der
                     Name der Überschrift im Barrierefreiheitsbaum lautete
-                    „Warum ein größeres Modell hier nichts bringt#", und wer
+                    „Warum ein größeres Modell hier nichts bringt#“, und wer
                     eine Überschrift markierte und kopierte, nahm es mit.
                     Gemessen an der ausgelieferten Seite an allen sieben
                     Überschriften des Artikels.
 
                     `aria-hidden` nimmt es aus dem Namen — der Verweis behält
                     seinen eigenen über `aria-label`. `select-none` hält es aus
-                    der Zwischenablage. */}
+                    der Zwischenablage.
+
+                    Nachtrag vom 06.08.2026: Der eigene Name war das nächste
+                    Problem. Ein beschrifteter Verweis als Kind des `h2` geht
+                    in dessen Namen ein — der Name einer Überschrift entsteht
+                    aus ihren Kindern. Im Barrierefreiheitsbaum stand bei
+                    1440 px „Der erste Hebel: dem Modell sagen, was es hören
+                    wird Verweis auf diesen Abschnitt: Der erste Hebel: dem
+                    Modell sagen, was es hören wird“: jede Überschrift
+                    doppelt, sieben mal je Artikel. Bei 390 px trat es nicht
+                    auf, weil der Verweis dort `display: none` trägt.
+
+                    Der Verweis steht deshalb jetzt neben der Überschrift und
+                    nicht mehr darin. `group` und `relative` wandern an die
+                    Hülle, die `id` bleibt an der Überschrift, und die Maße
+                    stehen in `rem` statt in `em`: An der Hülle rechnete `em`
+                    gegen die Grundschrift statt gegen 1,5 beziehungsweise
+                    1,875 rem. Eingesetzt sind die ausgerechneten alten
+                    Werte; gemessen liegt das Zeichen danach an derselben
+                    Stelle, 28 px links der Überschrift. */}
                 <a
                   href={`#${alsSprungmarke(block.text)}`}
                   aria-label={`${sprungmarkeLabel}: ${block.text}`}
-                  className="absolute top-[0.15em] -left-7 hidden text-[0.62em] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 lg:block"
+                  className="absolute top-[0.225rem] -left-7 hidden text-[0.93rem] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.28rem] sm:text-[1.16rem] lg:block"
                 >
                   <span aria-hidden>#</span>
                 </a>
-              </h2>
+              </div>
             );
 
           case "h3":

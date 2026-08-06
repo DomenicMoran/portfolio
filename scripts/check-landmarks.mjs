@@ -48,7 +48,56 @@ if (!basis) {
 
 const pfade = gebauteSeiten();
 const browser = await chromium.launch();
-const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const umgebung = await browser.newContext({
+  viewport: { width: 1440, height: 900 },
+});
+const seite = await umgebung.newPage();
+
+/* Der Name einer Überschrift wird gemessen, nicht nachgebaut.
+
+   Hier stand ein eigener Nachbau: Klon nehmen, `aria-hidden`-Kinder
+   entfernen, `textContent` lesen. Der übersieht alles, was die Norm sonst
+   noch tut — und genau daran ist er am 06.08.2026 gescheitert. Der
+   Abschnittsverweis in den Artikeln trug ein `aria-label`, das den
+   Überschriftentext wiederholt; als Kind des `h2` ging es in dessen Namen ein.
+   Der Nachbau las „Der erste Hebel: dem Modell sagen, was es hören wird“ und
+   war zufrieden, der Browser bildete „… Verweis auf diesen Abschnitt: Der
+   erste Hebel: …“.
+
+   `Accessibility.queryAXTree` fragt denselben Baum ab, den auch ein
+   Vorleseprogramm bekommt. Zugeordnet wird über die `backendNodeId`, nicht
+   über die Reihenfolge: Der Baum führt Fußzeilenüberschriften vor der
+   Hauptüberschrift, eine Paarung nach Index ginge daneben. */
+const werkzeug = await umgebung.newCDPSession(seite);
+await werkzeug.send("Accessibility.enable");
+await werkzeug.send("DOM.enable");
+
+const glatt = (text) => (text ?? "").replace(/\s+/g, " ").trim();
+
+async function ueberschriftenNamen() {
+  const { root } = await werkzeug.send("DOM.getDocument", { depth: -1 });
+  const { nodeIds } = await werkzeug.send("DOM.querySelectorAll", {
+    nodeId: root.nodeId,
+    selector: "h1, h2, h3, h4",
+  });
+  const raus = [];
+  for (const [i, nodeId] of nodeIds.entries()) {
+    const { node } = await werkzeug.send("DOM.describeNode", { nodeId });
+    const { nodes } = await werkzeug.send("Accessibility.queryAXTree", {
+      backendNodeId: node.backendNodeId,
+    });
+    const ax = nodes.find((n) => n.role?.value === "heading");
+    if (!ax) continue;
+    const sichtbar = glatt(
+      await seite.evaluate(
+        (nr) => document.querySelectorAll("h1, h2, h3, h4")[nr].innerText,
+        i,
+      ),
+    );
+    raus.push({ name: glatt(ax.name?.value), sichtbar });
+  }
+  return raus;
+}
 
 const funde = [];
 let geprueft = 0;
@@ -116,24 +165,29 @@ for (const pfad of pfade) {
      Überschriften eines Artikels; axe prüft Namen auf Vorhandensein, nicht
      auf Zierrat.
 
-     Geprüft wird der Name, wie ein Vorleseprogramm ihn bildet: sichtbarer
-     Text ohne die Teile, die `aria-hidden` trägt. */
-  const zierrat = await seite.evaluate(() => {
-    const raus = [];
-    for (const h of document.querySelectorAll("h1, h2, h3, h4")) {
-      const klon = h.cloneNode(true);
-      for (const weg of klon.querySelectorAll("[aria-hidden='true']"))
-        weg.remove();
-      const name = (klon.textContent ?? "").trim();
-      if (/[#*•·→↗]$/.test(name)) {
-        raus.push(name.slice(-45));
-      }
-    }
-    return raus;
-  });
+     Und der Name sagt genau das, was dasteht.
 
-  for (const z of zierrat) {
-    funde.push(`${pfad}: Überschrift endet auf ein Zierzeichen — „…${z}“`);
+     Zweite Regel, aus demselben Anlass: Der Abschnittsverweis neben der
+     Überschrift trug ein `aria-label` mit dem Überschriftentext darin. Als
+     Kind des `h2` ging es in dessen Namen ein, und ein Vorleseprogramm las
+     jede Zwischenüberschrift zweimal — sieben mal je Artikel, aber nur ab
+     1024 px, weil der Verweis darunter `display: none` trägt.
+
+     Geprüft wird gegen den sichtbaren Text: Was der Baum als Namen führt,
+     muss dem entsprechen, was dort steht. Alles andere ist etwas, das ein
+     Sehender nicht sieht und ein Hörender nicht erwartet. */
+  for (const h of await ueberschriftenNamen()) {
+    if (/[#*•·→↗]$/.test(h.name)) {
+      funde.push(
+        `${pfad}: Überschrift endet auf ein Zierzeichen — „…${h.name.slice(-45)}“`,
+      );
+    } else if (h.name !== h.sichtbar) {
+      funde.push(
+        `${pfad}: Überschrift heißt im Baum anders, als sie dasteht —\n` +
+          `          sichtbar: „${h.sichtbar.slice(0, 60)}“\n` +
+          `          Name:     „${h.name.slice(0, 90)}“`,
+      );
+    }
   }
 
   /* Eine Fallstudie trägt genau eine Überschrift der Ebene 3: ihren Namen.
