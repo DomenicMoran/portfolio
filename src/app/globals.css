@@ -523,6 +523,33 @@ textarea:-webkit-autofill {
   animation: fade-rise 0.9s var(--ease-out-expo) both;
 }
 
+/* Dieselbe Bewegung, aber ohne die Blende — für das LCP-Element.
+
+   Die eine Zeile `opacity: 0` kostet gemessen 650 ms. Der Vorspann des Kopfes
+   ist das größte Textstück über der Falz und damit das LCP-Element; auf einem
+   gedrosselten Telefon (390 px, Prozessor vierfach, 1,6 Mbit/s, 150 ms) stand
+   der Absatz daneben bei 1.624 ms, er selbst erst bei 2.232 bis 2.496 ms.
+   Chrome zählt ein Element mit `opacity: 0` nicht als gemalt, also schiebt
+   jede Einblendung ihre eigene Verzögerung plus einen Teil ihrer Dauer direkt
+   in den Kernwert. Das Budget liegt bei 2.500 ms — es hing an zwanzig
+   Millisekunden.
+
+   Die Bewegung bleibt, nur wird der Text nicht mehr dafür versteckt. Für
+   alles unter der Falz bleibt `animate-fade-rise` richtig: Dort entscheidet
+   kein Element über den Kernwert. */
+@utility animate-rise {
+  animation: rise 0.9s var(--ease-out-expo) both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes caret-blink {
   0%,
   49% {

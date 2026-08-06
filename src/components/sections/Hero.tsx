@@ -144,9 +144,15 @@ export function Hero() {
             wichtigste Satz der Seite nicht dasteht. Die Reihenfolge Marke,
             Überschrift, Absatz, Knöpfe, Belegleiste bleibt sichtbar, sie
             läuft nur schneller ab. */}
+          {/* `animate-rise` und nicht `animate-fade-rise`: Dieser Absatz ist
+              das LCP-Element der Startseite, und eine Blende versteckt ihn so
+              lange, wie sie läuft. Gemessen unter der Drosselung des
+              Prüflaufs: 1.624 ms für den Absatz daneben, 2.232 bis 2.496 ms
+              für diesen — bei einem Budget von 2.500 ms. Die Bewegung bleibt,
+              der Text steht ab dem ersten Bild. */}
           <p
             style={{ animationDelay: "0.2s" }}
-            className="animate-fade-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
+            className="animate-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
           >
             {hero.lede}
           </p>
