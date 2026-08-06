@@ -147,6 +147,38 @@ for (const pfad of pfade) {
         hreflang: e.getAttribute("hreflang"),
       }));
 
+    /* Dieselbe Regel für das, was man nicht sieht, aber hört.
+
+       Die Prüfung darüber springt über jeden Knoten ohne `offsetParent`. Bei
+       `sr-only` ist das immer der Fall: Solcher Text steht absolut
+       positioniert und weggeschnitten im Baum. Unsichtbar heißt hier aber
+       nicht unbenutzt — er ist die Fassung, die ein Vorleseprogramm benutzt.
+       Dasselbe gilt für `aria-label`, `alt` und `title`, die als Attribute
+       gar nicht erst im Textbaum stehen: Auf `/en` sind das 19 Stellen, und
+       keine davon war bis hierhin geprüft.
+
+       Was dieser Block **nicht** fängt, steht dazu: Die Beschriftungen der
+       Architekturdiagramme liegen hinter Reitern und stehen erst nach einem
+       Klick im Baum. Gemessen enthält die gebaute Seite sie gar nicht. Dafür
+       ist `check:panels` zuständig, der die Reiter durchklickt. */
+    const unsichtbar = [];
+    const stelle = (text, herkunft, element) => {
+      const wert = (text ?? "").trim();
+      if (wert.length < 4) return;
+      if (!/[äöüßÄÖÜ]/.test(wert) && !DEUTSCHE_WOERTER.test(wert)) return;
+      if (eigennamen.test(wert)) return;
+      if (element?.closest?.('[lang="de"]')) return;
+      unsichtbar.push(`${herkunft} „${wert.slice(0, 50)}"`);
+    };
+    for (const el of document.querySelectorAll("[aria-label]"))
+      stelle(el.getAttribute("aria-label"), "aria-label", el);
+    for (const el of document.querySelectorAll("[alt]"))
+      stelle(el.getAttribute("alt"), "alt", el);
+    for (const el of document.querySelectorAll("[title]"))
+      stelle(el.getAttribute("title"), "title", el);
+    for (const el of document.querySelectorAll(".sr-only"))
+      stelle(el.textContent, "sr-only", el);
+
     return {
       lang: document.documentElement.lang,
       alternativen,
@@ -154,6 +186,7 @@ for (const pfad of pfade) {
       rueckweg,
       deutsch: [...new Set(deutsch)],
       englischerText: [...new Set(englischerText)],
+      unsichtbar: [...new Set(unsichtbar)],
       rechtsverweise,
     };
   }, EIGENNAMEN.source);
@@ -273,6 +306,14 @@ for (const [pfad, daten] of stand) {
     funde.push(
       `${pfad}: deutscher Text ohne lang="de" — ` +
         daten.deutsch.map((t) => `„${t}"`).join(", "),
+    );
+  }
+
+  if (englisch && daten.unsichtbar.length > 0) {
+    funde.push(
+      `${pfad}: deutscher Text in der Fassung, die vorgelesen wird — ` +
+        daten.unsichtbar.join(", ") +
+        `\n        Sichtbar ist die Seite übersetzt, hörbar nicht.`,
     );
   }
 }
