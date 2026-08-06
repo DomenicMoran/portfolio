@@ -66,6 +66,7 @@ export const de: Content = {
       detail: siteDe.availability.detail,
       entry: siteDe.availability.entry,
       languages: siteDe.availability.languages,
+      salary: siteDe.availability.salary,
     },
 
     meta: siteDe.meta,
