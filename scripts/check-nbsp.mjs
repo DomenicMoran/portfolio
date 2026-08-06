@@ -2,9 +2,9 @@
 /**
  * Prüft, dass keine Rechtsangabe zwischen Kürzel und Ziffer umbricht.
  *
- * „§ 146a AO", „Art. 30 DSGVO", „Abs. 1 lit. f" — ein Kürzel und die Zahl
+ * „§ 146a AO“, „Art. 30 DSGVO", „Abs. 1 lit. f“ — ein Kürzel und die Zahl
  * dahinter sind eine Einheit. Bricht die Zeile dazwischen um, steht am Ende
- * der einen Zeile „Art." und am Anfang der nächsten „30", und beides sagt für
+ * der einen Zeile „Art." und am Anfang der nächsten „30“, und beides sagt für
  * sich nichts:
  *
  *     … beachtet? EU AI Act Art.
@@ -132,7 +132,7 @@ for (const pfad of pfade) {
       console.log(`  FEHLER ${pfad} bei ${breite} px`);
       for (const t of treffer) {
         funde.push(t);
-        console.log(`        „${t.stelle}" umbrochen in: …${t.umgebung}…`);
+        console.log(`        „${t.stelle}“ umbrochen in: …${t.umgebung}…`);
       }
     }
   }

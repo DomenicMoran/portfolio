@@ -95,7 +95,7 @@ const LINE_STYLE = {
  * Spielt einen aufgezeichneten Agentendurchlauf ab.
  *
  * Mit Absicht eine *Aufzeichnung* und keine vorgetäuschte Sitzung: Sie ist als
- * Nachzeichnung ausgewiesen, und die Schaltfläche „Nochmal" macht deutlich,
+ * Nachzeichnung ausgewiesen, und die Schaltfläche „Nochmal“ macht deutlich,
  * dass hier etwas abgespielt wird. Eine Bewerbungsseite, die ein Terminal live
  * vortäuscht, tut genau das, wogegen der Text daneben argumentiert.
  */

@@ -131,8 +131,8 @@ export function CommandPalette({
       },
       /* Der Kontaktbereich stand nicht in der Liste.
          Die Kopfleiste bietet ihn als eigenen Knopf an, die Palette bildet
-         aber nur `navItems` ab, und dort steht er nicht. Wer „Kontakt" tippte,
-         bekam „Nichts gefunden" — auf einer Seite, deren Zweck es ist, dass
+         aber nur `navItems` ab, und dort steht er nicht. Wer „Kontakt“ tippte,
+         bekam „Nichts gefunden“ — auf einer Seite, deren Zweck es ist, dass
          jemand Kontakt aufnimmt. */
       {
         id: "nav-contact",
@@ -291,7 +291,7 @@ export function CommandPalette({
      React räumt Effekte in der Reihenfolge auf, in der sie stehen. Lag die
      Rückgabe vorher, holte der Fokuswächter den gerade zurückgegebenen Fokus
      sofort wieder ins Eingabefeld — und weil der Dialog im selben Moment
-     verschwand, landete er im `body`. Gemessen: „nach Escape: BODY" statt am
+     verschwand, landete er im `body`. Gemessen: „nach Escape: BODY“ statt am
      Knopf, von dem aus geöffnet wurde.
   */
   useEffect(() => {
@@ -383,7 +383,7 @@ export function CommandPalette({
 
                 Das Combobox-Muster liest die aktive Option vor; wie viele es
                 davon gibt, sagt es nicht, und bei null Treffern gibt es keine
-                aktive — dann steht sichtbar „Nichts gefunden." da und ein
+                aktive — dann steht sichtbar „Nichts gefunden.“ da und ein
                 Vorleseprogramm schweigt. Der Bereich hängt von Anfang an im
                 Baum, weil ein Bereich, der erst mit seinem Inhalt erscheint,
                 von einem Teil der Programme verschluckt wird. */}

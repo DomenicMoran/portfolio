@@ -73,7 +73,7 @@ export function ShotCarousel({
 
          Gemessen bei 1440 px über acht Aufnahmen: Nach dem sechsten Klick war
          die Spur am Anschlag, das achte Bild vollständig zu sehen — und der
-         Zähler blieb bei „7 von 8". Der Weiter-Knopf blieb dabei aktiv, weil
+         Zähler blieb bei „7 von 8“. Der Weiter-Knopf blieb dabei aktiv, weil
          er auf `aktiv === shots.length - 1` prüft, und tat bei jedem weiteren
          Druck nichts. Ein Knopf, der sichtbar zu haben ist und nichts bewirkt,
          ist die unangenehmere Hälfte davon. */
@@ -183,7 +183,7 @@ export function ShotCarousel({
 
         {/* Der Zähler sagt die neue Stelle an, nicht nur die alte.
 
-            Er stand als stummer Text daneben: Wer „Nächstes Bild" drückt, hörte
+            Er stand als stummer Text daneben: Wer „Nächstes Bild“ drückt, hörte
             die Beschriftung des Knopfes und erfuhr nie, wo er gelandet ist —
             gemessen am 02.08.2026, `aria-live` war nicht gesetzt. Die Punktreihe
             darüber ist `aria-hidden`, sie kann es also nicht übernehmen.

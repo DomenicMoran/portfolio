@@ -30,7 +30,7 @@ describe("Zahlwerte lesen und schreiben", () => {
   });
 
   it("liest die Größenordnung richtig", () => {
-    // Der eigentliche Punkt: „1,276" ist auf Englisch tausendzweihundert­sechs­
+    // Der eigentliche Punkt: „1,276“ ist auf Englisch tausendzweihundert­sechs­
     // undsiebzig, auf Deutsch eins Komma zwei sieben sechs.
     expect(zerlege("1,276", "en").zahl).toBe(1276);
     expect(zerlege("1,276", "de").zahl).toBe(1.276);
@@ -45,7 +45,7 @@ describe("Zahlwerte lesen und schreiben", () => {
   });
 
   it("gruppiert nur, wo die Quelle es tat", () => {
-    // Sonst stünde die Jahreszahl als „2.022" da.
+    // Sonst stünde die Jahreszahl als „2.022“ da.
     expect(rundlauf("2022", "de")).toBe("2022");
     expect(rundlauf("2022", "en")).toBe("2022");
   });

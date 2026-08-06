@@ -165,7 +165,7 @@ export function ArticleIndex({
                           Standen die drei Angaben als fünf gleichrangige
                           Kästchen nebeneinander, brach die Zeile bei 390 px
                           hinter dem zweiten Punkt um: „31. Juli 2026 · 5 Min.
-                          Lesezeit ·" und darunter allein „Salati". Ein
+                          Lesezeit ·" und darunter allein „Salati“. Ein
                           Mittelpunkt am Zeilenende trennt nichts. */}
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-ink-faint lg:flex-col lg:items-start lg:gap-y-2 lg:pt-1">
                         <time dateTime={article.date}>

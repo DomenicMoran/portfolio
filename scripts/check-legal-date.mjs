@@ -14,7 +14,7 @@
  * Dieser Lauf rechnet sie neu.
  *
  * Gemessen wird der sichtbare Text der gebauten Seite, nicht der Quelltext:
- * Was zählt, ist das, was ein Leser vor sich hat. Der Abschnitt „Stand"
+ * Was zählt, ist das, was ein Leser vor sich hat. Der Abschnitt „Stand“
  * bleibt außen vor, sonst änderte jedes neue Datum die Prüfsumme, und der
  * Lauf verlangte nach jeder Korrektur eine weitere.
  *
@@ -41,7 +41,7 @@ const TEXT_PRUEFSUMME = ausStandDatei("TEXT_PRUEFSUMME");
 const SEITE = join(".next", "server", "app", "datenschutz.html");
 
 /**
- * Der sichtbare Text der Erklärung, ohne den Abschnitt „Stand".
+ * Der sichtbare Text der Erklärung, ohne den Abschnitt „Stand“.
  *
  * Der Abschnitt wird an seiner Überschrift abgeschnitten. Sie steht als
  * letzte auf der Seite; alles danach gehört zur Fußzeile und ist auf jeder
@@ -130,7 +130,7 @@ const gerechnet = createHash("sha256").update(text).digest("hex").slice(0, 16);
 
 if (gerechnet !== TEXT_PRUEFSUMME) {
   console.error(
-    `Die Datenschutzerklärung trägt den Stand „${STAND}", ihr Text ist aber ein anderer.\n\n` +
+    `Die Datenschutzerklärung trägt den Stand „${STAND}“, ihr Text ist aber ein anderer.\n\n` +
       `  in stand.ts:   ${TEXT_PRUEFSUMME}\n` +
       `  ausgeliefert:  ${gerechnet}\n\n` +
       `Beides gehört zusammen: Wenn der Text sich geändert hat, gehört das ` +
@@ -158,7 +158,7 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
    Die interne Not-found-Route bleibt draußen: Next erzeugt sie immer als
    dynamisch, weil sie eine Kopfzeile liest, um in der Sprache zu antworten,
    unter der jemand gekommen ist. Diese Ausnahme stand hier still im Code,
-   während die Erklärung „sämtliche Seiten" behauptete — eine Zeile, die man
+   während die Erklärung „sämtliche Seiten“ behauptete — eine Zeile, die man
    einmal einträgt und dann vergisst. Sie steht jetzt auch im Text der
    Erklärung, und der Block darunter hält sie dort fest. */
 const AUSNAHMEN = new Set(["/_not-found"]);
@@ -166,7 +166,7 @@ const AUSNAHMEN = new Set(["/_not-found"]);
 /* Dieselbe Zusage steht auch im README, und dort stand sie falsch.
 
    Die Erklärung nannte die Fehlerseite als Ausnahme, das README behauptete
-   zweimal ausnahmslos „Jede Route ist statisch" und „Jede Route wird vorab
+   zweimal ausnahmslos „Jede Route ist statisch“ und „Jede Route wird vorab
    erzeugt": zwei öffentliche Dokumente desselben Projekts, verschiedene
    Aussagen über dieselbe Tatsache. Gemessen am Bau hatte das README unrecht,
    eine App-Route von 26 wird nicht vorgerendert, und es ist die Fehlerseite.
@@ -180,8 +180,8 @@ const AUSNAHMEN = new Set(["/_not-found"]);
   const absolut = /Jede Route (?:ist statisch|wird vorab erzeugt)/.exec(readme);
   if (AUSNAHMEN.size && absolut) {
     console.error(
-      `README.md sagt „${absolut[0]}" ohne Einschränkung. Die Fehlerseite ` +
-        `wird bei der Anfrage zusammengesetzt; „jede Seite mit Inhalt" ist ` +
+      `README.md sagt „${absolut[0]}“ ohne Einschränkung. Die Fehlerseite ` +
+        `wird bei der Anfrage zusammengesetzt; „jede Seite mit Inhalt“ ist ` +
         `die Formulierung, die der Bau trägt.`,
     );
     process.exit(1);
@@ -321,11 +321,11 @@ const DPF = "https://dpfapi.azurewebsites.net/api/participants";
       );
       if (treffer.length === 0) {
         console.error(
-          `\nDie Erklärung nennt „${genannt}" als nach dem EU-US-Datenschutzrahmen\n` +
+          `\nDie Erklärung nennt „${genannt}“ als nach dem EU-US-Datenschutzrahmen\n` +
             `zertifiziert. In der Teilnehmerliste des US-Handelsministeriums steht\n` +
             `unter den aktiven Einträgen niemand dieses Namens.\n\n` +
             `Ohne gültige Zertifizierung fehlt der Übermittlung in die USA ihre\n` +
-            `Grundlage, und der Absatz „Hosting" behauptet etwas Unwahres.`,
+            `Grundlage, und der Absatz „Hosting“ behauptet etwas Unwahres.`,
         );
         process.exitCode = 1;
       }
@@ -432,7 +432,7 @@ const FRISTEN = new Map([
 /* ---------------------------------------------------------------------------
    Beide Rechtsseiten nennen dieselbe Anschrift.
 
-   Sie stand zweimal fest im Quelltext: unter „Angaben gemäß § 5 DDG" im
+   Sie stand zweimal fest im Quelltext: unter „Angaben gemäß § 5 DDG“ im
    Impressum und unter „Verantwortlicher" in der Datenschutzerklärung. Seit
    `app/(de)/(legal)/provider.ts` gibt es eine Quelle — dieser Block hält das
    Ergebnis dagegen, an den ausgelieferten Seiten und nicht am Quelltext. Wer
@@ -537,7 +537,7 @@ const FRISTEN = new Map([
     }
     if (!inhalt.includes(ANBIETER)) {
       console.error(
-        `/${name} nennt nicht den Anbieter aus provider.ts („${ANBIETER}").`,
+        `/${name} nennt nicht den Anbieter aus provider.ts („${ANBIETER}“).`,
       );
       process.exitCode = 1;
     }

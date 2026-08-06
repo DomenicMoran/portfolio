@@ -3,7 +3,7 @@
  *
  * Ein ausgedrucktes Blatt verliert die Adresszeile des Browsers. Wer es
  * weitergereicht bekommt, hält Text ohne Absender und ohne Datum in der Hand —
- * ausgerechnet bei einer Seite, deren ganzes Argument „jede Zahl ist belegt"
+ * ausgerechnet bei einer Seite, deren ganzes Argument „jede Zahl ist belegt“
  * lautet.
  *
  * Nur im Druck sichtbar: `.print-only` ist am Bildschirm `display: none` und

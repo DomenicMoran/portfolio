@@ -33,7 +33,7 @@ describe("Antwortzeit im Kontaktbereich", () => {
       const imVorspann = stunden(inhalt.contact.lede);
       const eintrag = inhalt.contact.fakten.find((f) => f.label === kachel);
       expect(imVorspann, "Vorspann nennt keine Stundenzahl").not.toBeNull();
-      expect(eintrag, `Kachel „${kachel}" fehlt`).toBeTruthy();
+      expect(eintrag, `Kachel „${kachel}“ fehlt`).toBeTruthy();
       expect(stunden(eintrag!.wert)).toBe(imVorspann);
     });
   }

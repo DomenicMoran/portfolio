@@ -50,7 +50,7 @@ function untergrenze(zahl: string, sprache: "de" | "en"): string {
  * Website; hier genügt der erste Satz jedes „schwierigen Teils".
  *
  * Getrennt wird an Satzzeichen, denen ein Leerzeichen und ein Großbuchstabe
- * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO", „1.44")
+ * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO“, „1.44“)
  * den Satz nicht vorzeitig ab.
  */
 function firstSentence(text: string) {
@@ -499,7 +499,7 @@ export function OnePager({
 
                 Beim ersten Bau in einem neuen Monat wandert die Angabe
                 trotzdem: Das HTML sagt dann „September 2026", die beiden
-                gedruckten PDF sagen weiter „August 2026". Der Quellstand ist
+                gedruckten PDF sagen weiter „August 2026“. Der Quellstand ist
                 die Prüfsumme über genau diesen Text, also schlägt
                 `check:onepager` fehl — ohne dass jemand etwas geändert hat.
 

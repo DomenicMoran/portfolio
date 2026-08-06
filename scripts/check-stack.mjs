@@ -8,7 +8,7 @@
  * die Dateipfade aus den Artikeln und die Commit-Kennungen daneben; die
  * Technik selbst nicht.
  *
- * Am 03.08.2026 stand deshalb sechs Tage lang „On-Device-LLM (GGUF/llama.cpp)"
+ * Am 03.08.2026 stand deshalb sechs Tage lang „On-Device-LLM (GGUF/llama.cpp)“
  * auf der Startseite, obwohl Salati 1.34.0 `llama.rn` aus dem Projekt genommen
  * hatte. Gefunden wurde das von Hand. Dieser Lauf findet es beim nächsten Mal
  * von selbst.
@@ -108,7 +108,7 @@ const ANDERS_IM_CODE = {
 
    Die Textsuche allein reicht dafür nicht, und das ist gemessen: Nach dem
    Entfernen von `llama.rn` steht in `features/ki/model.ts` weiterhin ein
-   Kommentar, der die Abschaffung erklärt — die Suche nach „llama" findet ihn
+   Kommentar, der die Abschaffung erklärt — die Suche nach „llama“ findet ihn
    und meldet die Technik als belegt. Ein Wort im Quelltext ist kein Beweis
    dafür, dass etwas benutzt wird; ein Eintrag in `dependencies` schon.
 */
@@ -137,7 +137,7 @@ const ALS_PAKET = {
 };
 
 /**
- * „Supabase / Postgres" nennt zwei Dinge, „React Native 0.86" eines mit Version.
+ * „Supabase / Postgres" nennt zwei Dinge, „React Native 0.86“ eines mit Version.
  *
  * Die Version wird überall entfernt, nicht nur am Ende: „pnpm 10 Workspaces"
  * trägt sie in der Mitte, und mit ihr im Suchbegriff findet sich nichts.
@@ -246,7 +246,7 @@ for (const [id, repo] of Object.entries(REPOS)) {
      Gelesen wird ein Stück Quelltext von `stack: [` bis zur schließenden
      Klammer, und darin stehen auch Erklärungen. Eine davon nennt in
      Anführungszeichen einen Namen, der früher einmal dastand
-     („Lighthouse-Budgets") — der Lauf hielt ihn für einen Eintrag und
+     („Lighthouse-Budgets“) — der Lauf hielt ihn für einen Eintrag und
      verlangte einen Beleg für etwas, das auf der Seite gar nicht mehr steht. */
   const ohneKommentare = block[1]
     .replace(/\/\*[\s\S]*?\*\//g, " ")
@@ -285,7 +285,7 @@ for (const [id, repo] of Object.entries(REPOS)) {
     const treffer = begriffe.every((begriff) => {
       const klein = begriff.toLowerCase();
       /* Ein Paketname trennt mit Bindestrich, die Seite schreibt ihn aus:
-         „React Native" gegen `react-native`. Ohne diese Schreibweise fiel der
+         „React Native“ gegen `react-native`. Ohne diese Schreibweise fiel der
          Vergleich auf die Quelltextsuche zurück und war dann schon mit einer
          beiläufigen Erwähnung in einer Notizdatei zufrieden — geprüft wurde
          damit nicht mehr die Abhängigkeit, sondern das Vorkommen des Wortes. */

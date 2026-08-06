@@ -21,14 +21,14 @@ const halbfett = readFileSync(join(process.cwd(), "src/lib/fonts/Geist-SemiBold.
 
 /**
  * Für `ImageResponse`. Der reguläre Schnitt bleibt der eingebaute — er heißt
- * dort ebenfalls „Geist", und genau darum greift die Zuordnung nach Gewicht.
+ * dort ebenfalls „Geist“, und genau darum greift die Zuordnung nach Gewicht.
  *
  * Zu den ungleichen Wortabständen auf den Karten, damit das niemand noch
  * einmal untersucht: Sie sind echt, gemessen am Pixel der ausgelieferten
  * Karte, und sie kommen aus Satoris Textsetzung. Derselbe Satz in 40 px:
  *
- *   Satori     15  18  15  22  14  14      (Grundlücke 14, nach „:" 22)
- *   Chromium   12  13  12  15  13  13      (Grundlücke 12, nach „:" 15)
+ *   Satori     15  18  15  22  14  14      (Grundlücke 14, nach „:“ 22)
+ *   Chromium   12  13  12  15  13  13      (Grundlücke 12, nach „:“ 15)
  *
  * Die Richtung ist in beiden dieselbe — nach einem Doppelpunkt steht mehr
  * Weißraum, weil der Glyph schmaler ist als seine Vorschubbreite. Satori

@@ -17,7 +17,7 @@
  *
  * Gemessen wird nicht über eine Liste fester Kästen. Die Kopfleiste trägt
  * ihre Fläche auf einem Kind und fällt durch jede solche Heuristik — der
- * erste Anlauf meldete deshalb „kein Befund", obwohl er nichts prüfte.
+ * erste Anlauf meldete deshalb „kein Befund“, obwohl er nichts prüfte.
  * Gefragt wird stattdessen der Browser: `elementFromPoint` sagt, was an
  * dieser Stelle wirklich obenauf liegt, und überspringt dabei von selbst,
  * was `pointer-events: none` trägt.
@@ -167,15 +167,15 @@ for (const breite of BREITEN) {
 
       if (stand.draussen) {
         funde.push(
-          `${pfad} bei ${breite} px: „${stand.name}" hat den Fokus außerhalb des Sichtfelds (oben ${stand.top})`,
+          `${pfad} bei ${breite} px: „${stand.name}“ hat den Fokus außerhalb des Sichtfelds (oben ${stand.top})`,
         );
       } else if (!stand.sichtbar) {
         funde.push(
-          `${pfad} bei ${breite} px: „${stand.name}" hat den Fokus, sichtbar ist ${stand.davor} (oben ${stand.top})`,
+          `${pfad} bei ${breite} px: „${stand.name}“ hat den Fokus, sichtbar ist ${stand.davor} (oben ${stand.top})`,
         );
       }
       if (!stand.markiert) {
-        funde.push(`${pfad} bei ${breite} px: „${stand.name}" zeigt keinen Fokus`);
+        funde.push(`${pfad} bei ${breite} px: „${stand.name}“ zeigt keinen Fokus`);
       }
     }
   }
@@ -270,7 +270,7 @@ for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
   if (nachEscape.offen) funde.push(`${name}: Escape schließt nicht`);
   else if (!/efehlspalette|ommand palette|enü öffnen|pen menu/.test(String(nachEscape.wo))) {
     funde.push(
-      `${name}: nach dem Schließen steht der Fokus auf „${nachEscape.wo}" ` +
+      `${name}: nach dem Schließen steht der Fokus auf „${nachEscape.wo}“ ` +
         `statt auf dem Knopf, der geöffnet hat`,
     );
   }

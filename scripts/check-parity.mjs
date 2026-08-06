@@ -123,8 +123,8 @@ async function zaehle(pfad, mitZahlen = false) {
        ergibt zwei verschiedene öffentliche Aussagen über denselben Gegenstand
        — und beide Seiten bleiben zählgleich.
 
-       Verglichen wird ohne Trennzeichen: Dieselbe Zahl heißt „4.318" und
-       „4,318", und genau dieser Unterschied ist gewollt. Datumsangaben
+       Verglichen wird ohne Trennzeichen: Dieselbe Zahl heißt „4.318“ und
+       „4,318“, und genau dieser Unterschied ist gewollt. Datumsangaben
        fallen heraus, weil sie in beiden Sprachen anders geschrieben werden;
        ihren Gleichstand prüft `check:legal-date`. */
     Zahlen: [
@@ -234,8 +234,8 @@ await sprachSeite.close();
   Sie stehen hinter einem Reiter, der nicht der erste ist — im gebauten HTML
   taucht ihr Text deshalb gar nicht auf, und keiner der Läufe, die Dateien
   lesen, konnte sie je sehen. Gemessen an der ausgelieferten Seite trugen alle
-  vier auf `/en` deutsche Beschriftungen: „GETEILTE LOGIK", „ZUGÄNGE",
-  „QR-Bestellung", „Mensch entscheidet". Also ausgerechnet in dem Bild, das
+  vier auf `/en` deutsche Beschriftungen: „GETEILTE LOGIK“, „ZUGÄNGE“,
+  „QR-Bestellung“, „Mensch entscheidet“. Also ausgerechnet in dem Bild, das
   eine fachliche Führung als Erstes aufmacht.
 
   Gesucht wird nach Umlauten und nach einer kurzen Liste von Wörtern, die es

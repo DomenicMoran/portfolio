@@ -117,7 +117,7 @@ for (const breite of BREITEN) {
         if (versatz > toleranz) {
           raus.push({
             versatz: Math.round(versatz),
-            karten: anfaenge.map((a) => `„${a.titel}" +${Math.round(a.y)}`),
+            karten: anfaenge.map((a) => `„${a.titel}“ +${Math.round(a.y)}`),
           });
         }
       }

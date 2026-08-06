@@ -25,7 +25,7 @@ import type { Content } from "@/content/types";
  * Das Ziel setzt der Besucher am Regler. In der App hängt es am Profil, und
  * ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.
  *
- * Die Titel stehen im Katalog in Ersatzschreibung („Haehnchen"), weil er über
+ * Die Titel stehen im Katalog in Ersatzschreibung („Haehnchen“), weil er über
  * ASCII-Kennungen erzeugt wird. Hier stehen sie mit Umlaut: Die Zahlen sind
  * die Aussage, die Schreibweise ist Darstellung.
  */
@@ -477,7 +477,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           der Auswahl stand stumm daneben — und genau das Ergebnis ist die
           Aussage dieser Kachel.
 
-          Nur die beiden Werte, um die es geht. „2.095 kcal, 198 g Eiweiß" ist
+          Nur die beiden Werte, um die es geht. „2.095 kcal, 198 g Eiweiß“ ist
           eine Ansage; fünf Zahlen hintereinander sind eine Liste, die niemand
           im Kopf behält. Der Bereich hängt von Anfang an im Baum. */}
       <p role="status" aria-live="polite" className="sr-only">
