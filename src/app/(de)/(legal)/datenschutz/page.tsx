@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedFuer, ogBildFuer } from "@/lib/metadata";
+import { feedFuer, ogBildFuer, kartenTitel } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { Rechtsfuss } from "../Rechtsfuss";
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
     // statt es zu mischen.
     images: ogBildFuer("de"),
-    title: "Datenschutz",
+    title: kartenTitel("Datenschutz"),
     locale: "de_DE",
   },
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des

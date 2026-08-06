@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedFuer, ogBildFuer } from "@/lib/metadata";
+import { feedFuer, ogBildFuer, kartenTitel } from "@/lib/metadata";
 import { OnePager } from "@/components/OnePager";
 import { en } from "@/content/en";
 import { site } from "@/content/site";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
     // statt es zu mischen.
     images: ogBildFuer("en"),
-    title: en.onepager.title,
+    title: kartenTitel(en.onepager.title),
     description: en.onepager.description,
     locale: "en_GB",
   },
