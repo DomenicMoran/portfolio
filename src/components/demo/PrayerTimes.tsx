@@ -595,6 +595,29 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
         </div>
       </div>
 
+      {/* Was „wie in der App" hier bedeutet.
+
+          Zwei der vier Schaltflächen sind ohne diesen Satz nicht zu
+          unterscheiden: Über 48° ist `auto` dieselbe Rechnung wie `angle`,
+          darunter wird der Dämmerungswinkel jeden Tag erreicht und keine
+          Ausweichregel greift. Gemessen liefern die beiden in Tromsø, Berlin
+          und Kairo überall dieselben Zeiten — wer zwischen ihnen wechselt,
+          sieht nichts geschehen und hält die Demo für kaputt.
+
+          Der Satz steht nur bei `auto`: Bei den drei anderen ist die
+          Beschriftung selbst die Antwort, und eine Zeile, die immer dasteht,
+          liest nach dem zweiten Mal niemand mehr.
+
+          `min-h`, damit das Ein- und Ausblenden nichts verschiebt. */}
+      <p className="mt-2 min-h-[1.25rem] font-mono text-[11px] text-ink-faint">
+        {regel === "auto"
+          ? demo.autoIst.replace(
+              "{regel}",
+              demo.rules[ORTE[ort].lat > 48 ? "angle" : "middle"],
+            )
+          : ""}
+      </p>
+
       {/* Feste Hoehe: Der Wechsel von Ort oder Regel darf nichts verschieben.
           Links bleibt Platz fuer die Stundenskala, unten fuer die Monate. Beide
           stehen als Text daneben und nicht im Bild: `preserveAspectRatio` ist
