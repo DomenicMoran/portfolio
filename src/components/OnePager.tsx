@@ -375,7 +375,21 @@ export function OnePager({
 
           {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
             untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
-          <div className="mt-8 grid grid-cols-2 gap-x-8 break-inside-avoid print:mt-4">
+          {/* Zwei Spalten erst ab `sm`, gedruckt immer.
+
+              Der Block stand fest auf `grid-cols-2`. Auf dem Papier ist das
+              richtig — 794 px Blattbreite ergeben zwei Spalten von rund
+              340 px. Am Telefon ergaben dieselben zwei Spalten 142 px, und
+              darin zerfiel „React / Next.js App Router · React Native /
+              Expo · TypeScript · Motion & Interaction“ in fünf Zeilen. Der
+              Verweis darunter brach mitten im Wort um, mit einem einzelnen
+              „n“ auf der letzten Zeile.
+
+              Alles darüber auf dem Blatt läuft am Telefon über die volle
+              Breite; nur dieser letzte Block tat es nicht. Gedruckt bleibt
+              es bei zwei Spalten, weil die Druckdarstellung mit 794 px
+              ohnehin über `sm` liegt. */}
+          <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 break-inside-avoid sm:grid-cols-2 print:mt-4 print:gap-y-0">
             <section>
               <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
                 {onepager.focus}
