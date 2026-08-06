@@ -13,6 +13,25 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Nur der neueste Stand wird geprüft.
+#
+# Ein Durchgang dauert rund 25 Minuten, weil neunzehn der Prüfläufe einen
+# Browser öffnen. Drei Commits kurz hintereinander stellen damit drei
+# Durchgänge in die Schlange, und am 06.08.2026 hat GitHub den mittleren nach
+# fünfzehn Minuten Wartezeit ohne Läufer abgebrochen: `runner_name` leer, null
+# Schritte gelaufen. In der Actions-Ansicht steht dann ein rotes „failure“,
+# das niemand verursacht hat — und ein Rot, das nichts bedeutet, ist teurer
+# als gar keine Anzeige.
+#
+# `cancel-in-progress` bricht den älteren Durchgang jetzt absichtlich ab. Er
+# steht danach als abgebrochen und nicht als fehlgeschlagen da, und die
+# Läuferzeit geht an den Stand, der wirklich ausgeliefert wird. Der Preis:
+# Ein Zwischencommit bekommt keinen vollständigen Lauf. Das ist hier richtig,
+# weil ausgeliefert wird, was zuletzt auf `main` steht.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
