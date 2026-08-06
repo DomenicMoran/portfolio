@@ -21,6 +21,18 @@ import "./globals.css";
  * vor einer weißen Seite mit einer englischen Zeile, und die letzte
  * Erinnerung an diese Adresse ist ein Absturz ohne Absender.
  *
+ * **Was diese Datei nicht ersetzt.** Der Bau legt weiterhin ein
+ * `_global-error.html` an, und darin steht Nexts eigene Fassung: 10.286 Byte
+ * ohne ein einziges Wort von hier, ohne `lang` am Dokument, Titel „500: This
+ * page couldn't load". Nachgezählt an der gebauten Datei, nicht angenommen.
+ * Das ist kein Versäumnis, sondern die Bauart: Eine Fehlergrenze ist eine
+ * Client-Komponente und greift erst, wenn React läuft. Was davor
+ * ausgeliefert würde, bestimmt das Framework.
+ *
+ * Erreichbar ist diese Fassung damit nur über den Weg, für den sie gebaut
+ * ist. Wer den anderen abdecken will, braucht einen Serverfehler auf einer
+ * Seite, die keinen Server hat — den gibt es hier nicht.
+ *
  * Zwei Unterschiede zur 404, beide mit Grund:
  *
  * - **Deutsch, mit englischer Zeile darunter.** Eine Fehlergrenze läuft im
