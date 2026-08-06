@@ -1158,7 +1158,16 @@ export const recruiter = {
        Verweis auf `/onepager`, auf keiner der zwanzig Seiten. Auf einem
        Telefon ist ein PDF der schlechtere Weg — es öffnet in einem Betrachter,
        lässt sich nicht durchsuchen und bricht die Zeilen für DIN A4. */
-    web: { label: "oder im Browser lesen", href: "/onepager" },
+    /* „Kurzprofil im Browser“ und nicht „oder im Browser lesen“.
+
+       Das „oder“ bezog sich auf den Knopf darüber und stand nur solange
+       richtig, wie beides nebeneinander gelesen wird. In der Verweisliste
+       eines Vorleseprogramms steht der Name für sich, und dort hieß der
+       Eintrag „oder im Browser lesen“ — ohne Bezug und ohne Ziel. Alle
+       anderen Verweise dieses Bereichs nennen ihr Ziel selbst („Salati im
+       Detail“, „MenuCloud im Detail“), und die Befehlspalette führt dieselbe
+       Seite längst als „Kurzprofil im Browser“. */
+    web: { label: "Kurzprofil im Browser", href: "/onepager" },
     mail: { label: "Direkt schreiben" },
     copy: {
       label: "Adresse kopieren",

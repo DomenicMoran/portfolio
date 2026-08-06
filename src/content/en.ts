@@ -1147,7 +1147,8 @@ export const en: Content = {
     ],
     cta: {
       pdf: { label: "One-pager as PDF", href: "/domenic-moran-one-pager.pdf" },
-      web: { label: "or read it in the browser", href: "/en/onepager" },
+      // Siehe `site.ts`: Der Name muss ohne den Knopf darüber tragen.
+      web: { label: "One-pager in the browser", href: "/en/onepager" },
       mail: { label: "Email me" },
       copy: {
         label: "Copy address",
