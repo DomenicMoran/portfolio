@@ -136,6 +136,36 @@ for (const pfad of pfade) {
     funde.push(`${pfad}: Überschrift endet auf ein Zierzeichen — „…${z}“`);
   }
 
+  /* Eine Fallstudie trägt genau eine Überschrift der Ebene 3: ihren Namen.
+
+     Wer mit einem Vorleseprogramm arbeitet, liest den Abschnitt oft nur als
+     Überschriftenliste. Dort stand unter „Vier Produkte. Alle live.“ sechsmal
+     eine Ebene 3: die vier Projekte und dazwischen die beiden Vorführungen,
+     „Ein Jahr Gebetszeiten, hier gerechnet“ und „Ein Tag, zusammengestellt“.
+     Sie sehen in dieser Liste aus wie zwei weitere Projekte, und weil eine
+     neue Ebene 3 den vorigen Zweig schließt, hing Salatis „Ausführlich
+     nachzulesen" anschließend unter der Vorführung statt unter Salati.
+
+     Die Stufen selbst sprangen dabei nie, es fehlte keine Ebene — genau
+     deshalb meldet axe hier nichts. Geprüft wird die Zugehörigkeit, nicht die
+     Reihenfolge. */
+  const fallstudien = await seite.evaluate(() =>
+    [...document.querySelectorAll('[id^="case-"]')].map((s) => ({
+      id: s.id,
+      titel: [...s.querySelectorAll("h3")].map((h) =>
+        (h.textContent ?? "").trim().slice(0, 40),
+      ),
+    })),
+  );
+  for (const f of fallstudien) {
+    if (f.titel.length !== 1) {
+      funde.push(
+        `${pfad}: #${f.id} hat ${f.titel.length} Überschriften der Ebene 3 statt einer — ` +
+          `„${f.titel.join("“, „")}“`,
+      );
+    }
+  }
+
   for (const pflicht of PFLICHT) {
     if (!gefunden.some((l) => l.rolle === pflicht)) {
       funde.push(`${pfad}: keine Landmarke „${pflicht}"`);

@@ -605,9 +605,14 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="text-base font-semibold tracking-tight text-ink">
+        {/* `h4` und nicht `h3`: Die Kachel steckt in der Fallstudie, und deren
+            Name ist das `h3`. Als `h3` stand sie in der Überschriftengliederung
+            neben den Projekten — der Abschnitt heißt „Vier Produkte“, gezählt
+            wurden dort sechs, und Salatis „Ausführlich nachzulesen“ hing
+            anschließend unter der Kachel statt unter dem Projekt. */}
+        <h4 className="text-base font-semibold tracking-tight text-ink">
           {demo.title}
-        </h3>
+        </h4>
         {/* Die gemessene Rechenzeit steht dabei, weil sie die Aussage trägt:
             Was hier passiert, ist Rechnen und kein Abrufen. */}
         <p className="font-mono text-[11px] text-ink-faint tabular-nums">
