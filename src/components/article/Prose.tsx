@@ -230,7 +230,24 @@ export function Prose({
                   aria-label={block.caption ?? tabelleLabel}
                   className="overflow-x-auto rounded-xl border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
                 >
-                  <table className="w-full border-collapse text-left text-sm">
+                  {/* Die Tabelle trägt ihren eigenen Namen, nicht nur ihr
+                      Rahmen.
+
+                      Der Rahmen ist beschriftet, weil er scrollt. Der Name
+                      der Tabelle blieb davon leer: Eine `figcaption`
+                      benennt die Abbildung, nicht die Tabelle darin.
+                      Gemessen im Barrierefreiheitsbaum stand dort `""`, und
+                      in der Tabellenliste eines Vorleseprogramms erscheint
+                      sie damit ohne Titel — neben Codekästen und
+                      Abbildungen, die alle einen haben.
+
+                      `aria-labelledby` auf die sichtbare Unterschrift statt
+                      einer eigenen `caption`: Sonst stünde derselbe Satz
+                      zweimal auf der Seite. */}
+                  <table
+                    aria-labelledby={block.caption ? `tabelle-${i}` : undefined}
+                    className="w-full border-collapse text-left text-sm"
+                  >
                     <thead>
                       <tr className="border-b border-line bg-surface/60">
                         {block.head.map((h) => (
@@ -268,7 +285,10 @@ export function Prose({
                   </table>
                 </div>
                 {block.caption ? (
-                  <figcaption className="mt-2.5 text-xs leading-relaxed text-ink-faint">
+                  <figcaption
+                    id={`tabelle-${i}`}
+                    className="mt-2.5 text-xs leading-relaxed text-ink-faint"
+                  >
                     {block.caption}
                   </figcaption>
                 ) : null}
