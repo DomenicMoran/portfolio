@@ -716,7 +716,12 @@ export const en: Content = {
         note: "Meta & Udemy certificates",
       },
     ],
-    statsHinweis: `Measured on ${verified.date} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
+    /* `dateLong` und nicht der rohe Wert: Hier stand „Measured on
+       2026-08-06“, während drei andere englische Stellen denselben Stempel
+       als „6 August 2026“ setzen — zwei Datumsformate auf einer Seite, und
+       das maschinenlesbare mitten im Satz. Die deutsche Fassung dreht den
+       Wert an derselben Stelle auf „06.08.2026“. */
+    statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [
       {
