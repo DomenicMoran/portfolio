@@ -320,6 +320,65 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
               }),
             );
           }
+
+          /* Die Kette muss steigen, sonst ist der Wert keiner.
+             ---------------------------------------------------
+             Die Grenzen oben fangen nur, was weit außerhalb des Tages liegt.
+             Am Rand der Polarnacht liefert `adhan` aber auch Werte, die
+             mitten im Tag stehen und trotzdem unmöglich sind: In Tromsø am
+             16. November steht Asr auf 11:25 und Dhuhr auf 11:34 — Asr vor
+             dem Sonnenhöchststand. Am 20. Januar liegt Asr um 14:44 nach
+             Maghrib um 13:22.
+
+             Der Grund ist derselbe wie oben: Die Sonne erreicht die
+             Schattenbedingung an diesem Tag nicht, und die Bibliothek
+             rechnet weiter, statt aufzugeben. Gemessen an der ausgelieferten
+             Seite über alle 365 Tage: 21 solcher Fälle in Tromsø, keiner in
+             Berlin, Istanbul oder Kairo.
+
+             Welcher der beiden Werte weicht, ist keine Geschmacksfrage.
+             Sonnenaufgang, Dhuhr und Maghrib sind reine Sonnenstandsgeometrie
+             und an jedem Ort eindeutig; Fadschr, Asr und Ischa hängen an einem
+             Winkel oder einer Schattenlänge, die die Sonne verfehlen kann.
+             Verletzt ein bedingter Wert die Reihenfolge, ist er der falsche.
+
+             Der erste Anlauf strich stattdessen jeden Wert, der vor seinem
+             Vorgänger lag. Am 15. Januar traf das Maghrib statt Asr: Der
+             Sonnenuntergang verschwand, obwohl er berechenbar ist und Asr das
+             Problem war. */
+          const DHUHR = GEBETE.indexOf("dhuhr");
+          const ASR = GEBETE.indexOf("asr");
+          const MAGHRIB = GEBETE.indexOf("maghrib");
+          const SONNENAUFGANG = GEBETE.indexOf("sunrise");
+          const FAJR = GEBETE.indexOf("fajr");
+          const ISHA = GEBETE.indexOf("isha");
+
+          for (const tag of tage) {
+            /* Asr gehört zwischen Sonnenhöchststand und Sonnenuntergang. */
+            if (
+              tag[ASR] !== null &&
+              ((tag[DHUHR] !== null && tag[ASR] < tag[DHUHR]) ||
+                (tag[MAGHRIB] !== null && tag[ASR] > tag[MAGHRIB]))
+            ) {
+              tag[ASR] = null;
+            }
+            /* Fadschr vor dem Sonnenaufgang, Ischa nach dem Sonnenuntergang. */
+            if (
+              tag[FAJR] !== null &&
+              tag[SONNENAUFGANG] !== null &&
+              tag[FAJR] > tag[SONNENAUFGANG]
+            ) {
+              tag[FAJR] = null;
+            }
+            if (
+              tag[ISHA] !== null &&
+              tag[MAGHRIB] !== null &&
+              tag[ISHA] < tag[MAGHRIB]
+            ) {
+              tag[ISHA] = null;
+            }
+          }
+
           aus[r] = tage;
         }
 
