@@ -157,7 +157,14 @@ export function NotFoundPage({
           <p className="border-t border-line pt-6 text-sm text-ink-faint">
             {notFound.report}{" "}
             <a
-              href={mailAdresse(site.email, site.mailSubject)}
+              /* Eigener Betreff, nicht der allgemeine.
+
+                 `site.mailSubject` lautet „Anfrage über domenicmoran.de“ und
+                 ist für den gedacht, der wegen einer Stelle schreibt. Wer von
+                 hier aus schreibt, meldet einen toten Verweis — und die
+                 Meldung soll im Postfach als solche ankommen, ohne dass
+                 jemand sie erst öffnet. */
+              href={mailAdresse(site.email, notFound.reportSubject)}
               className="-my-1 py-1 text-acid underline underline-offset-4"
             >
               {site.email}

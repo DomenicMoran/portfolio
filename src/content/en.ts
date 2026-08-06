@@ -1312,6 +1312,7 @@ export const en: Content = {
     onward: "Continue to",
     home: "Home",
     report: "Found something broken?",
+    reportSubject: "Dead link on domenicmoran.de",
     otherLanguage: {
       text: "This address does not exist.",
       link: "Continue on the English version",

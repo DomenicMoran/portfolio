@@ -516,6 +516,15 @@ export type Content = {
     home: string;
     report: string;
     /**
+     * Der Betreff der Meldung über einen toten Verweis.
+     *
+     * Nicht `site.mailSubject`: Der lautet „Anfrage über domenicmoran.de“ und
+     * ist für den gedacht, der wegen einer Stelle schreibt. Wer hier schreibt,
+     * meldet einen Fehler — und die Meldung soll im Postfach als solche
+     * ankommen, ohne dass jemand sie erst öffnet.
+     */
+    reportSubject: string;
+    /**
      * Der Hinweis für den, der in der anderen Sprache gekommen ist.
      *
      * Zusammengesetzt aus `title` und `home` stand dort „This page does not
