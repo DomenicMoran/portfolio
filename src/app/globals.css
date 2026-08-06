@@ -713,7 +713,21 @@ textarea:-webkit-autofill {
      genau dieser Eintrag auf Papier nirgendwohin: ein unterstrichenes Wort
      ohne Adresse. Nur hier und nicht an allen Links — jede Adresse im
      Fließtext ausgeschrieben wäre Lärm statt Hilfe. */
-  .evidence-list a[href^="http"]::after {
+  /* Dieselbe Regel für die Verweise, die ein Recruiter auf Papier mitnimmt.
+
+     Gemessen an der ausgelieferten Seite in der Druckdarstellung: Im
+     Recruiter- und im Kontaktbereich stehen fünf Verweise nach außen —
+     „verified-done auf GitHub", zweimal „LinkedIn", zweimal „GitHub" —, und
+     alle fünf kamen als unterstrichenes Wort ohne Ziel aus dem Drucker. Es
+     sind die beiden Profile und das eine Paket, also genau das, was jemand
+     nachschlagen will, der das Blatt in der Hand hält.
+
+     Der Einwand von oben gilt hier nicht: Er richtet sich gegen Adressen im
+     Fließtext, und davon trägt die gedruckte Startseite 36. Diese fünf
+     stehen in Listen und Knopfleisten, nicht in Sätzen. */
+  .evidence-list a[href^="http"]::after,
+  #hire a[href^="http"]::after,
+  #contact a[href^="http"]::after {
     content: " (" attr(href) ")";
     color: var(--color-ink-faint);
     word-break: break-all;
