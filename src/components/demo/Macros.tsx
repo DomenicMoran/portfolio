@@ -400,12 +400,28 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         <label className="basis-full sm:max-w-md">
           <span className="flex items-baseline justify-between gap-4">
             <span className="text-eyebrow">{demo.targetLabel}</span>
-            <span className="font-mono text-sm text-ink tabular-nums">
+            {/* Der Wert steht sichtbar hier und nicht im Namen des Reglers.
+
+                Beide gehören in dieses `label`, also bildete sich der Name
+                aus beidem: Gemessen im Barrierefreiheitsbaum hieß der Regler
+                „TAGESZIEL 2.200kcal“ — mit dem Wert darin, und ohne
+                Leerzeichen davor, weil zwei Elemente ohne Textknoten
+                aneinanderstoßen. Beim Ziehen ändert sich damit der Name des
+                Bedienelements, nicht nur sein Wert.
+
+                `aria-hidden` nimmt die Zahl aus dem Namen; angesagt wird sie
+                über `aria-valuetext` am Regler, wie beim Tagesregler der
+                Gebetszeiten-Kachel. */}
+            <span
+              aria-hidden
+              className="font-mono text-sm text-ink tabular-nums"
+            >
               {zahl(ziel)} {demo.units.kcal}
             </span>
           </span>
           <input
             type="range"
+            aria-valuetext={`${zahl(ziel)} ${demo.units.kcal}`}
             min={ZIEL.min}
             max={ZIEL.max}
             step={ZIEL.schritt}
