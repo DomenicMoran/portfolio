@@ -49,8 +49,13 @@ export function Writing() {
         <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {artikel.map((a, i) => (
             <Reveal as="li" key={a.slug} delay={i * 0.06}>
+              {/* Wie in der Artikelübersicht: Der Name des Verweises ist der
+                  Titel. Ohne `aria-labelledby` wurde die ganze Karte zum
+                  Namen, gemessen „5 Min. Lesezeit Der gestrichelte Kreis kam
+                  nicht aus der Schrift In etwa jedem dritten Vers …“. */}
               <Link
                 href={`${chrome.base}/${a.slug}`}
+                aria-labelledby={`schrift-${a.slug}`}
                 className="group lit flex h-full flex-col rounded-2xl border border-line bg-surface/40 p-6 transition-colors hover:border-acid/40"
               >
                 <span className="font-mono text-[11px] text-ink-faint">
@@ -71,7 +76,10 @@ export function Writing() {
                     Betriebssystems abhängt, ist kein Wert. Drei Zeilen decken
                     beide Fälle; die Karten bekommen dafür gleichmäßig etwas
                     Luft, was niemand als Fehler sieht. */}
-                <h3 className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[3lh]">
+                <h3
+                  id={`schrift-${a.slug}`}
+                  className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[3lh]"
+                >
                   {a.title}
                   <ArrowUpRight
                     className="mt-0.5 size-3.5 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
