@@ -1295,6 +1295,56 @@ const BRAUCHT_KIND = {
     }
   }
 
+  /*
+    Und die englische Fassung nennt dieselben Belege.
+
+    Geprüft wird oben nur `de-*.ts` gegen die Repos — die englische Fassung
+    sieht der Lauf nicht an. Ihre Belegliste ist aber keine Übersetzung,
+    sondern dieselbe Aussage: dieselben Commits, dieselben Dateipfade. Wer
+    einen davon in einer Sprache ändert, ändert ihn leicht nur dort, und die
+    englische Seite belegt danach etwas anderes als die deutsche.
+
+    Verglichen werden Kennungen und Pfade und nicht der Text: Das Datum steht
+    englisch als „31 July 2026“ und deutsch als „31.07.2026“, und die
+    Beschreibung dahinter soll sich unterscheiden.
+  */
+  for (const datei of readdirSync("src/content/articles")) {
+    if (!/^de-.+\.ts$/.test(datei)) continue;
+    const gegenstueck = `en-${datei.slice(3)}`;
+    if (!existsSync(join("src/content/articles", gegenstueck))) {
+      funde.push(`${datei}: keine englische Fassung ${gegenstueck}`);
+      continue;
+    }
+    const sammeln = (name) => {
+      const text = readFileSync(join("src/content/articles", name), "utf8");
+      const holen = (muster) =>
+        [...new Set([...text.matchAll(muster)].map((m) => m[0]))].sort();
+      return {
+        commits: holen(/\b[0-9a-f]{8,40}\b/g),
+        pfade: holen(
+          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g,
+        ),
+      };
+    };
+    const deutsch = sammeln(datei);
+    const englisch = sammeln(gegenstueck);
+    geprueft++;
+    for (const [was, hier, dort] of [
+      ["Commit", deutsch.commits, englisch.commits],
+      ["Dateipfad", deutsch.pfade, englisch.pfade],
+    ]) {
+      const nurDeutsch = hier.filter((x) => !dort.includes(x));
+      const nurEnglisch = dort.filter((x) => !hier.includes(x));
+      if (nurDeutsch.length || nurEnglisch.length) {
+        funde.push(
+          `${datei}: ${was}-Belege gehen auseinander — ` +
+            `nur deutsch: ${nurDeutsch.join(", ") || "–"}; ` +
+            `nur englisch: ${nurEnglisch.join(", ") || "–"}`,
+        );
+      }
+    }
+  }
+
   if (funde.length) {
     abweichungen += funde.length;
     zeilen.push(`  !!  ${funde.length} Commit-Beleg(e) stimmen nicht:`);
