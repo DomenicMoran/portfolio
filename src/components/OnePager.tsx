@@ -491,6 +491,22 @@ export function OnePager({
                 {alsAnzeige(heimatAdresse)}
               </a>
             </span>
+            {/* Der Stand kommt aus der Uhr, und das hat eine Folge mit Datum.
+
+                Die Seite ist statisch, `new Date()` friert also auf den
+                Bauzeitpunkt ein — hier ist das richtig, denn gemeint ist der
+                Stand des Blattes und nicht der Tag des Lesers.
+
+                Beim ersten Bau in einem neuen Monat wandert die Angabe
+                trotzdem: Das HTML sagt dann „September 2026", die beiden
+                gedruckten PDF sagen weiter „August 2026". Der Quellstand ist
+                die Prüfsumme über genau diesen Text, also schlägt
+                `check:onepager` fehl — ohne dass jemand etwas geändert hat.
+
+                Das ist kein Fehler des Laufs, sondern seine Aufgabe: Das
+                ausgelieferte Blatt trägt dann wirklich den falschen Monat.
+                Fällig ist `npm run build && npm run onepager:pdf`, nicht eine
+                Suche nach der Ursache. */}
             <span>
               {onepager.asOf}{" "}
               {new Date().toLocaleDateString(
