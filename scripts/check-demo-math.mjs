@@ -296,7 +296,7 @@ for (const ort of ORTE) {
           continue;
         }
         const minuten = Number(treffer[1]) * 60 + Number(treffer[2]);
-        if (vorher !== null && minuten <= vorher) {
+        if (vorher !== null && minuten < vorher) {
           funde.push(
             `${wo}: ${vorherName} steht auf ${String(Math.floor(vorher / 60)).padStart(2, "0")}:` +
               `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ${paar.wert} — ` +
@@ -310,9 +310,109 @@ for (const ort of ORTE) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Der nördlichste Ort, jeden Tag des Jahres
+
+   Fünf Stichtage decken die Jahreszeiten ab, aber nicht die zwei Wochen, in
+   denen es schwierig wird. Gemessen an der ausgelieferten Seite standen in
+   Tromsø 21 Zeiten in unmöglicher Reihenfolge — am 16. November Asr um 11:25
+   vor Dhuhr um 11:34, am 20. Januar Asr um 14:44 nach Maghrib um 13:22. Alle
+   lagen an den Rändern der Polarnacht, also zwischen den Stichtagen: Der Lauf
+   war grün, während die Demo falsche Zeiten zeigte.
+
+   Geprüft wird deshalb ein Ort vollständig statt vier stichprobenartig.
+   Tromsø ist der einzige der vier oberhalb des Polarkreises und damit der
+   einzige, an dem die Sonne die Bedingungen für Fadschr, Asr und Ischa
+   überhaupt verfehlen kann.
+
+   Der Regler wird im Browser durchgefahren und nicht je Tag von außen
+   gesetzt: 365 Runden über die Verbindung kosteten Minuten, hier ist es ein
+   Aufruf je Verfahren. Die Wartezeit von 60 ms je Tag ist gemessen — darunter
+   liest der Lauf denselben Stand zweimal.
+   ------------------------------------------------------------------------ */
+let jahrestage = 0;
+for (const verfahren of VERFAHREN) {
+  const jahr = await seite.evaluate(
+    async ([verfahren]) => {
+      const demo = [...document.querySelectorAll("section, div")]
+        .filter(
+          (e) =>
+            /Fadschr|Fajr/.test(e.innerText || "") &&
+            e.querySelector('input[type="range"]'),
+        )
+        .sort((a, b) => a.innerText.length - b.innerText.length)[0];
+      if (!demo) return { fehler: "Gebetszeiten-Demo nicht gefunden" };
+
+      const waehlen = (beschriftung) => {
+        const knopf = [...demo.querySelectorAll("button")].find(
+          (e) => e.textContent.trim() === beschriftung,
+        );
+        if (knopf) knopf.click();
+        return Boolean(knopf);
+      };
+      if (!waehlen("Tromsø")) return { fehler: "Ort „Tromsø“ fehlt" };
+      if (!waehlen(verfahren)) return { fehler: `Verfahren „${verfahren}" fehlt` };
+      await new Promise((r) => setTimeout(r, 250));
+
+      const regler = demo.querySelector('input[type="range"]');
+      const setzen = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        "value",
+      ).set;
+
+      const tage = [];
+      for (let tag = 0; tag < 365; tag++) {
+        setzen.call(regler, String(tag));
+        regler.dispatchEvent(new Event("input", { bubbles: true }));
+        await new Promise((r) => setTimeout(r, 60));
+        tage.push(
+          [...demo.querySelectorAll("dt")].map((dt) => ({
+            name: dt.textContent.trim(),
+            wert: (
+              dt.parentElement?.querySelector("dd") ?? dt.nextElementSibling
+            )?.textContent.trim(),
+          })),
+        );
+      }
+      return { tage };
+    },
+    [verfahren],
+  );
+
+  if (jahr.fehler) {
+    funde.push(`Tromsø / ${verfahren}: ${jahr.fehler}`);
+    continue;
+  }
+
+  for (const [tag, paare] of jahr.tage.entries()) {
+    jahrestage++;
+    let vorher = null;
+    let vorherName = null;
+    for (const paar of paare) {
+      const treffer = /^(\d{2}):(\d{2})$/.exec(paar.wert ?? "");
+      if (!treffer) {
+        vorher = null;
+        continue;
+      }
+      const minuten = Number(treffer[1]) * 60 + Number(treffer[2]);
+      if (vorher !== null && minuten < vorher) {
+        funde.push(
+          `Tromsø / ${verfahren} / Tag ${tag}: ${vorherName} steht auf ` +
+            `${String(Math.floor(vorher / 60)).padStart(2, "0")}:` +
+            `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ` +
+            `${paar.wert} — die Reihenfolge der Gebetszeiten liegt fest.`,
+        );
+      }
+      vorher = minuten;
+      vorherName = paar.name;
+    }
+  }
+}
+
 console.log(
   `  ok  Gebetszeiten: ${kombinationen} Kombinationen aus ${ORTE.length} Orten, ` +
-    `${VERFAHREN.length} Verfahren und ${TAGE.length} Tagen in Reihenfolge`,
+    `${VERFAHREN.length} Verfahren und ${TAGE.length} Tagen in Reihenfolge, ` +
+    `dazu Tromsø an ${jahrestage} Tagen über alle ${VERFAHREN.length} Verfahren`,
 );
 
 await browser.close();
@@ -332,6 +432,6 @@ if (funde.length > 0) {
 console.log(
   `\nBeide Demos rechnen richtig: ${ZIELE.length} Kalorienziele gegen je ` +
     `${1 << gerichte.length} Zusammenstellungen nachgerechnet, ` +
-    `${kombinationen} Gebetszeiten-Kombinationen in Reihenfolge ` +
+    `${kombinationen} Gebetszeiten-Kombinationen und Tromsø an ${jahrestage} Tagen in Reihenfolge ` +
     `(${nichtBerechnet} Angaben ohne Wert, wo es keinen gibt).`,
 );
