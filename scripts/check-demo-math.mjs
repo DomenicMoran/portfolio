@@ -415,6 +415,64 @@ console.log(
     `dazu Tromsø an ${jahrestage} Tagen über alle ${VERFAHREN.length} Verfahren`,
 );
 
+/* ---------------------------------------------------------------------------
+   Die Quellenangabe unter der Kachel
+
+   Sie nennt drei nachprüfbare Dinge: „adhan 4.4.4 (MIT), Methode 13 Diyanet,
+   Schule 0 schafiitisch." Das ist keine Beschreibung, sondern eine Zusage —
+   wer die Zahlen nachrechnen will, braucht genau diese drei Angaben, und mit
+   einer falschen käme er auf andere Zeiten.
+
+   Alle drei stehen im eigenen Projekt und lassen sich ohne die Produktivrepos
+   prüfen: die Version in `node_modules`, Methode und Schule im Quelltext der
+   Kachel. `adhan` steht in `package.json` mit `^4.4.4`, und dieses Zeichen
+   erlaubt jede 4.x — ein `npm update` hebt die installierte Fassung, ohne die
+   Angabe auf der Seite anzufassen.
+   ------------------------------------------------------------------------ */
+{
+  const { createRequire } = await import("node:module");
+  const verlangt = createRequire(import.meta.url);
+  const notiz = readFileSync("src/content/de.ts", "utf8");
+  const zeile = /adhan [^"]*schafiitisch/.exec(notiz)?.[0] ?? "";
+
+  if (!zeile) {
+    funde.push("Die Quellenangabe der Gebetszeiten-Kachel ist nicht zu finden.");
+  } else {
+    const genannt = /adhan ([\d.]+)/.exec(zeile)?.[1];
+    const eingebaut = JSON.parse(
+      readFileSync("node_modules/adhan/package.json", "utf8"),
+    ).version;
+    if (genannt !== eingebaut) {
+      funde.push(
+        `Die Kachel nennt adhan ${genannt}, eingebaut ist ${eingebaut}. ` +
+          `Wer die Zeiten nachrechnen will, käme mit der genannten Fassung ` +
+          `auf andere Werte.`,
+      );
+    }
+
+    const kachel = readFileSync("src/components/demo/PrayerTimes.tsx", "utf8");
+    /* Methode 13 ist Diyanet, und `adhan` nennt sie `Turkey()`.
+       Schule 0 ist die schafiitische, in `adhan` `Madhab.Shafi`. */
+    if (/Methode 13/.test(zeile) && !/CalculationMethod\.Turkey\(\)/.test(kachel)) {
+      funde.push(
+        "Die Kachel nennt Methode 13 (Diyanet), rechnet aber nicht mit " +
+          "CalculationMethod.Turkey().",
+      );
+    }
+    if (/Schule 0/.test(zeile) && !/Madhab\.Shafi/.test(kachel)) {
+      funde.push(
+        "Die Kachel nennt Schule 0 (schafiitisch), setzt aber nicht Madhab.Shafi.",
+      );
+    }
+    if (!funde.some((f) => /Kachel nennt|Quellenangabe/.test(f))) {
+      console.log(
+        `  ok  Quellenangabe: adhan ${eingebaut}, Methode 13 als Turkey(), ` +
+          `Schule 0 als Madhab.Shafi`,
+      );
+    }
+  }
+}
+
 await browser.close();
 beenden();
 
