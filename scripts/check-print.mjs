@@ -599,8 +599,20 @@ if (reiterfunde.length > 0) {
 
    Gemessen wird die Höhe von `.onepager` im Druckmodus bei 794 px Papier-
    breite. Die Grenze liegt bei 1040 px — A4 sind 1123 px bei 96 dpi, davon
-   gehen die Druckränder ab. Aktuell stehen dort 894 px auf Deutsch und
-   863 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht. */
+   gehen die Druckränder ab. Aktuell stehen dort 915 px auf Deutsch und
+   883 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht.
+
+   Gemessen bei der Grundschrift des Browsers, und das ist eine Annahme mit
+   Grenze: Wer sie auf 20 px stellt, druckt 1.090 px, bei 24 px sind es
+   1.161 — zwei Seiten. Der naheliegende Griff wäre `html { font-size: 16px }`
+   in den Druckregeln. Er bleibt bewusst aus: Damit stünde das Blatt für
+   jeden gleich groß auf dem Papier, auch für den, der seine Schrift bewusst
+   vergrößert hat, und die Seite hält es sonst überall andersherum. Wer sein
+   Blatt weiterreicht, reicht ohnehin das PDF weiter, und das entsteht mit
+   der Standardgröße.
+
+   Die Zahlen stehen hier, damit die nächste Messung nicht als Fund gelesen
+   wird, der sie nicht ist. */
 const BLATTGRENZE = 1040;
 const blattfunde = [];
 
