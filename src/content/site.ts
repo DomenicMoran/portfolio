@@ -127,7 +127,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, drei Apps in den Stores und zwei davon in beiden, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, drei Apps in den Stores, alle drei in beiden, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -368,7 +368,7 @@ export const caseStudies: CaseStudy[] = [
       "Gebets- und Koran-App für den DACH-Raum mit KI, die offline läuft",
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
-    statusLabel: "Live im App Store",
+    statusLabel: "Live in beiden Stores",
     accent: "acid",
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
@@ -442,15 +442,21 @@ export const caseStudies: CaseStudy[] = [
         href: "https://instagram.com/salatibox",
         kind: "social",
       },
-      // Nachgeprüft am 01.08.2026: Der App-Store-Eintrag existiert unter
-      // id6791867298, zuletzt Version 1.46.0. Auf Google Play gibt es unter dem
-      // Paketnamen de.salatibox.de keinen öffentlichen Eintrag, und eine
-      // Suche nach "Salatibox" liefert nichts. Deshalb steht hier nur der
-      // Store, der wirklich erreichbar ist. Sobald Android öffentlich ist,
-      // kommt die Zeile dazu und das Statuswort wieder auf beide Stores.
+      /* Nachgeprüft am 08.08.2026: Beide Einträge sind öffentlich. Apple
+         unter id6791867298, Google Play unter dem Paketnamen
+         de.salatibox.de mit dem Titel „Salati — Gebetszeiten & Koran".
+         Am 01.08.2026 antwortete Play auf denselben Paketnamen noch mit
+         404, und die Zeile stand deshalb nicht hier; das Statuswort nannte
+         nur Apple. Eine Seite, die weniger sagt als wahr ist, wird nicht
+         dadurch richtig, dass sie einmal richtig war. */
       {
         label: "App Store",
         href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
+        kind: "store",
+      },
+      {
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
         kind: "store",
       },
     ],
