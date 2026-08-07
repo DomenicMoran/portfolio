@@ -27,6 +27,7 @@
 import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
 import { gebauteSeiten } from "./lib/built-pages.mjs";
+import { FEHLERSEITEN } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const vorgegebeneBasis = process.argv[2];
@@ -54,7 +55,7 @@ const pfade = gebauteSeiten();
   Zwei Adressen, weil es zwei Antworten sind: Unterhalb von `/en` rendert die
   Seite englischen Text und verweist auf die englischen Ziele.
 */
-pfade.push("/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist");
+pfade.push(...FEHLERSEITEN);
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });

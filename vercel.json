@@ -165,6 +165,106 @@
       "source": "/en/contact",
       "destination": "/en#contact",
       "permanent": true
+    },
+    {
+      "source": "/kurzprofil",
+      "destination": "/onepager",
+      "permanent": true
+    },
+    {
+      "source": "/one-pager",
+      "destination": "/onepager",
+      "permanent": true
+    },
+    {
+      "source": "/en/one-pager",
+      "destination": "/en/onepager",
+      "permanent": true
+    },
+    {
+      "source": "/en/kurzprofil",
+      "destination": "/en/onepager",
+      "permanent": true
+    },
+    {
+      "source": "/projekte",
+      "destination": "/#work",
+      "permanent": true
+    },
+    {
+      "source": "/work",
+      "destination": "/en#work",
+      "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/en#work",
+      "permanent": true
+    },
+    {
+      "source": "/ueber-mich",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/en#about",
+      "permanent": true
+    },
+    {
+      "source": "/arbeitsweise",
+      "destination": "/#workflow",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/#skills",
+      "permanent": true
+    },
+    {
+      "source": "/en/skills",
+      "destination": "/en#skills",
+      "permanent": true
+    },
+    {
+      "source": "/fuer-recruiter",
+      "destination": "/#hire",
+      "permanent": true
+    },
+    {
+      "source": "/for-recruiters",
+      "destination": "/en#hire",
+      "permanent": true
+    },
+    {
+      "source": "/en/for-recruiters",
+      "destination": "/en#hire",
+      "permanent": true
+    },
+    {
+      "source": "/en/about",
+      "destination": "/en#about",
+      "permanent": true
+    },
+    {
+      "source": "/en/work",
+      "destination": "/en#work",
+      "permanent": true
+    },
+    {
+      "source": "/security.txt",
+      "destination": "/.well-known/security.txt",
+      "permanent": true
+    },
+    {
+      "source": "/how-i-work",
+      "destination": "/en#workflow",
+      "permanent": true
+    },
+    {
+      "source": "/en/how-i-work",
+      "destination": "/en#workflow",
+      "permanent": true
     }
   ]
 }

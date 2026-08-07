@@ -30,6 +30,7 @@
  */
 
 import { chromium } from "playwright";
+import { FEHLERSEITEN } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** Die Schwellen, ab denen ein Wert nicht mehr „gut“ heißt. */
@@ -61,7 +62,7 @@ const SEITEN = [
 
      Der Lauf gibt die Verschiebungen jetzt mit Wert, Zeitpunkt und Höhe aus.
      Was örtlich nicht entsteht, muss dort beschrieben werden, wo es entsteht. */
-  "/diese-adresse-gibt-es-nicht",
+  FEHLERSEITEN[0],
 ];
 
 /* Der frühere Grund für das Weglassen, zur Einordnung.
