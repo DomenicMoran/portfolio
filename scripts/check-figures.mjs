@@ -621,7 +621,13 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     folgen
       ? Math.round(folgen.reduce((n, f) => n + (f.sekunden ?? 0), 0) / 60)
       : null,
-    /Podcast-Folgen\s+mit\s+([\d.]+)\s+Minuten/,
+    /* Der Satz im README nennt die Folgen, dann die Vertonung, dann die
+       Spielzeit. Das Muster hing vorher an „Podcast-Folgen mit N Minuten"
+       und zwang den Satz in die Form „21 Podcast-Folgen, davon 21 vertonte
+       Podcast-Folgen mit 160 Minuten" — Prosa, die einem regulären Ausdruck
+       zuliebe zweimal dasselbe sagt, im README eines Projekts, das von
+       Belegbarkeit handelt. Jetzt hängt es an der Spielzeit selbst. */
+    /zusammen\s+([\d.]+)\s+Minuten/,
   );
   pruefe("Buchkapitel", lektionen?.length, /([\d.]+) Buchkapitel/);
   pruefe("Fachwörter", woerter?.length, /([\d.]+) Fachwörter/);
@@ -644,7 +650,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   pruefe(
     "Fragen mit Auswahl",
     quizfaehig,
-    /([\d.]+) Fragen mit Antwortauswahl/,
+    /([\d.]+) Fragen\s+mit Antwortauswahl/,
   );
   /* Der Rest sind die Karten zum Aufsagen: alles, was keine Auswahlfrage sein
      kann. Ungeprüft stand dort "40", während es 66 waren — die Zahl war aus
@@ -2050,6 +2056,71 @@ const BRAUCHT_KIND = {
    dieselbe Quelle, aus der die Pakete veröffentlicht sind.
 
    Ohne Netz wird übersprungen und das gesagt. */
+/* ---------------------------------------------------------------------------
+   Die Kennzahlen der Fallstudie ohne Git-Historie.
+
+   WohnungsJäger liegt neben diesem Repo, aber nicht bei GitHub. Der Jahrescheck
+   lässt es deshalb aus, und der Bericht sagt das auch — „3 von 4 Fallstudien".
+   Daraus wurde stillschweigend: gar nichts an dieser Fallstudie wird geprüft.
+
+   Gefunden am 07.08.2026: Auf der Seite standen „fünf Portale“, an zwei
+   Stellen je Sprache. Die Registrierung im Repo führt sechs Einträge, davon
+   vier echte Portale (`is24`, `immowelt`, `kleinanzeigen`, `wggesucht`), dazu
+   `custom` für eine selbst eingetragene Quelle und `demo` als Prüfvorrichtung.
+   Ein Demo-Portal mitzuzählen wäre auf einer Seite, die mit Nachprüfbarkeit
+   argumentiert, die teuerste Zahl von allen.
+
+   Für den Dateipfad braucht es keine Historie — die Zahl steht im Quelltext.
+   ------------------------------------------------------------------------ */
+{
+  const registrierung = "../../KIWohnung/src/scanner/registry.ts";
+  if (!existsSync(registrierung)) {
+    zeilen.push(`  --  ${registrierung} nicht vorhanden, Portalzahl übersprungen`);
+  } else {
+    const text = readFileSync(registrierung, "utf8");
+    const block = text.slice(text.indexOf("export const portals"));
+    const eingetragen = [
+      ...new Set(
+        [...block.slice(0, block.indexOf("}")).matchAll(/\b([a-z0-9]+)\b/g)].map(
+          (m) => m[1],
+        ),
+      ),
+    ].filter((n) => !["export", "const", "portals", "Record", "string", "Portal"].includes(n));
+
+    /* `custom` ist eine leere Stelle für eine eigene Quelle, `demo` eine
+       Prüfvorrichtung. Beide sind keine überwachten Portale. */
+    const echte = eingetragen.filter((n) => !["custom", "demo"].includes(n));
+
+    const behauptet = [
+      ...quelle.matchAll(/value: "(\d+)", label: "Überwachte Portale"/g),
+    ].map((m) => Number(m[1]));
+    const imFliesstext = [
+      ...quelle.matchAll(/rund um die Uhr (\w+) Portale scannt/g),
+    ].map((m) => m[1]);
+    const alsWort = { vier: 4, fünf: 5, sechs: 6, drei: 3, zwei: 2 };
+
+    const funde = [];
+    for (const zahl of behauptet)
+      if (zahl !== echte.length)
+        funde.push(`Kachel nennt ${zahl}, die Registrierung führt ${echte.length}`);
+    for (const wort of imFliesstext)
+      if (alsWort[wort] !== echte.length)
+        funde.push(
+          `Fließtext nennt „${wort}“, die Registrierung führt ${echte.length}`,
+        );
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  WohnungsJäger: Portalzahl stimmt nicht:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  WohnungsJäger        ${String(echte.length).padStart(6)} Portale wie in der Registrierung (${echte.join(", ")})`,
+      );
+    }
+  }
+}
+
 {
   const vorlage = "../docs/GITHUB-PROFILE-README.md";
   if (!existsSync(vorlage)) {
