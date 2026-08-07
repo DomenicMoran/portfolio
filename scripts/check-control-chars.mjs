@@ -18,6 +18,15 @@
  * Erlaubt bleiben Tabulator, Wagenrücklauf und Zeilenvorschub. Alles andere
  * unter 0x20, dazu 0x7f, ist ein Fund.
  *
+ * Dieselbe Frage stellt `check-figures.mjs` schon, dort über alle sieben
+ * erreichbaren Repos. Der Unterschied ist der Aufrufweg: Dieser Lauf braucht
+ * keine Nachbarordner und läuft deshalb in der CI mit, jener nicht. Genau
+ * dadurch stand das Rückschritt-Zeichen oben zwei Läufe lang im Bericht,
+ * ohne dass es jemand las: Es kam in einer Zeile mit zwei anderen Funden.
+ *
+ * Wer die Regel ändert, ändert beide Stellen. Sie sind bewusst gleich
+ * streng, damit ein Fund nicht davon abhängt, welcher Lauf gerade dran ist.
+ *
  *   npm run check:chars
  */
 
