@@ -13,7 +13,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Spotlight } from "@/components/ui/Spotlight";
 
 export function RecruiterHub() {
-  const { recruiter, site, hero } = useContent();
+  const { recruiter, site, hero, contact } = useContent();
 
   const links = [
     SOCIALS.linkedin
@@ -196,7 +196,11 @@ export function RecruiterHub() {
 
                 <Magnetic>
                   <a
-                    href={mailAdresse(site.email, site.mailSubject)}
+                    href={mailAdresse(
+                      site.email,
+                      site.mailSubject,
+                      contact.checkliste.punkte,
+                    )}
                     className="group inline-flex items-center gap-2 rounded-full border border-line bg-base px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-faint"
                   >
                     <Mail className="size-4" aria-hidden />
