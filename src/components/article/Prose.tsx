@@ -104,14 +104,37 @@ export function Prose({
             );
 
           case "h3":
+            /* Dieselbe Adresse und derselbe Weg dorthin wie bei `h2`.
+
+               Die `id` stand hier von Anfang an, die Sprungmarke nicht.
+               Gemessen an den ausgelieferten Artikeln: sechs Überschriften mit
+               Adresse, fünf Marken — die Ausnahme unter „Drittens" im
+               Kassenartikel ließ sich verlinken, nur nicht von der Seite aus.
+               Eine Adresse, die niemand kopieren kann, ist keine.
+
+               Aufbau wie oben, einschließlich der beiden Lehren, die dort
+               teuer waren: Die Marke steht neben der Überschrift statt in ihr,
+               sonst wächst ihr Name im Barrierefreiheitsbaum um den Namen des
+               Verweises; und das Doppelkreuz trägt `aria-hidden` und
+               `select-none`, damit es weder vorgelesen noch mitkopiert wird.
+               Die Maße sind auf die kleinere Schrift gerechnet: 1,125 rem
+               gegen 1,5 rem bei `h2`. */
             return (
-              <h3
-                key={i}
-                id={alsSprungmarke(block.text)}
-                className="mt-10 mb-4 max-w-[30ch] scroll-mt-28 text-lg font-semibold tracking-tight text-ink text-balance sm:text-xl"
-              >
-                {block.text}
-              </h3>
+              <div key={i} className="group relative mt-10 mb-4">
+                <h3
+                  id={alsSprungmarke(block.text)}
+                  className="max-w-[30ch] scroll-mt-28 text-lg font-semibold tracking-tight text-ink text-balance sm:text-xl"
+                >
+                  {block.text}
+                </h3>
+                <a
+                  href={`#${alsSprungmarke(block.text)}`}
+                  aria-label={`${sprungmarkeLabel}: ${block.text}`}
+                  className="absolute top-[0.12rem] -left-7 hidden text-[0.8rem] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.16rem] sm:text-[0.9rem] lg:block"
+                >
+                  <span aria-hidden>#</span>
+                </a>
+              </div>
             );
 
           case "p":
