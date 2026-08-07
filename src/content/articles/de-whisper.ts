@@ -83,8 +83,9 @@ export const whisperDe: Article = {
       code: `export function normalizeArabic(text: string): string {
   return text
     .replace(DIACRITICS, '')
-    // Persische und Urdu-Formen ZUERST auf Arabisch abbilden. Sonst macht
-    // die [^ء-ي]-Bereinigung unten Leerzeichen daraus und zerreißt Wörter.
+    // Persische und Urdu-Formen ZUERST auf Arabisch abbilden. Sonst
+    // macht die [^ء-ي]-Bereinigung unten Leerzeichen daraus und
+    // zerreißt Wörter.
     .replace(/ک/g, 'ك')
     .replace(/[یۍ]/g, 'ي')
     .replace(/ے/g, 'ي')
