@@ -53,5 +53,21 @@ export function quellstand() {
       .trim();
     hash.update(text);
   }
+
+  /* Dazu der Zoom, mit dem das Blatt gedruckt wird.
+
+     Gehasht wird sonst nur der sichtbare Text — bewusst, damit ein Kommentar
+     daneben keinen Neudruck verlangt. Der Zoom ändert keinen Buchstaben und
+     trotzdem jede Schriftgröße auf dem Papier: Am 08.08.2026 ging er von 0,78
+     auf 0,85, die kleinste Schrift von 5,9 auf 6,4 pt. Ohne diese Zeile wäre
+     das eingecheckte PDF mit der alten Größe stehen geblieben, und kein Lauf
+     hätte etwas gesagt.
+
+     Aus der Datei gelesen und nicht aus dem Bau: Die Regel steht in einem
+     `@media print`-Block, den das gebaute HTML nicht enthält. */
+  const stile = readFileSync(join("src", "app", "globals.css"), "utf8");
+  const zoom = stile.match(/\.onepager\s*\{[\s\S]*?zoom:\s*([\d.]+)/)?.[1];
+  if (zoom) hash.update(`zoom:${zoom}`);
+
   return hash.digest("hex").slice(0, 16);
 }
