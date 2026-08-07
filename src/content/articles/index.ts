@@ -33,7 +33,7 @@ export const chromeDe: ArticleChrome = {
   base: "/artikel",
   eyebrow: "Geschrieben",
   title: "Fünf Fehler, die mich etwas gelehrt haben",
-  lede: "Keine Tutorials und keine Meinungsstücke. Fünf Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und dem Commit, an dem sich beides nachlesen lässt. Zwei davon hatte monatelang niemand bemerkt.",
+  lede: "Keine Tutorials und keine Meinungsstücke. Fünf Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und den Belegen, an denen sich beides nachlesen lässt: Datei und Zeile, der Commit, das Paket, das daraus entstanden ist. Zwei davon hatte monatelang niemand bemerkt.",
   readingTime: (m) => `${m} Min. Lesezeit`,
   backToIndex: "Alle Artikel",
   evidenceLabel: "Belege",
@@ -52,7 +52,7 @@ export const chromeDe: ArticleChrome = {
   home: {
     eyebrow: "Geschrieben",
     title: "Fünf Fehler, die mich etwas gelehrt haben",
-    lede: "Aus meinen eigenen Systemen, mit Ursache, Fix und Commit. Kein Tutorial-Recycling.",
+    lede: "Aus meinen eigenen Systemen, mit Ursache, Fix und Beleg. Kein Tutorial-Recycling.",
     cta: "Alle fünf Artikel lesen",
   },
 };
@@ -61,7 +61,7 @@ export const chromeEn: ArticleChrome = {
   base: "/en/articles",
   eyebrow: "Writing",
   title: "Five bugs that taught me something",
-  lede: "No tutorials and no opinion pieces. Five problems out of my own systems, each with the cause, the fix, and the commit where you can read both. Two of them had gone unnoticed for months.",
+  lede: "No tutorials and no opinion pieces. Five problems out of my own systems, each with the cause, the fix, and the evidence for both: file and line, the commit, the package that came out of it. Two of them had gone unnoticed for months.",
   readingTime: (m) => `${m} min read`,
   backToIndex: "All articles",
   evidenceLabel: "Evidence",
@@ -80,7 +80,7 @@ export const chromeEn: ArticleChrome = {
   home: {
     eyebrow: "Writing",
     title: "Five bugs that taught me something",
-    lede: "Out of my own systems, with cause, fix and commit. No recycled tutorials.",
+    lede: "Out of my own systems, with cause, fix and evidence. No recycled tutorials.",
     cta: "Read all five articles",
   },
 };
