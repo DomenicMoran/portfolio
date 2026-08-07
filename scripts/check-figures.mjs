@@ -3011,34 +3011,72 @@ const BRAUCHT_KIND = {
     }
   }
 
+  /* Geprüft wird die aufgefrischte Datei, nicht der Inhalt.
+
+     Alle drei Zahlen standen bis zum 08.08.2026 getippt in `site.ts` und
+     `en.ts`. Sie wandern mit jedem Arbeitstag: An einem Vormittag ging die
+     Zahl der API-Routen von 1.278 auf 1.279. Von Hand ist das nicht zu
+     pflegen — dieselbe Lehre, die für die Commit-Summe längst gezogen war.
+
+     Sie kommen jetzt aus `verified.json`, das der tägliche Lauf aus der
+     GitHub-API schreibt. Geprüft wird deshalb zweierlei: dass dort steht,
+     was die Repos hergeben, und dass im Inhalt kein Wert mehr getippt ist,
+     sondern der Verweis darauf. Die Zahl aus GitHub darf hinter dem lokalen
+     Stand liegen — Commits, die niemand gesehen hat, zählt die Seite
+     bewusst nicht mit. */
+  const stempel = "src/content/verified.json";
+  const stand = existsSync(stempel)
+    ? JSON.parse(readFileSync(stempel, "utf8"))
+    : {};
+  const zahl = (t) => Number(String(t ?? "").replace(/[.,]/g, ""));
+
   const ANGABEN = [
-    ["API-Routen", routen, [/([\d.]+) API-Routen/, /([\d,]+) API routes/]],
-    ["DB-Migrationen", migrationen, [/([\d.]+) versionierte Postgres/, /([\d,]+) versioned Postgres/]],
-    ["Salati-Commits", salatiCommits, [/value: "([\d.]+)", label: "Commits"/, /value: "([\d,]+)", label: "commits"/]],
+    ["API-Routen", routen, zahl(stand.apiRouten), "verified.apiRouten"],
+    ["DB-Migrationen", migrationen, zahl(stand.migrationen), "verified.migrationen"],
+    ["Salati-Commits", salatiCommits, zahl(stand.commitsSalati), "verified.commitsSalati"],
   ];
 
-  const quellen = ["src/content/site.ts", "src/content/en.ts"]
-    .filter((d) => existsSync(d))
-    .map((d) => readFileSync(d, "utf8"))
-    .join("\n");
+  const lies = (d) => (existsSync(d) ? readFileSync(d, "utf8") : "");
+  const inhalt = ["src/content/site.ts", "src/content/en.ts"]
+    .map(lies)
+    .join(String.fromCharCode(10));
 
   const funde = [];
   let geprueft = 0;
   let uebersprungen = 0;
 
-  for (const [was, gemessen, muster] of ANGABEN) {
-    if (gemessen === null) {
+  for (const [was, oertlich, imStempel, verweis] of ANGABEN) {
+    if (!imStempel) {
+      funde.push(`${was}: steht nicht in ${stempel}`);
+      continue;
+    }
+    geprueft++;
+    if (!inhalt.includes(verweis))
+      funde.push(`${was}: der Inhalt nutzt \`${verweis}\` nicht`);
+
+    /* Und nirgends mehr als getippte Zahl.
+
+       Der Verweis an einer Stelle genügt nicht: Die API-Routen stehen an drei
+       Stellen, und beim Umstellen blieb eine davon getippt zurück. Ein
+       Wächter, der nur „kommt vor" prüft, sieht darüber hinweg. */
+    const alsText = String(stand[verweis.replace("verified.", "")] ?? "");
+    for (const form of [alsText, alsText.replace(".", ",")]) {
+      if (form && inhalt.includes(`"${form}"`))
+        funde.push(
+          `${was}: „${form}" steht getippt im Inhalt statt als \`${verweis}\``,
+        );
+    }
+    if (oertlich === null) {
       uebersprungen++;
       continue;
     }
-    for (const m of muster) {
-      const treffer = quellen.match(m);
-      if (!treffer) continue;
-      geprueft++;
-      const genannt = Number(treffer[1].replace(/[.,]/g, ""));
-      if (genannt !== gemessen)
-        funde.push(`${was}: die Seite sagt ${treffer[1]}, gezählt sind ${gemessen}`);
-    }
+    geprueft++;
+    /* Der Stempel darf hinterherhinken, aber nicht vorauseilen: Was GitHub
+       nennt, muss es örtlich mindestens geben. */
+    if (imStempel > oertlich)
+      funde.push(
+        `${was}: ${stempel} sagt ${imStempel}, örtlich gezählt sind nur ${oertlich}`,
+      );
   }
 
   if (funde.length) {

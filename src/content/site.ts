@@ -339,7 +339,7 @@ export const hero = {
   proof: [
     { value: "4", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
-    { value: "1.278", label: "API-Routen (MenuCloud)" },
+    { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.464", label: "Testfälle (MenuCloud)" },
   ],
 } as const;
@@ -433,7 +433,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "4", label: "Geräteklassen" },
       { value: "14", label: "Sprachen" },
       { value: "100 %", label: "KI läuft auf dem Gerät" },
-      { value: "1.070", label: "Commits" },
+      { value: verified.commitsSalati, label: "Commits" },
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -565,7 +565,7 @@ export const caseStudies: CaseStudy[] = [
       body: "Eine TSE ist nicht einfach ein API-Aufruf. Jeder Mandant braucht seine eigene, rechtlich zurechenbare Signatureinheit, jede Transaktion muss lückenlos in einer Hash-Kette hängen, und ein Ausfall darf niemals stillschweigend zu unsignierten Umsätzen führen. Für den Gastronomen wäre das eine Katastrophe bei der nächsten Betriebsprüfung. Die Lösung ist eine per-Tenant provisionierte Fiskaly-Cloud-TSE mit persistierter Kette in `tse_transactions` und einem fail-closed-Pfad: keine Signatur, keine Buchung.",
     },
     highlights: [
-      "1.278 API-Routen über 815 versionierte Postgres-Migrationen",
+      `${verified.apiRouten} API-Routen über ${verified.migrationen} versionierte Postgres-Migrationen`,
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
@@ -658,8 +658,8 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "1.278", label: "API-Routen" },
-      { value: "815", label: "DB-Migrationen" },
+      { value: verified.apiRouten, label: "API-Routen" },
+      { value: verified.migrationen, label: "DB-Migrationen" },
       { value: "7.464", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // Kunden, MRR, GMV oder Uptime würden hier eine Behauptung durch einen
