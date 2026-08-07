@@ -80,7 +80,7 @@ export const kassensichvDe: Article = {
     },
     {
       kind: "p",
-      text: "Meine erste Fassung berechnete das in der Anwendung: letzte Zeile lesen, Hash bilden, neue Zeile schreiben. Das funktioniert, solange nur eine Bestellung zur Zeit abgeschlossen wird. Im Abendgeschäft ist das nicht der Fall. Zwei gleichzeitige Abschlüsse lesen dieselbe Vorgängerzeile, berechnen denselben Vorgänger-Hash und schreiben beide. Die Kette gabelt sich.",
+      text: "Meine erste Fassung berechnete das in der Anwendung: letzte Zeile lesen, Hash bilden, neue Zeile schreiben. Das funktioniert, solange immer nur eine Bestellung gleichzeitig abgeschlossen wird. Im Abendgeschäft ist das nicht der Fall. Zwei gleichzeitige Abschlüsse lesen dieselbe Vorgängerzeile, berechnen denselben Vorgänger-Hash und schreiben beide. Die Kette gabelt sich.",
     },
     {
       kind: "note",
@@ -108,7 +108,7 @@ LIMIT 1;`,
     },
     {
       kind: "p",
-      text: "`pg_advisory_xact_lock` nimmt eine Zahl, keine Zeichenkette, deshalb der Umweg über `hashtext`. Die Sperre endet mit der Transaktion, ganz gleich ob sie erfolgreich war. Es gibt keinen Pfad, auf dem sie hängenbleibt.",
+      text: "`pg_advisory_xact_lock` nimmt eine Zahl, keine Zeichenkette, deshalb der Umweg über `hashtext`. Die Sperre endet mit der Transaktion, ganz gleich, ob sie erfolgreich war. Es gibt keinen Pfad, auf dem sie hängenbleibt.",
     },
     {
       kind: "h2",

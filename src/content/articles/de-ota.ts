@@ -92,7 +92,7 @@ export default {
     },
     {
       kind: "p",
-      text: "Sie waren verschieden. Das Manifest zeigte auf ein EAS-Projekt, die Konfiguration auf ein anderes. Ein veröffentlichtes Update hätte damit immer nur eine der beiden Plattformen erreicht, und welche, hing davon ab, unter welchem Projekt man es veröffentlicht.",
+      text: "Sie waren verschieden. Das Manifest zeigte auf ein EAS-Projekt, die Konfiguration auf ein anderes. Ein veröffentlichtes Update hätte damit immer nur eine der beiden Plattformen erreicht, und welche das war, hing davon ab, unter welchem Projekt man es veröffentlichte.",
     },
     {
       kind: "note",
