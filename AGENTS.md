@@ -247,8 +247,8 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-Neunzehn der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
-Seite: `check:a11y`, `check:cards`, `check:demo`, `check:focus`,
+Zwanzig der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+Seite: `check:a11y`, `check:cards`, `check:contrast`, `check:demo`, `check:focus`,
 `check:font-size`, `check:headings`, `check:language`, `check:lighthouse`,
 `check:links`, `check:palette`, `check:panels`, `check:parity`,
 `check:print`, `check:privacy`, `check:schema`, `check:separators` und
@@ -294,6 +294,7 @@ npm run check:panels   # jede Tafel hinter einem Reiter zeigt ihren Inhalt
 npm run check:language # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo     # die Demo auf der Startseite rechnet nachprüfbar richtig
 npm run check:code     # jeder Codeblock in den Artikeln geht syntaktisch auf
+npm run check:contrast # der Kontrast dort, wo axe keine Antwort gibt
 npm run check:schema   # die strukturierten Daten decken sich mit der Seite
 npm run check:palette  # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf

@@ -87,8 +87,13 @@ let geprueft = 0;
    der Stilvorlage gewinnt sie gegen `text-acid`. Gemessen 1,04:1.
 
    Eine absichtlich stumpfe Grenze: Was unter 2:1 liegt, ist nicht schwer
-   lesbar, sondern nicht vorhanden. Alles darüber bleibt axes Sache — diese
-   Prüfung soll nicht zweimal dasselbe entscheiden.
+   lesbar, sondern nicht vorhanden.
+
+   Hier stand, alles darüber bleibe axes Sache. Das war eine Annahme ohne
+   Deckung: axe meldet für jede Stelle, deren Untergrund es nicht bestimmen
+   kann, weder bestanden noch verletzt, sondern „incomplete" — auf der
+   Startseite allein 63 Textknoten, über die dieser Lauf nichts sagt und nie
+   etwas gesagt hat. Sie entscheidet `check:contrast` am Bild.
    ------------------------------------------------------------------------ */
 const UNSICHTBAR_AB = 2;
 const unsichtbar = [];
