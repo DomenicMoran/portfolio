@@ -27,6 +27,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
 import {
+  FEHLERSEITEN,
   gebauteSeiten,
   veroeffentlichteSeiten,
 } from "./lib/built-pages.mjs";
@@ -71,7 +72,7 @@ const pfade = vorgegebeneBasis
   heraus, wie Next sie ausliefert, samt der Kopfzeile, aus der sie ihre
   Sprache liest.
 */
-pfade.push("/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist");
+pfade.push(...FEHLERSEITEN);
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({

@@ -50,6 +50,29 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
  * das, was veröffentlicht ist. Der Bau kennt daneben Seiten, die bewusst nicht
  * indexiert werden.
  */
+/**
+ * Die beiden Adressen, unter denen die Fehlerseite herauskommt.
+ *
+ * Sie steht in keiner Liste gebauter Seiten: Im Bau liegt sie als
+ * `_not-found.html`, und der führende Unterstrich schließt sie aus — mit
+ * gutem Grund, denn die Datei ist nicht die Antwort, die ein Besucher
+ * bekommt. Die entsteht pro Anfrage und liest ihre Sprache aus einer
+ * Kopfzeile, die der Proxy setzt.
+ *
+ * Die Folge war eine Lücke mit System: Ausgerechnet die Seite, die jeder
+ * Vertipper zu sehen bekommt, fiel aus jedem Lauf heraus, der seine Liste
+ * aus dem Bau nimmt. `check-a11y` und `check-privacy` trugen die beiden
+ * Adressen deshalb je einmal selbst ein — zweimal dieselbe Zeile, und beim
+ * dritten Lauf hätte sie jemand vergessen.
+ *
+ * Nur für Läufe, die einen Server befragen. Wer Dateien liest, kann diese
+ * Seite nicht messen: Es gibt sie als Datei nicht.
+ */
+export const FEHLERSEITEN = [
+  "/diese-adresse-gibt-es-nicht",
+  "/en/this-address-does-not-exist",
+];
+
 export async function veroeffentlichteSeiten(basis) {
   const antwort = await fetch(`${basis}/sitemap.xml`);
   if (!antwort.ok) {

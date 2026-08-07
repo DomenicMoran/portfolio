@@ -24,7 +24,7 @@
  */
 
 import { chromium } from "playwright";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
+import { FEHLERSEITEN, gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** Zwei Breiten: die Schrift skaliert über `clamp`, das Polster über `em`. */
@@ -39,7 +39,11 @@ if (!basis) {
 }
 
 /** Jede gebaute Seite, ohne die Bau-Interna. */
-const pfade = gebauteSeiten();
+/* Dazu die Fehlerseite unter beiden Sprachen: Sie steht in keiner Liste
+   gebauter Seiten — im Bau liegt sie als `_not-found.html` — und fiel damit
+   aus jedem Lauf heraus, der seine Liste aus dem Bau nimmt. Sie ist die
+   Seite, die jeder Vertipper zu sehen bekommt. */
+const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
 
 const browser = await chromium.launch();
 let fehler = 0;
@@ -55,7 +59,12 @@ for (const breite of BREITEN) {
     const antwort = await seite.goto(`${basis}${pfad}`, {
       waitUntil: "domcontentloaded",
     });
-    if (!antwort || antwort.status() !== 200) continue;
+    /* Die Fehlerseite antwortet mit 404, und das ist ihre richtige
+     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie —
+     die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
+     standen. */
+  const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
+  if (!antwort || antwort.status() !== erwartet) continue;
 
     // Einmal durchscrollen: Die Überschriften unterhalb der Falz erscheinen
     // erst dabei, und vorher haben sie keine gemessene Größe.

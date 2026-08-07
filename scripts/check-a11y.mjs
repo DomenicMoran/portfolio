@@ -23,7 +23,7 @@
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { chromium } from "playwright";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
+import { FEHLERSEITEN, gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const require = createRequire(import.meta.url);
@@ -61,14 +61,13 @@ const pfade = gebauteSeiten();
   erfundene Adresse kommt sie so heraus, wie Next sie ausliefert, samt eigenem
   Dokument und Sprachauszeichnung.
 */
-const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
+const [UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN] = FEHLERSEITEN;
 /*
   Und einmal unterhalb von `/en`: Das ist eine andere Antwort. Die 404-Seite
   liest die Sprache aus einer Kopfzeile, die der Proxy setzt, und rendert
   englischen Text mit `lang="en"`. Ohne diesen Pfad pruefte der Waechter nur
   die Haelfte der Seite, die jeder Vertipper zu sehen bekommt.
 */
-const UNBEKANNTE_ADRESSE_EN = "/en/this-address-does-not-exist";
 pfade.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
 
 const browser = await chromium.launch();

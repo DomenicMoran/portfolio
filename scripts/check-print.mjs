@@ -33,7 +33,7 @@
 
 import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
+import { FEHLERSEITEN, gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** A4 bei 96 dpi. Chromium legt die Druckdarstellung auf diese Breite aus. */
@@ -73,8 +73,7 @@ const pfade = gebauteSeiten();
  * Adressen: Die erste antwortet mit 500, die zweite mit 404, weil sie beide nur
  * dann erscheinen, wenn etwas anderes schiefging.
  */
-const UNBEKANNTE_ADRESSE = "/diese-adresse-gibt-es-nicht";
-const UNBEKANNTE_ADRESSE_EN = "/en/this-address-does-not-exist";
+const [UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN] = FEHLERSEITEN;
 /* `gebauteSeiten` lässt die Bau-Interna bereits aus. */
 const gepruefteSeiten = [...pfade];
 
