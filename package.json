@@ -49,6 +49,7 @@
     "check:language": "node scripts/check-language.mjs",
     "check:demo": "node scripts/check-demo-math.mjs",
     "check:code": "node scripts/check-code-blocks.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
     "check:schema": "node scripts/check-structured-data.mjs",
     "check:palette": "node scripts/check-palette.mjs"
   },

@@ -272,6 +272,14 @@ jobs:
       - name: Codeblöcke der Artikel
         run: npm run check:code
 
+      # axe kennt neben bestanden und verletzt ein drittes Ergebnis:
+      # „incomplete". Bei der Kontrastregel trifft es jede Stelle, deren
+      # Untergrund nicht aus den Stilangaben folgt — halbdurchsichtige Karten,
+      # Verläufe, die Glüh-Kreise. Auf der Startseite allein 63 Textknoten, über
+      # die der Lauf darüber nichts sagt. Dieser entscheidet sie am Bild.
+      - name: Kontrast, wo axe keine Antwort gibt
+        run: npm run check:contrast
+
       # Die strukturierten Daten sind die einzige Stelle, an der die
       # Kernangaben ein zweites Mal stehen — und die einzige, die niemand
       # sieht. Wer eine Fallstudie umbenennt oder ein Bild verschiebt, merkt
