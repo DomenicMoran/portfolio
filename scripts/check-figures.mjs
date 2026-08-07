@@ -2929,6 +2929,82 @@ const BRAUCHT_KIND = {
    wörtlich im README steht. Wer ihn ändert, ändert ihn an beiden Stellen
    oder erfährt hier davon.
    ------------------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------
+   Die beiden Sicherheitszusagen der Fallstudie WohnungsJäger.
+
+   Auf der Seite stehen zwei Sätze, die keine Zahl sind und trotzdem
+   nachprüfbar: „REVIEW-Modus als Auslieferungszustand: kein Versand ohne
+   menschliche Freigabe" und „Server bindet standardmäßig nur auf 127.0.0.1".
+
+   Es sind die einzigen Aussagen der vier Fallstudien, die ein Versprechen über
+   Verhalten geben statt über Umfang — und damit die einzigen, deren Bruch
+   jemandem schaden könnte. Ein Agent, der ungefragt Bewerbungen mit echten
+   Personendaten verschickt, ist etwas anderes als eine Zahl, die um drei
+   danebenliegt.
+
+   Beide hängen an je einer Zeile im Nachbarrepo: der Voreinstellung in
+   `types.ts` und dem Rückfall in `api.ts`. Wer dort eines Tages auf `AUTO`
+   oder `0.0.0.0` stellt, ändert die Zusage der Seite, ohne die Seite
+   anzufassen. Genau dafür ist dieser Block da. Fehlt das Repo, wird
+   übersprungen statt geraten.
+   ------------------------------------------------------------------------ */
+{
+  const typen = "../../KIWohnung/src/core/types.ts";
+  const api = "../../KIWohnung/src/server/api.ts";
+
+  if (!existsSync(typen) || !existsSync(api)) {
+    zeilen.push("  --  KIWohnung nicht vorhanden, Zusagen übersprungen");
+  } else {
+    const funde = [];
+    let geprueft = 0;
+
+    const quellen = ["src/content/site.ts", "src/content/en.ts"]
+      .filter((d) => existsSync(d))
+      .map((d) => readFileSync(d, "utf8"))
+      .join(" ");
+
+    /* Die Voreinstellung steht als `mode: 'REVIEW'` im Standardobjekt, nicht
+       in der Typdeklaration darüber — die zählt jeden Modus einmal auf. */
+    const voreinstellung = readFileSync(typen, "utf8").match(
+      /mode:\s*['"]([A-Z]+)['"]/,
+    )?.[1];
+    if (quellen.includes("REVIEW")) {
+      geprueft++;
+      if (voreinstellung !== "REVIEW")
+        funde.push(
+          `Auslieferungszustand: die Seite sagt REVIEW, der Code stellt auf ` +
+            `${voreinstellung ?? "nichts Erkennbares"}`,
+        );
+    }
+
+    /* `lanAccess` schaltet bewusst auf 0.0.0.0 um. Geprüft wird der Zweig
+       ohne diese Einstellung — das ist der Auslieferungszustand. */
+    const bindung = readFileSync(api, "utf8").match(
+      /lanAccess\s*\?\s*['"]([\d.]+)['"]\s*:\s*['"]([\d.]+)['"]/,
+    );
+    if (quellen.includes("127.0.0.1")) {
+      geprueft++;
+      if (!bindung) funde.push("Bindung: der Code nennt keine erkennbare Adresse");
+      else if (bindung[2] !== "127.0.0.1")
+        funde.push(
+          `Bindung: die Seite sagt 127.0.0.1, der Code bindet ohne LAN-Freigabe ` +
+            `auf ${bindung[2]}`,
+        );
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Zusage(n) der Fallstudie stimmen nicht:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  WohnungsJäger-Zusagen ${String(geprueft).padStart(5)} geprüft: ` +
+          `Auslieferung ${voreinstellung}, Bindung ${bindung?.[2]}`,
+      );
+    }
+  }
+}
+
 {
   const vorlage = "../docs/GITHUB-PROFILE-README.md";
   const inhalt = "src/content/articles/index.ts";
