@@ -2179,6 +2179,64 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die Geräteklassen werden überall gleich aufgezählt.
+
+   „Vier Geräteklassen“ steht in der Salati-Fallstudie, im Recruiter-Bereich,
+   auf der Kennzahlenkachel und als Titel des Architekturbilds — je zweimal,
+   deutsch und englisch. Zweimal davon folgte eine Aufzählung, und die beiden
+   waren verschieden: „iOS, Android, Android TV und Wear OS" in der einen
+   Zeile, „Phone, Tablet, Android TV, Wear OS" zwei Zeilen darunter. Dieselbe
+   Vier, zwei verschiedene Gruppen, und iOS ist kein Gerät.
+
+   Geprüft wird deshalb nicht die Zahl — die steht ohnehin unter den
+   Kennzahlen —, sondern die Aufzählung: Wo eine folgt, muss es dieselbe sein.
+   Verglichen wird als Menge, damit die Reihenfolge frei bleibt.
+   ------------------------------------------------------------------------ */
+{
+  const gruppen = [];
+  for (const [datei, muster] of [
+    ["src/content/site.ts", /vier Geräteklassen[^:]{0,30}:\s*([^.]{5,90})\./g],
+    ["src/content/site.ts", /Vier Geräteklassen[^:]{0,30}:\s*([^"]{5,90})"/g],
+    ["src/content/en.ts", /four device classes[^:]{0,30}:\s*([^.]{5,90})\./g],
+    ["src/content/en.ts", /Four device classes[^:]{0,30}:\s*([^"]{5,90})"/g],
+  ]) {
+    if (!existsSync(datei)) continue;
+    const text = readFileSync(datei, "utf8");
+    for (const treffer of text.matchAll(muster)) {
+      const teile = treffer[1]
+        .split(/,| und | and /)
+        .map((t) => t.trim().toLowerCase())
+        .filter(Boolean);
+      if (teile.length >= 3) gruppen.push({ datei, teile: new Set(teile) });
+    }
+  }
+
+  /* Deutsch und englisch getrennt: „Telefon" und „phone" sind dieselbe
+     Klasse und trotzdem verschiedene Wörter. */
+  const funde = [];
+  for (const sprache of ["site.ts", "en.ts"]) {
+    const hier = gruppen.filter((g) => g.datei.endsWith(sprache));
+    if (hier.length < 2) continue;
+    const erste = [...hier[0].teile].sort().join(", ");
+    for (const g of hier.slice(1)) {
+      const diese = [...g.teile].sort().join(", ");
+      if (diese !== erste)
+        funde.push(`${sprache}: „${erste}" gegen „${diese}"`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Aufzählung(en) der Geräteklassen weichen ab:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (gruppen.length) {
+    zeilen.push(
+      `  ok  Geräteklassen       ${String(gruppen.length).padStart(6)} Aufzählungen nennen dieselben Geräte`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Zahlen in den Architekturbildern.
 
    Jedes Bild trägt Beschriftungen wie „63 Workflows · Watchdogs“ oder

@@ -24,8 +24,8 @@
  */
 const ARCHITEKTUR_EN: Record<string, string> = {
   /* Titel und Bildunterschriften */
-  "Salati: ein Monorepo, vier Zielgeräte":
-    "Salati: one monorepo, four target devices",
+  "Salati: ein Monorepo, vier Geräteklassen":
+    "Salati: one monorepo, four device classes",
   "Die Geräte teilen sich Domänenlogik und Inhalte. Der KI-Pfad endet bewusst auf dem Gerät: Modell und Korpus werden ausgeliefert, nicht angefragt.":
     "The devices share domain logic and content. The AI path deliberately ends on the device: model and corpus ship with the app, they are not requested.",
   "MenuCloud: mandantenfähig bis in die Fiskalisierung":

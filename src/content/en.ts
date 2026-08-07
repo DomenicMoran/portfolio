@@ -221,7 +221,7 @@ export const en: Content = {
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
-        "An ad-free platform across four device classes: iOS, Android, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering search runs entirely on the device. No query ever leaves the phone.",
+        "An ad-free platform across four device classes: phone, tablet, Android TV and Wear OS. Prayer times are computed locally, the full reader with multiple reciters and translations works offline, and the question-answering search runs entirely on the device. No query ever leaves the phone.",
       hardPart: {
         title: "Speech recognition for Quran recitation",
         body: "The memorisation mode has to hear whether a verse was recited correctly. The obvious route, a larger Whisper model, was the wrong one. The leverage was in the method: condition the model on the expected verse as a prompt, normalise Persian and Urdu letter variants before comparing, and score leniently rather than as pass or fail. A base model fine-tuned on Tarteel now beats one three times its size, at a fraction of the on-device latency.",
