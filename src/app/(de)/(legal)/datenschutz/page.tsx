@@ -139,7 +139,11 @@ export default function Datenschutz() {
           Alle Seiten mit Inhalt werden vorab erzeugt und als fertige Dateien
           ausgeliefert. Einzige Ausnahme ist die Fehlerseite: Sie wird bei der
           Anfrage zusammengesetzt, um in der Sprache zu antworten, unter der du
-          gekommen bist. Es gibt keinen Endpunkt, der Eingaben entgegennimmt.
+          gekommen bist. Vor jeder Auslieferung läuft beim Hoster eine kleine
+          Funktion: Sie liest den angefragten Pfad, setzt daraus die Sprache
+          der Fehlerseite und weist Anfragen ab, die Daten senden wollen. Sie
+          speichert nichts und gibt nichts weiter. Es gibt keinen Endpunkt, der
+          Eingaben entgegennimmt.
         </Section>
 
         <Section title="Deine Rechte">
