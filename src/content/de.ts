@@ -300,6 +300,7 @@ export const de: Content = {
     home: "Startseite",
     report: "Etwas kaputt gefunden?",
     reportSubject: "Toter Verweis auf domenicmoran.de",
+    reportPath: "Die Adresse, die ins Leere führte",
     otherLanguage: {
       text: "Diese Adresse gibt es nicht.",
       link: "Weiter auf der deutschen Fassung",

@@ -19,9 +19,18 @@ export function NotFoundPage({
   content,
   base = "",
   zweitsprache,
+  angefragt,
 }: {
   content: Content;
   base?: string;
+  /**
+   * Die Adresse, die ins Leere führte.
+   *
+   * Steht in der Meldung eines toten Verweises, damit der Empfänger nicht
+   * raten muss. Kommt vom Proxy und nicht aus dem Browser: So steht sie auch
+   * ohne JavaScript in der Mail.
+   */
+  angefragt?: string;
   /**
    * Ein kurzer Hinweis in der jeweils anderen Sprache.
    *
@@ -164,7 +173,11 @@ export function NotFoundPage({
                  hier aus schreibt, meldet einen toten Verweis — und die
                  Meldung soll im Postfach als solche ankommen, ohne dass
                  jemand sie erst öffnet. */
-              href={mailAdresse(site.email, notFound.reportSubject)}
+              href={mailAdresse(
+                site.email,
+                notFound.reportSubject,
+                angefragt ? [`${notFound.reportPath}: ${angefragt}`] : undefined,
+              )}
               className="-my-1 py-1 text-acid underline underline-offset-4"
             >
               {site.email}

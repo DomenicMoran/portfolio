@@ -526,6 +526,8 @@ export type Content = {
      * ankommen, ohne dass jemand sie erst öffnet.
      */
     reportSubject: string;
+    /** Beschriftung der Adresse in der Meldung eines toten Verweises. */
+    reportPath: string;
     /**
      * Der Hinweis für den, der in der anderen Sprache gekommen ist.
      *
