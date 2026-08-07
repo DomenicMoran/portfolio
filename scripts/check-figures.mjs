@@ -2466,6 +2466,69 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die vorbereitete Mail enthält, worum die Seite bittet.
+
+   Der Kontaktbereich listet unter „Das hilft mir in der ersten Mail" vier
+   Angaben und überließ es danach dem Absender, sie sich zu merken. Wer auf
+   „Direkt schreiben" klickte, bekam ein leeres Fenster — und schrieb zwei
+   Sätze ohne Gehaltsrahmen, worauf eine Rückfrage folgt, die genau die Zeit
+   kostet, die der vierte Punkt sparen will.
+
+   Seit dem 08.08.2026 trägt der Verweis die Punkte als Rumpf. Damit gibt es
+   sie zweimal auf derselben Seite: sichtbar in der Liste und kodiert in der
+   Adresse. Zwei Stellen für denselben Text sind die nächste, an der eine
+   veraltet — geprüft wird deshalb an der ausgelieferten Seite, dass jeder
+   Punkt der Liste auch im Rumpf steht.
+   ------------------------------------------------------------------------ */
+{
+  const bau = join(".next", "server", "app");
+  const seiten = [
+    ["index.html", "src/content/site.ts"],
+    ["en.html", "src/content/en.ts"],
+  ];
+
+  const funde = [];
+  let geprueft = 0;
+
+  for (const [seite, inhaltsdatei] of seiten) {
+    const pfad = join(bau, seite);
+    if (!existsSync(pfad) || !existsSync(inhaltsdatei)) continue;
+
+    const html = readFileSync(pfad, "utf8");
+    const treffer = html.match(/mailto:[^"]*body=([^"&]*)/);
+    if (!treffer) {
+      abweichungen++;
+      zeilen.push(`  !!  ${seite}: kein Mailverweis mit vorbereitetem Rumpf`);
+      continue;
+    }
+    const rumpf = decodeURIComponent(treffer[1].replace(/&amp;/g, "&"));
+
+    /* Die Punkte aus dem Inhalt, in der Reihenfolge der Liste. */
+    const quelltext = readFileSync(inhaltsdatei, "utf8");
+    const listeAb = quelltext.indexOf("punkte: [");
+    if (listeAb < 0) continue;
+    const liste = quelltext.slice(listeAb, quelltext.indexOf("],", listeAb));
+    const punkte = [...liste.matchAll(/"([^"]{10,120})"/g)].map((m) => m[1]);
+
+    for (const punkt of punkte) {
+      geprueft++;
+      if (!rumpf.includes(punkt))
+        funde.push(`${seite}: „${punkt.slice(0, 44)}…" fehlt im Rumpf der Mail`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Punkt(e) fehlen in der vorbereiteten Mail:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Vorbereitete Mail   ${String(geprueft).padStart(6)} Punkte stehen im Rumpf, wie in der Liste daneben`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jede Beschriftung der Navigation ist auch eine Adresse.
 
    Die Weiterleitungen in `vercel.json` folgen einem Muster, das jemand

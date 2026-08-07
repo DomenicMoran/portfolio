@@ -73,7 +73,11 @@ export function Contact() {
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic strength={0.15}>
                   <a
-                    href={mailAdresse(site.email, site.mailSubject)}
+                    href={mailAdresse(
+                      site.email,
+                      site.mailSubject,
+                      contact.checkliste.punkte,
+                    )}
                     className="group inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all text-ink transition-colors hover:text-acid sm:text-4xl"
                   >
                     {site.email}
