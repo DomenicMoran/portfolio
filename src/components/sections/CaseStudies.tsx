@@ -353,11 +353,28 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       {/* Die Reiter */}
       <Reveal delay={0.05}>
         <div className="mt-12">
+          {/* Ohne JavaScript gibt es die Reiterleiste nicht.
+
+              Im Baum steht immer nur eine Tafel, die gewählte — das ist eine
+              bewusste Entscheidung und oben begründet. Ohne Skript lässt sich
+              die Wahl aber nicht ändern: Die drei anderen Reiter nehmen den
+              Klick an und schweigen, und die Tafeln dahinter sind gar nicht
+              da. Gemessen an der ausgelieferten Seite mit abgeschaltetem
+              JavaScript: vier Reiter je Fallstudie, dreizehn insgesamt, alle
+              ohne Wirkung.
+
+              Sichtbar bleibt „Was drinsteckt" als Inhalt, nur ohne die
+              Schalter, die nichts schalten. Wer ohne Skript liest, verliert
+              damit nichts, was er vorher hatte — er sieht nur nicht mehr
+              aus, als könne er es holen. */}
+          <noscript>
+            <style>{`.tafel-reiter{display:none}`}</style>
+          </noscript>
           <div
             role="tablist"
             aria-label={study.name}
             onKeyDown={beiTaste}
-            className="flex flex-wrap gap-1.5 border-b border-line pb-3"
+            className="tafel-reiter flex flex-wrap gap-1.5 border-b border-line pb-3"
           >
             {sichtbareTabs.map((id) => {
               const Icon = TAB_ICONS[id];

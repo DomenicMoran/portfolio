@@ -84,13 +84,21 @@ export function Contact() {
                   </a>
                 </Magnetic>
 
+                {/* Dieselbe Überlegung wie beim Druck, eine Ebene weiter:
+                    Ohne Skript kann der Knopf nicht kopieren, und er trägt
+                    keine Auskunft, die verloren ginge — die Adresse steht als
+                    Verweis darüber. Der Knopf im Recruiter-Bereich ist der
+                    andere Fall: Dort ist die Adresse die Beschriftung. */}
+                <noscript>
+                  <style>{`.adresse-kopieren{display:none}`}</style>
+                </noscript>
                 <button
                   type="button"
                   onClick={kopieren}
                   // `no-print`: Die Adresse steht schon im Verweis darüber,
                   // dieser Knopf trägt nur seine Aufforderung. Auf Papier
                   // bliebe „Adresse kopieren" ohne alles, was darauf antwortet.
-                  className="no-print inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                  className="adresse-kopieren no-print inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                 >
                   {kopiert ? (
                     <>
