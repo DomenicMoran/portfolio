@@ -237,6 +237,16 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   height={shot.height}
                   label={shot.label}
                   variant={shot.variant}
+                  /* Teilt sich der Rahmen die Zeile mit einem Telefon, bleibt
+                     er schmaler als allein. Gemessen an der Fallstudie
+                     MenuCloud: 316 px bei 640, 444 bei 768, 700 bei 1.024 und
+                     886 ab 1.280 — gegenüber 1.150, die NOURI allein bekommt.
+                     Ohne diese Angabe lädt der Browser für beide dasselbe. */
+                  sizes={
+                    shot.variant === "browser" && study.shots!.length > 1
+                      ? "(max-width: 639px) 85vw, (max-width: 1279px) 70vw, 900px"
+                      : undefined
+                  }
                   /* `w-full` ist hier kein Beiwerk: Der Behälter ist eine
                      Spalte mit `items-center`, und darin bekommt ein Kind nur
                      die Breite, die es von sich aus mitbringt. Die kam bei

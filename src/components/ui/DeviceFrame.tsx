@@ -20,8 +20,38 @@ type Props = {
   label?: string;
   variant?: "browser" | "phone" | "screen";
   priority?: boolean;
+  /**
+   * Wie breit der Rahmen im Layout wirklich wird.
+   *
+   * Der Wert entscheidet, welche Auflösung der Browser lädt, und er stand
+   * hier fest verdrahtet auf `(max-width: 1024px) 100vw, 700px` — für jeden
+   * Rahmen derselbe, obwohl die Rahmen verschieden breit sind. Gemessen an
+   * der ausgelieferten Startseite bei 1.280, 1.440 und 1.920 px:
+   *
+   *     nouri-desktop      Kasten 1.150 px, geladen 700 px
+   *     menucloud-desktop  Kasten   886 px, geladen 700 px
+   *
+   * Beide wurden also hochgerechnet dargestellt, um 64 % und um 27 %, auf
+   * jedem Bildschirm ab 1.280 px. Es sind die beiden größten Bilder der
+   * Seite, und sie sind der Beleg, für den die Fallstudien geschrieben sind.
+   * Die Quelldateien liegen mit 1.440 px vor; es fehlte nur die Angabe.
+   *
+   * Wer einen neuen Rahmen einbaut, misst seine Kastenbreite und trägt sie
+   * hier ein. `check:images` hält beides gegeneinander.
+   */
+  sizes?: string;
   className?: string;
 };
+
+/** Vorgaben je Rahmenart, gemessen an der ausgelieferten Seite. */
+const SIZES = {
+  /* Der Telefonrahmen ist bei 240 px gedeckelt (`max-w-[15rem]`). */
+  phone: "(max-width: 640px) 60vw, 240px",
+  /* Der Bildschirmrahmen steht in der Bilderstrecke und wächst bis 542 px. */
+  screen: "(max-width: 767px) 80vw, 560px",
+  /* Der Browserrahmen füllt die Spalte: bis 1.150 px, wenn er allein steht. */
+  browser: "(max-width: 1279px) 95vw, 1160px",
+} as const;
 
 export function DeviceFrame({
   src,
@@ -31,8 +61,11 @@ export function DeviceFrame({
   label,
   variant = "browser",
   priority = false,
+  sizes,
   className,
 }: Props) {
+  const groessen = sizes ?? SIZES[variant];
+
   if (variant === "phone") {
     return (
       <div
@@ -53,7 +86,7 @@ export function DeviceFrame({
             width={width}
             height={height}
             priority={priority}
-            sizes="(max-width: 640px) 60vw, 240px"
+            sizes={groessen}
             className="h-auto w-full"
           />
         </div>
@@ -73,7 +106,7 @@ export function DeviceFrame({
             width={width}
             height={height}
             priority={priority}
-            sizes="(max-width: 1024px) 100vw, 700px"
+            sizes={groessen}
             className="h-auto w-full"
           />
         </div>
@@ -113,7 +146,7 @@ export function DeviceFrame({
         width={width}
         height={height}
         priority={priority}
-        sizes="(max-width: 1024px) 100vw, 700px"
+        sizes={groessen}
         className="h-auto w-full"
       />
     </figure>
