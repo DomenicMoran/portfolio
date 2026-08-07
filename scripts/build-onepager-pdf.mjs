@@ -28,6 +28,7 @@
 
 import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { quellstand } from "./lib/onepager-quellstand.mjs";
+import verified from "../src/content/verified.json" with { type: "json" };
 import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
 
@@ -171,6 +172,23 @@ for (const blatt of BLAETTER) {
     Eigenschaften öffnet, tut das nicht zufällig.
   */
   doc.setProducer("domenicmoran.de");
+
+  /*
+    Zwei Blätter mit demselben Inhalt sind auch dieselbe Datei.
+
+    Chromium und pdf-lib schreiben die Uhrzeit des Drucks in die Datei.
+    Gemessen an zwei Läufen ohne jede Inhaltsänderung: gleiche Größe,
+    gleiche Seitenzahl, gleicher Quellstand — und trotzdem verschiedene
+    Bytes, weil `/CreationDate` um fünfzig Minuten auseinanderlag. Jeder
+    Nachdruck erzeugte damit eine Änderung im Repo, die keine war, und die
+    Frage „ist das Blatt aktuell?“ ließ sich nicht am Vergleich beantworten.
+
+    Das Datum kommt deshalb aus dem Prüfstempel, den das Blatt ohnehin
+    zeigt. Es bewegt sich, wenn sich die Zahlen bewegen, und sonst nicht.
+  */
+  const stempel = new Date(`${verified.date}T00:00:00Z`);
+  doc.setCreationDate(stempel);
+  doc.setModificationDate(stempel);
 
   /*
     Der Stand der Quellen, aus denen das Blatt entstanden ist.
