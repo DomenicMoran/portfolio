@@ -84,6 +84,20 @@ export function proxy(request: NextRequest) {
   const kopfzeilen = new Headers(request.headers);
   kopfzeilen.set(PFAD_KOPFZEILE, request.nextUrl.pathname);
 
+  /* Erst löschen, dann setzen — sonst gilt, was der Aufrufer mitschickt.
+
+     `x-pfad` eine Zeile höher wird immer überschrieben, die Sprache bisher nur
+     unter `/en` gesetzt. Eine mitgeschickte Kopfzeile blieb damit stehen:
+     Gemessen an der ausgelieferten Seite am 08.08.2026 lieferte
+     `GET /gibt-es-nicht` mit `x-sprache: en` die englische Fehlerseite samt
+     `lang="en"` auf einer deutschen Adresse.
+
+     Schaden richtet das keinen an — wer die Kopfzeile schickt, täuscht nur
+     sich selbst, und einschleusen lässt sich darüber nichts. Aber die
+     Fehlerseite behandelt diesen Wert als Tatsache über die Anfrage, und eine
+     Tatsache über die Anfrage darf nicht aus der Anfrage stammen. */
+  kopfzeilen.delete(SPRACH_KOPFZEILE);
+
   const unterEn =
     request.nextUrl.pathname === "/en" ||
     request.nextUrl.pathname.startsWith("/en/");
