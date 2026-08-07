@@ -2908,6 +2908,70 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Wie viele Zeitpunkte die Gebetszeiten-Demo wirklich rechnet.
+
+   Unter der Demo steht: „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
+   schafiitisch. 8.760 Zeitpunkte, im Browser gerechnet, ohne eine einzige
+   Anfrage nach außen."
+
+   Dort stand bis zum 08.08.2026 „2.190 Zeitpunkte". Das ist 365 mal 6 — ein
+   Jahr für eine einzige Regel. Gerechnet werden aber alle vier Regeln des
+   Auswahlfeldes: `REGELN` hat vier Einträge, `TAGE` steht auf 365, `GEBETE`
+   nennt sechs. Die Zahl war also um den Faktor vier zu klein, auf einer
+   Seite, deren Argument die gezählte Zahl ist. Sie wurde nicht falsch,
+   sondern zu bescheiden — die Richtung, in der so etwas nie auffällt.
+
+   Gezählt wird aus der Komponente selbst, damit die Zahl mitwächst, wenn dort
+   eine Regel oder ein Gebet dazukommt.
+   ------------------------------------------------------------------------ */
+{
+  const bauteil = "src/components/demo/PrayerTimes.tsx";
+  if (!existsSync(bauteil)) {
+    zeilen.push(`  --  ${bauteil} nicht vorhanden, Zeitpunkte übersprungen`);
+  } else {
+    const text = readFileSync(bauteil, "utf8");
+    const zaehle = (name) =>
+      (text.match(new RegExp(`const ${name} = \\[([^\\]]*)\\]`))?.[1] ?? "")
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean).length;
+
+    const regeln = zaehle("REGELN");
+    const gebete = zaehle("GEBETE");
+    const tage = Number(text.match(/const TAGE = (\d+)/)?.[1] ?? 0);
+    const erwartet = regeln * gebete * tage;
+
+    const funde = [];
+    let geprueft = 0;
+    for (const [datei, muster] of [
+      ["src/content/de.ts", /([\d.]+) Zeitpunkte, im Browser gerechnet/],
+      ["src/content/en.ts", /([\d,]+) points in time, computed in the browser/],
+    ]) {
+      if (!existsSync(datei)) continue;
+      const genannt = readFileSync(datei, "utf8").match(muster)?.[1];
+      if (!genannt) continue;
+      geprueft++;
+      const zahl = Number(genannt.replace(/[.,]/g, ""));
+      if (zahl !== erwartet)
+        funde.push(
+          `${datei}: nennt ${genannt} Zeitpunkte, gerechnet werden ` +
+            `${regeln} Regeln × ${tage} Tage × ${gebete} Gebete = ${erwartet}`,
+        );
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Zeitpunkten stimmen nicht:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Zeitpunkte der Demo ${String(erwartet).padStart(6)} in beiden Fassungen, wie die Komponente rechnet`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Agenten-Sitzung auf der Startseite stimmt mit dem Repo.
 
    Sie zeichnet einen echten Fehler nach und wird auf der meistgelesenen Seite

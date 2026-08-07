@@ -261,7 +261,7 @@ export const de: Content = {
     },
     speed: "{ms} ms",
     today: "heute",
-    note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. 2.190 Zeitpunkte, im Browser gerechnet, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
+    note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. 8.760 Zeitpunkte, im Browser gerechnet, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
     hardPart: "Oberhalb von etwa 48° geht die Sonne im Sommer nie tief genug unter den Horizont, und Fadschr und Ischa sind nicht mehr eindeutig bestimmt. Die drei üblichen Regeln laufen dann auseinander, in Berlin im Juni um über zwei Stunden. Eine Nutzermeldung „Gebetszeiten stimmen nicht“ führte genau hierher. Die App wählt die winkelbasierte Regel, nicht weil sie richtiger wäre, sondern weil sie zu dem passt, womit Nutzer vergleichen. In Tromsø bleiben auch damit die Tage ohne Ergebnis, die oben stehen: Dort gibt es die Nacht nicht, auf die sich die Rechnung bezieht.",
   },
   onepager: {
