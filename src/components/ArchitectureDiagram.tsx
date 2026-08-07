@@ -278,7 +278,12 @@ const ARCHITECTURES: Record<string, Diagram> = {
       {
         id: "n8n",
         label: "n8n",
-        sub: "75+ Workflows · Watchdogs",
+        /* Die Zahl steht auch im Automatisierungsreiter derselben
+           Fallstudie, und dort wird sie geprüft: `check-figures` zählt die
+           von git verfolgten Workflow-Dateien im MenuCloud-Repo und hält
+           sie gegen den Text. Hier stand „75+“ — eine zweite, ungeprüfte
+           Fassung derselben Aussage, gemessen sind es 63. */
+        sub: "63 Workflows · Watchdogs",
         x: 594,
         y: 198,
         w: 306,

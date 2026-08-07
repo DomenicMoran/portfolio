@@ -2092,6 +2092,71 @@ const BRAUCHT_KIND = {
 
    Ohne Netz wird übersprungen und das gesagt. */
 /* ---------------------------------------------------------------------------
+   Die Zahlen in den Architekturbildern.
+
+   Jedes Bild trägt Beschriftungen wie „63 Workflows · Watchdogs“ oder
+   „11.892 Rezepte · Trainingspläne“. Das sind dieselben Aussagen, die
+   nebenan im Text stehen und dort seit Langem geprüft werden — nur an einer
+   zweiten Stelle, in einer eigenen Datei, und bis hierher von keiner Prüfung
+   gelesen.
+
+   Gefunden am 08.08.2026: Im MenuCloud-Bild stand „75+ Workflows“, während
+   der Automatisierungsreiter derselben Fallstudie „63 Workflows“ nennt und
+   das Repo 63 verfolgte Dateien führt. Zwei Zahlen für dieselbe Sache, eine
+   davon zwölf zu hoch, sichtbar nebeneinander auf einer Seite.
+
+   Geprüft wird jede Zahl aus den Beschriftungen gegen die Zahlen, die dieser
+   Lauf ohnehin aus den Repos kennt. Was dort nicht vorkommt, bleibt außen
+   vor: Ein Bild darf auch Zahlen nennen, die nirgends sonst stehen.
+   ------------------------------------------------------------------------ */
+{
+  const datei = "src/components/ArchitectureDiagram.tsx";
+  if (!existsSync(datei)) {
+    zeilen.push(`  --  ${datei} nicht vorhanden, Bildzahlen übersprungen`);
+  } else {
+    const text = readFileSync(datei, "utf8");
+    /* Nur Beschriftungen, nicht der ganze Quelltext: `label:` und `sub:`. */
+    const beschriftungen = [
+      ...text.matchAll(/(?:label|sub):\s*"([^"]*)"/g),
+    ].map((m) => m[1]);
+
+    /* Dieselben Paare, die der Lauf oben schon gegen die Repos gehalten hat.
+       Der Vergleich ist bewusst eng: Zahl plus Wort, sonst träfe „59“ auch
+       eine Zeilennummer. */
+    const bekannt = [
+      [/(\d[\d.]*) Workflows/, "63", "Workflows"],
+      [/(\d[\d.]*) Rezepte/, "11.892", "Rezepte"],
+      [/(\d[\d.]*) Tabellen/, "59", "Tabellen"],
+      [/(\d[\d.]*) Migrationen/, "12", "Migrationen"],
+    ];
+
+    const funde = [];
+    let geprueft = 0;
+    for (const beschriftung of beschriftungen) {
+      for (const [muster, soll, was] of bekannt) {
+        const treffer = beschriftung.match(muster);
+        if (!treffer) continue;
+        geprueft++;
+        if (treffer[1] !== soll)
+          funde.push(
+            `„${beschriftung}“ nennt ${treffer[1]} ${was}, der Text nennt ${soll}`,
+          );
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Zahl(en) im Architekturbild weichen ab:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Bildzahlen         ${String(geprueft).padStart(6)} Angaben in den Architekturbildern wie im Text`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Wie viele Apps in wie vielen Stores stehen.
 
    Im Werdegang stand „drei Apps in den Stores und zwei davon in beiden". Das

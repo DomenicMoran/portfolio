@@ -95,7 +95,7 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "Planer · Tracking": "Planner · tracking",
   "11.892 Rezepte · Trainingspläne": "11,892 recipes · training plans",
   "59 Tabellen · 12 Migrationen · RLS": "59 tables · 12 migrations · RLS",
-  "75+ Workflows · Watchdogs": "75+ workflows · watchdogs",
+  "63 Workflows · Watchdogs": "63 workflows · watchdogs",
   "Alerts nach Slack": "Alerts to Slack",
   "+ SES-Fallback": "+ SES fallback",
   "DNS · Edge · WAF": "DNS · edge · WAF",
