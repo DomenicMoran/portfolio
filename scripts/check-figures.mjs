@@ -2200,7 +2200,16 @@ const BRAUCHT_KIND = {
    im Nachbar-Repo sagt, ob es den Commit gibt.
    ------------------------------------------------------------------------ */
 {
+  /* Nicht nur die Artikel nennen Commits.
+
+     Die Agenten-Sitzung auf der Startseite endet mit „Ursache, Datei und
+     Änderung stehen in Commit bce08f5e“, und die Zeile darüber trägt ihn
+     ebenfalls. Das ist derselbe Beleg wie in einem Artikel, an der meist
+     gelesenen Stelle der Seite — und er stand außerhalb dieser Prüfung. */
   const repoZuArtikel = {
+    "../site.ts": "../../SalatiTech",
+    "../de.ts": "../../SalatiTech",
+    "../en.ts": "../../SalatiTech",
     "de-ota.ts": "../../SalatiTech",
     "de-shaper.ts": "../../SalatiTech",
     "de-widget.ts": "../../SalatiTech",
@@ -2254,11 +2263,11 @@ const BRAUCHT_KIND = {
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft) {
     zeilen.push(
-      `  ok  Artikel-Belege      ${String(geprueft).padStart(6)} genannte Commits gibt es im jeweiligen Repo` +
+      `  ok  Genannte Commits    ${String(geprueft).padStart(6)} genannte Commits gibt es im jeweiligen Repo` +
         (uebersprungen ? `, ${uebersprungen} ohne Repo übersprungen` : ""),
     );
   } else {
-    zeilen.push("  --  Artikel-Belege: kein Repo erreichbar, übersprungen");
+    zeilen.push("  --  Genannte Commits: kein Repo erreichbar, übersprungen");
   }
 }
 
