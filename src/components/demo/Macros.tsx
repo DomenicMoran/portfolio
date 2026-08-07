@@ -483,7 +483,20 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
             >
               <span aria-hidden>{g.emoji}</span>
               {inhalt.lang === "de" ? g.de : g.en}
-              <span className="font-mono text-[10px] opacity-70">{g.kcal}</span>
+              {/* Ohne die Deckkraft von 70 %. Die Druck-Stilvorlage hat genau
+                  diesen Wert schon einmal gemessen — `text-ink-faint` auf
+                  70 % ergibt 3,13:1 bei 10 px — und ihn nur für das Papier auf
+                  volle Deckung gesetzt. Am Bildschirm stand er weiter, weil
+                  axe den Untergrund hinter der Karte nicht bestimmen kann und
+                  die Stelle deshalb weder bestanden noch verletzt meldete.
+                  Voll gedeckt sind es 5,68:1; zurück tritt die Zahl über die
+                  schmalere Schrift und die 10 px.
+
+                  Der Klassenname steht bewusst nicht hier: Tailwind liest den
+                  Quelltext als Text und nimmt Kommentare mit. Er schrieb die
+                  Regel danach weiter ins Stilblatt, obwohl kein Bauteil sie
+                  mehr setzt. */}
+              <span className="font-mono text-[10px]">{g.kcal}</span>
             </button>
           );
         })}
@@ -606,7 +619,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
 
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 left-0 flex h-[150px] w-8 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint/80"
+            className="pointer-events-none absolute top-0 left-0 flex h-[150px] w-8 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint"
           >
             <span>{RAUM.maxEiweiss}</span>
             <span>0</span>
@@ -616,7 +629,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
 
         <div
           aria-hidden
-          className="flex justify-between pt-1 pl-9 font-mono text-[9px] text-ink-faint/80"
+          className="flex justify-between pt-1 pl-9 font-mono text-[9px] text-ink-faint"
         >
           <span>
             {demo.field.y} g · {demo.field.x} →

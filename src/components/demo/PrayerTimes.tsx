@@ -840,7 +840,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
             gleich gross bleiben. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 left-0 flex h-[190px] w-7 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint/80"
+          className="pointer-events-none absolute top-0 left-0 flex h-[190px] w-7 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint"
         >
           <span>24</span>
           <span>18</span>
@@ -850,7 +850,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute right-0 bottom-0 left-8 flex justify-between pt-1 font-mono text-[9px] text-ink-faint/80"
+          className="pointer-events-none absolute right-0 bottom-0 left-8 flex justify-between pt-1 font-mono text-[9px] text-ink-faint"
         >
           {MONATE.map((m, i) => (
             <span key={i}>{m}</span>

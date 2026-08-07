@@ -225,7 +225,16 @@ function AgentTerminal() {
               transition={{ duration: 0.35, ease: ease.expo }}
               className={cn("flex gap-2.5 py-1", style.className)}
             >
-              <span className="shrink-0 opacity-60">{style.prefix}</span>
+              {/* `aria-hidden`, weil das Zeichen ein Aufzählungszeichen ist:
+                  › für den Befehl, · für die Notiz, → für das Ergebnis. Ein
+                  Vorleseprogramm sagte bisher „größer als" vor jeder
+                  Befehlszeile. Sichtbar bleibt es und trägt auf 60 % Deckung
+                  2,60:1 — als Schmuck ist das die Ausnahme, die die WCAG
+                  dafür vorsieht, und `check:contrast` nimmt es an derselben
+                  Regel heraus wie den Trennpunkt im One-Pager. */}
+              <span aria-hidden className="shrink-0 opacity-60">
+                {style.prefix}
+              </span>
               <span className="text-pretty">{line.text}</span>
             </motion.p>
           );
