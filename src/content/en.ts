@@ -568,7 +568,7 @@ export const en: Content = {
       problem:
         "A Berlin flat draws applicants in the hundreds. What decides it is not the best application but the first, within minutes of the listing going up. That is a race a human structurally cannot win, because humans sleep.",
       solution:
-        "A locally running agent that scans five portals around the clock, checks each new listing against defined criteria, sends borderline cases to an LLM for a full-text assessment, and drafts an individual cover letter. It ships in REVIEW mode: it sends nothing without approval, until you deliberately switch it to automatic.",
+        "A locally running agent that scans four portals around the clock, checks each new listing against defined criteria, sends borderline cases to an LLM for a full-text assessment, and drafts an individual cover letter. It ships in REVIEW mode: it sends nothing without approval, until you deliberately switch it to automatic.",
       hardPart: {
         title: "An agent that does not act unasked",
         body: "What makes such a system appealing is also its risk: a bot sending applications with real personal data can do real damage. So the shipped state is REVIEW: propose, do not send. Automatic mode exists, but as a deliberate user decision rather than the default. The same logic sits in the watchdogs on my other projects: self-healing always with a cooldown, a cap, and a visible alert on every intervention.",
@@ -578,6 +578,7 @@ export const en: Content = {
         "LLM full-text assessment with a rule-based fallback when no key is configured",
         "Local SQLite storage; the server binds to 127.0.0.1 by default",
         "REVIEW mode as the shipped state: nothing is sent without human approval",
+        "A second ingest path through my own mailbox: ImmoScout24 reports new matches by mail faster than a results page can be polled",
         "Watchdog with automatic restart after a crash",
         "Multi-instance operation for parallel accounts, distributable package without personal data",
       ],
@@ -600,7 +601,7 @@ export const en: Content = {
         },
       ],
       metrics: [
-        { value: "5", label: "portals watched" },
+        { value: "4", label: "portals watched" },
         { value: "24/7", label: "scanning" },
         { value: "2", label: "review stages before sending" },
       ],

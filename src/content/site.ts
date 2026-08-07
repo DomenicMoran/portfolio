@@ -736,7 +736,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Auf eine Berliner Wohnung kommen dreistellige Bewerberzahlen. Entscheidend ist nicht die beste Bewerbung, sondern die erste, und zwar innerhalb von Minuten nach Inseratsschaltung. Das ist ein Wettlauf, den ein Mensch strukturell nicht gewinnen kann, weil er schläft.",
     solution:
-      "Ein lokal laufender Agent, der rund um die Uhr fünf Portale scannt, jedes neue Inserat gegen die eigenen Kriterien prüft, zweifelhafte Fälle per LLM im Volltext bewertet und ein individuelles Anschreiben erzeugt. Standardmäßig im REVIEW-Modus: die App versendet nichts ohne Freigabe, bis man sie bewusst auf Automatik stellt.",
+      "Ein lokal laufender Agent, der rund um die Uhr vier Portale scannt, jedes neue Inserat gegen die eigenen Kriterien prüft, zweifelhafte Fälle per LLM im Volltext bewertet und ein individuelles Anschreiben erzeugt. Standardmäßig im REVIEW-Modus: die App versendet nichts ohne Freigabe, bis man sie bewusst auf Automatik stellt.",
     hardPart: {
       title: "Ein Agent, der nicht ungefragt handelt",
       body: "Der Reiz eines solchen Systems ist auch sein Risiko: ein Bot, der selbstständig Bewerbungen mit echten Personendaten verschickt, kann realen Schaden anrichten. Deshalb ist der Auslieferungszustand REVIEW: Vorschlag statt Versand. Der Automatikmodus existiert, ist aber eine bewusste Entscheidung des Nutzers, nicht die Voreinstellung. Dieselbe Logik steckt in den Watchdogs meiner anderen Projekte: Selbstheilung immer mit Cooldown, Obergrenze und sichtbarem Alarm bei jedem Eingriff.",
@@ -746,6 +746,7 @@ export const caseStudies: CaseStudy[] = [
       "LLM-Volltextprüfung mit regelbasiertem Fallback, wenn kein Key hinterlegt ist",
       "Lokale SQLite-Datenhaltung, Server bindet standardmäßig nur auf 127.0.0.1",
       "REVIEW-Modus als Auslieferungszustand: kein Versand ohne menschliche Freigabe",
+      "Zweiter Erfassungsweg über das eigene Postfach: ImmoScout24 meldet neue Treffer per Mail schneller, als eine Ergebnisseite sich abfragen lässt",
       "Watchdog mit automatischem Neustart nach Absturz",
       "Mehrinstanz-Betrieb für parallele Accounts, Weitergabe-Paket ohne persönliche Daten",
     ],
@@ -764,7 +765,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "5", label: "Überwachte Portale" },
+      { value: "4", label: "Überwachte Portale" },
       { value: "24/7", label: "Scan-Betrieb" },
       { value: "2", label: "Bewertungsstufen vor dem Versand" },
     ],
