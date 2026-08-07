@@ -136,6 +136,13 @@ Leerzeichen am Ende eines `inline-block` mit `overflow: hidden` wird
 zusammengefaltet. Die Wörter kleben dann aneinander. Betrifft `Hero` und
 `RevealWords`.
 
+Der Hero löst es mit einem Leerzeichen **zwischen** den Masken, also außerhalb
+des schneidenden Kastens — dasselbe Ergebnis, und gemessen am 07.08.2026 sind
+es 24,8 px bei 129,6 px Schrift und 8,4 px bei 44 px, beide Male 19 Prozent.
+`check:headings` verlangt seither 8 Prozent und meldet sonst Wortpaar,
+Schriftgröße und Abstand. Gegengeprüft ohne das Leerzeichen: drei Paare mit
+0 px.
+
 **Dekorative Glüh-Kreise brauchen einen Clip.** Ein `glow-orb` ist breiter als
 das Viewport und erzeugt sonst horizontales Scrollen auf Telefonen.
 
@@ -154,7 +161,8 @@ einbaut, prüft das mit.
 
 Was dabei sichtbar wurde: `overflow-hidden` macht die Sektion zum
 Scrollcontainer. `#hire` meldet bei 390 px 504 px Inhaltsbreite auf 390 px
-sichtbar, `#workflow` 467 und `#contact` 435. Das Dokument scrollt nicht, alle
+sichtbar, `#workflow` 467 und `#contact` 435; bei 320 px kommt `#about` mit
+322 auf 320 dazu, ein einzelner Glüh-Kreis. Das Dokument scrollt nicht, alle
 fokussierbaren Elemente liegen innerhalb, und der Überstand stammt
 ausschließlich aus der Deko — heute also ohne Wirkung. Wer einen Verweis so
 weit nach rechts setzt, dass er in diesen Bereich fällt, bekommt beim

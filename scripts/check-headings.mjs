@@ -134,15 +134,48 @@ for (const breite of BREITEN) {
     // fährt und was `getAnimations` deshalb nicht kennt.
     await seite.waitForTimeout(1400);
 
-    const { raus: funde, unruhig } = await seite.evaluate(() => {
+    const { raus: funde, unruhig, geklebt } = await seite.evaluate(() => {
       const messer = document.createElement("canvas").getContext("2d");
       const raus = [];
       const unruhig = [];
+      const geklebt = [];
 
       for (const ueberschrift of document.querySelectorAll("h1, h2, h3")) {
         const masken = [...ueberschrift.querySelectorAll("span")].filter(
           (s) => getComputedStyle(s).overflow === "hidden",
         );
+
+        /* Stehen die Woerter noch auseinander?
+
+           Ein Leerzeichen am Ende eines `inline-block` mit
+           `overflow: hidden` wird zusammengefaltet — die Woerter kleben
+           dann aneinander. AGENTS.md nennt das als Falle, die hier schon
+           zugeschnappt ist, und verlangt deshalb `margin` statt eines
+           Leerzeichens. Geprueft hat das bisher niemand.
+
+           Gemessen am 07.08.2026 an der Kopfzeile der Startseite: 24,8 px
+           bei 129,6 px Schrift und 8,4 px bei 44 px — beide Male 19 Prozent
+           der Schriftgroesse. Verlangt werden 8 Prozent: deutlich unter dem
+           gemessenen Wert und weit ueber dem, was ein zusammengefaltetes
+           Leerzeichen uebrig laesst, naemlich nichts. Verglichen wird nur
+           innerhalb einer Zeile; ein Umbruch ist kein fehlender Abstand. */
+        const inZeile = masken
+          .map((m) => ({ m, r: m.getBoundingClientRect() }))
+          .filter(({ r }) => r.width > 0);
+        for (let i = 1; i < inZeile.length; i++) {
+          const a = inZeile[i - 1];
+          const b = inZeile[i];
+          if (Math.abs(a.r.top - b.r.top) > 4) continue;
+          const groesse = parseFloat(getComputedStyle(b.m).fontSize);
+          const abstand = b.r.left - a.r.right;
+          if (abstand < groesse * 0.08) {
+            geklebt.push({
+              woerter: `${(a.m.textContent ?? "").trim()} ${(b.m.textContent ?? "").trim()}`.slice(0, 30),
+              abstand: Math.round(abstand * 10) / 10,
+              groesse: Math.round(groesse),
+            });
+          }
+        }
         for (const maske of masken) {
           const wort = maske.textContent ?? "";
           if (!/[gyqpjß,;]/.test(wort)) continue;
@@ -205,8 +238,17 @@ for (const breite of BREITEN) {
           }
         }
       }
-      return { raus, unruhig };
+      return { raus, unruhig, geklebt };
     });
+
+    if (geklebt.length > 0) {
+      fehler += geklebt.length;
+      console.log(`  FEHLER ${pfad} bei ${breite} px: Woerter ohne Abstand`);
+      for (const g of geklebt)
+        console.log(
+          `        „${g.woerter}" bei ${g.groesse} px: ${g.abstand} px Abstand`,
+        );
+    }
 
     if (unruhig.length > 0) {
       nichtMessbar += unruhig.length;
@@ -327,5 +369,6 @@ if (fehler > 0 || nichtMessbar > 0 || beschnitten.length > 0) process.exit(1);
 
 console.log(
   `Keine abgeschnittene Unterlänge: ${pfade.length} Seiten × ${BREITEN.length} Breiten geprüft, ` +
-    `nichts waagerecht beschnitten bei ${SCHMALE_BREITEN.join(" und ")} px.`,
+    `nichts waagerecht beschnitten bei ${SCHMALE_BREITEN.join(" und ")} px, ` +
+    `keine zwei Wörter ohne Abstand.`,
 );
