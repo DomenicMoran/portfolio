@@ -990,7 +990,7 @@ export const en: Content = {
           },
           {
             name: "React Native / Expo",
-            evidence: "Expo SDK 57, RN 0.86, four device types",
+            evidence: "Expo SDK 57, RN 0.86, four device classes",
           },
           {
             name: "TypeScript",
