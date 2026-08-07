@@ -805,14 +805,21 @@ textarea:-webkit-autofill {
      and still reflows, unlike `transform: scale()`.
      If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
   .onepager {
-    /* Gemessen am 01.08.2026: Inhalt 1.302 px bei 794 px Breite, nutzbar
-       sind 1.040 px. 0,78 ergibt 1.016 px und lässt 24 px Luft.
+    /* Gemessen am 08.08.2026: Inhalt 1.172 px bei 794 px Breite. Die
+       nutzbare Höhe liegt bei rund 1.030 px — empirisch bestimmt, denn
+       zwischen 0,87 und 0,88 kippt das Blatt auf zwei Seiten. 0,85 ergibt
+       996 px, also 97 % der Seite und 34 px Luft.
 
-       Vorher stand hier 0,83 zu einem Inhalt von 1.109 px. Die Seite ist
-       seitdem gewachsen, die Zahl blieb stehen, und das eingecheckte PDF war
-       einseitig, während die Seite zwei erzeugte. Wer den Inhalt ändert, muss
-       `npm run onepager:pdf` laufen lassen: Das Skript sagt die Seitenzahl
-       und ist der einzige verlässliche Prüfer. */
-    zoom: 0.78;
+       Die Zahl ist zweimal veraltet, in beide Richtungen. Erst stand hier
+       0,83 zu einem Inhalt von 1.109 px; die Seite wuchs, die Zahl blieb, und
+       das eingecheckte PDF war einseitig, während die Seite zwei erzeugte.
+       Dann stand 0,78 zu einem angenommenen Inhalt von 1.302 px; der Inhalt
+       schrumpfte auf 1.172, die Zahl blieb, und das Blatt füllte nur 89 % der
+       Seite — die kleinste Schrift stand bei 5,9 pt statt 6,4.
+
+       Beides fällt jetzt beim Drucken auf: `npm run onepager:pdf` nennt
+       Seitenzahl, Ausnutzung und die kleinste Punktgröße und bricht unter
+       90 % ab. Wer den Inhalt ändert, lässt den Lauf laufen. */
+    zoom: 0.85;
   }
 }
