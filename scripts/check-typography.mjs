@@ -101,6 +101,26 @@ const AMERIKANISCH = new Map([
   ["labeled", "labelled"],
   ["traveling", "travelling"],
   ["gotten", "got"],
+  /* Nachgetragen am 07.08.2026. „shifts probabilities toward those words"
+     stand im Whisper-Artikel und ist die einzige Stelle gewesen, die dieser
+     Liste entkam — geprüft war die Endung -ize, nicht die auf -ward.
+
+     Die elf Ergänzungen sind gegen die gebauten englischen Seiten gemessen:
+     keine schlägt heute an, keine trifft einen Eigennamen. `normalize` fehlt
+     bewusst weiter, denn das Paket heißt `arabic-normalize` und steht als
+     sichtbarer Text auf drei Seiten; der Fließtext daneben schreibt
+     durchgängig `normalise`. */
+  ["toward", "towards"],
+  ["afterward", "afterwards"],
+  ["gray", "grey"],
+  ["specialty", "speciality"],
+  ["modeling", "modelling"],
+  ["modeled", "modelled"],
+  ["signaling", "signalling"],
+  ["traveled", "travelled"],
+  ["skillful", "skilful"],
+  ["enrollment", "enrolment"],
+  ["installment", "instalment"],
 ]);
 
 /**
