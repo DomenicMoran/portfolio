@@ -2821,6 +2821,54 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die drei Zustände, die die NOURI-API unterscheidet.
+
+   Die Fallstudie macht dort ihre genaueste Zusage: „Jeder schreibende
+   Endpunkt unterscheidet explizit: Secrets fehlen (Dry-Run, kein
+   Datenverlust vorgetäuscht), Datenbank nicht erreichbar (503), Datenbank
+   erreichbar aber lehnt ab (echter 4xx mit Postgres-Fehlercode)."
+
+   Nachgesehen am 08.08.2026 in `services/api/src`: Der 503 steht zentral im
+   `setErrorHandler` und gilt damit für jeden Endpunkt, der 4xx reicht den
+   `code` aus der Supabase-Antwort weiter, und `dry_run` hängt an
+   `!savedGrant.configured`. Alle drei sind da — geprüft hat es nichts.
+
+   Geprüft wird deshalb die Anwesenheit der drei Mechanismen, nicht ihr
+   Verhalten: Wer einen davon entfernt, macht einen Satz auf der Seite falsch,
+   und zwar den, der am genauesten klingt.
+   ------------------------------------------------------------------------ */
+{
+  const api = "../../NOURI/services/api/src";
+  if (!existsSync(api)) {
+    zeilen.push("  --  NOURI-API nicht vorhanden, Zustände übersprungen");
+  } else {
+    const quelltext = readdirSync(api)
+      .filter((d) => d.endsWith(".ts"))
+      .map((d) => readFileSync(join(api, d), "utf8"))
+      .join("\n");
+
+    const ZUSTAENDE = [
+      ["Dry-Run bei fehlender Konfiguration", /dry_run/],
+      ["503, wenn die Datenbank nicht erreichbar ist", /SupabaseUnreachableError[\s\S]{0,200}503/],
+      ["4xx mit weitergereichtem Fehlercode", /SupabaseRequestError[\s\S]{0,400}code/],
+    ];
+
+    const fehlend = ZUSTAENDE.filter(([, muster]) => !muster.test(quelltext));
+    if (fehlend.length) {
+      abweichungen += fehlend.length;
+      zeilen.push(
+        `  !!  ${fehlend.length} Zustand/Zustände der NOURI-API fehlen, die Fallstudie nennt sie:`,
+      );
+      for (const [was] of fehlend) zeilen.push(`        ${was}`);
+    } else {
+      zeilen.push(
+        `  ok  NOURI-Zustände       ${String(ZUSTAENDE.length).padStart(6)} unterschieden, wie die Fallstudie sagt`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Kennzahlen der Fallstudie ohne Git-Historie.
 
    WohnungsJäger liegt neben diesem Repo, aber nicht bei GitHub. Der Jahrescheck
@@ -2854,9 +2902,22 @@ const BRAUCHT_KIND = {
     /* `custom` ist eine leere Stelle für eine eigene Quelle, `demo` eine
        Prüfvorrichtung. Beide sind keine überwachten Portale. */
     const echte = eingetragen.filter((n) => !["custom", "demo"].includes(n));
+    let stufenGeprueft = 0;
+
+    /* Beide Sprachfassungen, nicht nur die deutsche.
+
+       Die Kennzahlen stehen zweimal — „Überwachte Portale" und „portals
+       watched", „Bewertungsstufen" und „review stages before sending". Wer
+       eine ändert, ändert selten beide, und geprüft wurde bisher nur die
+       deutsche. Eine englische Zahl, die niemand nachrechnet, ist genau die,
+       die stehen bleibt. */
+    const englisch = existsSync("src/content/en.ts")
+      ? readFileSync("src/content/en.ts", "utf8")
+      : "";
 
     const behauptet = [
       ...quelle.matchAll(/value: "(\d+)", label: "Überwachte Portale"/g),
+      ...englisch.matchAll(/value: "(\d+)", label: "portals watched"/g),
     ].map((m) => Number(m[1]));
     const imFliesstext = [
       ...quelle.matchAll(/rund um die Uhr (\w+) Portale scannt/g),
@@ -2873,13 +2934,55 @@ const BRAUCHT_KIND = {
           `Fließtext nennt „${wort}“, die Registrierung führt ${echte.length}`,
         );
 
+    /* Und die Bewertungsstufen vor dem Versand.
+
+       Die Kennzahlenkachel nennt „2 Bewertungsstufen vor dem Versand". Das
+       ist die Zahl, die den Absatz darüber trägt — „ein Bot, der selbständig
+       Bewerbungen mit echten Personendaten verschickt, kann realen Schaden
+       anrichten" —, und sie stand ungeprüft da.
+
+       Nachgesehen im Repo: `hardfilter.ts` beginnt mit „Stufe 1: Hard-Filter
+       auf strukturierte Daten", `pipeline.ts` ruft darunter „Stufe 2:
+       Volltext-Prüfung (KI oder Regeln)" auf. Der Code benennt seine Stufen
+       also selbst, und genau die werden hier gezählt. Kommt eine dritte dazu
+       oder fällt eine weg, fällt es hier auf und nicht dem Leser. */
+    {
+      const engine = "../../KIWohnung/src/engine";
+      if (existsSync(engine)) {
+        const stufen = new Set();
+        for (const datei of readdirSync(engine)) {
+          if (!datei.endsWith(".ts")) continue;
+          for (const treffer of readFileSync(join(engine, datei), "utf8").matchAll(
+            /Stufe (\d+):/g,
+          )) {
+            stufen.add(Number(treffer[1]));
+          }
+        }
+        const genannt = [
+          ...quelle.matchAll(/value: "(\d+)", label: "Bewertungsstufen/g),
+          ...englisch.matchAll(/value: "(\d+)", label: "review stages/g),
+        ].map((m) => Number(m[1]));
+        for (const zahl of genannt) {
+          if (stufen.size === 0) {
+            funde.push("Bewertungsstufen: der Code benennt keine");
+          } else if (zahl !== stufen.size) {
+            funde.push(
+              `Bewertungsstufen: die Seite sagt ${zahl}, der Code benennt ${stufen.size}`,
+            );
+          }
+        }
+        if (genannt.length && stufen.size) stufenGeprueft = stufen.size;
+      }
+    }
+
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  WohnungsJäger: Portalzahl stimmt nicht:`);
+      zeilen.push(`  !!  WohnungsJäger: Zahlen stimmen nicht:`);
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        `  ok  WohnungsJäger        ${String(echte.length).padStart(6)} Portale wie in der Registrierung (${echte.join(", ")})`,
+        `  ok  WohnungsJäger        ${String(echte.length).padStart(6)} Portale wie in der Registrierung (${echte.join(", ")})` +
+          (stufenGeprueft ? `, ${stufenGeprueft} Bewertungsstufen wie im Code` : ""),
       );
     }
   }
