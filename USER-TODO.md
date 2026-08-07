@@ -5,7 +5,32 @@ bereits erledigt.
 
 ---
 
-## 1. Seit wann arbeitest du agentengestützt?
+## 1. Konventionsdatei für NOURI und WohnungsJäger
+
+**Was der Fall ist:** Der Abschnitt „Arbeitsweise" sagte „Jedes Projekt trägt
+seine Konventionen als Datei im Repo". Nachgezählt am 08.08.2026 stimmte das
+für vier von sechs Repositories — MenuCloud, Salati (unter `apps/mobile`),
+diese Seite und die Lernplattform. `NOURI` und `KIWohnung` tragen keine, auch
+nicht unter anderem Namen; gesucht wurde bis in die dritte Ebene.
+
+Der Satz nennt jetzt vier und wird von `check-figures` nachgezählt. Damit ist
+er belegt, aber schwächer als die Wirklichkeit deiner Arbeitsweise: Zwei der
+vier Systeme, die die Seite als Produktion nennt, stehen ohne da.
+
+**Was du tun kannst:** In beiden Repos eine `AGENTS.md` anlegen, die die dort
+wirklich geltenden Konventionen beschreibt — Import-Regeln, Test-Muster,
+Sicherheits-Vorgaben. Ich habe sie bewusst nicht geschrieben: Eine
+Konventionsdatei, die aus dem Code geraten ist, ist genau der plausibel
+aussehende Schrott, gegen den der Abschnitt daneben argumentiert. Du weißt,
+was dort gilt.
+
+**Danach:** `node scripts/check-figures.mjs` zählt sechs statt vier und meldet
+die Abweichung; dann trägst du die Zahl in `site.ts` und `en.ts` nach — oder
+schreibst wieder „Jedes Projekt", was dann stimmt.
+
+---
+
+## 2. Seit wann arbeitest du agentengestützt?
 
 **Wo das steht:** Im Abschnitt „Arbeitsweise" auf der Startseite, in beiden
 Sprachen — „Ich arbeite seit über einem Jahr agentengestützt" /

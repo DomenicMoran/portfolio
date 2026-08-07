@@ -2969,6 +2969,106 @@ const BRAUCHT_KIND = {
    oder erfährt hier davon.
    ------------------------------------------------------------------------ */
 /* ---------------------------------------------------------------------------
+   Wie viele Repositories tragen wirklich eine Konventionsdatei?
+
+   Der Abschnitt „Arbeitsweise" sagte „Jedes Projekt trägt seine Konventionen
+   als Datei im Repo" und nannte als Beleg „CLAUDE.md pro Repo". Nachgezählt am
+   08.08.2026 stimmte das für vier von sechs: MenuCloud, Salati (unter
+   `apps/mobile`), diese Seite und die Lernplattform. NOURI und WohnungsJäger
+   tragen keine — auch nicht unter anderem Namen, gesucht wurde bis in die
+   dritte Ebene.
+
+   Zwei der vier Systeme, die diese Seite als Produktion nennt, waren also
+   nicht abgedeckt. Auf einer Seite, deren Argument die belegte Angabe ist, ist
+   „jedes" die teuerste Sorte Wort: Es kostet nichts zu schreiben und lässt
+   sich in einer Minute widerlegen.
+
+   Gezählt wird jetzt, was dasteht. Wer die Datei in den beiden übrigen anlegt,
+   sieht die Zahl hier steigen und zieht den Satz nach.
+   ------------------------------------------------------------------------ */
+{
+  const ORTE = [
+    ["MenuCloud", "../../MenuCloud"],
+    ["Salati", "../../SalatiTech"],
+    ["NOURI", "../../NOURI"],
+    ["WohnungsJäger", "../../KIWohnung"],
+    ["Portfolio", "."],
+    ["Lernplattform", "../pruefstand"],
+  ];
+  /* Salati trägt sie unter `apps/mobile`, nicht an der Wurzel — ein Monorepo
+     mit einer App darin. Gesucht wird deshalb an beiden Stellen. */
+  const UNTERORDNER = ["", "apps/mobile"];
+  const DATEIEN = ["CLAUDE.md", "AGENTS.md"];
+
+  const mit = [];
+  let unbekannt = 0;
+  for (const [name, ort] of ORTE) {
+    if (!existsSync(ort)) {
+      unbekannt++;
+      continue;
+    }
+    const da = UNTERORDNER.some((u) =>
+      DATEIEN.some((d) => existsSync(join(ort, u, d))),
+    );
+    if (da) mit.push(name);
+  }
+
+  const quellen = ["src/content/site.ts", "src/content/en.ts"]
+    .filter((d) => existsSync(d))
+    .map((d) => readFileSync(d, "utf8"))
+    .join(" ");
+
+  /* Eigene Zuordnung statt der weiter oben: Die dort steht in einem anderen
+     Block und ist hier nicht sichtbar. Ein `ZAHLWORT.get(…)` darauf hat den
+     ganzen Lauf mit einem ReferenceError beendet — und weil der Lauf seine
+     Zeilen erst am Ende ausgibt, sah das aus wie ein Block, der schweigt. */
+  const AUSGESCHRIEBEN = new Map([
+    ["eine", 1],
+    ["zwei", 2],
+    ["drei", 3],
+    ["vier", 4],
+    ["fünf", 5],
+    ["sechs", 6],
+    ["one", 1],
+    ["two", 2],
+    ["three", 3],
+    ["four", 4],
+    ["five", 5],
+    ["six", 6],
+  ]);
+
+  const funde = [];
+  let geprueft = 0;
+  for (const [muster, sprache] of [
+    [/([A-Za-zäöü]+) meiner Repositories tragen ihre Konventionen/, "de"],
+    [/([A-Za-z]+) of my repositories carry their conventions/, "en"],
+  ]) {
+    const treffer = muster.exec(quellen);
+    if (!treffer) continue;
+    geprueft++;
+    const genannt =
+      AUSGESCHRIEBEN.get(treffer[1].toLowerCase()) ?? Number(treffer[1]);
+    if (genannt !== mit.length) {
+      funde.push(
+        `${sprache}: die Seite sagt ${treffer[1]}, gezählt sind ${mit.length} ` +
+          `(${mit.join(", ")})`,
+      );
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Konventionsdateien stimmen nicht:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Konventionsdateien ${String(mit.length).padStart(6)} Repos tragen eine (${mit.join(", ")})` +
+        (unbekannt ? `, ${unbekannt} Ordner nicht gefunden` : ""),
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die beiden Sicherheitszusagen der Fallstudie WohnungsJäger.
 
    Auf der Seite stehen zwei Sätze, die keine Zahl sind und trotzdem
