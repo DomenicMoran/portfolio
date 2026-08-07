@@ -65,6 +65,45 @@ const FREMDER_TRENNER = {
 };
 
 /**
+ * Amerikanische Schreibweisen auf einer Seite, die britisch sein will.
+ *
+ * Die Metadaten melden `en_GB`, und der Text hält sich daran: licence, fibre,
+ * catalogue, recognise. Genau deshalb fällt jede amerikanische Form auf —
+ * einem britischen Leser sofort, einem deutschen Autor nie.
+ *
+ * Gefunden am 08.08.2026 auf dem englischen Kurzprofil: „in the print dialog".
+ * Ein Wort, und es stand ausgerechnet in dem Satz, der erklärt, wie man das
+ * Blatt speichert.
+ *
+ * Ganze Wörter, nicht Teilzeichenketten: „catalog" steckt in „catalogue" und
+ * „licens" in „licensed", das als Verb richtig ist. Wer hier ein Muster
+ * ergänzt, prüft es zuerst gegen die britische Form.
+ */
+const AMERIKANISCH = new Map([
+  ["dialog", "dialogue"],
+  ["catalog", "catalogue"],
+  ["analog", "analogue"],
+  ["center", "centre"],
+  ["color", "colour"],
+  ["behavior", "behaviour"],
+  ["favor", "favour"],
+  ["organize", "organise"],
+  ["organized", "organised"],
+  ["recognize", "recognise"],
+  ["recognized", "recognised"],
+  ["optimize", "optimise"],
+  ["optimized", "optimised"],
+  ["analyze", "analyse"],
+  ["analyzed", "analysed"],
+  ["defense", "defence"],
+  ["fulfill", "fulfil"],
+  ["canceled", "cancelled"],
+  ["labeled", "labelled"],
+  ["traveling", "travelling"],
+  ["gotten", "got"],
+]);
+
+/**
  * Der Text einer gebauten Seite — auch der, der erst im Browser entsteht.
  *
  * `sichtbarerText` wirft `<script>` weg, und das ist für die
@@ -156,6 +195,24 @@ for (const route of gebauteSeiten()) {
       funde.push(
         `${route}: ${luecken.length}× Leerzeichen vor dem Prozentzeichen — ` +
           `im Englischen steht es direkt an der Zahl (100%).`,
+      );
+    }
+  }
+
+  if (sprache === "en") {
+    const amerikanisch = [];
+    for (const [wort, britisch] of AMERIKANISCH) {
+      const muster = new RegExp(`\\b${wort}\\b`, "gi");
+      const treffer = [
+        ...new Set([...text.matchAll(muster)].map((m) => m[0])),
+      ];
+      for (const t of treffer) amerikanisch.push(`${t} → ${britisch}`);
+    }
+    if (amerikanisch.length > 0) {
+      funde.push(
+        `${route} (en): amerikanische Schreibweise — ${amerikanisch
+          .slice(0, 5)
+          .join(", ")}`,
       );
     }
   }
