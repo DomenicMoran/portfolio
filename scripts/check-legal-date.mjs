@@ -110,6 +110,70 @@ if (!angezeigt.includes(STAND)) {
   process.exit(1);
 }
 
+/* Und liegt dieses Datum überhaupt schon hinter uns?
+
+   Der Stand wird von Hand gepflegt, damit er nicht bei jedem Bau
+   weiterwandert. Von Hand heißt aber auch: Er kann daneben liegen, und in
+   eine Richtung fällt das nie auf.
+
+   Gemessen an der Historie: Commit `40bd768` setzte am 07.08.2026 um 19:33
+   Uhr den Stand von „5. August 2026" auf „8. August 2026". Von da bis
+   Mitternacht trug die ausgelieferte Erklärung ein Datum, das es noch nicht
+   gab — knapp viereinhalb Stunden lang. Grün war dabei alles: Datei und
+   Blatt zeigten dasselbe, die Prüfsumme passte zum Text.
+
+   Bei einem Rechtstext ist das Datum die Zusage, dass der Text an diesem Tag
+   so galt. Ein Datum in der Zukunft sagt das über einen Tag, der noch nicht
+   stattgefunden hat.
+
+   Verglichen wird gegen den Tagesbeginn in Berlin, nicht gegen die Uhrzeit:
+   Wer den Stand am Vormittag auf heute setzt, soll nicht am Zeitzonenversatz
+   scheitern. */
+{
+  const MONATE = [
+    "Januar", "Februar", "März", "April", "Mai", "Juni",
+    "Juli", "August", "September", "Oktober", "November", "Dezember",
+  ];
+  const teile = /^(\d{1,2})\.\s+([A-Za-zä]+)\s+(\d{4})$/.exec(STAND.trim());
+  if (!teile) {
+    console.error(
+      `Der Stand „${STAND}" hat nicht die Form „8. August 2026". ` +
+        `Ohne lesbares Datum lässt sich nicht prüfen, ob es schon erreicht ist.`,
+    );
+    process.exit(1);
+  }
+  const monat = MONATE.indexOf(teile[2]);
+  if (monat < 0) {
+    console.error(`Der Monat „${teile[2]}" aus dem Stand ist keiner der zwölf.`);
+    process.exit(1);
+  }
+  const stand = Date.UTC(Number(teile[3]), monat, Number(teile[1]));
+  const heuteInBerlin = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Europe/Berlin" }),
+  );
+  const heute = Date.UTC(
+    heuteInBerlin.getFullYear(),
+    heuteInBerlin.getMonth(),
+    heuteInBerlin.getDate(),
+  );
+  if (stand > heute) {
+    const tage = Math.round((stand - heute) / 86400000);
+    console.error(
+      `Der Stand der Datenschutzerklärung liegt ${tage} Tag(e) in der Zukunft.
+
+` +
+        `  in stand.ts:  ${STAND}
+` +
+        `  heute:        ${heuteInBerlin.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" })}
+
+` +
+        `Das Datum ist die Zusage, dass der Text an diesem Tag so galt. ` +
+        `Über einen Tag, der noch nicht stattgefunden hat, lässt sich das nicht sagen.`,
+    );
+    process.exit(1);
+  }
+}
+
 /* Die Ausnahme muss im Text stehen, solange es sie gibt.
 
    Der Lauf lässt `/_not-found` als einzige dynamische Route durchgehen. Damit
