@@ -42,7 +42,7 @@ export const whisperEn: Article = {
     { kind: "h2", text: "Lever one: tell the model what it is about to hear" },
     {
       kind: "p",
-      text: "In memorisation the expected text is known. The app knows which verse is being practised. Whisper accepts a `prompt` that goes into the decoder as prior context and shifts probabilities toward those words. It is one line of code.",
+      text: "In memorisation the expected text is known. The app knows which verse is being practised. Whisper accepts a `prompt` that goes into the decoder as prior context and shifts probabilities towards those words. It is one line of code.",
     },
     {
       kind: "code",
