@@ -1325,6 +1325,7 @@ export const en: Content = {
     home: "Home",
     report: "Found something broken?",
     reportSubject: "Dead link on domenicmoran.de",
+    reportPath: "The address that led nowhere",
     otherLanguage: {
       text: "This address does not exist.",
       link: "Continue on the English version",

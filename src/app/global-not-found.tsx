@@ -4,7 +4,7 @@ import { schriftKlassen } from "@/lib/web-fonts";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
-import { SPRACH_KOPFZEILE } from "@/lib/language-header";
+import { PFAD_KOPFZEILE, SPRACH_KOPFZEILE } from "@/lib/language-header";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -62,6 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function GlobalNotFound() {
   const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
+  const angefragt = (await headers()).get(PFAD_KOPFZEILE) ?? undefined;
   const inhalt = englisch ? en : de;
   const zweitsprache = englisch ? de : en;
 
@@ -72,6 +73,7 @@ export default async function GlobalNotFound() {
           content={inhalt}
           base={englisch ? "/en" : ""}
           zweitsprache={zweitsprache}
+          angefragt={angefragt}
         />
       </body>
     </html>

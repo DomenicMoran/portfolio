@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { SPRACH_KOPFZEILE } from "@/lib/language-header";
+import { PFAD_KOPFZEILE, SPRACH_KOPFZEILE } from "@/lib/language-header";
 
 /**
  * Sagt der 404-Seite, dass die Anfrage unter `/en` kam.
@@ -73,13 +73,22 @@ export function proxy(request: NextRequest) {
      Stand kam `/gibt-es-nicht` als „This page does not exist" mit
      `lang="en"` heraus — die deutsche Fehlerseite auf Englisch, weil die
      Kopfzeile unbedingt gesetzt wurde. */
+  /* Der angefragte Pfad, damit die Fehlerseite ihn nennen kann.
+
+     Sie bietet an, einen toten Verweis zu melden, und der Mailverweis trug
+     bis hierher nur einen Betreff. Welche Adresse ins Leere führte, musste
+     der Absender dazuschreiben — die Hälfte, auf die es ankommt.
+
+     Gesetzt wird nur der Pfad, nicht die ganze Adresse mit Abfrage: Was in
+     einer Suchzeile stand, gehört nicht in eine fremde Mailvorlage. */
+  const kopfzeilen = new Headers(request.headers);
+  kopfzeilen.set(PFAD_KOPFZEILE, request.nextUrl.pathname);
+
   const unterEn =
     request.nextUrl.pathname === "/en" ||
     request.nextUrl.pathname.startsWith("/en/");
-  if (!unterEn) return NextResponse.next();
+  if (unterEn) kopfzeilen.set(SPRACH_KOPFZEILE, "en");
 
-  const kopfzeilen = new Headers(request.headers);
-  kopfzeilen.set(SPRACH_KOPFZEILE, "en");
   return NextResponse.next({ request: { headers: kopfzeilen } });
 }
 
