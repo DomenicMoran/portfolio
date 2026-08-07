@@ -603,8 +603,10 @@ if (reiterfunde.length > 0) {
    883 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht.
 
    Gemessen bei der Grundschrift des Browsers, und das ist eine Annahme mit
-   Grenze: Wer sie auf 20 px stellt, druckt 1.090 px, bei 24 px sind es
-   1.161 — zwei Seiten. Der naheliegende Griff wäre `html { font-size: 16px }`
+   Grenze: Wer sie auf 20 px stellt, druckt 1.197 px, bei 24 px sind es
+   1.277 — zwei Seiten. (Gemessen am 08.08.2026; hier standen 1.090 und
+   1.161, gemessen an einem kürzeren Blatt. Die beiden Zahlen wandern mit dem
+   Inhalt, die Zeile darüber nicht — sie wird bei jedem Lauf neu bestimmt.) Der naheliegende Griff wäre `html { font-size: 16px }`
    in den Druckregeln. Er bleibt bewusst aus: Damit stünde das Blatt für
    jeden gleich groß auf dem Papier, auch für den, der seine Schrift bewusst
    vergrößert hat, und die Seite hält es sonst überall andersherum. Wer sein
