@@ -2321,8 +2321,40 @@ const BRAUCHT_KIND = {
 
    Ein Zahlendreher darin fiele nirgends auf. Hier fällt er auf: `git cat-file`
    im Nachbar-Repo sagt, ob es den Commit gibt.
+
+   Neben dem Commit steht meist ein Datum — „Commit 71bd8d2b vom 30. Juli 2026“,
+   englisch „commit 71bd8d2b, 30 July 2026“. Das ist die Angabe, die der Leser
+   tatsächlich einordnen kann, und bis hierher prüfte sie niemand: Ein Artikel
+   durfte einen existierenden Commit mit einem falschen Datum zitieren, und
+   beide Sprachfassungen durften sich dabei widersprechen. Geprüft wird deshalb
+   auch das Datum, gegen `%cs` desselben Commits.
    ------------------------------------------------------------------------ */
 {
+  /**
+   * Das Datum, das der Text neben einem Commit nennt, als ISO-Datum.
+   *
+   * Beide Sprachfassungen schreiben es anders, und beide sollen gelten:
+   * deutsch „vom 30. Juli 2026“, englisch „, 30 July 2026“. Steht kein Datum
+   * daneben, kommt `null` zurück — das ist erlaubt, nur falsch darf es nicht
+   * sein.
+   */
+  function datumNebenCommit(text, hash) {
+    const monate = {
+      januar: "01", february: "02", februar: "02", january: "01",
+      märz: "03", march: "03", april: "04", mai: "05", may: "05",
+      juni: "06", june: "06", juli: "07", july: "07", august: "08",
+      september: "09", oktober: "10", october: "10", november: "11",
+      dezember: "12", december: "12",
+    };
+    const treffer = text.match(
+      new RegExp(`${hash}[^"]{0,12}?(\\d{1,2})\\.? (\\p{L}+) (\\d{4})`, "u"),
+    );
+    if (!treffer) return null;
+    const monat = monate[treffer[2].toLowerCase()];
+    if (!monat) return null;
+    return `${treffer[3]}-${monat}-${treffer[1].padStart(2, "0")}`;
+  }
+
   /* Nicht nur die Artikel nennen Commits.
 
      Die Agenten-Sitzung auf der Startseite endet mit „Ursache, Datei und
@@ -2348,6 +2380,7 @@ const BRAUCHT_KIND = {
   const funde = [];
   let geprueft = 0;
   let uebersprungen = 0;
+  let datumsangaben = 0;
 
   for (const [datei, repo] of Object.entries(repoZuArtikel)) {
     const pfad = `src/content/articles/${datei}`;
@@ -2366,8 +2399,14 @@ const BRAUCHT_KIND = {
     for (const hash of hashes) {
       geprueft++;
       let art = "";
+      let wann = "";
       try {
         art = execFileSync("git", ["cat-file", "-t", hash], {
+          cwd: repo,
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+        wann = execFileSync("git", ["show", "-s", "--format=%cs", hash], {
           cwd: repo,
           encoding: "utf8",
           stdio: ["ignore", "pipe", "ignore"],
@@ -2375,23 +2414,37 @@ const BRAUCHT_KIND = {
       } catch {
         art = "";
       }
-      if (art !== "commit")
+      if (art !== "commit") {
         funde.push(`${datei}: ${hash} gibt es in ${repo} nicht`);
+        continue;
+      }
+
+      /* Steht im Text ein Datum daneben, muss es das des Commits sein. */
+      const genannt = datumNebenCommit(text, hash);
+      if (genannt) {
+        datumsangaben++;
+        if (genannt !== wann)
+          funde.push(
+            `${datei}: ${hash} ist vom ${wann}, der Text nennt den ${genannt}`,
+          );
+      }
     }
   }
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} genannte(r) Commit(s) ohne Gegenstück:`);
+    zeilen.push(`  !!  ${funde.length} genannte(r) Commit(s) mit Abweichung:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft) {
     zeilen.push(
       `  ok  Genannte Commits    ${String(geprueft).padStart(6)} genannte Commits gibt es im jeweiligen Repo` +
+        (datumsangaben ? `, ${datumsangaben} mit passendem Datum` : "") +
         (uebersprungen ? `, ${uebersprungen} ohne Repo übersprungen` : ""),
     );
   } else {
     zeilen.push("  --  Genannte Commits: kein Repo erreichbar, übersprungen");
   }
+
 }
 
 /* ---------------------------------------------------------------------------
