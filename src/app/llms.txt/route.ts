@@ -64,11 +64,24 @@ export function GET() {
   // Kurzbeschreibung und Problem sind zwei Sätze aus zwei Feldern. Ohne
   // Trennung dazwischen lief beides ineinander: "…runs offline Existing
   // prayer apps are…" — ein Satz, den so niemand geschrieben hat.
+  /* Mit den Adressen, unter denen das System wirklich liegt.
+
+     Vorher standen hier Name, Jahr, Status und das Problem — und keine
+     einzige Adresse. Ein Modell, das nach den Apps gefragt wird, konnte aus
+     dieser Datei nicht antworten, obwohl sie genau dafür geschrieben ist:
+     Vier Apps im Play Store, drei im App Store, dazu die Live-Adressen. Wer
+     eine Behauptung nachprüfen will, braucht den Weg dorthin. */
   const projekte = caseStudies
-    .map(
-      (p) =>
-        `### ${p.name} — ${p.tagline}\n${p.year} · ${p.statusLabel}\n\n${p.problem}`,
-    )
+    .map((p) => {
+      const adressen = (p.links ?? [])
+        .filter((l) => l.kind === "live" || l.kind === "store")
+        .map((l) => `- ${l.label}: ${l.href}`)
+        .join("\n");
+      return (
+        `### ${p.name} — ${p.tagline}\n${p.year} · ${p.statusLabel}\n\n${p.problem}` +
+        (adressen ? `\n\n${adressen}` : "")
+      );
+    })
     .join("\n\n");
 
   const fakten = recruiter.facts
