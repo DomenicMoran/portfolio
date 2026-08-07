@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:net";
 import { createRequire } from "node:module";
 
@@ -30,13 +30,50 @@ export async function starteServer() {
     stdio: "ignore",
   });
 
+  /**
+   * Den ganzen Baum beenden, nicht nur den Anfang.
+   *
+   * `server.kill()` trifft unter Windows genau den Prozess, den `spawn`
+   * gestartet hat. Next startet darunter eigene Arbeiter, und die bleiben
+   * stehen. Gezählt am 07.08.2026, mitten in einer Prüfrunde: 113 Node-
+   * Prozesse, davon über fünfzig Serverpaare aus abgebrochenen Läufen. Der
+   * Speicher reichte danach nicht mehr für einen weiteren Browser, und
+   * `check:a11y` brach mit „Target crashed" ab — ein Fehlerbild, das nach
+   * einem Fehler in der Prüfung aussieht und keiner war.
+   *
+   * `taskkill /T` nimmt die Kinder mit. Auf allen anderen Systemen bleibt es
+   * beim regulären Signal.
+   */
   const beenden = () => {
-    if (!server.killed) server.kill();
+    if (server.killed || server.exitCode !== null) return;
+    if (process.platform === "win32" && server.pid) {
+      try {
+        spawnSync("taskkill", ["/pid", String(server.pid), "/T", "/F"], {
+          stdio: "ignore",
+        });
+      } catch {
+        server.kill();
+      }
+      return;
+    }
+    server.kill();
   };
+
+  /* Auch bei einem Abbruch von außen und bei einem Fehler, den niemand fängt.
+     Nur `exit` und `SIGINT` abzudecken hieß: Wer den Lauf über die
+     Prozessverwaltung stoppt oder wer über eine Ausnahme herausfliegt, lässt
+     den Server stehen. Genau daraus wurden die fünfzig. */
   process.on("exit", beenden);
-  process.on("SIGINT", () => {
+  for (const signal of ["SIGINT", "SIGTERM", "SIGHUP", "SIGBREAK"]) {
+    process.on(signal, () => {
+      beenden();
+      process.exit(130);
+    });
+  }
+  process.on("uncaughtException", (fehler) => {
     beenden();
-    process.exit(130);
+    console.error(fehler);
+    process.exit(1);
   });
 
   if (!(await warteAufAntwort(`${basis}/`))) {
