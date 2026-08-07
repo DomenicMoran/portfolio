@@ -80,6 +80,24 @@ export function PrintButton({
             <Download className="size-4" aria-hidden />
             {datei.label}
           </a>
+          {/* Ohne JavaScript gibt es diesen Knopf nicht.
+
+              `window.print()` ist der ganze Knopf; läuft kein Skript, steht
+              dort ein Bedienelement, das auf jeden Klick schweigt. Gemessen
+              an der ausgelieferten Seite mit abgeschaltetem JavaScript: Text,
+              Abschnitte und Portraet identisch, nur dieser eine Knopf ohne
+              Wirkung — sichtbar wie zuvor.
+
+              Der Weg daneben bleibt: Die fertige Datei ist ein gewöhnlicher
+              Verweis und braucht kein Skript. Wer ohne JavaScript liest,
+              bekommt sie, statt an einem toten Knopf zu ziehen.
+
+              Als `noscript`-Regel und nicht über den Einbau-Zustand: Ein
+              Knopf, der erst nach der Hydration erscheint, springt für alle
+              anderen ins Layout. So kostet es niemanden etwas. */}
+          <noscript>
+            <style>{`.print-button{display:none}`}</style>
+          </noscript>
           <button
             type="button"
             onClick={() => window.print()}
@@ -89,7 +107,7 @@ export function PrintButton({
                Text am Anfang der Navigation. Ist der Hinweis ausgeblendet —
                unter 640 px —, greift die Beschreibung von selbst nicht. */
             aria-describedby="druck-hinweis"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9c9d2] px-4 py-2 text-sm font-medium text-[#101014] transition-colors hover:border-[#101014]"
+            className="print-button inline-flex items-center gap-2 rounded-full border border-[#c9c9d2] px-4 py-2 text-sm font-medium text-[#101014] transition-colors hover:border-[#101014]"
           >
             <Printer className="size-4" aria-hidden />
             {beschriftung}
