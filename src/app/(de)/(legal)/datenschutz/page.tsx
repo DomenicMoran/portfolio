@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedFuer, ogBildFuer, kartenTitel } from "@/lib/metadata";
+import { feedFuer, vorschaukarten, kartenTitel } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
 import { Rechtsfuss } from "../Rechtsfuss";
@@ -14,13 +14,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
-  openGraph: {
-    // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
-    // statt es zu mischen.
-    images: ogBildFuer("de"),
-    title: kartenTitel("Datenschutz"),
-    locale: "de_DE",
-  },
+  ...vorschaukarten({ titel: kartenTitel("Datenschutz"), lang: "de" }),
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.

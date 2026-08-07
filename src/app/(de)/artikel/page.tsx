@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelDe, chromeDe } from "@/content/articles";
 import { de } from "@/content/de";
-import { feedFuer, kurzbeschreibung, ogBildFuer, kartenTitel } from "@/lib/metadata";
+import { feedFuer, kurzbeschreibung, vorschaukarten, kartenTitel } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: chromeDe.title,
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
      Engineer". Wer die Artikelübersicht teilte, zeigte damit die Startseite.
      Titel und Text stehen längst da — sie wurden nur nicht weitergereicht.
   */
-  openGraph: {
-    // Ohne dieses Feld kein Bild: Next ersetzt das geerbte openGraph,
-    // statt es zu mischen.
-    images: ogBildFuer("de"),
-    title: kartenTitel(chromeDe.title),
-    description: kurzbeschreibung(chromeDe.lede),
-    locale: "de_DE",
-  },
+  // Beide Karten aus einer Angabe: Next ersetzt geerbte Metadaten je Feld,
+  // und ein eigenes `openGraph` ohne `twitter` ließ dort den Wert der
+  // Startseite stehen.
+  ...vorschaukarten({
+    titel: kartenTitel(chromeDe.title),
+    beschreibung: kurzbeschreibung(chromeDe.lede),
+    lang: "de",
+  }),
   alternates: {
     canonical: "/artikel",
     languages: { de: "/artikel", en: "/en/articles", "x-default": "/artikel" },

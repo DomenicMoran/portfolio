@@ -187,6 +187,55 @@ export function kartenTitel(titel: string) {
   return `${titel} – ${site.name}`;
 }
 
+/**
+ * Beide Vorschaukarten aus einer Angabe.
+ *
+ * Next mischt Seitenmetadaten nicht in die des Layouts, es ersetzt sie je
+ * Feld. Wer für eine Seite ein eigenes `openGraph` setzt und `twitter` nicht
+ * anfasst, behält dort den Wert aus dem Layout — und der beschreibt die
+ * Startseite.
+ *
+ * Gemessen an den gebauten Seiten am 08.08.2026: 16 von 18 Seiten meldeten an
+ * X den Titel „Domenic Moran – AI Product Engineer" und die Beschreibung der
+ * Startseite, darunter jeder der zehn Artikel, beide Kurzprofile und beide
+ * Rechtsseiten. Die Karte zeigte außerdem immer das deutsche Bild, auch auf
+ * `/en`. Betroffen war genau das, was geteilt wird.
+ *
+ * Deshalb eine Funktion statt zweier Blöcke je Seite: Wer den Titel ändert,
+ * ändert beide Karten, weil es nur eine Stelle gibt.
+ */
+export function vorschaukarten({
+  titel,
+  beschreibung,
+  lang,
+  typ = "website",
+  veroeffentlicht,
+}: {
+  titel: string;
+  beschreibung?: string;
+  lang: "de" | "en";
+  typ?: "website" | "article";
+  veroeffentlicht?: string;
+}) {
+  const bild = ogBildFuer(lang);
+  return {
+    openGraph: {
+      type: typ,
+      images: bild,
+      title: titel,
+      ...(beschreibung ? { description: beschreibung } : {}),
+      ...(veroeffentlicht ? { publishedTime: veroeffentlicht } : {}),
+      locale: lang === "de" ? "de_DE" : OG_LOCALE_EN,
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      images: bild,
+      title: titel,
+      ...(beschreibung ? { description: beschreibung } : {}),
+    },
+  };
+}
+
 export function ogBildFuer(lang: "de" | "en") {
   return [
     {
