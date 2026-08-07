@@ -112,9 +112,22 @@ export function CommandPalette({
         label: palette.pdf.label,
         hint: palette.pdf.hint,
         icon: FileText,
+        /* Herunterladen, nicht öffnen.
+
+           Dieselbe Beschriftung führte hier zu einem neuen Reiter und in
+           Fußzeile und Recruiter-Bereich zu einer gespeicherten Datei. Wer
+           gelernt hat, dass „Kurzprofil als PDF" die Datei bringt, bekam aus
+           der Palette etwas anderes. Die Lesefassung steht direkt darunter
+           als eigener Eintrag; für sie braucht es diesen nicht. */
         run: () => {
           onClose();
-          window.open(recruiter.cta.pdf.href, "_blank", "noopener,noreferrer");
+          const verweis = document.createElement("a");
+          verweis.href = recruiter.cta.pdf.href;
+          verweis.download = "";
+          verweis.rel = "noopener";
+          document.body.append(verweis);
+          verweis.click();
+          verweis.remove();
         },
       },
       /* Die Kurzfassung als Seite gehört ebenso hinein.
