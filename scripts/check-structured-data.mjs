@@ -110,6 +110,18 @@ for (const pfad of SEITEN) {
           }
         : null,
       artikel: artikel ? { inLanguage: artikel.inLanguage } : null,
+      /* Die Seite über sich selbst, nicht über ihren Gegenstand.
+
+         `ProfilePage` trug lange weder Name noch Adresse noch Sprache: Auf
+         beiden Startseiten stand derselbe Block, und welche Fassung in
+         welcher Sprache antwortet, ging daraus nicht hervor. Der `Blog` der
+         Artikelübersicht macht es seit jeher richtig. */
+      profil: (() => {
+        const p = daten.find((b) => b["@type"] === "ProfilePage");
+        return p
+          ? { name: p.name, url: p.url, inLanguage: p.inLanguage }
+          : null;
+      })(),
       fallstudien,
       verweise: [...verweise],
     };
@@ -163,6 +175,26 @@ for (const pfad of SEITEN) {
             `${zuviel.length ? `ohne Fallstudie: ${zuviel.join(", ")}` : ""}`,
         );
       }
+    }
+  }
+
+  if (stand.profil) {
+    angaben++;
+    if (!stand.profil.name || !stand.profil.url || !stand.profil.inLanguage) {
+      funde.push(
+        `${pfad}: ProfilePage nennt sich nicht selbst — ` +
+          `name ${stand.profil.name ? "ok" : "fehlt"}, ` +
+          `url ${stand.profil.url ? "ok" : "fehlt"}, ` +
+          `inLanguage ${stand.profil.inLanguage ? "ok" : "fehlt"}`,
+      );
+    } else if (stand.profil.inLanguage !== stand.htmlLang) {
+      funde.push(
+        `${pfad}: ProfilePage sagt „${stand.profil.inLanguage}", das Dokument ist „${stand.htmlLang}“`,
+      );
+    } else if (!stand.profil.url.endsWith(pfad === "/" ? ".de" : pfad)) {
+      funde.push(
+        `${pfad}: ProfilePage zeigt auf ${stand.profil.url}, nicht auf diese Seite`,
+      );
     }
   }
 

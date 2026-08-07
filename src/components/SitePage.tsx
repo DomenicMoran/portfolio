@@ -90,9 +90,24 @@ export function SitePage({ content }: { content: Content }) {
     })),
   };
 
+  /* Die Seite nennt sich selbst, nicht nur ihren Gegenstand.
+
+     Der `Blog` der Artikelübersicht trägt seit jeher `name`, `url` und
+     `inLanguage`; die `ProfilePage` der Startseite trug keines davon.
+     Gemessen an den ausgelieferten Seiten waren die beiden Sprachfassungen
+     auf Schema-Ebene damit nicht zu unterscheiden: zweimal derselbe Block,
+     zweimal dieselbe Person, kein Hinweis, welche Seite in welcher Sprache
+     antwortet. Für die meistgelesene Seite der Site ist das die Angabe, die
+     am ehesten fehlt.
+
+     `url` zeigt auf die jeweilige Fassung, `mainEntity.url` weiterhin auf die
+     Hauptfassung: Die Seiten sind zwei, die Person ist eine. */
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
+    name: content.site.meta.title,
+    url: content.lang === "de" ? content.site.url : `${content.site.url}/en`,
+    inLanguage: content.lang,
     mainEntity: person,
   };
 
