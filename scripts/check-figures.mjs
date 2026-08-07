@@ -1855,6 +1855,32 @@ const BRAUCHT_KIND = {
       if (ogText && xText && ogText !== xText) {
         funde.push(`${route}: X-Karte beschreibt etwas anderes als die Vorschaukarte`);
       }
+
+      /* Und das Bild, wo die Route ein eigenes mitbringt.
+
+         Die zehn Artikelrouten erzeugen zur Bauzeit je eine Karte mit dem
+         Titel des Artikels, seinem Anriss und seinen Themen. Next füllt beide
+         Vorschaukarten aus einer solchen Datei von allein — aber nur, solange
+         die Metadaten kein `images` setzen. Sie taten es, und ein gesetztes
+         Feld gewinnt still.
+
+         Gemessen am 08.08.2026: Alle zehn Artikel meldeten
+         `/opengraph-image`, das allgemeine Bild mit dem Alternativtext
+         „Domenic Moran – AI Product Engineer". Der Erzeuger lief, das Bild lag
+         im Bau, und gesehen hat es nie jemand — auf genau den Seiten, die
+         geteilt werden. */
+      const adresse = route.replace(/\.html$/, "");
+      if (/^\/(artikel|en\/articles)\/[^/]+$/.test(adresse)) {
+        const ogBild = rohesHtml.match(
+          /<meta property="og:image" content="([^"]*)"/,
+        )?.[1];
+        if (ogBild && !ogBild.includes(`${adresse}/opengraph-image`)) {
+          funde.push(
+            `${adresse}: teilt ${ogBild.replace("https://domenicmoran.de", "")} ` +
+              `statt der eigenen Karte, die der Bau dafür erzeugt hat`,
+          );
+        }
+      }
     }
   };
 

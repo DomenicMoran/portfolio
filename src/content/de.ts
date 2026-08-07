@@ -39,7 +39,7 @@ const salatiTage = Math.round(
   (Date.parse(verified.date) - Date.parse(SALATI_ERSTER_COMMIT)) / 86_400_000,
 );
 /** Im Changelog der App gezählt, siehe check-figures.mjs. */
-const SALATI_VERSIONEN = 64;
+const SALATI_VERSIONEN = 65;
 const salatiStundenJeVersion = Math.round((salatiTage * 24) / SALATI_VERSIONEN);
 
 export const de: Content = {
@@ -162,7 +162,7 @@ export const de: Content = {
         {
           value: String(SALATI_VERSIONEN),
           label: "ausgelieferte Versionen",
-          note: "1.0.0 bis 1.46.0, im Changelog der App nachlesbar",
+          note: "1.0.0 bis 1.47.0, im Changelog der App nachlesbar",
         },
         {
           value: `${salatiStundenJeVersion} h`,

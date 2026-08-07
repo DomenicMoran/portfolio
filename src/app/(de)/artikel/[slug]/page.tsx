@@ -48,6 +48,7 @@ export async function generateMetadata({
       lang: "de",
       typ: "article",
       veroeffentlicht: artikel.date,
+      eigenesBild: true,
     }),
     alternates: {
       canonical: `/artikel/${slug}`,

@@ -55,7 +55,7 @@ const salatiDays = Math.round(
   (Date.parse(verified.date) - Date.parse(SALATI_FIRST_COMMIT)) / 86_400_000,
 );
 /** Im Änderungsprotokoll der App gezählt, siehe check-figures.mjs. */
-const SALATI_VERSIONS = 64;
+const SALATI_VERSIONS = 65;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
@@ -960,7 +960,7 @@ export const en: Content = {
         {
           value: String(SALATI_VERSIONS),
           label: "versions shipped",
-          note: "1.0.0 to 1.46.0, listed in the app’s own changelog",
+          note: "1.0.0 to 1.47.0, listed in the app’s own changelog",
         },
         {
           value: `${salatiHoursPerVersion} h`,
@@ -1148,7 +1148,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: "64 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.",
+        body: "65 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.",
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
