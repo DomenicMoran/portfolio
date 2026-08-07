@@ -163,6 +163,30 @@ for (const breite of BREITEN) {
              Fokus über `box-shadow`, und das ist genauso sichtbar. */
           markiert: ring || stil.boxShadow !== "none",
           top: Math.round(r.top),
+          /* Hat der Sprung zum Ziel eine Sektion seitwaerts geschoben?
+
+             Fuenf Sektionen tragen `overflow-hidden` gegen die Glueh-Kreise,
+             die breiter sind als das Viewport. Damit wird jede von ihnen zum
+             Bildlaufbereich: Bei 390 px meldet `#hire` 504 px Inhalt auf 390
+             sichtbar, `#workflow` 467 und `#contact` 435. Der Ueberstand ist
+             heute reine Deko und ohne Wirkung.
+
+             Er hat aber eine Bedingung, und die steht bisher nur als Merksatz
+             in AGENTS.md: Sobald ein Bedienelement so weit rechts sitzt, dass
+             es in diesen Bereich faellt, scrollt der Browser die Sektion beim
+             Fokussieren seitwaerts — und scrollt nicht zurueck. Der Nutzer
+             sieht die Seite verschoben und findet keinen Weg heraus.
+
+             Gemessen am 07.08.2026 bei 390 und 320 px: kein einziges
+             Bedienelement liegt jenseits der Kante, jede Sektion steht auf
+             `scrollLeft: 0`. Geprueft wird ab jetzt genau das, an jeder der
+             Stationen. */
+          verschoben: (() => {
+            for (let e = el.parentElement; e; e = e.parentElement) {
+              if (e.scrollLeft > 1) return `${e.tagName.toLowerCase()}#${e.id || "?"} um ${Math.round(e.scrollLeft)} px`;
+            }
+            return null;
+          })(),
         };
       });
 
@@ -185,6 +209,12 @@ for (const breite of BREITEN) {
       }
       if (!stand.markiert) {
         funde.push(`${pfad} bei ${breite} px: „${stand.name}“ zeigt keinen Fokus`);
+      }
+      if (stand.verschoben) {
+        funde.push(
+          `${pfad} bei ${breite} px: „${stand.name}“ schiebt beim Fokussieren ` +
+            `${stand.verschoben} zur Seite`,
+        );
       }
     }
   }
