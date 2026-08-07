@@ -243,6 +243,13 @@ jobs:
       - name: Der Tastaturfokus bleibt sichtbar
         run: npm run check:focus
 
+      # 1.4.12 Textabstand ist das einzige Kriterium der Stufe AA, das axe
+      # grundsätzlich nicht prüfen kann: Es verlangt, die Seite zu verändern
+      # und danach zu messen. Wer Zeilen, Buchstaben, Wörter und Absätze
+      # auseinanderzieht, darf keinen Inhalt verlieren.
+      - name: Größerer Textabstand
+        run: npm run check:spacing
+
       # Die Fallstudien legen ihren Inhalt auf vier Reiter, sichtbar ist
       # immer nur einer. Ein Diagramm, dessen Schlüssel nicht mehr passt,
       # rendert nichts, und der Reiter darüber verspricht es weiter — der

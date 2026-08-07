@@ -97,7 +97,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 32 Prüfungen, die den Bau nicht ersetzen. 21 davon
+Nach dem Bau laufen 33 Prüfungen, die den Bau nicht ersetzen. 22 davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -125,6 +125,7 @@ npm run check:bundle    # wie viel JavaScript jede Seite mitbringt, gegen Budget
 npm run check:cards     # in einer Kartenreihe beginnt der Text auf gleicher Höhe
 npm run check:font-size # kein Text geht bei größerer Grundschrift verloren
 npm run check:focus     # der Tastaturfokus bleibt sichtbar
+npm run check:spacing   # größerer Textabstand kostet keinen Inhalt
 npm run check:panels    # jede Tafel hinter einem Reiter zeigt ihren Inhalt
 npm run check:language  # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo      # die Demo auf der Startseite rechnet nachprüfbar richtig
@@ -237,6 +238,7 @@ scripts/
 ├─ check-cards.mjs                in einer Kartenreihe beginnt der Text auf gleicher Höhe
 ├─ check-font-size.mjs            kein Text geht bei größerer Grundschrift verloren
 ├─ check-focus.mjs                der Tastaturfokus bleibt sichtbar
+├─ check-text-spacing.mjs         größerer Textabstand kostet keinen Inhalt
 ├─ check-panels.mjs               jede Tafel hinter einem Reiter zeigt ihren Inhalt
 ├─ check-language.mjs             beide Sprachfassungen hängen wechselseitig zusammen
 ├─ check-demo-math.mjs            die Demo auf der Startseite rechnet nachprüfbar richtig
