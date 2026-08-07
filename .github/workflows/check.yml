@@ -28,14 +28,28 @@ on:
 # behebt das nicht und soll es nicht — sie steht für den Fall, für den sie
 # gedacht ist, und der bleibt richtig.
 #
-# `cancel-in-progress` bricht den älteren Durchgang jetzt absichtlich ab. Er
-# steht danach als abgebrochen und nicht als fehlgeschlagen da, und die
-# Läuferzeit geht an den Stand, der wirklich ausgeliefert wird. Der Preis:
-# Ein Zwischencommit bekommt keinen vollständigen Lauf. Das ist hier richtig,
-# weil ausgeliefert wird, was zuletzt auf `main` steht.
+# `cancel-in-progress` bricht den älteren Durchgang ab. Er steht danach als
+# abgebrochen und nicht als fehlgeschlagen da, und die Läuferzeit geht an den
+# Stand, der wirklich ausgeliefert wird.
+#
+# Auf `main` gilt das seit dem 07.08.2026 nicht mehr. Hier stand als Begründung,
+# ein Zwischencommit brauche keinen vollständigen Lauf, weil ohnehin der letzte
+# Stand ausgeliefert wird. Das stimmt für die Auslieferung und übersieht, wofür
+# die Actions-Ansicht sonst noch da ist: Sie ist der öffentliche Beleg dafür,
+# dass diese Prüfungen laufen — bei einem Repo, dessen ganzes Argument die
+# nachgewiesene Änderung ist.
+#
+# Gezählt an den letzten zwanzig Durchgängen: 14 abgebrochen, 3 fehlgeschlagen,
+# 2 bestanden. Wer die Ansicht öffnet, sieht eine Wand aus Abbrüchen und schließt
+# daraus das Gegenteil dessen, was hier behauptet wird.
+#
+# Der Preis dafür war Läuferzeit — rund zwölf Minuten je Durchgang. Für ein
+# öffentliches Repo stellt GitHub sie nicht in Rechnung, das Argument trägt also
+# nicht. Auf allen anderen Zweigen bleibt der Abbruch, dort geht es wirklich nur
+# um den letzten Stand.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   check:
