@@ -250,6 +250,38 @@ if (!vorgegebeneBasis) {
     }
   }
 
+  /* Keine ausgelieferte Seite nennt eine Adresse vom Entwicklungsrechner.
+   *
+   * Der Bau warnt bei jedem Durchgang zweimal: `metadataBase property in
+   * metadata export is not set … using "http://localhost:3000"`. Next löst
+   * relative Bildadressen der Vorschaukarten dagegen auf, wenn keine Basis
+   * dasteht — und `ogBildFuer()` liefert genau solche relativen Adressen.
+   *
+   * Gemessen am 07.08.2026 an allen gebauten Seiten: keine einzige trägt
+   * `localhost`. Beide Sprachlayouts setzen `metadataBase` über
+   * `buildMetadata()`, die Seiten darunter erben es, und die ausgelieferten
+   * Karten zeigen auf domenicmoran.de. Testweise `metadataBase` aus
+   * `global-not-found.tsx` genommen: Die Warnung blieb bei zwei, dort kommt
+   * sie also nicht her. Sie stammt aus Routen, die Next selbst erzeugt, und
+   * hat auf die Auslieferung keine Wirkung.
+   *
+   * Geprüft wird deshalb nicht die Warnung, sondern ihre Folge. Bricht die
+   * Vererbung eines Tages, meldet X und LinkedIn jede geteilte Seite ein Bild
+   * auf einem Rechner, den es im Netz nicht gibt — und im Bauprotokoll stünde
+   * dieselbe Warnung wie an jedem anderen Tag. */
+  for (const datei of gebauteSeiten()) {
+    const html = readFileSync(
+      join(".next", "server", "app", datei === "/" ? "index.html" : `${datei.slice(1)}.html`),
+      "utf8",
+    );
+    for (const treffer of html.matchAll(/content="([^"]*localhost[^"]*)"/g)) {
+      zusagen.push(
+        `${datei} nennt in einer Metaangabe ${treffer[1]} — eine Adresse, ` +
+          `die es außerhalb dieses Rechners nicht gibt.`,
+      );
+    }
+  }
+
   /* Ein Endpunkt, der etwas entgegennimmt. */
   const VERBEN = ["POST", "PUT", "PATCH", "DELETE"];
   const suchen = (ordner) => {

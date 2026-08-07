@@ -152,15 +152,23 @@ Der zweite Teil stimmt weiterhin und ist der Preis dafür: Was über die
 Sektionskante hinausragen soll, wird abgeschnitten. Wer dort eine Parallaxe
 einbaut, prüft das mit.
 
-Was dabei sichtbar wurde und offen bleibt: `overflow-hidden` macht die Sektion
-zum Scrollcontainer. `#hire` meldet bei 390 px 492 px Inhaltsbreite auf 380 px
-sichtbar, `#workflow` 460 und `#contact` 430. Das Dokument scrollt nicht, alle
+Was dabei sichtbar wurde: `overflow-hidden` macht die Sektion zum
+Scrollcontainer. `#hire` meldet bei 390 px 504 px Inhaltsbreite auf 390 px
+sichtbar, `#workflow` 467 und `#contact` 435. Das Dokument scrollt nicht, alle
 fokussierbaren Elemente liegen innerhalb, und der Überstand stammt
 ausschließlich aus der Deko — heute also ohne Wirkung. Wer einen Verweis so
 weit nach rechts setzt, dass er in diesen Bereich fällt, bekommt beim
 Fokussieren einen Versatz, der nicht zurückspringt. Im Hero hat das bei 320 px die untere
 Kennzahlenreihe waagerecht mitten durch die Ziffern getrennt. Zusätzlich
 `overflow-x: clip` an `html`/`body` als Netz.
+
+Der letzte Satz war bis zum 07.08.2026 ein Merksatz — also eine Regel, die
+niemand prüft und die beim ersten Umbau still fällt. `check:focus` sieht sie
+jetzt an jeder der 1.132 Stationen nach: Steht ein Vorfahr des fokussierten
+Elements auf `scrollLeft > 1`, nennt der Lauf Seite, Breite, Element, Sektion
+und Versatz. Gegengeprüft mit einem Verweis auf `left: 460px` in `#hire`:
+gemeldet mit 161 px, und die Station danach gleich mit — weil die Sektion
+verschoben bleibt, was der Satz oben behauptet.
 
 ## Das Zeichen
 
