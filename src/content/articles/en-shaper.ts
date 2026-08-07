@@ -69,7 +69,7 @@ export const shaperEn: Article = {
     { kind: "h2", text: "The second damage from the same cause" },
     {
       kind: "p",
-      text: "While hunting the circle, a second bug turned up that had been running unnoticed for far longer.",
+      text: "While I was hunting the circle, a second bug turned up that had been running unnoticed for far longer.",
     },
     {
       kind: "p",

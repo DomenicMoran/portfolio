@@ -129,6 +129,7 @@ export const en: Content = {
     closeMenu: "Close menu",
     commandPalette: "Open command palette",
     currentSection: "Current section",
+    llmsTitel: "Facts for language models",
     replay: "Play the sequence again",
     shots: {
       label: "Screenshots, scroll horizontally",
@@ -630,9 +631,9 @@ export const en: Content = {
       statusLabel: "Beta",
       accent: "violet",
       problem:
-        "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetics: when the server is unreachable they display “saved” and lose the entry.",
+        "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
       solution:
-        "A platform of web app, Expo app and Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
+        "A platform of a web app, an Expo app and a Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
       hardPart: {
         title: "An API that does not lie",
         body: "Every write endpoint distinguishes explicitly: secrets missing (dry run, no pretence that data was saved), database unreachable (503), database reachable but rejecting (a real 4xx carrying the Postgres error code). It sounds like a detail, but it is the difference between a system you can believe while debugging and one that lies to you.",
@@ -701,7 +702,7 @@ export const en: Content = {
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
       `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, three apps in the stores, all three in both, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
-      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
+      "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
     stats: [
@@ -949,7 +950,7 @@ export const en: Content = {
         {
           value: String(salatiDays),
           label: "days",
-          note: `first commit on 16 April 2026 until the verification date, ${dateLong(verified.date)}`,
+          note: `from the first commit on 16 April 2026 until the verification date, ${dateLong(verified.date)}`,
         },
         {
           value: String(SALATI_VERSIONS),
@@ -1142,7 +1143,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: "64 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejected reviews, age ratings, privacy forms and signing chains are routine here, not new ground.",
+        body: "64 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.",
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },

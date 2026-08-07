@@ -1,4 +1,6 @@
 import { MotionProvider } from "@/components/providers/MotionProvider";
+import { de } from "@/content/de";
+import { en } from "@/content/en";
 import { schriftKlassen } from "@/lib/web-fonts";
 
 /**
@@ -35,13 +37,19 @@ export function RootDocument({
           Ohne eigenes `<head>`: React hebt `<link>` von selbst dorthin, und ein
           handgeschriebenes head-Element ist im App Router die Pages-Router-
           Gewohnheit, vor der auch der Linter warnt.
+
+          Der Titel kam aus dem Inhalt und nicht aus dieser Datei: Er stand
+          hier fest als „Facts for language models" und damit auch im Kopf der
+          deutschen Seite. Die Datei dahinter ist bewusst englisch, der Titel
+          beschreibt sie aber für den, der die deutsche Seite liest — und der
+          erfährt jetzt auch, dass ihn Englisch erwartet.
         */}
         <link rel="author" href="/humans.txt" type="text/plain" />
         <link
           rel="alternate"
           type="text/plain"
           href="/llms.txt"
-          title="Facts for language models"
+          title={(lang === "de" ? de : en).a11y.llmsTitel}
         />
         {/*
           Der Rückfall für Browser ohne JavaScript.

@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "preflight": "npm run check:chars && npm run check:docs && npm run check:exports && npm run check:onepager",
+    "preflight": "npm run check:chars && npm run check:docs && npm run check:exports && npm run check:onepager && npm run check:copy",
     "start": "next start",
     "lint": "eslint",
     "onepager:pdf": "node scripts/build-onepager-pdf.mjs",
@@ -55,7 +55,8 @@
     "check:images": "node scripts/check-images.mjs",
     "check:chars": "node scripts/check-control-chars.mjs",
     "check:schema": "node scripts/check-structured-data.mjs",
-    "check:palette": "node scripts/check-palette.mjs"
+    "check:palette": "node scripts/check-palette.mjs",
+    "check:copy": "node scripts/check-hardcoded-copy.mjs"
   },
   "dependencies": {
     "adhan": "^4.4.4",
