@@ -60,12 +60,23 @@ on:
 # hier jetzt keine Bedingung mehr: Ohne das Feld gilt der Vorgabewert `false`,
 # und ein laufender Durchgang wird nicht mehr beendet.
 #
-# Was auch das nicht abdeckt: Ein Durchgang, der noch wartet, wird von einem
-# neueren derselben Gruppe verdrängt — das macht die Reihung selbst und hängt
-# nicht an diesem Feld. Dagegen hilft nur, nicht zu schieben, solange ein Lauf
-# offen ist. Genau so wird hier gearbeitet.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+# Auch die Reihung selbst bricht ab, und das hing nicht am Feld: Ein Durchgang,
+# der noch wartet, wird vom nächsten derselben Gruppe verdrängt. Gemessen am
+# 08.08.2026 um 22:23 Uhr: `28c78df` stand als „pending" hinter `713cb91`, und
+# der Schub von `d0c9f5a` beendete ihn. Der Commit hat damit nie einen Lauf
+# bekommen — der eine Fall, in dem die Ansicht schweigt statt zu belegen.
+#
+# Hier stand als Gegenmittel „nicht schieben, solange ein Lauf offen ist". Das
+# ist eine Regel an den Menschen, keine an die Maschine, und sie ist am selben
+# Tag gebrochen worden, an dem sie aufgeschrieben wurde. Ein Durchgang dauert
+# rund eine halbe Stunde, eine Prüfrunde endet in zwanzig Minuten: Die Reihung
+# kollidiert damit im Regelfall und nicht in der Ausnahme.
+#
+# Deshalb gibt es sie nicht mehr. Ohne `concurrency` bekommt jeder Commit
+# seinen eigenen Lauf, nebeneinander, und keiner beendet einen anderen. Der
+# Preis ist Läuferzeit, und die steht oben: Für ein öffentliches Repo stellt
+# GitHub sie nicht in Rechnung. Dieser Workflow prüft nur, er liefert nichts
+# aus — zwei gleichzeitige Durchgänge treten sich also nicht auf die Füße.
 
 jobs:
   check:
