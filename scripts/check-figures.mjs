@@ -2321,9 +2321,34 @@ const BRAUCHT_KIND = {
     }
   }
 
+  /* Und das Wort selbst.
+
+     Für dieselbe Sache standen vier Bezeichnungen im Inhalt: „Zielgeräte" im
+     Titel des Architekturbilds, „Zielgeräte-Klassen" auf der Kennzahlenkachel,
+     „Geräteklassen" im Fließtext und „Gerätetypen" in der Skills-Zeile der
+     Salati-Spalte. Die ersten drei sind am 08.08.2026 zusammengeführt worden,
+     die vierte stand außerhalb dessen, was der Vergleich der Aufzählungen
+     erreicht — sie nennt keine Geräte, nur ihre Zahl.
+
+     Geprüft wird deshalb auch die Bezeichnung: „Geräteklasse" deutsch,
+     „device class" englisch, sonst keine. */
+  for (const [datei, verboten] of [
+    ["src/content/site.ts", /Gerätetyp|Zielgerät/],
+    ["src/content/en.ts", /device type/],
+  ]) {
+    if (!existsSync(datei)) continue;
+    const text = readFileSync(datei, "utf8");
+    const treffer = text.match(verboten);
+    if (treffer)
+      funde.push(
+        `${datei}: „${treffer[0]}" — für diese Sache heißt es überall ` +
+          `„${datei.endsWith("en.ts") ? "device class" : "Geräteklasse"}"`,
+      );
+  }
+
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Aufzählung(en) der Geräteklassen weichen ab:`);
+    zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Geräteklassen weichen ab:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (gruppen.length) {
     zeilen.push(

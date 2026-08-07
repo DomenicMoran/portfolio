@@ -987,7 +987,7 @@ export const skillDomains: SkillDomain[] = [
       },
       {
         name: "React Native / Expo",
-        evidence: "Expo SDK 57, RN 0.86, vier Gerätetypen",
+        evidence: "Expo SDK 57, RN 0.86, vier Geräteklassen",
       },
       {
         name: "TypeScript",
