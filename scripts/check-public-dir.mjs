@@ -244,6 +244,10 @@ const ERLAUBT_IN_DER_WURZEL = new Set([
   "CLAUDE.md",
   "LICENSE",
   "README.md",
+  /* AGENTS.md verlangt sie genau hier: „Was nur der Inhaber liefern kann,
+     steht gesammelt in USER-TODO.md" — eine Datei, die man beim Öffnen des
+     Repositorys sehen soll, nicht eine, die man suchen muss. */
+  "USER-TODO.md",
   "eslint.config.mjs",
   "next.config.ts",
   "package-lock.json",
