@@ -47,6 +47,23 @@ const BREITEN = [1920, 1440, 1280, 1024, 768, 640, 390];
  */
 const AUFSCHLAG = 1.05;
 
+/**
+ * Wie viele Bild-Bytes eine Seite auf dem Telefon kosten darf, bevor
+ * jemand scrollt.
+ *
+ * Gemessen am 08.08.2026 an der Startseite bei 390 px: zwölf Bilder,
+ * 258 kB, alle vor der ersten Bewegung. `loading="lazy"` steht an jedem
+ * davon und hält sie nicht auf — auch nicht mit auf 4G gedrosselter
+ * Leitung, gegengeprüft mit beiden Einstellungen.
+ *
+ * Das ist heute im Rahmen: Die Kernwerte bleiben im Budget, und die
+ * Aufnahmen sind der Beleg, für den die Fallstudien geschrieben sind.
+ * Die Grenze steht deshalb nicht als Vorwurf hier, sondern als Deckel:
+ * Drei weitere Aufnahmen würden unbemerkt hundert Kilobyte draufsetzen,
+ * und niemand misst so etwas von sich aus nach.
+ */
+const BILDBUDGET_KB = 320;
+
 /** Ab hier lohnt der Hinweis, dass Bytes verschenkt werden. */
 const VERSCHWENDUNG = 2.5;
 
@@ -132,8 +149,37 @@ for (const route of gebauteSeiten()) {
   }
 }
 
+/* Das Gewicht der Bilder, wie ein Telefon es bezahlt: 390 px, kein
+   Scrollen, gezählt am Übertragungsvolumen. */
+const schwer = [];
+for (const route of [...mitBildern]) {
+  const seite = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 2,
+  });
+  await seite.goto(basis + route, { waitUntil: "networkidle" });
+  const kb = await seite.evaluate(() =>
+    Math.round(
+      performance
+        .getEntriesByType("resource")
+        .filter((e) => e.initiatorType === "img")
+        .reduce((n, e) => n + (e.transferSize || e.encodedBodySize || 0), 0) /
+        1024,
+    ),
+  );
+  if (kb > BILDBUDGET_KB)
+    schwer.push(`${route}: ${kb} kB Bilder vor der ersten Bewegung, erlaubt ${BILDBUDGET_KB}`);
+  await seite.close();
+}
+
 await browser.close();
 beenden();
+
+if (schwer.length > 0) {
+  console.log(`\n${schwer.length} Seite(n) über dem Bildbudget:\n`);
+  for (const z of schwer) console.log(`  ${z}`);
+  process.exit(1);
+}
 
 if (funde.length > 0) {
   console.log(`\n${funde.length} Bild(er) werden hochgerechnet gezeigt:\n`);
@@ -143,7 +189,8 @@ if (funde.length > 0) {
 
 console.log(
   `Kein Bild wird größer gezeigt als geladen: ${gemessen} Messungen über ` +
-    `${BREITEN.length} Breiten.`,
+    `${BREITEN.length} Breiten, und keine Seite über ${BILDBUDGET_KB} kB Bildern ` +
+    `vor der ersten Bewegung.`,
 );
 if (grosszuegig.size > 0) {
   console.log(`\n  Reichlich geladen, ohne Beanstandung:`);
