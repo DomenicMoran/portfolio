@@ -3,6 +3,7 @@ import type { Article } from "./types";
 export const kassensichvEn: Article = {
   slug: "german-till-law-in-practice",
   title: "German till law in practice: what the documentation leaves out",
+  titleShort: "German till law in practice: what the docs leave out",
   dek: "Every point of sale in Germany has to sign its transactions in hardware-backed form. The vendor documentation explains the API call. The three things that actually bite are not in it.",
   date: "2026-07-29",
   minutes: 5,
