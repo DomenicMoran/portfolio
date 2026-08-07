@@ -1,3 +1,4 @@
+import { dateLong } from "@/lib/date-format";
 import { en } from "@/content/en";
 // Die Profil-URLs stehen nur in der deutschen Quelle, weil sie sprachneutral
 // sind. Sie hier zu wiederholen hiesse, sie an zwei Stellen zu pflegen.
@@ -54,11 +55,7 @@ export const dynamic = "force-static";
  */
 const commits = verified.commitsHead.replace(".", ",");
 
-const measuredOn = new Date(verified.date).toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+const measuredOn = dateLong(verified.date);
 
 export function GET() {
   const { site, caseStudies, recruiter } = en;

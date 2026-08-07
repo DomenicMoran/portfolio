@@ -1,3 +1,4 @@
+import { datumLang } from "@/lib/date-format";
 import verified from "./verified.json";
 import type { CaseStudy } from "./types";
 import {
@@ -156,7 +157,7 @@ export const about = {
    * Stempel 4.046, die Konsolenmeldung wieder etwas anderes. Eine Seite, die
    * zum Nachrechnen einlädt, darf sich nicht selbst widersprechen.
    */
-  statsHinweis: `Gemessen am ${verified.date.split("-").reverse().join(".")} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
+  statsHinweis: `Gemessen am ${datumLang(verified.date)} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
   timeline: [
     {
       period: "seit 04/2026",

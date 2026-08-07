@@ -1,3 +1,4 @@
+import { dateLong } from "@/lib/date-format";
 import verified from "./verified.json";
 import {
   asWord,
@@ -56,15 +57,6 @@ const salatiDays = Math.round(
 /** Im Änderungsprotokoll der App gezählt, siehe check-figures.mjs. */
 const SALATI_VERSIONS = 64;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
-
-/** „2026-08-01“ als „1 August 2026“. */
-function dateLong(iso: string) {
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 /**
  * Wie lange die vier Produktionssysteme entstehen — gerechnet.
@@ -719,8 +711,8 @@ export const en: Content = {
     /* `dateLong` und nicht der rohe Wert: Hier stand „Measured on
        2026-08-06“, während drei andere englische Stellen denselben Stempel
        als „6 August 2026“ setzen — zwei Datumsformate auf einer Seite, und
-       das maschinenlesbare mitten im Satz. Die deutsche Fassung dreht den
-       Wert an derselben Stelle auf „06.08.2026“. */
+       das maschinenlesbare mitten im Satz. Die Formatierung liegt seitdem in
+       `src/lib/date-format.ts`, für beide Sprachen. */
     statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [

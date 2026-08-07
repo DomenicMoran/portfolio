@@ -12,7 +12,7 @@ export const shaperDe: Article = {
   minutes: 5,
   tags: ["Typografie", "HarfBuzz", "Unicode", "React Native"],
   evidence: [
-    "Salati-Repo, Commit 427cd6c6 vom 31.07.2026",
+    "Salati-Repo, Commit 427cd6c6 vom 31. Juli 2026",
     "Neu: apps/mobile/src/lib/arabicText.ts (Normalisierung, splitArabicWords, arabicClusters)",
     {
       text: "Der Normalisierungsteil davon liegt öffentlich als arabic-normalize",
