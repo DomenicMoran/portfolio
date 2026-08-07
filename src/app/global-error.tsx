@@ -126,6 +126,34 @@ export default function GlobalError({
                 {de.site.email}
               </a>
             </p>
+
+            {/* Impressum und Datenschutz, wie auf jeder anderen Seite.
+
+                Gemessen an den 19 gebauten Seiten trugen 18 beide Verweise —
+                diese hier als einzige keinen. § 5 DDG verlangt sie „von jeder
+                Seite unmittelbar erreichbar", und eine Fehlerseite ist kein
+                Sonderfall: Sie ist die Seite, auf der jemand hängen bleibt.
+                Die 404 nebenan macht es seit Langem so.
+
+                Harte Verweise wie oben, kein `Link`: Der React-Baum ist hier
+                gerade zerbrochen, ein Routerwechsel würde denselben Baum neu
+                zu betreten versuchen. */}
+            <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
+              <a
+                href="/impressum"
+                hrefLang="de"
+                className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+              >
+                {de.footer.impressum}
+              </a>
+              <a
+                href="/datenschutz"
+                hrefLang="de"
+                className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+              >
+                {de.footer.datenschutz}
+              </a>
+            </p>
           </div>
         </footer>
       </body>
