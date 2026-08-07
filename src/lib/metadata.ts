@@ -236,7 +236,10 @@ export function vorschaukarten({
   };
 }
 
-export function ogBildFuer(lang: "de" | "en") {
+/* Ohne `export`: Seit `vorschaukarten()` beide Karten baut, ruft diese
+   Funktion nur noch diese Datei auf. Ein `export` ohne Abnehmer schickt
+   jeden Leser auf die Suche nach einer Stelle, die es nicht gibt. */
+function ogBildFuer(lang: "de" | "en") {
   return [
     {
       url: lang === "de" ? "/opengraph-image" : "/en/opengraph-image",

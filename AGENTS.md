@@ -307,13 +307,14 @@ npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 Vor jedem Schub die drei schnellen davon zusammen:
 
 ```bash
-npm run preflight   # Steuerzeichen, Handbuch, Stand der beiden Blätter
+npm run preflight   # Steuerzeichen, Handbuch, Ausfuhren, Stand der Blätter
 ```
 
-Zwei Sekunden, und sie decken die drei Fehler ab, die zuletzt in der CI rot
+Drei Sekunden, und sie decken die vier Fehler ab, die zuletzt in der CI rot
 wurden: ein Steuerzeichen aus einem Einfüge-Skript, eine Zahl im Handbuch, die
-nicht mehr stimmte, und zwei PDFs, die nach einer Inhaltsänderung nicht neu
-gedruckt waren. Alle drei fallen hier auf, bevor sie jemand sieht.
+nicht mehr stimmte, zwei PDFs, die nach einer Inhaltsänderung nicht neu
+gedruckt waren, und eine Ausfuhr, deren letzter Abnehmer weggefallen war.
+Alle vier fallen hier auf, bevor sie jemand sieht.
 
 Dazu, außerhalb der CI, weil er die Nachbar-Repos braucht:
 
