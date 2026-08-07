@@ -748,6 +748,30 @@ function ghApi(argumente) {
   throw letzterFehler ?? new Error("gh nicht erreichbar");
 }
 
+/**
+ * Eine GitHub-Adresse abrufen — angemeldet, über dieselbe Stelle wie alles
+ * andere.
+ *
+ * Drei Prüfungen holten ihre Daten mit einem blanken `fetch` von
+ * api.github.com: das Profil-README, die Repo-Beschreibung und die Themen der
+ * OSS-Pakete. Unangemeldet erlaubt GitHub 60 Abrufe je Stunde und Adresse.
+ *
+ * Gemessen am 07.08.2026: `remaining: 0`. Die drei Prüfungen fielen aus, der
+ * Bericht sagte „übersprungen“, und der Lauf endete grün. Das ist die
+ * schlechteste Art zu scheitern, die es hier gibt — eine Prüfung, die
+ * schweigt, sieht aus wie eine, die zustimmt. Der Schlussatz nennt die Zahl
+ * der Ausfälle inzwischen, aber verhindert hat sie das nicht.
+ *
+ * `ghApi` gibt es seit Längerem und nimmt den angemeldeten Zugang: 5.000
+ * Abrufe je Stunde statt 60. Der Zugang bleibt dabei in der Umgebung des
+ * Kindprozesses und taucht in keiner Ausgabe auf.
+ */
+function ghHolen(pfad, roh = false) {
+  const argumente = ["api", pfad];
+  if (roh) argumente.push("-H", "accept: application/vnd.github.raw");
+  return ghApi(argumente);
+}
+
 /** Die Namen aller angemeldeten Konten, das aktive zuerst weggelassen. */
 function ghKonten() {
   try {
@@ -2607,15 +2631,10 @@ const BRAUCHT_KIND = {
          Auslieferung liegt hinter einem Zwischenspeicher und zeigte nach
          einer Änderung noch minutenlang die alte Fassung — der Wächter
          meldete dann eine Abweichung, die es nicht gab. */
-      const antwort = await fetch(
-        "https://api.github.com/repos/DomenicMoran/DomenicMoran/contents/README.md",
-        {
-          headers: { accept: "application/vnd.github.raw" },
-          signal: AbortSignal.timeout(20000),
-        },
+      const veroeffentlicht = ghHolen(
+        "repos/DomenicMoran/DomenicMoran/contents/README.md",
+        true,
       );
-      if (!antwort.ok) throw new Error(String(antwort.status));
-      const veroeffentlicht = await antwort.text();
       if (glatt(oertlich) !== glatt(veroeffentlicht)) {
         abweichungen++;
         const a = glatt(oertlich).split("\n");
@@ -2683,15 +2702,8 @@ const BRAUCHT_KIND = {
       ["zehn", 10],
     ]);
     try {
-      const antwort = await fetch(
-        "https://api.github.com/repos/DomenicMoran/portfolio",
-        {
-          headers: { accept: "application/vnd.github+json" },
-          signal: AbortSignal.timeout(20000),
-        },
-      );
-      if (!antwort.ok) throw new Error(String(antwort.status));
-      const beschreibung = (await antwort.json()).description ?? "";
+      const beschreibung =
+        JSON.parse(ghHolen("repos/DomenicMoran/portfolio")).description ?? "";
 
       const quelle = readFileSync(join("src", "content", "site.ts"), "utf8");
       const von = quelle.indexOf("export const caseStudies");
@@ -2867,15 +2879,7 @@ const BRAUCHT_KIND = {
       if (!existsSync(ordner)) continue;
       let daten;
       try {
-        const antwort = await fetch(
-          `https://api.github.com/repos/DomenicMoran/${paket}`,
-          {
-            headers: { accept: "application/vnd.github+json" },
-            signal: AbortSignal.timeout(20000),
-          },
-        );
-        if (!antwort.ok) throw new Error(String(antwort.status));
-        daten = await antwort.json();
+        daten = JSON.parse(ghHolen(`repos/DomenicMoran/${paket}`));
       } catch {
         continue;
       }
