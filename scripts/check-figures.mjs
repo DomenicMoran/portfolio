@@ -1817,13 +1817,52 @@ const BRAUCHT_KIND = {
     }
   }
 
+  /* Dieselben drei Fassungen stehen auch in humans.txt.
+
+     Die Datei liegt unter `/humans.txt`, steht in der Kopfzeile jeder Seite
+     und nennt unter „WOMIT" den Stapel: „Next.js 16 (App Router, React Server
+     Components)", „React 19, TypeScript, Tailwind CSS 4". Die Zahlen daneben
+     kommen aus `verified.json` und wachsen von allein; diese drei stehen fest
+     im Text der Route.
+
+     Gemessen am 08.08.2026 stimmen sie. Sie stimmen aber nur bis zum nächsten
+     Hauptsprung, und dann fällt es niemandem auf: Das README wird bei jedem
+     Bump gegen `package.json` gehalten, humans.txt von nichts. Zwei Stellen
+     mit derselben Aussage, eine davon geprüft — das ist die Sorte Zahl, die
+     dieses Skript sonst überall einsammelt. */
+  {
+    const route = join("src", "app", "humans.txt", "route.ts");
+    if (existsSync(route)) {
+      const text = readFileSync(route, "utf8");
+      for (const [beschriftung, paket] of ABZEICHEN) {
+        /* „Tailwind CSS 4" trägt ein Wort zwischen Name und Fassung,
+           „Next.js 16" nicht. Eines ist erlaubt, mehr nicht — sonst greift
+           das Muster über den Satz hinweg auf die nächste Zahl. */
+        const muster = new RegExp(
+          String.raw`${beschriftung.replace(".", String.raw`\.`)}(?:\s+[A-Za-z.]+)?\s+v?(\d+)`,
+        );
+        const genannt = muster.exec(text)?.[1];
+        if (!genannt) continue;
+        const installiert = (alle[paket] ?? "").replace(/^[\^~]/, "");
+        if (!installiert) continue;
+        geprueft++;
+        const haupt = installiert.split(".")[0];
+        if (haupt !== genannt) {
+          funde.push(
+            `humans.txt: ${beschriftung} ${genannt}, installiert ist ${installiert}`,
+          );
+        }
+      }
+    }
+  }
+
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Abzeichen mit falscher Fassung:`);
+    zeilen.push(`  !!  ${funde.length} genannte Fassung(en) stimmen nicht:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft > 0) {
     zeilen.push(
-      `  ok  Abzeichen im README ${String(geprueft).padStart(6)} Fassungen stimmen mit package.json`,
+      `  ok  Genannte Fassungen ${String(geprueft).padStart(7)} in README und humans.txt stimmen mit package.json`,
     );
   }
 }
