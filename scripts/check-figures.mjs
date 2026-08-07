@@ -1366,7 +1366,7 @@ const BRAUCHT_KIND = {
       return {
         commits: holen(/\b[0-9a-f]{8,40}\b/g),
         pfade: holen(
-          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g,
+          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py|md)\b/g,
         ),
       };
     };
@@ -1427,7 +1427,12 @@ const BRAUCHT_KIND = {
     whisper: "../../SalatiTech",
     widget: "../../SalatiTech",
   };
-  const WURZELN = /^(src|apps|supabase|scripts|packages)\//;
+  /* `docs` kam später dazu und fehlte.
+     Der Whisper-Artikel belegt seine Messwerte mit
+     `docs/audit-2026-07-27/WHISPER-EIGENE-KONVERTIERUNG.md` — der einzige
+     Beleg, den ein Leser mit Zugang wirklich lesen kann statt nur zu
+     finden, und der einzige, der außerhalb dieser Liste stand. */
+  const WURZELN = /^(src|apps|supabase|scripts|packages|docs)\//;
 
   const funde = [];
   let geprueft = 0;
@@ -1447,7 +1452,7 @@ const BRAUCHT_KIND = {
     const pfade = new Set(
       [
         ...inhalt.matchAll(
-          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py)\b/g,
+          /[a-zA-Z0-9_./-]+\.(?:ts|tsx|mjs|sql|json|kt|swift|py|md)\b/g,
         ),
       ]
         .map((m) => m[0])
