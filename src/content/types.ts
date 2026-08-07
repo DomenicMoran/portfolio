@@ -123,6 +123,8 @@ export type Content = {
     closeMenu: string;
     commandPalette: string;
     currentSection: string;
+    /** Titel des Verweises auf llms.txt im Dokumentkopf. */
+    llmsTitel: string;
     replay: string;
     /** Bedienung der Bildstrecke in den Fallstudien. */
     shots: { label: string; vor: string; zurueck: string; von: string };

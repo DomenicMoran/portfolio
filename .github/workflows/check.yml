@@ -210,6 +210,13 @@ jobs:
       - name: Ausfuhren mit Abnehmer
         run: npm run check:exports
 
+      # AGENTS.md verbietet feste Beschriftungen in Komponenten, seit ein
+      # Screenreader auf der englischen Fassung deutsche Ansagen vorlas.
+      # Nachgesehen hat es niemand: Im Kopf beider Fassungen stand
+      # title="Facts for language models".
+      - name: Beschriftungen aus dem Inhalt
+        run: npm run check:copy
+
       # README.md und AGENTS.md zählen Dinge, und gezählte Dinge veralten leise.
       # Gefunden beim Lesen: eine Ankündigung von drei Regeln über vier Punkten,
       # dreizehn genannte Prüfungen bei vierzehn aufgezählten und ein

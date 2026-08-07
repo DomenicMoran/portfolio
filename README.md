@@ -97,7 +97,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 33 Prüfungen, die den Bau nicht ersetzen. 22 davon
+Nach dem Bau laufen 34 Prüfungen, die den Bau nicht ersetzen. 22 davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -113,6 +113,7 @@ npm run check:onepager  # das ausgelieferte PDF stammt aus dem aktuellen Inhalt
 npm run check:typography # jede Sprachfassung setzt ihre eigenen Zeichen
 npm run check:legal     # das Datum der Datenschutzerklärung passt zu ihrem Text
 npm run check:exports   # jede Ausfuhr aus src/ hat einen Abnehmer
+npm run check:copy      # keine Beschriftung steht fest in einer Komponente
 npm run check:headers   # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
 npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
@@ -228,6 +229,7 @@ scripts/
 │  An Dateien gemessen:
 ├─ check-docs.mjs                 die Zahlen in README.md und AGENTS.md stimmen noch
 ├─ check-exports.mjs              jede Ausfuhr aus src/ hat einen Abnehmer
+├─ check-hardcoded-copy.mjs       keine Beschriftung steht fest in einer Komponente
 ├─ check-legal-date.mjs           das Datum der Datenschutzerklärung passt zu ihrem Text
 ├─ check-onepager-pdf.mjs         das ausgelieferte PDF stammt aus dem aktuellen Inhalt
 ├─ check-public-dir.mjs           läuft als prebuild: nichts Privates in public/
