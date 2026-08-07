@@ -2908,6 +2908,72 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die Agenten-Sitzung auf der Startseite stimmt mit dem Repo.
+
+   Sie zeichnet einen echten Fehler nach und wird auf der meistgelesenen Seite
+   Zeile für Zeile abgespielt. Zwei ihrer Zeilen sind keine Erzählung, sondern
+   Tatsachen aus einem fremden Repo:
+
+     „package.json: `"main": "index.js"` wird zu `"index"`"
+     „registerWidgetTaskHandler läuft nie"
+
+   Geprüft war bisher nur der Commit darunter — dass es ihn gibt und wann er
+   entstand. Ob das Repo den Zustand noch trägt, den die Sitzung als Ergebnis
+   zeigt, sah niemand nach. Setzt jemand `main` zurück oder benennt den Handler
+   um, erzählt die Startseite weiter eine Geschichte, die nicht mehr stimmt.
+
+   Nachgesehen am 08.08.2026: `main` steht auf `"index"`, der Handler wird in
+   `index.android.js` aufgerufen, und beide Einstiegsdateien liegen nebeneinander
+   — genau die Aufteilung, die die Sitzung erklärt.
+   ------------------------------------------------------------------------ */
+{
+  const repo = "../../SalatiTech";
+  const mobil = join(repo, "apps", "mobile");
+  if (!existsSync(mobil)) {
+    zeilen.push("  --  Agenten-Sitzung: SalatiTech nicht vorhanden, übersprungen");
+  } else {
+    const funde = [];
+    let geprueft = 0;
+
+    /* Der Wert, den die Sitzung als Ergebnis zeigt. */
+    const gezeigt = quelle.match(/"main":\s*\\"index\.js\\"[^"]*?\\"([^\\]+)\\"/)?.[1];
+    const manifest = join(mobil, "package.json");
+    if (existsSync(manifest)) {
+      geprueft++;
+      const wirklich = JSON.parse(readFileSync(manifest, "utf8")).main;
+      if (gezeigt && wirklich !== gezeigt)
+        funde.push(
+          `Die Sitzung zeigt \`main\` als „${gezeigt}", im Repo steht „${wirklich}"`,
+        );
+      else if (!gezeigt && wirklich !== "index")
+        funde.push(`\`main\` steht im Repo auf „${wirklich}", nicht auf „index"`);
+    }
+
+    /* Der Handler, dessen Ausbleiben die Sitzung erklärt. */
+    for (const [name, datei] of [
+      ["registerWidgetTaskHandler", "index.android.js"],
+    ]) {
+      if (!quelle.includes(name)) continue;
+      geprueft++;
+      const pfad = join(mobil, datei);
+      if (!existsSync(pfad)) funde.push(`${datei} gibt es nicht mehr`);
+      else if (!readFileSync(pfad, "utf8").includes(name))
+        funde.push(`${name} steht nicht mehr in ${datei}`);
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Angabe(n) der Agenten-Sitzung stimmen nicht:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Agenten-Sitzung     ${String(geprueft).padStart(6)} Angaben stehen so im Repo`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jeder Commit, den ein Artikel nennt, existiert auch.
 
    Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
