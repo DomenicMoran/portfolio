@@ -2124,6 +2124,36 @@ const BRAUCHT_KIND = {
       );
     }
   }
+
+  /* Dieselbe Lage, anders gezählt: Das Profil-README spricht von Systemen,
+     nicht von Apps. „Zwei davon mit Apps in beiden Stores" meint zwei
+     Fallstudien, in denen beide Plattformen vorkommen. Auch diese Zahl hing
+     an der Lage bei Google Play und stand eine Woche lang neben ihr. */
+  {
+    const systemeInBeiden = bloecke.filter(
+      (b) => /apps\.apple\.com/.test(b) && /play\.google\.com/.test(b),
+    ).length;
+    const profil = "../docs/GITHUB-PROFILE-README.md";
+    if (!existsSync(profil)) {
+      zeilen.push(`  --  ${profil} nicht vorhanden, Systemzahl übersprungen`);
+    } else {
+      const satz = readFileSync(profil, "utf8").match(
+        /(\w+) davon mit Apps in beiden Stores/,
+      );
+      if (!satz) {
+        zeilen.push("  --  Profil-README: Satz zu den Stores nicht gefunden");
+      } else if (ZAHLWORT[satz[1].toLowerCase()] !== systemeInBeiden) {
+        abweichungen++;
+        zeilen.push(
+          `  !!  Profil-README nennt ${satz[1]} System(e) mit Apps in beiden Stores, verlinkt sind ${systemeInBeiden}`,
+        );
+      } else {
+        zeilen.push(
+          `  ok  Store-Zahlen        ${String(systemeInBeiden).padStart(6)} Systeme mit Apps in beiden Stores, wie im Profil-README`,
+        );
+      }
+    }
+  }
 }
 
 /* ---------------------------------------------------------------------------
