@@ -882,7 +882,17 @@ export const workflow = {
     {
       n: "01",
       title: "Kontext als versionierter Code",
-      body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
+      /* „Jedes Projekt" stand hier und war zu viel.
+
+         Nachgezählt am 08.08.2026 in den Repos: MenuCloud, Salati (unter
+         `apps/mobile`), diese Seite und die Lernplattform tragen eine
+         Konventionsdatei, NOURI und WohnungsJäger nicht. Vier von sechs, und
+         zwei der vier Systeme, die diese Seite als Produktion nennt, fehlen.
+
+         Vier ist keine schwächere Aussage, sondern eine belegte. `check-figures`
+         zählt die Dateien nach; wer sie in den beiden übrigen anlegt, hebt die
+         Zahl dort und hier. */
+      body: "Vier meiner Repositories tragen ihre Konventionen als versionierte Datei: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
       artifacts: [
         "CLAUDE.md pro Repo",
         "Persistentes Memory",
