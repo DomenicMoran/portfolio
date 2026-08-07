@@ -2316,6 +2316,83 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die ausgeschriebene Zahl der Artikel.
+
+   Die Artikelübersicht heißt „Fünf Fehler, die mich etwas gelehrt haben“, der
+   Vorspann darunter sagt „Fünf Probleme aus meinen eigenen Systemen“, und der
+   Verweis von der Startseite lautet „Alle fünf Artikel lesen“. Dieselbe Zahl
+   steht englisch noch einmal an drei Stellen.
+
+   Sechs Zeichenketten, alle fest geschrieben, keine davon aus der Liste
+   abgeleitet. Ein sechster Artikel würde die Liste verlängern und alle sechs
+   stehen lassen — auf der Seite, deren Argument ist, dass ihre Zahlen stimmen.
+   Ausgerechnet die Überschrift wäre falsch.
+
+   Geprüft wird gegen die Länge von `artikelDe`: Steht in einer der Stellen ein
+   Zahlwort, muss es das zur Anzahl passende sein.
+   ------------------------------------------------------------------------ */
+{
+  const datei = "src/content/articles/index.ts";
+  if (!existsSync(datei)) {
+    zeilen.push(`  --  ${datei} nicht vorhanden, Artikelzahl übersprungen`);
+  } else {
+    const text = readFileSync(datei, "utf8");
+
+    /* Die Liste selbst: alles zwischen `artikelDe = sortiert([` und `])`. */
+    const liste = text.match(/artikelDe = sortiert\(\[([\s\S]*?)\]\)/);
+    const anzahl = liste
+      ? liste[1].split(",").map((z) => z.trim()).filter(Boolean).length
+      : 0;
+
+    const woerter = {
+      de: ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn"],
+      en: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
+    };
+
+    const funde = [];
+    let geprueft = 0;
+
+    for (const [sprache, block] of [
+      ["de", text.slice(text.indexOf("chromeDe"), text.indexOf("chromeEn"))],
+      ["en", text.slice(text.indexOf("chromeEn"))],
+    ]) {
+      const richtig = woerter[sprache][anzahl];
+      for (const stelle of block.matchAll(/(title|lede|cta):\s*"([^"]+)"/g)) {
+        const satz = stelle[2];
+        for (const [i, wort] of woerter[sprache].entries()) {
+          if (i === 0 || i === 1) continue; /* „ein“ und „one“ sind zu häufig. */
+          /* Nur das Zahlwort direkt vor der Sache, die gezählt wird. Sonst
+             trifft es auch „Zwei davon hatte monatelang niemand bemerkt" —
+             dieselbe Zeile, eine andere Aussage. */
+          if (
+            !new RegExp(
+              `\\b${wort}\\s+(Fehler|Probleme|Artikel|bugs|problems|articles)\\b`,
+              "i",
+            ).test(satz)
+          )
+            continue;
+          geprueft++;
+          if (wort !== richtig)
+            funde.push(
+              `${sprache}, ${stelle[1]}: „${wort}“ bei ${anzahl} Artikeln — „${richtig}“`,
+            );
+        }
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Zahlwort(e) passen nicht zur Artikelzahl:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Artikelzahl        ${String(geprueft).padStart(6)} ausgeschriebene Zahlen passen zu ${anzahl} Artikeln`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jeder Commit, den ein Artikel nennt, existiert auch.
 
    Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
