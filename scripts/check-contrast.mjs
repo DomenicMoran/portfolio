@@ -134,6 +134,28 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         "*,*::before,*::after{animation-play-state:paused !important}" +
         "*{mask-image:none !important;-webkit-mask-image:none !important}",
     });
+
+    /* Endlose Animationen werden nicht angehalten, sondern entfernt.
+
+       Anhalten friert die Laufschrift dort ein, wo sie gerade steht, und das
+       ist auf jedem Rechner woanders. Gemessen am 08.08.2026: Der Lauf war
+       hier grün und in der CI rot, mit dem Befund „Text vorhanden, aber kein
+       Punkt deckt voll" an der zweiten Begriffsreihe der Startseite — dort
+       stand sie halb aus dem Bild geschoben. Ein Prüflauf, der je nach
+       Maschine anders ausgeht, ist keine Messung.
+
+       Eine endlose Animation hat keinen Endzustand, den das Einfrieren
+       bewahren müsste; ohne sie steht das Element an seiner unverschobenen
+       Stelle, auf jeder Maschine gleich. Die einmaligen Einblendungen bleiben
+       angehalten: Bei ihnen ist der erreichte Zustand genau der, den der
+       Leser sieht. */
+    await seite.evaluate(() => {
+      for (const el of document.querySelectorAll("*")) {
+        if (getComputedStyle(el).animationIterationCount.includes("infinite"))
+          el.style.animation = "none";
+      }
+    });
+    await seite.waitForTimeout(120);
     await seite.addScriptTag({ content: axeQuelle });
 
     const ergebnis = await seite.evaluate(
