@@ -40,7 +40,7 @@ export const whisperDe: Article = {
     },
     {
       kind: "p",
-      text: "Whisper ist auf allgemeine Sprache trainiert, über viele Sprachen hinweg. Das Arabisch des Korans ist etwas anderes als das Arabisch, das in Nachrichten oder Podcasts gesprochen wird: klassische Grammatik, ein eng begrenztes Vokabular, und eine Rezitationsweise mit gedehnten Vokalen, deren Länge bedeutungstragend ist. Ein größeres generisches Modell ist in genau dem besser, was hier nicht gebraucht wird, nämlich Breite. Es ist nicht besser in dem, was gebraucht wird, nämlich Tiefe in einem sehr schmalen Ausschnitt.",
+      text: "Whisper ist auf allgemeine Sprache trainiert, über viele Sprachen hinweg. Das Arabisch des Korans ist etwas anderes als das Arabisch, das in Nachrichten oder Podcasts gesprochen wird: klassische Grammatik, ein eng begrenztes Vokabular und eine Rezitationsweise mit gedehnten Vokalen, deren Länge bedeutungstragend ist. Ein größeres generisches Modell ist in genau dem besser, was hier nicht gebraucht wird, nämlich Breite. Es ist nicht besser in dem, was gebraucht wird, nämlich Tiefe in einem sehr schmalen Ausschnitt.",
     },
     {
       kind: "p",

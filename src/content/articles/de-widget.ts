@@ -40,7 +40,7 @@ export const widgetDe: Article = {
     },
     {
       kind: "p",
-      text: "Im Emulator trat es ebenfalls nicht auf, aus einem banalen Grund: Wer im Emulator entwickelt, öffnet ständig die App. Und beim Öffnen der App wurden die Widgets aktualisiert, über einen anderen Weg als den Hintergrund-Aktualisierung. Der kaputte Pfad wurde also bei jeder Prüfung durch den funktionierenden verdeckt.",
+      text: "Im Emulator trat es ebenfalls nicht auf, aus einem banalen Grund: Wer im Emulator entwickelt, öffnet ständig die App. Und beim Öffnen der App wurden die Widgets aktualisiert, über einen anderen Weg als den der Hintergrund-Aktualisierung. Der kaputte Pfad wurde also bei jeder Prüfung durch den funktionierenden verdeckt.",
     },
     {
       kind: "h2",
