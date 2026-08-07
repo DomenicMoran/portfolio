@@ -17,12 +17,22 @@
   --color-ink-dim: #a5a5b0;
   /* Gemessen, nicht geschätzt: #6b6b78 ergab nur 3,81:1 auf #08080a und fiel
      damit unter WCAG AA (4,5:1 für Fließtext). #84848f liefert 5,33:1 auf
-     --void und 5,05:1 auf --surface, also auf beiden Untergründen Reserve. */
-  --color-ink-faint: #84848f;
+     --void und 5,05:1 auf --surface.
+
+     Beide Untergründe waren aber nicht alle. Die Karte hinter „Die harte
+     Stelle" trägt einen Grünstich, und dort steht derselbe Wert auf 28,33,16
+     — gemessen an der gebauten Seite 4,45:1, fünf Hundertstel unter der
+     Forderung. #8a8a95 hebt das auf 4,83:1, ohne dass sich der Ton ändert;
+     auf --void sind es dann 5,68:1. */
+  --color-ink-faint: #8a8a95;
 
   --color-acid: #d4ff45;
   --color-acid-dim: #a8cc2e;
-  --color-violet: #7c5cff;
+  /* #7c5cff stand auf den violett getönten Karten (20,16,35) bei 4,28:1 und
+     auf --void bei 4,47:1 — beides unter 4,5:1, und getragen hat es die
+     Überschrift „Die harte Stelle" jeder Fallstudie. #8b6dff ist derselbe
+     Farbton eine Stufe heller: 5,08:1 und 5,29:1. */
+  --color-violet: #8b6dff;
   --color-cyan: #3fd0ff;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
