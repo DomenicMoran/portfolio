@@ -3206,6 +3206,55 @@ const BRAUCHT_KIND = {
       );
     }
   }
+
+  /* Und dieselbe Frage für die zweite Demo.
+
+     Unter der Tagesbilanz steht „Alle 4.096 Zusammenstellungen". Das ist
+     2 hoch 12, also eine Zahl, die sich aus der Zahl der Gerichte ergibt und
+     sich vervierfacht, sobald jemand zwei dazulegt. Nachgesehen am
+     08.08.2026: zwölf Gerichte, 4.096 — die Angabe stimmt und stand
+     ungeprüft da, während ihr Gegenstück bei den Gebetszeiten seit derselben
+     Woche geprüft wird. */
+  {
+    const bauteil = "src/components/demo/Macros.tsx";
+    if (!existsSync(bauteil)) {
+      zeilen.push(`  --  ${bauteil} nicht vorhanden, Zusammenstellungen übersprungen`);
+    } else {
+      const text = readFileSync(bauteil, "utf8");
+      const von = text.indexOf("const GERICHTE = [");
+      const block = text.slice(von, text.indexOf("];", von));
+      const gerichte = (block.match(/emoji:/g) ?? []).length;
+      const erwartet = 2 ** gerichte;
+
+      const funde = [];
+      let geprueft = 0;
+      for (const [datei, muster] of [
+        ["src/content/de.ts", /([\d.]+) Zusammenstellungen/g],
+        ["src/content/en.ts", /([\d,]+) (?:possible )?combinations/g],
+      ]) {
+        if (!existsSync(datei)) continue;
+        for (const treffer of readFileSync(datei, "utf8").matchAll(muster)) {
+          geprueft++;
+          const zahl = Number(treffer[1].replace(/[.,]/g, ""));
+          if (zahl !== erwartet)
+            funde.push(
+              `${datei}: nennt ${treffer[1]} Zusammenstellungen, ` +
+                `${gerichte} Gerichte ergeben ${erwartet}`,
+            );
+        }
+      }
+
+      if (funde.length) {
+        abweichungen += funde.length;
+        zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Zusammenstellungen stimmen nicht:`);
+        for (const f of funde) zeilen.push(`        ${f}`);
+      } else if (geprueft) {
+        zeilen.push(
+          `  ok  Zusammenstellungen ${String(erwartet).padStart(6)} aus ${gerichte} Gerichten, ${geprueft}× genannt`,
+        );
+      }
+    }
+  }
 }
 
 /* ---------------------------------------------------------------------------
