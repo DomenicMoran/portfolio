@@ -182,7 +182,7 @@ export const en: Content = {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
       },
-      { value: "1,276", label: "API routes (MenuCloud)" },
+      { value: "1,278", label: "API routes (MenuCloud)" },
       { value: "7,464", label: "test cases (MenuCloud)" },
     ],
   },
@@ -282,7 +282,7 @@ export const en: Content = {
         { value: "4", label: "device classes" },
         { value: "14", label: "languages" },
         { value: "100%", label: "AI runs on the device" },
-        { value: "1,062", label: "commits" },
+        { value: "1,070", label: "commits" },
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
@@ -405,7 +405,7 @@ export const en: Content = {
         body: "A signing unit is not simply an API call. Each tenant needs its own legally attributable unit, every transaction must sit in an unbroken hash chain, and an outage must never quietly produce unsigned revenue, which for the restaurateur would be an audit catastrophe. The answer is a per-tenant provisioned Fiskaly cloud unit with the chain persisted in `tse_transactions`, and a fail-closed path: no signature, no transaction.",
       },
       highlights: [
-        "1,276 API routes across 812 versioned Postgres migrations",
+        "1,278 API routes across 815 versioned Postgres migrations",
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
@@ -500,8 +500,8 @@ export const en: Content = {
         },
       ],
       metrics: [
-        { value: "1,276", label: "API routes" },
-        { value: "812", label: "DB migrations" },
+        { value: "1,278", label: "API routes" },
+        { value: "815", label: "DB migrations" },
         { value: "7,464", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],

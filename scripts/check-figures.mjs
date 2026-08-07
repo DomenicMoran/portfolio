@@ -2908,6 +2908,96 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Die drei Bestandszahlen der Fallstudien.
+
+   „1.278 API-Routen", „815 DB-Migrationen", „1.070 Commits" — sie stehen im
+   Kennzahlenband der Startseite, in den Fallstudien, im Lebenslauf und in den
+   Bewerbungsunterlagen. Gezählt hat sie zuletzt jemand von Hand.
+
+   Gemessen am 08.08.2026 standen dort 1.276, 812 und 1.062; wirklich waren es
+   1.278, 815 und 1.070. Alle drei zu klein, weil die Repos weitergewachsen
+   sind und die Zahlen stehen blieben. Falsch werden solche Angaben nie, sie
+   werden nur stiller — und genau deshalb fällt es niemandem auf.
+
+   Gezählt wird, was sich zählen lässt: Dateien namens `route.ts` unter
+   `src/app/api`, `.sql`-Dateien unter `supabase/migrations`, und die Commits
+   des Salati-Repos. Fehlt ein Repo, wird übersprungen statt geraten.
+   ------------------------------------------------------------------------ */
+{
+  const zaehleDateien = (wurzel, endung) => {
+    if (!existsSync(wurzel)) return null;
+    let n = 0;
+    const gehe = (ordner) => {
+      for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+        const pfad = join(ordner, eintrag.name);
+        if (eintrag.isDirectory()) gehe(pfad);
+        else if (eintrag.name === endung || eintrag.name.endsWith(endung)) n++;
+      }
+    };
+    gehe(wurzel);
+    return n;
+  };
+
+  const routen = zaehleDateien("../../MenuCloud/src/app/api", "route.ts");
+  const migrationen = zaehleDateien("../../MenuCloud/supabase/migrations", ".sql");
+  let salatiCommits = null;
+  if (existsSync("../../SalatiTech")) {
+    try {
+      salatiCommits = Number(
+        execFileSync("git", ["rev-list", "--count", "HEAD"], {
+          cwd: "../../SalatiTech",
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim(),
+      );
+    } catch {
+      salatiCommits = null;
+    }
+  }
+
+  const ANGABEN = [
+    ["API-Routen", routen, [/([\d.]+) API-Routen/, /([\d,]+) API routes/]],
+    ["DB-Migrationen", migrationen, [/([\d.]+) versionierte Postgres/, /([\d,]+) versioned Postgres/]],
+    ["Salati-Commits", salatiCommits, [/value: "([\d.]+)", label: "Commits"/, /value: "([\d,]+)", label: "commits"/]],
+  ];
+
+  const quellen = ["src/content/site.ts", "src/content/en.ts"]
+    .filter((d) => existsSync(d))
+    .map((d) => readFileSync(d, "utf8"))
+    .join("\n");
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const [was, gemessen, muster] of ANGABEN) {
+    if (gemessen === null) {
+      uebersprungen++;
+      continue;
+    }
+    for (const m of muster) {
+      const treffer = quellen.match(m);
+      if (!treffer) continue;
+      geprueft++;
+      const genannt = Number(treffer[1].replace(/[.,]/g, ""));
+      if (genannt !== gemessen)
+        funde.push(`${was}: die Seite sagt ${treffer[1]}, gezählt sind ${gemessen}`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Bestandszahl(en) hinken hinterher:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Bestandszahlen     ${String(geprueft).padStart(6)} Angaben stimmen mit den Repos` +
+        (uebersprungen ? `, ${uebersprungen} ohne Repo übersprungen` : ""),
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Wie viele Zeitpunkte die Gebetszeiten-Demo wirklich rechnet.
 
    Unter der Demo steht: „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
