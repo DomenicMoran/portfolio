@@ -189,6 +189,44 @@ for (const w of vorgabe.redirects ?? []) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Nichts nimmt Eingaben entgegen — auch nicht dem Statuscode nach.
+
+   Die Datenschutzerklärung sagt: „Es gibt keinen Endpunkt, der Eingaben
+   entgegennimmt." Gemessen am 08.08.2026 stimmte das für den Inhalt und
+   nicht für die Antwort: `POST /` und `POST /impressum` gaben richtig 405,
+   aber `POST /api/kontakt` und jede andere unbekannte Adresse gaben **200** —
+   dieselbe Fehlerseite wie bei `GET`, nur mit dem Statuscode für Erfolg.
+
+   Verarbeitet wurde nichts. Gelesen wird es trotzdem falsch: Wer eine Seite
+   abklopft, sieht auf `POST /api/kontakt` eine 200 und schließt daraus, dass
+   dort etwas zuhört.
+
+   Geprüft werden drei Adressen mit drei sendenden Methoden: die Startseite,
+   eine Rechtsseite und eine erfundene Adresse unter `/api`, die es nie gab
+   und die ein Prüfwerkzeug als Erstes probiert.
+   ------------------------------------------------------------------------ */
+const SENDENDE_METHODEN = ["POST", "PUT", "PATCH", "DELETE"];
+const ABGEKLOPFT = ["/", "/impressum", "/api/kontakt"];
+let methodenGeprueft = 0;
+
+for (const pfad of ABGEKLOPFT) {
+  for (const methode of SENDENDE_METHODEN) {
+    methodenGeprueft++;
+    const antwort = await fetch(`${basis}${pfad}`, {
+      method: methode,
+      redirect: "manual",
+    });
+    if (antwort.status !== 405) {
+      funde.push(
+        `${methode} ${pfad}: HTTP ${antwort.status} statt 405. Die ` +
+          `Datenschutzerklärung sagt zu, dass kein Endpunkt Eingaben ` +
+          `entgegennimmt; eine 200 liest sich als das Gegenteil.`,
+      );
+    }
+  }
+}
+
 if (funde.length > 0) {
   console.error(`${funde.length} Abweichung(en) bei den Schutz-Kopfzeilen:\n`);
   for (const f of funde) console.error(`  ${f}`);
@@ -204,6 +242,7 @@ const statusGeprueft = Object.keys(ERWARTETER_STATUS).length;
 console.log(
   `Alle ${fuerAlles.length} Schutz-Kopfzeilen, ${zwischenspeicher} ` +
     `Zwischenspeicher-Regeln und ${umleitungen} Weiterleitungen stimmen: ` +
-    `${geprueft + umleitungen + statusGeprueft} Prüfungen auf ${basis}. ` +
-    `Die unbekannte Adresse antwortet mit 404, nicht mit 200.`,
+    `${geprueft + umleitungen + statusGeprueft + methodenGeprueft} Prüfungen auf ${basis}. ` +
+    `Die unbekannte Adresse antwortet mit 404, nicht mit 200, und keine ` +
+    `sendende Methode kommt über 405 hinaus.`,
 );

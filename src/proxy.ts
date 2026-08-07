@@ -32,12 +32,63 @@ import { SPRACH_KOPFZEILE } from "@/lib/language-header";
  * Das ist die richtige Voreinstellung für eine Seite, deren übrige Adressen
  * alle deutsch sind.
  */
+/**
+ * Methoden, die eine Seite ohne Formular beantworten kann.
+ *
+ * Alles andere schickt Daten. `OPTIONS` bleibt drin, weil ein Browser damit
+ * fragt, bevor er etwas sendet — die Antwort darauf ist genau die Absage.
+ */
+const ERLAUBTE_METHODEN = new Set(["GET", "HEAD", "OPTIONS"]);
+
+/**
+ * Anfragen, die etwas senden wollen, bekommen eine Absage.
+ *
+ * Die Datenschutzerklärung sagt: „Es gibt keinen Endpunkt, der Eingaben
+ * entgegennimmt." Gemessen am 08.08.2026 stimmte das für den Inhalt und nicht
+ * für die Antwort: `POST /` und `POST /impressum` gaben richtig 405, aber
+ * `POST /api/kontakt` und jede andere unbekannte Adresse gaben **200** —
+ * dieselbe Fehlerseite wie bei `GET`, nur mit dem Statuscode für Erfolg.
+ *
+ * Verarbeitet wurde dabei nichts. Gelesen wird es trotzdem falsch: Wer eine
+ * Seite abklopft, sieht auf `POST /api/kontakt` eine 200 und schließt daraus,
+ * dass dort etwas zuhört. Für eine Seite, die genau das Gegenteil zusagt, ist
+ * das die unglücklichste Antwort von allen.
+ *
+ * Die Absage steht hier und nicht in der Fehlerseite: Bei zwei Wurzel-Layouts
+ * rendert Next für eine unbekannte Adresse `global-not-found.tsx`, und deren
+ * Statuscode hängt nicht an der Methode.
+ */
 export function proxy(request: NextRequest) {
+  if (!ERLAUBTE_METHODEN.has(request.method)) {
+    return new NextResponse(null, {
+      status: 405,
+      headers: { allow: [...ERLAUBTE_METHODEN].join(", ") },
+    });
+  }
+
+  /* Die Kopfzeile nur unter `/en`.
+
+     Solange der Filter ausschließlich `/en` durchließ, war das dasselbe.
+     Seit er alles durchlässt, ist es das nicht mehr: Gemessen am gebauten
+     Stand kam `/gibt-es-nicht` als „This page does not exist" mit
+     `lang="en"` heraus — die deutsche Fehlerseite auf Englisch, weil die
+     Kopfzeile unbedingt gesetzt wurde. */
+  const unterEn =
+    request.nextUrl.pathname === "/en" ||
+    request.nextUrl.pathname.startsWith("/en/");
+  if (!unterEn) return NextResponse.next();
+
   const kopfzeilen = new Headers(request.headers);
   kopfzeilen.set(SPRACH_KOPFZEILE, "en");
   return NextResponse.next({ request: { headers: kopfzeilen } });
 }
 
 export const config = {
-  matcher: "/en/:path*",
+  /* Alles, nicht nur `/en`.
+
+     Die Sprachkopfzeile braucht nur `/en`, die Absage oben jede Adresse. Der
+     Filter lässt deshalb alles durch und setzt die Kopfzeile weiterhin nur
+     dort, wo sie hingehört — sie steht als fester Wert `en` da und wäre auf
+     einer deutschen Adresse schlicht falsch. */
+  matcher: "/:path*",
 };
