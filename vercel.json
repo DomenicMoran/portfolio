@@ -265,6 +265,91 @@
       "source": "/en/how-i-work",
       "destination": "/en#workflow",
       "permanent": true
+    },
+    {
+      "source": "/articles",
+      "destination": "/en/articles",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel",
+      "destination": "/en/articles",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel/kassensichv-in-der-praxis",
+      "destination": "/en/articles/german-till-law-in-practice",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/kassensichv-in-der-praxis",
+      "destination": "/en/articles/german-till-law-in-practice",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/german-till-law-in-practice",
+      "destination": "/en/articles/german-till-law-in-practice",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel/published-ist-kein-beleg",
+      "destination": "/en/articles/published-is-not-proof",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/published-ist-kein-beleg",
+      "destination": "/en/articles/published-is-not-proof",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/published-is-not-proof",
+      "destination": "/en/articles/published-is-not-proof",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
+      "destination": "/en/articles/the-dotted-circle-was-not-the-font",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/gestrichelter-kreis-kam-nicht-aus-der-schrift",
+      "destination": "/en/articles/the-dotted-circle-was-not-the-font",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/the-dotted-circle-was-not-the-font",
+      "destination": "/en/articles/the-dotted-circle-was-not-the-font",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel/kleineres-whisper-modell",
+      "destination": "/en/articles/a-smaller-whisper-model",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/kleineres-whisper-modell",
+      "destination": "/en/articles/a-smaller-whisper-model",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/a-smaller-whisper-model",
+      "destination": "/en/articles/a-smaller-whisper-model",
+      "permanent": true
+    },
+    {
+      "source": "/en/artikel/widget-leer-trotz-gruener-tests",
+      "destination": "/en/articles/green-tests-empty-widget",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/widget-leer-trotz-gruener-tests",
+      "destination": "/en/articles/green-tests-empty-widget",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/green-tests-empty-widget",
+      "destination": "/en/articles/green-tests-empty-widget",
+      "permanent": true
     }
   ]
 }
