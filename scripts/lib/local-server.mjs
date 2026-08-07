@@ -2,6 +2,8 @@ import { spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:net";
 import { createRequire } from "node:module";
 
+import { pruefeBaustand } from "./built-pages.mjs";
+
 /**
  * Startet den gebauten Stand auf einem freien Port und gibt ihn wieder frei.
  *
@@ -22,6 +24,7 @@ import { createRequire } from "node:module";
  * zeigt dort ins Leere, und der Server kommt nicht hoch.
  */
 export async function starteServer() {
+  pruefeBaustand();
   const port = await freierPort();
   const basis = `http://127.0.0.1:${port}`;
 
