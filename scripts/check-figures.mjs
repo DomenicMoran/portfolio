@@ -2398,6 +2398,91 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Jede Beschriftung der Navigation ist auch eine Adresse.
+
+   Die Weiterleitungen in `vercel.json` folgen einem Muster, das jemand
+   bewusst angelegt hat: `/cv`, `/lebenslauf` und `/resume` führen zum
+   Kurzprofil, `/blog` zu den Artikeln, `/kontakt` und `/contact` zum
+   Kontaktbereich der jeweiligen Sprache. Das Muster war nur unvollständig.
+
+   Gemessen am 08.08.2026: `/kurzprofil` antwortete mit 404 — obwohl die Seite
+   ihr eigenes Blatt an vier Stellen so nennt. Ebenso `/fuer-recruiter`,
+   `/ueber-mich`, `/arbeitsweise`, `/projekte`, `/skills` und `/about`, also
+   genau die Wörter, die in der Kopfleiste stehen. Wer eines davon tippt oder
+   aus einer Mail übernimmt, landet auf der Fehlerseite statt an der Stelle,
+   die er gemeint hat.
+
+   Geprüft wird deshalb gegen die Navigation selbst: Für jede Beschriftung
+   muss es eine Weiterleitung geben, die auf ihre Sprungmarke zeigt. Kommt
+   eine Beschriftung dazu, fällt die fehlende Adresse hier auf und nicht dem
+   Besucher.
+   ------------------------------------------------------------------------ */
+{
+  const konfig = "vercel.json";
+  if (!existsSync(konfig)) {
+    zeilen.push("  --  Navigationsadressen: keine vercel.json, übersprungen");
+  } else {
+    const weiterleitungen = JSON.parse(readFileSync(konfig, "utf8")).redirects ?? [];
+    const ziele = new Map(
+      weiterleitungen.map((w) => [w.source, w.destination]),
+    );
+
+    /* Aus der Beschriftung wird ein Pfad: klein, ohne Umlaute, Leerzeichen
+       zu Bindestrichen. „Für Recruiter" wird `/fuer-recruiter`. */
+    const alsPfad = (beschriftung) =>
+      "/" +
+      beschriftung
+        .toLowerCase()
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    const funde = [];
+    let geprueft = 0;
+
+    for (const [datei, praefix] of [
+      ["src/content/de.ts", ""],
+      ["src/content/en.ts", "/en"],
+    ]) {
+      if (!existsSync(datei)) continue;
+      const text = readFileSync(datei, "utf8");
+      const block = text.slice(text.indexOf("nav: ["), text.indexOf("]", text.indexOf("nav: [")));
+      for (const treffer of block.matchAll(
+        /\{\s*label:\s*"([^"]+)",\s*href:\s*"#([^"]+)"\s*\}/g,
+      )) {
+        const [, beschriftung, marke] = treffer;
+        /* Artikel haben eine eigene Seite; ihre Adresse steht dort und
+           braucht keine Weiterleitung auf eine Sprungmarke. */
+        if (marke === "writing") continue;
+        geprueft++;
+        const pfad = alsPfad(beschriftung);
+        const erwartet = `${praefix}/#${marke}`;
+        const gefunden = ziele.get(pfad);
+        if (!gefunden)
+          funde.push(`„${beschriftung}" hat keine Adresse ${pfad}`);
+        else if (!gefunden.endsWith(`#${marke}`))
+          funde.push(
+            `${pfad} führt nach ${gefunden}, erwartet wird ${erwartet}`,
+          );
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Beschriftung(en) ohne eigene Adresse:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Navigationsadressen ${String(geprueft).padStart(6)} Beschriftungen sind auch als Adresse erreichbar`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Wie viele Apps in wie vielen Stores stehen.
 
    Im Werdegang stand „drei Apps in den Stores und zwei davon in beiden". Das

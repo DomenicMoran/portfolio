@@ -25,6 +25,7 @@
  */
 
 import { readFileSync } from "node:fs";
+import { FEHLERSEITEN } from "./lib/built-pages.mjs";
 
 const basis = (process.argv[2] ?? "https://domenicmoran.de").replace(/\/$/, "");
 
@@ -42,7 +43,7 @@ if (!fuerAlles?.length) {
    Kopfzeile) und eine statische Datei. Eine Regel, die nur für den ersten Weg
    greift, sähe sonst vollständig aus.
 */
-const adressen = ["/", "/en", "/diese-adresse-gibt-es-nicht", "/robots.txt"];
+const adressen = ["/", "/en", FEHLERSEITEN[0], "/robots.txt"];
 
 /* Der Statuscode gehört zur Antwort wie die Kopfzeilen.
 
@@ -59,7 +60,7 @@ const adressen = ["/", "/en", "/diese-adresse-gibt-es-nicht", "/robots.txt"];
 const ERWARTETER_STATUS = {
   "/": 200,
   "/en": 200,
-  "/diese-adresse-gibt-es-nicht": 404,
+  [FEHLERSEITEN[0]]: 404,
   "/robots.txt": 200,
 };
 
