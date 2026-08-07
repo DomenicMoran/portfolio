@@ -2529,6 +2529,75 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Ein Artikel-Slug in der falschen Sprachfassung führt trotzdem hin.
+
+   Jeder Artikel gibt es zweimal, unter zwei verschiedenen Slugs. Wer die
+   Adresse in der Leiste bearbeitet, um die Sprache zu wechseln — der
+   naheliegendste Handgriff überhaupt —, trifft die Mischform: `/en/artikel/`
+   mit deutschem Slug, oder den englischen Slug unter `/artikel/`.
+
+   Gemessen am 08.08.2026 antworteten alle diese Formen mit 404, obwohl die
+   Zuordnung im Repo steht: Jede `de-*.ts` hat ihre `en-*.ts` daneben, und die
+   Seite baut daraus bereits ihre `hreflang`-Angaben.
+
+   Geprüft wird deshalb je Paar, dass es die drei Wege gibt. Kommt ein
+   sechster Artikel dazu, fehlen sie hier auf und nicht dem Besucher.
+   ------------------------------------------------------------------------ */
+{
+  const konfig = "vercel.json";
+  const ordner = join("src", "content", "articles");
+  if (!existsSync(konfig) || !existsSync(ordner)) {
+    zeilen.push("  --  Artikelwege: keine vercel.json oder keine Artikel, übersprungen");
+  } else {
+    const ziele = new Map(
+      (JSON.parse(readFileSync(konfig, "utf8")).redirects ?? []).map((w) => [
+        w.source,
+        w.destination,
+      ]),
+    );
+
+    const funde = [];
+    let geprueft = 0;
+
+    for (const datei of readdirSync(ordner)) {
+      const treffer = datei.match(/^de-(.+)\.ts$/);
+      if (!treffer) continue;
+      const gegenstueck = join(ordner, `en-${treffer[1]}.ts`);
+      if (!existsSync(gegenstueck)) continue;
+
+      const slug = (pfad) =>
+        readFileSync(pfad, "utf8").match(/slug:\s*"([^"]+)"/)?.[1];
+      const de = slug(join(ordner, datei));
+      const en = slug(gegenstueck);
+      if (!de || !en) continue;
+
+      const erwartet = [
+        [`/en/artikel/${de}`, `/en/articles/${en}`],
+        [`/en/articles/${de}`, `/en/articles/${en}`],
+        [`/artikel/${en}`, `/en/articles/${en}`],
+      ];
+      for (const [quelle, ziel] of erwartet) {
+        geprueft++;
+        const gefunden = ziele.get(quelle);
+        if (!gefunden) funde.push(`${quelle} führt nirgendwohin`);
+        else if (gefunden !== ziel)
+          funde.push(`${quelle} führt nach ${gefunden}, erwartet ${ziel}`);
+      }
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Artikelweg(e) fehlen:`);
+      for (const f of funde.slice(0, 6)) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Artikelwege        ${String(geprueft).padStart(6)} Slugs in der falschen Fassung führen trotzdem hin`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jede Beschriftung der Navigation ist auch eine Adresse.
 
    Die Weiterleitungen in `vercel.json` folgen einem Muster, das jemand
