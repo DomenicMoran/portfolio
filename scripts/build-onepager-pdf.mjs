@@ -33,6 +33,25 @@ import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
 
 /**
+ * Wie hoch eine A4-Seite in Punkten dieser Darstellung ist, abzüglich dessen,
+ * was der Druck ohnehin abschneidet.
+ *
+ * Empirisch bestimmt: Bei 794 px Breite kippt das Blatt zwischen `zoom: 0.87`
+ * und `0.88` auf zwei Seiten. Die gezoomte Höhe an der Kippstelle ist die
+ * nutzbare Höhe — gemessen rund 1.030 px, nicht die vollen 1.123 px der
+ * Seitenhöhe.
+ */
+const NUTZBAR = 1030;
+
+/**
+ * Ab welcher Ausnutzung das Blatt in Ordnung ist.
+ *
+ * 90 % lassen genug Luft für einen zusätzlichen Absatz, ohne dass die
+ * Schrift unnötig klein steht. Bei 0,78 waren es 89 %, bei 0,85 sind es 97 %.
+ */
+const MINDESTNUTZUNG = 90;
+
+/**
  * Zwei Blätter, eines je Sprache.
  *
  * Die englische Fußzeile verlinkte lange auf das deutsche PDF: Wer
@@ -120,6 +139,35 @@ for (const blatt of BLAETTER) {
    * an 29 Prüfläufen misst, darf ihr wichtigstes Blatt nicht ungetaggt
    * verschicken. Die Sprache steht schon im Katalog, die Struktur fehlte.
    */
+  /* Wie viel der Seite das Blatt wirklich nutzt.
+
+     Die Regel „eine Seite" ist einseitig geprüft: Der Lauf meldet, wenn zwei
+     daraus werden. Er meldete nie, wenn der Zoom mehr schrumpft als nötig —
+     und genau das war der Fall. Gemessen am 08.08.2026 stand `zoom: 0.78`
+     zu einem Kommentar, der 1.302 px Inhalt annahm; gemessen waren es 1.172.
+     Der Inhalt war geschrumpft, die Zahl geblieben. Das Blatt füllte 915 von
+     rund 1.030 nutzbaren Punkten, und die kleinste Schrift stand bei 5,9 pt
+     auf einem Dokument, das ausgedruckt und gelesen wird.
+
+     Ein Blatt, das die Seite nicht ausnutzt, ist kein Fehler, den man sieht:
+     Es sieht nur nach kleiner Schrift aus. Deshalb steht die Ausnutzung
+     jetzt in derselben Zeile wie die Seitenzahl, und zu wenig davon bricht
+     den Lauf ab. */
+  const nutzung = await seite.evaluate(() => {
+    const blatt = document.querySelector(".onepager");
+    if (!blatt) return null;
+    const zoom = parseFloat(getComputedStyle(blatt).zoom || "1");
+    const kleinste = Math.min(
+      ...[...blatt.querySelectorAll("*")]
+        .filter((el) => el.textContent.trim() && el.children.length === 0)
+        .map((el) => parseFloat(getComputedStyle(el).fontSize) * zoom),
+    );
+    return {
+      hoehe: Math.round(blatt.getBoundingClientRect().height),
+      punkt: Math.round(kleinste * 0.75 * 100) / 100,
+    };
+  });
+
   await seite.pdf({
     path: blatt.ziel,
     format: "A4",
@@ -297,10 +345,22 @@ for (const blatt of BLAETTER) {
   }
 
   const kb = Math.round(statSync(blatt.ziel).size / 1024);
+  const anteil = nutzung ? Math.round((nutzung.hoehe / NUTZBAR) * 100) : null;
   console.log(
     `${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n), ${verweise.length} Verweis(e), ` +
-      `Sprache ${spracheOk ? blatt.sprache : "FEHLT"}`,
+      `Sprache ${spracheOk ? blatt.sprache : "FEHLT"}` +
+      (anteil ? `, ${anteil} % der Seite, kleinste Schrift ${nutzung.punkt} pt` : ""),
   );
+
+  if (anteil !== null && anteil < MINDESTNUTZUNG) {
+    console.error(
+      `${blatt.route}: Das Blatt füllt nur ${anteil} % der Seite. Der Zoom in ` +
+        `globals.css schrumpft mehr als nötig, und die kleinste Schrift steht ` +
+        `bei ${nutzung.punkt} pt. Zoom erhöhen, bis dieser Lauf zwei Seiten ` +
+        `meldet, dann eine Stufe zurück.`,
+    );
+    fehler++;
+  }
 
   if (!spracheOk) {
     console.error(
