@@ -53,6 +53,26 @@ const pfade = vorgegebeneBasis
   ? await veroeffentlichteSeiten(basis)
   : gebauteSeiten();
 
+/*
+  Dazu die Fehlerseite, unter beiden Sprachen.
+
+  Die Erklärung nennt sie namentlich: „Alle Seiten mit Inhalt werden vorab
+  erzeugt und als fertige Dateien ausgeliefert. Einzige Ausnahme ist die
+  Fehlerseite: Sie wird bei der Anfrage zusammengesetzt.“ Genau diese eine
+  Seite fehlte in der Liste — sie liegt als `_not-found.html` im Bau und
+  fällt damit durch das Filter, das Bau-Interna auslässt.
+
+  Die Seite, die als Ausnahme dasteht, war also die einzige, deren
+  Netzverkehr niemand gemessen hat. Und sie ist die einzige, die pro
+  Anfrage entsteht: Was dort dazukäme, käme durch keinen Bau, sondern zur
+  Laufzeit.
+
+  Über erfundene Adressen, nicht über die Datei: Nur so kommt sie so
+  heraus, wie Next sie ausliefert, samt der Kopfzeile, aus der sie ihre
+  Sprache liest.
+*/
+pfade.push("/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist");
+
 const browser = await chromium.launch();
 const ctx = await browser.newContext({
   viewport: { width: 1440, height: 900 },
@@ -75,6 +95,7 @@ for (const pfad of pfade) {
   const antwort = await seite.goto(`${basis}${pfad}`, {
     waitUntil: "networkidle",
   });
+  /* 404 ist hier kein Grund zum Ueberspringen, sondern der Fall selbst. */
   if (!antwort || antwort.status() >= 500) continue;
 
   /*
