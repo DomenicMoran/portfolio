@@ -194,10 +194,19 @@ export function OnePager({
                      `sizes` steuert die Auswahl aus dem srcset. Mit „110px"
                      nahm der Browser bei einfacher Pixeldichte die
                      128er-Fassung; der Druck läuft immer mit einfacher
-                     Dichte. 256 px auf denselben 22,7 mm sind 287 dpi. Die
-                     Vorlage liegt mit 1024 px vor, die Auflösung war also da
-                     und wurde nur nicht abgerufen. */
-                  sizes="256px"
+                     Dichte. Die Vorlage liegt mit 1024 px vor, die Auflösung
+                     war also da und wurde nur nicht abgerufen.
+
+                     Hier standen 256 px mit „287 dpi auf 22,7 mm". Nachgemessen
+                     am 07.08.2026 steht das Bild auf 24,7 mm, und 256 px sind
+                     dort 263 dpi — unter den 300, die ein Druck braucht. Das
+                     Blatt ist gewachsen, die Zahl blieb stehen.
+
+                     384 px ergeben auf derselben Fläche 394 dpi. Im PDF sind
+                     das 392 statt 278 KB; für ein Blatt, das als Anhang an
+                     Firmen geht, ist das kein Preis, und die eingebettete
+                     Fassung ist nachgezählt 384 × 384. */
+                  sizes="384px"
                   /* Ohne `priority` setzt next/image `loading="lazy"`, und ein
                    Bild, das nie geladen wurde, druckt als leerer Rahmen.
                    Genau darauf prueft scripts/check-print.mjs. Hier steht es
@@ -346,6 +355,19 @@ export function OnePager({
                         abschlossen. Vier gleich gebaute Blöcke, einer davon
                         anders ausgerichtet — im Druck fällt es nicht auf, dort
                         passt die Zeile. */}
+                    {/* 10 px bleibt, und das ist gemessen statt gesetzt.
+
+                        Das Blatt trägt `zoom: 0.85`: Hier stehen auf dem Papier
+                        8,5 px, also 6,4 pt — die kleinste Angabe des Blatts,
+                        ausgerechnet bei den Zahlen, die überzeugen sollen.
+                        11 px wären 9,35 px und 7 pt, deutlich angenehmer.
+
+                        Gemessen kostet der eine Punkt 21 px Blatthöhe: 996
+                        werden 1.017 von 1.040, die Reserve bis zur zweiten
+                        Seite fällt von 44 auf 23. Die Ein-Blatt-Zusage ist mehr
+                        wert als 0,6 pt, also bleibt es bei 10. `check:print`
+                        hält die Untergrenze von 8 px auf dem Papier dagegen —
+                        weiter schrumpfen darf hier nichts. */}
                     <span className="ml-auto font-mono text-[10px] text-[#6a6a76]">
                       {study.metrics
                         .map(

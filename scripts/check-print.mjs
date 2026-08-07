@@ -169,7 +169,31 @@ async function messen() {
         return wert;
       };
 
+      /* Wie gross steht der Text wirklich auf dem Papier?
+
+         `fontSize` liefert CSS-Pixel. Das Kurzprofil sitzt in einem Kasten mit
+         `zoom: 0.85`, damit es auf ein Blatt passt — jede Angabe darin ist auf
+         dem Papier also 15 Prozent kleiner, als sie hier gemessen wird.
+
+         Fuer die Schwelle zwischen grossem und normalem Text ist das der
+         Unterschied zwischen 3:1 und 4.5:1. Ein Titel mit 24 px CSS steht
+         gezoomt auf 20,4 px und ist damit kein grosser Text mehr; geprueft
+         wurde er trotzdem gegen den milderen Wert.
+
+         Gemessen am 07.08.2026 hat das auf dem Blatt keinen Fall getroffen —
+         der groesste Text steht bei 36 px CSS und bleibt auch gezoomt darueber.
+         Die Rechnung war trotzdem falsch, und sie stimmt jetzt. */
+      const geerbterZoom = (el) => {
+        let wert = 1;
+        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+          const z = parseFloat(getComputedStyle(n).zoom);
+          if (Number.isFinite(z) && z > 0) wert *= z;
+        }
+        return wert;
+      };
+
       const schwach = [];
+      const winzig = [];
       const abgeschnitten = [];
       const festgeheftet = [];
       /*
@@ -249,7 +273,7 @@ async function messen() {
         const hinten = untergrund(el);
         const wert = kontrast(helligkeit(ueber(vorne, hinten)), helligkeit(hinten));
 
-        const px = parseFloat(stil.fontSize);
+        const px = parseFloat(stil.fontSize) * geerbterZoom(el);
         const fett = parseInt(stil.fontWeight, 10) >= 700;
         const schwelle = px >= grossPx || (px >= grossFettPx && fett) ? 3 : 4.5;
         if (wert < schwelle) {
@@ -263,6 +287,35 @@ async function messen() {
             px,
             ist: Math.round(wert * 100) / 100,
             soll: schwelle,
+          });
+        }
+      }
+
+      /* Und: Ist der Text auf dem Papier ueberhaupt noch lesbar?
+
+         Bisher pruefte dieser Lauf den Kontrast und nicht die Groesse. Auf
+         einem Bildschirm ist das vertretbar — dort zoomt man. Auf Papier
+         nicht: Was gedruckt zu klein ist, bleibt zu klein.
+
+         Gemessen am 07.08.2026 auf dem Kurzprofil: Die kleinste Angabe steht
+         bei 8,5 px auf dem Papier, also 6,4 pt. Das sind die Kennzahlenzeilen
+         der Projekte, und sie tragen die ueberzeugendsten Angaben des Blatts.
+         Die Grenze liegt hier bei 8 px, also 6 pt: knapp unter dem heutigen
+         Stand, damit ein weiterer Griff am Zoom oder an den Groessen auffaellt,
+         statt still auf dem Papier zu landen. */
+      for (const el of document.querySelectorAll("*")) {
+        if (el.children.length > 0) continue;
+        const text = (el.textContent ?? "").trim();
+        if (text.length < 3) continue;
+        const stil = getComputedStyle(el);
+        if (stil.display === "none" || stil.visibility === "hidden") continue;
+        if (geerbteDeckkraft(el) === 0) continue;
+        const aufPapier = parseFloat(stil.fontSize) * geerbterZoom(el);
+        if (aufPapier < 8) {
+          winzig.push({
+            text: text.slice(0, 40),
+            px: Math.round(aufPapier * 10) / 10,
+            pt: Math.round(aufPapier * 0.75 * 10) / 10,
           });
         }
       }
@@ -298,7 +351,7 @@ async function messen() {
           klasse: String(el.className).slice(0, 50),
         }));
 
-      return { schwach, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe };
+      return { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe };
     },
     { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
   );
@@ -434,7 +487,7 @@ for (const pfad of gepruefteSeiten) {
     }
   });
   await seite.waitForTimeout(50);
-  const { schwach, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe } =
+  const { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe } =
     await messen();
   const textImDruck = await textEinsammeln();
   await seite.emulateMedia({ media: "screen" });
@@ -463,6 +516,7 @@ for (const pfad of gepruefteSeiten) {
 
   if (
     schwach.length === 0 &&
+    winzig.length === 0 &&
     abgeschnitten.length === 0 &&
     festgeheftet.length === 0 &&
     fehlend.length === 0 &&
@@ -504,6 +558,11 @@ for (const pfad of gepruefteSeiten) {
   for (const s of schwach) {
     console.log(
       `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — ${s.farbe} auf ${s.flaeche}: „${s.text}“`,
+    );
+  }
+  for (const s of winzig) {
+    console.log(
+      `        ${s.px} px auf dem Papier (${s.pt} pt) — unter der Grenze von 8 px: „${s.text}“`,
     );
   }
 }
@@ -598,14 +657,19 @@ if (reiterfunde.length > 0) {
 
    Gemessen wird die Höhe von `.onepager` im Druckmodus bei 794 px Papier-
    breite. Die Grenze liegt bei 1040 px — A4 sind 1123 px bei 96 dpi, davon
-   gehen die Druckränder ab. Aktuell stehen dort 915 px auf Deutsch und
-   883 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht.
+   gehen die Druckränder ab. Aktuell stehen dort 996 px auf Deutsch und
+   962 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht.
+
+   Der Abstand zur Grenze ist enger geworden: Hier standen 915 und 883, als
+   diese Zeilen entstanden, heute sind es 996 und 962. Von 125 px Luft sind
+   44 geblieben, gemessen am 07.08.2026. Wer dem Blatt noch einen Absatz
+   zufügt, kommt an die zweite Seite — der Lauf sagt es dann, aber es ist
+   keine Überraschung mehr.
 
    Gemessen bei der Grundschrift des Browsers, und das ist eine Annahme mit
-   Grenze: Wer sie auf 20 px stellt, druckt 1.197 px, bei 24 px sind es
-   1.277 — zwei Seiten. (Gemessen am 08.08.2026; hier standen 1.090 und
-   1.161, gemessen an einem kürzeren Blatt. Die beiden Zahlen wandern mit dem
-   Inhalt, die Zeile darüber nicht — sie wird bei jedem Lauf neu bestimmt.) Der naheliegende Griff wäre `html { font-size: 16px }`
+   Grenze: Wer sie auf 20 px stellt, druckt 1.188 px, bei 24 px sind es
+   1.265 — zwei Seiten. (Die beiden Zahlen wandern mit dem Inhalt, die Zeile
+   darüber nicht — sie wird bei jedem Lauf neu bestimmt.) Der naheliegende Griff wäre `html { font-size: 16px }`
    in den Druckregeln. Er bleibt bewusst aus: Damit stünde das Blatt für
    jeden gleich groß auf dem Papier, auch für den, der seine Schrift bewusst
    vergrößert hat, und die Seite hält es sonst überall andersherum. Wer sein
