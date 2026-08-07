@@ -36,7 +36,7 @@ import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** Dort, wo dieses Layout seine Sprünge hat. */
-const BREITEN = [390, 640, 768, 1024, 1280, 1440, 1920];
+const BREITEN = [1920, 1440, 1280, 1024, 768, 640, 390];
 
 /**
  * Wie viel Aufschlag ohne Beanstandung durchgeht.
@@ -60,8 +60,18 @@ const funde = [];
 const grosszuegig = new Map();
 let gemessen = 0;
 
+/* Seiten ohne Bilder werden einmal besucht, nicht siebenmal.
+
+   Von zwanzig gebauten Seiten tragen vier überhaupt Bilder. Sie alle an
+   jeder Breite zu laden kostete 4 Minuten 20 für eine Antwort, die nach der
+   ersten Breite feststeht. Die erste Breite entscheidet mit, welche Seiten
+   danach noch drankommen — und sie ist die breiteste, weil ein Bild dort am
+   ehesten vorhanden und am größten ist. */
+const mitBildern = new Set();
+
 for (const route of gebauteSeiten()) {
   for (const breite of BREITEN) {
+    if (breite !== BREITEN[0] && !mitBildern.has(route)) continue;
     const seite = await browser.newPage({
       viewport: { width: breite, height: 900 },
       deviceScaleFactor: 1,
@@ -99,6 +109,8 @@ for (const route of gebauteSeiten()) {
         })
         .filter((b) => b.gezeigt > 0),
     );
+
+    if (bilder.length > 0) mitBildern.add(route);
 
     for (const b of bilder) {
       gemessen++;
