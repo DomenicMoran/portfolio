@@ -12,7 +12,23 @@ export const kassensichvDe: Article = {
   date: "2026-07-29",
   minutes: 5,
   tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-Tenant"],
+  /* Die beiden Rechtsquellen zuerst, dann die eigenen Dateien.
+
+     Der Artikel argumentiert durchgehend aus § 146a AO und der
+     Kassensicherungsverordnung, nannte sie aber nur im Fließtext. Ein Leser,
+     der die Aussagen nachschlagen will — und bei einem Text über
+     Steuerrecht will er das —, musste selbst suchen. Die übrigen Belege
+     zeigen auf ein Repo, das niemand von außen öffnet; diese beiden sind
+     die einzigen, die jeder prüfen kann. */
   evidence: [
+    {
+      text: "§ 146a AO: Ordnungsvorschrift für die Buchführung, amtlicher Text",
+      href: "https://www.gesetze-im-internet.de/ao_1977/__146a.html",
+    },
+    {
+      text: "Kassensicherungsverordnung, amtlicher Text",
+      href: "https://www.gesetze-im-internet.de/kassensichv/",
+    },
     "src/lib/tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql (Sperre, Hash-Kette)",
     "src/lib/food-order-tse.ts (Signatur, Token-Zwischenspeicher)",
     "src/app/api/food-orders/route.ts, Zeile 473 ff. (fail-closed, HTTP 503)",

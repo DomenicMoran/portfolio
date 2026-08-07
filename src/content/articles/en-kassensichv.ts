@@ -7,7 +7,19 @@ export const kassensichvEn: Article = {
   date: "2026-07-29",
   minutes: 5,
   tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-tenant"],
+  /* Siehe die deutsche Fassung: die beiden Rechtsquellen zuerst. Sie sind
+     die einzigen Belege dieses Artikels, die ein Leser selbst öffnen kann.
+     Der amtliche Text bleibt deutsch — eine englische Übersetzung wäre für
+     eine Rechtsnorm keine Quelle. */
   evidence: [
+    {
+      text: "Section 146a of the German Fiscal Code, official text (German)",
+      href: "https://www.gesetze-im-internet.de/ao_1977/__146a.html",
+    },
+    {
+      text: "Cash Register Security Ordinance, official text (German)",
+      href: "https://www.gesetze-im-internet.de/kassensichv/",
+    },
     "src/lib/tse-chain.ts and supabase/migrations/20260413_tse_chain_atomic_append.sql (lock, hash chain)",
     "src/lib/food-order-tse.ts (signing, token cache)",
     "src/app/api/food-orders/route.ts, line 473 onward (fail-closed, HTTP 503)",
