@@ -2179,6 +2179,76 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Was die Pakete versprechen, liegt auch auf npm.
+
+   Drei der vier öffentlichen Pakete sind veröffentlicht, und ihre READMEs
+   tragen ein Fassungsabzeichen. Geprüft wurde bisher nur, dass das Abzeichen
+   zur `package.json` daneben passt — beide liegen im selben Ordner, beide
+   ändert man in einem Zug.
+
+   Der Fall, der dabei durchrutscht, ist genau der teure: Fassung erhöht,
+   Abzeichen mitgezogen, Veröffentlichung vergessen. Das Abzeichen steht dann
+   öffentlich auf einer Zahl, die niemand installieren kann, und im Repo sieht
+   alles stimmig aus. Gefunden wird so etwas erst, wenn es jemand versucht.
+
+   Geprüft wird gegen die Registry: Die Fassung aus der `package.json` muss
+   dort vorhanden sein. Nicht „ist die neueste“ — eine ältere lokale Fassung
+   ist kein Fehler, eine nirgends veröffentlichte schon.
+   ------------------------------------------------------------------------ */
+{
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const [paket] of PAKETE) {
+    const manifest = join(OSS, paket, "package.json");
+    if (!existsSync(manifest)) continue;
+    const daten = JSON.parse(readFileSync(manifest, "utf8"));
+    /* Ein Paket, das gar nicht veröffentlicht werden soll, sagt das selbst. */
+    if (daten.private) continue;
+    const fassung = daten.version;
+    if (!fassung) continue;
+
+    let bekannt = null;
+    try {
+      const antwort = await fetch(`https://registry.npmjs.org/${paket}`, {
+        headers: { accept: "application/vnd.npm.install-v1+json" },
+        signal: AbortSignal.timeout(20000),
+      });
+      if (antwort.ok) bekannt = Object.keys((await antwort.json()).versions ?? {});
+      else if (antwort.status === 404) bekannt = [];
+    } catch {
+      bekannt = null;
+    }
+
+    if (bekannt === null) {
+      uebersprungen++;
+      continue;
+    }
+    geprueft++;
+    if (!bekannt.includes(fassung))
+      funde.push(
+        bekannt.length
+          ? `${paket} ${fassung} liegt nicht auf npm (dort ${bekannt.join(", ")})`
+          : `${paket} ${fassung} ist auf npm nicht veröffentlicht`,
+      );
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Paketfassung(en) ohne Veröffentlichung:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Paketfassungen      ${String(geprueft).padStart(6)} Fassungen liegen auf npm` +
+        (uebersprungen ? `, ${uebersprungen} nicht abfragbar` : ""),
+    );
+  } else {
+    zeilen.push("  --  Paketfassungen: npm nicht erreichbar, übersprungen");
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Geräteklassen werden überall gleich aufgezählt.
 
    „Vier Geräteklassen“ steht in der Salati-Fallstudie, im Recruiter-Bereich,
