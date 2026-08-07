@@ -1164,7 +1164,7 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: "64 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
+      body: "65 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

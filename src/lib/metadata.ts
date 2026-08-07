@@ -210,18 +210,34 @@ export function vorschaukarten({
   lang,
   typ = "website",
   veroeffentlicht,
+  eigenesBild = false,
 }: {
   titel: string;
   beschreibung?: string;
   lang: "de" | "en";
   typ?: "website" | "article";
   veroeffentlicht?: string;
+  /**
+   * Die Route bringt ein eigenes `opengraph-image` mit.
+   *
+   * Next füllt beide Karten aus einer solchen Datei von allein — aber nur,
+   * solange die Metadaten kein `images` setzen. Ein gesetztes Feld gewinnt,
+   * und zwar still.
+   *
+   * Gemessen an den ausgelieferten Artikelseiten am 08.08.2026: Jeder der
+   * zehn Artikel erzeugt zur Bauzeit eine eigene Karte mit seinem Titel, und
+   * jeder meldete an X und LinkedIn trotzdem `/opengraph-image` — das
+   * allgemeine Bild mit dem Alternativtext „Domenic Moran – AI Product
+   * Engineer". Der Erzeuger lief, das Ergebnis lag im Bau, und niemand sah
+   * es je. Betroffen war genau das, was geteilt wird.
+   */
+  eigenesBild?: boolean;
 }) {
-  const bild = ogBildFuer(lang);
+  const bild = eigenesBild ? undefined : ogBildFuer(lang);
   return {
     openGraph: {
       type: typ,
-      images: bild,
+      ...(bild ? { images: bild } : {}),
       title: titel,
       ...(beschreibung ? { description: beschreibung } : {}),
       ...(veroeffentlicht ? { publishedTime: veroeffentlicht } : {}),
@@ -229,7 +245,7 @@ export function vorschaukarten({
     },
     twitter: {
       card: "summary_large_image" as const,
-      images: bild,
+      ...(bild ? { images: bild } : {}),
       title: titel,
       ...(beschreibung ? { description: beschreibung } : {}),
     },
