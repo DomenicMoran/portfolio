@@ -75,17 +75,38 @@ jobs:
             echo "changed=yes" >> "$GITHUB_OUTPUT"
           fi
 
+      # Die beiden Blätter tragen dieselben Zahlen — und ihren Monat.
+      #
+      # Das Kurzprofil nennt „Stand: August 2026" aus der Uhr des Baus, und es
+      # nennt die Zahlen, die dieser Lauf gerade aufgefrischt hat. Beides steht
+      # nur im HTML; die zwei PDF entstehen nicht beim Bau, weil Vercel dafür
+      # kein Chromium hat.
+      #
+      # Damit veralteten sie zweimal ohne Zutun: bei jeder neuen Zahl und beim
+      # ersten Lauf in einem neuen Monat. `check:onepager` meldete das
+      # zuverlässig — und verlangte danach einen Handgriff am eigenen Rechner,
+      # zu einem Zeitpunkt, den niemand geplant hatte.
+      #
+      # Hier gibt es Chromium. Also wird gedruckt, wo ohnehin gebaut wird.
+      - name: Blätter neu drucken
+        if: steps.diff.outputs.changed == 'yes'
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm run build
+          npm run onepager:pdf
+
       - name: Einchecken
         if: steps.diff.outputs.changed == 'yes'
         run: |
           git config user.name "Zahlen-Automat"
           git config user.email "noreply@domenicmoran.de"
-          git add src/content/verified.json
+          git add src/content/verified.json public/domenic-moran-kurzprofil.pdf public/domenic-moran-one-pager.pdf
           git commit -m "Commit-Zahlen aufgefrischt
 
           Automatisch gezählt über die GitHub-API. Die Zahl auf der Seite trägt ihr
           Messdatum, damit sie auch zwischen zwei Läufen nicht falsch ist, sondern nur
-          älter."
+          älter. Die beiden Kurzprofile sind mit derselben Zahl neu gedruckt."
           git push
 
       - name: Ausliefern
