@@ -3041,19 +3041,39 @@ const BRAUCHT_KIND = {
     let geprueft = 0;
     let uebersprungen = 0;
 
+    /* Ein einzelner schlechter Moment ist kein toter Verweis.
+
+       Der Lauf meldete am 08.08.2026 einen auffälligen Verweis; der Aufruf
+       unmittelbar danach war grün. Dasselbe war zuvor bei LinkedIn passiert,
+       das einmal 403 statt 999 antwortete. Beides ist die Tagesform eines
+       fremden Dienstes, und ein Lauf, der davon rot wird, schickt die Suche
+       zu einer Seite, an der nichts ist.
+
+       Deshalb ein zweiter Versuch nach kurzer Pause, und erst der zweite
+       zählt. Ein Ziel, das wirklich weg ist, antwortet auch beim zweiten Mal
+       mit 404 — die Wiederholung verdeckt nichts, sie trennt nur den Ausfall
+       vom Zufall. */
+    const abrufen = async (adresse) =>
+      await fetch(adresse, {
+        redirect: "follow",
+        headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
+        signal: AbortSignal.timeout(20000),
+      });
+
     for (const adresse of [...ziele].sort()) {
       const host = new URL(adresse).host;
+      const erlaubt = AUSNAHMEN.get(host);
+      const inOrdnung = (antwort) =>
+        antwort.status === 200 || erlaubt?.includes(antwort.status);
       try {
-        const antwort = await fetch(adresse, {
-          redirect: "follow",
-          headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
-          signal: AbortSignal.timeout(20000),
-        });
+        let antwort = await abrufen(adresse);
+        if (!inOrdnung(antwort)) {
+          await new Promise((weiter) => setTimeout(weiter, 1500));
+          antwort = await abrufen(adresse);
+        }
         geprueft++;
-        const erlaubt = AUSNAHMEN.get(host);
-        if (antwort.status === 200) continue;
-        if (erlaubt?.includes(antwort.status)) continue;
-        funde.push(`${adresse}: Status ${antwort.status}`);
+        if (inOrdnung(antwort)) continue;
+        funde.push(`${adresse}: Status ${antwort.status}, auch im zweiten Versuch`);
       } catch {
         uebersprungen++;
       }
