@@ -280,6 +280,20 @@ jobs:
       - name: Kontrast, wo axe keine Antwort gibt
         run: npm run check:contrast
 
+      # `next/image` wählt die Auflösung anhand von `sizes` — einer Angabe von
+      # Hand, die niemand nachrechnet. Steht dort ein zu kleiner Wert, lädt der
+      # Browser eine zu kleine Datei und zieht sie auf. Nichts bricht, das Bild
+      # ist nur weich. Gemessen traf es die zwei größten Bilder der Seite.
+      - name: Bilder in der Auflösung, in der sie stehen
+        run: npm run check:images
+
+      # Ein Steuerzeichen im Quelltext sieht man nicht: Editor und `grep`
+      # zeigen die Zeile unauffällig, erst `cat -A` macht ein `^H` daraus.
+      # Es entsteht, wo ein Skript die Wortgrenze mit einem Backslash schreibt statt mit
+      # zweien — aus der Wortgrenze wird 0x08, und der Ausdruck misst falsch.
+      - name: Steuerzeichen im Quelltext
+        run: npm run check:chars
+
       # Die strukturierten Daten sind die einzige Stelle, an der die
       # Kernangaben ein zweites Mal stehen — und die einzige, die niemand
       # sieht. Wer eine Fallstudie umbenennt oder ein Bild verschiebt, merkt
