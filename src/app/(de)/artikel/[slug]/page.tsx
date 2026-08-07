@@ -36,7 +36,7 @@ export async function generateMetadata({
     // absolute: ohne das haengt das Layout " – Domenic Moran" an, und die
     // Titel liegen dann bei 64 bis 79 Zeichen. Suchmaschinen schneiden ab 60
     // ab, und der Name steht ohnehin separat daneben.
-    title: { absolute: artikel.title },
+    title: { absolute: artikel.titleShort ?? artikel.title },
     description: kurzbeschreibung(artikel.dek),
     keywords: [...artikel.tags],
     // Beide Karten aus einer Angabe: Ein eigenes `openGraph` ohne `twitter`

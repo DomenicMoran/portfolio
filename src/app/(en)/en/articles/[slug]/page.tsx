@@ -31,7 +31,7 @@ export async function generateMetadata({
     // absolute: ohne das haengt das Layout " – Domenic Moran" an, und die
     // Titel liegen dann bei 64 bis 79 Zeichen. Suchmaschinen schneiden ab 60
     // ab, und der Name steht ohnehin separat daneben.
-    title: { absolute: article.title },
+    title: { absolute: article.titleShort ?? article.title },
     description: kurzbeschreibung(article.dek),
     keywords: [...article.tags],
     // Siehe die deutsche Fassung: beide Karten aus einer Angabe.

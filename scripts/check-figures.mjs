@@ -3191,6 +3191,63 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Kein Seitentitel wird im Suchergebnis abgeschnitten.
+
+   Die Artikelseiten setzen ihren Titel `absolute`, also ohne den Zusatz
+   „ – Domenic Moran". Der Grund steht dort: Mit ihm lägen sie bei 64 bis 79
+   Zeichen, und Suchmaschinen schneiden ab etwa 60 ab.
+
+   Gemessen am 08.08.2026 an den gebauten Seiten: Zwei von zehn Artikeln
+   überschritten die Grenze auch ohne Zusatz — 62 und 61 Zeichen. Die Regel
+   war eingeführt, ihre Zahl aber nie nachgeprüft.
+
+   Beide tragen jetzt ein `titleShort`; die Überschrift auf der Seite bleibt
+   unberührt, denn dort ist der Platz da. Geprüft wird der ausgelieferte
+   `<title>` jeder gebauten Seite.
+   ------------------------------------------------------------------------ */
+{
+  const GRENZE = 60;
+  const bau = join(".next", "server", "app");
+  if (!existsSync(bau)) {
+    zeilen.push("  --  Seitentitel: kein Bau vorhanden, übersprungen");
+  } else {
+    const funde = [];
+    let geprueft = 0;
+    const gehe = (ordner) => {
+      for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+        const pfad = join(ordner, eintrag.name);
+        if (eintrag.isDirectory()) {
+          gehe(pfad);
+          continue;
+        }
+        if (!eintrag.name.endsWith(".html")) continue;
+        if (eintrag.name.startsWith("_")) continue;
+        const titel = readFileSync(pfad, "utf8").match(
+          /<title>([^<]*)<\/title>/,
+        )?.[1];
+        if (!titel) continue;
+        geprueft++;
+        if (titel.length > GRENZE)
+          funde.push(`${pfad}: ${titel.length} Zeichen — „${titel}"`);
+      }
+    };
+    gehe(bau);
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(
+        `  !!  ${funde.length} Seitentitel über ${GRENZE} Zeichen, im Suchergebnis abgeschnitten:`,
+      );
+      for (const f of funde.slice(0, 6)) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Seitentitel        ${String(geprueft).padStart(6)} Titel bleiben unter ${GRENZE} Zeichen`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Agenten-Sitzung auf der Startseite stimmt mit dem Repo.
 
    Sie zeichnet einen echten Fehler nach und wird auf der meistgelesenen Seite

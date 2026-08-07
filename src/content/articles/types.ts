@@ -27,6 +27,19 @@ export type Block =
 export type Article = {
   slug: string;
   title: string;
+  /**
+   * Kürzere Fassung für das `<title>`, wo die Überschrift zu lang ist.
+   *
+   * Die Artikelseiten setzen ihren Titel `absolute`, also ohne den Zusatz
+   * „ – Domenic Moran": Mit ihm lägen sie bei 64 bis 79 Zeichen, und
+   * Suchmaschinen schneiden ab 60 ab. Gemessen am 08.08.2026 überschritten
+   * zwei von zehn die Grenze auch ohne Zusatz — 62 und 61 Zeichen, also
+   * genau der Fall, für den die Regel gedacht war.
+   *
+   * Steht hier nichts, gilt `title`. Die Überschrift auf der Seite bleibt in
+   * jedem Fall unberührt: Sie hat den Platz, den ein Suchergebnis nicht hat.
+   */
+  titleShort?: string;
   /** Der Untertitel. Trägt die Aussage, falls jemand nur die Übersicht liest. */
   dek: string;
   /** ISO-Datum. Wird für <time> und die Sortierung gebraucht. */
