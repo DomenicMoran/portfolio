@@ -247,9 +247,9 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-21 der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+22 der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
 Seite: `check:a11y`, `check:cards`, `check:contrast`, `check:demo`, `check:focus`,
-`check:images`,
+`check:images`, `check:spacing`,
 `check:font-size`, `check:headings`, `check:language`, `check:lighthouse`,
 `check:links`, `check:palette`, `check:panels`, `check:parity`,
 `check:print`, `check:privacy`, `check:schema`, `check:separators` und
@@ -291,6 +291,7 @@ npm run check:bundle   # JavaScript je Seite gegen Budgets
 npm run check:cards    # Kartenreihen beginnen auf einer Höhe
 npm run check:font-size # kein Text geht bei größerer Grundschrift verloren
 npm run check:focus    # der Tastaturfokus bleibt sichtbar
+npm run check:spacing  # größerer Textabstand kostet keinen Inhalt
 npm run check:panels   # jede Tafel hinter einem Reiter zeigt ihren Inhalt
 npm run check:language # beide Sprachfassungen hängen wechselseitig zusammen
 npm run check:demo     # die Demo auf der Startseite rechnet nachprüfbar richtig
