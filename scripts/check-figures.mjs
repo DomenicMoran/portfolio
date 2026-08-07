@@ -2790,6 +2790,55 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Das Profil-README und die Seite sagen dasselbe über die Artikel.
+
+   Beide führen dieselben fünf Artikel und beschreiben sie mit demselben Satz.
+   Geprüft war bisher nur die Liste — die fünf Titel stimmen seit Langem
+   überein. Der Satz darüber nicht.
+
+   Gefunden am 08.08.2026: Auf der Seite steht seit Runde 19 „Einen davon
+   hatte monatelang niemand bemerkt, einen zweiten über Wochen"; der Satz war
+   damals berichtigt worden, weil nur ein Artikel „monatelang" belegt und der
+   zweite „über Wochen" sagt. Im README stand weiter „Zwei davon hatte
+   monatelang niemand bemerkt" — die Fassung, die dort nachweislich zu viel
+   behauptet, an der Stelle, die ein CTO zuerst öffnet.
+
+   Geprüft wird deshalb, dass der Satz aus dem Vorspann der Artikelübersicht
+   wörtlich im README steht. Wer ihn ändert, ändert ihn an beiden Stellen
+   oder erfährt hier davon.
+   ------------------------------------------------------------------------ */
+{
+  const vorlage = "../docs/GITHUB-PROFILE-README.md";
+  const inhalt = "src/content/articles/index.ts";
+  if (!existsSync(vorlage) || !existsSync(inhalt)) {
+    zeilen.push("  --  Gemeinsamer Satz: Vorlage oder Inhalt fehlt, übersprungen");
+  } else {
+    const readme = readFileSync(vorlage, "utf8").replace(/\s+/g, " ");
+    const lede = readFileSync(inhalt, "utf8").match(/lede:\s*"([^"]+)"/)?.[1];
+
+    /* Der letzte Satz des Vorspanns ist die gemeinsame Aussage. Davor steht,
+       was die Artikel sind; danach nichts mehr. */
+    const satz = lede?.split(/(?<=\.)\s+/).pop()?.trim();
+
+    if (!satz) {
+      abweichungen++;
+      zeilen.push("  !!  Gemeinsamer Satz: kein Vorspann in index.ts gefunden");
+    } else if (!readme.includes(satz)) {
+      abweichungen++;
+      zeilen.push(
+        "  !!  Profil-README und Seite beschreiben die Artikel verschieden:",
+      );
+      zeilen.push(`        Seite:  „${satz}"`);
+      zeilen.push("        README: dieser Satz steht dort nicht");
+    } else {
+      zeilen.push(
+        `  ok  Gemeinsamer Satz        1 Aussage über die Artikel steht wörtlich in beiden`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jeder Commit, den ein Artikel nennt, existiert auch.
 
    Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
