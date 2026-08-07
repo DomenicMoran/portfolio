@@ -1550,6 +1550,49 @@ const BRAUCHT_KIND = {
         belegte.push([pfad, normal(readFileSync(voll, "utf8"))]);
       }
     }
+    /*
+      Die Messwerte im Fließtext.
+
+      Die Artikel nennen Zahlen mit Einheit: „55 MB", „574 MB", „63 Prozent
+      weniger Download", „Wortfehlerrate 9,2 Prozent ohne Prompt, 7,9 Prozent
+      mit". Das sind die härtesten Angaben, die sie machen — und die
+      einzigen, die aus einem fremden Repo stammen, das sich unabhängig
+      ändert.
+
+      Nachgesehen am 08.08.2026: Alle sechs stehen wörtlich im Kommentar von
+      `whisperModel.ts`, samt der SHA-256 der byte-identischen F16-Datei.
+      Geprüft hat das nichts. Wer das Modell tauscht oder anders quantisiert,
+      ändert die Zahl im Repo und lässt sie im Artikel stehen.
+
+      Geprüft wird gegen die Belegdateien desselben Artikels, nicht gegen das
+      ganze Repo: Eine Zahl, die irgendwo im Repo vorkommt, belegt nichts.
+      Gemessen ergibt das über fünf Artikel sechs Werte und keinen Fehlalarm.
+    */
+    if (belegte.length > 0) {
+      const belegtext = belegte.map(([, t]) => t).join(" ");
+      for (const treffer of inhalt.matchAll(
+        /\b(\d{1,4}(?:[.,]\d{1,3})?)\s*(MB|kB|GB|ms|%|Prozent)\b/g,
+      )) {
+        const [, zahl, einheit] = treffer;
+        geprueft++;
+        /* Als ganze Zahl, nicht als Teilzeichenkette.
+
+           Der erste Anlauf suchte mit `includes`. Damit ging „51 MB" durch,
+           weil irgendwo im Beleg eine 51 in einer längeren Zahl steckt —
+           eine Zeilennummer, ein Stück einer Prüfsumme. Ein Wächter, der auf
+           Ziffernfolgen anspringt, findet fast alles und belegt nichts. */
+        const alsZahl = new RegExp(
+          `(?<![\\d.,])${zahl.replace(/[.,]/g, "[.,]")}(?![\\d.,])`,
+        );
+        if (!alsZahl.test(belegtext)) {
+          funde.push(
+            `${datei}: „${zahl} ${einheit}" steht in keiner der genannten ` +
+              `Belegdateien`,
+          );
+        }
+      }
+    }
+
     if (belegte.length > 0) {
       for (const block of inhalt.matchAll(/code:\s*`([\s\S]*?)`/g)) {
         const kandidaten = block[1]
