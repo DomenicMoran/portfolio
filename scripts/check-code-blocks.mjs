@@ -105,12 +105,44 @@ for (const datei of readdirSync(ORDNER).sort()) {
   }
 }
 
+/* Passt jede Zeile in den Kasten, den der Leser sieht?
+ *
+ * Der Kasten ist bei 1440 px 614 px breit und scrollt waagerecht, wenn eine
+ * Zeile länger ist. Auf einem Telefon ist das offensichtlich und richtig so:
+ * Dort läuft ein Block um mehrere hundert Pixel über, man wischt, fertig.
+ *
+ * Am Schreibtisch ist es das Gegenteil von offensichtlich. Gemessen an der
+ * ausgelieferten Seite lief ein Block im Whisper-Artikel um 14 px über —
+ * eine Zeile von 75 Zeichen, davon sechs arabische, die breiter setzen. Der
+ * Leser sieht einen Kommentar, der vollständig aussieht, und ihm fehlt das
+ * letzte Wort. Die anderen neun Artikel hielten die Grenze; die englische
+ * Fassung derselben Stelle war schon umbrochen.
+ *
+ * Gerechnet passen 614 px bei 8,4 px je Zeichen auf rund 73. Geprüft wird
+ * gegen 72, und die längste Zeile im Bestand hat 70 — der Abstand ist Absicht,
+ * weil nicht jedes Zeichen gleich breit setzt.
+ */
+const GRENZE = 72;
+for (const datei of readdirSync(ORDNER).filter((f) => /^(de|en)-.*\.ts$/.test(f))) {
+  const quelle = readFileSync(join(ORDNER, datei), "utf8");
+  for (const block of bloeckeAus(quelle)) {
+    block.code.split("\n").forEach((zeile, i) => {
+      if (zeile.length > GRENZE)
+        funde.push(
+          `${datei}, Block ab Zeile ${block.zeile}, dort Zeile ${i + 1}: ` +
+            `${zeile.length} Zeichen, ${GRENZE} passen in den Kasten`,
+        );
+    });
+  }
+}
+
 if (funde.length > 0) {
-  console.error(`${funde.length} Codeblock geht syntaktisch nicht auf:\n`);
+  console.error(`${funde.length} Codeblock ist nicht in Ordnung:\n`);
   for (const f of funde) console.error(`  ${f}`);
   console.error(
     `\nDie Artikel zeigen Code als Beleg. Wer sie liest, liest Code — ein ` +
-      `\nTippfehler darin wiegt mehr als jede Kennzahl daneben.`,
+      `\nTippfehler darin wiegt mehr als jede Kennzahl daneben, und eine Zeile,` +
+      `\ndie am Schreibtisch abgeschnitten wird, sieht vollständig aus.`,
   );
   process.exit(1);
 }
@@ -122,5 +154,5 @@ const verteilung = Object.entries(nachSprache)
 
 console.log(
   `Jeder Codeblock geht auf: ${geprueft} TypeScript-Blöcke geparst ` +
-    `(insgesamt ${verteilung}).`,
+    `(insgesamt ${verteilung}), keine Zeile über ${GRENZE} Zeichen.`,
 );

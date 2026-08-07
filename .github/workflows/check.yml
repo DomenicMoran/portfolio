@@ -45,11 +45,27 @@ on:
 #
 # Der Preis dafür war Läuferzeit — rund zwölf Minuten je Durchgang. Für ein
 # öffentliches Repo stellt GitHub sie nicht in Rechnung, das Argument trägt also
-# nicht. Auf allen anderen Zweigen bleibt der Abbruch, dort geht es wirklich nur
-# um den letzten Stand.
+# nicht.
+#
+# Hier stand dafür `cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}`,
+# nach dem Muster aus der GitHub-Dokumentation: abbrechen überall, nur nicht auf
+# main. Nachgemessen am 07.08.2026 hat das nicht gewirkt. Der Ausdruck kam um
+# 11:07 in die Datei; danach wurden sechs Läufe abgebrochen, alle mit
+# `head_branch: main`, alle mit genau dieser Zeile im Workflow des jeweiligen
+# Commits. Jeder endete in der Minute, in der der nächste startete — 14:43 auf
+# 14:56, 16:13 auf 16:38, 17:24 auf 17:33, 17:33 auf 17:43.
+#
+# Aufgehört haben die Abbrüche erst, als ich pro Runde nur noch einmal
+# schiebe. Die Regel hat also nie gegriffen, sie sah nur so aus. Deshalb steht
+# hier jetzt keine Bedingung mehr: Ohne das Feld gilt der Vorgabewert `false`,
+# und ein laufender Durchgang wird nicht mehr beendet.
+#
+# Was auch das nicht abdeckt: Ein Durchgang, der noch wartet, wird von einem
+# neueren derselben Gruppe verdrängt — das macht die Reihung selbst und hängt
+# nicht an diesem Feld. Dagegen hilft nur, nicht zu schieben, solange ein Lauf
+# offen ist. Genau so wird hier gearbeitet.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   check:

@@ -190,7 +190,16 @@ export function ArticlePage({
               </span>
               <span className="flex items-center gap-x-5">
                 <span aria-hidden>·</span>
-                <ul className="flex flex-wrap gap-x-3">
+                {/* Abstand wie im Rest der Zeile, und aus einem Grund.
+                    Gemessen an der ausgelieferten Seite trennte `gap-x-3` die
+                    Schlagwörter um 12 px, während das Leerzeichen innerhalb
+                    von „React Native" 6,6 px misst — knapp das Doppelte. Die
+                    Zeile las sich als „Whisper On-Device-KI React Native
+                    Arabisch", und wo ein Schlagwort endet, war nicht zu sehen.
+                    Die Übersicht hat dasselbe Problem mit Plättchen gelöst;
+                    hier wäre das zu laut, also nimmt die Reihe den Abstand,
+                    den Datum und Lesezeit daneben ohnehin benutzen. */}
+                <ul className="flex flex-wrap gap-x-5">
                   {article.tags.map((tag) => (
                     <li key={tag}>{tag}</li>
                   ))}
