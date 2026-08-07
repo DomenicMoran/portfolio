@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "preflight": "npm run check:chars && npm run check:docs && npm run check:onepager",
+    "preflight": "npm run check:chars && npm run check:docs && npm run check:exports && npm run check:onepager",
     "start": "next start",
     "lint": "eslint",
     "onepager:pdf": "node scripts/build-onepager-pdf.mjs",
