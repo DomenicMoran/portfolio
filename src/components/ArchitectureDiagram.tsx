@@ -64,7 +64,7 @@ const NODE_H = 62;
 
 const ARCHITECTURES: Record<string, Diagram> = {
   salati: {
-    title: "Salati: ein Monorepo, vier Zielgeräte",
+    title: "Salati: ein Monorepo, vier Geräteklassen",
     caption:
       "Die Geräte teilen sich Domänenlogik und Inhalte. Der KI-Pfad endet bewusst auf dem Gerät: Modell und Korpus werden ausgeliefert, nicht angefragt.",
     height: 470,
@@ -75,7 +75,7 @@ const ARCHITECTURES: Record<string, Diagram> = {
       { label: "Delivery & Daten", y: 396 },
     ],
     nodes: [
-      // Vier Zielgeräte, gleichmäßig über die Breite. Hier stand einmal ein
+      // Vier Geräteklassen, gleichmäßig über die Breite. Hier stand einmal ein
       // fünfter Knoten für einen HDMI-Stick; den gibt es in diesem Projekt
       // nicht.
       {
