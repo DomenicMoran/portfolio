@@ -43,7 +43,7 @@ import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { chromium } from "playwright";
 import sharp from "sharp";
-import { gebauteSeiten } from "./lib/built-pages.mjs";
+import { FEHLERSEITEN, gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 const require = createRequire(import.meta.url);
@@ -84,7 +84,13 @@ let unentschieden = 0;
 let huellen = 0;
 let schwaechster = { wert: Infinity, wo: "" };
 
-for (const route of gebauteSeiten()) {
+/* Dazu die Fehlerseite unter beiden Sprachen.
+
+   Sie steht in keiner Liste gebauter Seiten und fiel damit aus jedem Lauf,
+   der seine Liste aus dem Bau nimmt — ausgerechnet die Seite, die jeder
+   Vertipper zu sehen bekommt. Ihr Text steht auf demselben Untergrund wie
+   der Rest, also gilt hier dieselbe Frage. */
+for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
   for (const breite of BREITEN) {
     const seite = await browser.newPage({
       viewport: { width: breite, height: 900 },
