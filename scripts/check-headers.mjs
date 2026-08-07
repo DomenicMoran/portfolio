@@ -227,6 +227,48 @@ for (const pfad of ABGEKLOPFT) {
   }
 }
 
+/* Die Sprache der Fehlerseite folgt dem Pfad, nicht der Anfrage.
+
+   `proxy.ts` setzt `x-sprache` unter `/en` und loescht sie sonst. Bis zum
+   08.08.2026 loeschte es nicht: Gemessen an der ausgelieferten Seite kam
+   `GET /gibt-es-nicht` mit `x-sprache: en` als englische Fehlerseite samt
+   `lang="en"` auf einer deutschen Adresse heraus.
+
+   Einschleusen laesst sich darueber nichts, und wer die Kopfzeile schickt,
+   taeuscht nur sich selbst. Die Fehlerseite behandelt den Wert aber als
+   Tatsache ueber die Anfrage — und eine Tatsache ueber die Anfrage darf nicht
+   aus der Anfrage stammen.
+
+   Geprueft wird in beide Richtungen: Die deutsche Adresse bleibt deutsch,
+   auch wenn `en` mitkommt, und die englische bleibt englisch, auch wenn `de`
+   mitkommt. */
+let sprachGeprueft = 0;
+for (const [pfad, mitgeschickt, erwartet] of [
+  [FEHLERSEITEN[0], "en", "de"],
+  [FEHLERSEITEN[1], "de", "en"],
+]) {
+  let antwort;
+  try {
+    antwort = await fetch(`${basis}${pfad}`, {
+      headers: { "x-sprache": mitgeschickt },
+      redirect: "manual",
+      signal: AbortSignal.timeout(20000),
+    });
+  } catch (fehler) {
+    funde.push(`${pfad} mit x-sprache: ${fehler.message}`);
+    continue;
+  }
+  sprachGeprueft++;
+  const html = await antwort.text();
+  const ist = /<html[^>]+lang="([^"]+)"/.exec(html)?.[1] ?? "keine Angabe";
+  if (ist !== erwartet) {
+    funde.push(
+      `${pfad} mit x-sprache: ${mitgeschickt} antwortet in ${ist}, ` +
+        `erwartet ${erwartet} — der Pfad entscheidet, nicht die Anfrage.`,
+    );
+  }
+}
+
 if (funde.length > 0) {
   console.error(`${funde.length} Abweichung(en) bei den Schutz-Kopfzeilen:\n`);
   for (const f of funde) console.error(`  ${f}`);
@@ -242,7 +284,8 @@ const statusGeprueft = Object.keys(ERWARTETER_STATUS).length;
 console.log(
   `Alle ${fuerAlles.length} Schutz-Kopfzeilen, ${zwischenspeicher} ` +
     `Zwischenspeicher-Regeln und ${umleitungen} Weiterleitungen stimmen: ` +
-    `${geprueft + umleitungen + statusGeprueft + methodenGeprueft} Prüfungen auf ${basis}. ` +
-    `Die unbekannte Adresse antwortet mit 404, nicht mit 200, und keine ` +
-    `sendende Methode kommt über 405 hinaus.`,
+    `${geprueft + umleitungen + statusGeprueft + methodenGeprueft + sprachGeprueft} Prüfungen auf ${basis}. ` +
+    `Die unbekannte Adresse antwortet mit 404, nicht mit 200, keine ` +
+    `sendende Methode kommt über 405 hinaus, und ihre Sprache folgt dem Pfad ` +
+    `auch dann, wenn die Anfrage etwas anderes behauptet.`,
 );
