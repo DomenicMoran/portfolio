@@ -37,6 +37,14 @@ const BLAETTER = [
 ];
 
 const erwartet = quellstand();
+/**
+ * Wie viele Pixel Kantenlänge ein Bild auf dem Blatt mindestens hat.
+ *
+ * Das Porträt steht auf 22,7 mm. 256 px sind darauf 287 dpi und damit im
+ * Bereich, in dem ein Druck nicht mehr weich wirkt; 128 px waren 143.
+ */
+const DRUCKKANTE = 256;
+
 const funde = [];
 let geprueft = 0;
 
@@ -78,6 +86,68 @@ for (const pfad of BLAETTER) {
         `Inhalt kürzen, dann neu drucken.`,
     );
     continue;
+  }
+
+  /* Das Porträt trägt Druckauflösung.
+     ---------------------------------
+     Dieses Blatt wird gedruckt, und auf Papier zählt die Dichte und nicht die
+     Bildschirmgröße. Gemessen am ausgelieferten PDF stand dort ein Bild mit
+     128 × 128 Pixeln auf 22,7 mm Kantenlänge: 143 dpi, gut die Hälfte dessen,
+     was ein Druck braucht. Auf dem Bildschirm sieht man das nicht, auf Papier
+     sofort — und ausgerechnet an dem Blatt, das eine Bewerbung begleitet.
+
+     Die Ursache lag in `sizes="110px"` an der Bildkomponente: Bei einfacher
+     Pixeldichte, und mit der druckt Chromium immer, nimmt der Browser daraus
+     die 128er-Fassung. Die Vorlage hat 1024 px, die Auflösung war da und
+     wurde nur nicht abgerufen.
+
+     Geprüft wird die Kantenlänge in Pixeln, nicht die dpi: Wie groß das Bild
+     auf dem Blatt steht, weiß dieses Skript nicht, und die Kante ist die
+     Größe, die sich beim nächsten Eingriff still ändert. 256 px sind auf
+     22,7 mm 287 dpi. */
+  {
+    /* Die Bilder liegen in komprimierten Objektströmen.
+
+       Zwei Anläufe gingen daneben, beide still: `seite.node.Resources()` fand
+       nichts, und `doc.context.enumerateIndirectObjects()` sieht nur, was
+       außerhalb der Ströme steht — gemessen `/Type3` und `/Link`, kein
+       einziges Bild. Beide Male blieb der Lauf grün, weil er nichts zu
+       melden hatte. Aufgefallen ist es erst, als die Schwelle testweise auf
+       512 stand und der Lauf trotzdem durchging.
+
+       Deshalb hier die Ströme selbst: entpacken, was sich entpacken lässt,
+       und darin nach `/Subtype /Image` samt `/Width` suchen. */
+    const bilder = [];
+    {
+      const roh = readFileSync(pfad);
+      const teile = [roh];
+      for (const treffer of roh.toString("latin1").matchAll(new RegExp("stream\r?\n", "g"))) {
+        const von = treffer.index + treffer[0].length;
+        const bis = roh.indexOf("endstream", von, "latin1");
+        if (bis < 0) continue;
+        try {
+          teile.push(inflateSync(roh.subarray(von, bis)));
+        } catch {
+          // Kein zlib-Strom: Bilddaten, Schriftschnitte, alles Übrige.
+        }
+      }
+      const alles = Buffer.concat(teile).toString("latin1");
+      for (const treffer of alles.matchAll(
+        /\/Subtype\s*\/Image[\s\S]{0,400}?\/Width\s+(\d+)/g,
+      )) {
+        bilder.push(Number(treffer[1]));
+      }
+    }
+
+    const zuKlein = bilder.filter((b) => b > 0 && b < DRUCKKANTE);
+    if (zuKlein.length) {
+      funde.push(
+        `${pfad}: ${zuKlein.length} Bild(er) mit nur ${zuKlein.join(", ")} px ` +
+          `Kantenlänge. Auf dem Blatt sind das rund ${Math.round(zuKlein[0] / (22.7 / 25.4))} dpi; ` +
+          `gedruckt sieht man das. Mindestens ${DRUCKKANTE} px über sizes anfordern.`,
+      );
+      continue;
+    }
   }
 
   /* Das Blatt trägt eine Struktur, nicht nur Zeichen.

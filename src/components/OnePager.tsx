@@ -181,7 +181,23 @@ export function OnePager({
                   alt=""
                   width={110}
                   height={110}
-                  sizes="110px"
+                  /* 256 px für 110 CSS-Pixel, und das ist kein Versehen.
+
+                     Dieses Blatt wird gedruckt, und auf Papier zählt nicht die
+                     Bildschirmgröße, sondern die Dichte. Gemessen am
+                     ausgelieferten PDF: das einzige Bild darin war 128 × 128
+                     und stand auf 22,7 mm — 143 dpi, also gut die Hälfte
+                     dessen, was ein Druck braucht. Auf dem Bildschirm fällt
+                     das nicht auf, auf Papier sieht man es sofort, und
+                     ausgerechnet an dem Blatt, das eine Bewerbung begleitet.
+
+                     `sizes` steuert die Auswahl aus dem srcset. Mit „110px"
+                     nahm der Browser bei einfacher Pixeldichte die
+                     128er-Fassung; der Druck läuft immer mit einfacher
+                     Dichte. 256 px auf denselben 22,7 mm sind 287 dpi. Die
+                     Vorlage liegt mit 1024 px vor, die Auflösung war also da
+                     und wurde nur nicht abgerufen. */
+                  sizes="256px"
                   /* Ohne `priority` setzt next/image `loading="lazy"`, und ein
                    Bild, das nie geladen wurde, druckt als leerer Rahmen.
                    Genau darauf prueft scripts/check-print.mjs. Hier steht es
