@@ -2908,6 +2908,62 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   „100 % KI läuft auf dem Gerät" — nachgesehen, nicht geglaubt.
+
+   Die Salati-Fallstudie führt das als Kennzahl, und der Vorspann der
+   Startseite wiederholt es: „die Fragen-Antwort-Suche arbeitet vollständig
+   auf dem Gerät. Keine Anfrage verlässt das Telefon." Das ist die Zusage, die
+   ein Leser am wenigsten selbst prüfen kann und die am meisten kostet, wenn
+   sie nicht stimmt — es geht um Gebete und um den Koran.
+
+   Geprüft wird das Gegenteil: dass im App-Quelltext keine Adresse eines
+   Sprachmodell-Anbieters vorkommt. Das ist eine schwache Bedingung und
+   genau so gemeint — sie findet den Rückfall, nicht die Absicht.
+
+   Nachgesehen am 08.08.2026: keine einzige Fundstelle in `apps/`.
+   ------------------------------------------------------------------------ */
+{
+  const wurzel = "../../SalatiTech/apps";
+  const ANBIETER =
+    /api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis|api\.replicate\.com|api-inference\.huggingface/;
+
+  if (!existsSync(wurzel)) {
+    zeilen.push("  --  KI auf dem Gerät: SalatiTech nicht vorhanden, übersprungen");
+  } else if (!/KI läuft auf dem Gerät/.test(quelle)) {
+    zeilen.push("  --  KI auf dem Gerät: die Seite behauptet es nicht mehr");
+  } else {
+    const funde = [];
+    let gelesen = 0;
+    const gehe = (ordner) => {
+      for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+        if (eintrag.name === "node_modules" || eintrag.name.startsWith(".")) continue;
+        const pfad = join(ordner, eintrag.name);
+        if (eintrag.isDirectory()) {
+          gehe(pfad);
+          continue;
+        }
+        if (!/\.(ts|tsx|js|jsx)$/.test(eintrag.name)) continue;
+        gelesen++;
+        if (ANBIETER.test(readFileSync(pfad, "utf8"))) funde.push(pfad);
+      }
+    };
+    gehe(wurzel);
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(
+        `  !!  ${funde.length} Datei(en) rufen ein Sprachmodell aus der Wolke:`,
+      );
+      for (const f of funde.slice(0, 5)) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  KI auf dem Gerät   ${String(gelesen).padStart(6)} Dateien ohne Adresse eines Modellanbieters`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die drei Bestandszahlen der Fallstudien.
 
    „1.278 API-Routen", „815 DB-Migrationen", „1.070 Commits" — sie stehen im
