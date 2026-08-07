@@ -50,6 +50,8 @@
     "check:demo": "node scripts/check-demo-math.mjs",
     "check:code": "node scripts/check-code-blocks.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
+    "check:images": "node scripts/check-images.mjs",
+    "check:chars": "node scripts/check-control-chars.mjs",
     "check:schema": "node scripts/check-structured-data.mjs",
     "check:palette": "node scripts/check-palette.mjs"
   },
