@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -20,7 +20,53 @@ import { join } from "node:path";
  * - **`/index` wird zu `/`.** Der Bau legt die Startseite als `index.html` ab;
  *   ausgeliefert wird sie unter der Wurzel.
  */
+/**
+ * Sagt Nein, wenn der gebaute Stand älter ist als die Quellen.
+ *
+ * Diese Läufe messen die ausgelieferte Seite, und genau das macht sie
+ * angreifbar: Ein Lauf gegen einen alten Build ist nicht falsch, er ist
+ * unbemerkt beantwortet. Gemessen am 07.08.2026: `check:typography` lief
+ * lokal grün, während der Text, den es hätte finden müssen, seit Minuten
+ * in `site.ts` stand. In der CI, die immer frisch baut, fiel er sofort auf.
+ * Ein grüner Lauf hier und ein roter dort ist das teuerste Ergebnis von
+ * allen, weil man dem eigenen Rechner danach nicht mehr glaubt.
+ *
+ * Verglichen werden Zeitstempel, nicht Inhalte: `.next/BUILD_ID` entsteht am
+ * Ende jedes Baus, alles unter `src/` davor. Ist eine Quelle jünger, bricht
+ * der Lauf mit dem Befehl ab, der ihn wieder gültig macht.
+ */
+export function pruefeBaustand() {
+  const bauStempel = statSync(".next/BUILD_ID", { throwIfNoEntry: false })?.mtimeMs;
+  if (!bauStempel)
+    throw new Error("Kein gebauter Stand vorhanden. Erst `npm run build`.");
+
+  let neuste = 0;
+  let woher = "";
+  const gehe = (ordner) => {
+    for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
+      const pfad = join(ordner, eintrag.name);
+      if (eintrag.isDirectory()) {
+        gehe(pfad);
+        continue;
+      }
+      const wann = statSync(pfad).mtimeMs;
+      if (wann > neuste) {
+        neuste = wann;
+        woher = pfad;
+      }
+    }
+  };
+  gehe("src");
+
+  if (neuste > bauStempel)
+    throw new Error(
+      `Der gebaute Stand ist älter als die Quellen (${woher}). ` +
+        "Dieser Lauf würde die vorige Fassung messen. Erst `npm run build`.",
+    );
+}
+
 export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
+  pruefeBaustand();
   const pfade = [];
 
   const suchen = (ordner) => {

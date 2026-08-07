@@ -753,7 +753,7 @@ export const caseStudies: CaseStudy[] = [
       "Lokale SQLite-Datenhaltung, Server bindet standardmäßig nur auf 127.0.0.1",
       "REVIEW-Modus als Auslieferungszustand: kein Versand ohne menschliche Freigabe",
       "Zweiter Erfassungsweg über das eigene Postfach: ImmoScout24 meldet neue Treffer per Mail schneller, als eine Ergebnisseite sich abfragen lässt",
-      "Dazu frei eintragbare Vermieter-Websites — kommunale Gesellschaften und Genossenschaften, die auf keinem Portal inserieren. Ihre Treffer gehen immer in die Freigabe, nie in den Automatikmodus",
+      "Dazu frei eintragbare Vermieter-Websites: kommunale Gesellschaften und Genossenschaften, die auf keinem Portal inserieren. Ihre Treffer gehen immer in die Freigabe, nie in den Automatikmodus",
       "Watchdog mit automatischem Neustart nach Absturz",
       "Mehrinstanz-Betrieb für parallele Accounts, Weitergabe-Paket ohne persönliche Daten",
     ],

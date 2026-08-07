@@ -587,7 +587,7 @@ export const en: Content = {
         "Local SQLite storage; the server binds to 127.0.0.1 by default",
         "REVIEW mode as the shipped state: nothing is sent without human approval",
         "A second ingest path through my own mailbox: ImmoScout24 reports new matches by mail faster than a results page can be polled",
-        "Plus freely configurable landlord websites — municipal housing companies and cooperatives that never advertise on a portal. Their hits always go to review, never to automatic mode",
+        "Plus freely configurable landlord websites: municipal housing companies and cooperatives that never advertise on a portal. Their hits always go to review, never to automatic mode",
         "Watchdog with automatic restart after a crash",
         "Multi-instance operation for parallel accounts, distributable package without personal data",
       ],
