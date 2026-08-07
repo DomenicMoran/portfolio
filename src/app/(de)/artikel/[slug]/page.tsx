@@ -8,7 +8,7 @@ import {
   andereSprache,
 } from "@/content/articles";
 import { de } from "@/content/de";
-import { feedFuer, kurzbeschreibung } from "@/lib/metadata";
+import { feedFuer, kurzbeschreibung, vorschaukarten } from "@/lib/metadata";
 
 /**
  * Alle Artikel sind zur Bauzeit bekannt, also werden alle vorgerendert.
@@ -39,13 +39,16 @@ export async function generateMetadata({
     title: { absolute: artikel.title },
     description: kurzbeschreibung(artikel.dek),
     keywords: [...artikel.tags],
-    openGraph: {
-      type: "article",
-      title: artikel.title,
-      description: kurzbeschreibung(artikel.dek),
-      publishedTime: artikel.date,
-      locale: "de_DE",
-    },
+    // Beide Karten aus einer Angabe: Ein eigenes `openGraph` ohne `twitter`
+    // ließ dort den Titel der Startseite stehen — auf jeder der zehn
+    // Artikelseiten, also genau dort, wo geteilt wird.
+    ...vorschaukarten({
+      titel: artikel.title,
+      beschreibung: kurzbeschreibung(artikel.dek),
+      lang: "de",
+      typ: "article",
+      veroeffentlicht: artikel.date,
+    }),
     alternates: {
       canonical: `/artikel/${slug}`,
       // `x-default` benennt die Fassung für Leser, deren Sprache auf keine

@@ -1795,6 +1795,37 @@ const BRAUCHT_KIND = {
           `${route}: Karte heißt „${titel}“, der Browsertitel „${browsertitel}“`,
         );
       }
+
+      /* Und X bekommt dieselbe Karte wie alle anderen.
+
+         Next mischt Seitenmetadaten nicht in die des Layouts, es ersetzt sie
+         je Feld. Wer ein eigenes `openGraph` setzt und `twitter` nicht
+         anfasst, behält dort den Wert des Layouts — und der beschreibt die
+         Startseite. Gemessen an den gebauten Seiten am 08.08.2026: 16 von 18
+         meldeten an X den Titel „Domenic Moran – AI Product Engineer" und die
+         Beschreibung der Startseite, darunter jeder der zehn Artikel und
+         beide Kurzprofile.
+
+         Zwei Felder, eine Aussage: Was auf der einen Karte steht, steht auch
+         auf der anderen. */
+      const rohesHtml = readFileSync(pfad, "utf8");
+      const xTitel = rohesHtml.match(
+        /<meta name="twitter:title" content="([^"]*)"/,
+      )?.[1];
+      const ogText = rohesHtml.match(
+        /<meta property="og:description" content="([^"]*)"/,
+      )?.[1];
+      const xText = rohesHtml.match(
+        /<meta name="twitter:description" content="([^"]*)"/,
+      )?.[1];
+      if (xTitel && xTitel !== titel) {
+        funde.push(
+          `${route}: X-Karte heißt „${xTitel}“, die Vorschaukarte „${titel}“`,
+        );
+      }
+      if (ogText && xText && ogText !== xText) {
+        funde.push(`${route}: X-Karte beschreibt etwas anderes als die Vorschaukarte`);
+      }
     }
   };
 

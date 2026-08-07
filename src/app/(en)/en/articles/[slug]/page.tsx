@@ -8,7 +8,7 @@ import {
   andereSprache,
 } from "@/content/articles";
 import { en } from "@/content/en";
-import { feedFuer, kurzbeschreibung } from "@/lib/metadata";
+import { feedFuer, kurzbeschreibung, vorschaukarten } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -34,13 +34,14 @@ export async function generateMetadata({
     title: { absolute: article.title },
     description: kurzbeschreibung(article.dek),
     keywords: [...article.tags],
-    openGraph: {
-      type: "article",
-      title: article.title,
-      description: kurzbeschreibung(article.dek),
-      publishedTime: article.date,
-      locale: "en_GB",
-    },
+    // Siehe die deutsche Fassung: beide Karten aus einer Angabe.
+    ...vorschaukarten({
+      titel: article.title,
+      beschreibung: kurzbeschreibung(article.dek),
+      lang: "en",
+      typ: "article",
+      veroeffentlicht: article.date,
+    }),
     alternates: {
       canonical: `/en/articles/${slug}`,
       // `x-default` benennt die Fassung für Leser, deren Sprache auf keine
