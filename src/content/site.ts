@@ -340,7 +340,7 @@ export const hero = {
     { value: "4", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
-    { value: "7.464", label: "Testfälle (MenuCloud)" },
+    { value: "7.400+", label: "Testfälle (MenuCloud)" },
   ],
 } as const;
 
@@ -660,7 +660,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: verified.apiRouten, label: "API-Routen" },
       { value: verified.migrationen, label: "DB-Migrationen" },
-      { value: "7.464", label: "Testfälle" },
+      { value: "7.400+", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // Kunden, MRR, GMV oder Uptime würden hier eine Behauptung durch einen
       // Beleg ersetzen. Sie stehen bewusst nicht da: Erfinden kommt nicht in

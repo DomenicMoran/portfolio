@@ -214,6 +214,41 @@ if (existsSync(MENUCLOUD)) {
     vitest.numTotalTests + e2e,
     aufSeite?.[1] ?? "",
   );
+
+  /* Und die Kacheln, die dieselbe Zahl tragen.
+
+     Der Fließtext sagt seit Langem „über 7.400 Testfälle", die Kennzahlen-
+     kacheln nannten eine exakte: 7.464. Gemessen am 08.08.2026 waren es
+     7.635 — die Kachel lag 171 zurück, weil Tests dazukommen und die Zahl
+     stehen blieb. Der Lebenslauf sagt an derselben Stelle „über 7.400".
+
+     Die Kacheln nennen jetzt dieselbe Untergrenze, in der Form „7.400+".
+     Geprüft wird beides: dass die Grenze gedeckt ist, und dass keine exakte
+     Zahl zurückkommt. */
+  for (const [datei, muster] of [
+    ["src/content/site.ts", /value: "([\d.]+)\+?", label: "Testfälle/g],
+    ["src/content/en.ts", /value: "([\d,]+)\+?", label: "test cases/g],
+  ]) {
+    if (!existsSync(datei)) continue;
+    const text = readFileSync(datei, "utf8");
+    for (const treffer of text.matchAll(muster)) {
+      const roh = treffer[0];
+      const grenze = Number(treffer[1].replace(/[.,]/g, ""));
+      if (!roh.includes("+")) {
+        abweichungen++;
+        zeilen.push(
+          `  !=  Testfälle-Kachel          nennt ${treffer[1]} genau; die Zahl wächst, ` +
+            `also gehört dort eine Untergrenze hin`,
+        );
+      } else if (vitest.numTotalTests + e2e < grenze) {
+        abweichungen++;
+        zeilen.push(
+          `  !=  Testfälle-Kachel          nennt ${treffer[1]}+, gemessen sind ` +
+            `${vitest.numTotalTests + e2e}`,
+        );
+      }
+    }
+  }
   if (vitest.numFailedTests > 0) {
     /* Mit Namen. „2 Unit-Tests scheitern" ist eine Zahl, mit der man nichts
        anfangen kann: Der Lauf steht im Portfolio, die Tests liegen in einem

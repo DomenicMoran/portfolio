@@ -183,7 +183,7 @@ export const en: Content = {
         label: "commits since March 2026",
       },
       { value: verified.apiRouten.replace(".", ","), label: "API routes (MenuCloud)" },
-      { value: "7,464", label: "test cases (MenuCloud)" },
+      { value: "7,400+", label: "test cases (MenuCloud)" },
     ],
   },
 
@@ -502,7 +502,7 @@ export const en: Content = {
       metrics: [
         { value: verified.apiRouten.replace(".", ","), label: "API routes" },
         { value: verified.migrationen, label: "DB migrations" },
-        { value: "7,464", label: "test cases" },
+        { value: "7,400+", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
