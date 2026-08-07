@@ -2092,6 +2092,64 @@ const BRAUCHT_KIND = {
 
    Ohne Netz wird übersprungen und das gesagt. */
 /* ---------------------------------------------------------------------------
+   Die Live-Adressen zeigen wirklich das Produkt.
+
+   Der Lauf weiter unten ruft jede Produktadresse ab und prüft den Status.
+   Das reicht nicht: Eine abgelaufene Domain antwortet mit 200 und einer
+   Parkseite, ein umgezogenes Projekt mit der Startseite des neuen Anbieters.
+   Die stärkste Behauptung dieser Seite — „vier Systeme in Produktion“ — hinge
+   dann an einem Verweis, der zwar antwortet, aber nichts belegt.
+
+   Geprüft wird deshalb der Inhalt: Nennt die Seite den Namen des Produkts,
+   unter dem sie hier steht? Das ist eine schwache Bedingung, und genau so ist
+   sie gemeint — sie soll den Totalausfall finden, nicht den Inhalt bewerten.
+   ------------------------------------------------------------------------ */
+{
+  const ZUORDNUNG = [
+    ["https://www.salati.pro", "Salati"],
+    ["https://menucloud-berlin.de", "MenuCloud"],
+    ["https://nouri-fitness.vercel.app", "NOURI"],
+  ];
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const [adresse, name] of ZUORDNUNG) {
+    try {
+      const antwort = await fetch(adresse, {
+        redirect: "follow",
+        headers: { "user-agent": "Mozilla/5.0 Pruefstempel" },
+        signal: AbortSignal.timeout(20000),
+      });
+      if (!antwort.ok) {
+        uebersprungen++;
+        continue;
+      }
+      const text = await antwort.text();
+      geprueft++;
+      if (!text.toLowerCase().includes(name.toLowerCase()))
+        funde.push(`${adresse} antwortet, nennt aber „${name}“ nicht`);
+    } catch {
+      uebersprungen++;
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Produktadresse(n) ohne ihr Produkt:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Produktinhalt      ${String(geprueft).padStart(6)} Live-Adressen nennen ihr Produkt` +
+        (uebersprungen ? `, ${uebersprungen} nicht erreichbar` : ""),
+    );
+  } else {
+    zeilen.push("  --  Produktinhalt: keine Adresse erreichbar, übersprungen");
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Zahlen in den Architekturbildern.
 
    Jedes Bild trägt Beschriftungen wie „63 Workflows · Watchdogs“ oder
