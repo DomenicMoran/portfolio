@@ -216,7 +216,7 @@ export const en: Content = {
       // Impressum, Datenschutz, Alterseinstufung und die Kennzeichnung nach
       // EU AI Act Art. 50 — nicht Lizenzen.
       role: "Sole developer · product, code, stores, legal",
-      statusLabel: "Live on the App Store",
+      statusLabel: "Live in both stores",
       accent: "acid",
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
@@ -295,6 +295,14 @@ export const en: Content = {
         {
           label: "App Store",
           href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
+          kind: "store",
+        },
+        // Siehe `site.ts`: Der Play-Eintrag ist seit dem 08.08.2026
+        // öffentlich. Beide Fassungen führen ihn, sonst wiederholt sich
+        // genau der Fall aus dem Kommentar darüber.
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
           kind: "store",
         },
       ],
@@ -691,7 +699,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, three apps in the stores and two of them in both, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, three apps in the stores, all three in both, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget where every test passed and which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],

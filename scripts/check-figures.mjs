@@ -2061,6 +2061,72 @@ const BRAUCHT_KIND = {
 
    Ohne Netz wird übersprungen und das gesagt. */
 /* ---------------------------------------------------------------------------
+   Wie viele Apps in wie vielen Stores stehen.
+
+   Im Werdegang stand „drei Apps in den Stores und zwei davon in beiden". Das
+   war eine Woche lang zu wenig: Salati war am 01.08.2026 nur bei Apple
+   erreichbar, am 08.08.2026 auch bei Google Play — und der Satz zählte weiter
+   die alte Lage. Eine Seite, die weniger sagt als wahr ist, fällt niemandem
+   auf; sie kostet nur.
+
+   Gezählt wird an den Verweisen selbst: Jede Fallstudie führt ihre
+   Store-Einträge, und daraus ergeben sich beide Zahlen von allein.
+   ------------------------------------------------------------------------ */
+{
+  const ZAHLWORT = { eine: 1, zwei: 2, drei: 3, vier: 4, fünf: 5 };
+
+  /* Je Fallstudie: welche Plattformen sie verlinkt. Der Block einer Studie
+     endet am nächsten `id:` auf derselben Ebene. */
+  const bloecke = quelle.split(/^ {4}id: "/m).slice(1);
+  let apps = 0;
+  let inBeiden = 0;
+  for (const block of bloecke) {
+    const apple = /apps\.apple\.com/.test(block);
+    const play = /play\.google\.com/.test(block);
+    const anzahl = Math.max(
+      (block.match(/apps\.apple\.com/g) ?? []).length,
+      (block.match(/play\.google\.com/g) ?? []).length,
+    );
+    if (!apple && !play) continue;
+    apps += anzahl;
+    if (apple && play)
+      inBeiden += Math.min(
+        (block.match(/apps\.apple\.com/g) ?? []).length,
+        (block.match(/play\.google\.com/g) ?? []).length,
+      );
+  }
+
+  const satz = quelle.match(
+    /(\w+) Apps in den Stores, (alle \w+|\w+ davon) in beiden/,
+  );
+
+  if (!satz) {
+    zeilen.push("  --  Store-Zahlen: Satz im Werdegang nicht gefunden");
+  } else {
+    const behauptetApps = ZAHLWORT[satz[1].toLowerCase()];
+    const zweiteAngabe = satz[2].startsWith("alle")
+      ? ZAHLWORT[satz[2].split(" ")[1]]
+      : ZAHLWORT[satz[2].split(" ")[0]];
+    const funde = [];
+    if (behauptetApps !== apps)
+      funde.push(`Satz nennt ${behauptetApps} Apps, verlinkt sind ${apps}`);
+    if (zweiteAngabe !== inBeiden)
+      funde.push(
+        `Satz nennt ${zweiteAngabe} in beiden Stores, verlinkt sind ${inBeiden}`,
+      );
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push("  !!  Store-Zahlen im Werdegang stimmen nicht:");
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  Store-Zahlen        ${String(apps).padStart(6)} Apps verlinkt, ${inBeiden} in beiden Stores`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Jeder Commit, den ein Artikel nennt, existiert auch.
 
    Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
