@@ -1897,7 +1897,25 @@ const BRAUCHT_KIND = {
       const browsertitel = readFileSync(pfad, "utf8").match(
         /<title>([^<]*)<\/title>/,
       )?.[1];
-      if (browsertitel && titel !== browsertitel) {
+      /* Eine Ausnahme, und nur diese: der gekürzte Browsertitel.
+
+         Seit dem 08.08.2026 trägt ein Artikel ein `titleShort`, weil seine
+         Überschrift mit 62 Zeichen im Suchergebnis abgeschnitten würde. Die
+         Karte darf dort die volle Überschrift zeigen — eine geteilte Karte
+         hat mehr Platz als eine Trefferzeile, und der ganze Satz ist das,
+         was den Klick auslöst.
+
+         Erlaubt ist der Unterschied deshalb genau dann, wenn er aus diesem
+         Grund entstanden ist: Die Karte über der Grenze, der Browsertitel
+         darunter. Jede andere Abweichung bleibt ein Befund. */
+      const GRENZE = 60;
+      const gekuerzt =
+        browsertitel &&
+        titel.length > GRENZE &&
+        browsertitel.length <= GRENZE &&
+        browsertitel.length < titel.length;
+
+      if (browsertitel && titel !== browsertitel && !gekuerzt) {
         funde.push(
           `${route}: Karte heißt „${titel}“, der Browsertitel „${browsertitel}“`,
         );
