@@ -733,7 +733,11 @@ export const en: Content = {
     timelineLabel: "Path",
     timeline: [
       {
-        period: "since 04/2026",
+        /* „April 2026" statt „04/2026": Das Zahlenformat ist eine deutsche
+           Gewohnheit. Ein englischer Leser liest hier eine Zeitangabe, keine
+           Aktennummer — und die Zeile daneben sagt schon „since 2022", also
+           ohne Monat. */
+        period: "since April 2026",
         title: "Founder & product engineer",
         org: "MenuCloud, sole proprietorship, Berlin",
         body: "Building and running four production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
