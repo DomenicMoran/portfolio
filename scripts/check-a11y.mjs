@@ -351,6 +351,85 @@ const ohneSkript = [];
     );
   }
 
+  /* Und kein Knopf, der ohne Skript nichts tun kann.
+
+     Ein `button` außerhalb eines `form` hat ohne JavaScript keine eigene
+     Wirkung: Er nimmt den Klick an und schweigt. Gefunden am 08.08.2026 auf
+     dem Kurzprofil — „Drucken / PDF" ist `window.print()` und sonst nichts,
+     stand aber sichtbar in der Leiste. Daneben lag die fertige Datei als
+     gewöhnlicher Verweis, also gab es sogar einen Weg, der funktioniert.
+
+     Der Ausweg ist eine `noscript`-Regel, die den Knopf ausblendet; sie
+     kostet niemanden etwas, weil sie nur greift, wo er ohnehin nicht wirkt.
+     Deshalb prüft dieser Lauf beides an derselben Stelle: Text, der ohne
+     Skript verschwindet, und Bedienelemente, die ohne Skript bleiben. */
+  /* Was ohne Skript stehen bleiben darf, steht hier mit Grund.
+
+     Nicht jeder dieser Knöpfe ist derselbe Fall. Der Druckknopf war einer:
+     Direkt daneben liegt die fertige Datei als gewöhnlicher Verweis, das
+     Ausblenden kostete nichts. Die folgenden sind es nicht, und die
+     Begründung gehört zur Regel, nicht in einen Kopf:
+
+     - Die Bedienelemente der beiden Vorführungen tragen ihre Beschriftung
+       selbst („Berlin", „wie in der App"). Sie auszublenden nähme dem Bild
+       ohne Skript die Legende und machte die Seite ärmer statt ehrlicher.
+     - Die Bilderstrecke lässt sich ohne Skript mit dem Finger schieben; die
+       beiden Pfeile sind der zweite Weg, nicht der einzige.
+     - Die Befehlspalette ist eine Abkürzung zu Zielen, die alle auch in der
+       Kopfleiste stehen.
+
+     Wer einen neuen Knopf einbaut, entscheidet hier: ausblenden oder
+     eintragen. Beides ist eine Entscheidung, keine Unterlassung. */
+  const ERLAUBT_OHNE_SKRIPT = new Map([
+    ["Befehlspalette öffnen", "führt nur zu Zielen, die auch in der Kopfleiste stehen"],
+    ["Vorheriges Bild", "die Strecke lässt sich auch schieben"],
+    ["Nächstes Bild", "die Strecke lässt sich auch schieben"],
+    ["Ablauf erneut abspielen", "die Zeilen stehen ohne Skript vollständig da"],
+    [
+      "Adresse kopieren: domenicmoran@gmail.com",
+      "seine Beschriftung ist die Adresse; ausgeblendet fehlte sie ohne Skript ganz",
+    ],
+  ]);
+
+  /* Die Vorführungen tragen ihre Beschriftung im Knopf: Ort, Regel, Gericht.
+     Ein Muster statt zwanzig Einträgen, und es steht an der Stelle, an der
+     jemand nachsieht, warum sein neuer Knopf nicht meckert. */
+  const VORFUEHRUNG = "#case-salati, #case-nouri";
+
+  const geprueftePfade = ["/", "/onepager", "/artikel"];
+  for (const pfad of geprueftePfade) {
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "networkidle",
+    });
+    if (antwort?.status() !== 200) continue;
+    const tote = await seite.evaluate(
+      ({ erlaubt, vorfuehrung }) =>
+        [...document.querySelectorAll("button")]
+          .filter((b) => {
+            const kasten = b.getBoundingClientRect();
+            if (kasten.width === 0 || kasten.height === 0) return false;
+            if (b.closest("form")) return false;
+            if (b.closest(vorfuehrung)) return false;
+            const name = (b.getAttribute("aria-label") || b.textContent || "")
+              .replace(/\s+/g, " ")
+              .trim();
+            return !erlaubt.includes(name);
+          })
+          .map((b) =>
+            (b.getAttribute("aria-label") || b.textContent || "")
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 40),
+          ),
+      { erlaubt: [...ERLAUBT_OHNE_SKRIPT.keys()], vorfuehrung: VORFUEHRUNG },
+    );
+    if (tote.length)
+      ohneSkript.push(
+        `${pfad}: ${tote.length} Knopf/Knöpfe ohne JavaScript sichtbar, aber ohne Wirkung`,
+        ...tote.slice(0, 5).map((t) => `    „${t}“`),
+      );
+  }
+
   await kontext.close();
 }
 
