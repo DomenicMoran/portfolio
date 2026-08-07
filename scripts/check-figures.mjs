@@ -2380,7 +2380,9 @@ const BRAUCHT_KIND = {
    die alte Lage. Eine Seite, die weniger sagt als wahr ist, fällt niemandem
    auf; sie kostet nur.
 
-   Gezählt wird an den Verweisen selbst: Jede Fallstudie führt ihre
+   Seit dem 08.08.2026 sind die beiden Zahlen verschieden: Salati TV ist ein
+   eigener Play-Eintrag ohne Gegenstück bei Apple. Gezählt wird deshalb je
+   Store getrennt, an den Verweisen selbst — jede Fallstudie führt ihre
    Store-Einträge, und daraus ergeben sich beide Zahlen von allein.
    ------------------------------------------------------------------------ */
 {
@@ -2389,41 +2391,42 @@ const BRAUCHT_KIND = {
   /* Je Fallstudie: welche Plattformen sie verlinkt. Der Block einer Studie
      endet am nächsten `id:` auf derselben Ebene. */
   const bloecke = quelle.split(/^ {4}id: "/m).slice(1);
-  let apps = 0;
-  let inBeiden = 0;
+  let beiApple = 0;
+  let beiPlay = 0;
   for (const block of bloecke) {
-    const apple = /apps\.apple\.com/.test(block);
-    const play = /play\.google\.com/.test(block);
-    const anzahl = Math.max(
-      (block.match(/apps\.apple\.com/g) ?? []).length,
-      (block.match(/play\.google\.com/g) ?? []).length,
-    );
-    if (!apple && !play) continue;
-    apps += anzahl;
-    if (apple && play)
-      inBeiden += Math.min(
-        (block.match(/apps\.apple\.com/g) ?? []).length,
-        (block.match(/play\.google\.com/g) ?? []).length,
-      );
+    beiApple += (block.match(/apps\.apple\.com/g) ?? []).length;
+    beiPlay += (block.match(/play\.google\.com/g) ?? []).length;
   }
 
+  /* Der Satz nennt seit dem 08.08.2026 beide Zahlen getrennt.
+
+     Vorher stand dort „drei Apps in den Stores, alle drei in beiden", und
+     das ging, solange jede App in beiden Stores lag. Mit Salati TV gilt das
+     nicht mehr: Die Fernseher-Fassung ist ein eigener Play-Eintrag ohne
+     Gegenstück bei Apple. Ein Satz, der nur eine Zahl nennt, müsste sich
+     dann für einen der beiden Stores entscheiden und wäre für den anderen
+     falsch. */
   const satz = quelle.match(
-    /(\w+) Apps in den Stores, (alle \w+|\w+ davon) in beiden/,
+    /(\w+) Apps im Play Store und (\w+) davon auch im App Store/,
   );
 
   if (!satz) {
-    zeilen.push("  --  Store-Zahlen: Satz im Werdegang nicht gefunden");
+    abweichungen++;
+    zeilen.push(
+      "  !!  Store-Zahlen: Der Satz im Werdegang steht nicht mehr in der " +
+        "erwarteten Form — ohne ihn prüft dieser Lauf nichts.",
+    );
   } else {
-    const behauptetApps = ZAHLWORT[satz[1].toLowerCase()];
-    const zweiteAngabe = satz[2].startsWith("alle")
-      ? ZAHLWORT[satz[2].split(" ")[1]]
-      : ZAHLWORT[satz[2].split(" ")[0]];
+    const behauptetPlay = ZAHLWORT[satz[1].toLowerCase()];
+    const behauptetApple = ZAHLWORT[satz[2].toLowerCase()];
     const funde = [];
-    if (behauptetApps !== apps)
-      funde.push(`Satz nennt ${behauptetApps} Apps, verlinkt sind ${apps}`);
-    if (zweiteAngabe !== inBeiden)
+    if (behauptetPlay !== beiPlay)
       funde.push(
-        `Satz nennt ${zweiteAngabe} in beiden Stores, verlinkt sind ${inBeiden}`,
+        `Satz nennt ${behauptetPlay} Apps im Play Store, verlinkt sind ${beiPlay}`,
+      );
+    if (behauptetApple !== beiApple)
+      funde.push(
+        `Satz nennt ${behauptetApple} im App Store, verlinkt sind ${beiApple}`,
       );
     if (funde.length) {
       abweichungen += funde.length;
@@ -2431,7 +2434,7 @@ const BRAUCHT_KIND = {
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        `  ok  Store-Zahlen        ${String(apps).padStart(6)} Apps verlinkt, ${inBeiden} in beiden Stores`,
+        `  ok  Store-Zahlen        ${String(beiPlay).padStart(6)} Apps im Play Store, ${beiApple} im App Store`,
       );
     }
   }

@@ -306,6 +306,11 @@ export const en: Content = {
           href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
           kind: "store",
         },
+        {
+          label: "Google Play (TV)",
+          href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
+          kind: "store",
+        },
       ],
       architecture: "salati",
       articles: [
@@ -701,7 +706,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, three apps in the stores, all three in both, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, four apps in the Play Store and three of them in the App Store as well, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
