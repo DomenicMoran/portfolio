@@ -949,7 +949,11 @@ function ghKonten() {
 
    Eine Ausnahme ist eingetragen und begründet: Ein MenuCloud-Test füttert
    absichtlich eine URL mit NUL-Zeichen, um zu prüfen, dass die Funktion leer
-   zurückkommt statt zu stolpern. Das ist der Zweck der Zeile, kein Unfall. */
+   zurückkommt statt zu stolpern. Das ist der Zweck der Zeile, kein Unfall.
+
+   Für das Portfolio allein stellt `check:chars` dieselbe Frage. Das ist keine
+   Doppelung, sondern der Aufrufweg: Dieser Lauf braucht die Nachbarordner und
+   läuft deshalb nicht in der CI. Beide bleiben gleich streng. */
 
 const ERLAUBTE_STEUERZEICHEN = new Set([0x09, 0x0a, 0x0d]);
 
@@ -2057,6 +2061,81 @@ const BRAUCHT_KIND = {
 
    Ohne Netz wird übersprungen und das gesagt. */
 /* ---------------------------------------------------------------------------
+   Jeder Commit, den ein Artikel nennt, existiert auch.
+
+   Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
+   von fünf einen Commit. Die Dateien kann von außen niemand öffnen — die Repos
+   sind privat —, und genau deshalb ist der Commit die Angabe, die am meisten
+   Gewicht trägt und am wenigsten kostet: acht Zeichen, die jeder abtippt und
+   niemand nachschlagen kann.
+
+   Ein Zahlendreher darin fiele nirgends auf. Hier fällt er auf: `git cat-file`
+   im Nachbar-Repo sagt, ob es den Commit gibt.
+   ------------------------------------------------------------------------ */
+{
+  const repoZuArtikel = {
+    "de-ota.ts": "../../SalatiTech",
+    "de-shaper.ts": "../../SalatiTech",
+    "de-widget.ts": "../../SalatiTech",
+    "de-whisper.ts": "../../SalatiTech",
+    "de-kassensichv.ts": "../../MenuCloud",
+    "en-ota.ts": "../../SalatiTech",
+    "en-shaper.ts": "../../SalatiTech",
+    "en-widget.ts": "../../SalatiTech",
+    "en-whisper.ts": "../../SalatiTech",
+    "en-kassensichv.ts": "../../MenuCloud",
+  };
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+
+  for (const [datei, repo] of Object.entries(repoZuArtikel)) {
+    const pfad = `src/content/articles/${datei}`;
+    if (!existsSync(pfad)) continue;
+    const text = readFileSync(pfad, "utf8");
+    const hashes = [
+      ...new Set(
+        [...text.matchAll(/[Cc]ommit ([0-9a-f]{7,40})\b/g)].map((m) => m[1]),
+      ),
+    ];
+    if (hashes.length === 0) continue;
+    if (!existsSync(repo)) {
+      uebersprungen += hashes.length;
+      continue;
+    }
+    for (const hash of hashes) {
+      geprueft++;
+      let art = "";
+      try {
+        art = execFileSync("git", ["cat-file", "-t", hash], {
+          cwd: repo,
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+      } catch {
+        art = "";
+      }
+      if (art !== "commit")
+        funde.push(`${datei}: ${hash} gibt es in ${repo} nicht`);
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} genannte(r) Commit(s) ohne Gegenstück:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft) {
+    zeilen.push(
+      `  ok  Artikel-Belege      ${String(geprueft).padStart(6)} genannte Commits gibt es im jeweiligen Repo` +
+        (uebersprungen ? `, ${uebersprungen} ohne Repo übersprungen` : ""),
+    );
+  } else {
+    zeilen.push("  --  Artikel-Belege: kein Repo erreichbar, übersprungen");
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Die Kennzahlen der Fallstudie ohne Git-Historie.
 
    WohnungsJäger liegt neben diesem Repo, aber nicht bei GitHub. Der Jahrescheck
@@ -2822,9 +2901,17 @@ const BRAUCHT_KIND = {
    Bot-Abwehr. Sie stehen als benannte Ausnahme hier, nicht als stille
    Sonderbehandlung im Vergleich. */
 {
+  /* Je Dienst die Antworten, die für ein Werkzeug normal sind.
+
+     Eine Zahl je Host reichte nicht: LinkedIn antwortete diesem Lauf über
+     Monate mit 999, am 08.08.2026 einmal mit 403 und unmittelbar danach
+     wieder zweimal mit 999. Beides ist dieselbe Bot-Abwehr, und ein Lauf,
+     der davon rot wird, meldet die Tagesform eines fremden Dienstes als
+     Fehler der eigenen Seite. Was zählt, bleibt der Fall, der wirklich
+     etwas bedeutet: 404 und 410 stehen hier nicht. */
   const AUSNAHMEN = new Map([
-    ["www.linkedin.com", 999],
-    ["ude.my", 403],
+    ["www.linkedin.com", [999, 403]],
+    ["ude.my", [403]],
   ]);
 
   const gebaut = join(".next", "server", "app");
@@ -2869,7 +2956,7 @@ const BRAUCHT_KIND = {
         geprueft++;
         const erlaubt = AUSNAHMEN.get(host);
         if (antwort.status === 200) continue;
-        if (erlaubt !== undefined && antwort.status === erlaubt) continue;
+        if (erlaubt?.includes(antwort.status)) continue;
         funde.push(`${adresse}: Status ${antwort.status}`);
       } catch {
         uebersprungen++;
@@ -3211,7 +3298,7 @@ const ANGABEN = [
         }
         /* Dieselben Ausnahmen wie bei den Verweisen der Seite: Manche Dienste
            antworten Werkzeugen grundsätzlich anders als einem Browser. */
-        if (AUSNAHMEN.get(host) === antwort.status) {
+        if (AUSNAHMEN.get(host)?.includes(antwort.status)) {
           erreicht++;
           continue;
         }
