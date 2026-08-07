@@ -85,6 +85,49 @@ async function commitsIn(repo) {
   return { repo, anzahl: (await antwort.json()).length };
 }
 
+/**
+ * Zählt Dateien im Baum eines Repositories.
+ *
+ * Zwei Zahlen der Seite hängen an Dateien und nicht an Commits: „1.278
+ * API-Routen" sind `route.ts` unter `src/app/api`, „815 DB-Migrationen" sind
+ * `.sql` unter `supabase/migrations`. Beide standen getippt im Inhalt.
+ *
+ * Gemessen am 08.08.2026: 1.276 und 812 auf der Seite, 1.278 und 815 im Repo
+ * — und zwei Stunden später 1.279. Zahlen, die mit jedem Arbeitstag wachsen,
+ * lassen sich von Hand nicht pflegen; genau dafür gibt es diesen Lauf.
+ *
+ * Ein Aufruf je Repository: Der rekursive Baum liefert alle Pfade auf einmal.
+ * `truncated` sagt, wenn GitHub abgeschnitten hat — dann wird nichts
+ * geschrieben, statt eine zu kleine Zahl zu melden.
+ */
+async function dateienIn(repo, treffer) {
+  const kopf = {
+    Authorization: `Bearer ${TOKEN}`,
+    Accept: "application/vnd.github+json",
+    "User-Agent": "domenicmoran.de-zahlen",
+  };
+  const daten = await fetch(`https://api.github.com/repos/${repo}`, { headers: kopf });
+  if (!daten.ok) return { fehler: `HTTP ${daten.status}` };
+  const zweig = (await daten.json()).default_branch;
+
+  const baum = await fetch(
+    `https://api.github.com/repos/${repo}/git/trees/${zweig}?recursive=1`,
+    { headers: kopf },
+  );
+  if (!baum.ok) return { fehler: `HTTP ${baum.status}` };
+  const inhalt = await baum.json();
+  if (inhalt.truncated) return { fehler: "Baum abgeschnitten" };
+
+  const pfade = (inhalt.tree ?? [])
+    .filter((e) => e.type === "blob")
+    .map((e) => e.path);
+  const raus = {};
+  for (const [name, muster] of Object.entries(treffer)) {
+    raus[name] = pfade.filter((p) => muster.test(p)).length;
+  }
+  return raus;
+}
+
 const je = await Promise.all(REPOS.map(commitsIn));
 const fehlend = je.filter((e) => e.fehler);
 
@@ -114,11 +157,44 @@ const summe = je.reduce((n, e) => n + e.anzahl, 0);
 const heute = new Date().toISOString().slice(0, 10);
 console.log(`  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repositories`);
 
+/* Die Commits des Salati-Repos einzeln.
+
+   Die Salati-Fallstudie führt sie als Kennzahl. Sie stand dort als getippte
+   Zahl und war damit die einzige Commit-Angabe der Seite, die niemand
+   auffrischt: Gemessen am 08.08.2026 sagte die Seite 1.070, das Repo zählte
+   1.071 — einen Tag nach der letzten Berichtigung von Hand. Eine Zahl, die
+   sich täglich bewegt, lässt sich so nicht pflegen; dieselbe Lehre steht an
+   zwei anderen Stellen dieses Repos schon.
+
+   Der Lauf holt sie ohnehin, sie stand nur nicht einzeln in der Datei. */
+const salati = je.find((e) => e.repo.endsWith("/salatibox"));
+
+/* Die beiden Dateizahlen der MenuCloud-Fallstudie. */
+const menucloud = await dateienIn("MenuCloud-Berlin/MenuCloud-app", {
+  apiRouten: /^src\/app\/api\/.*\/route\.ts$/,
+  migrationen: /^supabase\/migrations\/.*\.sql$/,
+});
+if (menucloud.fehler) {
+  console.log(`      ?  MenuCloud-app Dateizahlen: ${menucloud.fehler}`);
+} else {
+  console.log(`  ${String(menucloud.apiRouten).padStart(5)}  API-Routen`);
+  console.log(`  ${String(menucloud.migrationen).padStart(5)}  Migrationen`);
+}
+
 const vorher = existsSync(ZIEL) ? JSON.parse(readFileSync(ZIEL, "utf8")) : {};
 const neu = {
   ...vorher,
   date: heute,
   commitsHead: summe.toLocaleString("de-DE"),
+  ...(salati?.anzahl
+    ? { commitsSalati: salati.anzahl.toLocaleString("de-DE") }
+    : {}),
+  ...(menucloud.fehler
+    ? {}
+    : {
+        apiRouten: menucloud.apiRouten.toLocaleString("de-DE"),
+        migrationen: menucloud.migrationen.toLocaleString("de-DE"),
+      }),
   repos: REPOS.length,
   source: "GitHub-API",
 };
