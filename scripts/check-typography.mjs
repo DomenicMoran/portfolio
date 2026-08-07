@@ -182,6 +182,37 @@ for (const route of gebauteSeiten()) {
     );
   }
 
+  /* Ein Datum im Fließtext wird ausgeschrieben.
+
+     Gemessen an den gebauten Seiten am 07.08.2026 standen auf der Startseite
+     zwei Schreibweisen desselben Tages: „Gemessen am 06.08.2026 über die
+     GitHub-API“ unter den Kennzahlen und „gezählt am 6. August 2026“ unter dem
+     Liefertempo. Auf drei Artikelseiten dasselbe Paar — die Kopfzeile datiert
+     auf „30. Juli 2026“, die Belegliste darunter nennt „Commit 71bd8d2b vom
+     30.07.2026“. Die englischen Fassungen derselben Artikel schrieben an
+     derselben Stelle „30 July 2026“.
+
+     Die Ziffernform ist die Form für Formulare und Tabellen. Auf einer Seite,
+     deren Belege in Sätzen stehen, liest sie sich wie ein Feld, das jemand
+     ausgefüllt hat.
+
+     Ausgenommen ist, was in `<pre>` steht: Eine zitierte Ausgabe schreibt ihr
+     Datum so, wie das Programm es geschrieben hat, und darf nicht umformuliert
+     werden. */
+  const ohneCode = readFileSync(datei, "utf8")
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<pre[\s\S]*?<\/pre>/g, " ")
+    .replace(/<[^>]+>/g, " ");
+  const ziffernDatum = [
+    ...new Set([...ohneCode.matchAll(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g)].map((m) => m[0])),
+  ];
+  if (sprache === "de" && ziffernDatum.length > 0) {
+    funde.push(
+      `${route} (de): ${ziffernDatum.slice(0, 4).join(", ")} — ein Datum im ` +
+        `Fließtext wird ausgeschrieben (6. August 2026).`,
+    );
+  }
+
   /* Der Apostroph in englischen Verkürzungen.
 
      „Let's build something" stand als Überschrift des Kontaktabschnitts auf

@@ -1,3 +1,4 @@
+import { datumLang } from "@/lib/date-format";
 import verified from "@/content/verified.json";
 
 /**
@@ -13,7 +14,7 @@ import verified from "@/content/verified.json";
 export const dynamic = "force-static";
 
 export function GET() {
-  const stand = verified.date.split("-").reverse().join(".");
+  const stand = datumLang(verified.date);
 
   const text = `/* WER */
   Name:     Domenic Moran

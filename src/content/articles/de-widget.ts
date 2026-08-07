@@ -12,7 +12,7 @@ export const widgetDe: Article = {
   minutes: 4,
   tags: ["React Native", "Android", "Metro", "Debugging"],
   evidence: [
-    "Salati-Repo, Commit bce08f5e vom 23.07.2026",
+    "Salati-Repo, Commit bce08f5e vom 23. Juli 2026",
     "Geänderte Datei: apps/mobile/package.json, ein Feld",
     "Vorgeschichte: Commit 07d259e2 (Absturz des Einrichtungsbildschirms, andere Ursache)",
   ],

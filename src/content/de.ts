@@ -1,3 +1,4 @@
+import { datumLang } from "@/lib/date-format";
 import type { Content } from "./types";
 import verified from "./verified.json";
 import {
@@ -40,15 +41,6 @@ const salatiTage = Math.round(
 /** Im Changelog der App gezählt, siehe check-figures.mjs. */
 const SALATI_VERSIONEN = 64;
 const salatiStundenJeVersion = Math.round((salatiTage * 24) / SALATI_VERSIONEN);
-
-/** "2026-08-01" als "1. August 2026". */
-function datumLang(iso: string) {
-  return new Date(iso).toLocaleDateString("de-DE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export const de: Content = {
   lang: "de",
@@ -206,7 +198,7 @@ export const de: Content = {
     onepager: "Kurzprofil als PDF",
     sourceLabel: "Quellcode dieser Seite",
     sourceHref: "https://github.com/DomenicMoran/portfolio",
-    printNote: `Gedruckt von domenicmoran.de. Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${verified.date.split("-").reverse().join(".")}.`,
+    printNote: `Gedruckt von domenicmoran.de. Domenic Moran, Berlin. Alle Zahlen auf dieser Seite sind gegen die Repositories geprüft, Stand ${datumLang(verified.date)}.`,
   },
 
   demoNouri: {
