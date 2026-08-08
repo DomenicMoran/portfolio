@@ -69,6 +69,7 @@ const kopfGesehen = new Set();
 let nebenzeilen = 0;
 let bilder = 0;
 let mailverweis = 0;
+let elternpfade = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -541,6 +542,41 @@ for (const w of weiterleitungen) {
   sitemapzeilen = inSitemap.size;
 }
 
+/* Kein Elternpfad einer Seite führt ins Leere.
+
+   Wer auf `/artikel/kassensichv-in-der-praxis` steht und die Adresse bis
+   `/artikel` kürzt, tut das Naheliegende. Kein Verweis wäre tot, wenn dort
+   nichts läge — diese Adressen entstehen nicht durch Klicken, sondern durch
+   Tippen und Kürzen, und dieser Lauf sieht nur, worauf jemand zeigt.
+
+   Hier ist gerade alles in Ordnung: 18 Seiten, drei Elternpfade, alle drei
+   beantwortet. Im Prüfstand nebenan waren es vier verwaiste — /aufsagen,
+   /aufsagen/folge, /quiz/folge und /quiz/kapitel —, gefunden mit derselben
+   Rechnung. Was hier stimmt, stimmt nicht von selbst weiter: Ein neuer
+   Abschnitt unter einer neuen Ebene bringt den Fall mit. */
+{
+  const seitenmenge = new Set(pfade);
+  const umgeleitet = new Set(
+    (JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? []).map(
+      (w) => w.source,
+    ),
+  );
+  const eltern = new Set();
+  for (const seite of seitenmenge) {
+    const teile = seite.split("/").filter(Boolean);
+    for (let i = 1; i < teile.length; i++)
+      eltern.add("/" + teile.slice(0, i).join("/"));
+  }
+  for (const pfad of [...eltern].sort()) {
+    if (seitenmenge.has(pfad) || umgeleitet.has(pfad)) continue;
+    funde.push(
+      `${pfad} ist der Elternpfad einer Seite, antwortet aber selbst nicht — ` +
+        `weder gebaut noch in vercel.json weitergeleitet`,
+    );
+  }
+  elternpfade = eltern.size;
+}
+
 /* Der Mailverweis der Fehlerseite muss auch bei einer absurden Adresse gehen.
 
    Sie nennt den angefragten Pfad in der Vorlage, damit der Empfänger nicht
@@ -601,5 +637,6 @@ console.log(
     `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp, ` +
     `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar, ` +
     `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben, ` +
-    `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen.`,
+    `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen, ` +
+    `${elternpfade} Elternpfade antworten.`,
 );
