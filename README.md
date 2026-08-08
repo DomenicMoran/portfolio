@@ -304,6 +304,13 @@ Was die Policy stattdessen tatsächlich absichert und was hier zählt:
 'none'`, `base-uri 'self'` (kein Base-Tag-Hijacking), `frame-ancestors 'none'`
 (kein Clickjacking) und `form-action 'self'`.
 
+`img-src` erlaubt `'self'` und `data:`, nicht mehr `blob:`. Gemessen an den
+zwanzig gebauten Seiten trägt kein einziger der 26 Bildknoten eine
+`blob:`-Adresse; die einzige Fundstelle im Bündel ist eine Hülle um
+`URL.createObjectURL` aus einem Polyfill. Eine Erlaubnis, die niemand braucht,
+ist eine Erlaubnis zu viel. Wer hier je ein Bild aus einem Canvas erzeugt,
+holt sie zurück.
+
 Sobald die Seite je Nutzerinhalte rendert, kippt diese Abwägung. Dann kommen
 Nonces und dynamisches Rendering.
 
