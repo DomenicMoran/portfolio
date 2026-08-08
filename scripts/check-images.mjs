@@ -172,6 +172,75 @@ for (const route of [...mitBildern]) {
   await seite.close();
 }
 
+/* Eine begründete Leerstelle darf kein Bild daneben haben.
+
+   Die Fallstudie zu WohnungsJäger sagt: „Von diesem Projekt gibt es hier
+   bewusst kein Bild. Das Dashboard zeigt echte Inserate, echte Adressen und
+   meine vollständigen Bewerbungsunterlagen. Einen Screenshot mit ausgedachten
+   Daten nachzustellen wäre die naheliegende Lösung. Aber dann stünde auf einer
+   Seite, die mit Nachprüfbarkeit argumentiert, ein erfundenes Bild."
+
+   Der Inhalt kennt dafür ein eigenes Feld, `keinScreenshot`. Nur schließt es
+   `shots` nicht aus: Das Bauteil rendert beides nacheinander, wer also eine
+   Aufnahme nachträgt, bekommt ein Bild und darunter den Satz, es gebe keins.
+   Auf einer Seite, deren Argument Nachprüfbarkeit ist, wäre das der teuerste
+   Widerspruch von allen — und im Quelltext sieht man ihn nicht, weil die
+   beiden Felder vierzig Zeilen auseinanderliegen.
+
+   Gemessen wird an der ausgelieferten Seite und in beiden Sprachfassungen:
+   Der Kasten, der den Satz trägt, darf kein `img` enthalten. */
+{
+  const HINWEIS = /bewusst kein Bild|deliberately no image/i;
+  let leerstellen = 0;
+
+  for (const route of ["/", "/en"]) {
+    const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    const antwort = await seite.goto(`${basis}${route}`, { waitUntil: "networkidle" });
+    if (antwort?.status() !== 200) {
+      await seite.close();
+      continue;
+    }
+    await seite.evaluate(async () => {
+      const hoehe = document.documentElement.scrollHeight;
+      for (let y = 0; y < hoehe; y += 700) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 40));
+      }
+    });
+
+    const treffer = await seite.evaluate((muster) => {
+      const regel = new RegExp(muster, "i");
+      return [...document.querySelectorAll("[id^='case-']")]
+        .filter((k) => regel.test(k.innerText || ""))
+        .map((k) => ({ id: k.id, bilder: k.querySelectorAll("img").length }));
+    }, HINWEIS.source);
+
+    for (const k of treffer) {
+      leerstellen++;
+      if (k.bilder > 0) {
+        funde.push(
+          `${route}: ${k.id} sagt, es gebe hier bewusst kein Bild, zeigt aber ` +
+            `${k.bilder}. Entweder das Bild heraus oder den Satz.`,
+        );
+      }
+    }
+    await seite.close();
+  }
+
+  /* Zwei erwartet, eine je Sprachfassung. Ein erster Anlauf hatte die
+     englische Formulierung geraten — "deliberately no picture" — und traf
+     nicht: Dort steht "There is deliberately no image of this project." Mit
+     nur einem Treffer wäre der Lauf grün geblieben und die englische
+     Fallstudie ungeprüft. */
+  if (leerstellen !== 2) {
+    funde.push(
+      `${leerstellen} statt 2 Fallstudien tragen den Satz über die begründete ` +
+        `Leerstelle. Erwartet ist je eine Sprachfassung — fehlt eine, ist der ` +
+        `Satz verschwunden oder sein Wortlaut hat sich geändert.`,
+    );
+  }
+}
+
 await browser.close();
 beenden();
 
