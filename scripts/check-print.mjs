@@ -680,6 +680,7 @@ if (reiterfunde.length > 0) {
    wird, der sie nicht ist. */
 const BLATTGRENZE = 1040;
 const blattfunde = [];
+let gedruckteBlaetter = 0;
 
 for (const pfad of ["/onepager", "/en/onepager"]) {
   const seite = await browser.newPage({
@@ -702,6 +703,39 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     } else {
       console.log(`  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`);
     }
+
+    /* Und die Zusage selbst, nicht nur ihr Stellvertreter.
+
+       Die Höhe ist eine Näherung: Sie sagt, dass der Inhalt auf ein Blatt
+       passt, nicht, dass er auch auf eines gedruckt wird. Ein `break-inside`,
+       das der Browser anders auslegt, ein Kasten, der nicht geteilt werden
+       darf, eine Fußzeile mit eigener Umbruchregel — jedes davon ergibt zwei
+       Seiten bei unveränderter Höhe.
+
+       Der Knopf auf dem Blatt heißt „Drucken / PDF", und wer ihn drückt,
+       bekommt genau das hier: den Druck aus dem Browser, nicht die
+       vorbereitete Datei. Geprüft war bisher nur die vorbereitete —
+       `check:onepager` zählt die Seiten des fertigen PDF, das von Hand
+       entsteht. Der Weg über den Knopf hatte keinen Wächter.
+
+       Gemessen am 08.08.2026: beide Fassungen eine Seite, 421 und 403 kB. */
+    const gedruckt = await seite.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: { top: "12mm", bottom: "12mm", left: "12mm", right: "12mm" },
+    });
+    const seitenzahl = (
+      gedruckt.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []
+    ).length;
+    if (seitenzahl !== 1) {
+      blattfunde.push(
+        `${pfad}: Der Druck aus dem Browser ergibt ${seitenzahl} Seiten. ` +
+          `Der Knopf auf dem Blatt heißt „Drucken / PDF", und das ist, was ` +
+          `dabei herauskommt.`,
+      );
+    } else {
+      gedruckteBlaetter++;
+    }
   }
   await seite.close();
 }
@@ -723,4 +757,7 @@ if (fehler > 0) {
   process.exit(1);
 }
 
-console.log(`\nAlle ${gepruefteSeiten.length} Seiten drucken lesbar und vollständig.`);
+console.log(
+  `\nAlle ${gepruefteSeiten.length} Seiten drucken lesbar und vollständig, ` +
+    `das Kurzprofil in ${gedruckteBlaetter} Fassungen auf je einer Seite.`,
+);
