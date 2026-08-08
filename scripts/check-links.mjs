@@ -489,12 +489,41 @@ for (const w of weiterleitungen) {
         `Vercel antwortet dann mit 307 statt 308`,
     );
   }
-  const antwort = await fetch(`${basis}${ziel}`).catch(() => null);
-  if (!antwort || antwort.status !== 200) {
+  /* Ziele mit Platzhalter werden mit einem echten Wert geprüft.
+
+     `/en/article/:slug` auf `/en/articles/:slug` fängt die Verwechslung von
+     Einzahl und Mehrzahl für jeden Artikel auf einmal — der deutsche Pfad
+     heißt `/artikel`, der englische `/en/articles`, und wer den einen kennt,
+     schreibt den anderen falsch. Wörtlich abgerufen antwortet ein solches
+     Ziel mit 404, weil `:slug` kein Pfad ist; der Lauf meldete es beim
+     Einbau prompt.
+
+     Eingesetzt wird der erste gebaute Artikel der jeweiligen Sprache. Damit
+     prüft der Lauf, was die Regel wirklich erzeugt, statt sie zu übergehen. */
+  const beispiel = (pfad) => {
+    if (!pfad.includes(":")) return pfad;
+    const englisch = pfad.startsWith("/en/");
+    const muster = englisch ? /^\/en\/articles\/[^/]+$/ : /^\/artikel\/[^/]+$/;
+    const echter = pfade.find((p) => muster.test(p));
+    if (!echter) return null;
+    return pfad.replace(/:[a-zA-Z]+/, echter.split("/").pop());
+  };
+
+  const gepruefteAdresse = beispiel(ziel);
+  if (gepruefteAdresse === null) {
     funde.push(
-      `vercel.json: ${w.source} zeigt auf ${w.destination}, ` +
-        `und das antwortet mit ${antwort ? antwort.status : "gar nicht"}`,
+      `vercel.json: ${w.source} zeigt auf ${w.destination}, und dafür gibt es ` +
+        `keine gebaute Seite, an der sich der Platzhalter prüfen ließe`,
     );
+  } else {
+    const antwort = await fetch(`${basis}${gepruefteAdresse}`).catch(() => null);
+    if (!antwort || antwort.status !== 200) {
+      funde.push(
+        `vercel.json: ${w.source} zeigt auf ${w.destination}` +
+          (gepruefteAdresse === ziel ? "" : ` (geprüft als ${gepruefteAdresse})`) +
+          `, und das antwortet mit ${antwort ? antwort.status : "gar nicht"}`,
+      );
+    }
   }
 }
 

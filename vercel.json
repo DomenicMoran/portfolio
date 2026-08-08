@@ -321,6 +321,46 @@
       "permanent": true
     },
     {
+      "source": "/artikel/feed",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/rss",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/feed",
+      "destination": "/en/articles/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/rss",
+      "destination": "/en/articles/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/feed.atom",
+      "destination": "/artikel/feed.xml",
+      "permanent": true
+    },
+    {
+      "source": "/en/article",
+      "destination": "/en/articles",
+      "permanent": true
+    },
+    {
+      "source": "/en/article/:slug",
+      "destination": "/en/articles/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/artikeln",
+      "destination": "/artikel",
+      "permanent": true
+    },
+    {
       "source": "/articles",
       "destination": "/en/articles",
       "permanent": true
