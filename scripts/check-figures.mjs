@@ -3614,6 +3614,84 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   „Alle mit Tests, CI und MIT-Lizenz"
+
+   So steht es auf dem Kurzprofil unter den vier veröffentlichten Paketen —
+   auf dem einen Blatt, das weitergereicht wird, und in beiden
+   Sprachfassungen. Drei Zusagen in sechs Wörtern, und ein Leser, der eine
+   davon nachsieht, sieht die anderen beiden gleich mit.
+
+   Die Testzahlen prüft der Lauf schon gegen die Repos. Lizenz und CI nicht:
+   Eine Datei, die beim Aufräumen verschwindet, oder ein `license`-Feld, das
+   beim Anlegen des nächsten Pakets vergessen wird, fällt sonst erst dem auf,
+   der klickt.
+
+   Geprüft wird beides dort, wo es gilt: das Feld in der `package.json`, die
+   LICENSE-Datei daneben und ein Arbeitsablauf unter `.github/workflows`.
+   Gemessen am 08.08.2026 tragen alle vier alle drei.
+   ------------------------------------------------------------------------ */
+{
+  const PAKETE = [
+    "verified-done",
+    "cron-last-due",
+    "arabic-normalize",
+    "whisper-ggml-header",
+  ];
+
+  const genannt = existsSync("src/content/de.ts")
+    ? /alle mit Tests, CI und MIT-Lizenz/.test(readFileSync("src/content/de.ts", "utf8"))
+    : false;
+
+  if (!genannt) {
+    abweichungen++;
+    zeilen.push(
+      "  !!  Die Zusage über Tests, CI und Lizenz steht nicht mehr im Kurzprofil",
+    );
+  } else {
+    const funde = [];
+    let geprueft = 0;
+
+    for (const name of PAKETE) {
+      const ort = join(OSS, name);
+      if (!existsSync(ort)) {
+        zeilen.push(`  --  ${name} nicht vorhanden, Lizenz und CI übersprungen`);
+        continue;
+      }
+      geprueft++;
+
+      const paket = JSON.parse(readFileSync(join(ort, "package.json"), "utf8"));
+      if (paket.license !== "MIT") {
+        funde.push(`${name}: package.json nennt „${paket.license ?? "nichts"}"`);
+      }
+
+      const lizenzdatei = join(ort, "LICENSE");
+      if (!existsSync(lizenzdatei)) {
+        funde.push(`${name}: keine LICENSE-Datei`);
+      } else if (!/MIT License/i.test(readFileSync(lizenzdatei, "utf8").slice(0, 200))) {
+        funde.push(`${name}: die LICENSE-Datei nennt keine MIT-Lizenz`);
+      }
+
+      const ablaeufe = join(ort, ".github", "workflows");
+      const yml = existsSync(ablaeufe)
+        ? readdirSync(ablaeufe).filter((d) => /\.ya?ml$/.test(d))
+        : [];
+      if (yml.length === 0) funde.push(`${name}: kein Arbeitsablauf, also keine CI`);
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(`  !!  ${funde.length} Zusage(n) über die Pakete stimmen nicht:`);
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else if (geprueft) {
+      zeilen.push(
+        `  ok  Lizenz und CI      ${String(geprueft).padStart(6)} Pakete mit MIT im Feld, ` +
+          `in der Datei und mit Arbeitsablauf`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    „Alle allein gebaut" — steht das noch in der Historie?
 
    Der Satz steht sechsmal auf der Seite: im Vorspann, in der Kennzahlenreihe
