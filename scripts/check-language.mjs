@@ -66,6 +66,7 @@ if (!basis) ({ basis, beenden } = await starteServer());
 
 const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
 const funde = [];
+let umschalterGeprueft = 0;
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -90,9 +91,29 @@ for (const pfad of pfade) {
       alternativen[el.getAttribute("hreflang")] = el.getAttribute("href");
     }
 
-    const wechsel = [...document.querySelectorAll("a")]
-      .filter((e) => /^(English|Deutsch)$/i.test(e.textContent.trim()))
-      .map((e) => e.getAttribute("href"));
+    const wechselknoten = [...document.querySelectorAll("a")].filter((e) =>
+      /^(English|Deutsch)$/i.test(e.textContent.trim()),
+    );
+    const wechsel = wechselknoten.map((e) => e.getAttribute("href"));
+
+    /* Der Umschalter braucht zwei Angaben, nicht eine.
+
+       `hreflang` sagt, was am anderen Ende wartet — das prüft dieser Lauf
+       weiter unten. `lang` sagt, in welcher Sprache die Beschriftung selbst
+       steht, und darauf kommt es hier besonders an: Der Knopf trägt auf der
+       englischen Seite `aria-label="Diese Seite auf Deutsch"`. Ohne `lang`
+       liest ein englisches Vorleseprogramm diese vier deutschen Wörter mit
+       englischer Aussprache vor, und heraus kommt Kauderwelsch an der einen
+       Stelle, an der jemand die Sprache wechseln will.
+
+       Gemessen am 08.08.2026 tragen beide Richtungen beides. Der Lauf hält
+       es fest, weil ein Attribut leichter verschwindet als ein Wort. */
+    const umschalter = wechselknoten.map((e) => ({
+      ziel: e.getAttribute("href"),
+      hreflang: e.getAttribute("hreflang"),
+      lang: e.getAttribute("lang"),
+      name: (e.getAttribute("aria-label") ?? e.textContent).trim().slice(0, 40),
+    }));
 
     const rueckweg = [...document.querySelectorAll("a")].some(
       (e) => e.getAttribute("href") === "/en",
@@ -194,6 +215,7 @@ for (const pfad of pfade) {
       lang: document.documentElement.lang,
       alternativen,
       wechsel: [...new Set(wechsel)],
+      umschalter,
       rueckweg,
       deutsch: [...new Set(deutsch)],
       englischerText: [...new Set(englischerText)],
@@ -304,6 +326,18 @@ for (const [pfad, daten] of stand) {
   }
 
   /* Und der sichtbare Wechsel führt dorthin, wo hreflang hinzeigt. */
+  for (const u of daten.umschalter ?? []) {
+    const soll = u.ziel === "/en" || u.ziel?.startsWith("/en/") ? "en" : "de";
+    if (u.hreflang !== soll || u.lang !== soll) {
+      funde.push(
+        `${pfad}: Der Sprachumschalter „${u.name}" führt nach ${u.ziel}, ` +
+          `trägt aber hreflang="${u.hreflang ?? "nichts"}" und ` +
+          `lang="${u.lang ?? "nichts"}" statt zweimal „${soll}"`,
+      );
+    }
+    umschalterGeprueft++;
+  }
+
   if (daten.wechsel.length === 0) {
     funde.push(`${pfad}: kein sichtbarer Sprachwechsel`);
   } else if (!daten.wechsel.some((z) => alsPfad(z) === gegen)) {
@@ -340,5 +374,6 @@ if (funde.length > 0) {
 
 console.log(
   `Beide Sprachfassungen hängen zusammen: ${stand.size} Seiten geprüft, ` +
-    `hreflang wechselseitig, Sprachwechsel deckungsgleich.`,
+    `hreflang wechselseitig, Sprachwechsel deckungsgleich, ` +
+    `${umschalterGeprueft} Umschalter mit lang und hreflang.`,
 );
