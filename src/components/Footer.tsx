@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import verified from "@/content/verified.json";
 import { mailAdresse } from "@/lib/mailto";
 import { ArrowUpRight } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -29,7 +30,15 @@ export function Footer({
     languageSwitch,
     lang,
   } = useContent();
-  const year = new Date().getFullYear();
+  /* Das Jahr im Copyright kommt aus dem Prüfstempel, nicht aus der Uhr.
+
+     Die Fußzeile ist ein Client-Bauteil auf vorab erzeugten Seiten. `new
+     Date()` im Render heißt: Der Server schreibt das Jahr des Bautags, der
+     Browser rechnet beim Laden — und am 1. Januar liefen beide auseinander,
+     mit demselben React-Fehler 418, den die Gebetszeiten-Demo einen Tag nach
+     jedem Bau erzeugte. Der Stempel wird täglich nachgeführt und steht als
+     Zeichenkette im Bündel, ist also auf beiden Seiten derselbe Wert. */
+  const year = Number(verified.date.slice(0, 4));
   const sprachZiel = otherHref ?? (lang === "de" ? "/en" : "/");
 
   const socials = [
@@ -125,7 +134,7 @@ export function Footer({
               ))}
               <Link
                 href={sprachZiel}
-              prefetch={false}
+                prefetch={false}
                 hrefLang={languageSwitch.to}
                 lang={languageSwitch.to}
                 className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
