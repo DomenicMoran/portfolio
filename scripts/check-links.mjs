@@ -447,6 +447,37 @@ for (const adresse of VEROEFFENTLICHT) {
    erst, wenn ein Recruiter auf der 404 landet. Geprüft wird deshalb das
    Ziel: Es muss eine Seite sein, die es wirklich gibt. Die Weiterleitung
    selbst kann hier nicht getestet werden — sie entsteht erst bei Vercel. */
+/* Keine Weiterleitung zeigt auf eine andere Weiterleitung.
+
+   Die Liste wächst mit jeder Runde, in der jemand eine Adresse ausprobiert
+   und im Leeren landet — inzwischen 77 Regeln. Sobald ein Ziel selbst wieder
+   eine Quelle ist, kostet jeder Aufruf zwei Umläufe statt einem, und
+   Suchmaschinen werten eine Kette schlechter als einen Sprung. Im Quelltext
+   sieht man es nicht: Die beiden Zeilen stehen dann zwanzig Einträge
+   auseinander.
+
+   Gemessen am 08.08.2026: keine Kette. Live nachgesehen springt jede Regel
+   genau einmal — nur eine getippte Adresse mit Schrägstrich am Ende braucht
+   zwei, und der erste Sprung ist Vercels eigene Normalisierung, keine
+   Regel von hier. */
+{
+  const ziele = new Map(
+    (JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? []).map((w) => [
+      w.source,
+      w.destination,
+    ]),
+  );
+  for (const [quelle, ziel] of ziele) {
+    const ohneAnker = ziel.split("#")[0];
+    if (ziele.has(ohneAnker)) {
+      funde.push(
+        `vercel.json: ${quelle} zeigt auf ${ziel}, und das ist selbst eine ` +
+          `Weiterleitung auf ${ziele.get(ohneAnker)} — zwei Sprünge statt einem`,
+      );
+    }
+  }
+}
+
 const weiterleitungen =
   JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? [];
 let ziele = 0;
