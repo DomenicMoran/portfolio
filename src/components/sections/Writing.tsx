@@ -55,6 +55,18 @@ export function Writing() {
                   nicht aus der Schrift In etwa jedem dritten Vers …“. */}
               <Link
                 href={`${chrome.base}/${a.slug}`}
+                /* Kein Vorabladen im Anriss.
+
+                   Next holt jede sichtbare Zielseite im Voraus. Gemessen an
+                   der ausgelieferten Startseite auf dem Telefon: 36 Antworten
+                   mit zusammen 625 kB, davon 443 kB für sechs vollständige
+                   Artikelseiten — geholt, bevor jemand einen Titel gelesen
+                   hat. Wer hier klickt, klickt einen davon an, nicht sechs.
+
+                   Beim Zeigen mit der Maus lädt Next weiterhin vor, der Klick
+                   bleibt also gleich schnell. `check:vitals` hält die Menge
+                   offen. */
+                prefetch={false}
                 aria-labelledby={`schrift-${a.slug}`}
                 className="group lit flex h-full flex-col rounded-2xl border border-line bg-surface/40 p-6 transition-colors hover:border-acid/40"
               >

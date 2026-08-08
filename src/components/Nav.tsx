@@ -221,6 +221,7 @@ export function Nav({
           <div className="flex items-center gap-2">
             <Link
               href={sprachZiel}
+              prefetch={false}
               /* `lang` neben `hrefLang`: Beschriftung und Ansage stehen in
                   der Zielsprache — auf der englischen Seite also "Deutsch"
                   und "Diese Seite auf Deutsch". Ohne die Auszeichnung liest
@@ -307,6 +308,7 @@ export function Nav({
               <div className="flex items-center justify-between">
                 <Link
                   href={sprachZiel}
+              prefetch={false}
                   hrefLang={c.languageSwitch.to}
                   lang={c.languageSwitch.to}
                   aria-label={c.languageSwitch.aria}

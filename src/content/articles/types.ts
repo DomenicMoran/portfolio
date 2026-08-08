@@ -53,7 +53,7 @@ export type Article = {
    * Ein Eintrag darf eine Adresse tragen. Der Grund ist der Unterschied
    * zwischen Beleg und Nachweis: Bis hierher zeigte jede Zeile auf eine Datei
    * in einem Repo, das niemand außer mir öffnen kann — gemessen am 02.08.2026
-   * waren das alle 21 Belege der fünf Artikel. Wo derselben Arbeit ein
+   * waren das alle 21 Belege der damals fünf Artikel. Wo derselben Arbeit ein
    * öffentliches Paket entstammt, gehört es hierher, denn das ist die einzige
    * Zeile, die ein Leser selbst ausführen kann.
    */

@@ -125,6 +125,7 @@ export function Footer({
               ))}
               <Link
                 href={sprachZiel}
+              prefetch={false}
                 hrefLang={languageSwitch.to}
                 lang={languageSwitch.to}
                 className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
@@ -146,6 +147,7 @@ export function Footer({
                   vorher, und ein Vorleseprogramm wechselt die Aussprache. */}
               <Link
                 href="/impressum"
+                prefetch={false}
                 hrefLang="de"
                 className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >
@@ -153,6 +155,7 @@ export function Footer({
               </Link>
               <Link
                 href="/datenschutz"
+                prefetch={false}
                 hrefLang="de"
                 className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
               >

@@ -112,6 +112,8 @@ let basis = vorgegebeneBasis;
 let beenden = () => {};
 if (!basis) ({ basis, beenden } = await starteServer());
 
+let vorablast = 0;
+let vorabAntworten = 0;
 const browser = await chromium.launch();
 const funde = [];
 const zeilen = [];
@@ -264,7 +266,9 @@ for (const pfad of SEITEN) {
    vermischen — sonst prüft er zweimal dasselbe und keins davon genau.
    ------------------------------------------------------------------------ */
 {
-  const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const seite = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+  });
   const cdp = await seite.context().newCDPSession(seite);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 
@@ -336,6 +340,72 @@ for (const pfad of SEITEN) {
   }
 }
 
+/* Was die Seite nachlädt, ohne dass jemand klickt.
+
+   Next holt die Zielseite jedes sichtbaren Verweises im Voraus. Das ist meist
+   richtig — ein Klick fühlt sich dadurch sofort an —, aber es ist Verkehr, den
+   niemand angefordert hat, und er taucht in keinem Bündelbudget auf: Die
+   Antworten kommen als `fetch` und nicht als Skript.
+
+   Gemessen an der ausgelieferten Startseite auf dem Telefon, vor dem Eingriff:
+   36 Antworten mit zusammen 625 kB. Davon 443 kB für sechs vollständige
+   Artikelseiten — geholt, bevor jemand einen Titel gelesen hat, und wer hier
+   klickt, klickt einen davon an, nicht sechs. Ohne das Vorabladen an den
+   Artikelverweisen, am Sprachwechsel und an den beiden Rechtsseiten sind es
+   20 Antworten und 308 kB. Beim Zeigen mit der Maus lädt Next weiterhin vor,
+   der Klick bleibt also gleich schnell.
+
+   Die Kernwerte bleiben davon unberührt: Das Nachladen beginnt nach dem
+   Aufbau. Es kostet Daten auf einer bezahlten Verbindung und Bandbreite beim
+   Scrollen, und genau deshalb steht die Messung hier und nicht bei den
+   Skripten.
+
+   Die Grenze steht bei 400 kB: hoch genug, dass die Schwankung zwischen zwei
+   Läufen sie nicht reißt, niedrig genug, dass ein zurückgenommenes
+   `prefetch={false}` sofort auffällt. */
+{
+  const NACHLADEGRENZE_KB = 400;
+  const seite = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 2,
+  });
+  let bytes = 0;
+  let antworten = 0;
+  seite.on("response", async (antwort) => {
+    if (antwort.request().resourceType() !== "fetch") return;
+    antworten++;
+    try {
+      bytes += (await antwort.body()).length;
+    } catch {
+      /* Eine Antwort ohne Körper zählt als Anfrage und mit null Bytes. */
+    }
+  });
+
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  await seite.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 800) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 60));
+    }
+  });
+  await seite.waitForTimeout(2000);
+  await seite.close();
+
+  vorablast = Math.round(bytes / 1024);
+  if (vorablast > NACHLADEGRENZE_KB) {
+    console.error(
+      `${String.fromCharCode(10)}Die Startseite lädt ${vorablast} kB im Voraus ` +
+        `nach (${antworten} Antworten), erlaubt sind ${NACHLADEGRENZE_KB}. ` +
+        `Wahrscheinlich fehlt prefetch={false} an einem Verweis, dem fast ` +
+        `niemand folgt.`,
+    );
+    await browser.close();
+    beenden();
+    process.exit(1);
+  }
+  vorabAntworten = antworten;
+}
+
 await browser.close();
 beenden();
 
@@ -353,5 +423,6 @@ if (funde.length > 0) {
 
 console.log(
   `\nAlle Kernwerte im Budget: ${SEITEN.length} Seiten × ${LAEUFE} Läufe nach dem Aufwärmen ` +
-    `auf einem gedrosselten Telefon, LCP unter ${BUDGET.lcp} ms, CLS unter ${BUDGET.cls}, INP unter ${BUDGET.inp} ms.`,
+    `auf einem gedrosselten Telefon, LCP unter ${BUDGET.lcp} ms, CLS unter ${BUDGET.cls}, INP unter ${BUDGET.inp} ms. ` +
+    `Die Startseite lädt dazu ${vorablast} kB in ${vorabAntworten} Antworten vorab.`,
 );
