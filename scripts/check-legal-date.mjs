@@ -24,6 +24,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { pruefeBaustand } from "./lib/built-pages.mjs";
 import { ANBIETER, ANSCHRIFT } from "../src/app/(de)/(legal)/provider.ts";
 const STAND_DATEI = join("src", "app", "(de)", "(legal)", "stand.ts");
 
@@ -98,31 +99,14 @@ try {
    dreizehn Wörter länger, und der Lauf meldete unverändert 516 Wörter und
    dieselbe Prüfsumme. Genau der Fall, den die Prüfsumme abfangen soll.
 
-   Also zuerst die Frage, ob das Blatt überhaupt die Quelle zeigt. */
-{
-  const gebaut = statSync(SEITE).mtimeMs;
-  const quellen = [
-    join("src", "app", "(de)", "(legal)", "datenschutz", "page.tsx"),
-    join("src", "app", "(de)", "(legal)", "provider.ts"),
-    STAND_DATEI,
-  ].filter((d) => existsSync(d));
-  const juenger = quellen.filter((d) => statSync(d).mtimeMs > gebaut);
-
-  if (juenger.length) {
-    console.error(
-      `Der Bau ist älter als die Quelle der Datenschutzerklärung:` +
-        String.fromCharCode(10) +
-        String.fromCharCode(10) +
-        juenger.map((d) => `  ${d}`).join(String.fromCharCode(10)) +
-        String.fromCharCode(10) +
-        String.fromCharCode(10) +
-        `Dieser Lauf misst ${SEITE}. Ohne neuen Bau prüft er die Fassung ` +
-        `von vorhin und meldet grün, obwohl der Text sich geändert hat. ` +
-        `Erst „npm run build", dann noch einmal hier entlang.`,
-    );
-    process.exit(1);
-  }
-}
+   Geprüft wird über `pruefeBaustand` und nicht über einen eigenen Vergleich.
+   Hier stand zuerst einer: drei Dateien der Rechtsseiten gegen den
+   Zeitstempel des Blatts. Er hätte den gemessenen Fall gefunden und den
+   nächsten nicht — eine Änderung an `provider.ts`, an einer geteilten
+   Komponente oder am Layout wäre durchgelaufen. Die zwanzig Läufe, die einen
+   Browser öffnen, benutzen längst den vollständigen Vergleich über `src/`;
+   dieser hier las das Blatt direkt und kam deshalb nie daran vorbei. */
+pruefeBaustand();
 
 /* Steht das Datum aus `stand.ts` auch wirklich auf dem Blatt?
 
