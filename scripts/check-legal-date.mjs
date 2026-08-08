@@ -212,6 +212,67 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
   process.exit(1);
 }
 
+/* Eine Adresse, und zwar überall dieselbe.
+
+   § 5 DDG verlangt eine Angabe für die schnelle elektronische Kontaktaufnahme,
+   Art. 13 DSGVO die Kontaktdaten des Verantwortlichen, und RFC 9116 verlangt
+   in `security.txt` einen erreichbaren Kanal. Alle drei zeigen hier auf
+   dieselbe Adresse — und genau deshalb ist eine zweite, die irgendwo
+   hineingerät, so teuer: Eine Auskunftsanfrage oder eine Sicherheitsmeldung
+   liefe an ein Postfach, das niemand liest, und beides hat Fristen.
+
+   Gemessen am 08.08.2026 über alles, was ausgeliefert wird: eine Adresse auf
+   zwanzig Seiten, in llms.txt, humans.txt, security.txt und beiden PDF.
+
+   Verglichen wird gegen `site.ts`, nicht gegen eine Zeichenkette hier: Wer die
+   Adresse wechselt, ändert sie dort, und der Lauf zieht mit. */
+{
+  const quelle = join("src", "content", "site.ts");
+  const richtige = existsSync(quelle)
+    ? readFileSync(quelle, "utf8").match(/email:\s*"([^"]+)"/)?.[1]
+    : null;
+
+  if (!richtige) {
+    console.log("  --  Keine Adresse in site.ts gefunden, Vergleich übersprungen.");
+  } else {
+    const MUSTER = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+    const fremde = new Map();
+    let durchsucht = 0;
+
+    for (const datei of dateienUnter(join(".next", "server", "app"))) {
+      if (!/\.(html|body)$/.test(datei)) continue;
+      durchsucht++;
+      for (const treffer of readFileSync(datei, "utf8").matchAll(MUSTER)) {
+        const adresse = treffer[0].toLowerCase();
+        /* Beispieladressen aus Artikeltexten und Codeblöcken zählen nicht:
+           Sie stehen dort als Beispiel und nicht als Kontaktweg. */
+        if (adresse === richtige.toLowerCase()) continue;
+        if (/@example\.(com|org|net)$/.test(adresse)) continue;
+        if (adresse === "noreply@domenicmoran.de") continue;
+        fremde.set(adresse, (fremde.get(adresse) ?? 0) + 1);
+      }
+    }
+
+    if (fremde.size) {
+      console.error(
+        `Neben ${richtige} stehen weitere Adressen im Ausgelieferten:` +
+          String.fromCharCode(10) +
+          String.fromCharCode(10) +
+          [...fremde].map(([a, n]) => `  ${a} (${n}×)`).join(String.fromCharCode(10)) +
+          String.fromCharCode(10) +
+          String.fromCharCode(10) +
+          `Eine Auskunftsanfrage oder eine Sicherheitsmeldung an die falsche ` +
+          `Adresse hat trotzdem eine Frist.`,
+      );
+      process.exitCode = 1;
+    } else {
+      console.log(
+        `  ok  Eine Kontaktadresse über ${durchsucht} ausgelieferte Dateien.`,
+      );
+    }
+  }
+}
+
 /* Kein Verweis auf die abgeschaffte Streitbeilegungsplattform.
 
    Bis Juli 2025 verlangte Art. 14 der ODR-Verordnung von fast jeder
