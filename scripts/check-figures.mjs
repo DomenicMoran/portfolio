@@ -3639,7 +3639,16 @@ const BRAUCHT_KIND = {
   let uebersprungen = 0;
   let automatenCommits = 0;
 
-  for (const [name, ort] of REPOS) {
+  /* WohnungsJäger gehört dazu, auch ohne Historie.
+
+     `REPOS` kennt es nicht, weil dort die Repos mit Commit-Zählung stehen und
+     `../../KIWohnung` keine `.git` hat. Für diese Frage ist das aber gerade
+     der Punkt: Es ist eine der vier Fallstudien, die „Alleiniger Entwickler"
+     als Rolle trägt, und ohne Historie lässt sich das nicht nachsehen. Wird
+     es hier weggelassen, sagt die Ausgabe „nur eigene Absender" und meint
+     drei von vier — eine Zusage, die vollständiger klingt, als sie gemessen
+     ist. So steht die Lücke in der Zeile. */
+  for (const [name, ort] of [...REPOS, ["WohnungsJäger", resolve("../../KIWohnung")]]) {
     if (!existsSync(join(ort, ".git"))) {
       uebersprungen++;
       continue;
@@ -3695,7 +3704,9 @@ const BRAUCHT_KIND = {
       `  ok  Allein gebaut          ${geprueft} Repos, nur eigene Absender, ` +
         `dazu ${automatenCommits} Commits des Zahlen-Automaten mit seinem ` +
         `einen Betreff` +
-        (uebersprungen ? ` (${uebersprungen} ohne Historie)` : ""),
+        (uebersprungen
+          ? ` — ${uebersprungen} Projekt(e) ohne Historie, dort ungeprüft`
+          : ""),
     );
   }
 }
