@@ -78,7 +78,31 @@ await werkzeug.send("DOM.enable");
 
 const glatt = (text) => (text ?? "").replace(/\s+/g, " ").trim();
 
+/**
+ * Die Namen aller Ueberschriften, aus dem Barrierefreiheitsbaum.
+ *
+ * Zweimal abgefragt, wenn die erste Runde ins Leere greift. `DOM.getDocument`
+ * und `DOM.querySelectorAll` liefern Kennungen, die nur so lange gelten, wie
+ * der Baum steht. Zwischen der Abfrage und dem letzten `DOM.describeNode`
+ * liegt hier die ganze Schleife, und in dieser Zeit rendert die Seite nach:
+ * Einblendungen setzen ein, die Kopfleiste tauscht ihre Marke. In der CI fiel
+ * der Lauf dadurch am 08.08.2026 mit „Could not find node with given id" aus,
+ * ohne dass an der Seite etwas gewesen waere.
+ *
+ * Ein zweiter Anlauf holt sich frische Kennungen. Bleibt es auch dann dabei,
+ * ist es kein Wettlauf mehr und der Fehler gehoert nach oben.
+ */
 async function ueberschriftenNamen(aufSeite = seite, mitWerkzeug = werkzeug) {
+  try {
+    return await einAnlauf(aufSeite, mitWerkzeug);
+  } catch (fehler) {
+    if (!/Could not find node/.test(String(fehler))) throw fehler;
+    await aufSeite.waitForTimeout(500);
+    return await einAnlauf(aufSeite, mitWerkzeug);
+  }
+}
+
+async function einAnlauf(aufSeite, mitWerkzeug) {
   const { root } = await mitWerkzeug.send("DOM.getDocument", { depth: -1 });
   const { nodeIds } = await mitWerkzeug.send("DOM.querySelectorAll", {
     nodeId: root.nodeId,
@@ -263,7 +287,9 @@ await seite.close();
 
    Nur die Namen, nicht die Landmarken: Die hängen an keiner Breite. */
 {
-  const eng = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const eng = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
   const engeSeite = await eng.newPage();
   const engesWerkzeug = await eng.newCDPSession(engeSeite);
   await engesWerkzeug.send("Accessibility.enable");
