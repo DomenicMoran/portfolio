@@ -192,8 +192,25 @@ console.log(
     `${BREITEN.length} Breiten, und keine Seite über ${BILDBUDGET_KB} kB Bildern ` +
     `vor der ersten Bewegung.`,
 );
+/* Diese Liste ist ein Hinweis und keine Aufgabe.
+
+   Sie stand ohne ein Wort dazu da, und ihr einziger wiederkehrender Eintrag
+   sieht nach Verschwendung aus: `portrait.jpg`, 384 px geladen für 110 px
+   angezeigt, bei jeder der sieben Breiten. Er ist aber Absicht. Das Blatt
+   wird gedruckt, das Porträt steht dort auf 22,7 mm, und beide
+   ausgelieferten PDF betten es mit genau 384 x 384 ein — nachgemessen an den
+   Bildobjekten, nicht angenommen. Wer `sizes` enger stellt, verkleinert das
+   Bild im PDF mit und sieht am Bildschirm keinen Unterschied.
+
+   Gegen genau diesen Griff steht `DRUCKKANTE` in `check-onepager-pdf.mjs`:
+   Unter 256 px scheitert der Lauf. Der Satz hier nennt den Grund, damit
+   niemand ihn ein zweites Mal herleiten muss. */
 if (grosszuegig.size > 0) {
-  console.log(`\n  Reichlich geladen, ohne Beanstandung:`);
+  console.log(
+    `\n  Reichlich geladen, ohne Beanstandung ` +
+      `(portrait.jpg trägt die Druckauflösung des One-Pagers, ` +
+      `gesichert über DRUCKKANTE in check:onepager):`,
+  );
   for (const z of [...new Set(grosszuegig.values())].slice(0, 8))
     console.log(`    ${z}`);
 }
