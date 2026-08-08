@@ -3585,8 +3585,12 @@ const BRAUCHT_KIND = {
             `Salati nutzt ${echteMethode}`,
         );
       } else if (
-        (echteVersion ?? "").replace(/^\D*/, "").split(".")[0] !==
-        version.split(".")[0]
+        /* Alle Stellen vergleichen, wie es die Tabelle der Tech-Stacks tut:
+           Sie hält „so viele Stellen, wie die Seite nennt". Ein erster Anlauf
+           verglich nur die Hauptversion und wäre damit schwächer gewesen als
+           der Lauf, der schon da ist — ein Sprung auf 4.5.0 wäre
+           durchgelaufen, obwohl die Seite 4.4.4 nennt. */
+        (echteVersion ?? "").replace(/^\D*/, "") !== version
       ) {
         abweichungen++;
         zeilen.push(
