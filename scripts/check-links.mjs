@@ -70,6 +70,7 @@ let nebenzeilen = 0;
 let bilder = 0;
 let mailverweis = 0;
 let elternpfade = 0;
+let belegteSaetze = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -557,6 +558,76 @@ for (const w of weiterleitungen) {
   sitemapzeilen = inSitemap.size;
 }
 
+/* Jede Behauptung im Recruiter-Bereich trägt ihren Beleg.
+
+   Die Sektion heißt „Das Wichtigste in zwei Minuten" und besteht aus sechs
+   Sätzen in der ersten Person: „Ich liefere fertig", „Ich weise nach, statt zu
+   behaupten". Jeder davon endet an einem Verweis — auf eine Fallstudie, einen
+   Artikel oder ein Repo. Das ist der ganze Unterschied zwischen dieser Seite
+   und einem Anschreiben.
+
+   Im Inhaltsmodell ist `proof` optional. Eine siebte Behauptung ohne Beleg
+   ließe sich also in einer Minute hinzufügen, sähe im Quelltext unauffällig
+   aus und stünde auf der Seite genau dort, wo der Leser Belege erwartet.
+   Gemessen am 08.08.2026 tragen alle sechs je Sprachfassung einen.
+
+   Geprüft wird an der ausgelieferten Seite und in beiden Sprachfassungen,
+   samt gleicher Anzahl: Eine Behauptung, die nur eine Fassung kennt, ist
+   dieselbe Lücke von der anderen Seite her. */
+{
+  const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const jeSprache = [];
+
+  for (const route of ["/", "/en"]) {
+    const antwort = await seite.goto(`${basis}${route}`, {
+      waitUntil: "networkidle",
+    });
+    if (antwort?.status() !== 200) continue;
+    await seite.evaluate(async () => {
+      const hoehe = document.documentElement.scrollHeight;
+      for (let y = 0; y < hoehe; y += 700) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 40));
+      }
+    });
+
+    const behauptungen = await seite.evaluate(() => {
+      const s = document.getElementById("hire");
+      if (!s) return null;
+      return [...s.querySelectorAll("h3")].map((h) => {
+        const karte = h.closest("li, div, article");
+        return {
+          satz: h.textContent.trim(),
+          beleg: karte?.querySelector("a[href]")?.getAttribute("href") ?? null,
+        };
+      });
+    });
+
+    if (!behauptungen) {
+      funde.push(`${route}: kein Recruiter-Bereich gefunden`);
+      continue;
+    }
+    jeSprache.push(behauptungen.length);
+    for (const b of behauptungen) {
+      if (!b.beleg) {
+        funde.push(
+          `${route}: „${b.satz.slice(0, 50)}" steht ohne Beleg im ` +
+            `Recruiter-Bereich`,
+        );
+      }
+    }
+  }
+
+  if (jeSprache.length === 2 && jeSprache[0] !== jeSprache[1]) {
+    funde.push(
+      `Der Recruiter-Bereich zeigt ${jeSprache[0]} Behauptungen auf Deutsch ` +
+        `und ${jeSprache[1]} auf Englisch`,
+    );
+  }
+  belegteSaetze = jeSprache.reduce((a, b) => a + b, 0);
+  await seite.close();
+}
+
 /* Kein Elternpfad einer Seite führt ins Leere.
 
    Wer auf `/artikel/kassensichv-in-der-praxis` steht und die Adresse bis
@@ -653,5 +724,6 @@ console.log(
     `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar, ` +
     `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben, ` +
     `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen, ` +
-    `${elternpfade} Elternpfade antworten.`,
+    `${elternpfade} Elternpfade antworten, ` +
+    `${belegteSaetze} Behauptungen im Recruiter-Bereich mit Beleg.`,
 );
