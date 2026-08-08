@@ -29,8 +29,17 @@ export function EnglishNote() {
           Der Verweis steht am Ende eines Satzes, fällt also unter die Ausnahme
           für Verweise mitten im Text — die Ausnahme zu brauchen ist trotzdem
           schlechter, als sie nicht zu brauchen. */}
+      {/* `hrefLang`, wie die Fußzeile es in der Gegenrichtung führt.
+
+          Dort tragen die Verweise auf diese beiden Seiten `hrefLang="de"`,
+          weil sie von der englischen Fassung aus die Sprache wechseln.
+          Derselbe Wechsel findet hier statt, nur andersherum, und er stand
+          ohne Angabe da — gemessen an den 22 gebauten Seiten der einzige
+          Sprachwechsel ohne Kennzeichnung. Ein Vorleseprogramm entscheidet
+          daran, in welcher Aussprache es das Ziel ankündigt. */}
       <Link
         href="/en"
+        hrefLang="en"
         className="-my-1 py-1 text-acid underline underline-offset-4"
       >
         Back to the English version

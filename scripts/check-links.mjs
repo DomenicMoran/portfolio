@@ -71,6 +71,7 @@ let bilder = 0;
 let mailverweis = 0;
 let elternpfade = 0;
 let belegteSaetze = 0;
+let sprachwechsel = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -558,6 +559,65 @@ for (const w of weiterleitungen) {
   sitemapzeilen = inSitemap.size;
 }
 
+/* Ein Verweis, der die Sprache wechselt, sagt es auch.
+
+   Die Fußzeile der englischen Fassung führt auf die deutschen Rechtsseiten
+   und trägt dafür `hreflang="de"`. Derselbe Wechsel findet in der
+   Gegenrichtung statt: Auf beiden Rechtsseiten steht „Back to the English
+   version". Gemessen an den 22 gebauten Seiten war das der einzige
+   Sprachwechsel ohne Angabe.
+
+   Es ist keine Kosmetik. Ein Vorleseprogramm entscheidet an `hreflang`, in
+   welcher Aussprache es das Ziel ankündigt, und ein englischer Verweistext
+   auf einer deutschen Seite ist genau der Fall, für den das Attribut da ist.
+
+   Die Zuordnung ist streng am Pfad: Alles unter `/en` ist englisch, alles
+   andere deutsch. Ein Anker wie `/en#work` bleibt damit innerhalb seiner
+   Sprache — ein erster Anlauf ohne diese Unterscheidung meldete 108
+   angebliche Wechsel, von denen 106 keine waren. */
+{
+  const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  let wechsel = 0;
+
+  for (const route of pfade) {
+    const antwort = await seite.goto(`${basis}${route}`, {
+      waitUntil: "domcontentloaded",
+    });
+    if (!antwort || antwort.status() >= 500) continue;
+
+    const offen = await seite.evaluate(() => {
+      const englisch = (pfad) => pfad === "/en" || pfad.startsWith("/en/");
+      const hier = englisch(location.pathname);
+      return [...document.querySelectorAll('a[href^="/"]')]
+        .map((a) => {
+          const ziel = a.getAttribute("href").split("#")[0];
+          return {
+            ziel,
+            wechselt: ziel !== "" && englisch(ziel) !== hier,
+            sprache: a.getAttribute("hreflang"),
+            text: a.textContent.trim().slice(0, 34),
+          };
+        })
+        /* Dateien ohne Sprachpräfix sind sprachneutral: Das PDF heißt in
+           beiden Fassungen anders und trägt seine Sprache im Namen. */
+        .filter((x) => x.wechselt && !/\.[a-z0-9]+$/i.test(x.ziel));
+    });
+
+    for (const x of offen) {
+      wechsel++;
+      if (!x.sprache) {
+        funde.push(
+          `${route}: „${x.text}" führt nach ${x.ziel} und wechselt damit die ` +
+            `Sprache, ohne hreflang`,
+        );
+      }
+    }
+  }
+
+  sprachwechsel = wechsel;
+  await seite.close();
+}
+
 /* Jede Behauptung im Recruiter-Bereich trägt ihren Beleg.
 
    Die Sektion heißt „Das Wichtigste in zwei Minuten" und besteht aus sechs
@@ -725,5 +785,6 @@ console.log(
     `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben, ` +
     `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen, ` +
     `${elternpfade} Elternpfade antworten, ` +
-    `${belegteSaetze} Behauptungen im Recruiter-Bereich mit Beleg.`,
+    `${belegteSaetze} Behauptungen im Recruiter-Bereich mit Beleg, ` +
+    `${sprachwechsel} Sprachwechsel alle mit hreflang.`,
 );
