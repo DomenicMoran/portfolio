@@ -27,7 +27,7 @@
  */
 
 import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { quellstand } from "./lib/onepager-quellstand.mjs";
+import { quellstand } from "./lib/onepager-source-state.mjs";
 import verified from "../src/content/verified.json" with { type: "json" };
 import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";

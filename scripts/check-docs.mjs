@@ -24,6 +24,7 @@
  *   npm run check:docs
  */
 
+import { execSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
@@ -216,7 +217,7 @@ const wortlaut = [
 ].join("\n");
 
 /* Hilfsdateien werden importiert, nicht aufgerufen. */
-const HILFSDATEIEN = ["local-server.mjs", "built-pages.mjs", "onepager-quellstand.mjs"];
+const HILFSDATEIEN = ["local-server.mjs", "built-pages.mjs", "onepager-source-state.mjs"];
 
 const ohneAufruf = vorhanden.filter(
   (d) => !HILFSDATEIEN.includes(d) && !wortlaut.includes(d),
@@ -303,6 +304,45 @@ for (const [datei, text] of [
 }
 
 // ---------------------------------------------------------------------------
+
+/* Kein Dateiname trägt ein Zeichen, das nicht überall gleich ankommt.
+
+   AGENTS.md verlangt englische Dateinamen und begründet es hart: Umlaute in
+   Dateinamen brechen über Betriebssysteme hinweg, und die Ersatzschreibung
+   ist die Krücke, die man sich dafür einhandelt. Die Regel stand da und
+   niemand prüfte sie — gefunden wurde `scripts/lib/onepager-quellstand.mjs`,
+   ein deutscher Name zwischen 43 englischen, beim Durchsehen von Hand.
+
+   Geprüft wird der mechanische Teil: kein Zeichen außerhalb von ASCII. Ob ein
+   Name deutsch oder englisch ist, entscheidet kein Muster; ob er sich über
+   Windows, Linux und einen Zip-Anhang hinweg gleich schreibt, schon. Genau
+   das ist der Grund, aus dem die Regel überhaupt existiert.
+
+   Gemessen wird gegen `git ls-files`, also gegen das, was jemand beim Klonen
+   bekommt — nicht gegen das Arbeitsverzeichnis mit seinen Bauordnern. */
+{
+  /* `-z` und `core.quotepath=false`, sonst prüft der Lauf sich selbst blind:
+     Git schreibt einen Namen mit Umlaut als `"prÃ¼fung.mjs"` — in
+     Anführungszeichen und mit Oktalfolgen, also reines ASCII. Gegengeprüft
+     mit einer angelegten Datei `scripts/prüfung-test.mjs`: gemeldet haben
+     zwei andere Blöcke, dieser nicht. */
+  const verfolgt = execSync("git -c core.quotepath=false ls-files -z", {
+    encoding: "utf8",
+  })
+    .split(String.fromCharCode(0))
+    .filter(Boolean);
+  geprueft += verfolgt.length;
+
+  const fremd = verfolgt.filter((d) => /[^ -~]/.test(d));
+  if (fremd.length > 0) {
+    melde(
+      "Dateinamen",
+      `${fremd.length} Name(n) tragen ein Zeichen außerhalb von ASCII: ` +
+        `${fremd.slice(0, 5).join(", ")}. Über Betriebssysteme hinweg ` +
+        `schreibt sich das nicht gleich.`,
+    );
+  }
+}
 
 if (funde.length > 0) {
   for (const f of funde) console.error(`  ${f}`);

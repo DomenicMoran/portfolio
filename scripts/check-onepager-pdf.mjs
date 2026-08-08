@@ -23,7 +23,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { inflateSync } from "node:zlib";
 import { join } from "node:path";
 import { PDFDocument, PDFName, PDFString } from "pdf-lib";
-import { QUELLEN, quellstand } from "./lib/onepager-quellstand.mjs";
+import { QUELLEN, quellstand } from "./lib/onepager-source-state.mjs";
 
 /** Welches gebaute Blatt zu welcher PDF gehört. */
 const SEITEN = {
