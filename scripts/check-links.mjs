@@ -73,6 +73,7 @@ let elternpfade = 0;
 let belegteSaetze = 0;
 let sprachwechsel = 0;
 let pdfverweise = 0;
+let belegteFaehigkeiten = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -716,6 +717,28 @@ for (const w of weiterleitungen) {
         );
       }
     }
+    /* Und dieselbe Zusage eine Sektion weiter oben.
+
+       Der Vorspann der Fähigkeiten sagt es ausdrücklich: „Hier stehen keine
+       Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent
+       beherrscht." Statt einer Zahl steht neben jeder Fähigkeit ein Beleg —
+       „Expo SDK 57, RN 0.86, vier Geräteklassen" neben React Native. Auch
+       dieses Feld ist im Inhaltsmodell optional; gemessen tragen heute alle
+       24 je Sprachfassung einen. */
+    const faehigkeiten = await seite.evaluate(() => {
+      const s = document.getElementById("skills");
+      if (!s) return [];
+      return [...s.querySelectorAll("dt")].map((dt) => ({
+        name: dt.textContent.trim(),
+        beleg: (dt.nextElementSibling?.textContent ?? "").trim(),
+      }));
+    });
+    for (const f of faehigkeiten) {
+      belegteFaehigkeiten++;
+      if (!f.beleg) {
+        funde.push(`${route}: Die Fähigkeit „${f.name}" steht ohne Beleg`);
+      }
+    }
   }
 
   if (jeSprache.length === 2 && jeSprache[0] !== jeSprache[1]) {
@@ -827,5 +850,6 @@ console.log(
     `${elternpfade} Elternpfade antworten, ` +
     `${belegteSaetze} Behauptungen im Recruiter-Bereich mit Beleg, ` +
     `${sprachwechsel} Sprachwechsel alle mit hreflang, ` +
-    `${pdfverweise} Verweise auf das Kurzprofil in der richtigen Fassung.`,
+    `${pdfverweise} Verweise auf das Kurzprofil in der richtigen Fassung, ` +
+    `${belegteFaehigkeiten} Fähigkeiten mit Beleg.`,
 );
