@@ -872,9 +872,10 @@ export const en: Content = {
       {
         n: "01",
         title: "Context as versioned code",
-        /* Siehe die Begründung an derselben Stelle in `site.ts`: gezählt sind
-           es vier Repositories, nicht alle. */
-        body: "Four of my repositories carry their conventions as a versioned file: import rules, test patterns, design tokens, security defaults. Plus a memory that persists across sessions: every lesson becomes an entry with its reasoning, not a note in a chat log that is gone tomorrow. An agent is only as good as the context it reliably finds.",
+        /* Siehe die Begründung an derselben Stelle in `site.ts`: Am 08.08.2026
+           trugen vier von sechs Repositories eine Konventionsdatei, seither
+           alle sechs. */
+        body: "Every project carries its conventions as a file in the repository: import rules, test patterns, design tokens, security defaults. Plus a memory that persists across sessions: every lesson becomes an entry with its reasoning, not a note in a chat log that is gone tomorrow. An agent is only as good as the context it reliably finds.",
         artifacts: [
           "A conventions file per repo",
           "Persistent memory",

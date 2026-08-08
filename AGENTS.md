@@ -93,9 +93,14 @@ Platzhalter rendern. Muster:
 Grund: Diese Seite verkauft Glaubwürdigkeit. Ein sichtbares „Lorem ipsum“ oder
 ein toter Link kostet mehr, als das fehlende Element je gebracht hätte.
 
-Offene Datenpunkte werden als `TODO(domenic)` markiert. Was nur der Inhaber
-liefern kann, steht gesammelt in `USER-TODO.md` — und diese Datei enthält
-ausschließlich das.
+Offene Datenpunkte werden als `TODO(domenic)` markiert.
+
+Eine `USER-TODO.md` gibt es nicht mehr. Sie war die Stelle, an der Arbeit
+liegen blieb: „Konventionsdatei für zwei Repos anlegen“ stand dort keine
+Stunde, bevor die Dateien geschrieben waren, und „zwei Vercel-Projekte“
+löste sich beim Nachmessen in einen Namensgleichklang auf. Was auffällt, wird
+entschieden und umgesetzt; die Begründung steht dort, wo die Sache steht.
+Nachlesbar bleibt sie in `../ENTSCHIEDEN.md`.
 
 ## Bewegung
 

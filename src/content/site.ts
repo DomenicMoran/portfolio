@@ -42,8 +42,8 @@ const lernzeit = grossErstes(
 /**
  * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
  *
- * Alles mit `TODO(domenic)` ist ein Wert, den nur der Inhaber liefern kann; die
- * offenen stehen gesammelt in USER-TODO.md. Die Komponenten sind so gebaut,
+ * Alles mit `TODO(domenic)` ist ein Wert, den nur der Inhaber liefern kann.
+ * Eine Sammelliste dafür gibt es nicht mehr — siehe AGENTS.md. Die Komponenten sind so gebaut,
  * dass ein fehlender Wert — leer oder null — das Element entfernt, statt einen
  * Platzhalter zu rendern: Eine offene Frage darf auf einer Seite, deren ganzer
  * Zweck Glaubwürdigkeit ist, nie als sichtbares „Lorem ipsum" enden.
@@ -877,22 +877,42 @@ export const caseStudies: CaseStudy[] = [
 export const workflow = {
   eyebrow: "Arbeitsweise",
   title: "KI ist ein Werkzeug, keine Ausrede",
+  /* Die einzige Zeitangabe der Seite, die nicht gerechnet wird — und sie
+     bleibt es.
+
+     Alle anderen kommen aus einer Quelle: die Bauzeit aus dem ersten Commit,
+     die Lernjahre aus 2022, die Tage je Salati-Fassung aus dem
+     Änderungsprotokoll. Diese hier ist getippt, und ableiten lässt sie sich
+     nicht: Die früheste Konventionsdatei liegt im ersten MenuCloud-Commit vom
+     26.03.2026, die älteste Agenten-Sitzung auf diesem Rechner stammt vom
+     07.07.2026. Beides belegt Monate, kein Jahr — es widerlegt das Jahr aber
+     auch nicht, denn beide Spuren beginnen erst mit den Repos.
+
+     Sie steht deshalb unverändert da. Eine belegbare Ersatzformulierung wäre
+     schwächer als die Wirklichkeit, und eine erfundene Zahl wäre genau das,
+     wogegen der Abschnitt darunter argumentiert. Was die Angabe altern lässt,
+     ist bekannt: In einem Jahr müsste dort „über zwei Jahren" stehen. Wer sie
+     dann anfasst, hat diesen Absatz gelesen. */
   lede: "Ich arbeite seit über einem Jahr agentengestützt. Das komprimiert Lieferzeiten von Monaten auf Tage, aber nur, weil um die Agenten herum ein System steht, das ihre Fehler abfängt. Ohne dieses System ist KI-gestützte Entwicklung eine Maschine zur Erzeugung von plausibel aussehendem Schrott.",
   principles: [
     {
       n: "01",
       title: "Kontext als versionierter Code",
-      /* „Jedes Projekt" stand hier und war zu viel.
+      /* „Jedes Projekt" war am 08.08.2026 zu viel und ist es seit demselben
+         Tag nicht mehr.
 
-         Nachgezählt am 08.08.2026 in den Repos: MenuCloud, Salati (unter
-         `apps/mobile`), diese Seite und die Lernplattform tragen eine
-         Konventionsdatei, NOURI und WohnungsJäger nicht. Vier von sechs, und
-         zwei der vier Systeme, die diese Seite als Produktion nennt, fehlen.
+         Nachgezählt trugen vier von sechs Repositories eine Konventionsdatei:
+         MenuCloud, Salati (unter `apps/mobile`), diese Seite und die
+         Lernplattform. NOURI und WohnungsJäger nicht — auch nicht unter
+         anderem Namen, gesucht bis in die dritte Ebene. Zwei der vier Systeme,
+         die diese Seite als Produktion nennt, standen ohne da.
 
-         Vier ist keine schwächere Aussage, sondern eine belegte. `check-figures`
-         zählt die Dateien nach; wer sie in den beiden übrigen anlegt, hebt die
-         Zahl dort und hier. */
-      body: "Vier meiner Repositories tragen ihre Konventionen als versionierte Datei: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
+         Der billige Weg wäre gewesen, hier eine Zahl hinzuschreiben. Statt
+         dessen liegt die Datei jetzt in beiden: `NOURI/AGENTS.md` und
+         `KIWohnung/AGENTS.md`, jede aus dem Code abgelesen. `check-figures`
+         zählt nach und verlangt alle sechs — wer ein Repo dazunimmt, bringt
+         die Datei mit. */
+      body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
       artifacts: [
         "CLAUDE.md pro Repo",
         "Persistentes Memory",
