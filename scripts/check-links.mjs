@@ -72,6 +72,7 @@ let mailverweis = 0;
 let elternpfade = 0;
 let belegteSaetze = 0;
 let sprachwechsel = 0;
+let pdfverweise = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -603,6 +604,45 @@ for (const w of weiterleitungen) {
         .filter((x) => x.wechselt && !/\.[a-z0-9]+$/i.test(x.ziel));
     });
 
+    /* Und dieselbe Runde für das Kurzprofil.
+
+       Es ist die Datei, die weitergereicht wird, und sie hängt an zwei
+       Eigenschaften: `download`, damit sie sich sichern lässt statt sich in
+       einem Betrachter zu öffnen, und der richtigen Sprachfassung. Beide
+       waren schon einmal auseinander — der Kommentar in `CopyEmail.tsx` hält
+       fest, dass zwei von drei Verweisen es anders hielten als der dritte.
+
+       Geprüft war seither nur `/onepager` und `/en/onepager`, also zwei von
+       zwanzig Verweisen. Die übrigen achtzehn stehen in der Fußzeile jeder
+       Seite. */
+    const blaetter = await seite.evaluate(() => {
+      const englisch = (pfad) => pfad === "/en" || pfad.startsWith("/en/");
+      const hier = englisch(location.pathname);
+      return [...document.querySelectorAll('a[href$=".pdf"]')].map((a) => ({
+        ziel: a.getAttribute("href"),
+        laedt: a.hasAttribute("download"),
+        text: a.textContent.trim().slice(0, 30),
+        erwartetEnglisch: hier,
+      }));
+    });
+
+    for (const b of blaetter) {
+      pdfverweise++;
+      if (!b.laedt) {
+        funde.push(
+          `${route}: „${b.text}" zeigt auf ${b.ziel} ohne download — die Datei ` +
+            `öffnet sich im Betrachter statt sich zu sichern`,
+        );
+      }
+      const istEnglisch = b.ziel.includes("one-pager");
+      if (istEnglisch !== b.erwartetEnglisch) {
+        funde.push(
+          `${route}: „${b.text}" zeigt auf ${b.ziel}, also auf die andere ` +
+            `Sprachfassung des Kurzprofils`,
+        );
+      }
+    }
+
     for (const x of offen) {
       wechsel++;
       if (!x.sprache) {
@@ -786,5 +826,6 @@ console.log(
     `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen, ` +
     `${elternpfade} Elternpfade antworten, ` +
     `${belegteSaetze} Behauptungen im Recruiter-Bereich mit Beleg, ` +
-    `${sprachwechsel} Sprachwechsel alle mit hreflang.`,
+    `${sprachwechsel} Sprachwechsel alle mit hreflang, ` +
+    `${pdfverweise} Verweise auf das Kurzprofil in der richtigen Fassung.`,
 );
