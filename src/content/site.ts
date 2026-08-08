@@ -229,7 +229,7 @@ export const about = {
     note: "Jeder Eintrag führt zur Bestätigungsseite des Ausstellers.",
     noteHref: {
       label: "Alle zehn zusätzlich als PDF",
-      href: "https://github.com/DomenicMoran/Zertifikate",
+      href: "https://github.com/DomenicMoran/certificates",
     },
     groups: [
       {

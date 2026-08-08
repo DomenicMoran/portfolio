@@ -794,7 +794,7 @@ export const en: Content = {
       note: "Every entry opens the issuer’s verification page.",
       noteHref: {
         label: "All ten also kept as PDFs",
-        href: "https://github.com/DomenicMoran/Zertifikate",
+        href: "https://github.com/DomenicMoran/certificates",
       },
       groups: [
         {
