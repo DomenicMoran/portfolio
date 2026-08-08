@@ -745,7 +745,7 @@ export const en: Content = {
            Aktennummer — und die Zeile daneben sagt schon „since 2022", also
            ohne Monat. */
         period: "since April 2026",
-        title: "Founder & product engineer",
+        title: "Founder & sole developer",
         org: "MenuCloud, sole proprietorship, Berlin",
         body: "Building and running four production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
