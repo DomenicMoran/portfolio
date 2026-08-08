@@ -26,6 +26,17 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
+/* Gemessene Werte, die weiter unten ein zweites Mal gebraucht werden.
+
+   Das Architekturbild nennt vier Zahlen, die dieser Lauf ohnehin misst —
+   Workflows, Rezepte, Tabellen, Migrationen. Verglichen wurden sie dort gegen
+   fest eingetragene Sollwerte ("63", "11.892", "59", "12"). Damit war der
+   Wächter selbst die Stelle, die veraltet: Wächst der Bestand, meldet der Lauf
+   die Inhaltsdatei und lässt das Bild durch, weil sein Sollwert mitgealtert
+   ist. Gemessen wird jede Zahl genau einmal; hier steht, wo sie danach noch
+   gebraucht wird. */
+const GEMESSEN = new Map();
+
 const MENUCLOUD = resolve("../../MenuCloud");
 const OSS = resolve("../oss");
 const INHALT = "src/content/site.ts";
@@ -176,10 +187,45 @@ if (existsSync(MENUCLOUD)) {
     namen.size,
     ausSeite(/title: "([\d.]+) Workflows, die den Betrieb tragen"/),
   );
+  GEMESSEN.set("Workflows", namen.size);
+
   if (dateien !== namen.size) {
     zeilen.push(
       `       (${dateien} Dateien, ${dateien - namen.size} doppelt exportiert)`,
     );
+  }
+
+  /* Und die englische Übersetzung derselben Beschriftung.
+
+     Die Zahl steht dreimal: im Titel des Automatisierungsreiters, im
+     Architekturbild und ein drittes Mal in `architecture-en.ts` — dort auf
+     beiden Seiten des Übersetzungspaars, weil der Schlüssel die deutsche
+     Zeichenkette selbst ist. Die ersten beiden hält der Lauf gegen die
+     Messung; die dritte sah niemand an.
+
+     Interpolieren lässt sie sich dort nicht: Ein Schlüssel mit Platzhalter
+     träfe die Beschriftung nicht mehr. Also wird gemessen, ob überall
+     dieselbe Zahl steht. */
+  for (const [datei, muster] of [
+    ["src/content/architecture-en.ts", /"([\d.]+) Workflows · Watchdogs":\s*"([\d.]+) workflows/],
+  ]) {
+    if (!existsSync(datei)) continue;
+    const treffer = readFileSync(datei, "utf8").match(muster);
+    if (!treffer) {
+      abweichungen++;
+      zeilen.push(
+        `  !!  ${datei}: keine Workflow-Zahl gefunden — der Wortlaut hat sich geändert`,
+      );
+      continue;
+    }
+    for (const wert of treffer.slice(1).filter(Boolean)) {
+      if (Number(wert.replace(/[.,]/g, "")) !== namen.size) {
+        abweichungen++;
+        zeilen.push(
+          `  !!  ${datei}: nennt ${wert} Workflows, gemessen sind ${namen.size}`,
+        );
+      }
+    }
   }
 
   // --- Testfälle -----------------------------------------------------------
@@ -728,6 +774,9 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
       inhalt.match(/create\s+table(\s+if\s+not\s+exists)?\s+["a-z_.]+/gi) ?? []
     ).length;
   }
+
+  GEMESSEN.set("Migrationen", migrationen.length);
+  GEMESSEN.set("Tabellen", tabellen);
 
   vergleiche(
     "NOURI-Migrationen",
@@ -1744,6 +1793,7 @@ const BRAUCHT_KIND = {
           `  !!  Rezeptzahl: die Seite sagt ${behauptet}, die Anwendung ${dort}+`,
         );
       } else {
+        GEMESSEN.set("Rezepte", meine);
         zeilen.push(
           `  ok  Rezepte              ${String(meine).padStart(6)} und die Anwendung sagt ${dort}+`,
         );
@@ -2564,12 +2614,20 @@ const BRAUCHT_KIND = {
     /* Dieselben Paare, die der Lauf oben schon gegen die Repos gehalten hat.
        Der Vergleich ist bewusst eng: Zahl plus Wort, sonst träfe „59“ auch
        eine Zeilennummer. */
+    /* Die Sollwerte kommen aus der Messung, nicht aus dieser Zeile.
+
+       Sie standen hier als Zeichenketten — "63", "11.892", "59", "12" —, und
+       damit war die Prüfung ihre eigene Wahrheit: Wächst ein Bestand, meldet
+       der Lauf die Inhaltsdatei und lässt das Bild durch, weil sein Sollwert
+       mitgealtert ist. Fehlt eine Messung, weil das Repo nicht erreichbar
+       war, bleibt das Paar draußen statt gegen eine erfundene Zahl zu
+       prüfen. */
     const bekannt = [
-      [/(\d[\d.]*) Workflows/, "63", "Workflows"],
-      [/(\d[\d.]*) Rezepte/, "11.892", "Rezepte"],
-      [/(\d[\d.]*) Tabellen/, "59", "Tabellen"],
-      [/(\d[\d.]*) Migrationen/, "12", "Migrationen"],
-    ];
+      [/(\d[\d.]*) Workflows/, GEMESSEN.get("Workflows"), "Workflows"],
+      [/(\d[\d.]*) Rezepte/, GEMESSEN.get("Rezepte"), "Rezepte"],
+      [/(\d[\d.]*) Tabellen/, GEMESSEN.get("Tabellen"), "Tabellen"],
+      [/(\d[\d.]*) Migrationen/, GEMESSEN.get("Migrationen"), "Migrationen"],
+    ].filter(([, soll]) => soll != null);
 
     const funde = [];
     let geprueft = 0;
@@ -2578,7 +2636,7 @@ const BRAUCHT_KIND = {
         const treffer = beschriftung.match(muster);
         if (!treffer) continue;
         geprueft++;
-        if (treffer[1] !== soll)
+        if (Number(treffer[1].replace(/[.,]/g, "")) !== Number(soll))
           funde.push(
             `„${beschriftung}“ nennt ${treffer[1]} ${was}, der Text nennt ${soll}`,
           );
