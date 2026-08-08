@@ -736,6 +736,41 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     } else {
       gedruckteBlaetter++;
     }
+
+    /* Und der Knopf, der den Druck auslöst.
+
+       Auf dem Blatt stehen zwei Wege: „Kurzprofil als PDF" holt die
+       vorbereitete Datei, „Drucken / PDF" ruft den Druckdialog. Der zweite
+       ist eine einzige Zeile Client-Code, und genau deshalb fällt sein
+       Wegfall niemandem auf: Die Seite sieht danach unverändert aus, der
+       Knopf steht da und tut nichts.
+
+       Geprüft wird der Aufruf, nicht der Dialog: `window.print` wird vor dem
+       Laden ersetzt und gezählt. Ein echter Dialog würde den Lauf anhalten. */
+    const mitZaehler = await browser.newPage({
+      viewport: { width: PAPIERBREITE, height: PAPIERHOEHE },
+    });
+    await mitZaehler.addInitScript(() => {
+      window.__gedruckt = 0;
+      window.print = () => {
+        window.__gedruckt++;
+      };
+    });
+    await mitZaehler.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    const knopf = mitZaehler.locator("button").filter({ hasText: /Drucken|Print/ });
+    if ((await knopf.count()) === 0) {
+      blattfunde.push(`${pfad}: kein Knopf, der den Druckdialog öffnet`);
+    } else {
+      await knopf.first().click();
+      await mitZaehler.waitForTimeout(200);
+      const rufe = await mitZaehler.evaluate(() => window.__gedruckt);
+      if (rufe !== 1) {
+        blattfunde.push(
+          `${pfad}: „Drucken / PDF" hat window.print ${rufe}-mal gerufen`,
+        );
+      }
+    }
+    await mitZaehler.close();
   }
   await seite.close();
 }
@@ -744,7 +779,12 @@ await browser.close();
 beenden();
 
 if (blattfunde.length > 0) {
-  console.error(`\nDas Kurzprofil passt nicht mehr auf ein Blatt:`);
+  /* „Das Kurzprofil passt nicht mehr auf ein Blatt" stand hier. Seit dieser
+     Block auch die gedruckte Seitenzahl und den Druckknopf prüft, trifft der
+     Satz nur noch auf einen von drei möglichen Befunden zu. */
+  console.error(
+    `\nDas Kurzprofil: ${blattfunde.length} Befund${blattfunde.length === 1 ? "" : "e"}`,
+  );
   for (const f of blattfunde) console.error(`  ${f}`);
   process.exit(1);
 }
