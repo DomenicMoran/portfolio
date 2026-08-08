@@ -68,6 +68,7 @@ const nebendateien = [];
 const kopfGesehen = new Set();
 let nebenzeilen = 0;
 let bilder = 0;
+let mailverweis = 0;
 let adressen = 0;
 const gesehen = new Map();
 
@@ -540,6 +541,47 @@ for (const w of weiterleitungen) {
   sitemapzeilen = inSitemap.size;
 }
 
+/* Der Mailverweis der Fehlerseite muss auch bei einer absurden Adresse gehen.
+
+   Sie nennt den angefragten Pfad in der Vorlage, damit der Empfänger nicht
+   raten muss, welcher Verweis ins Leere führte. Der Pfad kommt aber von außen,
+   und ein `mailto` ist eine Adresse wie jede andere: Windows reicht sie nur
+   bis etwa 2.083 Zeichen an das Mailprogramm weiter, Outlook schneidet früher
+   ab. Ein Verweis, den niemand mehr öffnen kann, ist so tot wie einer ins
+   Leere — nur sieht man es ihm nicht an.
+
+   Gemessen am 08.08.2026 vor der Begrenzung: ein Pfad aus 4.000 Zeichen ergab
+   einen Verweis aus 4.170. Der Proxy kürzt jetzt bei 200 Zeichen, und ein
+   erster Anlauf mit einem Auslassungszeichen als Marke lieferte Status 500,
+   weil Kopfzeilenwerte nur Latin-1 tragen dürfen. Beides steht hier. */
+{
+  const lang = `/${"a".repeat(4000)}`;
+  const antwort = await fetch(`${basis}${lang}`);
+  const html = await antwort.text();
+  const verweis = html.match(/href="(mailto:[^"]*)"/)?.[1];
+
+  if (antwort.status !== 404) {
+    funde.push(
+      `Eine Adresse aus 4.000 Zeichen beantwortet die Seite mit ` +
+        `${antwort.status} statt 404`,
+    );
+  } else if (!verweis) {
+    funde.push("Die Fehlerseite einer sehr langen Adresse trägt keinen Mailverweis");
+  } else if (verweis.length > 2000) {
+    funde.push(
+      `Der Mailverweis der Fehlerseite misst ${verweis.length} Zeichen. ` +
+        `Über etwa 2.000 reicht Windows ihn nicht mehr an das Mailprogramm weiter.`,
+    );
+  } else if (!/%E2%80%A6/.test(verweis)) {
+    funde.push(
+      "Die gekürzte Adresse endet nicht mit einem Auslassungszeichen — " +
+        "der Empfänger läse eine Adresse, die es so nie gab.",
+    );
+  } else {
+    mailverweis = verweis.length;
+  }
+}
+
 await browser.close();
 beenden();
 
@@ -558,5 +600,6 @@ console.log(
     `${ziele} Weiterleitungen aus vercel.json mit erreichbarem Ziel, ` +
     `${nebenzeilen} angemeldete Nebendateien mit passendem Medientyp, ` +
     `${veroeffentlicht} veröffentlichte Adressen weiterhin erreichbar, ` +
-    `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben.`,
+    `${sitemapzeilen} Einträge in der Sitemap decken sich mit den robots-Angaben, ` +
+    `der Mailverweis der Fehlerseite bleibt bei ${mailverweis} Zeichen.`,
 );

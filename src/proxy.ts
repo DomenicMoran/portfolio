@@ -81,8 +81,38 @@ export function proxy(request: NextRequest) {
 
      Gesetzt wird nur der Pfad, nicht die ganze Adresse mit Abfrage: Was in
      einer Suchzeile stand, gehört nicht in eine fremde Mailvorlage. */
+  /* Und begrenzt, denn der Pfad wandert in eine Mailvorlage.
+
+     AGENTS.md verlangt für jeden Wert, der in eine E-Mail geht, drei Dinge:
+     Länge begrenzen, HTML escapen, CR/LF entfernen. Die letzten beiden
+     erledigt `encodeURIComponent` in `mailAdresse` — gegengeprüft mit
+     `/x%0D%0ABcc:…`, `/x&subject=…` und `/x%3Cscript%3E`: Alle drei kommen
+     als Prozentfolgen an und brechen die Adresse nicht auf. Die erste fehlte.
+
+     Gemessen an der ausgelieferten Seite: Ein Pfad aus 4.000 Zeichen ergab
+     einen `mailto`-Verweis aus 4.170. Windows reicht eine Adresse nur bis
+     etwa 2.083 Zeichen an das Mailprogramm weiter, Outlook schneidet früher
+     ab — der Verweis, der einen toten Verweis melden soll, tut dann nichts
+     mehr. Der längste Pfad, den diese Seite selbst hat, misst 54 Zeichen.
+
+     200 lässt jeder denkbaren Vertipper-Adresse Platz und hält den Verweis
+     unter 400 Zeichen. Was darüber steht, endet mit einer Kürzungsmarke: Der
+     Empfänger sieht, dass gekürzt wurde, statt eine erfundene Adresse zu
+     lesen.
+
+     Die Marke ist `GEKUERZT` und kein Auslassungszeichen. Kopfzeilenwerte
+     dürfen nur Latin-1 tragen; `…` liegt darüber, und `Headers.set` wirft
+     dafür. Gemessen am gebauten Stand: Der Pfad aus 4.000 Zeichen kam als
+     Status 500 zurück statt als Fehlerseite — aus einer Kürzung, die das
+     Melden erleichtern soll, wurde ein Serverfehler. Zum Auslassungszeichen
+     wird die Marke dort, wo sie gelesen wird. */
+  const OBERGRENZE = 200;
+  const pfad = request.nextUrl.pathname;
   const kopfzeilen = new Headers(request.headers);
-  kopfzeilen.set(PFAD_KOPFZEILE, request.nextUrl.pathname);
+  kopfzeilen.set(
+    PFAD_KOPFZEILE,
+    pfad.length > OBERGRENZE ? `${pfad.slice(0, OBERGRENZE)}GEKUERZT` : pfad,
+  );
 
   /* Erst löschen, dann setzen — sonst gilt, was der Aufrufer mitschickt.
 

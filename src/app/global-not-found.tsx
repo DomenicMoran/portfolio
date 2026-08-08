@@ -62,7 +62,11 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function GlobalNotFound() {
   const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
-  const angefragt = (await headers()).get(PFAD_KOPFZEILE) ?? undefined;
+  /* Der Proxy kürzt lange Pfade und setzt dafür `GEKUERZT` ans Ende — eine
+     Marke aus Latin-1, weil eine Kopfzeile nichts anderes tragen darf. Gelesen
+     wird sie hier, und hier steht auch das Zeichen, das ein Mensch erwartet. */
+  const gemeldet = (await headers()).get(PFAD_KOPFZEILE) ?? undefined;
+  const angefragt = gemeldet?.replace(/GEKUERZT$/, "…");
   const inhalt = englisch ? en : de;
   const zweitsprache = englisch ? de : en;
 
