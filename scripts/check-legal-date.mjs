@@ -1,6 +1,23 @@
 #!/usr/bin/env node
 /**
- * Prüft, dass das Datum der Datenschutzerklärung zu ihrem Text passt.
+ * Hält die Zusagen der beiden Rechtsseiten gegen die Wirklichkeit.
+ *
+ * Der Lauf begann als reine Datumsprüfung und heißt deshalb noch so. Er prüft
+ * inzwischen sieben Dinge, und alle sieben haben denselben Grund: Auf diesen
+ * beiden Seiten steht nichts, was man glauben soll — es steht dort, weil es
+ * stimmt, und was stimmt, lässt sich nachsehen.
+ *
+ *   1. Das Datum passt zum Text, über eine Prüfsumme (unten ausführlich).
+ *   2. Das Datum liegt nicht in der Zukunft.
+ *   3. Der Bau ist nicht älter als die Quelle, sonst misst der Lauf von gestern.
+ *   4. Die Privatanschrift steht auf keiner anderen ausgelieferten Datei.
+ *   5. Es gibt genau eine Kontaktadresse, und zwar die aus `site.ts`.
+ *   6. Kein Verweis auf die 2025 abgeschaltete Streitbeilegungsplattform.
+ *   7. `src/proxy.ts` speichert nichts und gibt nichts weiter, wie zugesagt.
+ *
+ * Dazu drei Angaben, die gegen fremde Quellen laufen: die Teilnehmerliste des
+ * EU-US-Datenschutzrahmens, die Aufbewahrungszeit des Hosters und das
+ * EU-Register für die Umsatzsteuer-Identifikationsnummer.
  *
  * Das Datum steht von Hand in `stand.ts`, und das ist Absicht: Vorher stand
  * dort `new Date()`, und weil ein Automat die Commit-Zahlen täglich
