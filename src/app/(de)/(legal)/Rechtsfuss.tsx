@@ -47,6 +47,9 @@ export function Rechtsfuss({ hier }: { hier: "impressum" | "datenschutz" }) {
         <Link
           key={seite.pfad}
           href={seite.pfad}
+          /* Kein Vorabladen, wie beim Rückweg im Rahmen darüber: Die andere
+             Rechtsseite ist genauso still, und wer sie braucht, klickt. */
+          prefetch={false}
           aria-current={seite.schluessel === hier ? "page" : undefined}
           className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
         >

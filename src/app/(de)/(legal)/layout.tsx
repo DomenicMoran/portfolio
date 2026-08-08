@@ -26,6 +26,15 @@ export default function LegalLayout({
       <nav aria-label={de.a11y.legalNav}>
         <Link
           href="/"
+          /* Kein Vorabladen.
+
+             Next holt zu jedem sichtbaren Verweis auch die Skripte der
+             Zielseite. Gemessen am gebauten Stand lud /impressum dadurch
+             989 kB Skript, davon 269 kB Animationsbibliothek — für eine
+             Textseite, auf der sich nichts bewegt, geholt für einen Klick,
+             den die wenigsten tun. Beim Zeigen mit der Maus lädt Next
+             weiterhin vor, der Rückweg bleibt also gleich schnell. */
+          prefetch={false}
           className="text-eyebrow -my-2 w-fit py-2 transition-colors hover:text-ink-dim"
         >
           ← {site.name}

@@ -406,6 +406,62 @@ for (const pfad of SEITEN) {
   vorabAntworten = antworten;
 }
 
+/* Stille Seiten liefern keine Bewegungsbibliothek aus.
+
+   Framer Motion wiegt ausgeliefert 270 kB und liegt in einem Bündel mit dem
+   Zeiger, der Einblendung, dem Zähler und der Kopfleiste. Auf der Startseite
+   ist das bezahlt: Dort bewegt sich etwas. Auf /impressum und /datenschutz
+   bewegt sich nichts, und trotzdem kamen dort 989 kB Skript an, davon 270 kB
+   davon.
+
+   Die Ursache war kein Import, sondern ein einziger Verweis: Der englische
+   Hinweis auf beiden Rechtsseiten zeigt auf /en, und Next holt zu jedem
+   sichtbaren Verweis die Skripte des Ziels mit. Genau deshalb steht diese
+   Prüfung hier und nicht bei den Bündelgrößen: Im gebauten Blatt der
+   Rechtsseite taucht das Bündel gar nicht auf. Es kommt erst, wenn die Seite
+   läuft.
+
+   Gemessen nach dem Eingriff: 560 kB, davon 2 kB. Die Grenze steht bei 20 kB,
+   damit eine Namensänderung im Bündel den Lauf nicht kippt, ein
+   zurückgeholtes Vorabladen aber sofort. */
+{
+  const STILLE_SEITEN = ["/impressum", "/datenschutz"];
+  const BEWEGUNGSGRENZE_KB = 20;
+  const stilleFunde = [];
+
+  for (const pfad of STILLE_SEITEN) {
+    const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    let bewegung = 0;
+    seite.on("response", async (antwort) => {
+      if (antwort.request().resourceType() !== "script") return;
+      try {
+        const text = (await antwort.body()).toString("utf8");
+        if (/MotionConfigContext|projection/.test(text)) bewegung += text.length / 1024;
+      } catch {
+        /* Eine Antwort ohne Körper trägt auch keine Bibliothek. */
+      }
+    });
+    await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    await seite.waitForTimeout(1500);
+    await seite.close();
+
+    const kb = Math.round(bewegung);
+    if (kb > BEWEGUNGSGRENZE_KB) {
+      stilleFunde.push(
+        `${pfad}: ${kb} kB Bewegungsbibliothek, erlaubt sind ${BEWEGUNGSGRENZE_KB}. ` +
+          `Wahrscheinlich fehlt prefetch={false} an einem Verweis auf eine bewegte Seite.`,
+      );
+    }
+  }
+
+  if (stilleFunde.length) {
+    console.error(`${String.fromCharCode(10)}${stilleFunde.join(String.fromCharCode(10))}`);
+    await browser.close();
+    beenden();
+    process.exit(1);
+  }
+}
+
 await browser.close();
 beenden();
 
