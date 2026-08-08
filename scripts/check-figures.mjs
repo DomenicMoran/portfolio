@@ -3534,6 +3534,115 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   „Alle allein gebaut" — steht das noch in der Historie?
+
+   Der Satz steht sechsmal auf der Seite: im Vorspann, in der Kennzahlenreihe
+   („4 Systeme in Produktion · alle allein gebaut") und als Rolle über jeder
+   der vier Fallstudien („Alleiniger Entwickler"). Er ist die Zusage, auf der
+   alles andere ruht — und die einzige, die ein einziger fremder Commit
+   umstößt, ohne dass jemand es merkt.
+
+   Nachprüfbar ist er da, wo er entsteht: in den Autorenzeilen der Repos.
+   Gemessen am 08.08.2026 tragen MenuCloud, SalatiTech und NOURI zusammen
+   drei Absender, und alle drei gehören zu denselben zwei Konten — das
+   Arbeitskonto, das eigene und die noreply-Adresse, die GitHub für Commits
+   über die Weboberfläche einsetzt.
+
+   Geprüft werden Adressen und nicht Namen: Ein Name lässt sich in
+   `git config` in einer Sekunde ändern, die Adresse hängt am Konto. Wer
+   künftig mitschreibt, taucht hier auf, und dann gehört der Satz geändert
+   und nicht der Lauf.
+   ------------------------------------------------------------------------ */
+{
+  const EIGENE = new Set([
+    "menucloudberlin@gmail.com",
+    "domenicmoran@gmail.com",
+    "109432512+domenicmoran@users.noreply.github.com",
+  ]);
+
+  /* Der Zahlen-Automat ist kein Mensch, aber auch kein Freibrief.
+
+     `refresh-figures.yml` schreibt unter `noreply@domenicmoran.de` und trägt
+     damit als Einziges eine Adresse, die keinem Konto gehört. Gemessen am
+     08.08.2026: fünfzehn Commits, alle mit demselben Betreff. Sie zählen
+     nicht als fremde Hand — AGENTS.md sagt es genauso: „Automatische Commits
+     kommen ausschließlich vom Zahlen-Automaten und tragen ‚Commit-Zahlen
+     aufgefrischt'."
+
+     Nur eben deshalb wird der Absender nicht einfach durchgewinkt: Ein Konto,
+     das im Namen des Projekts schreiben darf, ohne dass jemand hinsieht, ist
+     genau die Stelle, an der später etwas anderes durchrutscht. Der Lauf hält
+     ihn auf seinen einen Betreff fest. */
+  const AUTOMAT = "noreply@domenicmoran.de";
+  const AUTOMATENBETREFF = "Commit-Zahlen aufgefrischt";
+
+  const funde = [];
+  let geprueft = 0;
+  let uebersprungen = 0;
+  let automatenCommits = 0;
+
+  for (const [name, ort] of REPOS) {
+    if (!existsSync(join(ort, ".git"))) {
+      uebersprungen++;
+      continue;
+    }
+    let adressen;
+    try {
+      adressen = execFileSync("git", ["-C", ort, "log", "--format=%ae"], {
+        encoding: "utf8",
+        maxBuffer: 32 * 1024 * 1024,
+      })
+        .split(String.fromCharCode(10))
+        .map((a) => a.trim().toLowerCase())
+        .filter(Boolean);
+    } catch {
+      uebersprungen++;
+      continue;
+    }
+    geprueft++;
+
+    const fremd = [...new Set(adressen)].filter(
+      (a) => !EIGENE.has(a) && a !== AUTOMAT,
+    );
+    if (fremd.length) funde.push(`${name}: ${fremd.join(", ")}`);
+
+    if (adressen.includes(AUTOMAT)) {
+      const betreffe = execFileSync(
+        "git",
+        ["-C", ort, "log", `--author=${AUTOMAT}`, "--format=%s"],
+        { encoding: "utf8", maxBuffer: 8 * 1024 * 1024 },
+      )
+        .split(String.fromCharCode(10))
+        .map((z) => z.trim())
+        .filter(Boolean);
+      const andere = [...new Set(betreffe)].filter((z) => z !== AUTOMATENBETREFF);
+      if (andere.length) {
+        funde.push(
+          `${name}: Der Zahlen-Automat hat ${andere.length} Commit(s) mit ` +
+            `anderem Betreff geschrieben — ${andere.slice(0, 2).join(" | ")}`,
+        );
+      }
+      automatenCommits += betreffe.length;
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  „Alle allein gebaut" — fremde Absender in der Historie:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (geprueft === 0) {
+    zeilen.push("  --  Kein Repo mit Historie erreichbar, „allein gebaut“ übersprungen");
+  } else {
+    zeilen.push(
+      `  ok  Allein gebaut          ${geprueft} Repos, nur eigene Absender, ` +
+        `dazu ${automatenCommits} Commits des Zahlen-Automaten mit seinem ` +
+        `einen Betreff` +
+        (uebersprungen ? ` (${uebersprungen} ohne Historie)` : ""),
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Rechnet die Demo noch so wie die App?
 
    Unter der Kachel steht „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
