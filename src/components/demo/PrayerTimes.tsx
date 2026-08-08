@@ -623,9 +623,12 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
     [luecken],
   );
 
+  /* Das Jahr kommt aus dem Prüfstempel, nicht aus der Uhr: Dieselbe Falle wie
+     beim heutigen Tag, nur einmal im Jahr — am 1. Januar stünde im
+     ausgelieferten HTML noch das alte Jahr und im Browser das neue. */
   const datum = useMemo(
     () =>
-      new Date(new Date().getFullYear(), 0, 1 + tag).toLocaleDateString(
+      new Date(BAUZEIT.getFullYear(), 0, 1 + tag).toLocaleDateString(
         inhalt.lang === "de" ? "de-DE" : "en-GB",
         { day: "numeric", month: "long" },
       ),
