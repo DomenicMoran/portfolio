@@ -300,6 +300,28 @@ for (const pfad of BLAETTER) {
     );
   }
 
+  /* Und was hier gerade nicht stehen darf.
+
+     Die Privatanschrift steht auf zwei Blättern der Seite, beide mit
+     `noindex` — die Pflichtangabe nach § 5 DDG soll erfüllt sein, ohne die
+     Wohnanschrift in Suchergebnisse zu tragen. `check:legal` hält das über
+     den ganzen Bau. Diese beiden Dateien fallen dort durch: Sie liegen unter
+     `public/` und tragen ihren Text in komprimierten Strömen, sind also
+     weder HTML noch durchsuchbar.
+
+     Ausgerechnet sie sind der Weg, auf dem etwas herauskommt: Ein Kurzprofil
+     wird weitergereicht, angehängt und in ein Bewerbermanagement geladen.
+     Gemessen am 08.08.2026 führt keines der beiden die Anschrift. */
+  const ANSCHRIFTSTEILE = ["Heidelberger", "12059"];
+  const gefunden = ANSCHRIFTSTEILE.filter((teil) => text.includes(teil));
+  if (gefunden.length) {
+    funde.push(
+      `${pfad}: nennt die Privatanschrift (${gefunden.join(", ")}). Sie ` +
+        `gehört auf Impressum und Datenschutz, die dafür noindex tragen, ` +
+        `und nicht auf ein Blatt, das weitergereicht wird.`,
+    );
+  }
+
   /* Jedes Zeichen des Blattes muss eine Zuordnung haben.
 
      Ohne ToUnicode-Eintrag kann kein Extraktor es lesen, egal wie gut er ist —

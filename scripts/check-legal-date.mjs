@@ -233,8 +233,20 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
   const strasse = ANSCHRIFT[0];
   const ERLAUBT = new Set(["impressum.html", "datenschutz.html"]);
 
+  /* Nicht nur die Blätter, sondern alles, was ausgeliefert wird.
+
+     Hier stand `.html`, und das ließ die Hälfte der Auslieferung draußen:
+     llms.txt, humans.txt, robots.txt, die Sitemap und beide Feeds entstehen
+     als Route und liegen im Bau als `.body`. Gerade llms.txt ist der Fall, um
+     den es geht — es fasst die ganze Seite für ein Sprachmodell zusammen,
+     wird aus demselben Inhalt erzeugt und wäre die naheliegende Stelle, an
+     der eine Anschrift mitwandert, ohne dass jemand sie dort sucht.
+
+     Gemessen am 08.08.2026 führt keine der sieben Nebendateien sie. */
+  const AUSGELIEFERT = /\.(html|body)$/;
+
   const fremde = dateienUnter(bau)
-    .filter((d) => d.endsWith(".html"))
+    .filter((d) => AUSGELIEFERT.test(d))
     .filter((d) => !ERLAUBT.has(d.split(/[\\/]/).pop()))
     .filter((d) => readFileSync(d, "utf8").includes(strasse));
 
