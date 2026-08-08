@@ -364,46 +364,68 @@ for (const pfad of SEITEN) {
    Läufen sie nicht reißt, niedrig genug, dass ein zurückgenommenes
    `prefetch={false}` sofort auffällt. */
 {
-  const NACHLADEGRENZE_KB = 400;
-  const seite = await browser.newPage({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 2,
-  });
-  let bytes = 0;
-  let antworten = 0;
-  seite.on("response", async (antwort) => {
-    if (antwort.request().resourceType() !== "fetch") return;
-    antworten++;
-    try {
-      bytes += (await antwort.body()).length;
-    } catch {
-      /* Eine Antwort ohne Körper zählt als Anfrage und mit null Bytes. */
-    }
-  });
+  /* Je Seite ein eigenes Budget, weil je Seite etwas anderes vernünftig ist.
 
-  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
-  await seite.evaluate(async () => {
-    for (let y = 0; y < document.body.scrollHeight; y += 800) {
-      window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 60));
-    }
-  });
-  await seite.waitForTimeout(2000);
-  await seite.close();
+     Die Startseite und die Übersicht führen weiter, eine Artikelseite hält
+     fest. Gemessen am gebauten Stand auf dem Telefon: Startseite 282 kB,
+     Übersicht 0, Artikelseite 76 — dort bleibt der Rückweg zur Übersicht
+     absichtlich vorgeladen, weil er von hier aus der wahrscheinlichste Klick
+     ist. Was das Weglassen kostet, ist gemessen und klein: 206 statt 93 ms
+     bis zum Artikel, gegen 443 kB, die niemand angefordert hat. */
+  const NACHLADEBUDGETS = [
+    { pfad: "/", grenze: 400, name: "Die Startseite" },
+    { pfad: "/artikel", grenze: 60, name: "Die Artikelübersicht" },
+    {
+      pfad: "/artikel/gruen-lokal-rot-in-der-ci",
+      grenze: 150,
+      name: "Eine Artikelseite",
+    },
+  ];
 
-  vorablast = Math.round(bytes / 1024);
-  if (vorablast > NACHLADEGRENZE_KB) {
-    console.error(
-      `${String.fromCharCode(10)}Die Startseite lädt ${vorablast} kB im Voraus ` +
-        `nach (${antworten} Antworten), erlaubt sind ${NACHLADEGRENZE_KB}. ` +
-        `Wahrscheinlich fehlt prefetch={false} an einem Verweis, dem fast ` +
-        `niemand folgt.`,
-    );
-    await browser.close();
-    beenden();
-    process.exit(1);
+  for (const budget of NACHLADEBUDGETS) {
+    const seite = await browser.newPage({
+      viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 2,
+    });
+    let bytes = 0;
+    let antworten = 0;
+    seite.on("response", async (antwort) => {
+      if (antwort.request().resourceType() !== "fetch") return;
+      antworten++;
+      try {
+        bytes += (await antwort.body()).length;
+      } catch {
+        /* Eine Antwort ohne Körper zählt als Anfrage und mit null Bytes. */
+      }
+    });
+
+    await seite.goto(`${basis}${budget.pfad}`, { waitUntil: "networkidle" });
+    await seite.evaluate(async () => {
+      for (let y = 0; y < document.body.scrollHeight; y += 800) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+    });
+    await seite.waitForTimeout(2000);
+    await seite.close();
+
+    const kb = Math.round(bytes / 1024);
+    if (kb > budget.grenze) {
+      console.error(
+        `${String.fromCharCode(10)}${budget.name} lädt ${kb} kB im Voraus ` +
+          `nach (${antworten} Antworten), erlaubt sind ${budget.grenze}. ` +
+          `Wahrscheinlich fehlt prefetch={false} an einem Verweis, dem fast ` +
+          `niemand folgt.`,
+      );
+      await browser.close();
+      beenden();
+      process.exit(1);
+    }
+    if (budget.pfad === "/") {
+      vorablast = kb;
+      vorabAntworten = antworten;
+    }
   }
-  vorabAntworten = antworten;
 }
 
 /* Stille Seiten liefern keine Bewegungsbibliothek aus.
@@ -430,13 +452,16 @@ for (const pfad of SEITEN) {
   const stilleFunde = [];
 
   for (const pfad of STILLE_SEITEN) {
-    const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const seite = await browser.newPage({
+      viewport: { width: 390, height: 844 },
+    });
     let bewegung = 0;
     seite.on("response", async (antwort) => {
       if (antwort.request().resourceType() !== "script") return;
       try {
         const text = (await antwort.body()).toString("utf8");
-        if (/MotionConfigContext|projection/.test(text)) bewegung += text.length / 1024;
+        if (/MotionConfigContext|projection/.test(text))
+          bewegung += text.length / 1024;
       } catch {
         /* Eine Antwort ohne Körper trägt auch keine Bibliothek. */
       }
@@ -455,7 +480,9 @@ for (const pfad of SEITEN) {
   }
 
   if (stilleFunde.length) {
-    console.error(`${String.fromCharCode(10)}${stilleFunde.join(String.fromCharCode(10))}`);
+    console.error(
+      `${String.fromCharCode(10)}${stilleFunde.join(String.fromCharCode(10))}`,
+    );
     await browser.close();
     beenden();
     process.exit(1);

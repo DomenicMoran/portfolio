@@ -1,5 +1,6 @@
 import { dateLong } from "@/lib/date-format";
 import verified from "./verified.json";
+import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
 import {
   asWord,
   grossErstes,
@@ -50,12 +51,12 @@ const SALARY = "€55–70k, depending on scope";
  * einfrieren. Der Stempel rückt täglich mit dem geplanten Lauf weiter, und die
  * Anmerkung neben der Zahl benennt ihn.
  */
-const SALATI_FIRST_COMMIT = "2026-04-16";
+const SALATI_FIRST_COMMIT = SALATI_ERSTER_COMMIT;
 const salatiDays = Math.round(
   (Date.parse(verified.date) - Date.parse(SALATI_FIRST_COMMIT)) / 86_400_000,
 );
 /** Im Änderungsprotokoll der App gezählt, siehe check-figures.mjs. */
-const SALATI_VERSIONS = 65;
+const SALATI_VERSIONS = SALATI_VERSIONEN;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
@@ -183,7 +184,10 @@ export const en: Content = {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
       },
-      { value: verified.apiRouten.replace(".", ","), label: "API routes (MenuCloud)" },
+      {
+        value: verified.apiRouten.replace(".", ","),
+        label: "API routes (MenuCloud)",
+      },
       { value: "7,400+", label: "test cases (MenuCloud)" },
     ],
   },
@@ -970,7 +974,7 @@ export const en: Content = {
         {
           value: String(SALATI_VERSIONS),
           label: "versions shipped",
-          note: "1.0.0 to 1.47.0, listed in the app’s own changelog",
+          note: `1.0.0 to ${SALATI_STAND}, listed in the app’s own changelog`,
         },
         {
           value: `${salatiHoursPerVersion} h`,
@@ -1160,7 +1164,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: "65 versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.",
+        body: `${SALATI_VERSIONS} versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
@@ -1315,8 +1319,7 @@ export const en: Content = {
       "Self-taught in software development: no degree, no bootcamp. " +
       "The evidence is four systems in production.",
     openSource: "Published",
-    openSourceNote:
-      "all with tests, CI and an MIT licence on",
+    openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
     back: "← Back to the site",

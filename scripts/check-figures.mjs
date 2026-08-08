@@ -1017,10 +1017,12 @@ function ghKonten() {
     });
     const hoechste = versionen.at(-1);
 
-    // Die Zahl steht als Konstante in de.ts und nicht als Literal im Inhalt:
-    // Sie wird dort auch für die Stunden je Version gebraucht.
-    const inDe = readFileSync("src/content/de.ts", "utf8").match(
-      /const SALATI_VERSIONEN = (\d+);/,
+    // Die Zahl steht als Konstante in salati.ts und nicht als Literal im
+    // Inhalt: Deutsche Fassung, englische Fassung und die Recruiter-Kachel
+    // lesen sie von dort. Vorher hatte jede ihre eigene, und die Kachel blieb
+    // bei 65 stehen, als die beiden anderen auf 66 gingen.
+    const inDe = readFileSync("src/content/salati.ts", "utf8").match(
+      /SALATI_VERSIONEN = (\d+);/,
     );
     vergleiche(
       "Salati-Versionen",
@@ -2378,9 +2380,21 @@ const BRAUCHT_KIND = {
     const stempel = JSON.parse(readFileSync(stempelPfad, "utf8"));
     const funde = [];
 
+    /* Die Salati-Zahlen kommen aus `de.ts` und nicht aus dem Prüfstempel:
+       Dort stehen sie, dort prüft der Lauf sie gegen die Store-Wirklichkeit,
+       und der Lebenslauf soll ihnen folgen. Am 08.08.2026 lief er zwei
+       Versionen hinterher — „Version 1.46" und „64 ausgelieferte Versionen"
+       gegen 1.48.0 und 66 —, ohne dass etwas darauf zeigte. */
+    const inhalt = readFileSync(join("src", "content", "salati.ts"), "utf8");
+
     for (const [was, wert] of [
       ["API-Routen", stempel.apiRouten],
       ["Migrationen", stempel.migrationen],
+      [
+        "ausgelieferte Versionen",
+        /const SALATI_VERSIONEN = (\d+);/.exec(inhalt)?.[1],
+      ],
+      ["App-Store-Version", /SALATI_STAND = "([\d.]+)"/.exec(inhalt)?.[1]],
     ]) {
       /* Gesucht wird die Zahl im Wortumfeld, nicht irgendwo im Blatt: „816"
          allein stünde auch in einer Postleitzahl. */
@@ -2389,10 +2403,17 @@ const BRAUCHT_KIND = {
          `\d` wird `d`, aus `\s` wird `s`, und gesucht wurde nach „[d.]+s+
          API-Routen". Das Muster fand nie etwas, und der Wächter meldete
          „keine Angabe im Lebenslauf gefunden" statt „stimmt". */
-      const muster = new RegExp(
-        `([\\d.]+)\\s+(?:versionierte\\s+Postgres-)?${was === "API-Routen" ? "API-Routen" : "(?:versionierte )?Migrationen"}`,
-        "g",
-      );
+      const MUSTER = {
+        "API-Routen": String.raw`([\d.]+)\s+API-Routen`,
+        Migrationen: String.raw`([\d.]+)\s+(?:versionierte\s+Postgres-|versionierte )?Migrationen`,
+        "ausgelieferte Versionen": String.raw`(\d+)\s+ausgelieferte (?:App-)?Versionen`,
+        "App-Store-Version": String.raw`Live im App Store \(Version ([\d.]+)\)`,
+      };
+      if (!wert) {
+        funde.push(`${was}: in der Quelle nicht gefunden`);
+        continue;
+      }
+      const muster = new RegExp(MUSTER[was], "g");
       const genannt = [...text.matchAll(muster)].map((m) => m[1]);
       /* Dieselbe Zahl steht weiter unten in anderer Form: „versionierte
          Migrationen (816 im größten Projekt)". Ohne diesen Zusatz bliebe
@@ -2432,7 +2453,7 @@ const BRAUCHT_KIND = {
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        "  ok  Lebenslauf           Routen und Migrationen wie im Prüfstempel",
+        "  ok  Lebenslauf              4 Zahlen wie auf der Seite: Routen, Migrationen, Versionen, App-Stand",
       );
     }
   }
