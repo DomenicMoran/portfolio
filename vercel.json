@@ -331,6 +331,21 @@
       "permanent": true
     },
     {
+      "source": "/en/artikel/gruen-lokal-rot-in-der-ci",
+      "destination": "/en/articles/green-locally-red-in-ci",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/gruen-lokal-rot-in-der-ci",
+      "destination": "/en/articles/green-locally-red-in-ci",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/green-locally-red-in-ci",
+      "destination": "/en/articles/green-locally-red-in-ci",
+      "permanent": true
+    },
+    {
       "source": "/en/artikel/kassensichv-in-der-praxis",
       "destination": "/en/articles/german-till-law-in-practice",
       "permanent": true
