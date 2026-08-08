@@ -125,6 +125,8 @@ export type Content = {
     currentSection: string;
     /** Titel des Verweises auf llms.txt im Dokumentkopf. */
     llmsTitel: string;
+    /** Titel des humans.txt-Verweises. Die Datei ist deutsch. */
+    humansTitel: string;
     replay: string;
     /** Bedienung der Bildstrecke in den Fallstudien. */
     shots: { label: string; vor: string; zurueck: string; von: string };
