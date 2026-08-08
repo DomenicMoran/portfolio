@@ -25,6 +25,7 @@
 
 import { chromium } from "playwright";
 import { starteServer } from "./lib/local-server.mjs";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 
 const vorgegebeneBasis = process.argv[2];
 let beenden = () => {};
@@ -35,40 +36,31 @@ if (!basis) {
 }
 
 /** Die Seitenpaare, die dasselbe zeigen sollen. */
-const PAARE = [
+/* Die Artikelpaare entstehen aus dem Bau, nicht aus dieser Liste.
+
+   Hier standen sie ausgeschrieben, fünf Stück. Der sechste Artikel kam dazu
+   und fehlte — gemessen am 08.08.2026 meldete der Lauf acht Seitenpaare,
+   während neun zu prüfen gewesen wären. Die Lücke sieht man der Ausgabe nicht
+   an: „8 Seitenpaare, 97 Vergleiche ohne Abweichung" liest sich wie ein
+   vollständiger Lauf.
+
+   Die Zuordnung steht in jedem Artikel selbst: Der Kopf nennt die andere
+   Sprachfassung als `rel="alternate"` mit `hreflang`. Von dort geholt, ist
+   sie gemessen und nicht gepflegt — und ein Artikel ohne Gegenstück fällt
+   sofort auf, statt still aus der Prüfung zu fallen.
+
+   Die drei festen Paare bleiben ausgeschrieben: Sie folgen keiner Regel, die
+   sich ableiten ließe. */
+const FESTE_PAARE = [
   { de: "/", en: "/en", name: "Startseite" },
   { de: "/artikel", en: "/en/articles", name: "Artikelübersicht" },
   { de: "/onepager", en: "/en/onepager", name: "One-Pager", zahlen: true },
-  /* Alle fünf Artikel, nicht mehr einer als Stichprobe.
-     Sie sind der Teil der Seite, der einzeln geteilt wird und den ein CTO
-     zuerst liest — und der einzige, bei dem beide Fassungen unabhängig
-     geschrieben sind statt übersetzt. Vier von fünf Paaren waren ungeprüft. */
-  {
-    de: "/artikel/published-ist-kein-beleg",
-    en: "/en/articles/published-is-not-proof",
-    name: "Artikel: Published",
-  },
-  {
-    de: "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
-    en: "/en/articles/the-dotted-circle-was-not-the-font",
-    name: "Artikel: Kreis",
-  },
-  {
-    de: "/artikel/widget-leer-trotz-gruener-tests",
-    en: "/en/articles/green-tests-empty-widget",
-    name: "Artikel: Widget",
-  },
-  {
-    de: "/artikel/kassensichv-in-der-praxis",
-    en: "/en/articles/german-till-law-in-practice",
-    name: "Artikel: KassenSichV",
-  },
-  {
-    de: "/artikel/kleineres-whisper-modell",
-    en: "/en/articles/a-smaller-whisper-model",
-    name: "Artikel: Whisper",
-  },
 ];
+
+const artikelpfade = gebauteSeiten().filter((pfad) =>
+  /^\/artikel\/[^/]+$/.test(pfad),
+);
+
 
 /**
  * Wie weit die Textmenge zweier Fassungen auseinanderliegen darf.
@@ -80,6 +72,28 @@ const PAARE = [
 const ANTEIL_MINDESTENS = 0.8;
 
 const browser = await chromium.launch();
+
+const PAARE = [...FESTE_PAARE];
+{
+  const leser = await browser.newPage();
+  for (const pfad of artikelpfade) {
+    await leser.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+    const englisch = await leser.evaluate(() => {
+      const l = document.querySelector('link[rel="alternate"][hreflang="en"]');
+      return l ? new URL(l.getAttribute("href"), location.origin).pathname : null;
+    });
+    if (!englisch || !englisch.startsWith("/en/")) {
+      throw new Error(`${pfad} nennt keine englische Fassung im Kopf.`);
+    }
+    PAARE.push({
+      de: pfad,
+      en: englisch,
+      name: `Artikel: ${pfad.replace("/artikel/", "").slice(0, 26)}`,
+    });
+  }
+  await leser.close();
+}
+
 
 /** Was ein Leser sieht, in Zahlen. */
 async function zaehle(pfad, mitZahlen = false) {
