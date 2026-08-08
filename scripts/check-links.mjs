@@ -61,6 +61,30 @@ const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
+
+/* Was die Seite selbst in die Konsole schreibt.
+
+   Kein Prüflauf sah bisher hin, und genau dort stand am 09.08.2026 auf beiden
+   Startseiten ein React-Fehler 418: Die Gebetszeiten-Demo rechnete den
+   heutigen Tag im Render, der Server am Bautag und der Browser beim Laden. Ab
+   dem ersten Tag nach dem Bau lief beides auseinander, und jeder, der die
+   Entwicklerkonsole öffnete — also genau der Leser, um den es hier geht —,
+   sah einen Fehler auf einer Seite, die mit Nachweisbarkeit wirbt.
+
+   Hier und nicht in einem eigenen Lauf: Dieser wartet ohnehin je Seite auf
+   `networkidle` und scrollt durch, die Hydration ist also gelaufen. Gesammelt
+   wird über alle Seiten, gemeldet am Ende zusammen mit den übrigen Befunden.
+
+   Der Fehler dieser Sorte zeigt sich nur an einem Tag nach dem Bau: Wer heute
+   baut und heute misst, sieht ihn nicht. Deshalb steht der Wächter hier und
+   nicht nur die Behebung im Bauteil. */
+const seitenfehler = [];
+seite.on("pageerror", (fehler) => {
+  seitenfehler.push(
+    `${new URL(seite.url()).pathname}: ${String(fehler).slice(0, 110)}`,
+  );
+});
+
 let sitemapzeilen = 0;
 let anker = 0;
 /** Die im Kopf angemeldeten Nebendateien, je einmal geprüft. */
@@ -940,6 +964,8 @@ for (const w of weiterleitungen) {
 
 await browser.close();
 beenden();
+
+for (const f of seitenfehler) funde.push(`Fehler in der Konsole — ${f}`);
 
 if (funde.length > 0) {
   /* "2 toter Verweise" stand hier, und ab jetzt wäre selbst die richtige

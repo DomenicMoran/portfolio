@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import verified from "@/content/verified.json";
 import type { Content } from "@/content/types";
 
 /**
@@ -43,7 +50,13 @@ import type { Content } from "@/content/types";
 const ORTE = [
   { name: "Berlin", lat: 52.52, lon: 13.405, zone: "Europe/Berlin" },
   { name: "Istanbul", lat: 41.0082, lon: 28.9784, zone: "Europe/Istanbul" },
-  { name: "Kairo", lat: 30.0444, lon: 31.2357, en: "Cairo", zone: "Africa/Cairo" },
+  {
+    name: "Kairo",
+    lat: 30.0444,
+    lon: 31.2357,
+    en: "Cairo",
+    zone: "Africa/Cairo",
+  },
   { name: "Tromsø", lat: 69.6496, lon: 18.956, zone: "Europe/Oslo" },
 ] as const;
 
@@ -183,6 +196,15 @@ function spanne(m: number) {
  * Beim Wechsel des Ortes kann der Tag deshalb springen — genau dann, wenn er
  * es auch in Wirklichkeit tut.
  */
+/**
+ * Der Zeitpunkt, den die vorab erzeugte Fassung kennt.
+ *
+ * Der Prüfstempel steht als Zeichenkette im Bündel und ist damit auf dem
+ * Server und im Browser derselbe Wert. Mittags angesetzt, damit keine
+ * Zeitzone den Tag über die Grenze schiebt.
+ */
+const BAUZEIT = new Date(`${verified.date}T12:00:00Z`);
+
 function tagDesJahresImOrt(zone: string, jetzt = new Date()) {
   const heute = new Intl.DateTimeFormat("en-CA", {
     timeZone: zone,
@@ -204,12 +226,37 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   /* Der heutige Tag als fester Wert für diesen Aufruf.
      Nicht über die Uhr getaktet: Das Band ändert sich innerhalb einer Sitzung
      nicht, und ein Minutentakt würde nur dieselbe Zahl neu setzen. */
-  const heuteNr = useMemo(
-    () => Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[ort].zone)),
-    [ort],
+  /* Der heutige Tag kommt über `useSyncExternalStore` und nicht aus einem
+     `new Date()` mitten im Render.
+
+     Die Seite wird vorab erzeugt. Der Server rechnete den Tag am Bautag, der
+     Browser rechnet ihn beim Laden — und ab dem ersten Tag nach dem Bau stand
+     im ausgelieferten HTML „8. August" und im Browser „9. August". React
+     meldete das als Fehler 418 in der Konsole, sichtbar für jeden, der sie
+     öffnet: eine Seite, die auf Nachweisbarkeit setzt, protokollierte beim
+     Aufruf einen Fehler.
+
+     `getServerSnapshot` rechnet aus dem Prüfstempel, der als Zeichenkette im
+     Bündel steht: Serverfassung und erster Renderdurchgang im Browser kommen
+     damit zwangsläufig auf denselben Wert. Erst danach wechselt React auf die
+     echte Uhr. Sichtbar ist das nur an den Tagen, an denen beide
+     auseinanderliegen — und dann als sauberer Wechsel statt als Abweichung.
+
+     Kein Abonnement: Der Tag ändert sich innerhalb einer Sitzung nicht, und
+     ein Takt würde nur dieselbe Zahl neu setzen. */
+  const heuteNr = useSyncExternalStore(
+    () => () => {},
+    useCallback(
+      () => Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[ort].zone)),
+      [ort],
+    ),
+    useCallback(
+      () => Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[ort].zone, BAUZEIT)),
+      [ort],
+    ),
   );
   const [tag, setTag] = useState(() =>
-    Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[0].zone)),
+    Math.min(TAGE - 1, tagDesJahresImOrt(ORTE[0].zone, BAUZEIT)),
   );
 
   /* Beim Ortswechsel auf dessen heutigen Tag springen, solange der Regler noch
