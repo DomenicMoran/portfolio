@@ -5,7 +5,7 @@ import {
   TafelAutomation,
   TafelHighlights,
   TafelStack,
-} from "@/components/sections/case-study/Tafeln";
+} from "@/components/sections/case-study/Panels";
 import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, Bot, Layers, Smartphone, Workflow } from "lucide-react";
 import Link from "next/link";

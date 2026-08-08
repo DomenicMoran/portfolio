@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { feedFuer, vorschaukarten, kartenTitel } from "@/lib/metadata";
 import { mailAdresse } from "@/lib/mailto";
 import { EnglishNote } from "../EnglishNote";
-import { Rechtsfuss } from "../Rechtsfuss";
+import { Rechtsfuss } from "../LegalFooter";
 import { ANBIETER, ANSCHRIFT } from "../provider";
 import { site } from "@/content/site";
 
