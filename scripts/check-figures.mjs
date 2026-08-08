@@ -1256,6 +1256,19 @@ const BRAUCHT_KIND = {
     const xml = readFileSync(sitemapDatei, "utf8");
     const adressen = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
+    /* Je Adresse die Sprachen, die ihr `<url>`-Block nennt. Zerlegt wird an
+       den Blöcken und nicht über einen Ausdruck über die ganze Datei — sonst
+       bekäme jede Adresse die Sprachen aller anderen dazu. */
+    const gruppen = new Map();
+    for (const block of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+      const wo = /<loc>([^<]+)<\/loc>/.exec(block[1])?.[1];
+      if (!wo) continue;
+      gruppen.set(
+        wo,
+        new Set([...block[1].matchAll(/hreflang="([^"]+)"/g)].map((m) => m[1])),
+      );
+    }
+
     const zuDatei = (adresse) => {
       const pfad = new URL(adresse).pathname.replace(/\/$/, "");
       return join(bauOrdner, pfad === "" ? "index.html" : `${pfad}.html`);
@@ -1292,6 +1305,34 @@ const BRAUCHT_KIND = {
         funde.push(
           `${adresse} steht in der Sitemap, die Seite nennt als canonical ${kanonisch}`,
         );
+      }
+
+      /* Und die Sprachgruppe ist in beiden Quellen dieselbe.
+
+         Google liest hreflang aus dem Dokumentkopf **und** aus der Sitemap und
+         erwartet dieselbe Gruppe. Gemessen am 08.08.2026 nannte jede Seite im
+         Kopf drei Alternativen — `de`, `en`, `x-default` —, die Sitemap je
+         Adresse nur zwei: `x-default` fehlte dort. Die Angabe, welche Fassung
+         ein Besucher ohne passende Sprache bekommt, stand damit nur an einer
+         von zwei Stellen. */
+      /* `gi`, nicht `g`: Next schreibt das Attribut als `hrefLang` in das
+         HTML. Für einen Browser ist das dasselbe, für einen Ausdruck ohne
+         `i` nicht — und ein Ausdruck, der nichts findet, meldet nichts. */
+      const imKopf = new Set(
+        [...html.matchAll(/<link[^>]+hreflang="([^"]+)"/gi)].map((m) => m[1]),
+      );
+      const inDerKarte = new Set(
+        [...(gruppen.get(adresse) ?? [])],
+      );
+      if (imKopf.size && inDerKarte.size) {
+        const nurKopf = [...imKopf].filter((k) => !inDerKarte.has(k));
+        const nurKarte = [...inDerKarte].filter((k) => !imKopf.has(k));
+        if (nurKopf.length || nurKarte.length) {
+          funde.push(
+            `${adresse}: hreflang im Kopf {${[...imKopf].sort().join(", ")}}, ` +
+              `in der Sitemap {${[...inDerKarte].sort().join(", ")}}`,
+          );
+        }
       }
     }
 

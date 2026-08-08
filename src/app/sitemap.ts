@@ -46,8 +46,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
      Kanonischen übereinstimmt, lässt eine Suchmaschine die ganze Gruppe
      verwerfen. Gemessen an der ausgelieferten Sitemap betraf das beide
      Startseiten-Einträge. */
+  /* `x-default` gehört dazu, wie im Dokumentkopf auch.
+
+     Gemessen an der ausgelieferten Sitemap standen dort je Adresse zwei
+     Alternativen, `de` und `en`; jede Seite im Kopf nennt drei. Google liest
+     beide Quellen und erwartet dieselbe Gruppe — fehlt `x-default` in der
+     einen, ist die Angabe, welche Fassung ein Besucher ohne passende Sprache
+     bekommt, nur an einer von zwei Stellen hinterlegt.
+
+     Das Ziel ist die deutsche Fassung, aus demselben Grund wie im Kopf: Die
+     Seite richtet sich an deutsche Unternehmen, und die englische ist die
+     Übersetzung, nicht der Ausgangspunkt. */
   const paar = (de: string, en: string) => ({
-    languages: { de: `${basis}${de}`, en: `${basis}${en}` },
+    languages: {
+      de: `${basis}${de}`,
+      en: `${basis}${en}`,
+      "x-default": `${basis}${de}`,
+    },
   });
 
   const urls: MetadataRoute.Sitemap = [
