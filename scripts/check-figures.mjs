@@ -1030,10 +1030,11 @@ function ghKonten() {
       inDe?.[1] ?? "(nicht gefunden)",
     );
 
-    // Die Spanne steht als Fließtext in beiden Sprachfassungen.
+    // Die Spanne stand als Fließtext in beiden Sprachfassungen und nannte
+    // damit dieselbe Version zweimal. Seit sie aus salati.ts kommt, steht
+    // dort die einzige Ziffer — beide Fassungen setzen sie ein.
     for (const [datei, muster] of [
-      ["src/content/de.ts", /1\.0\.0 bis (\d+\.\d+\.\d+)/],
-      ["src/content/en.ts", /1\.0\.0 to (\d+\.\d+\.\d+)/],
+      ["src/content/salati.ts", /SALATI_STAND = "(\d+\.\d+\.\d+)"/],
     ]) {
       const treffer = readFileSync(datei, "utf8").match(muster);
       const gleich = treffer?.[1] === hoechste;
