@@ -3116,6 +3116,59 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Jeder Artikel gehört zu genau einer Fallstudie.
+
+   Über jedem Artikel steht ein Schild „Aus dem System …" und führt zurück in
+   den Fallstudienbereich. Abgeleitet ist es aus der Fallstudie selbst: Sie
+   führt ihre Artikel in `articles: [...]` auf, und `ArticlePage` sucht die
+   Studie, die den Slug enthält. Eine zweite Liste am Artikel gibt es bewusst
+   nicht.
+
+   Der Preis dieser Bauart: Wer einen Artikel anlegt und die Zuordnung
+   vergisst, bekommt kein Schild — und nichts sagt es. Genau dieser Zustand
+   ist der Grund, warum es das Schild gibt: Gezählt an der ausgelieferten
+   Seite führte aus keinem der fünf Artikel ein Verweis zurück, und wer über
+   eine Suchmaschine im Whisper-Text landete, las von Salati, ohne zu
+   erfahren, dass es die App in zwei Stores gibt.
+
+   Geprüft wird beides: kein Artikel ohne Studie, und kein Slug in einer
+   Studie, den es nicht gibt.
+   ------------------------------------------------------------------------ */
+{
+  const ordner = join("src", "content", "articles");
+  if (!existsSync(ordner) || !existsSync("src/content/site.ts")) {
+    zeilen.push("  --  Artikel oder Inhalt nicht vorhanden, Zuordnung übersprungen");
+  } else {
+    const quelle = readFileSync("src/content/site.ts", "utf8");
+    const zugeordnet = new Set();
+    for (const liste of quelle.matchAll(/articles:\s*\[([^\]]*)\]/g)) {
+      for (const eintrag of liste[1].matchAll(/"([^"]+)"/g)) zugeordnet.add(eintrag[1]);
+    }
+
+    const slugs = readdirSync(ordner)
+      .filter((f) => /^de-.*\.ts$/.test(f))
+      .map((f) => /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1])
+      .filter(Boolean);
+
+    const ohneStudie = slugs.filter((s) => !zugeordnet.has(s));
+    const ohneArtikel = [...zugeordnet].filter((s) => !slugs.includes(s));
+
+    if (ohneStudie.length || ohneArtikel.length) {
+      abweichungen += ohneStudie.length + ohneArtikel.length;
+      zeilen.push(`  !!  Die Zuordnung Artikel/Fallstudie stimmt nicht:`);
+      for (const s of ohneStudie)
+        zeilen.push(`        "${s}" gehört zu keiner Fallstudie — kein Weg zurück`);
+      for (const s of ohneArtikel)
+        zeilen.push(`        eine Fallstudie nennt "${s}", den Artikel gibt es nicht`);
+    } else {
+      zeilen.push(
+        `  ok  Artikelzuordnung ${String(slugs.length).padStart(7)} Artikel, jeder in genau einer Fallstudie`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Wie viele Stufen hat die Mail-Kette wirklich?
 
    Die MenuCloud-Fallstudie sagte „Self-hosted Mailstack (Mailcow) mit
