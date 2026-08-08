@@ -37,6 +37,7 @@ const browser = await chromium.launch();
 const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 
 const funde = [];
+let sprachvergleich = 0;
 
 await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
 await seite.evaluate(async () => {
@@ -471,7 +472,69 @@ console.log(
   }
 }
 
-await browser.close();
+/* Und dieselben Zahlen auf der englischen Fassung.
+
+   Bis hierher schlug dieser Lauf die englische Startseite nie auf. Die
+   Rechnung dahinter ist dieselbe — es ist derselbe Code —, die Vorführung
+   aber nicht: Ein anderer Vorgabewert, ein anderer Datensatz oder ein Reiter,
+   der nur in einer Fassung vorausgewählt ist, ergäbe zwei Demos, die
+   verschiedene Ergebnisse zeigen und beide für sich richtig rechnen.
+
+   Verglichen werden die Kalorienangaben ohne Trennzeichen und die Zahl der
+   gewählten Gerichte. Das Trennzeichen selbst bleibt bewusst draußen: Auf
+   Deutsch steht dort „2.200", auf Englisch „2,200", und ob das stimmt, misst
+   `check:typography` genauer — gegengeprüft mit deutscher Formatierung auf
+   der englischen Seite, gemeldet als „Tausender trennt das Englische mit
+   einem Komma". Zweimal dieselbe Prüfung wäre eine zu viel. */
+{
+  const auslesen = async (route) => {
+    const blatt = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+    await blatt.goto(`${basis}${route}`, { waitUntil: "networkidle" });
+    await blatt.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 30));
+      }
+    });
+    await blatt.waitForTimeout(700);
+    const stand = await blatt.evaluate(() => {
+      const demo = [...document.querySelectorAll("section, div")]
+        .filter((e) => /kcal/.test(e.innerText || "") && e.querySelectorAll("button").length > 3)
+        .sort((a, b) => a.innerText.length - b.innerText.length)[0];
+      if (!demo) return null;
+      return {
+        gewaehlt: demo.querySelectorAll('button[aria-pressed="true"]').length,
+        werte: (demo.innerText.match(/[\d.,]+(?=\s*kcal)/g) ?? []).map((z) =>
+          z.replace(/[.,]/g, ""),
+        ),
+      };
+    });
+    await blatt.close();
+    return stand;
+  };
+
+  const [deutsch, englisch] = [await auslesen("/"), await auslesen("/en")];
+
+  if (!deutsch || !englisch) {
+    funde.push("Die Tagesbilanz ist auf einer der beiden Fassungen nicht zu finden.");
+  } else {
+    if (deutsch.gewaehlt !== englisch.gewaehlt) {
+      funde.push(
+        `Die Tagesbilanz zeigt ${deutsch.gewaehlt} gewählte Gerichte auf Deutsch ` +
+          `und ${englisch.gewaehlt} auf Englisch.`,
+      );
+    }
+    if (deutsch.werte.join(" ") !== englisch.werte.join(" ")) {
+      funde.push(
+        `Die Tagesbilanz nennt andere Zahlen: deutsch ${deutsch.werte.join(", ")}, ` +
+          `englisch ${englisch.werte.join(", ")}.`,
+      );
+    }
+    sprachvergleich = deutsch.werte.length;
+  }
+}
+
+await browser.close();
 beenden();
 
 if (funde.length > 0) {
@@ -489,5 +552,6 @@ console.log(
   `\nBeide Demos rechnen richtig: ${ZIELE.length} Kalorienziele gegen je ` +
     `${1 << gerichte.length} Zusammenstellungen nachgerechnet, ` +
     `${kombinationen} Gebetszeiten-Kombinationen und Tromsø an ${jahrestage} Tagen in Reihenfolge ` +
-    `(${nichtBerechnet} Angaben ohne Wert, wo es keinen gibt).`,
+    `(${nichtBerechnet} Angaben ohne Wert, wo es keinen gibt), ` +
+    `${sprachvergleich} Kalorienangaben in beiden Fassungen gleich.`,
 );
