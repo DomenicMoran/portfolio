@@ -571,7 +571,13 @@ export const caseStudies: CaseStudy[] = [
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
       "über 7.400 Testfälle (über 7.200 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
-      "Self-hosted Mailstack (Mailcow) mit dreistufiger Fallback-Kette",
+      /* „dreistufig" stimmte bis zum 01.05.2026: Resend, Migadu, SES.
+         Migadu ist seither abgeschaltet, und `src/lib/smtp.ts` sagt es im
+         Kopf: „Supports two backends — mailcow (default + only primary),
+         ses (rescue fallback)". `resend.ts` heißt nur noch so, um 25
+         Importeure nicht anzufassen; Migadu kommt in `src/lib` nicht mehr
+         vor. Zwei Stufen, und der Prüflauf zählt sie nach. */
+      "Self-hosted Mailstack (Mailcow) mit AWS SES als Rettungsweg",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
