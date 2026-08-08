@@ -903,9 +903,15 @@ const FRISTEN = new Map([
    nicht stimmt, und genau das ist der Fehler, den dieser Lauf sonst sucht. */
 if (!process.exitCode) {
   console.log(
-    `Die Datenschutzerklärung passt zu ihrem Stand: ${text.split(" ").length} Wörter, ` +
-      `Stand ${STAND}. Alle Seiten mit Inhalt vorab erzeugt, die Fehlerseite als ` +
-      `benannte Ausnahme, kein Endpunkt nimmt Eingaben entgegen.`,
+    /* Die Schlusszeile nennt, was der Lauf abgedeckt hat, nicht nur seinen
+       ältesten Teil. Sie sagte „Die Datenschutzerklärung passt zu ihrem
+       Stand" und war damit dieselbe Untertreibung wie die Zeile im Handbuch:
+       Wer in einem CI-Protokoll nur die letzte Zeile liest, hielt die
+       Rechtsseiten für kaum geprüft. Die Einzelbefunde stehen darüber. */
+    `Die Rechtsseiten halten, was sie zusagen: ${text.split(" ").length} Wörter, ` +
+      `Stand ${STAND}, Prüfsumme passend. Alle Seiten mit Inhalt vorab erzeugt, ` +
+      `die Fehlerseite als benannte Ausnahme, kein Endpunkt nimmt Eingaben ` +
+      `entgegen — dazu die sieben Punkte darüber.`,
   );
 }
 
