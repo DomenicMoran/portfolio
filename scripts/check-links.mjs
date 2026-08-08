@@ -213,6 +213,44 @@ for (const pfad of pfade) {
   if (!vorschau.length) {
     funde.push(`${pfad}: keine Vorschaukarte (og:image)`);
   }
+
+  /* Und die Karte muss sagen, wohin sie gehört.
+
+     Dieselbe Ursache eine Ebene tiefer: Gemessen an den ausgelieferten Seiten
+     trugen genau zwei von achtzehn ein `og:url` — die beiden Startseiten, die
+     als einzige kein eigenes `openGraph` setzen. Wer einen Artikel auf
+     LinkedIn stellt, teilt eine Adresse mit `?trk=…` daran; ohne `og:url` ist
+     das für jeden Sammler die Kennung des Inhalts, und dieselbe Seite zerfällt
+     in so viele Einträge, wie es Kanäle gibt.
+
+     Verglichen wird gegen `canonical`, weil beide dasselbe sagen sollen und
+     eine Seite mit zwei verschiedenen Selbstauskünften schlechter dran ist
+     als eine ohne. */
+  const kartenAdresse = await seite.evaluate(
+    () =>
+      document
+        .querySelector("meta[property='og:url']")
+        ?.getAttribute("content") ?? null,
+  );
+  const kanonisch = await seite.evaluate(
+    () =>
+      document.querySelector("link[rel='canonical']")?.getAttribute("href") ??
+      null,
+  );
+  /* Ohne kanonische Adresse keine Kartenadresse.
+
+     Die beiden Fehlerseiten tragen keine — ihre Adresse ist die, die jemand
+     falsch getippt hat, und `noindex` steht ohnehin darüber. Eine Karte mit
+     `og:url` auf eine Adresse, die es nicht gibt, wäre schlechter als keine.
+     Die Bedingung ist deshalb an `canonical` gebunden und nicht an eine
+     Ausnahmeliste, die beim nächsten Pfad veraltet. */
+  if (!kartenAdresse && kanonisch) {
+    funde.push(`${pfad}: Vorschaukarte ohne og:url`);
+  } else if (kartenAdresse && kanonisch && kartenAdresse !== kanonisch) {
+    funde.push(
+      `${pfad}: og:url ${kartenAdresse} steht gegen canonical ${kanonisch}`,
+    );
+  }
   for (const adresse of vorschau) {
     const ohneDomain = (adresse ?? "").replace("https://domenicmoran.de", "");
     if (!ohneDomain.startsWith("/")) continue;
@@ -462,10 +500,9 @@ for (const adresse of VEROEFFENTLICHT) {
    Regel von hier. */
 {
   const ziele = new Map(
-    (JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? []).map((w) => [
-      w.source,
-      w.destination,
-    ]),
+    (JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? []).map(
+      (w) => [w.source, w.destination],
+    ),
   );
   for (const [quelle, ziel] of ziele) {
     const ohneAnker = ziel.split("#")[0];
@@ -547,11 +584,15 @@ for (const w of weiterleitungen) {
         `keine gebaute Seite, an der sich der Platzhalter prüfen ließe`,
     );
   } else {
-    const antwort = await fetch(`${basis}${gepruefteAdresse}`).catch(() => null);
+    const antwort = await fetch(`${basis}${gepruefteAdresse}`).catch(
+      () => null,
+    );
     if (!antwort || antwort.status !== 200) {
       funde.push(
         `vercel.json: ${w.source} zeigt auf ${w.destination}` +
-          (gepruefteAdresse === ziel ? "" : ` (geprüft als ${gepruefteAdresse})`) +
+          (gepruefteAdresse === ziel
+            ? ""
+            : ` (geprüft als ${gepruefteAdresse})`) +
           `, und das antwortet mit ${antwort ? antwort.status : "gar nicht"}`,
       );
     }
@@ -613,7 +654,9 @@ for (const w of weiterleitungen) {
   for (const eintrag of inSitemap) {
     const pfad = eintrag === "" ? "/" : eintrag;
     if (!pfade.includes(pfad)) {
-      sitemapfunde.push(`${pfad}: steht in der Sitemap, wird aber nicht gebaut`);
+      sitemapfunde.push(
+        `${pfad}: steht in der Sitemap, wird aber nicht gebaut`,
+      );
     }
   }
 
@@ -638,7 +681,9 @@ for (const w of weiterleitungen) {
    Sprache — ein erster Anlauf ohne diese Unterscheidung meldete 108
    angebliche Wechsel, von denen 106 keine waren. */
 {
-  const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const seite = await browser.newPage({
+    viewport: { width: 1440, height: 900 },
+  });
   let wechsel = 0;
 
   for (const route of pfade) {
@@ -650,19 +695,21 @@ for (const w of weiterleitungen) {
     const offen = await seite.evaluate(() => {
       const englisch = (pfad) => pfad === "/en" || pfad.startsWith("/en/");
       const hier = englisch(location.pathname);
-      return [...document.querySelectorAll('a[href^="/"]')]
-        .map((a) => {
-          const ziel = a.getAttribute("href").split("#")[0];
-          return {
-            ziel,
-            wechselt: ziel !== "" && englisch(ziel) !== hier,
-            sprache: a.getAttribute("hreflang"),
-            text: a.textContent.trim().slice(0, 34),
-          };
-        })
-        /* Dateien ohne Sprachpräfix sind sprachneutral: Das PDF heißt in
+      return (
+        [...document.querySelectorAll('a[href^="/"]')]
+          .map((a) => {
+            const ziel = a.getAttribute("href").split("#")[0];
+            return {
+              ziel,
+              wechselt: ziel !== "" && englisch(ziel) !== hier,
+              sprache: a.getAttribute("hreflang"),
+              text: a.textContent.trim().slice(0, 34),
+            };
+          })
+          /* Dateien ohne Sprachpräfix sind sprachneutral: Das PDF heißt in
            beiden Fassungen anders und trägt seine Sprache im Namen. */
-        .filter((x) => x.wechselt && !/\.[a-z0-9]+$/i.test(x.ziel));
+          .filter((x) => x.wechselt && !/\.[a-z0-9]+$/i.test(x.ziel))
+      );
     });
 
     /* Und dieselbe Runde für das Kurzprofil.
@@ -736,7 +783,9 @@ for (const w of weiterleitungen) {
    samt gleicher Anzahl: Eine Behauptung, die nur eine Fassung kennt, ist
    dieselbe Lücke von der anderen Seite her. */
 {
-  const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const seite = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+  });
   const jeSprache = [];
 
   for (const route of ["/", "/en"]) {
@@ -871,7 +920,9 @@ for (const w of weiterleitungen) {
         `${antwort.status} statt 404`,
     );
   } else if (!verweis) {
-    funde.push("Die Fehlerseite einer sehr langen Adresse trägt keinen Mailverweis");
+    funde.push(
+      "Die Fehlerseite einer sehr langen Adresse trägt keinen Mailverweis",
+    );
   } else if (verweis.length > 2000) {
     funde.push(
       `Der Mailverweis der Fehlerseite misst ${verweis.length} Zeichen. ` +

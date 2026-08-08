@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     titel: kartenTitel(en.onepager.title),
     beschreibung: en.onepager.description,
     lang: "en",
+    pfad: "/en/onepager",
   }),
   alternates: {
     // Der Feed steht auf jeder Seite, auch hier: Next ersetzt das geerbte

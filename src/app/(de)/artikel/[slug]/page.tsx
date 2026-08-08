@@ -46,6 +46,7 @@ export async function generateMetadata({
       titel: artikel.title,
       beschreibung: kurzbeschreibung(artikel.dek),
       lang: "de",
+      pfad: `/artikel/${slug}`,
       typ: "article",
       veroeffentlicht: artikel.date,
       eigenesBild: true,
