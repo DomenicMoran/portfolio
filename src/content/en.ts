@@ -1319,7 +1319,8 @@ export const en: Content = {
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
     back: "← Back to the site",
-    printHint: "Save as PDF: choose “Save as PDF” in the print dialogue.",
+    printHint:
+      "Save as PDF: in the print dialogue, pick PDF as the destination instead of a printer.",
     printButton: "Print / PDF",
     atLeast: "Over",
   },

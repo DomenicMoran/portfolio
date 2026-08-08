@@ -287,7 +287,8 @@ export const de: Content = {
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
     asOf: "Stand:",
     back: "← Zurück zur Seite",
-    printHint: "Als PDF speichern: im Druckdialog „Als PDF sichern“ wählen.",
+    printHint:
+      "Als PDF speichern: im Druckdialog als Ziel PDF wählen statt eines Druckers.",
     printButton: "Drucken / PDF",
     atLeast: "Über",
   },
