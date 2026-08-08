@@ -178,7 +178,7 @@ export const de: Content = {
     eyebrow: "Fähigkeiten",
     title:
       "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
-    lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit das System, an dem sie entstanden ist.",
+    lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit der Beleg, an dem sie entstanden ist.",
     domains: skillDomains,
   },
 

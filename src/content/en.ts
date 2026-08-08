@@ -985,7 +985,7 @@ export const en: Content = {
     eyebrow: "Capabilities",
     title:
       "Broad enough for the whole product, deep enough for the hard parts.",
-    lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the system it came from.",
+    lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the evidence it came from.",
     domains: [
       {
         id: "frontend",
