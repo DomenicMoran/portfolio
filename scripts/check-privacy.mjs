@@ -133,9 +133,11 @@ for (const pfad of pfade) {
   /*
      Und nichts auf dem Gerät ablegen.
 
-     Die Erklärung sagt: „Diese Website setzt keine Cookies, weder eigene noch
-     fremde." § 25 TTDSG meint mehr als Cookies — er meint jedes Speichern von
-     Informationen auf dem Endgerät, also auch `localStorage` und
+     Die Erklärung sagt: „Diese Website legt nichts auf deinem Gerät ab und
+     liest nichts davon aus: keine Cookies, weder eigene noch fremde, und auch
+     nichts im lokalen Speicher deines Browsers." Das ist der Zuschnitt des
+     § 25 TDDDG, der nicht Cookies regelt, sondern jedes Speichern von
+     Informationen auf dem Endgerät — also auch `localStorage` und
      `sessionStorage`. Ein gemerkter Reiter oder eine gemerkte Sprachwahl wäre
      technisch eine Kleinigkeit und würde die Erklärung still falsch machen.
 
@@ -171,7 +173,7 @@ if (speicher.size > 0) {
   for (const eintrag of speicher) console.error(`  ${eintrag}`);
   console.error(
     `\nDie Datenschutzerklärung sagt, dass diese Seite nichts ablegt, und ` +
-      `§ 25 TTDSG meint damit nicht nur Cookies. Entweder das Ablegen ` +
+      `§ 25 TDDDG meint damit nicht nur Cookies. Entweder das Ablegen ` +
       `entfernen oder die Erklärung ändern.`,
   );
   process.exit(1);

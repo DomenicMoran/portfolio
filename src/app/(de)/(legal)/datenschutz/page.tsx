@@ -11,7 +11,19 @@ export const metadata: Metadata = {
   title: "Datenschutz",
   description:
     "Was diese Seite technisch tut und welche Daten dabei anfallen. Keine Cookies, keine Analyse, keine Einbindung von Dritten.",
-  robots: { index: false, follow: false },
+  /* noindex, aber follow — wie beim One-Pager und den beiden PDFs.
+
+     Hier stand `follow: false`, und damit standen drei Entscheidungen
+     zur selben Frage nebeneinander: /onepager und die PDFs auf
+     `noindex, follow`, diese beiden Blätter auf `noindex, nofollow`.
+     Der Unterschied war keiner — er ist entstanden, nicht entschieden.
+
+     `noindex` ist hier Absicht: Die Pflichtangabe nach § 5 DDG soll
+     erfüllt sein, ohne die Wohnanschrift in Suchergebnisse zu tragen.
+     `nofollow` trägt dazu nichts bei. Es hält einen Crawler nur davon
+     ab, den Verweisen dieser Seite zu folgen — und die zeigen auf die
+     Startseite und auf /en, also genau dorthin, wo er hin soll. */
+  robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
   ...vorschaukarten({ titel: kartenTitel("Datenschutz"), lang: "de" }),
@@ -108,11 +120,24 @@ export default function Datenschutz() {
           und ergänzend auf die EU-Standardvertragsklauseln.
         </Section>
 
+        {/* „Keine Cookies" ist enger als das Gesetz und enger als die
+            Wirklichkeit.
+
+            § 25 TDDDG regelt nicht Cookies, sondern jedes Speichern von
+            Informationen auf dem Endgerät und jeden Zugriff darauf —
+            `localStorage` und `sessionStorage` fallen genauso darunter. Wer
+            nur Cookies verneint, hat die halbe Zusage gegeben, obwohl die
+            ganze zutrifft: `check:privacy` liest nach dem Bedienen jeder
+            gebauten Seite alle drei Ablagen aus und findet sie leer.
+
+            Der Satz sagt jetzt, was gemessen wird. */}
         <Section title="Cookies und Tracking">
-          Diese Website setzt keine Cookies, weder eigene noch fremde, und
-          bindet keine Analyse- oder Werbedienste ein. Es gibt daher auch kein
-          Cookie-Banner, nicht aus Nachlässigkeit, sondern weil es nichts gibt,
-          worin man einwilligen könnte.
+          Diese Website legt nichts auf deinem Gerät ab und liest nichts davon
+          aus: keine Cookies, weder eigene noch fremde, und auch nichts im
+          lokalen Speicher deines Browsers. Sie bindet keine Analyse- oder
+          Werbedienste ein. Es gibt daher auch kein Cookie-Banner, nicht aus
+          Nachlässigkeit, sondern weil es nichts gibt, worin man einwilligen
+          könnte.
         </Section>
 
         <Section title="Schriftarten">

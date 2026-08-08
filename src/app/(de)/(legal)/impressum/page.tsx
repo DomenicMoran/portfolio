@@ -13,7 +13,19 @@ export const metadata: Metadata = {
   // sie ausserdem inhaltlich falsch.
   description:
     "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
-  robots: { index: false, follow: false },
+  /* noindex, aber follow — wie beim One-Pager und den beiden PDFs.
+
+     Hier stand `follow: false`, und damit standen drei Entscheidungen
+     zur selben Frage nebeneinander: /onepager und die PDFs auf
+     `noindex, follow`, diese beiden Blätter auf `noindex, nofollow`.
+     Der Unterschied war keiner — er ist entstanden, nicht entschieden.
+
+     `noindex` ist hier Absicht: Die Pflichtangabe nach § 5 DDG soll
+     erfüllt sein, ohne die Wohnanschrift in Suchergebnisse zu tragen.
+     `nofollow` trägt dazu nichts bei. Es hält einen Crawler nur davon
+     ab, den Verweisen dieser Seite zu folgen — und die zeigen auf die
+     Startseite und auf /en, also genau dorthin, wo er hin soll. */
+  robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
   ...vorschaukarten({ titel: kartenTitel("Impressum"), lang: "de" }),

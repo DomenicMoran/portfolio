@@ -20,4 +20,4 @@
 export const STAND = "8. August 2026";
 
 /** sha256 über den sichtbaren Text von `/datenschutz`, ohne den Abschnitt „Stand“. */
-export const TEXT_PRUEFSUMME = "e277afa814ea74a6";
+export const TEXT_PRUEFSUMME = "7228a48ff8e6e8d6";

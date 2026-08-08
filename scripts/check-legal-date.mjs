@@ -22,7 +22,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { ANBIETER, ANSCHRIFT } from "../src/app/(de)/(legal)/provider.ts";
 const STAND_DATEI = join("src", "app", "(de)", "(legal)", "stand.ts");
@@ -84,6 +84,44 @@ try {
     "  --  Datenschutzerklärung: kein Bau vorhanden, übersprungen (npm run build)",
   );
   process.exit(0);
+}
+
+/* Ein alter Bau macht diesen Lauf wertlos.
+
+   Die Prüfsumme soll erzwingen, dass mit dem Text auch der Stand wandert.
+   Sie liest dafür `.next/server/app/datenschutz.html` — das ausgelieferte
+   Blatt, und das ist richtig so. Nur hat das eine Lücke, die genau in die
+   Gegenrichtung zeigt: Wer die Quelle ändert und nicht baut, bekommt ein
+   grünes „passt zu ihrem Stand", gemessen an der Fassung von vorhin.
+
+   Gemessen am 08.08.2026: Der Abschnitt „Cookies und Tracking" war um
+   dreizehn Wörter länger, und der Lauf meldete unverändert 516 Wörter und
+   dieselbe Prüfsumme. Genau der Fall, den die Prüfsumme abfangen soll.
+
+   Also zuerst die Frage, ob das Blatt überhaupt die Quelle zeigt. */
+{
+  const gebaut = statSync(SEITE).mtimeMs;
+  const quellen = [
+    join("src", "app", "(de)", "(legal)", "datenschutz", "page.tsx"),
+    join("src", "app", "(de)", "(legal)", "provider.ts"),
+    STAND_DATEI,
+  ].filter((d) => existsSync(d));
+  const juenger = quellen.filter((d) => statSync(d).mtimeMs > gebaut);
+
+  if (juenger.length) {
+    console.error(
+      `Der Bau ist älter als die Quelle der Datenschutzerklärung:` +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        juenger.map((d) => `  ${d}`).join(String.fromCharCode(10)) +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        `Dieser Lauf misst ${SEITE}. Ohne neuen Bau prüft er die Fassung ` +
+        `von vorhin und meldet grün, obwohl der Text sich geändert hat. ` +
+        `Erst „npm run build", dann noch einmal hier entlang.`,
+    );
+    process.exit(1);
+  }
 }
 
 /* Steht das Datum aus `stand.ts` auch wirklich auf dem Blatt?
@@ -188,6 +226,121 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
       `gehört aus diesem Lauf heraus.`,
   );
   process.exit(1);
+}
+
+/* Die Privatanschrift gehört auf zwei Blätter und auf kein drittes.
+
+   Sie steht dort, weil § 5 DDG sie verlangt, und beide Blätter tragen dafür
+   `noindex`: Die Pflichtangabe soll erfüllt sein, ohne die Wohnanschrift in
+   Suchergebnisse zu tragen. Diese Abwägung hält nur, solange die Anschrift
+   nirgends sonst auftaucht.
+
+   Und sie kann leicht wandern. `provider.ts` ist eine gewöhnliche Datei,
+   ANSCHRIFT ist ausgeführt und importierbar; ein Fuß auf jeder Seite, eine
+   Kontaktkachel, ein strukturierter Datensatz mit `PostalAddress` — jedes
+   davon wäre eine plausible Änderung und würde die Anschrift auf achtzehn
+   indexierte Seiten setzen, ohne dass jemand es beabsichtigt hätte.
+
+   Gemessen an der ausgelieferten Seite am 08.08.2026: Startseite, /en,
+   beide One-Pager, llms.txt, humans.txt, Artikelübersicht und Feed führen
+   sie nicht, die beiden PDFs auch nicht. Der Lauf hält diesen Stand fest. */
+{
+  const bau = join(".next", "server", "app");
+  const strasse = ANSCHRIFT[0];
+  const ERLAUBT = new Set(["impressum.html", "datenschutz.html"]);
+
+  const fremde = dateienUnter(bau)
+    .filter((d) => d.endsWith(".html"))
+    .filter((d) => !ERLAUBT.has(d.split(/[\\/]/).pop()))
+    .filter((d) => readFileSync(d, "utf8").includes(strasse));
+
+  if (fremde.length) {
+    console.error(
+      `Die Privatanschrift steht auf Blättern, die sie nicht führen sollen:` +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        fremde.map((d) => `  ${d}`).join(String.fromCharCode(10)) +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        `Nur Impressum und Datenschutzerklärung nennen sie, und beide tragen ` +
+        `dafür noindex. Jede weitere Seite ist indexierbar und trägt die ` +
+        `Wohnanschrift damit in Suchergebnisse.`,
+    );
+    process.exitCode = 1;
+  } else {
+    for (const blatt of ERLAUBT) {
+      const datei = join(bau, blatt);
+      if (!existsSync(datei)) continue;
+      if (!/name="robots"[^>]*content="[^"]*noindex/.test(readFileSync(datei, "utf8"))) {
+        console.error(
+          `${blatt} nennt die Privatanschrift, trägt aber kein noindex.`,
+        );
+        process.exitCode = 1;
+      }
+    }
+    if (!process.exitCode) {
+      console.log(
+        `  ok  Die Anschrift steht nur auf Impressum und Datenschutz, beide noindex.`,
+      );
+    }
+  }
+}
+
+/* Was die Erklärung über die Funktion beim Hoster sagt, muss der Code halten.
+
+   Der Absatz nennt sie beim Namen: „Vor jeder Auslieferung läuft beim Hoster
+   eine kleine Funktion: Sie liest den angefragten Pfad, setzt daraus die
+   Sprache der Fehlerseite und weist Anfragen ab, die Daten senden wollen. Sie
+   speichert nichts und gibt nichts weiter."
+
+   Das ist die einzige Stelle, an der diese Seite über laufenden Code auf einem
+   fremden Server spricht — und der letzte Satz ist eine Zusage, die sich mit
+   einer Zeile brechen lässt. Ein `console.log` in `proxy.ts` landet im
+   Protokoll des Hosters, ein `fetch` gibt weiter, ein gesetztes Cookie
+   speichert. Keines davon fällt beim Lesen der Seite auf.
+
+   Geprüft wird gegen `src/proxy.ts`, nicht gegen den Bau: Diese Funktion läuft
+   bei Vercel und liegt in keiner ausgelieferten Datei. */
+{
+  const quelle = "src/proxy.ts";
+  if (!existsSync(quelle)) {
+    console.log("  --  src/proxy.ts fehlt, Zusage über die Funktion übersprungen.");
+  } else if (/Vor jeder Auslieferung läuft beim Hoster/.test(text)) {
+    const code = readFileSync(quelle, "utf8")
+      /* Kommentare erklären, was der Code nicht tut — sie sind kein Code. */
+      .replace(/\/\*[\s\S]*?\*\//g, " ")
+      .replace(/^\s*\/\/.*$/gm, " ");
+
+    const VERBOTEN = [
+      [/\bfetch\s*\(/, "ruft etwas nach außen auf (fetch)"],
+      [/\bconsole\.\w+\s*\(/, "schreibt ins Protokoll (console)"],
+      [/\bcookies\b|set-cookie/i, "setzt oder liest ein Cookie"],
+      [/localStorage|sessionStorage|indexedDB/, "legt etwas auf dem Gerät ab"],
+      [/\bwriteFile|appendFile\b/, "schreibt eine Datei"],
+    ];
+    const funde = VERBOTEN.filter(([m]) => m.test(code)).map(([, was]) => was);
+
+    if (funde.length) {
+      const umbruch = String.fromCharCode(10);
+      console.error(
+        umbruch +
+          `Die Datenschutzerklärung sagt über die Funktion beim Hoster: „Sie` +
+          umbruch +
+          `speichert nichts und gibt nichts weiter.“ ${quelle} tut aber:` +
+          umbruch +
+          umbruch +
+          funde.map((f) => `  ${f}`).join(umbruch) +
+          umbruch +
+          umbruch +
+          `Entweder die Zeile zurücknehmen oder den Satz ändern.`,
+      );
+      process.exitCode = 1;
+    } else {
+      console.log(
+        `  ok  ${quelle} speichert nichts und gibt nichts weiter, wie zugesagt.`,
+      );
+    }
+  }
 }
 
 const gerechnet = createHash("sha256").update(text).digest("hex").slice(0, 16);
