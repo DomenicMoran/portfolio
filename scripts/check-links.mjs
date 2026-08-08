@@ -380,10 +380,23 @@ for (const adresse of VEROEFFENTLICHT) {
     );
 
     if (eintraege.length !== erwartet.length) {
+      /* Die Meldung sagt, was zu tun ist.
+
+         Sie nannte bis hierher nur die beiden Zahlen. Beim sechsten Artikel
+         wurde die CI genau daran rot, und aus der Meldung ging nicht hervor,
+         dass `VEROEFFENTLICHT` in dieser Datei die Liste ist, die nachzieht:
+         Sie ist bewusst von Hand geführt, damit eine einmal veröffentlichte
+         Adresse nicht stillschweigend verschwinden kann. Wer das nicht weiß,
+         sucht im Feed-Erzeuger, und der ist in Ordnung. */
+      const mehrImFeed = eintraege.length > erwartet.length;
       funde.push(
         `${feed.pfad}: ${eintraege.length} Einträge, aber ${erwartet.length} ` +
-          `veröffentlichte Artikel. Wer den Feed abonniert hat, sieht die ` +
-          `Differenz nie.`,
+          `veröffentlichte Artikel. ` +
+          (mehrImFeed
+            ? `Ein neuer Artikel gehört in VEROEFFENTLICHT in dieser Datei — ` +
+              `die Liste ist von Hand geführt, damit keine Adresse still ` +
+              `verschwindet.`
+            : `Wer den Feed abonniert hat, sieht die Differenz nie.`),
       );
     }
 
