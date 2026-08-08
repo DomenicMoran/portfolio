@@ -85,6 +85,7 @@ export const de: Content = {
     commandPalette: "Befehlspalette öffnen",
     currentSection: "Aktueller Abschnitt",
     llmsTitel: "Fakten für Sprachmodelle (englisch)",
+    humansTitel: "Über diese Seite und wer sie gebaut hat",
     replay: "Ablauf erneut abspielen",
     shots: {
       label: "Bildschirmfotos, waagerecht blätterbar",

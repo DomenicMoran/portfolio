@@ -44,7 +44,21 @@ export function RootDocument({
           beschreibt sie aber für den, der die deutsche Seite liest — und der
           erfährt jetzt auch, dass ihn Englisch erwartet.
         */}
-        <link rel="author" href="/humans.txt" type="text/plain" />
+        {/* humans.txt ist deutsch, und das steht jetzt daran.
+
+            `llms.txt` daneben trägt seit je einen Titel, der die Sprache nennt
+            — „Fakten für Sprachmodelle (englisch)". Bei humans.txt fehlte
+            beides: kein Titel, kein `hreflang`. Auf der englischen Fassung
+            zeigte damit ein `rel="author"` ohne jede Angabe auf eine deutsche
+            Datei. `hreflang` ist dafür die genaue Angabe, der Titel die
+            lesbare. */}
+        <link
+          rel="author"
+          href="/humans.txt"
+          type="text/plain"
+          hrefLang="de"
+          title={(lang === "de" ? de : en).a11y.humansTitel}
+        />
         <link
           rel="alternate"
           type="text/plain"

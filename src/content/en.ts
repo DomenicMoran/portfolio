@@ -130,6 +130,7 @@ export const en: Content = {
     commandPalette: "Open command palette",
     currentSection: "Current section",
     llmsTitel: "Facts for language models",
+    humansTitel: "About this site and who built it (German)",
     replay: "Play the sequence again",
     shots: {
       label: "Screenshots, scroll horizontally",
