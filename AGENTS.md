@@ -252,6 +252,36 @@ Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 (`if (open !== wasOpen) { … }`), nicht in einem `useEffect`. Die
 `react-hooks/set-state-in-effect`-Regel ist scharf und hat recht.
 
+## Die 77 Weiterleitungen
+
+`vercel.json` ist mit 464 Zeilen die längste Datei ohne Prosa, und JSON lässt
+keinen Kommentar zu. Deshalb steht hier, was dort steht und warum.
+
+Jede Regel kommt aus derselben Beobachtung: Adressen entstehen nicht nur durch
+Klicken, sondern durch Tippen, Kürzen und Raten. Wer `/artikel/feed.xml` kennt,
+schreibt `/artikel/feed`. Wer die englische Fußzeile mit „Privacy“ gelesen hat,
+tippt `/privacy`. Wer den deutschen Pfad `/artikel` kennt, schreibt `/en/article`
+statt `/en/articles`. Keiner dieser Fälle taucht in einem Verweis auf, und keiner
+fällt ohne Messung auf.
+
+Sechs Gruppen, gemessen am 08.08.2026:
+
+| Gruppe | Anzahl | Beispiel |
+| --- | --- | --- |
+| Abschnitt der Startseite | 20 | `/recruiter` → `/#hire` |
+| Artikel in der falschen Sprachfassung | 18 | `/en/artikel/<slug>` → `/en/articles/<slug>` |
+| Feed | 12 | `/rss`, `/artikel/feed` → `/artikel/feed.xml` |
+| Rechtsseiten | 10 | `/imprint`, `/privacy` |
+| Kurzprofil | 8 | `/cv`, `/lebenslauf`, `/resume` |
+| Übersichten und Reste | 9 | `/blog` → `/artikel` |
+
+Drei Regeln hält `check:links` dagegen. Jedes Ziel muss mit 200 antworten —
+auch eines mit Platzhalter, das der Lauf dafür mit einem echten Slug einsetzt.
+Jede Regel trägt `permanent: true`, sonst antwortet Vercel mit 307, und 307
+sagt „vorübergehend“. Und kein Ziel ist selbst wieder eine Quelle: Eine Kette
+kostet zwei Umläufe statt einem, und im Quelltext liegen die beiden Zeilen
+dann zwanzig Einträge auseinander.
+
 ## Sicherheit
 
 - Kein `dangerouslySetInnerHTML` mit etwas anderem als lokalen Konstanten, und
