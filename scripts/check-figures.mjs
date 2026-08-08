@@ -5092,6 +5092,46 @@ const BRAUCHT_KIND = {
       zeilen.push(`  !!  ${funde.length} Seite(n) ohne Rechtsverweise:`);
       for (const f of funde.slice(0, 8)) zeilen.push(`        ${f}`);
     } else {
+      /* Und die Fehlergrenze, die in keinem Blatt steht.
+
+         `global-error.tsx` erscheint, wenn im Browser etwas zerbricht. Sie ist
+         eine Client-Komponente und wird nie vorab gerendert — im Bau liegt an
+         ihrer Stelle Nexts eigene englische Fassung. Der Durchlauf über die
+         gebauten Blätter sieht sie deshalb nicht, und genau das war schon
+         einmal der Fall: Gemessen trugen 18 von 19 Seiten beide
+         Rechtsverweise, und die eine ohne war diese.
+
+         § 5 DDG verlangt sie „von jeder Seite unmittelbar erreichbar", und
+         eine Fehlerseite ist kein Sonderfall — sie ist die Seite, auf der
+         jemand hängen bleibt. Geprüft wird das ausgelieferte JavaScript: Dort
+         steht ihr Text, und dort stehen ihre Verweise. */
+      const bündel = readdirSync(join(".next", "static", "chunks"))
+        .filter((d) => d.endsWith(".js"))
+        .map((d) => join(".next", "static", "chunks", d));
+      const grenze = bündel.find((d) =>
+        readFileSync(d, "utf8").includes("Da ist etwas zerbrochen"),
+      );
+
+      if (!grenze) {
+        abweichungen++;
+        zeilen.push(
+          "  !!  Die Fehlergrenze steht in keinem ausgelieferten Bündel",
+        );
+      } else {
+        const inhalt = readFileSync(grenze, "utf8");
+        const fehlt = ["/impressum", "/datenschutz"].filter(
+          (weg) => !inhalt.includes(weg),
+        );
+        if (fehlt.length) {
+          abweichungen++;
+          zeilen.push(
+            `  !!  Die Fehlergrenze führt ${fehlt.join(" und ")} nicht`,
+          );
+        } else {
+          geprueft++;
+        }
+      }
+
       zeilen.push(
         `  ok  Rechtsverweise         ${String(geprueft).padStart(6)} Seiten mit Impressum und Datenschutz`,
       );
