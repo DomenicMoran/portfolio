@@ -67,6 +67,14 @@ const BLAETTER = [
     ziel: "public/domenic-moran-kurzprofil.pdf",
     betreff:
       "Kurzprofil: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite",
+    schlagwoerter: [
+      "AI Product Engineer",
+      "Fullstack",
+      "TypeScript",
+      "React Native",
+      "Next.js",
+      "Berlin",
+    ],
   },
   {
     route: "/en/onepager",
@@ -74,6 +82,19 @@ const BLAETTER = [
     ziel: "public/domenic-moran-one-pager.pdf",
     betreff:
       "One-page profile: four systems in production, path and contact on a single page",
+    /* „Full-stack" mit Bindestrich, wie die englische Fassung es überall
+       schreibt. Beide Blätter trugen dieselbe Liste, und die stammte vom
+       deutschen: Ein Bewerbermanagement-System, das dieses Feld indiziert,
+       fand auf dem englischen Blatt eine Schreibweise, die auf keiner
+       englischen Seite steht. */
+    schlagwoerter: [
+      "AI Product Engineer",
+      "Full-stack",
+      "TypeScript",
+      "React Native",
+      "Next.js",
+      "Berlin",
+    ],
   },
 ];
 const vorgegebeneBasis = process.argv[2];
@@ -199,16 +220,7 @@ for (const blatt of BLAETTER) {
     „React" und „Native", „AI Product Engineer" in drei Wörter, von denen
     keines der Titel ist.
   */
-  doc.setKeywords([
-    [
-      "AI Product Engineer",
-      "Fullstack",
-      "TypeScript",
-      "React Native",
-      "Next.js",
-      "Berlin",
-    ].join(", "),
-  ]);
+  doc.setKeywords([blatt.schlagwoerter.join(", ")]);
   doc.setCreator("domenicmoran.de");
   /*
     Auch der Erzeuger, nicht nur der Ersteller.
