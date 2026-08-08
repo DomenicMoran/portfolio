@@ -111,11 +111,11 @@ npm run check:parity    # beide Sprachfassungen zeigen gleich viel
 npm run check:stack     # jede genannte Technik steht wirklich im Produktivrepo
 npm run check:onepager  # das ausgelieferte PDF stammt aus dem aktuellen Inhalt
 npm run check:typography # jede Sprachfassung setzt ihre eigenen Zeichen
-npm run check:legal     # das Datum der Datenschutzerklärung passt zu ihrem Text
+npm run check:legal     # jede Zusage der Rechtsseiten gegen die Wirklichkeit
 npm run check:exports   # jede Ausfuhr aus src/ hat einen Abnehmer
 npm run check:copy      # keine Beschriftung steht fest in einer Komponente
 npm run check:headers   # die ausgelieferte Seite trägt die Schutz-Kopfzeilen
-npm run check:print     # jede gebaute Seite druckt lesbar und vollständig
+npm run check:print     # jede Seite druckt lesbar, das Kurzprofil auf einem Blatt
 npm run check:headings  # keine Überschrift schneidet ihre Unterlängen ab
 npm run check:landmarks # jede Seite bietet Hauptbereich, Navigation und Fußzeile
 npm run check:separators # kein Trennzeichen bleibt beim Umbruch am Zeilenende
