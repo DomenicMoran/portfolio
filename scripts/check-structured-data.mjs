@@ -29,14 +29,24 @@
  */
 
 import { chromium } from "playwright";
+import { gebauteSeiten } from "./lib/built-pages.mjs";
 import { starteServer } from "./lib/local-server.mjs";
 
 /** Beide Sprachfassungen und je eine Artikelseite. */
+/* Beide Startseiten und jeder Artikel.
+
+   Hier standen vier Adressen: die zwei Startseiten und ein Artikelpaar. Von
+   den zehn Artikelseiten war damit eine geprüft, und vom Artikel-Datensatz
+   nur `inLanguage`. Genau dort steht aber, was eine Suchmaschine als
+   Überschrift, Datum und Verfasser anzeigt — Angaben, die niemand beim
+   Ansehen der Seite bemerkt, wenn sie auseinanderlaufen.
+
+   Die Liste kommt aus den gebauten Seiten, damit ein neuer Artikel nicht
+   nachgetragen werden muss. */
 const SEITEN = [
   "/",
   "/en",
-  "/artikel/kassensichv-in-der-praxis",
-  "/en/articles/german-till-law-in-practice",
+  ...gebauteSeiten().filter((p) => /^\/(artikel|en\/articles)\/[^/]+$/.test(p)),
 ];
 
 const vorgegebeneBasis = process.argv[2];
@@ -109,7 +119,19 @@ for (const pfad of SEITEN) {
             subjectOf: (person.subjectOf ?? []).map((x) => x.name),
           }
         : null,
-      artikel: artikel ? { inLanguage: artikel.inLanguage } : null,
+      artikel: artikel
+        ? {
+            inLanguage: artikel.inLanguage,
+            headline: artikel.headline,
+            datePublished: artikel.datePublished,
+            autor: artikel.author?.name,
+            /* Die sichtbare Überschrift und das sichtbare Datum daneben,
+               damit der Vergleich die Seite meint und nicht eine zweite
+               Datenquelle. */
+            h1: document.querySelector("h1")?.textContent.trim(),
+            datum: document.querySelector("time")?.getAttribute("datetime"),
+          }
+        : null,
       /* Die Seite über sich selbst, nicht über ihren Gegenstand.
 
          `ProfilePage` trug lange weder Name noch Adresse noch Sprache: Auf
@@ -199,8 +221,30 @@ for (const pfad of SEITEN) {
   }
 
   if (stand.artikel) {
+    const a = stand.artikel;
+
     angaben++;
-    if (stand.artikel.inLanguage !== stand.htmlLang) {
+    if (a.headline !== a.h1) {
+      funde.push(
+        `${pfad}: headline ist „${a.headline}", die Überschrift der Seite ` +
+          `„${a.h1}"`,
+      );
+    }
+
+    angaben++;
+    if ((a.datePublished ?? "").slice(0, 10) !== (a.datum ?? "").slice(0, 10)) {
+      funde.push(
+        `${pfad}: datePublished ist ${a.datePublished}, die Seite zeigt ${a.datum}`,
+      );
+    }
+
+    angaben++;
+    if (!a.autor) {
+      funde.push(`${pfad}: Der Artikel nennt keinen Verfasser`);
+    }
+
+    angaben++;
+    if (a.inLanguage !== stand.htmlLang) {
       funde.push(
         `${pfad}: inLanguage ist „${stand.artikel.inLanguage}", das Dokument ist „${stand.htmlLang}“`,
       );
