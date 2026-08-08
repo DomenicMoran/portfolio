@@ -80,7 +80,8 @@ const ctx = await browser.newContext({
 });
 const seite = await ctx.newPage();
 
-const funde = new Map();
+const funde = new Map();
+let regelbewegungen = 0;
 /* Was die Seite auf dem Gerät ablegt — Cookies, localStorage, sessionStorage. */
 const speicher = new Set();
 seite.on("request", (anfrage) => {
@@ -127,7 +128,65 @@ for (const pfad of pfade) {
       if (/druck|print|schließ|close/.test(name)) continue;
       knopf.click();
     }
+
   });
+  /* Und jedes Feld, das kein Knopf ist — über echte Tasten, nicht über das DOM.
+
+     Reiter und Knöpfe wurden bedient, Schieberegler nie. Genau die tragen die
+     beiden Demos: Die Startseite hat zwei `input[type="range"]`, an denen
+     Kalorienziel und Ort hängen. Ein Nachladen bei jedem Schieben wäre
+     durchgelaufen, obwohl der Satz „weder beim Aufruf noch bei einer
+     Interaktion" genau das ausschließt.
+
+     Ein erster Anlauf setzte `value` und schickte `input` und `change` los —
+     und blieb grün, auch mit einem eingesetzten `fetch` im Änderungshandler.
+     React merkt sich den zuletzt gerenderten Wert in einem eigenen Tracker;
+     wer das Feld direkt beschreibt, kommt daran nicht vorbei, und die
+     Komponente sieht keine Änderung. Gegengeprüft, nicht vermutet.
+
+     Pfeiltasten auf dem fokussierten Feld sind, was ein Mensch tut, und
+     erzeugen echte Ereignisse. Zwei Richtungen, damit auch ein Regler am
+     Anschlag sich bewegt. */
+  /* Erst zumachen, was der Knopf-Durchlauf aufgemacht hat.
+
+     Er drückt jeden Knopf, darunter den für die Befehlspalette. Die hält den
+     Fokus fest, und ein programmatisches `focus()` auf den Regler dahinter
+     wird sofort zurückgeholt: Die Pfeiltasten landeten im Suchfeld der
+     Palette. Gemessen blieben beide Regler auf ihrem Ausgangswert — 219 und
+     2200 —, während dieselben Tastendrücke außerhalb dieses Laufs 220 und
+     2250 ergaben. */
+  await seite.keyboard.press("Escape");
+  await seite.waitForTimeout(200);
+
+  for (const regler of await seite.$$('input[type="range"]')) {
+    try {
+      await regler.scrollIntoViewIfNeeded({ timeout: 2000 });
+      await regler.focus();
+      for (const taste of ["ArrowRight", "ArrowRight", "ArrowLeft"]) {
+        await seite.keyboard.press(taste);
+        await seite.waitForTimeout(80);
+      }
+      regelbewegungen++;
+    } catch {
+      /* Ein Regler, der gerade nicht erreichbar ist, ist kein Befund dieses
+         Laufs — dafür gibt es check:focus. */
+    }
+  }
+  for (const auswahl of await seite.$$("select")) {
+    try {
+      const werte = await auswahl.$$eval("option", (o) =>
+        o.slice(0, 3).map((x) => x.value),
+      );
+      for (const wert of werte) {
+        await auswahl.selectOption(wert);
+        await seite.waitForTimeout(80);
+      }
+      regelbewegungen++;
+    } catch {
+      /* siehe oben */
+    }
+  }
+
   await seite.waitForTimeout(900);
 
   /*
@@ -319,7 +378,8 @@ if (!vorgegebeneBasis) {
 
 console.log(
   `Keine Verbindung nach außen und nichts auf dem Gerät: ${pfade.length} Seiten ` +
-    `geladen und bedient, alle Anfragen gingen an ${eigenerHost}.` +
+    `geladen und bedient, davon ${regelbewegungen} Felder mit echten Tasten, ` +
+    `alle Anfragen gingen an ${eigenerHost}.` +
     (vorgegebeneBasis
       ? ""
       : `\nUnd was die Erklärung sonst behauptet, stimmt: alles vorab erzeugt ` +
