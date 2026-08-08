@@ -74,6 +74,9 @@ zwei Zahlen für dieselbe Sache.
 - `site.ts` ist die deutsche Quelle
 - `de.ts` ist ein Adapter darauf plus die Beschriftungen, die erst durch die
   Zweisprachigkeit entstehen
+- `salati.ts` hält die Zahlen der App, die in beiden Sprachfassungen und in der
+  Recruiter-Kachel vorkommen. Sie standen dort dreimal, und als Salati auf 66
+  ausgelieferte Versionen kam, nannte dieselbe Seite 66 und 65 nebeneinander
 - `en.ts` ist die englische Fassung, deklariert als `Content`
 - `types.ts` ist die gemeinsame Form. Fehlt in `en.ts` ein Feld, schlägt der
   Typecheck fehl; eine Übersetzung kann nicht stillschweigend unvollständig
@@ -377,6 +380,11 @@ wurden: ein Steuerzeichen aus einem Einfüge-Skript, eine Zahl im Handbuch, die
 nicht mehr stimmte, zwei PDFs, die nach einer Inhaltsänderung nicht neu
 gedruckt waren, und eine Ausfuhr, deren letzter Abnehmer weggefallen war.
 Alle vier fallen hier auf, bevor sie jemand sieht.
+
+Gestartet wird er nicht von Hand: `.githooks/pre-push` ruft ihn vor jedem Push
+auf, und `prepare` hängt den Hook-Pfad nach `npm install` ein. Der Aufruf steht
+in einem `try` — auf einem Bauserver ohne `.git` würde ein nacktes `git config`
+die Installation abbrechen und damit den ganzen Bau.
 
 Dazu, außerhalb der CI, weil er die Nachbar-Repos braucht:
 
