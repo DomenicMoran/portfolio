@@ -817,6 +817,11 @@ const ANSAGEFUNDE = [];
 {
   const kontext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
+    /* Für den Kopierknopf weiter unten. Ohne die Erlaubnis wirft
+       `navigator.clipboard.writeText`, und der Knopf meldete dann seinen
+       Fehlerfall — geprüft wäre damit das Gegenteil dessen, was hier
+       gemeint ist. */
+    permissions: ["clipboard-read", "clipboard-write"],
   });
   const seite = await kontext.newPage();
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
@@ -855,6 +860,67 @@ const ANSAGEFUNDE = [];
   });
   if (!/\d/.test(palette)) {
     ANSAGEFUNDE.push(`Befehlspalette: ${palette}`);
+  }
+
+  /* Der Kopierknopf im Recruiter-Bereich: die vierte Stelle.
+
+     Er ist der Weg, über den jemand mit einem Arbeitsrechner ohne
+     eingerichtetes Mailprogramm Kontakt aufnimmt, also die Stelle, an der
+     diese Seite ihren Zweck erfüllt oder nicht. Geprüft war er nie: Kein Lauf
+     fasste die Zwischenablage an.
+
+     Drei Dinge müssen zusammenkommen, und alle drei können einzeln
+     verschwinden. Die Adresse muss wirklich in der Zwischenablage landen; die
+     Meldung muss angesagt werden; und sie muss auch sichtbar sein, denn wer
+     sieht, bekommt von einer `sr-only`-Region nichts mit. */
+  await seite.keyboard.press("Escape");
+  await seite.waitForTimeout(200);
+
+  const knopf = seite.locator("#hire button").first();
+  if ((await knopf.count()) === 0) {
+    ANSAGEFUNDE.push("Kopierknopf: im Recruiter-Bereich nicht gefunden");
+  } else {
+    const adresse = (await knopf.textContent())?.trim() ?? "";
+    await knopf.scrollIntoViewIfNeeded();
+    await knopf.click();
+    await seite.waitForTimeout(400);
+
+    const stand = await seite.evaluate(() => {
+      const k = document.querySelector("#hire button");
+      const geschwister = [...k.parentElement.children].filter((e) => e !== k);
+      return {
+        symbol: k.querySelector("svg")?.getAttribute("class") ?? "",
+        angesagt: geschwister
+          .filter((e) => e.getAttribute("role") === "status")
+          .map((e) => e.textContent.trim())
+          .join(" "),
+        sichtbar: geschwister
+          .filter(
+            (e) =>
+              e.getAttribute("role") !== "status" &&
+              !String(e.className).includes("sr-only"),
+          )
+          .map((e) => e.textContent.trim())
+          .join(" "),
+      };
+    });
+
+    const inhalt = await seite.evaluate(() => navigator.clipboard.readText());
+    if (inhalt !== adresse) {
+      ANSAGEFUNDE.push(
+        `Kopierknopf: in der Zwischenablage steht „${inhalt}", auf dem Knopf ` +
+          `„${adresse}"`,
+      );
+    }
+    if (!stand.angesagt) {
+      ANSAGEFUNDE.push("Kopierknopf: keine Ansage nach dem Klick");
+    }
+    if (!stand.sichtbar.includes(stand.angesagt) && !/check/.test(stand.symbol)) {
+      ANSAGEFUNDE.push(
+        "Kopierknopf: nichts Sichtbares ändert sich — wer sieht, weiß nicht, " +
+          "ob kopiert wurde",
+      );
+    }
   }
 
   await kontext.close();
