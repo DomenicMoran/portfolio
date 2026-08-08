@@ -3534,6 +3534,76 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Rechnet die Demo noch so wie die App?
+
+   Unter der Kachel steht „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
+   schafiitisch", und im Bauteil daneben steht der Anspruch ausgeschrieben:
+   Sie zeige dieselbe Rechnung wie `apps/mobile/src/features/prayer-times/
+   calc.ts` der ausgelieferten App. Das ist keine Geschmacksangabe, sondern
+   der Grund, aus dem die Kachel überhaupt etwas beweist.
+
+   Beides steht in einem anderen Repo und wandert dort ohne Rückfrage. Ein
+   Sprung auf adhan 5 oder eine andere Vorgabemethode wäre in Salati eine
+   Zeile — und die Startseite behauptete weiter, das Produkt zu zeigen.
+   Gemessen am 08.08.2026: `DEFAULT_METHOD_ID = 13`, `adhan: ^4.4.4`.
+
+   Verglichen wird die Hauptversion der Bibliothek, nicht die genaue: Die
+   Angabe auf der Seite nennt 4.4.4, und ein Sprung auf 4.4.5 ändert an der
+   Aussage nichts. Ein Sprung auf 5 schon.
+   ------------------------------------------------------------------------ */
+{
+  const salati = resolve("../../SalatiTech");
+  const methoden = join(salati, "apps/mobile/src/features/settings/methods.ts");
+  const paket = join(salati, "apps/mobile/package.json");
+
+  if (!existsSync(methoden) || !existsSync(paket)) {
+    zeilen.push("  --  SalatiTech nicht vorhanden, Demo-Herkunft übersprungen");
+  } else {
+    const genannt = existsSync("src/content/de.ts")
+      ? readFileSync("src/content/de.ts", "utf8").match(
+          /adhan ([\d.]+) \(MIT\), Methode (\d+)/,
+        )
+      : null;
+
+    if (!genannt) {
+      abweichungen++;
+      zeilen.push(
+        "  !!  In de.ts steht keine Herkunftsangabe unter der Gebetszeiten-Demo",
+      );
+    } else {
+      const [, version, methode] = genannt;
+      const echteMethode = readFileSync(methoden, "utf8").match(
+        /DEFAULT_METHOD_ID = (\d+)/,
+      )?.[1];
+      const echteVersion = JSON.parse(readFileSync(paket, "utf8")).dependencies
+        ?.adhan;
+
+      if (echteMethode !== methode) {
+        abweichungen++;
+        zeilen.push(
+          `  !!  Gebetszeiten-Demo: Seite nennt Methode ${methode}, ` +
+            `Salati nutzt ${echteMethode}`,
+        );
+      } else if (
+        (echteVersion ?? "").replace(/^\D*/, "").split(".")[0] !==
+        version.split(".")[0]
+      ) {
+        abweichungen++;
+        zeilen.push(
+          `  !!  Gebetszeiten-Demo: Seite nennt adhan ${version}, ` +
+            `Salati nutzt ${echteVersion}`,
+        );
+      } else {
+        zeilen.push(
+          `  ok  Gebetszeiten-Demo    Methode ${methode} und adhan ${version} ` +
+            `wie in Salati`,
+        );
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Wie viele Zeitpunkte die Gebetszeiten-Demo wirklich rechnet.
 
    Unter der Demo steht: „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
