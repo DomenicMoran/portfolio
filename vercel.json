@@ -271,6 +271,56 @@
       "permanent": true
     },
     {
+      "source": "/imprint",
+      "destination": "/impressum",
+      "permanent": true
+    },
+    {
+      "source": "/en/imprint",
+      "destination": "/impressum",
+      "permanent": true
+    },
+    {
+      "source": "/legal",
+      "destination": "/impressum",
+      "permanent": true
+    },
+    {
+      "source": "/legal-notice",
+      "destination": "/impressum",
+      "permanent": true
+    },
+    {
+      "source": "/en/legal-notice",
+      "destination": "/impressum",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/datenschutz",
+      "permanent": true
+    },
+    {
+      "source": "/en/privacy",
+      "destination": "/datenschutz",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/datenschutz",
+      "permanent": true
+    },
+    {
+      "source": "/en/privacy-policy",
+      "destination": "/datenschutz",
+      "permanent": true
+    },
+    {
+      "source": "/datenschutzerklaerung",
+      "destination": "/datenschutz",
+      "permanent": true
+    },
+    {
       "source": "/articles",
       "destination": "/en/articles",
       "permanent": true
