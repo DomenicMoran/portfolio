@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
-  ...vorschaukarten({ titel: kartenTitel("Datenschutz"), lang: "de" }),
+  ...vorschaukarten({ titel: kartenTitel("Datenschutz"), lang: "de", pfad: "/datenschutz" }),
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.

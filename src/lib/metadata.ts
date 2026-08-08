@@ -208,6 +208,7 @@ export function vorschaukarten({
   titel,
   beschreibung,
   lang,
+  pfad,
   typ = "website",
   veroeffentlicht,
   eigenesBild = false,
@@ -215,6 +216,23 @@ export function vorschaukarten({
   titel: string;
   beschreibung?: string;
   lang: "de" | "en";
+  /**
+   * Die eigene Adresse, absolut in der Karte.
+   *
+   * Dritter Fall derselben Ursache: Next ersetzt geerbte Metadaten je Feld,
+   * und wer ein eigenes `openGraph` setzt, verliert das `url` des Layouts.
+   * Gemessen an den ausgelieferten Seiten am 08.08.2026 trugen genau zwei von
+   * achtzehn ein `og:url` — die beiden Startseiten, die keines selbst setzen.
+   *
+   * Was daran hängt: Wer einen Artikel auf LinkedIn stellt, teilt eine Adresse
+   * mit `?trk=…` daran. Ohne `og:url` ist das für jeden Sammler die Kennung
+   * des Inhalts, und dieselbe Seite zerfällt in so viele Einträge, wie es
+   * Kanäle gibt.
+   *
+   * Als Pflichtfeld und nicht als Vorgabe: Eine Seite, die es vergisst,
+   * scheitert am Typecheck statt still ohne Karte zu liegen.
+   */
+  pfad: string;
   typ?: "website" | "article";
   veroeffentlicht?: string;
   /**
@@ -237,6 +255,7 @@ export function vorschaukarten({
   return {
     openGraph: {
       type: typ,
+      url: `${site.url}${pfad}`,
       ...(bild ? { images: bild } : {}),
       title: titel,
       ...(beschreibung ? { description: beschreibung } : {}),

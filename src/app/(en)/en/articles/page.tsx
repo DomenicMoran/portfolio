@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelEn, chromeEn } from "@/content/articles";
 import { en } from "@/content/en";
-import { feedFuer, kurzbeschreibung, vorschaukarten, kartenTitel } from "@/lib/metadata";
+import {
+  feedFuer,
+  kurzbeschreibung,
+  vorschaukarten,
+  kartenTitel,
+} from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: chromeEn.title,
@@ -12,6 +17,7 @@ export const metadata: Metadata = {
     titel: kartenTitel(chromeEn.title),
     beschreibung: kurzbeschreibung(chromeEn.lede),
     lang: "en",
+    pfad: "/en/articles",
   }),
   alternates: {
     canonical: "/en/articles",
