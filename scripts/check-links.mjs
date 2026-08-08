@@ -303,11 +303,13 @@ for (const [pfad, angemeldet] of nebendateien) {
    weg, verlangt der Lauf eine Weiterleitung in `vercel.json` — dieselbe
    Antwort, die auch `/cv` und `/blog` bekommen. */
 const VEROEFFENTLICHT = [
+  "/artikel/gruen-lokal-rot-in-der-ci",
   "/artikel/kassensichv-in-der-praxis",
   "/artikel/published-ist-kein-beleg",
   "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
   "/artikel/kleineres-whisper-modell",
   "/artikel/widget-leer-trotz-gruener-tests",
+  "/en/articles/green-locally-red-in-ci",
   "/en/articles/german-till-law-in-practice",
   "/en/articles/published-is-not-proof",
   "/en/articles/the-dotted-circle-was-not-the-font",
