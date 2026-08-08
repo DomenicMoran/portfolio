@@ -572,7 +572,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
         {/* Der Weg von der Fallstudie in den Artikel.
 
-            Vier der fünf Fachartikel handeln von einem Fehler in genau diesen
+            Fünf der sechs Fachartikel handeln von einem Fehler in genau diesen
             Systemen, und aus dem Fallstudien-Bereich führte kein einziger
             Verweis dorthin — gezählt an der ausgelieferten Seite. Wer wissen
             will, wie tief das geht, musste weiterscrollen und dann raten,
@@ -586,6 +586,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   <li key={artikel.slug}>
                     <Link
                       href={`${chrome.base}/${artikel.slug}`}
+                      /* Kein Vorabladen, aus demselben Grund wie im
+                         Artikel-Anriss: Diese Verweise stehen unter jeder
+                         Fallstudie und zeigen zusammen auf jeden Artikel der
+                         Seite. Beim Zeigen mit der Maus lädt Next weiter vor. */
+                      prefetch={false}
                       /* `-my-0.5 py-0.5`: Ein einzeiliger Titel misst sonst
                          23 px hoch — gemessen bei 390 px — und liegt damit
                          unter den 24 px aus WCAG 2.5.8. Die Ausnahme für

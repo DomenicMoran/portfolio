@@ -208,7 +208,10 @@ if (existsSync(MENUCLOUD)) {
      träfe die Beschriftung nicht mehr. Also wird gemessen, ob überall
      dieselbe Zahl steht. */
   for (const [datei, muster] of [
-    ["src/content/architecture-en.ts", /"([\d.]+) Workflows · Watchdogs":\s*"([\d.]+) workflows/],
+    [
+      "src/content/architecture-en.ts",
+      /"([\d.]+) Workflows · Watchdogs":\s*"([\d.]+) workflows/,
+    ],
   ]) {
     if (!existsSync(datei)) continue;
     const treffer = readFileSync(datei, "utf8").match(muster);
@@ -1348,9 +1351,7 @@ const BRAUCHT_KIND = {
          Adressen. Gefunden am 06.08.2026 in der anderen Richtung: Die
          Sitemap nannte die deutsche Startseite als `<loc>` ohne
          Schrägstrich und im hreflang-Verweis auf sich selbst mit. */
-      const kanonisch = html.match(
-        /<link rel="canonical" href="([^"]+)"/,
-      )?.[1];
+      const kanonisch = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
       if (kanonisch && kanonisch !== adresse) {
         funde.push(
           `${adresse} steht in der Sitemap, die Seite nennt als canonical ${kanonisch}`,
@@ -1371,9 +1372,7 @@ const BRAUCHT_KIND = {
       const imKopf = new Set(
         [...html.matchAll(/<link[^>]+hreflang="([^"]+)"/gi)].map((m) => m[1]),
       );
-      const inDerKarte = new Set(
-        [...(gruppen.get(adresse) ?? [])],
-      );
+      const inDerKarte = new Set([...(gruppen.get(adresse) ?? [])]);
       if (imKopf.size && inDerKarte.size) {
         const nurKopf = [...imKopf].filter((k) => !inDerKarte.has(k));
         const nurKarte = [...inDerKarte].filter((k) => !imKopf.has(k));
@@ -2079,7 +2078,9 @@ const BRAUCHT_KIND = {
         );
       }
       if (ogText && xText && ogText !== xText) {
-        funde.push(`${route}: X-Karte beschreibt etwas anderes als die Vorschaukarte`);
+        funde.push(
+          `${route}: X-Karte beschreibt etwas anderes als die Vorschaukarte`,
+        );
       }
 
       /* Und das Bild, wo die Route ein eigenes mitbringt.
@@ -2274,7 +2275,7 @@ const BRAUCHT_KIND = {
       geprueft++;
       if (gefunden.length > 0) {
         zeilen.push(
-          `  !!  Rolle in ${name}: „${[...new Set(gefunden)].join('“, „')}“ statt „${rolle}"`,
+          `  !!  Rolle in ${name}: „${[...new Set(gefunden)].join("“, „")}“ statt „${rolle}"`,
         );
         abweichungen++;
         abweichend++;
@@ -2321,10 +2322,7 @@ const BRAUCHT_KIND = {
       ["Standort", holen("detail")],
       ["Verfügbar", holen("entry")],
       ["Sprachen", holen("languages")],
-      [
-        "Gesucht",
-        /"Produktteam, in dem[^"]*"/.exec(quelle)?.[0]?.slice(1, -1),
-      ],
+      ["Gesucht", /"Produktteam, in dem[^"]*"/.exec(quelle)?.[0]?.slice(1, -1)],
     ];
 
     const funde = [];
@@ -2347,6 +2345,94 @@ const BRAUCHT_KIND = {
     } else {
       zeilen.push(
         `  ok  Faktenblatt        ${String(geprueft).padStart(6)} Angaben wie im Lebenslauf`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Der Lebenslauf nennt dieselben Zahlen wie der Prüfstempel
+   ---------------------------------------------------------------------------
+
+   Die Webseite setzt API-Routen und Migrationen aus `verified.json` ein, das
+   ein täglicher Arbeitsablauf schreibt. Im Lebenslauf standen dieselben
+   Zahlen als Text, und beide liefen auseinander: Am 08.08.2026 sagte das
+   Blatt „1.278 API-Routen über 815 Migrationen", der Stempel 1.279 und 816.
+
+   Untertreiben ist keine Falschaussage, und trotzdem ist es der teuerste Ort
+   dafür: Wer Lebenslauf und Seite nebeneinanderlegt — und genau das tut, wer
+   prüft — findet zwei Zahlen für dieselbe Sache und weiß nicht, welche gilt.
+
+   Der Prüfstempel gewinnt, weil er täglich nachgeführt wird. Gemeldet wird
+   jede Abweichung in beide Richtungen.
+   ------------------------------------------------------------------------ */
+{
+  const pfad = "../docs/LEBENSLAUF.md";
+  const stempelPfad = "src/content/verified.json";
+  if (!existsSync(pfad) || !existsSync(stempelPfad)) {
+    zeilen.push(
+      "  --  Lebenslauf oder Prüfstempel nicht da, Abgleich übersprungen",
+    );
+  } else {
+    const text = readFileSync(pfad, "utf8");
+    const stempel = JSON.parse(readFileSync(stempelPfad, "utf8"));
+    const funde = [];
+
+    for (const [was, wert] of [
+      ["API-Routen", stempel.apiRouten],
+      ["Migrationen", stempel.migrationen],
+    ]) {
+      /* Gesucht wird die Zahl im Wortumfeld, nicht irgendwo im Blatt: „816"
+         allein stünde auch in einer Postleitzahl. */
+      /* Doppelte Backslashes, weil das Muster in einem Template-Literal steht.
+         Einfach geschrieben verschluckt JavaScript sie beim Einlesen: Aus
+         `\d` wird `d`, aus `\s` wird `s`, und gesucht wurde nach „[d.]+s+
+         API-Routen". Das Muster fand nie etwas, und der Wächter meldete
+         „keine Angabe im Lebenslauf gefunden" statt „stimmt". */
+      const muster = new RegExp(
+        `([\\d.]+)\\s+(?:versionierte\\s+Postgres-)?${was === "API-Routen" ? "API-Routen" : "(?:versionierte )?Migrationen"}`,
+        "g",
+      );
+      const genannt = [...text.matchAll(muster)].map((m) => m[1]);
+      /* Dieselbe Zahl steht weiter unten in anderer Form: „versionierte
+         Migrationen (816 im größten Projekt)". Ohne diesen Zusatz bliebe
+         ausgerechnet die zweite Nennung ungeprüft. */
+      if (was === "Migrationen") {
+        genannt.push(
+          ...[...text.matchAll(/\(([\d.]+) im größten Projekt\)/g)].map(
+            (m) => m[1],
+          ),
+        );
+      }
+      if (!genannt.length) {
+        funde.push(`${was}: keine Angabe im Lebenslauf gefunden`);
+        continue;
+      }
+      for (const zahl of genannt) {
+        /* Die 12 Migrationen von NOURI sind eine andere Größe als die des
+           größten Projekts und bleiben außen vor. */
+        if (Number(zahl.replace(/\./g, "")) < 100) continue;
+        if (zahl !== wert) {
+          funde.push(`${was}: Lebenslauf ${zahl}, Prüfstempel ${wert}`);
+        }
+      }
+    }
+
+    /* Und die Marke muss im gesetzten Blatt aufgelöst sein. */
+    const pdf = "../docs/LEBENSLAUF.pdf";
+    if (existsSync(pdf) && readFileSync(pdf).includes("verified.")) {
+      funde.push("Im PDF steht noch eine unaufgelöste ${verified.…}-Marke");
+    }
+
+    if (funde.length) {
+      abweichungen += funde.length;
+      zeilen.push(
+        `  !!  ${funde.length} Zahl(en) im Lebenslauf neben dem Prüfstempel:`,
+      );
+      for (const f of funde) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        "  ok  Lebenslauf           Routen und Migrationen wie im Prüfstempel",
       );
     }
   }
@@ -2467,7 +2553,8 @@ const BRAUCHT_KIND = {
         headers: { accept: "application/vnd.npm.install-v1+json" },
         signal: AbortSignal.timeout(20000),
       });
-      if (antwort.ok) bekannt = Object.keys((await antwort.json()).versions ?? {});
+      if (antwort.ok)
+        bekannt = Object.keys((await antwort.json()).versions ?? {});
       else if (antwort.status === 404) bekannt = [];
     } catch {
       bekannt = null;
@@ -2488,7 +2575,9 @@ const BRAUCHT_KIND = {
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Paketfassung(en) ohne Veröffentlichung:`);
+    zeilen.push(
+      `  !!  ${funde.length} Paketfassung(en) ohne Veröffentlichung:`,
+    );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft) {
     zeilen.push(
@@ -2574,7 +2663,9 @@ const BRAUCHT_KIND = {
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Geräteklassen weichen ab:`);
+    zeilen.push(
+      `  !!  ${funde.length} Angabe(n) zu den Geräteklassen weichen ab:`,
+    );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (gruppen.length) {
     zeilen.push(
@@ -2646,7 +2737,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Zahl(en) im Architekturbild weichen ab:`);
+      zeilen.push(
+        `  !!  ${funde.length} Zahl(en) im Architekturbild weichen ab:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
@@ -2704,13 +2797,17 @@ const BRAUCHT_KIND = {
     for (const punkt of punkte) {
       geprueft++;
       if (!rumpf.includes(punkt))
-        funde.push(`${seite}: „${punkt.slice(0, 44)}…" fehlt im Rumpf der Mail`);
+        funde.push(
+          `${seite}: „${punkt.slice(0, 44)}…" fehlt im Rumpf der Mail`,
+        );
     }
   }
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Punkt(e) fehlen in der vorbereiteten Mail:`);
+    zeilen.push(
+      `  !!  ${funde.length} Punkt(e) fehlen in der vorbereiteten Mail:`,
+    );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft) {
     zeilen.push(
@@ -2738,7 +2835,9 @@ const BRAUCHT_KIND = {
   const konfig = "vercel.json";
   const ordner = join("src", "content", "articles");
   if (!existsSync(konfig) || !existsSync(ordner)) {
-    zeilen.push("  --  Artikelwege: keine vercel.json oder keine Artikel, übersprungen");
+    zeilen.push(
+      "  --  Artikelwege: keine vercel.json oder keine Artikel, übersprungen",
+    );
   } else {
     const ziele = new Map(
       (JSON.parse(readFileSync(konfig, "utf8")).redirects ?? []).map((w) => [
@@ -2813,7 +2912,8 @@ const BRAUCHT_KIND = {
   if (!existsSync(konfig)) {
     zeilen.push("  --  Navigationsadressen: keine vercel.json, übersprungen");
   } else {
-    const weiterleitungen = JSON.parse(readFileSync(konfig, "utf8")).redirects ?? [];
+    const weiterleitungen =
+      JSON.parse(readFileSync(konfig, "utf8")).redirects ?? [];
     const ziele = new Map(
       weiterleitungen.map((w) => [w.source, w.destination]),
     );
@@ -2840,7 +2940,10 @@ const BRAUCHT_KIND = {
     ]) {
       if (!existsSync(datei)) continue;
       const text = readFileSync(datei, "utf8");
-      const block = text.slice(text.indexOf("nav: ["), text.indexOf("]", text.indexOf("nav: [")));
+      const block = text.slice(
+        text.indexOf("nav: ["),
+        text.indexOf("]", text.indexOf("nav: [")),
+      );
       for (const treffer of block.matchAll(
         /\{\s*label:\s*"([^"]+)",\s*href:\s*"#([^"]+)"\s*\}/g,
       )) {
@@ -2863,7 +2966,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Beschriftung(en) ohne eigene Adresse:`);
+      zeilen.push(
+        `  !!  ${funde.length} Beschriftung(en) ohne eigene Adresse:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else if (geprueft) {
       zeilen.push(
@@ -2998,12 +3103,39 @@ const BRAUCHT_KIND = {
     /* Die Liste selbst: alles zwischen `artikelDe = sortiert([` und `])`. */
     const liste = text.match(/artikelDe = sortiert\(\[([\s\S]*?)\]\)/);
     const anzahl = liste
-      ? liste[1].split(",").map((z) => z.trim()).filter(Boolean).length
+      ? liste[1]
+          .split(",")
+          .map((z) => z.trim())
+          .filter(Boolean).length
       : 0;
 
     const woerter = {
-      de: ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn"],
-      en: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
+      de: [
+        "null",
+        "ein",
+        "zwei",
+        "drei",
+        "vier",
+        "fünf",
+        "sechs",
+        "sieben",
+        "acht",
+        "neun",
+        "zehn",
+      ],
+      en: [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+      ],
     };
 
     const funde = [];
@@ -3017,7 +3149,8 @@ const BRAUCHT_KIND = {
       for (const stelle of block.matchAll(/(title|lede|cta):\s*"([^"]+)"/g)) {
         const satz = stelle[2];
         for (const [i, wort] of woerter[sprache].entries()) {
-          if (i === 0 || i === 1) continue; /* „ein“ und „one“ sind zu häufig. */
+          if (i === 0 || i === 1)
+            continue; /* „ein“ und „one“ sind zu häufig. */
           /* Nur das Zahlwort direkt vor der Sache, die gezählt wird. Sonst
              trifft es auch „Zwei davon hatte monatelang niemand bemerkt" —
              dieselbe Zeile, eine andere Aussage. */
@@ -3039,7 +3172,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Zahlwort(e) passen nicht zur Artikelzahl:`);
+      zeilen.push(
+        `  !!  ${funde.length} Zahlwort(e) passen nicht zur Artikelzahl:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
@@ -3129,7 +3264,7 @@ const BRAUCHT_KIND = {
   } else {
     zeilen.push(
       `  ok  Konventionsdateien ${String(mit.length).padStart(6)} Repos, jedes mit einer (${mit.join(", ")})` +
-        (unbekannt ? `, ${unbekannt} Ordner nicht gefunden` : "")
+        (unbekannt ? `, ${unbekannt} Ordner nicht gefunden` : ""),
     );
   }
 }
@@ -3189,7 +3324,8 @@ const BRAUCHT_KIND = {
     );
     if (quellen.includes("127.0.0.1")) {
       geprueft++;
-      if (!bindung) funde.push("Bindung: der Code nennt keine erkennbare Adresse");
+      if (!bindung)
+        funde.push("Bindung: der Code nennt keine erkennbare Adresse");
       else if (bindung[2] !== "127.0.0.1")
         funde.push(
           `Bindung: die Seite sagt 127.0.0.1, der Code bindet ohne LAN-Freigabe ` +
@@ -3199,7 +3335,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Zusage(n) der Fallstudie stimmen nicht:`);
+      zeilen.push(
+        `  !!  ${funde.length} Zusage(n) der Fallstudie stimmen nicht:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else if (geprueft) {
       zeilen.push(
@@ -3232,17 +3370,23 @@ const BRAUCHT_KIND = {
 {
   const ordner = join("src", "content", "articles");
   if (!existsSync(ordner) || !existsSync("src/content/site.ts")) {
-    zeilen.push("  --  Artikel oder Inhalt nicht vorhanden, Zuordnung übersprungen");
+    zeilen.push(
+      "  --  Artikel oder Inhalt nicht vorhanden, Zuordnung übersprungen",
+    );
   } else {
     const quelle = readFileSync("src/content/site.ts", "utf8");
     const zugeordnet = new Set();
     for (const liste of quelle.matchAll(/articles:\s*\[([^\]]*)\]/g)) {
-      for (const eintrag of liste[1].matchAll(/"([^"]+)"/g)) zugeordnet.add(eintrag[1]);
+      for (const eintrag of liste[1].matchAll(/"([^"]+)"/g))
+        zugeordnet.add(eintrag[1]);
     }
 
     const slugs = readdirSync(ordner)
       .filter((f) => /^de-.*\.ts$/.test(f))
-      .map((f) => /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1])
+      .map(
+        (f) =>
+          /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1],
+      )
       .filter(Boolean);
 
     /* Ein Artikel darf über diese Seite selbst handeln.
@@ -3260,8 +3404,17 @@ const BRAUCHT_KIND = {
     const ueberDieseSeite = new Set(
       readdirSync(ordner)
         .filter((f) => /^de-.*\.ts$/.test(f))
-        .filter((f) => /evidence:[\s\S]*?Portfolio-Repo/.test(readFileSync(join(ordner, f), "utf8")))
-        .map((f) => /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1])
+        .filter((f) =>
+          /evidence:[\s\S]*?Portfolio-Repo/.test(
+            readFileSync(join(ordner, f), "utf8"),
+          ),
+        )
+        .map(
+          (f) =>
+            /slug:\s*"([^"]+)"/.exec(
+              readFileSync(join(ordner, f), "utf8"),
+            )?.[1],
+        )
         .filter(Boolean),
     );
 
@@ -3274,9 +3427,13 @@ const BRAUCHT_KIND = {
       abweichungen += ohneStudie.length + ohneArtikel.length;
       zeilen.push(`  !!  Die Zuordnung Artikel/Fallstudie stimmt nicht:`);
       for (const s of ohneStudie)
-        zeilen.push(`        "${s}" gehört zu keiner Fallstudie — kein Weg zurück`);
+        zeilen.push(
+          `        "${s}" gehört zu keiner Fallstudie — kein Weg zurück`,
+        );
       for (const s of ohneArtikel)
-        zeilen.push(`        eine Fallstudie nennt "${s}", den Artikel gibt es nicht`);
+        zeilen.push(
+          `        eine Fallstudie nennt "${s}", den Artikel gibt es nicht`,
+        );
     } else {
       zeilen.push(
         `  ok  Artikelzuordnung ${String(slugs.length).padStart(7)} Artikel, ${slugs.length - ueberDieseSeite.size} in genau einer Fallstudie, ${ueberDieseSeite.size} über diese Seite selbst`,
@@ -3307,11 +3464,16 @@ const BRAUCHT_KIND = {
     zeilen.push("  --  MenuCloud nicht vorhanden, Mail-Kette übersprungen");
   } else {
     const kopf = readFileSync(smtp, "utf8").slice(0, 1200).toLowerCase();
-    const KANDIDATEN = ["mailcow", "ses", "migadu", "resend", "sendgrid", "postmark"];
+    const KANDIDATEN = [
+      "mailcow",
+      "ses",
+      "migadu",
+      "resend",
+      "sendgrid",
+      "postmark",
+    ];
     /* Der Kopf nennt jeden Weg mit seiner Rolle in Anführungszeichen. */
-    const imCode = KANDIDATEN.filter((k) =>
-      new RegExp(`"${k}"`).test(kopf),
-    );
+    const imCode = KANDIDATEN.filter((k) => new RegExp(`"${k}"`).test(kopf));
 
     const seite = ["src/content/site.ts", "src/content/en.ts"]
       .filter((d) => existsSync(d))
@@ -3320,21 +3482,28 @@ const BRAUCHT_KIND = {
     /* Nur die Zeile über den Mailstapel, nicht der ganze Inhalt: „Resend"
        steht auch in Kommentaren zur Vorgeschichte. */
     const zeile = /Self-hosted Mailstack[^"]*|Self-hosted mail stack[^"]*/g;
-    const genannt = [...new Set(
-      [...seite.matchAll(zeile)]
-        .flatMap((m) => KANDIDATEN.filter((k) => m[0].toLowerCase().includes(k))),
-    )];
+    const genannt = [
+      ...new Set(
+        [...seite.matchAll(zeile)].flatMap((m) =>
+          KANDIDATEN.filter((k) => m[0].toLowerCase().includes(k)),
+        ),
+      ),
+    ];
 
     const zuviel = genannt.filter((g) => !imCode.includes(g));
     const fehlt = imCode.filter((c) => !genannt.includes(c));
 
     if (!genannt.length) {
-      zeilen.push("  --  Die Seite nennt keinen Mailstapel mehr, Prüfung übersprungen");
+      zeilen.push(
+        "  --  Die Seite nennt keinen Mailstapel mehr, Prüfung übersprungen",
+      );
     } else if (zuviel.length || fehlt.length) {
       abweichungen += zuviel.length + fehlt.length;
       zeilen.push(`  !!  Die Mail-Kette der Seite passt nicht zu smtp.ts:`);
       if (zuviel.length)
-        zeilen.push(`        genannt, aber nicht im Code: ${zuviel.join(", ")}`);
+        zeilen.push(
+          `        genannt, aber nicht im Code: ${zuviel.join(", ")}`,
+        );
       if (fehlt.length)
         zeilen.push(`        im Code, aber nicht genannt: ${fehlt.join(", ")}`);
     } else {
@@ -3371,7 +3540,10 @@ const BRAUCHT_KIND = {
     const quelle = readFileSync(server, "utf8");
     const WEGE = [
       ["Dry-Run bei fehlenden Zugangsdaten", /dry-run-env-missing/],
-      ["503 bei nicht erreichbarer Datenbank", /503[\s\S]{0,80}ServiceUnavailable/],
+      [
+        "503 bei nicht erreichbarer Datenbank",
+        /503[\s\S]{0,80}ServiceUnavailable/,
+      ],
       ["4xx mit Postgres-Code", /Conflict[\s\S]{0,200}code:\s*parsed\?\.code/],
     ];
     const fehlend = WEGE.filter(([, muster]) => !muster.test(quelle)).map(
@@ -3385,10 +3557,14 @@ const BRAUCHT_KIND = {
     const behauptet = /Secrets fehlen|Secrets are missing/.test(seite);
 
     if (!behauptet) {
-      zeilen.push("  --  Die Seite nennt die API-Zusage nicht mehr, Prüfung übersprungen");
+      zeilen.push(
+        "  --  Die Seite nennt die API-Zusage nicht mehr, Prüfung übersprungen",
+      );
     } else if (fehlend.length) {
       abweichungen += fehlend.length;
-      zeilen.push(`  !!  ${fehlend.length} Zusage(n) der NOURI-API stehen nicht im Code:`);
+      zeilen.push(
+        `  !!  ${fehlend.length} Zusage(n) der NOURI-API stehen nicht im Code:`,
+      );
       for (const f of fehlend) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
@@ -3403,14 +3579,19 @@ const BRAUCHT_KIND = {
   const vorlage = "../docs/GITHUB-PROFILE-README.md";
   const inhalt = "src/content/articles/index.ts";
   if (!existsSync(vorlage) || !existsSync(inhalt)) {
-    zeilen.push("  --  Gemeinsamer Satz: Vorlage oder Inhalt fehlt, übersprungen");
+    zeilen.push(
+      "  --  Gemeinsamer Satz: Vorlage oder Inhalt fehlt, übersprungen",
+    );
   } else {
     const readme = readFileSync(vorlage, "utf8").replace(/\s+/g, " ");
     const lede = readFileSync(inhalt, "utf8").match(/lede:\s*"([^"]+)"/)?.[1];
 
     /* Der letzte Satz des Vorspanns ist die gemeinsame Aussage. Davor steht,
        was die Artikel sind; danach nichts mehr. */
-    const satz = lede?.split(/(?<=\.)\s+/).pop()?.trim();
+    const satz = lede
+      ?.split(/(?<=\.)\s+/)
+      .pop()
+      ?.trim();
 
     if (!satz) {
       abweichungen++;
@@ -3451,7 +3632,9 @@ const BRAUCHT_KIND = {
     /api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis|api\.replicate\.com|api-inference\.huggingface/;
 
   if (!existsSync(wurzel)) {
-    zeilen.push("  --  KI auf dem Gerät: SalatiTech nicht vorhanden, übersprungen");
+    zeilen.push(
+      "  --  KI auf dem Gerät: SalatiTech nicht vorhanden, übersprungen",
+    );
   } else if (!/KI läuft auf dem Gerät/.test(quelle)) {
     zeilen.push("  --  KI auf dem Gerät: die Seite behauptet es nicht mehr");
   } else {
@@ -3459,7 +3642,8 @@ const BRAUCHT_KIND = {
     let gelesen = 0;
     const gehe = (ordner) => {
       for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
-        if (eintrag.name === "node_modules" || eintrag.name.startsWith(".")) continue;
+        if (eintrag.name === "node_modules" || eintrag.name.startsWith("."))
+          continue;
         const pfad = join(ordner, eintrag.name);
         if (eintrag.isDirectory()) {
           gehe(pfad);
@@ -3518,7 +3702,10 @@ const BRAUCHT_KIND = {
   };
 
   const routen = zaehleDateien("../../MenuCloud/src/app/api", "route.ts");
-  const migrationen = zaehleDateien("../../MenuCloud/supabase/migrations", ".sql");
+  const migrationen = zaehleDateien(
+    "../../MenuCloud/supabase/migrations",
+    ".sql",
+  );
   let salatiCommits = null;
   if (existsSync("../../SalatiTech")) {
     try {
@@ -3555,8 +3742,18 @@ const BRAUCHT_KIND = {
 
   const ANGABEN = [
     ["API-Routen", routen, zahl(stand.apiRouten), "verified.apiRouten"],
-    ["DB-Migrationen", migrationen, zahl(stand.migrationen), "verified.migrationen"],
-    ["Salati-Commits", salatiCommits, zahl(stand.commitsSalati), "verified.commitsSalati"],
+    [
+      "DB-Migrationen",
+      migrationen,
+      zahl(stand.migrationen),
+      "verified.migrationen",
+    ],
+    [
+      "Salati-Commits",
+      salatiCommits,
+      zahl(stand.commitsSalati),
+      "verified.commitsSalati",
+    ],
   ];
 
   const lies = (d) => (existsSync(d) ? readFileSync(d, "utf8") : "");
@@ -3675,7 +3872,9 @@ const BRAUCHT_KIND = {
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Blatt/Blätter weichen vom Ausgelieferten ab:`);
+    zeilen.push(
+      `  !!  ${funde.length} Blatt/Blätter weichen vom Ausgelieferten ab:`,
+    );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (verglichen) {
     zeilen.push(
@@ -3685,7 +3884,7 @@ const BRAUCHT_KIND = {
   }
 }
 
-/* ---------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------
    „Alle mit Tests, CI und MIT-Lizenz"
 
    So steht es auf dem Kurzprofil unter den vier veröffentlichten Paketen —
@@ -3711,7 +3910,9 @@ const BRAUCHT_KIND = {
   ];
 
   const genannt = existsSync("src/content/de.ts")
-    ? /alle mit Tests, CI und MIT-Lizenz/.test(readFileSync("src/content/de.ts", "utf8"))
+    ? /alle mit Tests, CI und MIT-Lizenz/.test(
+        readFileSync("src/content/de.ts", "utf8"),
+      )
     : false;
 
   if (!genannt) {
@@ -3726,20 +3927,26 @@ const BRAUCHT_KIND = {
     for (const name of PAKETE) {
       const ort = join(OSS, name);
       if (!existsSync(ort)) {
-        zeilen.push(`  --  ${name} nicht vorhanden, Lizenz und CI übersprungen`);
+        zeilen.push(
+          `  --  ${name} nicht vorhanden, Lizenz und CI übersprungen`,
+        );
         continue;
       }
       geprueft++;
 
       const paket = JSON.parse(readFileSync(join(ort, "package.json"), "utf8"));
       if (paket.license !== "MIT") {
-        funde.push(`${name}: package.json nennt „${paket.license ?? "nichts"}"`);
+        funde.push(
+          `${name}: package.json nennt „${paket.license ?? "nichts"}"`,
+        );
       }
 
       const lizenzdatei = join(ort, "LICENSE");
       if (!existsSync(lizenzdatei)) {
         funde.push(`${name}: keine LICENSE-Datei`);
-      } else if (!/MIT License/i.test(readFileSync(lizenzdatei, "utf8").slice(0, 200))) {
+      } else if (
+        !/MIT License/i.test(readFileSync(lizenzdatei, "utf8").slice(0, 200))
+      ) {
         funde.push(`${name}: die LICENSE-Datei nennt keine MIT-Lizenz`);
       }
 
@@ -3747,12 +3954,15 @@ const BRAUCHT_KIND = {
       const yml = existsSync(ablaeufe)
         ? readdirSync(ablaeufe).filter((d) => /\.ya?ml$/.test(d))
         : [];
-      if (yml.length === 0) funde.push(`${name}: kein Arbeitsablauf, also keine CI`);
+      if (yml.length === 0)
+        funde.push(`${name}: kein Arbeitsablauf, also keine CI`);
     }
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Zusage(n) über die Pakete stimmen nicht:`);
+      zeilen.push(
+        `  !!  ${funde.length} Zusage(n) über die Pakete stimmen nicht:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else if (geprueft) {
       zeilen.push(
@@ -3763,7 +3973,7 @@ const BRAUCHT_KIND = {
   }
 }
 
-/* ---------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------
    „Alle allein gebaut" — steht das noch in der Historie?
 
    Der Satz steht sechsmal auf der Seite: im Vorspann, in der Kennzahlenreihe
@@ -3820,7 +4030,10 @@ const BRAUCHT_KIND = {
      es hier weggelassen, sagt die Ausgabe „nur eigene Absender" und meint
      drei von vier — eine Zusage, die vollständiger klingt, als sie gemessen
      ist. So steht die Lücke in der Zeile. */
-  for (const [name, ort] of [...REPOS, ["WohnungsJäger", resolve("../../KIWohnung")]]) {
+  for (const [name, ort] of [
+    ...REPOS,
+    ["WohnungsJäger", resolve("../../KIWohnung")],
+  ]) {
     if (!existsSync(join(ort, ".git"))) {
       uebersprungen++;
       continue;
@@ -3854,7 +4067,9 @@ const BRAUCHT_KIND = {
         .split(String.fromCharCode(10))
         .map((z) => z.trim())
         .filter(Boolean);
-      const andere = [...new Set(betreffe)].filter((z) => z !== AUTOMATENBETREFF);
+      const andere = [...new Set(betreffe)].filter(
+        (z) => z !== AUTOMATENBETREFF,
+      );
       if (andere.length) {
         funde.push(
           `${name}: Der Zahlen-Automat hat ${andere.length} Commit(s) mit ` +
@@ -3867,10 +4082,14 @@ const BRAUCHT_KIND = {
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(`  !!  „Alle allein gebaut" — fremde Absender in der Historie:`);
+    zeilen.push(
+      `  !!  „Alle allein gebaut" — fremde Absender in der Historie:`,
+    );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft === 0) {
-    zeilen.push("  --  Kein Repo mit Historie erreichbar, „allein gebaut“ übersprungen");
+    zeilen.push(
+      "  --  Kein Repo mit Historie erreichbar, „allein gebaut“ übersprungen",
+    );
   } else {
     zeilen.push(
       `  ok  Allein gebaut          ${geprueft} Repos, nur eigene Absender, ` +
@@ -3883,7 +4102,7 @@ const BRAUCHT_KIND = {
   }
 }
 
-/* ---------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------
    Rechnet die Demo noch so wie die App?
 
    Unter der Kachel steht „adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0
@@ -4034,7 +4253,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Zeitpunkten stimmen nicht:`);
+      zeilen.push(
+        `  !!  ${funde.length} Angabe(n) zu den Zeitpunkten stimmen nicht:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else if (geprueft) {
       zeilen.push(
@@ -4054,7 +4275,9 @@ const BRAUCHT_KIND = {
   {
     const bauteil = "src/components/demo/Macros.tsx";
     if (!existsSync(bauteil)) {
-      zeilen.push(`  --  ${bauteil} nicht vorhanden, Zusammenstellungen übersprungen`);
+      zeilen.push(
+        `  --  ${bauteil} nicht vorhanden, Zusammenstellungen übersprungen`,
+      );
     } else {
       const text = readFileSync(bauteil, "utf8");
       const von = text.indexOf("const GERICHTE = [");
@@ -4082,7 +4305,9 @@ const BRAUCHT_KIND = {
 
       if (funde.length) {
         abweichungen += funde.length;
-        zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Zusammenstellungen stimmen nicht:`);
+        zeilen.push(
+          `  !!  ${funde.length} Angabe(n) zu den Zusammenstellungen stimmen nicht:`,
+        );
         for (const f of funde) zeilen.push(`        ${f}`);
       } else if (geprueft) {
         zeilen.push(
@@ -4173,13 +4398,17 @@ const BRAUCHT_KIND = {
   const repo = "../../SalatiTech";
   const mobil = join(repo, "apps", "mobile");
   if (!existsSync(mobil)) {
-    zeilen.push("  --  Agenten-Sitzung: SalatiTech nicht vorhanden, übersprungen");
+    zeilen.push(
+      "  --  Agenten-Sitzung: SalatiTech nicht vorhanden, übersprungen",
+    );
   } else {
     const funde = [];
     let geprueft = 0;
 
     /* Der Wert, den die Sitzung als Ergebnis zeigt. */
-    const gezeigt = quelle.match(/"main":\s*\\"index\.js\\"[^"]*?\\"([^\\]+)\\"/)?.[1];
+    const gezeigt = quelle.match(
+      /"main":\s*\\"index\.js\\"[^"]*?\\"([^\\]+)\\"/,
+    )?.[1];
     const manifest = join(mobil, "package.json");
     if (existsSync(manifest)) {
       geprueft++;
@@ -4189,7 +4418,9 @@ const BRAUCHT_KIND = {
           `Die Sitzung zeigt \`main\` als „${gezeigt}", im Repo steht „${wirklich}"`,
         );
       else if (!gezeigt && wirklich !== "index")
-        funde.push(`\`main\` steht im Repo auf „${wirklich}", nicht auf „index"`);
+        funde.push(
+          `\`main\` steht im Repo auf „${wirklich}", nicht auf „index"`,
+        );
     }
 
     /* Der Handler, dessen Ausbleiben die Sitzung erklärt. */
@@ -4206,7 +4437,9 @@ const BRAUCHT_KIND = {
 
     if (funde.length) {
       abweichungen += funde.length;
-      zeilen.push(`  !!  ${funde.length} Angabe(n) der Agenten-Sitzung stimmen nicht:`);
+      zeilen.push(
+        `  !!  ${funde.length} Angabe(n) der Agenten-Sitzung stimmen nicht:`,
+      );
       for (const f of funde) zeilen.push(`        ${f}`);
     } else if (geprueft) {
       zeilen.push(
@@ -4246,11 +4479,26 @@ const BRAUCHT_KIND = {
    */
   function datumNebenCommit(text, hash) {
     const monate = {
-      januar: "01", february: "02", februar: "02", january: "01",
-      märz: "03", march: "03", april: "04", mai: "05", may: "05",
-      juni: "06", june: "06", juli: "07", july: "07", august: "08",
-      september: "09", oktober: "10", october: "10", november: "11",
-      dezember: "12", december: "12",
+      januar: "01",
+      february: "02",
+      februar: "02",
+      january: "01",
+      märz: "03",
+      march: "03",
+      april: "04",
+      mai: "05",
+      may: "05",
+      juni: "06",
+      june: "06",
+      juli: "07",
+      july: "07",
+      august: "08",
+      september: "09",
+      oktober: "10",
+      october: "10",
+      november: "11",
+      dezember: "12",
+      december: "12",
     };
     const treffer = text.match(
       new RegExp(`${hash}[^"]{0,12}?(\\d{1,2})\\.? (\\p{L}+) (\\d{4})`, "u"),
@@ -4350,7 +4598,6 @@ const BRAUCHT_KIND = {
   } else {
     zeilen.push("  --  Genannte Commits: kein Repo erreichbar, übersprungen");
   }
-
 }
 
 /* ---------------------------------------------------------------------------
@@ -4382,8 +4629,14 @@ const BRAUCHT_KIND = {
 
     const ZUSTAENDE = [
       ["Dry-Run bei fehlender Konfiguration", /dry_run/],
-      ["503, wenn die Datenbank nicht erreichbar ist", /SupabaseUnreachableError[\s\S]{0,200}503/],
-      ["4xx mit weitergereichtem Fehlercode", /SupabaseRequestError[\s\S]{0,400}code/],
+      [
+        "503, wenn die Datenbank nicht erreichbar ist",
+        /SupabaseUnreachableError[\s\S]{0,200}503/,
+      ],
+      [
+        "4xx mit weitergereichtem Fehlercode",
+        /SupabaseRequestError[\s\S]{0,400}code/,
+      ],
     ];
 
     const fehlend = ZUSTAENDE.filter(([, muster]) => !muster.test(quelltext));
@@ -4420,17 +4673,24 @@ const BRAUCHT_KIND = {
 {
   const registrierung = "../../KIWohnung/src/scanner/registry.ts";
   if (!existsSync(registrierung)) {
-    zeilen.push(`  --  ${registrierung} nicht vorhanden, Portalzahl übersprungen`);
+    zeilen.push(
+      `  --  ${registrierung} nicht vorhanden, Portalzahl übersprungen`,
+    );
   } else {
     const text = readFileSync(registrierung, "utf8");
     const block = text.slice(text.indexOf("export const portals"));
     const eingetragen = [
       ...new Set(
-        [...block.slice(0, block.indexOf("}")).matchAll(/\b([a-z0-9]+)\b/g)].map(
-          (m) => m[1],
-        ),
+        [
+          ...block.slice(0, block.indexOf("}")).matchAll(/\b([a-z0-9]+)\b/g),
+        ].map((m) => m[1]),
       ),
-    ].filter((n) => !["export", "const", "portals", "Record", "string", "Portal"].includes(n));
+    ].filter(
+      (n) =>
+        !["export", "const", "portals", "Record", "string", "Portal"].includes(
+          n,
+        ),
+    );
 
     /* `custom` ist eine leere Stelle für eine eigene Quelle, `demo` eine
        Prüfvorrichtung. Beide sind keine überwachten Portale. */
@@ -4460,7 +4720,9 @@ const BRAUCHT_KIND = {
     const funde = [];
     for (const zahl of behauptet)
       if (zahl !== echte.length)
-        funde.push(`Kachel nennt ${zahl}, die Registrierung führt ${echte.length}`);
+        funde.push(
+          `Kachel nennt ${zahl}, die Registrierung führt ${echte.length}`,
+        );
     for (const wort of imFliesstext)
       if (alsWort[wort] !== echte.length)
         funde.push(
@@ -4485,9 +4747,10 @@ const BRAUCHT_KIND = {
         const stufen = new Set();
         for (const datei of readdirSync(engine)) {
           if (!datei.endsWith(".ts")) continue;
-          for (const treffer of readFileSync(join(engine, datei), "utf8").matchAll(
-            /Stufe (\d+):/g,
-          )) {
+          for (const treffer of readFileSync(
+            join(engine, datei),
+            "utf8",
+          ).matchAll(/Stufe (\d+):/g)) {
             stufen.add(Number(treffer[1]));
           }
         }
@@ -4515,7 +4778,9 @@ const BRAUCHT_KIND = {
     } else {
       zeilen.push(
         `  ok  WohnungsJäger        ${String(echte.length).padStart(6)} Portale wie in der Registrierung (${echte.join(", ")})` +
-          (stufenGeprueft ? `, ${stufenGeprueft} Bewertungsstufen wie im Code` : ""),
+          (stufenGeprueft
+            ? `, ${stufenGeprueft} Bewertungsstufen wie im Code`
+            : ""),
       );
     }
   }
@@ -4814,7 +5079,9 @@ const BRAUCHT_KIND = {
     }
     if (themenFunde.length) {
       abweichungen += themenFunde.length;
-      zeilen.push(`  !!  ${themenFunde.length} Abweichung(en) bei den Repo-Themen:`);
+      zeilen.push(
+        `  !!  ${themenFunde.length} Abweichung(en) bei den Repo-Themen:`,
+      );
       for (const f of themenFunde) zeilen.push(`        ${f}`);
     } else if (geprueftePakete > 0) {
       zeilen.push(
@@ -5324,7 +5591,9 @@ const BRAUCHT_KIND = {
         }
         geprueft++;
         if (inOrdnung(antwort)) continue;
-        funde.push(`${adresse}: Status ${antwort.status}, auch im zweiten Versuch`);
+        funde.push(
+          `${adresse}: Status ${antwort.status}, auch im zweiten Versuch`,
+        );
       } catch {
         uebersprungen++;
       }
@@ -5530,7 +5799,6 @@ const ANGABEN = [
       `  ok  Versionsangaben     ${String(geprueft).padStart(6)} Angaben stimmen mit den Repos`,
     );
   }
-
 }
 
 /* ---------------------------------------------------------------------------
@@ -5607,7 +5875,9 @@ const ANGABEN = [
 
   if (readmefunde.length) {
     abweichungen += readmefunde.length;
-    zeilen.push(`  !!  ${readmefunde.length} Beispiel(e) in einem README zeigen ins Leere:`);
+    zeilen.push(
+      `  !!  ${readmefunde.length} Beispiel(e) in einem README zeigen ins Leere:`,
+    );
     for (const f of readmefunde) zeilen.push(`        ${f}`);
   } else if (ausgefallen) {
     zeilen.push(
