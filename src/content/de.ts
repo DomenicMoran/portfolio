@@ -1,6 +1,7 @@
 import { datumLang } from "@/lib/date-format";
 import type { Content } from "./types";
 import verified from "./verified.json";
+import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
 import {
   about as aboutDe,
   caseStudies,
@@ -34,12 +35,9 @@ import {
  * Render fröre ohnehin auf den Bauzeitpunkt ein. Der Stempel wandert täglich
  * mit dem Automaten weiter, und die Angabe daneben nennt ihn.
  */
-const SALATI_ERSTER_COMMIT = "2026-04-16";
 const salatiTage = Math.round(
   (Date.parse(verified.date) - Date.parse(SALATI_ERSTER_COMMIT)) / 86_400_000,
 );
-/** Im Changelog der App gezählt, siehe check-figures.mjs. */
-const SALATI_VERSIONEN = 65;
 const salatiStundenJeVersion = Math.round((salatiTage * 24) / SALATI_VERSIONEN);
 
 export const de: Content = {
@@ -103,7 +101,10 @@ export const de: Content = {
     jump: "Springen",
     modifier: "Strg",
     pdf: { label: "One-Pager als PDF", hint: "Druckfertige Kurzfassung" },
-    onepagerWeb: { label: "Kurzprofil im Browser", hint: "Dieselbe Kurzfassung als Seite" },
+    onepagerWeb: {
+      label: "Kurzprofil im Browser",
+      hint: "Dieselbe Kurzfassung als Seite",
+    },
     mail: "E-Mail schreiben",
     github: "Quellcode und Profil",
     linkedin: "Beruflicher Werdegang",
@@ -163,7 +164,7 @@ export const de: Content = {
         {
           value: String(SALATI_VERSIONEN),
           label: "ausgelieferte Versionen",
-          note: "1.0.0 bis 1.47.0, im Changelog der App nachlesbar",
+          note: `1.0.0 bis ${SALATI_STAND}, im Changelog der App nachlesbar`,
         },
         {
           value: `${salatiStundenJeVersion} h`,
@@ -263,7 +264,8 @@ export const de: Content = {
     speed: "{ms} ms",
     today: "heute",
     note: "adhan 4.4.4 (MIT), Methode 13 Diyanet, Schule 0 schafiitisch. 8.760 Zeitpunkte, im Browser gerechnet, ohne eine einzige Anfrage nach außen. Genau so rechnet die App, wenn kein Netz da ist.",
-    hardPart: "Oberhalb von etwa 48° geht die Sonne im Sommer nie tief genug unter den Horizont, und Fadschr und Ischa sind nicht mehr eindeutig bestimmt. Die drei üblichen Regeln laufen dann auseinander, in Berlin im Juni um über zwei Stunden. Eine Nutzermeldung „Gebetszeiten stimmen nicht“ führte genau hierher. Die App wählt die winkelbasierte Regel, nicht weil sie richtiger wäre, sondern weil sie zu dem passt, womit Nutzer vergleichen. In Tromsø bleiben auch damit die Tage ohne Ergebnis, die oben stehen: Dort gibt es die Nacht nicht, auf die sich die Rechnung bezieht.",
+    hardPart:
+      "Oberhalb von etwa 48° geht die Sonne im Sommer nie tief genug unter den Horizont, und Fadschr und Ischa sind nicht mehr eindeutig bestimmt. Die drei üblichen Regeln laufen dann auseinander, in Berlin im Juni um über zwei Stunden. Eine Nutzermeldung „Gebetszeiten stimmen nicht“ führte genau hierher. Die App wählt die winkelbasierte Regel, nicht weil sie richtiger wäre, sondern weil sie zu dem passt, womit Nutzer vergleichen. In Tromsø bleiben auch damit die Tage ohne Ergebnis, die oben stehen: Dort gibt es die Nacht nicht, auf die sich die Rechnung bezieht.",
   },
   onepager: {
     title: "Kurzprofil",
@@ -283,8 +285,7 @@ export const de: Content = {
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
       "Der Nachweis sind vier Systeme in Produktion.",
     openSource: "Veröffentlicht",
-    openSourceNote:
-      "alle mit Tests, CI und MIT-Lizenz auf",
+    openSourceNote: "alle mit Tests, CI und MIT-Lizenz auf",
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
     asOf: "Stand:",
     back: "← Zurück zur Seite",

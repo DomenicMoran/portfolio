@@ -159,6 +159,10 @@ export function ArticleIndex({
                         bleiben im Lesemodus vollständig erreichbar. */}
                     <Link
                       href={`${chrome.base}/${article.slug}`}
+                      /* Kein Vorabladen, wie unter dem gelesenen Artikel: Die
+                         Übersicht führt in genau einen Artikel, holte aber
+                         gemessen alle sechs — 443 kB auf dem Telefon. */
+                      prefetch={false}
                       aria-labelledby={`artikel-${article.slug}`}
                       className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
                     >

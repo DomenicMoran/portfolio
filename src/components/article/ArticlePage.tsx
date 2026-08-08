@@ -324,6 +324,17 @@ export function ArticlePage({
                     <li key={a.slug}>
                       <Link
                         href={`${chrome.base}/${a.slug}`}
+                        /* Kein Vorabladen unter dem gelesenen Artikel.
+
+                           Next holt zu jedem sichtbaren Verweis die Zielseite
+                           im Voraus. Gemessen am gebauten Stand auf dem
+                           Telefon holte eine Artikelseite dadurch alle fünf
+                           anderen vollständig: 373 kB, bevor jemand den
+                           gelesenen Artikel zu Ende hatte. Wer hier klickt,
+                           klickt einen davon an. Beim Zeigen mit der Maus und
+                           beim Antippen lädt Next weiterhin vor, der Klick
+                           bleibt also gleich schnell. */
+                        prefetch={false}
                         className="group flex items-start justify-between gap-6 rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
                       >
                         <span>

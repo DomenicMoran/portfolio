@@ -1,5 +1,6 @@
 import { datumLang } from "@/lib/date-format";
 import verified from "./verified.json";
+import { SALATI_VERSIONEN } from "./salati";
 import type { CaseStudy } from "./types";
 import {
   alsWort,
@@ -1216,7 +1217,7 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: "65 ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.",
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },
