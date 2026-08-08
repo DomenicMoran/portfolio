@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Der schnelle Sammellauf vor jedem Push.
+#
+# `preflight` prüft in drei Sekunden, was sich still ändert und erst in der CI
+# auffällt: Steuerzeichen im Quelltext, Angaben in README und AGENTS.md, tote
+# Ausfuhren, fest eingetippte Beschriftungen und den Stand der beiden
+# ausgelieferten PDF. Am 08.08.2026 stand die Actions-Ansicht zweimal auf Rot,
+# weil die zwei Kurzprofil-Blätter aus einem älteren Quellstand kamen — der
+# Lauf, der das findet, war die ganze Zeit da und wurde nur nicht gestartet.
+#
+# Bewusst nicht der ganze Prüfsatz: Der braucht Browser und Minuten. Was hier
+# steht, kostet drei Sekunden und fängt genau die Klasse Fehler, die man beim
+# Pushen nicht mehr im Kopf hat.
+#
+# Im Notfall überspringen: git push --no-verify
+
+if ! npm run preflight --silent; then
+  echo ""
+  echo "Der Push wurde angehalten: preflight hat etwas gefunden."
+  echo "Beheben und erneut pushen, oder mit --no-verify umgehen."
+  exit 1
+fi

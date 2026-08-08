@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prepare": "git config core.hooksPath .githooks",
     "preflight": "npm run check:chars && npm run check:docs && npm run check:exports && npm run check:onepager && npm run check:copy",
     "start": "next start",
     "lint": "eslint",
