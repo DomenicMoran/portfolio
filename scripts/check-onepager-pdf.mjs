@@ -375,7 +375,7 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
 {
   const kopf = BLAETTER.filter((p) => existsSync(p)).map((p) => {
     /* Die Angaben liegen in einem komprimierten Objektstrom, nicht im
-       Klartext — ein Suchlauf ueber die rohe Datei findet sie nicht. Deshalb
+       Klartext — ein Suchlauf über die rohe Datei findet sie nicht. Deshalb
        jeden Strom aufblasen und dann suchen. */
     const daten = readFileSync(p);
     const teile = [daten.toString("latin1")];
