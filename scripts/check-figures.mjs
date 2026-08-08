@@ -5590,7 +5590,31 @@ const BRAUCHT_KIND = {
           antwort = await abrufen(adresse);
         }
         geprueft++;
-        if (inOrdnung(antwort)) continue;
+        if (inOrdnung(antwort)) {
+          /* Ein Verweis auf ein umbenanntes Repository antwortet mit 200.
+
+             GitHub leitet den alten Namen dauerhaft weiter, und genau deshalb
+             fällt es keinem Prüflauf auf: Der Zertifikate-Ordner hieß nach der
+             Umbenennung `certificates`, im Lebenslauf stand weiter
+             `Zertifikate`, und alles war grün. Wer den Verweis anklickt, sieht
+             in der Adresszeile einen anderen Namen als im Text — bei einem
+             Beleg ist das der schlechteste Moment für eine Unstimmigkeit.
+
+             Verglichen wird nur der Pfad und nur bei GitHub: Bei anderen
+             Anbietern ist eine Weiterleitung Alltag (Sprachkennung, Nachlauf-
+             Schrägstrich, Marketing-Parameter) und sagt nichts über den Text. */
+          const ziel = new URL(antwort.url || adresse);
+          const quelle = new URL(adresse);
+          if (
+            quelle.host.endsWith("github.com") &&
+            ziel.pathname.toLowerCase() !== quelle.pathname.toLowerCase()
+          ) {
+            funde.push(
+              `${adresse}: führt auf ${ziel.pathname} — umbenannt, im Text steht der alte Name`,
+            );
+          }
+          continue;
+        }
         funde.push(
           `${adresse}: Status ${antwort.status}, auch im zweiten Versuch`,
         );

@@ -85,7 +85,11 @@ export const site = {
     // ausschließlich im Faktenblatt der Startseite, das nicht mitgedruckt
     // wird und niemanden erreicht, der nur das Blatt bekommt.
     detail: "Berlin · remote in der EU · hybrid",
-    entry: "Gespräche jederzeit · Eintritt nach bis zu drei Monaten",
+    /* „innerhalb von" und nicht „nach bis zu": Die englische Fassung sagt seit
+       jeher „start within three months", die deutsche las sich als frühestens.
+       Dieselbe Auskunft, zwei Richtungen — und die deutsche war die, die ein
+       Personalbereich als Verzögerung liest. */
+    entry: "Gespräche jederzeit · Eintritt innerhalb von drei Monaten",
     languages: "Deutsch (Muttersprache) · Englisch",
     /* Dieselbe Spanne wie in der Faktenkachel, hier als einzige Quelle.
 

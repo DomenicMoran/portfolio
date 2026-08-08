@@ -39,6 +39,15 @@ export function EnglishNote() {
           daran, in welcher Aussprache es das Ziel ankündigt. */}
       <Link
         href="/en"
+        /* Kein Vorabladen.
+
+           Dieser eine Verweis kostete die Rechtsseiten ihre halbe Ladung: Er
+           zeigt auf die englische Startseite, und Next holt zu jedem
+           sichtbaren Verweis die Skripte des Ziels mit. Gemessen am gebauten
+           Stand brachte er 270 kB Animationsbibliothek auf zwei Seiten, auf
+           denen sich nichts bewegt. Beim Zeigen mit der Maus lädt Next
+           weiterhin vor. */
+        prefetch={false}
         hrefLang="en"
         className="-my-1 py-1 text-acid underline underline-offset-4"
       >
