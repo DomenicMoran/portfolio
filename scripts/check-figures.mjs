@@ -3055,11 +3055,6 @@ const BRAUCHT_KIND = {
     else ohne.push(name);
   }
 
-  const quellen = ["src/content/site.ts", "src/content/en.ts"]
-    .filter((d) => existsSync(d))
-    .map((d) => readFileSync(d, "utf8"))
-    .join(" ");
-
   /* Geprüft wird Vollständigkeit, nicht eine Zahl.
 
      Der Satz sagt „jedes Projekt", und genau das lässt sich zählen: Wer ein
