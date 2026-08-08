@@ -24,6 +24,7 @@
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
 
 /* Gemessene Werte, die weiter unten ein zweites Mal gebraucht werden.
@@ -3614,6 +3615,77 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
+   Das geprüfte Blatt ist auch das ausgelieferte
+
+   `check:onepager` hält die beiden PDF gegen den Inhalt: Quellstand,
+   Seitenzahl, Verweise, Schriftgröße, Bildauflösung. Geprüft wird dabei die
+   Datei im Arbeitsverzeichnis. Ob dieselbe Datei auch bei einem Besucher
+   ankommt, sagt der Lauf nicht.
+
+   Dazwischen liegt ein Schritt von Hand. Die beiden PDF entstehen nicht beim
+   Bau — dafür bräuchte Vercel ein Chromium —, sondern über
+   `npm run onepager:pdf`. Wer den Lauf vergisst, hat eine geprüfte Datei auf
+   dem Rechner und eine ältere im Netz; wer ihn ausführt und nicht ausliefert,
+   ebenso. Beide Fälle sehen lokal grün aus.
+
+   Verglichen werden die Prüfsummen. Der Lauf gehört hierher und nicht in die
+   CI: Dort liefe er vor dem Deploy und wäre nach jeder Änderung am Blatt rot,
+   ohne dass etwas falsch wäre.
+   ------------------------------------------------------------------------ */
+{
+  const BLAETTER = [
+    "domenic-moran-kurzprofil.pdf",
+    "domenic-moran-one-pager.pdf",
+  ];
+  const funde = [];
+  let verglichen = 0;
+
+  for (const name of BLAETTER) {
+    const ort = join("public", name);
+    if (!existsSync(ort)) {
+      funde.push(`${name} liegt nicht in public/`);
+      continue;
+    }
+    const hier = createHash("sha256").update(readFileSync(ort)).digest("hex");
+
+    let dort = null;
+    try {
+      const antwort = await fetch(`https://domenicmoran.de/${name}`);
+      if (antwort.ok) {
+        dort = createHash("sha256")
+          .update(Buffer.from(await antwort.arrayBuffer()))
+          .digest("hex");
+      } else {
+        funde.push(`${name}: die Seite antwortet mit ${antwort.status}`);
+        continue;
+      }
+    } catch {
+      zeilen.push(`  --  ${name}: nicht erreichbar, Vergleich übersprungen`);
+      continue;
+    }
+
+    verglichen++;
+    if (hier !== dort) {
+      funde.push(
+        `${name}: hier ${hier.slice(0, 12)}, ausgeliefert ${dort.slice(0, 12)} — ` +
+          `npm run build && npm run onepager:pdf, dann ausliefern`,
+      );
+    }
+  }
+
+  if (funde.length) {
+    abweichungen += funde.length;
+    zeilen.push(`  !!  ${funde.length} Blatt/Blätter weichen vom Ausgelieferten ab:`);
+    for (const f of funde) zeilen.push(`        ${f}`);
+  } else if (verglichen) {
+    zeilen.push(
+      `  ok  Ausgelieferte Blätter ${String(verglichen).padStart(3)} PDF, ` +
+        `Prüfsumme gleich der geprüften Datei`,
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
    „Alle mit Tests, CI und MIT-Lizenz"
 
    So steht es auf dem Kurzprofil unter den vier veröffentlichten Paketen —
