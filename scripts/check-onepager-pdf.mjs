@@ -362,6 +362,76 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
   }
 }
 
+/* Die beiden Blätter tragen nicht dieselben Angaben im Dokumentkopf.
+
+   `/Subject` und `/Keywords` liest ein Bewerbermanagement-System aus, wenn die
+   Datei dort abgelegt wird — es sind die einzigen Felder, in denen eine
+   Sprachfassung stillschweigend die andere abschreiben kann. Genau das war der
+   Fall: Beide trugen „AI Product Engineer, Fullstack, TypeScript, …", und
+   „Fullstack" ohne Bindestrich steht auf keiner englischen Seite dieser Site.
+
+   Gleiche Werte in beiden Dateien heißen deshalb: Eine der beiden ist nicht
+   gepflegt. */
+{
+  const kopf = BLAETTER.filter((p) => existsSync(p)).map((p) => {
+    /* Die Angaben liegen in einem komprimierten Objektstrom, nicht im
+       Klartext — ein Suchlauf ueber die rohe Datei findet sie nicht. Deshalb
+       jeden Strom aufblasen und dann suchen. */
+    const daten = readFileSync(p);
+    const teile = [daten.toString("latin1")];
+    let i = 0;
+    while (true) {
+      const a = daten.indexOf("stream", i);
+      if (a < 0) break;
+      let anfang = a + 6;
+      if (daten[anfang] === 0x0d) anfang++;
+      if (daten[anfang] === 0x0a) anfang++;
+      const ende = daten.indexOf("endstream", anfang);
+      if (ende < 0) break;
+      try {
+        teile.push(inflateSync(daten.subarray(anfang, ende)).toString("latin1"));
+      } catch {
+        /* kein Deflate-Strom */
+      }
+      i = ende + 9;
+    }
+    const roh = teile.join(String.fromCharCode(10));
+    /* Zwei Schreibweisen: Klartext in Klammern oder UTF-16 als Hex in spitzen
+       Klammern. pdf-lib nimmt die zweite, sobald ein Zeichen außerhalb von
+       Latin-1 vorkommt — und eine Meldung mit „<FEFF0041…“ liest niemand. */
+    const MUSTER = {
+      Subject: /\/Subject\s*(?:\(([^)]*)\)|<([0-9A-Fa-f]+)>)/,
+      Keywords: /\/Keywords\s*(?:\(([^)]*)\)|<([0-9A-Fa-f]+)>)/,
+    };
+    const feld = (name) => {
+      const treffer = MUSTER[name].exec(roh);
+      if (!treffer) return "";
+      if (treffer[1] !== undefined) return treffer[1];
+      const hex = treffer[2].replace(/^FEFF/i, "");
+      let raus = "";
+      for (let k = 0; k + 3 < hex.length + 1; k += 4) {
+        raus += String.fromCharCode(parseInt(hex.slice(k, k + 4), 16));
+      }
+      return raus;
+    };
+    return { betreff: feld("Subject"), schlagwoerter: feld("Keywords") };
+  });
+
+  if (kopf.length === 2) {
+    for (const [feld, name] of [
+      ["betreff", "/Subject"],
+      ["schlagwoerter", "/Keywords"],
+    ]) {
+      if (kopf[0][feld] && kopf[0][feld] === kopf[1][feld]) {
+        funde.push(
+          `Beide Blätter tragen dasselbe ${name}: "${kopf[0][feld].slice(0, 60)}" — ` +
+            "eine Sprachfassung schreibt die andere ab.",
+        );
+      }
+    }
+  }
+}
+
 if (funde.length > 0) {
   console.error(`${funde.length} Befund am ausgelieferten Blatt:\n`);
   for (const f of funde) console.error(`  ${f}`);
