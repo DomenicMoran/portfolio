@@ -80,6 +80,15 @@ zwei Zahlen für dieselbe Sache.
   werden
 - `articles/` trägt die Fachartikel als getippte Blöcke, je Sprache eine Datei
 
+Ein neuer Artikel ist mehr als zwei Dateien. Gemessen am sechsten: Er braucht
+beide Sprachfassungen, einen Eintrag in `articles/index.ts` samt Slug-Paar,
+drei Weiterleitungen in `vercel.json` für die Slugs in der falschen Fassung,
+die Zahl in den Überschriften der Übersicht, die Repo-Beschreibung auf GitHub
+und eine Zeile in `VEROEFFENTLICHT` in `scripts/check-links.mjs`. Die letzte
+ist die, die man vergisst — sie hält fest, welche Adresse einmal öffentlich
+war, und ohne sie zählt der Feed einen Eintrag mehr, als die Liste kennt.
+`node scripts/check-figures.mjs` nennt die übrigen Punkte von selbst.
+
 Nichts wird fest in eine Komponente geschrieben, auch keine `aria-label`. Auf
 der englischen Fassung las ein Screenreader sonst deutsche Ansagen vor.
 
