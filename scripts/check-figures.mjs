@@ -4730,14 +4730,20 @@ const BRAUCHT_KIND = {
     salati: resolve("../../SalatiTech"),
     menucloud: resolve("../../MenuCloud"),
     nouri: resolve("../../NOURI"),
+    wohnungsjaeger: resolve("../../KIWohnung"),
   };
 
   const quelle = readFileSync("src/content/site.ts", "utf8");
 
-  /* WohnungsJäger fehlt in der Zuordnung oben, weil das Verzeichnis keine
-     Git-Historie hat — es gibt dort keinen ersten Commit, gegen den sich ein
-     Jahr halten ließe. Die Zahl unten nennt das ausdrücklich: „3 von 4“ statt
-     „3“, sonst liest sich die Zeile wie eine vollständige Prüfung. */
+  /* WohnungsJäger stand hier lange nicht, weil das Verzeichnis keine
+     Git-Historie hatte. Seit dem 08.08.2026 hat es eine, und damit gibt es
+     einen ersten Commit, gegen den sich das Jahr halten lässt.
+
+     Was diese Prüfung dort belegt, ist weniger als bei den anderen dreien:
+     Die Historie beginnt mit der Einrichtung, nicht mit der Arbeit. Sie fängt
+     ein zurückdatiertes Jahr ab — „2024" wäre ein Befund — und sagt nichts
+     darüber, wann das Projekt wirklich entstand. Die Zahl unten zählt
+     trotzdem alle vier, weil geprüft nun geprüft heißt. */
   const anfang = quelle.indexOf("export const caseStudies");
   const fallstudienBlock = quelle.slice(
     anfang,
