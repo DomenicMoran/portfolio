@@ -212,6 +212,64 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
   process.exit(1);
 }
 
+/* Kein Verweis auf die abgeschaffte Streitbeilegungsplattform.
+
+   Bis Juli 2025 verlangte Art. 14 der ODR-Verordnung von fast jeder
+   gewerblichen Website einen Verweis auf die Online-Streitbeilegung der EU.
+   Die Verordnung ist aufgehoben, und die Plattform hat den Betrieb am
+   20. Juli 2025 eingestellt — nachgesehen unter der alten Adresse, die heute
+   nur noch die Abschaltung meldet: „discontinued as of 20 July 2025".
+
+   Das Impressum hier nennt sie richtigerweise nicht. Nur ist die Floskel das
+   meistkopierte Stück Text im deutschen Netz, sie steht in jeder Vorlage und
+   in jedem Generator, und sie kommt bei der nächsten Überarbeitung mit einer
+   Zeile zurück. Herauskäme ein Impressum, das auf eine tote Plattform
+   verweist — die eine Stelle, an der ein Mitbewerber zuerst nachsieht.
+
+   Der Satz über die Verbraucherschlichtungsstelle daneben bleibt richtig und
+   ist etwas anderes: Er beruht auf § 36 VSBG und gilt weiter. */
+{
+  const VERALTET = [
+    [/ec\.europa\.eu\/consumers\/odr/i, "Verweis auf die abgeschaltete ODR-Plattform"],
+    [/Plattform der EU zur Online-Streitbeilegung/i, "Hinweis auf die OS-Plattform"],
+    [/OS-Plattform/i, "Hinweis auf die OS-Plattform"],
+  ];
+
+  const blaetter = ["impressum.html", "datenschutz.html"]
+    .map((n) => join(".next", "server", "app", n))
+    .filter((d) => existsSync(d));
+
+  const funde = [];
+  for (const blatt of blaetter) {
+    const inhalt = readFileSync(blatt, "utf8");
+    for (const [muster, was] of VERALTET) {
+      /* Nur der Dateiname: Der Pfad davor ist auf jeder Zeile derselbe und
+         verdrängt die Aussage an den rechten Rand. */
+      if (muster.test(inhalt)) {
+        funde.push(`${blatt.split(/[\\/]/).pop()}: ${was}`);
+      }
+    }
+  }
+
+  if (funde.length) {
+    console.error(
+      `Die Rechtsseiten nennen eine Stelle, die es nicht mehr gibt:` +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        [...new Set(funde)].map((f) => `  ${f}`).join(String.fromCharCode(10)) +
+        String.fromCharCode(10) +
+        String.fromCharCode(10) +
+        `Die ODR-Verordnung ist aufgehoben, die Plattform seit dem ` +
+        `20. Juli 2025 abgeschaltet.`,
+    );
+    process.exitCode = 1;
+  } else if (blaetter.length) {
+    console.log(
+      `  ok  Kein Verweis auf die ODR-Plattform, die seit Juli 2025 ruht.`,
+    );
+  }
+}
+
 /* Die Privatanschrift gehört auf zwei Blätter und auf kein drittes.
 
    Sie steht dort, weil § 5 DDG sie verlangt, und beide Blätter tragen dafür
