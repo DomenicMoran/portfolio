@@ -74,8 +74,25 @@ for (const pfad of dateien) {
   });
 }
 
+/* Und kein Sonderzeichen im Dateinamen.
+
+   AGENTS.md verlangt englische Dateinamen, und der Grund steht dort: Umlaute
+   brechen über Betriebssysteme hinweg, und die Ersatzschreibung `ue/ae/oe` ist
+   die Krücke, die man sich dafür einhandelt. Ob ein Name englisch ist, kann
+   eine Maschine nicht entscheiden — ob er ausserhalb von ASCII liegt, schon,
+   und das ist der Teil der Regel mit dem harten Grund.
+
+   Gezählt am 08.08.2026: kein einziger von 186 gelesenen Namen. Die Prüfung
+   hält diesen Stand, sie stellt ihn nicht her. */
+for (const datei of dateien) {
+  const name = datei.split(/[\/]/).pop();
+  if ([...name].some((zeichen) => zeichen.codePointAt(0) > 127)) {
+    funde.push(`${datei}: Sonderzeichen im Dateinamen`);
+  }
+}
+
 if (funde.length > 0) {
-  console.log(`\n${funde.length} Steuerzeichen im Quelltext:\n`);
+  console.log(`\n${funde.length} Fund(e) im Quelltext:\n`);
   for (const f of funde) console.log(`  ${f}`);
   console.log(
     `\n  Meist ein einfacher Backslash, wo zwei hingehören: \\b wird zu 0x08.`,
@@ -84,5 +101,6 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `Kein Steuerzeichen im Quelltext: ${dateien.length} Dateien gelesen.`,
+  `Kein Steuerzeichen im Quelltext und kein Sonderzeichen in einem Dateinamen: ` +
+    `${dateien.length} Dateien gelesen.`,
 );
