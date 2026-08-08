@@ -246,6 +246,28 @@ textarea:-webkit-autofill {
   color: var(--color-ink-faint);
 }
 
+/* Dasselbe Etikett, eine Stufe heller — für getönte Flächen.
+ *
+ * `text-eyebrow` ist auf `--color-void` gerechnet und steht dort mit 5,86:1.
+ * Auf der getönten Tafel der Fallstudien („Die harte Stelle") liegt hinter
+ * ihm eine Akzentfarbe mit 10 Prozent Deckung, und der Wert fällt auf
+ * 4,54:1 — gemessen an der gebauten Seite bei 1440 px die schwächste Stelle
+ * der ganzen Seite, vier Hundertstel über der Anforderung aus WCAG 1.4.3.
+ *
+ * Die Farbe global zu heben käme teurer: `text-eyebrow` steht in 16 Dateien,
+ * und überall sonst sitzt es auf einfarbigem Grund, wo es richtig ist. Eine
+ * zweite Klasse für den einen Fall ist ehrlicher als ein Kompromiss für
+ * beide. Mit `--color-ink-dim` sind es dort 6,25:1.
+ */
+@utility text-eyebrow-strong {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
 /* ============================================================================
    Surface utilities
    ========================================================================= */
@@ -365,9 +387,17 @@ textarea:-webkit-autofill {
      * Erster Anlauf mischte ihn aus `--color-void` (#08080a) auf einer Fläche
      * von `--color-base` (#0b0b0e): drei Werte Unterschied je Kanal, im
      * Bildschirmfoto nicht zu erkennen. Auf dunklem Grund trägt nur eine
-     * Aufhellung, dieselbe Technik wie beim Kantenglanz von `.lit`. */
-    linear-gradient(to right, color-mix(in oklab, var(--color-ink) 20%, transparent), transparent),
-    linear-gradient(to left, color-mix(in oklab, var(--color-ink) 20%, transparent), transparent);
+     * Aufhellung, dieselbe Technik wie beim Kantenglanz von `.lit`.
+     *
+     * 12 Prozent und nicht 20: Der Streifen liegt genau dort, wo Text steht,
+     * und hellt den Grund darunter auf. Bei 20 Prozent kostete das mehr, als
+     * der Hinweis wert ist — gemessen an der gebauten Seite mit dem stabilen
+     * Verfahren aus `check:contrast`: die Achsenbeschriftung „610" eines
+     * Architekturdiagramms bei 1440 px auf 4,10:1, deutlich unter den 4,5:1
+     * aus WCAG 1.4.3. Bei 12 Prozent liegt die schwächste Stelle der ganzen
+     * Seite bei 4,80:1, und der Hinweis bleibt sichtbar. */
+    linear-gradient(to right, color-mix(in oklab, var(--color-ink) 12%, transparent), transparent),
+    linear-gradient(to left, color-mix(in oklab, var(--color-ink) 12%, transparent), transparent);
   background-position:
     left center,
     right center,
