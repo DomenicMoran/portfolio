@@ -3244,7 +3244,29 @@ const BRAUCHT_KIND = {
       .map((f) => /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1])
       .filter(Boolean);
 
-    const ohneStudie = slugs.filter((s) => !zugeordnet.has(s));
+    /* Ein Artikel darf über diese Seite selbst handeln.
+
+       Die Regel dahinter ist der Weg zurück: Wer über einen Fehler in Salati
+       liest, soll von dort zur Fallstudie kommen. Für einen Artikel über
+       diese Website führt kein solcher Weg irgendwohin — der Leser steht
+       bereits darin, und ein Schild „Aus dem System: Portfolio" wäre ein
+       Verweis auf die Seite, die man gerade liest.
+
+       Die Ausnahme ist eng gefasst und trägt sich selbst: Sie gilt nur für
+       Artikel, deren Belegliste das Portfolio-Repo nennt. Ein Artikel über
+       ein Kundensystem kann sie damit nicht versehentlich in Anspruch
+       nehmen. */
+    const ueberDieseSeite = new Set(
+      readdirSync(ordner)
+        .filter((f) => /^de-.*\.ts$/.test(f))
+        .filter((f) => /evidence:[\s\S]*?Portfolio-Repo/.test(readFileSync(join(ordner, f), "utf8")))
+        .map((f) => /slug:\s*"([^"]+)"/.exec(readFileSync(join(ordner, f), "utf8"))?.[1])
+        .filter(Boolean),
+    );
+
+    const ohneStudie = slugs.filter(
+      (s) => !zugeordnet.has(s) && !ueberDieseSeite.has(s),
+    );
     const ohneArtikel = [...zugeordnet].filter((s) => !slugs.includes(s));
 
     if (ohneStudie.length || ohneArtikel.length) {
@@ -3256,7 +3278,7 @@ const BRAUCHT_KIND = {
         zeilen.push(`        eine Fallstudie nennt "${s}", den Artikel gibt es nicht`);
     } else {
       zeilen.push(
-        `  ok  Artikelzuordnung ${String(slugs.length).padStart(7)} Artikel, jeder in genau einer Fallstudie`,
+        `  ok  Artikelzuordnung ${String(slugs.length).padStart(7)} Artikel, ${slugs.length - ueberDieseSeite.size} in genau einer Fallstudie, ${ueberDieseSeite.size} über diese Seite selbst`,
       );
     }
   }

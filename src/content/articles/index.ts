@@ -4,17 +4,20 @@ import { kassensichvDe } from "./de-kassensichv";
 import { widgetDe } from "./de-widget";
 import { otaDe } from "./de-ota";
 import { shaperDe } from "./de-shaper";
+import { kontrastDe } from "./de-kontrast";
 import { whisperEn } from "./en-whisper";
 import { kassensichvEn } from "./en-kassensichv";
 import { widgetEn } from "./en-widget";
 import { otaEn } from "./en-ota";
 import { shaperEn } from "./en-shaper";
+import { kontrastEn } from "./en-kontrast";
 
 /** Neueste zuerst. Die Reihenfolge steht hier und nicht in der Komponente. */
 const sortiert = (liste: Article[]) =>
   [...liste].sort((a, b) => b.date.localeCompare(a.date));
 
 export const artikelDe = sortiert([
+  kontrastDe,
   whisperDe,
   kassensichvDe,
   widgetDe,
@@ -22,6 +25,7 @@ export const artikelDe = sortiert([
   shaperDe,
 ]);
 export const artikelEn = sortiert([
+  kontrastEn,
   whisperEn,
   kassensichvEn,
   widgetEn,
@@ -32,8 +36,8 @@ export const artikelEn = sortiert([
 export const chromeDe: ArticleChrome = {
   base: "/artikel",
   eyebrow: "Geschrieben",
-  title: "Fünf Fehler, die mich etwas gelehrt haben",
-  lede: "Keine Tutorials und keine Meinungsstücke. Fünf Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und den Belegen, an denen sich beides nachlesen lässt: Datei und Zeile, der Commit, das Paket, das daraus entstanden ist. Einen davon hatte monatelang niemand bemerkt, einen zweiten über Wochen.",
+  title: "Sechs Fehler, die mich etwas gelehrt haben",
+  lede: "Keine Tutorials und keine Meinungsstücke. Sechs Probleme aus meinen eigenen Systemen, jeweils mit der Ursache, dem Fix und den Belegen, an denen sich beides nachlesen lässt: Datei und Zeile, der Commit, das Paket, das daraus entstanden ist. Einen davon hatte monatelang niemand bemerkt, einen zweiten über Wochen.",
   readingTime: (m) => `${m} Min. Lesezeit`,
   backToIndex: "Alle Artikel",
   evidenceLabel: "Belege",
@@ -51,17 +55,17 @@ export const chromeDe: ArticleChrome = {
   allArticles: "Artikel",
   home: {
     eyebrow: "Geschrieben",
-    title: "Fünf Fehler, die mich etwas gelehrt haben",
+    title: "Sechs Fehler, die mich etwas gelehrt haben",
     lede: "Aus meinen eigenen Systemen, mit Ursache, Fix und Beleg. Kein Tutorial-Recycling.",
-    cta: "Alle fünf Artikel lesen",
+    cta: "Alle sechs Artikel lesen",
   },
 };
 
 export const chromeEn: ArticleChrome = {
   base: "/en/articles",
   eyebrow: "Writing",
-  title: "Five bugs that taught me something",
-  lede: "No tutorials and no opinion pieces. Five problems out of my own systems, each with the cause, the fix, and the evidence for both: file and line, the commit, the package that came out of it. One of them had gone unnoticed for months, a second one for weeks.",
+  title: "Six bugs that taught me something",
+  lede: "No tutorials and no opinion pieces. Six problems out of my own systems, each with the cause, the fix, and the evidence for both: file and line, the commit, the package that came out of it. One of them had gone unnoticed for months, a second one for weeks.",
   readingTime: (m) => `${m} min read`,
   backToIndex: "All articles",
   evidenceLabel: "Evidence",
@@ -79,9 +83,9 @@ export const chromeEn: ArticleChrome = {
   allArticles: "Articles",
   home: {
     eyebrow: "Writing",
-    title: "Five bugs that taught me something",
+    title: "Six bugs that taught me something",
     lede: "Out of my own systems, with cause, fix and evidence. No recycled tutorials.",
-    cta: "Read all five articles",
+    cta: "Read all six articles",
   },
 };
 
@@ -106,6 +110,7 @@ export function artikelNach(lang: "de" | "en", slug: string) {
  * ändert, wäre die Position falsch, ohne dass es auffiele.
  */
 const slugPaare = [
+  { de: kontrastDe.slug, en: kontrastEn.slug },
   { de: whisperDe.slug, en: whisperEn.slug },
   { de: kassensichvDe.slug, en: kassensichvEn.slug },
   { de: widgetDe.slug, en: widgetEn.slug },
