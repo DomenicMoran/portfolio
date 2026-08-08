@@ -3559,19 +3559,31 @@ const BRAUCHT_KIND = {
   if (!existsSync(methoden) || !existsSync(paket)) {
     zeilen.push("  --  SalatiTech nicht vorhanden, Demo-Herkunft übersprungen");
   } else {
-    const genannt = existsSync("src/content/de.ts")
-      ? readFileSync("src/content/de.ts", "utf8").match(
-          /adhan ([\d.]+) \(MIT\), Methode (\d+)/,
-        )
-      : null;
+    /* Beide Sprachfassungen, nicht nur die deutsche.
 
-    if (!genannt) {
+       Gemessen am 08.08.2026: Mit „adhan 5.0.0 (MIT), method 3" in `en.ts`
+       blieb jeder Lauf grün — check-figures las nur `de.ts`, und check:parity
+       vergleicht Anzahl und Kennzahlen, nicht den Wortlaut einer Fußnote. Die
+       englische Fassung hätte damit eine falsche technische Angabe getragen,
+       und zwar die, die ein internationaler Leser zuerst sieht. */
+    const QUELLEN_TEXTE = [
+      ["src/content/de.ts", /adhan ([\d.]+) \(MIT\), Methode (\d+)/],
+      ["src/content/en.ts", /adhan ([\d.]+) \(MIT\), method (\d+)/],
+    ];
+
+    const angaben = QUELLEN_TEXTE.map(([datei, muster]) => [
+      datei,
+      existsSync(datei) ? readFileSync(datei, "utf8").match(muster) : null,
+    ]);
+
+    const ohne = angaben.filter(([, treffer]) => !treffer).map(([d]) => d);
+    if (ohne.length) {
       abweichungen++;
       zeilen.push(
-        "  !!  In de.ts steht keine Herkunftsangabe unter der Gebetszeiten-Demo",
+        `  !!  Keine Herkunftsangabe unter der Gebetszeiten-Demo in: ${ohne.join(", ")}`,
       );
     } else {
-      const [, version, methode] = genannt;
+      const [, version, methode] = angaben[0][1];
       const echteMethode = readFileSync(methoden, "utf8").match(
         /DEFAULT_METHOD_ID = (\d+)/,
       )?.[1];
@@ -3598,10 +3610,21 @@ const BRAUCHT_KIND = {
             `Salati nutzt ${echteVersion}`,
         );
       } else {
-        zeilen.push(
-          `  ok  Gebetszeiten-Demo    Methode ${methode} und adhan ${version} ` +
-            `wie in Salati`,
-        );
+        const abweichend = angaben
+          .filter(([, t]) => t[1] !== version || t[2] !== methode)
+          .map(([d, t]) => `${d}: adhan ${t[1]}, Methode ${t[2]}`);
+        if (abweichend.length) {
+          abweichungen++;
+          zeilen.push(
+            `  !!  Die Sprachfassungen nennen verschiedene Herkunft: ` +
+              abweichend.join(" | "),
+          );
+        } else {
+          zeilen.push(
+            `  ok  Gebetszeiten-Demo    Methode ${methode} und adhan ${version} ` +
+              `wie in Salati, in beiden Sprachfassungen`,
+          );
+        }
       }
     }
   }
