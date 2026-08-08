@@ -594,9 +594,8 @@ Die README des Prüfstands beschreibt, was er enthält: Folgen, Minuten,
    einer Stichprobe standen dort 240 Fragen, gezählt waren es 280, und 125
    Minuten gegen gemessene 127.
 
-   Die Angaben standen früher in USER-TODO.md. Die Datei ist auf das
-   zusammengestrichen, was nur der Inhaber tun kann; die Zahlen gehören
-   ohnehin dorthin, wo die Sache beschrieben wird.
+   Die Angaben standen früher in einer Sammelliste. Die gibt es nicht mehr;
+   die Zahlen gehören ohnehin dorthin, wo die Sache beschrieben wird.
 
    Kein Beinbruch, aber dieselbe Sorte Fehler, gegen die dieses Skript für die
    Webseite gebaut wurde: eine Zahl, die einmal richtig war. Also zählt es sie
@@ -3001,6 +3000,7 @@ const BRAUCHT_KIND = {
   const DATEIEN = ["CLAUDE.md", "AGENTS.md"];
 
   const mit = [];
+  const ohne = [];
   let unbekannt = 0;
   for (const [name, ort] of ORTE) {
     if (!existsSync(ort)) {
@@ -3011,6 +3011,7 @@ const BRAUCHT_KIND = {
       DATEIEN.some((d) => existsSync(join(ort, u, d))),
     );
     if (da) mit.push(name);
+    else ohne.push(name);
   }
 
   const quellen = ["src/content/site.ts", "src/content/en.ts"]
@@ -3018,52 +3019,22 @@ const BRAUCHT_KIND = {
     .map((d) => readFileSync(d, "utf8"))
     .join(" ");
 
-  /* Eigene Zuordnung statt der weiter oben: Die dort steht in einem anderen
-     Block und ist hier nicht sichtbar. Ein `ZAHLWORT.get(…)` darauf hat den
-     ganzen Lauf mit einem ReferenceError beendet — und weil der Lauf seine
-     Zeilen erst am Ende ausgibt, sah das aus wie ein Block, der schweigt. */
-  const AUSGESCHRIEBEN = new Map([
-    ["eine", 1],
-    ["zwei", 2],
-    ["drei", 3],
-    ["vier", 4],
-    ["fünf", 5],
-    ["sechs", 6],
-    ["one", 1],
-    ["two", 2],
-    ["three", 3],
-    ["four", 4],
-    ["five", 5],
-    ["six", 6],
-  ]);
+  /* Geprüft wird Vollständigkeit, nicht eine Zahl.
 
-  const funde = [];
-  let geprueft = 0;
-  for (const [muster, sprache] of [
-    [/([A-Za-zäöü]+) meiner Repositories tragen ihre Konventionen/, "de"],
-    [/([A-Za-z]+) of my repositories carry their conventions/, "en"],
-  ]) {
-    const treffer = muster.exec(quellen);
-    if (!treffer) continue;
-    geprueft++;
-    const genannt =
-      AUSGESCHRIEBEN.get(treffer[1].toLowerCase()) ?? Number(treffer[1]);
-    if (genannt !== mit.length) {
-      funde.push(
-        `${sprache}: die Seite sagt ${treffer[1]}, gezählt sind ${mit.length} ` +
-          `(${mit.join(", ")})`,
-      );
-    }
-  }
-
-  if (funde.length) {
-    abweichungen += funde.length;
-    zeilen.push(`  !!  ${funde.length} Angabe(n) zu den Konventionsdateien stimmen nicht:`);
-    for (const f of funde) zeilen.push(`        ${f}`);
-  } else if (geprueft) {
+     Der Satz sagt „jedes Projekt", und genau das lässt sich zählen: Wer ein
+     Repo dazunimmt, bringt die Datei mit, sonst meldet es der Lauf. Eine Zahl
+     im Text wäre die schwächere Zusage und müsste bei jedem neuen Repo
+     nachgezogen werden. */
+  if (ohne.length) {
+    abweichungen += ohne.length;
     zeilen.push(
-      `  ok  Konventionsdateien ${String(mit.length).padStart(6)} Repos tragen eine (${mit.join(", ")})` +
-        (unbekannt ? `, ${unbekannt} Ordner nicht gefunden` : ""),
+      `  !!  ${ohne.length} Repo(s) ohne Konventionsdatei: ${ohne.join(", ")}`,
+    );
+    zeilen.push(`        Die Seite sagt „jedes Projekt“ und meint auch jedes.`);
+  } else {
+    zeilen.push(
+      `  ok  Konventionsdateien ${String(mit.length).padStart(6)} Repos, jedes mit einer (${mit.join(", ")})` +
+        (unbekannt ? `, ${unbekannt} Ordner nicht gefunden` : "")
     );
   }
 }
