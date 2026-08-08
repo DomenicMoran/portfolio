@@ -117,6 +117,16 @@ export function NotFoundPage({
               <li>
                 <Link
                   href={base === "" ? "/" : base}
+                  /* Kein Vorabladen auf einer Seite ohne Client-Code.
+
+                     Next holt zu jedem sichtbaren Verweis die Skripte des
+                     Ziels mit. Gemessen an der ausgelieferten Fehlerseite auf
+                     dem Telefon: 1.002 kB Skript und 205 kB vorab — doppelt so
+                     viel wie das Impressum, auf einer Seite, die sich
+                     ausdrücklich ohne Client-Code versteht. Wer sich vertippt
+                     hat, klickt genau einen dieser Wege an. Beim Zeigen mit
+                     der Maus lädt Next weiterhin vor. */
+                  prefetch={false}
                   className="inline-flex rounded-full border border-transparent bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
                 >
                   {notFound.home}
@@ -126,6 +136,7 @@ export function NotFoundPage({
                 <li key={ziel.href}>
                   <Link
                     href={ziel.href}
+                    prefetch={false}
                     className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
                   >
                     {ziel.label}
@@ -147,6 +158,7 @@ export function NotFoundPage({
                   Fehlerseiten war es das Einzige, was fehlte. */}
               <Link
                 href={zweitsprache.lang === "en" ? "/en" : "/"}
+                prefetch={false}
                 hrefLang={zweitsprache.lang}
                 className="-my-1 py-1 text-acid underline underline-offset-4"
               >
@@ -184,7 +196,9 @@ export function NotFoundPage({
               href={mailAdresse(
                 site.email,
                 notFound.reportSubject,
-                angefragt ? [`${notFound.reportPath}: ${angefragt}`] : undefined,
+                angefragt
+                  ? [`${notFound.reportPath}: ${angefragt}`]
+                  : undefined,
               )}
               className="-my-1 py-1 text-acid underline underline-offset-4"
             >
@@ -216,6 +230,7 @@ export function NotFoundPage({
           <p className="mt-4 flex min-h-[2lh] flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
             <Link
               href="/impressum"
+              prefetch={false}
               hrefLang="de"
               className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
             >
@@ -223,6 +238,7 @@ export function NotFoundPage({
             </Link>
             <Link
               href="/datenschutz"
+              prefetch={false}
               hrefLang="de"
               className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
             >

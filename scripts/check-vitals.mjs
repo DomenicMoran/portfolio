@@ -380,6 +380,7 @@ for (const pfad of SEITEN) {
       grenze: 150,
       name: "Eine Artikelseite",
     },
+    { pfad: "/gibt-es-nicht", grenze: 20, name: "Die Fehlerseite" },
   ];
 
   for (const budget of NACHLADEBUDGETS) {
@@ -447,7 +448,14 @@ for (const pfad of SEITEN) {
    damit eine Namensänderung im Bündel den Lauf nicht kippt, ein
    zurückgeholtes Vorabladen aber sofort. */
 {
-  const STILLE_SEITEN = ["/impressum", "/datenschutz"];
+  /* Die Fehlerseite gehört dazu, seit sie gemessen wurde.
+
+     Sie versteht sich ausdrücklich als Seite ohne Client-Code, lieferte aber
+     1.002 kB Skript aus und 205 kB vorab — doppelt so viel wie das Impressum.
+     Ursache waren wieder die Verweise: Sie führen auf die Startseite und ihre
+     Anker, und Next holt zu jedem sichtbaren Verweis die Skripte des Ziels
+     mit. Ohne Vorabladen sind es 558 kB und 0 kB, davon 0 kB Bewegung. */
+  const STILLE_SEITEN = ["/impressum", "/datenschutz", "/gibt-es-nicht"];
   const BEWEGUNGSGRENZE_KB = 20;
   const stilleFunde = [];
 
