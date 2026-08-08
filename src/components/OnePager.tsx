@@ -39,10 +39,24 @@ function untergrenze(zahl: string, sprache: "de" | "en"): string {
   const roh = Number(zahl.replace(/[.,]/g, ""));
   if (!Number.isFinite(roh) || roh < 1000) {
     throw new Error(
-      `Kennzahl "${zahl}" lässt sich nicht auf Tausender abrunden.`,
+      `Kennzahl "${zahl}" lässt sich nicht auf Hunderter abrunden.`,
     );
   }
-  return `${Math.floor(roh / 1000)}${sprache === "de" ? ".000" : ",000"}`;
+  return abgerundet(roh, sprache);
+}
+
+/*
+   Abgerundet auf Hunderter, nicht auf Tausender.
+
+   Die Zahl steht als Untergrenze auf dem Blatt, damit sie stimmt, solange sie
+   wächst. Auf Tausender gerundet wurde daraus bei gemessenen 4.722 Commits
+   „über 4.000" — siebenhundert Belege weniger, als es gibt, und im Lebenslauf
+   daneben stand „über 4.700". Hunderter sind genauso sicher und lesen sich
+   nicht wie eine grobe Schätzung.
+*/
+function abgerundet(roh: number, sprache: "de" | "en"): string {
+  const hunderter = Math.floor(roh / 100) * 100;
+  return hunderter.toLocaleString(sprache === "de" ? "de-DE" : "en-GB");
 }
 
 /**
@@ -79,10 +93,7 @@ function gedruckt(
   if (!/commits/i.test(metrik.label)) return metrik.value;
   const roh = Number(metrik.value.replace(/[.,]/g, ""));
   if (!Number.isFinite(roh) || roh < 1000) return metrik.value;
-  const tausender = Math.floor(roh / 1000).toLocaleString(
-    sprache === "de" ? "de-DE" : "en-GB",
-  );
-  return `${mindestens.toLowerCase()} ${tausender}${sprache === "de" ? ".000" : ",000"}`;
+  return `${mindestens.toLowerCase()} ${abgerundet(roh, sprache)}`;
 }
 
 export function OnePager({

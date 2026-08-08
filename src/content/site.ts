@@ -166,7 +166,7 @@ export const about = {
   timeline: [
     {
       period: "seit 04/2026",
-      title: "Gründer & Product Engineer",
+      title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
       body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
