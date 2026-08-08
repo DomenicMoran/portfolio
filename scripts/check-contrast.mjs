@@ -397,17 +397,47 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
       const schwelle = Math.min(DECKUNG, hoechsteDeckung * 0.95);
 
+      /* Der schlechteste Wert wird über den Grund gesucht, nicht über die
+         Punkte, die ein Buchstabe zufällig trifft.
+
+         Bis hierher liefen beide Fragen über dieselbe Schleife: Sie ging nur
+         die voll gedeckten Punkte durch und rechnete dort den Kontrast. Das
+         bindet das Ergebnis an die Kantenglättung — und die entscheidet je
+         Renderer anders, welcher Punkt voll gedeckt ist. Auf einem Verlauf
+         oder einer durchscheinenden Tönung liegt hinter jedem Punkt eine
+         andere Farbe, und damit wird der gemeldete Wert zur Stichprobe.
+
+         Gemessen am 08.08.2026: derselbe Codeblock 4,58:1 unter Windows und
+         4,50:1 unter Linux — lokal grün, in der CI rot, ohne Änderung am
+         Code. Und zwei Läufe hintereinander auf derselben Maschine meldeten
+         für dieselbe 10-px-Achsenbeschriftung einmal 4,13:1 und einmal
+         nichts.
+
+         Die Deckung beantwortet weiterhin die erste Frage: Steht hier
+         überhaupt Text, und mit welcher Deckkraft. Die zweite Frage — wie
+         dunkel ist der Grund im schlimmsten Fall — beantwortet der Grund
+         selbst, über jeden Punkt in den Zeilenkästen des Textes. Das hängt
+         an keiner Kantenglättung und fällt auf jedem Renderer gleich aus. */
       let schlechtester = Infinity;
       let kernpunkte = 0;
       if (hoechsteDeckung >= 0.4)
         for (let i = 0; i < mit.length; i += info.channels) {
           const punktNr = i / info.channels;
           if (deckungen[punktNr] < schwelle || deckungen[punktNr] === 0) continue;
+          kernpunkte++;
+        }
+
+      if (kernpunkte)
+        for (let i = 0; i < ohne.length; i += info.channels) {
+          const punktNr = i / info.channels;
+          const px = punktNr % info.width;
+          const py = Math.floor(punktNr / info.width);
+          if (!zeilen.some((z) => px >= z.x0 && px < z.x1 && py >= z.y0 && py < z.y1))
+            continue;
           const hinten = [ohne[i], ohne[i + 1], ohne[i + 2]];
           const erwartet = [0, 1, 2].map(
             (k) => deckkraft * kanaele[k] + (1 - deckkraft) * hinten[k],
           );
-          kernpunkte++;
           const wert = kontrast(erwartet, hinten);
           if (wert < schlechtester) schlechtester = wert;
         }

@@ -306,7 +306,10 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             accent.soft,
           )}
         >
-          <span className="text-eyebrow">{work.labels.hardPart}</span>
+          {/* Eine Stufe heller als die Etiketten daneben: Diese Tafel ist
+              getönt, die anderen stehen auf einfarbigem Grund. Begründung
+              samt Messung steht bei der Klasse in globals.css. */}
+          <span className="text-eyebrow-strong">{work.labels.hardPart}</span>
           <h4
             className={cn(
               "mt-3 text-lg font-semibold tracking-tight sm:text-xl",
