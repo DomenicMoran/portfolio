@@ -1028,7 +1028,9 @@ export const en: Content = {
         skills: [
           {
             name: "Postgres / Supabase",
-            evidence: "59-table schema, RLS, migrations",
+            /* Siehe die Begründung in `site.ts`: Die 59 Tabellen sind NOURI,
+               RLS ist MenuCloud. */
+            evidence: `RLS per tenant, ${verified.migrationen} migrations (MenuCloud)`,
           },
           {
             name: "API design",

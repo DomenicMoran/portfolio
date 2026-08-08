@@ -1053,7 +1053,19 @@ export const skillDomains: SkillDomain[] = [
     skills: [
       {
         name: "Postgres / Supabase",
-        evidence: "59-Tabellen-Schema, RLS, Migrationen",
+        /* Hier stand „59-Tabellen-Schema, RLS, Migrationen".
+
+           Die 59 sind das Schema von NOURI, RLS ist das Merkmal von MenuCloud
+           — zwei Systeme in einer Zeile, unter einer Überschrift, die von
+           mandantenfähigen Systemen mit echtem Geld spricht. Der Abschnitt
+           verspricht drei Zeilen darüber genau das Gegenteil: „neben jeder
+           Fähigkeit das System, an dem sie entstanden ist."
+
+           Nebenbei war die Zahl zu klein: MenuCloud legt in seinen
+           Migrationen 844 verschiedene Tabellen an. Die steht hier trotzdem
+           nicht — sie ist aus SQL gezählt und nicht so belegbar wie die
+           Migrationszahl, die der tägliche Lauf ohnehin auffrischt. */
+        evidence: `RLS pro Mandant, ${verified.migrationen} Migrationen (MenuCloud)`,
       },
       {
         name: "API-Design",
