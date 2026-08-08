@@ -3115,6 +3115,120 @@ const BRAUCHT_KIND = {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Wie viele Stufen hat die Mail-Kette wirklich?
+
+   Die MenuCloud-Fallstudie sagte „Self-hosted Mailstack (Mailcow) mit
+   dreistufiger Fallback-Kette". Das stimmte bis zum 01.05.2026: Resend,
+   Migadu, SES. Seither ist Migadu abgeschaltet, und `src/lib/smtp.ts` sagt es
+   im Kopf — „Supports two backends: mailcow (default + only primary), ses
+   (rescue fallback)". `resend.ts` heißt nur noch so, um 25 Importeure nicht
+   anzufassen; Migadu kommt in `src/lib` nicht mehr vor.
+
+   Eine Zahl, die niemand nachzählt, überlebt die Sache, die sie beschreibt.
+   Deshalb nennt die Seite jetzt die beiden Wege statt einer Stufenzahl, und
+   dieser Block hält beides gegeneinander: Was im Kopf von `smtp.ts` steht,
+   muss auf der Seite stehen — und was dort nicht mehr steht, darf die Seite
+   nicht mehr nennen.
+   ------------------------------------------------------------------------ */
+{
+  const smtp = "../../MenuCloud/src/lib/smtp.ts";
+  if (!existsSync(smtp)) {
+    zeilen.push("  --  MenuCloud nicht vorhanden, Mail-Kette übersprungen");
+  } else {
+    const kopf = readFileSync(smtp, "utf8").slice(0, 1200).toLowerCase();
+    const KANDIDATEN = ["mailcow", "ses", "migadu", "resend", "sendgrid", "postmark"];
+    /* Der Kopf nennt jeden Weg mit seiner Rolle in Anführungszeichen. */
+    const imCode = KANDIDATEN.filter((k) =>
+      new RegExp(`"${k}"`).test(kopf),
+    );
+
+    const seite = ["src/content/site.ts", "src/content/en.ts"]
+      .filter((d) => existsSync(d))
+      .map((d) => readFileSync(d, "utf8"))
+      .join(" ");
+    /* Nur die Zeile über den Mailstapel, nicht der ganze Inhalt: „Resend"
+       steht auch in Kommentaren zur Vorgeschichte. */
+    const zeile = /Self-hosted Mailstack[^"]*|Self-hosted mail stack[^"]*/g;
+    const genannt = [...new Set(
+      [...seite.matchAll(zeile)]
+        .flatMap((m) => KANDIDATEN.filter((k) => m[0].toLowerCase().includes(k))),
+    )];
+
+    const zuviel = genannt.filter((g) => !imCode.includes(g));
+    const fehlt = imCode.filter((c) => !genannt.includes(c));
+
+    if (!genannt.length) {
+      zeilen.push("  --  Die Seite nennt keinen Mailstapel mehr, Prüfung übersprungen");
+    } else if (zuviel.length || fehlt.length) {
+      abweichungen += zuviel.length + fehlt.length;
+      zeilen.push(`  !!  Die Mail-Kette der Seite passt nicht zu smtp.ts:`);
+      if (zuviel.length)
+        zeilen.push(`        genannt, aber nicht im Code: ${zuviel.join(", ")}`);
+      if (fehlt.length)
+        zeilen.push(`        im Code, aber nicht genannt: ${fehlt.join(", ")}`);
+    } else {
+      zeilen.push(
+        `  ok  Mail-Kette ${String(imCode.length).padStart(14)} Wege, wie in smtp.ts (${imCode.join(" → ")})`,
+      );
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Die Zusage der Fallstudie NOURI: eine API, die nicht lügt.
+
+   Auf der Seite steht: „Jeder schreibende Endpunkt unterscheidet explizit:
+   Secrets fehlen (Dry-Run, kein Datenverlust vorgetäuscht), Datenbank nicht
+   erreichbar (503), Datenbank erreichbar aber lehnt ab (echter 4xx mit
+   Postgres-Fehlercode)."
+
+   Das sind drei Aussagen über Verhalten, und alle drei hängen an
+   `services/api/src/server.ts`. Die dritte ist die, auf die es ankommt: Wer
+   „nicht erreichbar" und „erreichbar, lehnt ab" gleich beantwortet, macht
+   jede Fehlersuche doppelt so lang — und genau das behauptet die Seite als
+   Unterschied zu anderen.
+
+   Geprüft wird das Vorhandensein der drei Wege, nicht ihre Vollständigkeit:
+   Ein Lauf im Nachbarrepo, der jeden Endpunkt durchspielt, gehört dorthin und
+   nicht hierher. Fehlt das Repo, wird übersprungen statt geraten.
+   ------------------------------------------------------------------------ */
+{
+  const server = "../../NOURI/services/api/src/server.ts";
+  if (!existsSync(server)) {
+    zeilen.push("  --  NOURI nicht vorhanden, API-Zusagen übersprungen");
+  } else {
+    const quelle = readFileSync(server, "utf8");
+    const WEGE = [
+      ["Dry-Run bei fehlenden Zugangsdaten", /dry-run-env-missing/],
+      ["503 bei nicht erreichbarer Datenbank", /503[\s\S]{0,80}ServiceUnavailable/],
+      ["4xx mit Postgres-Code", /Conflict[\s\S]{0,200}code:\s*parsed\?\.code/],
+    ];
+    const fehlend = WEGE.filter(([, muster]) => !muster.test(quelle)).map(
+      ([name]) => name,
+    );
+
+    const seite = ["src/content/site.ts", "src/content/en.ts"]
+      .filter((d) => existsSync(d))
+      .map((d) => readFileSync(d, "utf8"))
+      .join(" ");
+    const behauptet = /Secrets fehlen|Secrets are missing/.test(seite);
+
+    if (!behauptet) {
+      zeilen.push("  --  Die Seite nennt die API-Zusage nicht mehr, Prüfung übersprungen");
+    } else if (fehlend.length) {
+      abweichungen += fehlend.length;
+      zeilen.push(`  !!  ${fehlend.length} Zusage(n) der NOURI-API stehen nicht im Code:`);
+      for (const f of fehlend) zeilen.push(`        ${f}`);
+    } else {
+      zeilen.push(
+        `  ok  NOURI-API-Zusagen ${String(WEGE.length).padStart(7)} Wege im Code: ` +
+          `Dry-Run, 503, 4xx mit Code`,
+      );
+    }
+  }
+}
+
 {
   const vorlage = "../docs/GITHUB-PROFILE-README.md";
   const inhalt = "src/content/articles/index.ts";

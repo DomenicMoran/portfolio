@@ -411,7 +411,9 @@ export const en: Content = {
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
         "over 7,400 test cases (over 7,200 unit, 174 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
-        "Self-hosted mail stack with a three-stage fallback chain",
+        /* Siehe die Begründung in `site.ts`: seit dem 01.05.2026 zwei Stufen,
+           nicht drei. */
+        "Self-hosted mail stack with AWS SES as the rescue path",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
         "iOS and Android apps for owners and service staff",
       ],
