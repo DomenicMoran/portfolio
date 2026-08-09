@@ -58,7 +58,7 @@ export function ArticlePage({
    *
    * Warum es den Rückweg überhaupt gibt: Ein geteilter Artikel ist für viele
    * Leser die erste Seite. Gezählt an der ausgelieferten Seite führte aus
-   * jedem der fünf Artikel kein einziger Verweis in den Fallstudienbereich —
+   * jedem der fünf Artikel kein einziger Verweis in den Fallstudienbereich:
    * wer über eine Suchmaschine im Whisper-Text landete, las von Salati, ohne
    * zu erfahren, dass es die App in zwei Stores gibt.
    */
@@ -77,7 +77,7 @@ export function ArticlePage({
     inLanguage: lang,
     /* Die Lesezeit auch maschinenlesbar.
        Sie steht sichtbar über jedem Artikel, und `check:reading` hält sie
-       gegen den Wortbestand — in den strukturierten Daten fehlte sie, obwohl
+       gegen den Wortbestand, in den strukturierten Daten fehlte sie, obwohl
        Such- und Antwortmaschinen genau danach filtern. ISO-8601-Dauer, also
        „PT8M“ für acht Minuten; kein zweiter Wert, sondern derselbe. */
     timeRequired: `PT${article.minutes}M`,
@@ -91,7 +91,7 @@ export function ArticlePage({
     mainEntityOfPage: `${content.site.url}${chrome.base}/${article.slug}`,
     /* Kein `image`, und das ist gemessen statt vergessen: Jeder Artikel hat
        eine Karte, aber Next liefert sie nur unter einer Adresse mit Prüfsumme
-       aus — `…/opengraph-image` allein antwortet mit 404. Diese Adresse
+       aus, `…/opengraph-image` allein antwortet mit 404. Diese Adresse
        entsteht erst beim Bau und steht einer Serverkomponente nicht zur
        Verfügung. Eine geratene Adresse hier wäre ein toter Verweis in den
        strukturierten Daten, also steht das Bild dort, wo Next es selbst
@@ -111,7 +111,7 @@ export function ArticlePage({
    * Übersicht, keiner auf die Startseite. Suchmaschinen zeigen daraus die
    * Pfadzeile unter dem Treffer, und Antwortmaschinen erkennen, dass hier eine
    * Reihe von fünf Texten steht und kein einzelner Fund. Sichtbar gab es den
-   * Weg längst — der Zurück-Verweis oben trägt ihn —, nur nicht als Angabe.
+   * Weg längst, der Zurück-Verweis oben trägt ihn, nur nicht als Angabe.
    */
   const brotkrumen = {
     "@context": "https://schema.org",
@@ -178,7 +178,7 @@ export function ArticlePage({
             </p>
 
             {/* Jeder Trennpunkt gehört mit dem, was er einleitet, in eine
-                Einheit — sonst bricht die Zeile dahinter um und der Punkt
+                Einheit, sonst bricht die Zeile dahinter um und der Punkt
                 bleibt allein am Ende stehen. Gemessen bei 320 bis 430 px auf
                 allen zehn Artikelseiten; `npm run check:separators` hält es
                 offen. */}
@@ -193,7 +193,7 @@ export function ArticlePage({
                 {/* Abstand wie im Rest der Zeile, und aus einem Grund.
                     Gemessen an der ausgelieferten Seite trennte `gap-x-3` die
                     Schlagwörter um 12 px, während das Leerzeichen innerhalb
-                    von „React Native" 6,6 px misst — knapp das Doppelte. Die
+                    von „React Native" 6,6 px misst, knapp das Doppelte. Die
                     Zeile las sich als „Whisper On-Device-KI React Native
                     Arabisch", und wo ein Schlagwort endet, war nicht zu sehen.
                     Die Übersicht hat dasselbe Problem mit Plättchen gelöst;
@@ -243,7 +243,7 @@ export function ArticlePage({
           <Reveal>
             {/* Benannt, damit der Abschnitt eine Landmarke ist.
 
-                Ein `section` ohne Namen ist im Barrierefreiheitsbaum keine —
+                Ein `section` ohne Namen ist im Barrierefreiheitsbaum keine:
                 gemessen an der ausgelieferten Artikelseite gab es dort drei
                 Regionen (die beiden Codekästen und die Tabelle) und für die
                 Belege keine. Das ist der Abschnitt, den jemand gezielt sucht,
@@ -251,7 +251,7 @@ export function ArticlePage({
 
                 `aria-label` und nicht `aria-labelledby`: Die Überschrift trägt
                 `text-transform: uppercase`, und der Name folgt dem gerenderten
-                Text — dann käme „BELEGE“ heraus, und manche Vorleseprogramme
+                Text, dann käme „BELEGE“ heraus, und manche Vorleseprogramme
                 buchstabieren Großbuchstaben. Dieselbe Entscheidung wie bei der
                 Artikelnavigation darunter. */}
             <section
@@ -261,7 +261,7 @@ export function ArticlePage({
               <h2 className="text-eyebrow mb-4">{chrome.evidenceLabel}</h2>
               {/* `evidence-list` hängt nur für den Druck daran: Dort steht die
                   Adresse hinter dem Linktext, weil ein unterstrichenes Wort auf
-                  Papier nirgendwohin führt. Nur hier und nicht an allen Links —
+                  Papier nirgendwohin führt. Nur hier und nicht an allen Links:
                   ausgeschriebene Adressen im Fließtext wären Lärm. */}
               <ul className="evidence-list flex flex-col gap-2.5">
                 {article.evidence.map((item) => {
@@ -271,7 +271,7 @@ export function ArticlePage({
                        eine Adresse, also ein Wort ohne Leerzeichen. Gemessen an
                        der gebauten Seite bei 320 px brauchte
                        "apps/mobile/src/features/..." 345 px in einer 212 px
-                       breiten Spalte — der Browser schnitt ab, statt umzubrechen,
+                       breiten Spalte, der Browser schnitt ab, statt umzubrechen,
                        und ausgerechnet der Beleg war nicht zu Ende lesbar. `break-words`
                        reicht dafür nicht: Ein Pfad hat keine Wortgrenze. */
                     <li
@@ -312,7 +312,7 @@ export function ArticlePage({
                   weiß bei einer davon nicht, wohin sie führt. */}
               {/* `aria-label` und nicht `aria-labelledby`: Die Überschrift
                   trägt `text-transform: uppercase`, und der Name folgt dem
-                  gerenderten Text — gemessen kam "ARTIKEL" heraus. Manche
+                  gerenderten Text: gemessen kam "ARTIKEL" heraus. Manche
                   Vorleseprogramme buchstabieren Grossbuchstaben. */}
               <nav
                 aria-label={chrome.allArticles}

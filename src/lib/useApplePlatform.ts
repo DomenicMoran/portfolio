@@ -7,13 +7,13 @@ import { useCallback, useSyncExternalStore } from "react";
  *
  * Gebraucht für genau eine Sache: die Taste, die neben dem `K` steht. Der
  * Griff dazu ist auf dem Mac die Befehlstaste und überall sonst `Strg`. Der
- * Hinweis in der Kopfleiste zeigte bisher immer das ⌘-Zeichen — auf einem
+ * Hinweis in der Kopfleiste zeigte bisher immer das ⌘-Zeichen, auf einem
  * Windows-Rechner ein Symbol, das auf keiner Tastatur liegt. Die Kombination
  * funktionierte dort trotzdem, weil `SiteShell` `metaKey` und `ctrlKey`
  * gleich behandelt; nur wusste es niemand.
  *
  * `useSyncExternalStore` und nicht `useEffect`: Der Serverwert steht
- * ausdrücklich da, und zwar auf `false`. Damit rendert der Server „Strg“ —
+ * ausdrücklich da, und zwar auf `false`. Damit rendert der Server „Strg“:
  * die Mehrheit der Besucher sieht sofort das Richtige, und nur auf einem Mac
  * tauscht die Hydration das Zeichen. Andersherum flackerte es für alle
  * anderen.

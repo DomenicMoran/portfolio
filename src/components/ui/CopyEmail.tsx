@@ -6,12 +6,12 @@ import { Check, Copy } from "lucide-react";
 /**
  * Die Adresse in die Zwischenablage legen.
  *
- * Im Recruiter-Bereich stand sie zweimal, beide Male als `mailto:` — gemessen
+ * Im Recruiter-Bereich stand sie zweimal, beide Male als `mailto:`, gemessen
  * am 02.08.2026 an der ausgelieferten Seite: zwei mailto-Verweise, kein
  * einziger Knopf. Auf einem Arbeitsrechner ohne eingerichtetes Mailprogramm
  * passiert bei einem Klick darauf nichts, und genau dort sitzt der Leser, den
  * diese Sektion adressiert. Wer die Adresse in Outlook oder ins
- * Bewerbermanagement einfügen will, musste sie markieren — an einem Element,
+ * Bewerbermanagement einfügen will, musste sie markieren, an einem Element,
  * das auf Klick etwas anderes tut.
  *
  * Der Schreiben-Knopf daneben bleibt, weil er auf dem Telefon der kürzere Weg

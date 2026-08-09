@@ -44,7 +44,7 @@ export type CaseStudy = {
   shots?: readonly Shot[];
   keinScreenshot?: string;
   /**
-   * Die Fachartikel, die aus genau diesem System stammen — als Adressteil,
+   * Die Fachartikel, die aus genau diesem System stammen, als Adressteil,
    * je Sprachfassung.
    *
    * Fünf der sechs Artikel handeln von einem Fehler in einem dieser Systeme,
@@ -69,14 +69,14 @@ export type Content = {
      * Vorbelegter Betreff jeder Mail von dieser Seite.
      *
      * Ohne ihn oeffnet sich ein leeres Fenster. Mit ihm steht die Herkunft
-     * schon drin, bevor jemand tippt — aenderbar wie jeder Betreff.
+     * schon drin, bevor jemand tippt, aenderbar wie jeder Betreff.
      */
     mailSubject: string;
     availability: {
       label: string;
       /** Wo gearbeitet wird. */
       detail: string;
-      /** Ab wann — die erste Rückfrage jedes Recruiters. */
+      /** Ab wann, die erste Rückfrage jedes Recruiters. */
       entry: string;
       /** In welchen Sprachen. */
       languages: string;
@@ -85,7 +85,7 @@ export type Content = {
        *
        * Sie stand nur in den Recruiter-Fakten und damit nur auf der Seite.
        * Das Kurzprofil ist aber das Blatt, das weitergereicht wird, und es
-       * nennt Rolle, Ort, Eintritt und Sprachen — alles außer der Zahl, nach
+       * nennt Rolle, Ort, Eintritt und Sprachen, alles außer der Zahl, nach
        * der als nächstes gefragt wird.
        */
       salary: string;
@@ -142,12 +142,12 @@ export type Content = {
      * Die Zahl der Treffer, für die Ansage beim Tippen.
      *
      * Die Liste filtert live von 23 Einträgen auf einen. Wer sie sieht, merkt
-     * das sofort; wer sie sich vorlesen lässt, hörte nichts — das
+     * das sofort; wer sie sich vorlesen lässt, hörte nichts, das
      * Combobox-Muster sagt nur die aktive Option an, und bei null Treffern
      * gibt es keine.
      *
      * Als Zeichenkette mit `{n}` und nicht als Funktion: Die Palette ist eine
-     * Client-Komponente, und eine Funktion lässt sich nicht dorthin reichen —
+     * Client-Komponente, und eine Funktion lässt sich nicht dorthin reichen:
      * der Bau bricht mit „Functions cannot be passed directly to Client
      * Components" ab. Dieselbe Form wie bei `demoSalati.gap`.
      *
@@ -161,7 +161,7 @@ export type Content = {
      *
      * Das ⌘-Zeichen stand dort für alle, auch auf Windows und Linux, wo es
      * auf keiner Tastatur liegt. Der Griff ist dort `Strg` beziehungsweise
-     * `Ctrl` — und weil beides schon immer funktionierte, fehlte nur das
+     * `Ctrl`, und weil beides schon immer funktionierte, fehlte nur das
      * Wort. Für Apple bleibt das Zeichen; die Umschaltung macht
      * `useApplePlatform`.
      */
@@ -216,7 +216,7 @@ export type Content = {
      * Dieselbe Aufnahme auf hellem Grund, für Papier.
      *
      * Am Bildschirm steht die Seite auf fast Schwarz, und ein Porträt mit
-     * heller Wand ist darin die einzige helle Fläche weit und breit — es
+     * heller Wand ist darin die einzige helle Fläche weit und breit, es
      * sieht aufgeklebt aus. Gedruckt ist es genau umgekehrt.
      */
     portraitPrint: string;
@@ -318,7 +318,7 @@ export type Content = {
      *
      * Der Abschnitt ist eine Landeadresse: Die Kopfleiste, die 404-Seite und
      * jeder geteilte Verweis auf `#hire` setzen jemanden mitten hinein. Von
-     * dort führte kein Weg in die Fallstudien oder Artikel — gezählt an der
+     * dort führte kein Weg in die Fallstudien oder Artikel, gezählt an der
      * ausgelieferten Seite: vier Verweise, alle nach draußen (PDF, Mail,
      * LinkedIn, GitHub). Wer die Behauptung prüfen wollte, musste hochscrollen
      * und raten.
@@ -496,7 +496,7 @@ export type Content = {
      * Auf dem Blatt stehen vier Produktivsysteme, und alle vier sind privat:
      * Kundendaten und lizenzierte Inhalte. Wer das Blatt liest und prüfen
      * will, kann genau nichts davon öffnen. Die vier Pakete sind der Teil,
-     * der offen liegt — mit Tests, CI und Lizenz.
+     * der offen liegt, mit Tests, CI und Lizenz.
      */
     openSource: string;
     /** Der Nachsatz dazu, ohne die Namen: die kommen aus dem Inhalt. */
@@ -524,7 +524,7 @@ export type Content = {
      *
      * Nicht `site.mailSubject`: Der lautet „Anfrage über domenicmoran.de“ und
      * ist für den gedacht, der wegen einer Stelle schreibt. Wer hier schreibt,
-     * meldet einen Fehler — und die Meldung soll im Postfach als solche
+     * meldet einen Fehler, und die Meldung soll im Postfach als solche
      * ankommen, ohne dass jemand sie erst öffnet.
      */
     reportSubject: string;
@@ -534,7 +534,7 @@ export type Content = {
      * Der Hinweis für den, der in der anderen Sprache gekommen ist.
      *
      * Zusammengesetzt aus `title` und `home` stand dort „This page does not
-     * exist. Home" — zwei Fragmente, und der Verweis hieß „Home“. Als eigener
+     * exist. Home", zwei Fragmente, und der Verweis hieß „Home“. Als eigener
      * Satz sagt er, wohin er führt, und der Verweis trägt die Beschreibung
      * statt eines Worts.
      */

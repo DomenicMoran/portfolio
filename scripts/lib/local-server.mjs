@@ -10,7 +10,7 @@ import { pruefeBaustand } from "./built-pages.mjs";
  * Drei Skripte brauchten das bisher und brachten es dreimal mit: der
  * One-Pager-Druck, die Druckprüfung und die Überschriftenprüfung. Dreimal
  * dieselbe Portsuche, dreimal dieselbe Warteschleife, dreimal derselbe
- * Aufräumhaken — und beim vierten Mal hätte jemand eine der drei Fassungen
+ * Aufräumhaken, und beim vierten Mal hätte jemand eine der drei Fassungen
  * erwischt und die anderen übersehen.
  *
  * Next wird direkt mit Node gestartet, nicht über npx: Mit `shell: true` warnt
@@ -41,7 +41,7 @@ export async function starteServer() {
    * stehen. Gezählt am 07.08.2026, mitten in einer Prüfrunde: 113 Node-
    * Prozesse, davon über fünfzig Serverpaare aus abgebrochenen Läufen. Der
    * Speicher reichte danach nicht mehr für einen weiteren Browser, und
-   * `check:a11y` brach mit „Target crashed" ab — ein Fehlerbild, das nach
+   * `check:a11y` brach mit „Target crashed" ab, ein Fehlerbild, das nach
    * einem Fehler in der Prüfung aussieht und keiner war.
    *
    * `taskkill /T` nimmt die Kinder mit. Auf allen anderen Systemen bleibt es
@@ -100,7 +100,7 @@ async function freierPort() {
   });
 }
 
-/** Wartet, bis die Adresse antwortet — oder gibt nach `versuche` auf. */
+/** Wartet, bis die Adresse antwortet, oder gibt nach `versuche` auf. */
 async function warteAufAntwort(adresse, versuche = 60) {
   for (let i = 0; i < versuche; i++) {
     try {

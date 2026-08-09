@@ -5,7 +5,7 @@
  * Fußzeile, Kontaktbereich, Recruiter-Bereich, Befehlspalette, 404-Seite,
  * One-Pager, Impressum und Datenschutzerklärung. Neunmal dieselbe
  * Zeichenkette heißt: Wer etwas daran ändert, ändert es an acht Stellen nicht
- * mit — und genau so war es: Die beiden Rechtsseiten blieben beim ersten
+ * mit, und genau so war es: Die beiden Rechtsseiten blieben beim ersten
  * Durchgang liegen und waren danach die einzigen zwei Mailverweise der Seite
  * ohne Betreff.
  *
@@ -14,7 +14,7 @@
  *
  * Der Betreff ist der Grund, warum es die Funktion jetzt gibt. Ohne ihn öffnet
  * sich ein leeres Fenster, und die Nachricht kommt ohne Zeile an, an der sich
- * erkennen ließe, woher sie stammt. Mit ihm steht sie da, bevor jemand tippt —
+ * erkennen ließe, woher sie stammt. Mit ihm steht sie da, bevor jemand tippt:
  * und lässt sich ändern wie jeder andere Betreff auch.
  *
  * Kodiert wird der Betreff vollständig. `encodeURIComponent` lässt genau die
@@ -38,13 +38,13 @@ export function mailAdresse(
  *
  * Die Seite listet unter „Das hilft mir in der ersten Mail" vier Angaben und
  * überlässt es danach dem Absender, sie sich zu merken. Wer auf „Direkt
- * schreiben" klickt, bekommt ein leeres Fenster — und schreibt zwei Sätze
+ * schreiben" klickt, bekommt ein leeres Fenster, und schreibt zwei Sätze
  * ohne Gehaltsrahmen, worauf eine Rückfrage folgt, die genau die Zeit kostet,
  * die der letzte Punkt sparen will.
  *
  * Die Zeilen stammen aus derselben Liste, die daneben steht: eine Quelle, und
  * in beiden Sprachen dieselbe. Sie stehen als leere Stichpunkte da, nicht als
- * Fragen — wer sie nicht braucht, löscht eine Zeile, statt einen Text zu
+ * Fragen, wer sie nicht braucht, löscht eine Zeile, statt einen Text zu
  * überschreiben.
  *
  * Zeilenumbrüche als CRLF: RFC 6068 verlangt sie so im `body`, und Outlook

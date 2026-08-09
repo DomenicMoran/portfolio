@@ -8,7 +8,7 @@
  *     github.com/DomenicMoran
  *     www.linkedin.com/in/domenicmoran
  *
- * Der Verweis selbst behält das `www.` — LinkedIn braucht es —, nur die
+ * Der Verweis selbst behält das `www.`. LinkedIn braucht es, nur die
  * Anzeige verliert es. Ein abschließender Schrägstrich fällt ebenfalls weg:
  * `domenicmoran.de/` liest sich wie ein abgeschnittener Pfad.
  */

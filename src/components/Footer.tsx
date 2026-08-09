@@ -34,7 +34,7 @@ export function Footer({
 
      Die Fußzeile ist ein Client-Bauteil auf vorab erzeugten Seiten. `new
      Date()` im Render heißt: Der Server schreibt das Jahr des Bautags, der
-     Browser rechnet beim Laden — und am 1. Januar liefen beide auseinander,
+     Browser rechnet beim Laden, und am 1. Januar liefen beide auseinander,
      mit demselben React-Fehler 418, den die Gebetszeiten-Demo einen Tag nach
      jedem Bau erzeugte. Der Stempel wird täglich nachgeführt und steht als
      Zeichenkette im Bündel, ist also auf beiden Seiten derselbe Wert. */
@@ -152,7 +152,7 @@ export function Footer({
                   nur auf Deutsch. Das Impressum nach § 5 DDG ist ein deutsches
                   Rechtsdokument, und eine Übersetzung wäre nicht dieselbe
                   Erklärung. Wer von der englischen Fassung dorthin klickt,
-                  landet also in einer anderen Sprache — die Angabe sagt das
+                  landet also in einer anderen Sprache, die Angabe sagt das
                   vorher, und ein Vorleseprogramm wechselt die Aussprache. */}
               <Link
                 href="/impressum"

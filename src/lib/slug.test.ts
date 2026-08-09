@@ -6,7 +6,7 @@ import { alsSprungmarke } from "./slug";
  *
  * Sobald jemand einen Abschnittsverweis weitergibt, ist die Marke ein
  * Versprechen: Sie muss dieselbe bleiben, solange die Überschrift dieselbe
- * ist. Auf der Seite sieht man einer falschen Marke nichts an — der Verweis
+ * ist. Auf der Seite sieht man einer falschen Marke nichts an, der Verweis
  * springt einfach nicht, und niemand meldet das. Deshalb steht die Regel hier
  * und nicht in einem Prüflauf gegen die gebaute Seite.
  */
@@ -18,7 +18,7 @@ describe("alsSprungmarke", () => {
   });
 
   it("schreibt Umlaute aus, statt sie wegzuwerfen", () => {
-    // Weggeworfen hießen „Hebel“ und „Hübel“ dieselbe Marke — und die zweite
+    // Weggeworfen hießen „Hebel“ und „Hübel“ dieselbe Marke, und die zweite
     // Überschrift auf derselben Seite überschriebe stumm die erste.
     expect(alsSprungmarke("Der zweite Hebel")).not.toBe(
       alsSprungmarke("Der zweite Hübel"),
@@ -29,7 +29,7 @@ describe("alsSprungmarke", () => {
   });
 
   it("lässt keine Trennstriche am Rand oder in Ketten stehen", () => {
-    expect(alsSprungmarke("„Published!“ — ist kein Beleg")).toBe(
+    expect(alsSprungmarke("„Published!“, ist kein Beleg")).toBe(
       "published-ist-kein-beleg",
     );
     expect(alsSprungmarke("  Rand  ")).toBe("rand");

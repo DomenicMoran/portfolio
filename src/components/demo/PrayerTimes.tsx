@@ -20,7 +20,7 @@ import type { Content } from "@/content/types";
  * `apps/mobile/src/features/prayer-times/calc.ts`.
  *
  * Der erste Anlauf zeigte einen einzelnen Tag: sechs Uhrzeiten und einen Bogen
- * darunter. Das war richtig gerechnet und trotzdem nichts wert — sechs Zahlen
+ * darunter. Das war richtig gerechnet und trotzdem nichts wert, sechs Zahlen
  * anzuzeigen ist keine Leistung, die man vorführt, und wer sie sieht, kann
  * nicht unterscheiden, ob dahinter eine Bibliothek oder eine Textdatei steckt.
  *
@@ -43,7 +43,7 @@ import type { Content } from "@/content/types";
  *   sind; der Wechsel von Ort oder Regel ändert daran nichts.
  * - **Ohne Maus bedienbar.** Der Tag wird über einen Schieberegler gewählt und
  *   nicht über die Zeigerposition. Das Band selbst ist Darstellung und für
- *   Vorleseprogramme ausgeblendet — die sechs Zeiten stehen darunter als Text.
+ *   Vorleseprogramme ausgeblendet, die sechs Zeiten stehen darunter als Text.
  */
 
 /** Die Orte. Der letzte ist der Grenzfall, und er steht bewusst dabei. */
@@ -64,7 +64,7 @@ const ORTE = [
  * Die Zeitzone gehört zum Ort, nicht zum Betrachter.
  *
  * `adhan` liefert echte Zeitpunkte. Wer sie mit `getHours()` ausliest, bekommt
- * sie in der Zone des Browsers — und damit sah dieselbe Auswahl je nach
+ * sie in der Zone des Browsers, und damit sah dieselbe Auswahl je nach
  * Standort des Lesers anders aus. Gemessen an der ausgelieferten Seite für
  * Tromsø am 5. August: aus Berlin „01:34 · 02:42 · 12:55 · 17:25 · 22:53 ·
  * 23:57", aus New York „19:34 −1 · 20:42 −1 · 06:55 …“, aus Tokio „08:37 ·
@@ -108,12 +108,12 @@ type Gebet = (typeof GEBETE)[number];
  * `auto` ist keine eigene Regel der Bibliothek, sondern die Entscheidung der
  * App: oberhalb von 48° die winkelbasierte, darunter Mitte der Nacht. Hier
  * stand „die Standardrechnung", und das war an derselben Zeile Code die
- * zweite, andere Aussage — weiter unten steht sie richtig.
+ * zweite, andere Aussage, weiter unten steht sie richtig.
  *
  * Was das für die Schaltflächen heißt, ist nicht offensichtlich: An einem Ort
  * über 48° liefern „wie in der App" und „winkelbasiert" zwangsläufig
  * dieselben Zeiten, weil es dieselbe Rechnung ist. Gemessen in Tromsø, Berlin
- * und Kairo stimmen sie an allen drei Orten überein — unterhalb von 48° aus
+ * und Kairo stimmen sie an allen drei Orten überein, unterhalb von 48° aus
  * einem anderen Grund: Dort wird der Dämmerungswinkel jeden Tag erreicht, und
  * dann greift keine der Ausweichregeln.
  */
@@ -156,7 +156,7 @@ const HOEHE = 190;
  *
  * Ohne Raster ist das Band ein hübsches Bild und keine Ablesung: Man sieht,
  * dass sich etwas verändert, aber nicht wann. Zwölf Beschriftungen wären zu
- * viel — die Striche stehen für alle Monate, die Zahlen nur an den Quartalen.
+ * viel, die Striche stehen für alle Monate, die Zahlen nur an den Quartalen.
  */
 const MONATSANFANG = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 
@@ -169,7 +169,7 @@ const MONATE = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
  * Die Werte können außerhalb eines Tages liegen: Mit der Regel „Mitte der
  * Nacht“ fällt Ischa in Berlin auf 00:02 des Folgetags (1.442) und Fadschr in
  * Tromsø auf 23:53 des Vortags (−7). Die Uhrzeit ist trotzdem die richtige,
- * sie gehört nur zu einem anderen Kalendertag — deshalb wird auf 24 Stunden
+ * sie gehört nur zu einem anderen Kalendertag, deshalb wird auf 24 Stunden
  * zurückgerechnet und der Tagesversatz als Zusatz genannt, statt ihn
  * wegzulassen.
  */
@@ -193,7 +193,7 @@ function spanne(m: number) {
  *
  * „Heute“ ist der Tag dort, nicht der beim Leser: Wer aus Auckland Berlin
  * wählt, sieht Berliner Zeiten und soll das Berliner Datum dazu bekommen.
- * Beim Wechsel des Ortes kann der Tag deshalb springen — genau dann, wenn er
+ * Beim Wechsel des Ortes kann der Tag deshalb springen, genau dann, wenn er
  * es auch in Wirklichkeit tut.
  */
 /**
@@ -230,7 +230,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
      `new Date()` mitten im Render.
 
      Die Seite wird vorab erzeugt. Der Server rechnete den Tag am Bautag, der
-     Browser rechnet ihn beim Laden — und ab dem ersten Tag nach dem Bau stand
+     Browser rechnet ihn beim Laden, und ab dem ersten Tag nach dem Bau stand
      im ausgelieferten HTML „8. August" und im Browser „9. August". React
      meldete das als Fehler 418 in der Konsole, sichtbar für jeden, der sie
      öffnet: eine Seite, die auf Nachweisbarkeit setzt, protokollierte beim
@@ -240,7 +240,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
      Bündel steht: Serverfassung und erster Renderdurchgang im Browser kommen
      damit zwangsläufig auf denselben Wert. Erst danach wechselt React auf die
      echte Uhr. Sichtbar ist das nur an den Tagen, an denen beide
-     auseinanderliegen — und dann als sauberer Wechsel statt als Abweichung.
+     auseinanderliegen, und dann als sauberer Wechsel statt als Abweichung.
 
      Kein Abonnement: Der Tag ändert sich innerhalb einer Sitzung nicht, und
      ein Takt würde nur dieselbe Zahl neu setzen. */
@@ -271,7 +271,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
    * Das Jahr, alle vier Regeln nebeneinander.
    *
    * Alle auf einmal, weil die Spanne zwischen ihnen die eigentliche Aussage
-   * ist. Gemessen kostet das zusammen etwa 20 ms — billiger, als beim
+   * ist. Gemessen kostet das zusammen etwa 20 ms, billiger, als beim
    * Umschalten jedes Mal neu zu rechnen, und ohne Ruckeln beim Klick.
    */
   const [jahr, setJahr] = useState<Record<Regel, Tag[]> | null>(null);
@@ -316,7 +316,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
               /* Mitternacht in der Browserzone, und das mit Absicht:
                  `adhan` liest aus dem Datum die Kalenderwerte des laufenden
                  Systems. Ein UTC-Mittag fällt in Auckland schon auf den
-                 nächsten Tag — gemessen kam von dort für Tromsø „Fadschr
+                 nächsten Tag: gemessen kam von dort für Tromsø „Fadschr
                  02:56 +1, Ischa nicht berechnet" heraus. So bleibt der
                  gemeinte Kalendertag überall derselbe; in welcher Zone seine
                  Uhrzeiten stehen, entscheidet `minutenImOrt`. */
@@ -327,7 +327,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
 
                `adhan` liefert echte Zeitpunkte, und die fallen an hohen
                Breiten auf den Nachbartag: Mit der Regel „Mitte der Nacht“
-               steht Ischa in Berlin ab Mai um 00:02 — am Tag danach. Fadschr
+               steht Ischa in Berlin ab Mai um 00:02, am Tag danach. Fadschr
                fällt in Tromsø umgekehrt auf 23:53 des Vortags.
 
                `getHours()` wirft das Datum weg. Ein Ischa um 00:02 landete
@@ -337,7 +337,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
 
                Die Differenz zum Tagesbeginn hält die Reihenfolge: Ischa
                bekommt 1.442 Minuten, Fadschr −7. Beides liegt außerhalb des
-               gezeigten Tages und wird am Rand beschnitten — genau das ist die
+               gezeigten Tages und wird am Rand beschnitten, genau das ist die
                Aussage. Die Uhrzeiten in der Tafel darunter kommen weiterhin
                aus `getHours()` und stimmen. */
             const d0 = new Date(jahrZahl, 0, 1 + i);
@@ -353,7 +353,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                    keine Zeit dieses Tages mehr.
 
                    Gemessen: In Tromsø liefert `adhan` am 19. Januar für Asr
-                   2.925 Minuten — 48 Stunden und 45 Minuten, also übermorgen.
+                   2.925 Minuten, 48 Stunden und 45 Minuten, also übermorgen.
                    Am Rand der Polarnacht erreicht die Sonne die Bedingung an
                    diesem Tag nie, und die Bibliothek rutscht auf den nächsten
                    Tag, an dem sie es tut. Die Nachbartage liegen bei 842 und
@@ -373,7 +373,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
              Die Grenzen oben fangen nur, was weit außerhalb des Tages liegt.
              Am Rand der Polarnacht liefert `adhan` aber auch Werte, die
              mitten im Tag stehen und trotzdem unmöglich sind: In Tromsø am
-             16. November steht Asr auf 11:25 und Dhuhr auf 11:34 — Asr vor
+             16. November steht Asr auf 11:25 und Dhuhr auf 11:34. Asr vor
              dem Sonnenhöchststand. Am 20. Januar liegt Asr um 14:44 nach
              Maghrib um 13:22.
 
@@ -387,7 +387,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
              Gutdünken: Genau das tut die ausgelieferte App in
              `apps/mobile/src/features/prayer-times/calc.ts`, und diese Kachel
              behauptet, dieselbe Rechnung zu zeigen. Dort steht die Begründung
-             ausführlich — der Sonnenuntergang ist der Grenzwert der Formel,
+             ausführlich, der Sonnenuntergang ist der Grenzwert der Formel,
              frühestens dann wäre die Schattenlänge erreicht, und die
              Reihenfolge Dhuhr < Asr ≤ Maghrib bleibt erhalten, auf die die
              Benachrichtigungen der App bauen. Aladhan kappt in denselben
@@ -395,7 +395,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
 
              Zwei Anläufe davor waren falsch. Der erste strich jeden Wert vor
              seinem Vorgänger und traf am 15. Januar den Sonnenuntergang statt
-             Asr. Der zweite setzte Asr auf „nicht berechnet" — richtig
+             Asr. Der zweite setzte Asr auf „nicht berechnet", richtig
              geordnet, aber eine dritte Variante neben App und Aladhan, und
              damit eine Kachel, die etwas anderes zeigt als das Produkt, auf
              das sie sich beruft.
@@ -425,7 +425,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
             }
 
             /* Fadschr nach dem Sonnenaufgang kappt die App nicht, weil sie
-               „Siebtel der Nacht" nicht anbietet — hier ist die Regel
+               „Siebtel der Nacht" nicht anbietet, hier ist die Regel
                wählbar, und sie liefert am 16. Mai in Tromsø Fadschr um 01:13
                bei Sonnenaufgang um 01:10. Einen Grenzwert wie beim Schatten
                gibt es hier nicht: Die Dämmerung beginnt entweder oder nicht.
@@ -472,7 +472,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
        Breiten über 1.440 und Fadschr unter 0. Eine Fläche, die dorthin
        läuft, wäre oben und unten offen; geklemmt endet sie am Rand, und
        genau dort geht sie ja auch in den Nachbartag über. Die Linien darunter
-       bleiben ungeklemmt — sie sollen das Bild verlassen. */
+       bleiben ungeklemmt, sie sollen das Bild verlassen. */
     const y = (m: number) =>
       HOEHE - (Math.min(Math.max(m, 0), MINUTEN) / MINUTEN) * HOEHE;
     const spalte = (g: string) => GEBETE.indexOf(g as Gebet);
@@ -556,7 +556,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
    * Die beiden anderen Regeln als feine Geisterlinien.
    *
    * Der eigentliche Befund ist nicht, wo Fadschr liegt, sondern wie weit die
-   * Regeln auseinanderliegen — und das sah man vorher erst, wenn man auf jede
+   * Regeln auseinanderliegen, und das sah man vorher erst, wenn man auf jede
    * Schaltflaeche einzeln klickte und sich das Bild merkte. Mit den Geistern
    * steht die Spanne im Bild: Im Winter fallen die Linien zusammen, ab Mai
    * laufen sie auf ueber zwei Stunden auseinander. Nur Fadschr und Ischa,
@@ -568,7 +568,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
     /* Welche der drei Regeln gerade wirklich rechnet.
        `auto` ist keine eigene Rechnung, sondern die Entscheidung der App: über
        48° die winkelbasierte, darunter Mitte der Nacht. Verglichen wurde hier
-       vorher `jahr[r] !== jahr[regel]` — zwei verschiedene Felder, also nie
+       vorher `jahr[r] !== jahr[regel]`, zwei verschiedene Felder, also nie
        gleich. In Tromsø mit „wie in der App" lag deshalb eine gestrichelte
        Geisterlinie Punkt für Punkt auf der durchgezogenen: sechs Geisterpfade
        statt vier, die Legende sprach von „den beiden anderen", und ein Wechsel
@@ -599,7 +599,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
    *
    * Als zusammenhaengende Bereiche und nicht als Zahl: In Tromsø sind es 117
    * Tage am Stück, und ohne Markierung sieht die Stelle im Band wie ein
-   * Zeichenfehler aus. Markiert ist sie die Aussage — dort gibt es die Nacht
+   * Zeichenfehler aus. Markiert ist sie die Aussage, dort gibt es die Nacht
    * nicht, auf die sich die Rechnung bezieht.
    */
   const luecken = useMemo(() => {
@@ -624,7 +624,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
   );
 
   /* Das Jahr kommt aus dem Prüfstempel, nicht aus der Uhr: Dieselbe Falle wie
-     beim heutigen Tag, nur einmal im Jahr — am 1. Januar stünde im
+     beim heutigen Tag, nur einmal im Jahr, am 1. Januar stünde im
      ausgelieferten HTML noch das alte Jahr und im Browser das neue. */
   const datum = useMemo(
     () =>
@@ -642,13 +642,13 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
     /* `no-print`: Eine Vorführung, die man anfassen muss, gehört nicht auf
        Papier. Gemessen kam sie dort auch nicht an: `check:print` lädt frisch
        und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
-       durch — auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
+       durch, auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
        Aussage trägt, steht in der Fallstudie darüber. */
     <div
       /* Ein Merkmal, an dem eine Prüfung erkennt, dass die Kachel fertig
          gerechnet hat. Ohne das misst jeder Lauf einen Zustand, den kein
          Besucher je sieht: leere Felder. Genau daran ging eine schwarze Zahl
-         auf schwarzem Grund durch die Barrierefreiheitsprüfung — zur Messzeit
+         auf schwarzem Grund durch die Barrierefreiheitsprüfung, zur Messzeit
          stand dort noch kein Text, und was nicht dasteht, hat auch keinen
          Kontrast. */
       data-demo-fertig={jahr ? "" : undefined}
@@ -657,7 +657,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         {/* `h4` und nicht `h3`: Die Kachel steckt in der Fallstudie, und deren
             Name ist das `h3`. Als `h3` stand sie in der Überschriftengliederung
-            neben den Projekten — der Abschnitt heißt „Vier Produkte“, gezählt
+            neben den Projekten, der Abschnitt heißt „Vier Produkte“, gezählt
             wurden dort sechs, und Salatis „Ausführlich nachzulesen“ hing
             anschließend unter der Kachel statt unter dem Projekt. */}
         <h4 className="text-base font-semibold tracking-tight text-ink">
@@ -726,7 +726,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           unterscheiden: Über 48° ist `auto` dieselbe Rechnung wie `angle`,
           darunter wird der Dämmerungswinkel jeden Tag erreicht und keine
           Ausweichregel greift. Gemessen liefern die beiden in Tromsø, Berlin
-          und Kairo überall dieselben Zeiten — wer zwischen ihnen wechselt,
+          und Kairo überall dieselben Zeiten, wer zwischen ihnen wechselt,
           sieht nichts geschehen und hält die Demo für kaputt.
 
           Der Satz steht nur bei `auto`: Bei den drei anderen ist die
@@ -766,7 +766,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                 />
               ))}
 
-              {/* Wo nichts gerechnet werden kann, steht auch nichts — aber
+              {/* Wo nichts gerechnet werden kann, steht auch nichts, aber
                   sichtbar. */}
               {luecken.map((l) => (
                 <rect
@@ -832,7 +832,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
                   Schaltflaechen darueber wirken.
 
                   Gruen und nicht violett, obwohl violett hier die Farbe der
-                  Daemmerung ist — und genau deshalb: Die beiden Daemmerungs-
+                  Daemmerung ist, und genau deshalb: Die beiden Daemmerungs-
                   flaechen sind in Tromsø im Sommer fast das halbe Bild, und
                   eine violette Linie darin war nicht mehr zu finden. Jetzt
                   traegt Violett die Tageszeit, Gruen die Aussage: Was gruen
@@ -934,7 +934,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           aria-label={`${demo.dayLabel}, ${datum}${tag === heuteNr ? ` · ${demo.today}` : ""}`}
           /* 24 px hoch statt 16, über `py-1` mit ausgleichendem `-my-1`:
           Die sichtbare Spur bleibt schlank, die Trefferfläche erreicht das
-          Maß aus WCAG 2.5.8. Nötig war das nicht — der Regler steht allein,
+          Maß aus WCAG 2.5.8. Nötig war das nicht, der Regler steht allein,
           und damit greift die Abstandsausnahme der Norm. Am Finger ist der
           Unterschied trotzdem zu spüren, und es kostet nichts. */
           className="mt-2 -my-1 w-full py-1 accent-acid"
@@ -946,7 +946,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           Ort, Regel und Tag tauschen sechs Uhrzeiten und die Spanne aus, ohne
           dass sich am Aufbau etwas ändert. Wer sieht, merkt es sofort; wer
           sich vorlesen lässt, hörte nichts. Angesagt werden der Ort und die
-          beiden Zeiten, an denen die Regel hängt — sechs Uhrzeiten
+          beiden Zeiten, an denen die Regel hängt, sechs Uhrzeiten
           hintereinander sind eine Liste, die niemand behält. */}
       <p role="status" aria-live="polite" className="sr-only">
         {heutiger
@@ -960,7 +960,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
             {/* `break-words`, weil die Beschriftung ein einziges Wort sein
                 kann: „SONNENAUFGANG“ mit gesperrten Versalien ist 96 px breit,
                 und bei 320 px hat die Spalte 94. Ohne Umbruchpunkt schneidet
-                der Browser ab, statt umzubrechen — gemessen an der gebauten
+                der Browser ab, statt umzubrechen, gemessen an der gebauten
                 Seite bei 320 und 768 px. */}
             <dt className="font-mono text-[10px] tracking-[0.14em] break-words text-ink-faint uppercase">
               {demo.prayers[g]}
@@ -980,7 +980,7 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           {/* `text-[1rem]` und nicht `text-base`: In diesem Farbsystem gibt es
               ein Token `--color-base`, und Tailwind erzeugt daraus neben der
               Schriftgröße auch eine Farbe. In der Reihenfolge der Stilvorlage
-              steht `.text-base` hinter `.text-acid` und gewinnt — die Zahl kam
+              steht `.text-base` hinter `.text-acid` und gewinnt, die Zahl kam
               in der Farbe des Hintergrunds heraus, gemessen 1,01:1. Mit
               `text-violet` fiel das nie auf, weil „violet“ alphabetisch hinter
               „base“ liegt. */}

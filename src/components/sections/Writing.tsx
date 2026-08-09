@@ -60,7 +60,7 @@ export function Writing() {
                    Next holt jede sichtbare Zielseite im Voraus. Gemessen an
                    der ausgelieferten Startseite auf dem Telefon: 36 Antworten
                    mit zusammen 625 kB, davon 443 kB für sechs vollständige
-                   Artikelseiten — geholt, bevor jemand einen Titel gelesen
+                   Artikelseiten, geholt, bevor jemand einen Titel gelesen
                    hat. Wer hier klickt, klickt einen davon an, nicht sechs.
 
                    Beim Zeigen mit der Maus lädt Next weiterhin vor, der Klick
@@ -82,7 +82,7 @@ export function Writing() {
 
                     Drei Zeilen und nicht zwei, obwohl zwei örtlich reichten:
                     Auf dem Linux-Läufer der CI brechen dieselben Titel bei
-                    1024 px anders um als unter Windows — dort meldete
+                    1024 px anders um als unter Windows, dort meldete
                     `check:cards` 22 px Versatz, während hier alles bündig
                     stand. Ein Wert, der von den Schriftmetriken des
                     Betriebssystems abhängt, ist kein Wert. Drei Zeilen decken

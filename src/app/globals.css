@@ -20,8 +20,7 @@
      --void und 5,05:1 auf --surface.
 
      Beide Untergründe waren aber nicht alle. Die Karte hinter „Die harte
-     Stelle" trägt einen Grünstich, und dort steht derselbe Wert auf 28,33,16
-     — gemessen an der gebauten Seite 4,45:1, fünf Hundertstel unter der
+     Stelle" trägt einen Grünstich, und dort steht derselbe Wert auf 28,33,16, gemessen an der gebauten Seite 4,45:1, fünf Hundertstel unter der
      Forderung. #8a8a95 hebt das auf 4,83:1, ohne dass sich der Ton ändert;
      auf --void sind es dann 5,68:1. */
   --color-ink-faint: #8a8a95;
@@ -29,7 +28,7 @@
   --color-acid: #d4ff45;
   --color-acid-dim: #a8cc2e;
   /* #7c5cff stand auf den violett getönten Karten (20,16,35) bei 4,28:1 und
-     auf --void bei 4,47:1 — beides unter 4,5:1, und getragen hat es die
+     auf --void bei 4,47:1, beides unter 4,5:1, und getragen hat es die
      Überschrift „Die harte Stelle" jeder Fallstudie. #8b6dff ist derselbe
      Farbton eine Stufe heller: 5,08:1 und 5,29:1. */
   --color-violet: #8b6dff;
@@ -68,7 +67,7 @@ html {
      Telefonmenue (`useScrollSperre`): Ohne reservierten Platz verschwindet
      beim Sperren die Leiste, der Inhalt rueckt um ihre Breite nach rechts,
      und die feste Kopfleiste bleibt stehen. Zweitens der Wechsel zwischen
-     einer langen und einer kurzen Seite — auf Systemen mit klassischer
+     einer langen und einer kurzen Seite, auf Systemen mit klassischer
      Leiste (Windows, ~15 px) sprang dabei das ganze Layout. Auf Systemen mit
      ueberlagerter Leiste kostet die Regel nichts, dort ist sie 0 px breit. */
   scrollbar-gutter: stable;
@@ -82,7 +81,7 @@ body {
   overflow-x: clip;
 }
 
-/* Ein Wort, das nicht passt, bricht — es laeuft nicht hinaus.
+/* Ein Wort, das nicht passt, bricht, es laeuft nicht hinaus.
    ----------------------------------------------------------
    Der Standardwert `normal` laesst ein Wort ohne Umbruchpunkt aus seiner
    Spalte laufen. Am Bildschirm faellt das lange nicht auf, weil `html` und
@@ -91,7 +90,7 @@ body {
 
    Sichtbar wird es, sobald jemand die Standardschriftgroesse seines Browsers
    hochstellt. Chrome bietet dafuer 20 und 24 px in den Einstellungen an, und
-   anders als Zoom vergroessert das nur Laengen in `rem`/`em` — die Spalten
+   anders als Zoom vergroessert das nur Laengen in `rem`/`em`, die Spalten
    bleiben, die Woerter wachsen. Gemessen bei 24 px Grundschrift und 320 px
    Breite, der Bezugsbreite von WCAG 1.4.10: 58 Elemente der Startseite ragten
    ueber die rechte Kante, bis zu 63 px weit, darunter Ueberschriften und
@@ -106,7 +105,7 @@ body {
    Layers schlaegt saemtliche Utility-Klassen, unabhaengig von der
    Spezifitaet. Ohne den Layer hat diese Regel das `wrap-anywhere` der
    Beleglisten ueberschrieben und damit genau die Zeilen verschlechtert, die
-   sie schuetzen soll — gemessen an `/en/articles/published-is-not-proof` bei
+   sie schuetzen soll, gemessen an `/en/articles/published-is-not-proof` bei
    320 px: `overflow-wrap` fiel von `anywhere` auf `normal` zurueck. */
 @layer base {
   h1,
@@ -127,18 +126,18 @@ body {
      ------------------------------------------------------
      Sie tragen von sich aus `min-width: auto` und gehen damit nie unter ihre
      Inhaltsbreite. Passt der Inhalt nicht, waechst das Kind aus dem Kasten
-     heraus statt umzubrechen — und `overflow-x: clip` an `html`/`body`
+     heraus statt umzubrechen, und `overflow-x: clip` an `html`/`body`
      schneidet es ab, ohne Bildlaufleiste.
 
      Die Regel stand vorher einzeln an sechs Stellen, und in jeder Runde kam
      eine siebte dazu: zuletzt das Raster aus Problem und Loesung, das auf dem
      Bauserver 6 px ueberstand und hier keinen einzigen. Linux setzt gesperrte
-     Versalien breiter als Windows — eine Klasse Fehler, die man oertlich nicht
+     Versalien breiter als Windows, eine Klasse Fehler, die man oertlich nicht
      sieht und einzeln nie fertig behebt.
 
      `:where` haelt die Spezifitaet auf null: Jedes `min-w-*` aus einer
      Utility-Klasse schlaegt diese Regel. Und `flex-shrink: 0` bleibt
-     unberuehrt — was nicht schrumpfen soll, schrumpft weiterhin nicht, denn
+     unberuehrt, was nicht schrumpfen soll, schrumpft weiterhin nicht, denn
      die beiden Eigenschaften steuern Verschiedenes. */
   :where(.flex, .grid, .inline-flex) > * {
     min-width: 0;
@@ -246,12 +245,12 @@ textarea:-webkit-autofill {
   color: var(--color-ink-faint);
 }
 
-/* Dasselbe Etikett, eine Stufe heller — für getönte Flächen.
+/* Dasselbe Etikett, eine Stufe heller, für getönte Flächen.
  *
  * `text-eyebrow` ist auf `--color-void` gerechnet und steht dort mit 5,86:1.
  * Auf der getönten Tafel der Fallstudien („Die harte Stelle") liegt hinter
  * ihm eine Akzentfarbe mit 10 Prozent Deckung, und der Wert fällt auf
- * 4,54:1 — gemessen an der gebauten Seite bei 1440 px die schwächste Stelle
+ * 4,54:1, gemessen an der gebauten Seite bei 1440 px die schwächste Stelle
  * der ganzen Seite, vier Hundertstel über der Anforderung aus WCAG 1.4.3.
  *
  * Die Farbe global zu heben käme teurer: `text-eyebrow` steht in 16 Dateien,
@@ -365,7 +364,7 @@ textarea:-webkit-autofill {
  *
  * Gemessen auf 390 px in einem Artikel: Zeilen von 59 und 66 Zeichen in einem
  * Kasten, der 42 zeigt. Der Block scrollt korrekt in sich selbst, aber ohne
- * jedes sichtbare Zeichen dafür — ein Leser sieht eine Zeile, die endet, und
+ * jedes sichtbare Zeichen dafür, ein Leser sieht eine Zeile, die endet, und
  * erfährt nie, dass sie mit "…transaction ends." weitergeht.
  *
  * Ohne JavaScript, über `background-attachment`: Die Deckel liegen `local` und
@@ -391,7 +390,7 @@ textarea:-webkit-autofill {
      *
      * 12 Prozent und nicht 20: Der Streifen liegt genau dort, wo Text steht,
      * und hellt den Grund darunter auf. Bei 20 Prozent kostete das mehr, als
-     * der Hinweis wert ist — gemessen an der gebauten Seite mit dem stabilen
+     * der Hinweis wert ist, gemessen an der gebauten Seite mit dem stabilen
      * Verfahren aus `check:contrast`: die Achsenbeschriftung „610" eines
      * Architekturdiagramms bei 1440 px auf 4,10:1, deutlich unter den 4,5:1
      * aus WCAG 1.4.3. Bei 12 Prozent liegt die schwächste Stelle der ganzen
@@ -485,7 +484,7 @@ textarea:-webkit-autofill {
      mit will-change    53,6 und 55,6 fps, 18 und 14 Bilder über 32 ms
      ohne will-change   60,0 fps, kein einziges Bild über 32 ms
 
-   Bei 390 px war beides schon bei 60,0 — dort greift die Regel gar nicht.
+   Bei 390 px war beides schon bei 60,0, dort greift die Regel gar nicht.
    Sichtbar ändert sich nichts: `will-change` zeichnet selbst nichts, es sagt
    dem Browser nur, was er vorbereiten soll. Hier hat er zu viel vorbereitet. */
 
@@ -563,7 +562,7 @@ textarea:-webkit-autofill {
   animation: fade-rise 0.9s var(--ease-out-expo) both;
 }
 
-/* Dieselbe Bewegung, aber ohne die Blende — für das LCP-Element.
+/* Dieselbe Bewegung, aber ohne die Blende, für das LCP-Element.
 
    Die eine Zeile `opacity: 0` kostet gemessen 650 ms. Der Vorspann des Kopfes
    ist das größte Textstück über der Falz und damit das LCP-Element; auf einem
@@ -571,7 +570,7 @@ textarea:-webkit-autofill {
    der Absatz daneben bei 1.624 ms, er selbst erst bei 2.232 bis 2.496 ms.
    Chrome zählt ein Element mit `opacity: 0` nicht als gemalt, also schiebt
    jede Einblendung ihre eigene Verzögerung plus einen Teil ihrer Dauer direkt
-   in den Kernwert. Das Budget liegt bei 2.500 ms — es hing an zwanzig
+   in den Kernwert. Das Budget liegt bei 2.500 ms, es hing an zwanzig
    Millisekunden.
 
    Die Bewegung bleibt, nur wird der Text nicht mehr dafür versteckt. Für
@@ -681,7 +680,7 @@ textarea:-webkit-autofill {
      ---------------------------------------------------------------
      Die Abschnitte blenden sich beim Scrollen ein: Bis dahin stehen sie auf
      `opacity: 0` und einer Verschiebung. Beim Drucken scrollt niemand, der
-     Beobachter feuert nie, und die Abschnitte bleiben unsichtbar — gedruckt
+     Beobachter feuert nie, und die Abschnitte bleiben unsichtbar, gedruckt
      wird ihr Platz, nicht ihr Inhalt.
 
      Gemessen am 02.08.2026, Startseite ohne vorheriges Scrollen gedruckt:
@@ -735,7 +734,7 @@ textarea:-webkit-autofill {
   .glow-orb,
   .dot-grid,
   .lit::before,
-  /* Der Lichtschein hat auf Papier keinen Zeiger, dem er folgen könnte — und
+  /* Der Lichtschein hat auf Papier keinen Zeiger, dem er folgen könnte, und
      die Regel oben setzt jede Deckkraft auf 1, er käme sonst als grüner
      Fleck heraus, sobald jemand vor dem Drucken über eine Karte gefahren
      ist. */
@@ -752,7 +751,7 @@ textarea:-webkit-autofill {
   /* Und weil nichts scrollt, ist alles rechts der Spaltenkante gedruckt weg.
      Gemessen am 02.08.2026 bei 794 px Papierbreite: Im Artikel „Warum ein
      kleineres Whisper-Modell mein größeres schlug" ragte ein Block 14 px
-     über die Spalte, die Zeichen fehlten still im Ausdruck — kein Hinweis,
+     über die Spalte, die Zeichen fehlten still im Ausdruck, kein Hinweis,
      keine Lücke, nur eine Zeile, die früher endet als im Browser.
      Umbrechen ist die richtige Wahl: eine Zeile mehr im Code liest sich,
      ein fehlendes Zeichen nicht. */
@@ -764,13 +763,13 @@ textarea:-webkit-autofill {
 
   /* Dasselbe für das Architekturdiagramm, das an derselben Kante verlor.
      Gemessen am 06.08.2026 bei 794 px Papierbreite mit dem Reiter
-     „Architektur“ vorn: Das Bild ist 1.150 px breit, der Kasten 736 — 414 px
+     „Architektur“ vorn: Das Bild ist 1.150 px breit, der Kasten 736, 414 px
      und damit gut ein Drittel fehlten auf dem Papier, wieder ohne Lücke und
      ohne Hinweis.
 
      Die Mindestbreite ist am Bildschirm richtig: Sie hält die kleinste
      Beschriftung bei 12,5 px, statt sie auf einem Telefon auf 7,8 px
-     schrumpfen zu lassen. Auf Papier gilt das Argument nicht — dort löst der
+     schrumpfen zu lassen. Auf Papier gilt das Argument nicht, dort löst der
      Druck viel feiner auf als ein Bildschirm, und ein SVG verliert beim
      Verkleinern nichts. Ohne Mindestbreite passt das Bild vollständig auf die
      Spalte; die kleinste Beschriftung misst dann 8 px, gedruckt etwa 6 pt. */
@@ -798,13 +797,13 @@ textarea:-webkit-autofill {
      Die Liste am Fuß eines Artikels ist der Teil, den jemand ausdruckt oder
      weiterreicht, und seit die öffentlichen Pakete dort verlinkt sind, führte
      genau dieser Eintrag auf Papier nirgendwohin: ein unterstrichenes Wort
-     ohne Adresse. Nur hier und nicht an allen Links — jede Adresse im
+     ohne Adresse. Nur hier und nicht an allen Links, jede Adresse im
      Fließtext ausgeschrieben wäre Lärm statt Hilfe. */
   /* Dieselbe Regel für die Verweise, die ein Recruiter auf Papier mitnimmt.
 
      Gemessen an der ausgelieferten Seite in der Druckdarstellung: Im
-     Recruiter- und im Kontaktbereich stehen fünf Verweise nach außen —
-     „verified-done auf GitHub", zweimal „LinkedIn", zweimal „GitHub" —, und
+     Recruiter- und im Kontaktbereich stehen fünf Verweise nach außen:
+     „verified-done auf GitHub", zweimal „LinkedIn", zweimal „GitHub", und
      alle fünf kamen als unterstrichenes Wort ohne Ziel aus dem Drucker. Es
      sind die beiden Profile und das eine Paket, also genau das, was jemand
      nachschlagen will, der das Blatt in der Hand hält.
@@ -836,7 +835,7 @@ textarea:-webkit-autofill {
      If a browser ignores zoom the result is a two-page PDF: worse, not broken. */
   .onepager {
     /* Gemessen am 08.08.2026: Inhalt 1.172 px bei 794 px Breite. Die
-       nutzbare Höhe liegt bei rund 1.030 px — empirisch bestimmt, denn
+       nutzbare Höhe liegt bei rund 1.030 px, empirisch bestimmt, denn
        zwischen 0,87 und 0,88 kippt das Blatt auf zwei Seiten. 0,85 ergibt
        996 px, also 97 % der Seite und 34 px Luft.
 
@@ -845,7 +844,7 @@ textarea:-webkit-autofill {
        das eingecheckte PDF war einseitig, während die Seite zwei erzeugte.
        Dann stand 0,78 zu einem angenommenen Inhalt von 1.302 px; der Inhalt
        schrumpfte auf 1.172, die Zahl blieb, und das Blatt füllte nur 89 % der
-       Seite — die kleinste Schrift stand bei 5,9 pt statt 6,4.
+       Seite, die kleinste Schrift stand bei 5,9 pt statt 6,4.
 
        Beides fällt jetzt beim Drucken auf: `npm run onepager:pdf` nennt
        Seitenzahl, Ausnutzung und die kleinste Punktgröße und bricht unter

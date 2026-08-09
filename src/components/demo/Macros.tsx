@@ -12,13 +12,13 @@ import type { Content } from "@/content/types";
  * Ballaststoffe stehen dort je Portion, und genau diese Werte stehen hier.
  *
  * Was der Besucher tut, ist das, was die App tut: einen Tag zusammenstellen,
- * der ein Ziel trifft. Der erste Anlauf konnte nur addieren — anklicken und
+ * der ein Ziel trifft. Der erste Anlauf konnte nur addieren, anklicken und
  * die Summe ablesen. Das ist keine Vorführung, das ist ein Taschenrechner.
  *
  * Diese Fassung löst die Aufgabe, die dahintersteckt: Aus zwölf Gerichten
  * die Zusammenstellung finden, die unter einem Kalorienziel bleibt und dabei
  * das meiste Eiweiß bringt. Zwölf Gerichte sind 2^12 = 4.096 Möglichkeiten,
- * und die lassen sich vollständig durchrechnen — gemessen in unter einer
+ * und die lassen sich vollständig durchrechnen, gemessen in unter einer
  * Millisekunde. Kein Näherungsverfahren, keine Heuristik: das Ergebnis ist
  * beweisbar das beste, und die geprüfte Anzahl steht daneben.
  *
@@ -164,7 +164,7 @@ const ZIEL = { min: 1200, max: 3400, schritt: 50, start: 2200 } as const;
  * Die beste Zusammenstellung unter einem Kalorienziel.
  *
  * Vollständige Aufzählung über die Bitmuster von 0 bis 4.095: Jedes Bit ist
- * ein Gericht. Das geht, weil zwölf Gerichte nur 4.096 Teilmengen haben —
+ * ein Gericht. Das geht, weil zwölf Gerichte nur 4.096 Teilmengen haben:
  * bei dreissig wären es eine Milliarde, und dann bräuchte es ein anderes
  * Verfahren. Genau das ist der Punkt, den die Zahl daneben belegt.
  *
@@ -256,7 +256,7 @@ function suchraum() {
 export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const demo = inhalt.demoNouri;
   /* Der Anfangszustand ist das Ergebnis des Laufs, nicht eine Handauswahl.
-     Vorher standen dort zwei Gerichte, 925 kcal und 72 g Eiweiß — bei
+     Vorher standen dort zwei Gerichte, 925 kcal und 72 g Eiweiß, bei
      demselben Ziel sind 198 g möglich. Wer die Karte nur überfliegt, sah
      also einen Punkt weit unter der Grenze und darunter „1.275 kcal unter
      dem Ziel". Die Vorführung widersprach ihrer eigenen Behauptung, solange
@@ -279,7 +279,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
   const { punkte, front } = useMemo(() => suchraum(), []);
 
   /* Gezeichnet wird nur, was der Regler erreichen kann.
-     Über alle Zusammenstellungen reicht der Raum bis 5.770 kcal — alle zwölf
+     Über alle Zusammenstellungen reicht der Raum bis 5.770 kcal, alle zwölf
      Gerichte an einem Tag. Der Regler endet bei 3.400, jenseits davon ist
      nichts wählbar. Auf die volle Breite gezeichnet drängte sich deshalb der
      gesamte brauchbare Teil in das linke Drittel, und die dichte Mitte war
@@ -299,7 +299,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
 
   /* Zwei Wolken statt einer: Was unter dem Ziel liegt, kommt infrage, der Rest
      nicht. Die Trennung hängt am Regler und macht ihn zur eigentlichen
-     Vorführung — man sieht den Suchraum schrumpfen und die Grenze des
+     Vorführung, man sieht den Suchraum schrumpfen und die Grenze des
      Möglichen mitwandern. */
   const [wolkeUnter, wolkeUeber] = useMemo(() => {
     const unter: string[] = [];
@@ -375,7 +375,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
     /* `no-print`: Eine Vorführung, die man anfassen muss, gehört nicht auf
        Papier. Gemessen kam sie dort auch nicht an: `check:print` lädt frisch
        und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
-       durch — auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
+       durch, auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
        Aussage trägt, steht in der Fallstudie darüber. */
     <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -410,7 +410,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           {/* Der Wert steht im Namen des Reglers, nicht in `aria-valuetext`.
 
               Ohne Angabe liest ein Vorleseprogramm die rohe Zahl vor: „2200“.
-              Der naheliegende Weg wäre `aria-valuetext` — am nativen
+              Der naheliegende Weg wäre `aria-valuetext`, am nativen
               Schieberegler übernimmt Chrome das nicht. Gemessen an der
               ausgelieferten Seite meldete der Baum bei gesetztem
               `aria-valuetext="2.200 kcal"` weiterhin `valuetext="2200"`.
@@ -419,7 +419,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
               Also als `aria-label`, den Chrome auswertet, und mit Komma
               statt Leerzeichen: Ohne eigenes `aria-label` bildete sich der
               Name aus den beiden Spans darüber und lautete „TAGESZIEL
-              2.200kcal“ — zwei Elemente ohne Textknoten dazwischen stoßen
+              2.200kcal“, zwei Elemente ohne Textknoten dazwischen stoßen
               ohne Leerzeichen aneinander. */}
           <input
             type="range"
@@ -434,7 +434,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
             }}
             /* 24 px hoch statt 16, über `py-1` mit ausgleichendem `-my-1`:
             Die sichtbare Spur bleibt schlank, die Trefferfläche erreicht das
-            Maß aus WCAG 2.5.8. Nötig war das nicht — der Regler steht allein,
+            Maß aus WCAG 2.5.8. Nötig war das nicht, der Regler steht allein,
             und damit greift die Abstandsausnahme der Norm. Am Finger ist der
             Unterschied trotzdem zu spüren, und es kostet nichts. */
             className="mt-2 -my-1 w-full py-1 accent-acid"
@@ -484,8 +484,8 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
               <span aria-hidden>{g.emoji}</span>
               {inhalt.lang === "de" ? g.de : g.en}
               {/* Ohne die Deckkraft von 70 %. Die Druck-Stilvorlage hat genau
-                  diesen Wert schon einmal gemessen — `text-ink-faint` auf
-                  70 % ergibt 3,13:1 bei 10 px — und ihn nur für das Papier auf
+                  diesen Wert schon einmal gemessen, `text-ink-faint` auf
+                  70 % ergibt 3,13:1 bei 10 px, und ihn nur für das Papier auf
                   volle Deckung gesetzt. Am Bildschirm stand er weiter, weil
                   axe den Untergrund hinter der Karte nicht bestimmen kann und
                   die Stelle deshalb weder bestanden noch verletzt meldete.
@@ -507,7 +507,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           Wer ein Gericht an- oder abwählt, sieht die fünf Zahlen darunter
           springen. Wer sich die Seite vorlesen lässt, hörte nichts: Die Knöpfe
           melden ihren eigenen Zustand über `aria-pressed`, aber das Ergebnis
-          der Auswahl stand stumm daneben — und genau das Ergebnis ist die
+          der Auswahl stand stumm daneben, und genau das Ergebnis ist die
           Aussage dieser Kachel.
 
           Nur die beiden Werte, um die es geht. „2.095 kcal, 198 g Eiweiß“ ist
@@ -553,7 +553,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           Eine Zahl allein zeigt nicht, was daran eine Leistung ist. Hier
           steht jede der 4.096 Zusammenstellungen als Punkt: waagerecht ihre
           Kalorien, senkrecht ihr Eiweiß. Die Linie darüber ist die Grenze des
-          Möglichen — für jeden Kalorienwert das erreichbare Maximum. Der
+          Möglichen, für jeden Kalorienwert das erreichbare Maximum. Der
           gewählte Tag liegt darauf, unmittelbar links vom Ziel.
 
           Ein einziger Pfad statt 4.096 Elementen: Ein `circle` je Punkt wäre
@@ -670,7 +670,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         {demo.units.fat} {anteile.f} %
       </p>
 
-      {/* Wie weit die Zusammenstellung unter dem Ziel bleibt — der Rest, den
+      {/* Wie weit die Zusammenstellung unter dem Ziel bleibt, der Rest, den
           das Verfahren nicht füllen konnte, ohne darüber zu gehen. Bei zwölf
           Gerichten mit festen Portionen bleibt fast immer etwas übrig, und
           das zu verschweigen wäre die unehrlichere Darstellung. */}

@@ -41,13 +41,12 @@ export function RootDocument({
           Der Titel kam aus dem Inhalt und nicht aus dieser Datei: Er stand
           hier fest als „Facts for language models" und damit auch im Kopf der
           deutschen Seite. Die Datei dahinter ist bewusst englisch, der Titel
-          beschreibt sie aber für den, der die deutsche Seite liest — und der
+          beschreibt sie aber für den, der die deutsche Seite liest, und der
           erfährt jetzt auch, dass ihn Englisch erwartet.
         */}
         {/* humans.txt ist deutsch, und das steht jetzt daran.
 
-            `llms.txt` daneben trägt seit je einen Titel, der die Sprache nennt
-            — „Fakten für Sprachmodelle (englisch)". Bei humans.txt fehlte
+            `llms.txt` daneben trägt seit je einen Titel, der die Sprache nennt, „Fakten für Sprachmodelle (englisch)". Bei humans.txt fehlte
             beides: kein Titel, kein `hreflang`. Auf der englischen Fassung
             zeigte damit ein `rel="author"` ohne jede Angabe auf eine deutsche
             Datei. `hreflang` ist dafür die genaue Angabe, der Titel die
@@ -72,7 +71,7 @@ export function RootDocument({
           werden von Framer Motion sichtbar gemacht, sobald der Abschnitt ins
           Bild kommt. Läuft kein JavaScript, passiert das nie: Gemessen an der
           gebauten Startseite blieben nach vollständigem Durchscrollen 160 von
-          181 Überschriften und Faktenzeilen unsichtbar — mit JavaScript keine
+          181 Überschriften und Faktenzeilen unsichtbar, mit JavaScript keine
           einzige.
 
           Der Text steht im HTML, er wird nur nicht gezeigt. Betroffen sind

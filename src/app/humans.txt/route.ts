@@ -5,7 +5,7 @@ import verified from "@/content/verified.json";
  * humans.txt als Route statt als Datei.
  *
  * Sie lag zuerst in `public/`, mit den Zahlen eingetippt. Damit war sie ab dem
- * ersten Lauf des Zahlen-Automaten überholt — und ausgerechnet die Datei, die
+ * ersten Lauf des Zahlen-Automaten überholt, und ausgerechnet die Datei, die
  * von den Belegen dieser Seite erzählt, wäre dann die einzige gewesen, die
  * niemand nachzieht.
  *
@@ -40,7 +40,7 @@ export function GET() {
   Ein Automat bei GitHub zählt täglich die Commits über alle
   ${verified.repos} Repositories, schreibt sie in diese Seite und liefert aus.
   Stand ${stand}: ${verified.commitsHead} Commits, über die GitHub-API gezählt.
-  Nur was auch bei GitHub liegt, zählt mit — lokale Stände nicht.
+  Nur was auch bei GitHub liegt, zählt mit, lokale Stände nicht.
   Der Bau scheitert, wenn eine private Datei in public/ liegt.
 
 /* DANKE */

@@ -5,7 +5,7 @@
  * Die Überschriften kommen wortweise aus einer Maske hervor: Jedes Wort sitzt
  * in einem `inline-block` mit `overflow: hidden`, und dessen untere Kante
  * schneidet mit. Wie viel Platz darunter bleibt, hängt an drei Werten, die
- * nichts voneinander wissen — Schriftgröße, `line-height` und das Polster der
+ * nichts voneinander wissen. Schriftgröße, `line-height` und das Polster der
  * Maske. Ändert jemand einen davon, verschwinden Buchstaben, und zwar nur die
  * mit Unterlänge und nur in manchen Wörtern.
  *
@@ -15,7 +15,7 @@
  * Auszeichnungsschrift.
  *
  * Gemessen wird die tatsächliche Tinte über `actualBoundingBoxDescent` der
- * jeweils gerenderten Schrift — nicht ein Tabellenwert, denn Grundschrift und
+ * jeweils gerenderten Schrift, nicht ein Tabellenwert, denn Grundschrift und
  * kursive Auszeichnung unterscheiden sich hier um ein Drittel.
  *
  * Aufruf nach `npm run build`:
@@ -40,7 +40,7 @@ if (!basis) {
 
 /** Jede gebaute Seite, ohne die Bau-Interna. */
 /* Dazu die Fehlerseite unter beiden Sprachen: Sie steht in keiner Liste
-   gebauter Seiten — im Bau liegt sie als `_not-found.html` — und fiel damit
+   gebauter Seiten, im Bau liegt sie als `_not-found.html`, und fiel damit
    aus jedem Lauf heraus, der seine Liste aus dem Bau nimmt. Sie ist die
    Seite, die jeder Vertipper zu sehen bekommt. */
 const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
@@ -60,7 +60,7 @@ for (const breite of BREITEN) {
       waitUntil: "domcontentloaded",
     });
     /* Die Fehlerseite antwortet mit 404, und das ist ihre richtige
-     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie —
+     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie:
      die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
      standen. */
   const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
@@ -81,7 +81,7 @@ for (const breite of BREITEN) {
       Und dann warten, bis die Wörter stehen.
 
       Der erste Anlauf maß sofort und meldete drei Überschriften auf /en als
-      abgeschnitten — mit „nur 0 px Platz", was es gar nicht geben kann. Die
+      abgeschnitten, mit „nur 0 px Platz", was es gar nicht geben kann. Die
       Wörter waren mitten im Auftritt: Sie kommen von unten aus der Maske
       hervor, und solange sie unterwegs sind, liegt ihre Unterkante unter der
       des Kastens. Gemessen wurde die Bewegung, nicht das Ergebnis.
@@ -94,7 +94,7 @@ for (const breite of BREITEN) {
 
       Sie stand hier auf 1.400 ms, und lokal ging das immer gut. Auf dem
       Bauserver scheiterte derselbe Lauf am 02.08.2026 an „gebaut." mit
-      „12 px Tinte, nur -55,8 px Platz" — eine negative Zahl, die es als
+      „12 px Tinte, nur -55,8 px Platz", eine negative Zahl, die es als
       Befund nicht geben kann: Sie heißt, dass das Wort zum Messzeitpunkt
       noch 56 px unter seiner Maske stand, also mitten im Auftritt war.
 
@@ -148,13 +148,13 @@ for (const breite of BREITEN) {
         /* Stehen die Woerter noch auseinander?
 
            Ein Leerzeichen am Ende eines `inline-block` mit
-           `overflow: hidden` wird zusammengefaltet — die Woerter kleben
+           `overflow: hidden` wird zusammengefaltet, die Woerter kleben
            dann aneinander. AGENTS.md nennt das als Falle, die hier schon
            zugeschnappt ist, und verlangt deshalb `margin` statt eines
            Leerzeichens. Geprueft hat das bisher niemand.
 
            Gemessen am 07.08.2026 an der Kopfzeile der Startseite: 24,8 px
-           bei 129,6 px Schrift und 8,4 px bei 44 px — beide Male 19 Prozent
+           bei 129,6 px Schrift und 8,4 px bei 44 px, beide Male 19 Prozent
            der Schriftgroesse. Verlangt werden 8 Prozent: deutlich unter dem
            gemessenen Wert und weit ueber dem, was ein zusammengefaltetes
            Leerzeichen uebrig laesst, naemlich nichts. Verglichen wird nur
@@ -186,7 +186,7 @@ for (const breite of BREITEN) {
           /* Die Verschiebung wird herausgerechnet, nicht abgewartet.
 
              `getBoundingClientRect` zählt Transformationen mit. Steht das Wort
-             noch unter seiner Maske, kommt eine negative Platzangabe heraus —
+             noch unter seiner Maske, kommt eine negative Platzangabe heraus:
              ein Befund, den es so nicht gibt. Auf dem Bauserver meldete der
              Lauf deshalb „gebaut." mit -55,8 px Platz, und auch mit einer
              Wartebedingung blieb dieses eine Wort bei matrix(…, 75,2): Es
@@ -195,7 +195,7 @@ for (const breite of BREITEN) {
              Für die Frage, ob die Maske eine Unterlänge abschneidet, ist die
              Verschiebung ohnehin gleichgültig: Geschnitten wird am ruhenden
              Kasten. Aus der Matrix kommt der senkrechte Anteil als sechster
-             Wert; er wird abgezogen. Skaliert oder gedreht wird nichts — käme
+             Wert; er wird abgezogen. Skaliert oder gedreht wird nichts, käme
              so etwas vor, wäre die Rechnung falsch, und der Fall wird als
              nicht messbar gemeldet statt stillschweigend übergangen. */
           let versatzY = 0;
@@ -279,7 +279,7 @@ for (const breite of BREITEN) {
    passt nicht in seine Spalte, und der Browser schneidet ab, statt umzubrechen.
 
    Gemessen an der gebauten Seite bei 320 px: „SONNENAUFGANG“,
-   „KOHLENHYDRATE“ und „BALLASTSTOFFE“ — gesperrte Versalien in einer 94 px
+   „KOHLENHYDRATE“ und „BALLASTSTOFFE“, gesperrte Versalien in einer 94 px
    breiten Spalte, die 96 bräuchten. Bei 768 px blieb eines davon übrig. Kein
    Lauf sah hin, weil beide Breiten zwischen den geprüften 390 und 1440 liegen.
 
@@ -311,7 +311,7 @@ for (const breite of SCHMALE_BREITEN) {
           /* `scrollWidth > clientWidth` allein genügt nicht: Auch ein Absatz,
              der sauber umbricht, meldet das, weil sein längstes unteilbares
              Wort breiter ist als die Spalte. Gemessen am Kurzprofil bei
-             320 px waren vier von fünf Meldungen genau das — der Text stand
+             320 px waren vier von fünf Meldungen genau das, der Text stand
              lesbar da, nur eben umgebrochen.
 
              Weg ist er erst, wenn er über den rechten Fensterrand hinausragt:

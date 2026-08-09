@@ -88,12 +88,12 @@ for (const b of befunde) {
 
    Erlaubt war eine Minute Unterschied, und genau darin verschwand ein
    Befund: `de-ota` und `de-shaper` gaben vier Minuten an, gerechnet waren es
-   fünf — und dieselben beiden Texte nannten auf Englisch fünf. Derselbe
+   fünf, und dieselben beiden Texte nannten auf Englisch fünf. Derselbe
    Artikel sagte dem deutschen Leser vier und dem englischen fünf.
 
    Die Zahl wird gerechnet, nicht geschätzt. Wenn sie gerechnet ist, gibt es
    keinen Grund, warum die angezeigte eine andere sein sollte. Wer den Text
-   ändert, ruft `--setzen` — derselbe Handgriff wie beim Kurzprofil. */
+   ändert, ruft `--setzen`, derselbe Handgriff wie beim Kurzprofil. */
 const schief = befunde.filter((b) => b.abweichung > 0);
 if (schief.length && !setzen) {
   console.error(
@@ -129,7 +129,7 @@ Jede Lesezeit stimmt mit dem Wortbestand: ${befunde.length} Artikel gezählt, ` 
    Gezählt wird aus der gebauten Seite und nicht aus `site.ts`: Der Bereich
    ist dort durch `id="hire"` eindeutig begrenzt und enthält genau das, was
    der Leser sieht. Der erste Anlauf schnitt den Block aus dem Quelltext und
-   kam auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt — die Grenzen
+   kam auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt, die Grenzen
    eines Objektliterals sind mit einem Regex nicht zuverlässig zu finden. */
 const ZAHLWORT = {
   de: { 1: "einer Minute", 2: "zwei Minuten", 3: "drei Minuten", 4: "vier Minuten" },
@@ -160,7 +160,7 @@ function abschnitt(html) {
 const zeitfunde = [];
 for (const { sprache, datei } of bereiche) {
   if (!existsSync(datei)) {
-    zeitfunde.push(`${datei} fehlt — erst npm run build`);
+    zeitfunde.push(`${datei} fehlt, erst npm run build`);
     continue;
   }
   const block = abschnitt(readFileSync(datei, "utf8"));
@@ -183,7 +183,7 @@ for (const { sprache, datei } of bereiche) {
     zeitfunde.push(`${datei}: ${woerter} Wörter sind ${minuten} Minuten, dafür fehlt das Zahlwort`);
   } else if (!titel.includes(erwartet)) {
     zeitfunde.push(
-      `${datei}: „${titel}“ bei ${woerter} Wörtern — gerechnet sind das ${erwartet}`,
+      `${datei}: „${titel}“ bei ${woerter} Wörtern, gerechnet sind das ${erwartet}`,
     );
   }
 }

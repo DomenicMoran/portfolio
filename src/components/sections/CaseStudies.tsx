@@ -92,18 +92,18 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
    * Stelle auffällt: Gedruckt wird, was im Baum steht, und das ist die
    * gewählte Tafel. Gemessen an der ausgelieferten Seite in der
    * Druckdarstellung trägt jede Fallstudie dort genau eine von drei bis vier
-   * Tafeln — bei MenuCloud eine von vier, zwischen 303 und 710 Zeichen je
+   * Tafeln, bei MenuCloud eine von vier, zwischen 303 und 710 Zeichen je
    * Studie. Architektur und Tech-Stack fehlen auf Papier.
    *
    * Das bleibt so. Alle Tafeln zu rendern und die inaktiven per CSS
    * auszublenden würde den Baum der Startseite um vier Architekturdiagramme
-   * mit je 17 bis 30 Knoten vergrößern, dazu ihre Textfassungen — bezahlt von
+   * mit je 17 bis 30 Knoten vergrößern, dazu ihre Textfassungen, bezahlt von
    * jedem Besucher, damit ein Ausdruck vollständig ist, den die Seite gar
    * nicht als Weg anbietet. Wer die Arbeit auf Papier braucht, bekommt sie
    * über das Kurzprofil, und das ist dafür gebaut.
    *
    * `highlights` ist die Standardtafel und damit die, die gedruckt wird. Sie
-   * beantwortet „Was drinsteckt" — von den drei Fragen die, die ohne Bild
+   * beantwortet „Was drinsteckt", von den drei Fragen die, die ohne Bild
    * auskommt. */
   const [tab, setTab] = useState<TabId>("highlights");
   /* `MotionConfig reducedMotion="user"` nimmt die Bewegung heraus, nicht die
@@ -129,7 +129,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
    * Gemessen an der ausgelieferten Seite am 02.08.2026: Alle dreizehn Reiter
    * hatten `tabIndex` 0, und Pfeil rechts bewegte weder Fokus noch Auswahl.
    * Wer mit der Tastatur zum Inhalt einer Fallstudie will, musste sich durch
-   * jeden einzelnen Reiter tabben — die Reiterleiste kostete mehr Stationen
+   * jeden einzelnen Reiter tabben, die Reiterleiste kostete mehr Stationen
    * als die Fallstudie Inhalte hat.
    *
    * Das ist das Muster, das eine Reiterleiste ausmacht: Tab springt in die
@@ -169,7 +169,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
     setTab(ziel);
     // Der Fokus muss mitgehen, sonst zeigt die Leiste etwas anderes an als die
     // Tastatur bedient. Alle Reiter stehen im Dokument, nur der `tabIndex`
-    // wechselt — ein Element mit `tabIndex` -1 lässt sich so fokussieren.
+    // wechselt, ein Element mit `tabIndex` -1 lässt sich so fokussieren.
     document.getElementById(`${study.id}-tab-${ziel}`)?.focus();
   };
 
@@ -240,7 +240,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   /* Teilt sich der Rahmen die Zeile mit einem Telefon, bleibt
                      er schmaler als allein. Gemessen an der Fallstudie
                      MenuCloud: 316 px bei 640, 444 bei 768, 700 bei 1.024 und
-                     886 ab 1.280 — gegenüber 1.150, die NOURI allein bekommt.
+                     886 ab 1.280, gegenüber 1.150, die NOURI allein bekommt.
                      `variant` steht bei dieser Aufnahme nicht im Inhalt: Der
                      Browserrahmen ist die Vorgabe des Bauteils. Ein Vergleich
                      gegen `"browser"` allein traf sie deshalb nie, und die
@@ -256,7 +256,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                      Spalte mit `items-center`, und darin bekommt ein Kind nur
                      die Breite, die es von sich aus mitbringt. Die kam bei
                      einer Aufnahme aus dem Bild selbst und stand erst nach dem
-                     Laden fest — gemessen wuchs der Rahmen von 212 auf 340 px
+                     Laden fest: gemessen wuchs der Rahmen von 212 auf 340 px
                      und die Fallstudie damit um 141 px, mitten im Dokument.
                      Wer über `#hire` einstieg, bekam dadurch 0,17 bis 0,52
                      Layout-Verschiebung auf ein Budget von 0,1. */
@@ -358,7 +358,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <div className="mt-12">
           {/* Ohne JavaScript gibt es die Reiterleiste nicht.
 
-              Im Baum steht immer nur eine Tafel, die gewählte — das ist eine
+              Im Baum steht immer nur eine Tafel, die gewählte, das ist eine
               bewusste Entscheidung und oben begründet. Ohne Skript lässt sich
               die Wahl aber nicht ändern: Die drei anderen Reiter nehmen den
               Klick an und schweigen, und die Tafeln dahinter sind gar nicht
@@ -368,7 +368,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
               Sichtbar bleibt „Was drinsteckt" als Inhalt, nur ohne die
               Schalter, die nichts schalten. Wer ohne Skript liest, verliert
-              damit nichts, was er vorher hatte — er sieht nur nicht mehr
+              damit nichts, was er vorher hatte, er sieht nur nicht mehr
               aus, als könne er es holen. */}
           <noscript>
             <style>{`.tafel-reiter{display:none}`}</style>
@@ -401,12 +401,12 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   // Gerendert wird immer nur die gewählte Tafel, AnimatePresence
                   // tauscht sie aus. An allen dreizehn Reitern gesetzt zeigten
                   // deshalb neun auf eine Kennung, die es im Dokument nicht
-                  // gibt — gemessen an der ausgelieferten Seite. Ein Verweis
+                  // gibt, gemessen an der ausgelieferten Seite. Ein Verweis
                   // ins Leere ist schlechter als keiner: Er behauptet ein Ziel.
                   //
                   // Die Kennung hieß danach `…-panel-architecture` und wechselte
                   // beim Umschalten mit. Zwischen dem Klick und dem Ende der
-                  // Blende zeigte sie erneut ins Leere — gemessen am
+                  // Blende zeigte sie erneut ins Leere, gemessen am
                   // 02.08.2026 an der Live-Seite: bei 100 ms unauflösbar, bei
                   // 250 ms wieder da. Ein Zustand, den die statische Prüfung
                   // nicht sehen kann, weil er nur zwischen zwei Bildern
@@ -449,7 +449,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 Bei `prefers-reduced-motion` ist genau das falsch: `MotionConfig`
                 nimmt die Bewegung heraus, die Wartezeit bleibt. Gemessen an der
                 gebauten Seite dauerte der Wechsel mit der Einstellung 452 ms und
-                ohne sie 439 — wer Bewegung abstellt, wartete also genauso lang
+                ohne sie 439, wer Bewegung abstellt, wartete also genauso lang
                 auf eine Animation, die er gar nicht sieht.
 
                 Mit Dauer null ist `wait` sofort durch, und die Reihenfolge
@@ -547,7 +547,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                  „Instagram“, zwei verschiedene Konten.
 
                  Der sichtbare Text steht vorn, damit er im Namen enthalten
-                 bleibt — sonst sagt jemand per Sprache etwas anderes, als er
+                 bleibt, sonst sagt jemand per Sprache etwas anderes, als er
                  liest. */
               <a
                 key={link.label}
@@ -574,7 +574,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
             Fünf der sechs Fachartikel handeln von einem Fehler in genau diesen
             Systemen, und aus dem Fallstudien-Bereich führte kein einziger
-            Verweis dorthin — gezählt an der ausgelieferten Seite. Wer wissen
+            Verweis dorthin, gezählt an der ausgelieferten Seite. Wer wissen
             will, wie tief das geht, musste weiterscrollen und dann raten,
             welcher Artikel zu welchem System gehört. */}
         {artikelDazu.length > 0 ? (
@@ -592,7 +592,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                          Seite. Beim Zeigen mit der Maus lädt Next weiter vor. */
                       prefetch={false}
                       /* `-my-0.5 py-0.5`: Ein einzeiliger Titel misst sonst
-                         23 px hoch — gemessen bei 390 px — und liegt damit
+                         23 px hoch, gemessen bei 390 px, und liegt damit
                          unter den 24 px aus WCAG 2.5.8. Die Ausnahme für
                          Verweise mitten im Satz greift hier nicht: Jeder steht
                          allein in seiner Zeile. Optisch ändert sich nichts. */

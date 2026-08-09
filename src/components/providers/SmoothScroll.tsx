@@ -95,7 +95,7 @@ function starte(lenis: import("lenis").default) {
 
         Ein Klick auf `#inhalt` löst normalerweise zwei Dinge aus: Der Browser
         scrollt hin und setzt den Fokus auf das Ziel. Hier wird das
-        Standardverhalten unterbunden, damit Lenis scrollen kann — und damit
+        Standardverhalten unterbunden, damit Lenis scrollen kann, und damit
         blieb auch der Fokus stehen. Gemessen am 02.08.2026: Nach dem
         Sprunglink war `document.activeElement` weiterhin der Link selbst, der
         Lesepunkt einer Vorlesesoftware also unverändert in der Kopfleiste.

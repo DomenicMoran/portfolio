@@ -6,7 +6,7 @@ import verified from "@/content/verified.json";
 /**
  * Eine Nachricht für den, der die Entwicklerkonsole öffnet.
  *
- * Wer diese Seite fachlich prüft, öffnet irgendwann die Konsole — um zu sehen,
+ * Wer diese Seite fachlich prüft, öffnet irgendwann die Konsole, um zu sehen,
  * ob dort Fehler stehen. Das ist der Moment, in dem man antworten kann, und es
  * ist die einzige Stelle der Seite, an der ausschließlich Fachleute lesen.
  *

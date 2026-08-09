@@ -67,12 +67,12 @@ export function ShotCarousel({
       /* Am rechten Anschlag zählt das letzte Bild, egal wo seine Kante liegt.
          --------------------------------------------------------------------
          Die Messung oben sucht das Bild, dessen linke Kante der Kante der Spur
-         am nächsten ist — richtig, denn dort rastet der Bildlauf ein. Nur das
+         am nächsten ist, richtig, denn dort rastet der Bildlauf ein. Nur das
          letzte Bild rastet nie ein: Die Spur ist vorher zu Ende, und es bleibt
          rechts stehen.
 
          Gemessen bei 1440 px über acht Aufnahmen: Nach dem sechsten Klick war
-         die Spur am Anschlag, das achte Bild vollständig zu sehen — und der
+         die Spur am Anschlag, das achte Bild vollständig zu sehen, und der
          Zähler blieb bei „7 von 8“. Der Weiter-Knopf blieb dabei aktiv, weil
          er auf `aktiv === shots.length - 1` prüft, und tat bei jedem weiteren
          Druck nichts. Ein Knopf, der sichtbar zu haben ist und nichts bewirkt,
@@ -184,7 +184,7 @@ export function ShotCarousel({
         {/* Der Zähler sagt die neue Stelle an, nicht nur die alte.
 
             Er stand als stummer Text daneben: Wer „Nächstes Bild“ drückt, hörte
-            die Beschriftung des Knopfes und erfuhr nie, wo er gelandet ist —
+            die Beschriftung des Knopfes und erfuhr nie, wo er gelandet ist:
             gemessen am 02.08.2026, `aria-live` war nicht gesetzt. Die Punktreihe
             darüber ist `aria-hidden`, sie kann es also nicht übernehmen.
 

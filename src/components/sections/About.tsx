@@ -58,7 +58,7 @@ export function About() {
                 zugleich. Unter 640 px stapelt es wie vorher.
 
                 Der Grund der Aufnahme ist die Farbe der Seite, nicht die Wand
-                dahinter — siehe `portraitPrint` in site.ts. Auf fast Schwarz
+                dahinter, siehe `portraitPrint` in site.ts. Auf fast Schwarz
                 war die helle Wand die einzige helle Fläche der ganzen Seite
                 und damit das, was man zuerst sah. */}
             {about.portrait ? (
@@ -233,7 +233,7 @@ export function About() {
                                   /* Volle Deckkraft statt /70: Mit der
                                      Abschwaechung kam das Datum auf
                                      #5f5f67 ueber #08080a und damit auf
-                                     3,16:1 — unter den 4,5:1, die WCAG fuer
+                                     3,16:1, unter den 4,5:1, die WCAG fuer
                                      10-px-Text verlangt. Gemessen mit
                                      axe-core an der gebauten Seite, zehn
                                      Stellen auf der Startseite je Sprache. */
@@ -289,7 +289,7 @@ export function About() {
               <Reveal as="li" key={item.name} delay={i * 0.05}>
                 {/* Wie bei den Artikelkarten: Der Name des Verweises ist der
                     Paketname. Ohne `aria-labelledby` wurde die ganze Karte
-                    zum Namen — gemessen bis zu 32 Wörter, mit Beschreibung
+                    zum Namen, gemessen bis zu 32 Wörter, mit Beschreibung
                     und Kennzeile. Die Fläche bleibt vollständig anklickbar. */}
                 <a
                   href={item.href}

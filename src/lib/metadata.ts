@@ -75,8 +75,8 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       type: "website",
       // en_GB, nicht en_US.
       //
-      // Die englische Fassung ist durchgehend britisch geschrieben — licence,
-      // fibre, catalogue, recognise — und rechnet mit `en-GB`: Datumsangaben
+      // Die englische Fassung ist durchgehend britisch geschrieben, licence,
+      // fibre, catalogue, recognise, und rechnet mit `en-GB`: Datumsangaben
       // als "3 August 2026", Tausender mit Komma. Die Metadaten meldeten
       // trotzdem amerikanisches Englisch an jedes System, das eine Vorschau
       // baut. Die Seite sucht Stellen in Berlin und remote in der EU; das ist
@@ -122,7 +122,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
       },
       // Der Feed gehört auf jede Seite, nicht nur auf die Artikelübersicht.
       //
-      // Ein Feed-Leser prüft die Seite, auf der man gerade steht — und das ist
+      // Ein Feed-Leser prüft die Seite, auf der man gerade steht, und das ist
       // der Artikel, denn der wird geteilt. Gemessen trug ihn nur /artikel und
       // /en/articles: Wer von einem Artikel aus abonnieren wollte, fand nichts.
       // Je Sprache der eigene, sonst bekommt ein englischer Leser deutsche
@@ -138,7 +138,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
  * Als Funktion, weil vier Seiten ihr `alternates` vollständig selbst setzen
  * müssen: Next ersetzt das geerbte Objekt, statt es zu mischen. Ohne diese
  * Stelle stünde die Angabe fünfmal da, und auf /artikel fehlte der Titel
- * bereits — im Leser stand dort die nackte Adresse.
+ * bereits, im Leser stand dort die nackte Adresse.
  */
 const SEITE_URL = site.url;
 
@@ -163,7 +163,7 @@ export function feedFuer(lang: "de" | "en") {
  * Als Funktion, weil sechs Seiten ihr `openGraph` vollständig selbst setzen:
  * Next ersetzt das geerbte Objekt, statt es zu mischen, und ein fehlendes
  * `images` heißt dann kein Bild. Genau das stand hier schon einmal im
- * Kommentar — für die Wurzel-Layouts gelöst, an den Unterseiten wiederholt.
+ * Kommentar, für die Wurzel-Layouts gelöst, an den Unterseiten wiederholt.
  *
  * Gemessen an der ausgelieferten Seite trugen /artikel, /onepager,
  * /impressum, /datenschutz und ihre englischen Entsprechungen kein
@@ -172,11 +172,11 @@ export function feedFuer(lang: "de" | "en") {
 /**
  * Der Titel einer Vorschaukarte, wie ihn der Browsertitel auch bildet.
  *
- * Next hängt den Namen über `title.template` an — aber nur an `<title>`, nicht
+ * Next hängt den Namen über `title.template` an, aber nur an `<title>`, nicht
  * an `openGraph.title`. Wer für eine Seite ein eigenes `openGraph` setzt,
  * bekommt dort deshalb den nackten Seitentitel. Gemessen an der
  * ausgelieferten Seite hieß die Karte des Kurzprofils „Kurzprofil“, die des
- * Impressums „Impressum“ — ohne Namen, ohne Rolle, ohne Zusammenhang.
+ * Impressums „Impressum“, ohne Namen, ohne Rolle, ohne Zusammenhang.
  *
  * Ausgerechnet das Kurzprofil ist die Seite, die weitergereicht wird. Wer sie
  * in einen Kanal stellt, stellt eine Karte hinein, auf der „Kurzprofil“ steht.
@@ -192,7 +192,7 @@ export function kartenTitel(titel: string) {
  *
  * Next mischt Seitenmetadaten nicht in die des Layouts, es ersetzt sie je
  * Feld. Wer für eine Seite ein eigenes `openGraph` setzt und `twitter` nicht
- * anfasst, behält dort den Wert aus dem Layout — und der beschreibt die
+ * anfasst, behält dort den Wert aus dem Layout, und der beschreibt die
  * Startseite.
  *
  * Gemessen an den gebauten Seiten am 08.08.2026: 16 von 18 Seiten meldeten an
@@ -222,7 +222,7 @@ export function vorschaukarten({
    * Dritter Fall derselben Ursache: Next ersetzt geerbte Metadaten je Feld,
    * und wer ein eigenes `openGraph` setzt, verliert das `url` des Layouts.
    * Gemessen an den ausgelieferten Seiten am 08.08.2026 trugen genau zwei von
-   * achtzehn ein `og:url` — die beiden Startseiten, die keines selbst setzen.
+   * achtzehn ein `og:url`, die beiden Startseiten, die keines selbst setzen.
    *
    * Was daran hängt: Wer einen Artikel auf LinkedIn stellt, teilt eine Adresse
    * mit `?trk=…` daran. Ohne `og:url` ist das für jeden Sammler die Kennung
@@ -238,13 +238,13 @@ export function vorschaukarten({
   /**
    * Die Route bringt ein eigenes `opengraph-image` mit.
    *
-   * Next füllt beide Karten aus einer solchen Datei von allein — aber nur,
+   * Next füllt beide Karten aus einer solchen Datei von allein, aber nur,
    * solange die Metadaten kein `images` setzen. Ein gesetztes Feld gewinnt,
    * und zwar still.
    *
    * Gemessen an den ausgelieferten Artikelseiten am 08.08.2026: Jeder der
    * zehn Artikel erzeugt zur Bauzeit eine eigene Karte mit seinem Titel, und
-   * jeder meldete an X und LinkedIn trotzdem `/opengraph-image` — das
+   * jeder meldete an X und LinkedIn trotzdem `/opengraph-image`, das
    * allgemeine Bild mit dem Alternativtext „Domenic Moran – AI Product
    * Engineer". Der Erzeuger lief, das Ergebnis lag im Bau, und niemand sah
    * es je. Betroffen war genau das, was geteilt wird.

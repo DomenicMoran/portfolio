@@ -5,7 +5,7 @@
  * Sie behauptet etwas Nachprüfbares: „Der Lauf prüft jede der 4.096 möglichen
  * Zusammenstellungen und nimmt die mit dem meisten Eiweiß, die unter dem Ziel
  * bleibt." Wer das liest, soll daraus schließen, dass hier jemand rechnen
- * kann — eine Demo, die daneben liegt, sagt das Gegenteil, und niemand würde
+ * kann, eine Demo, die daneben liegt, sagt das Gegenteil, und niemand würde
  * es bemerken. Die Zahlen sehen in jedem Fall plausibel aus.
  *
  * Gemessen wird an der ausgelieferten Seite und nicht an der Funktion im
@@ -52,7 +52,7 @@ await seite.waitForTimeout(900);
  * Die Gerichte, wie die Seite sie zeigt.
  *
  * Aus den Schaltflächen der Demo gelesen: Jede trägt Name und Kalorien. Die
- * übrigen Werte stehen nicht im sichtbaren Text — sie kommen aus dem
+ * übrigen Werte stehen nicht im sichtbaren Text, sie kommen aus dem
  * Datensatz, den der Lauf gleich daneben aus der Seite holt.
  */
 const daten = await seite.evaluate(() => {
@@ -76,7 +76,7 @@ if (!daten) {
   process.exit(1);
 }
 
-/* Die Werte je Gericht stehen im Quelltext der Demo — sichtbar ist nur die
+/* Die Werte je Gericht stehen im Quelltext der Demo, sichtbar ist nur die
    Kalorienzahl. Gelesen wird die gebaute Datei, nicht die Komponente: Was
    ausgeliefert wird, entscheidet. */
 const { readFileSync } = await import("node:fs");
@@ -128,13 +128,13 @@ function optimum(ziel) {
 }
 
 /* Der Regler ist ein `input[type=range]`. Gesetzt wird sein Wert und ein
-   `input`-Ereignis ausgelöst — ein Klick träfe je nach Breite einen anderen
+   `input`-Ereignis ausgelöst, ein Klick träfe je nach Breite einen anderen
    Wert. */
 for (const ziel of ZIELE) {
   const ergebnis = await seite.evaluate(async (ziel) => {
     /* Den Regler in seiner Demo suchen, nicht auf der ganzen Seite: Der erste
        `input[type=range]` des Dokuments gehört der Gebetszeiten-Demo. Wer ihn
-       nimmt, verstellt den Tag und bekommt sechsmal dasselbe Ergebnis — der
+       nimmt, verstellt den Tag und bekommt sechsmal dasselbe Ergebnis, der
        erste Anlauf meldete deshalb fünf Abweichungen, die keine waren. */
     const demo = [...document.querySelectorAll("section, div")]
       .filter(
@@ -206,7 +206,7 @@ for (const ziel of ZIELE) {
    Die zweite Demo: Gebetszeiten
 
    Auch sie rechnet im Browser, mit derselben Bibliothek wie die ausgelieferte
-   App. Ein zweites Mal nachzurechnen wäre hier sinnlos — dann stünde dieselbe
+   App. Ein zweites Mal nachzurechnen wäre hier sinnlos, dann stünde dieselbe
    Formel zweimal da. Was sich prüfen lässt, ist die Ordnung, die keine
    Rechnung verletzen darf: Fadschr kommt vor dem Sonnenaufgang, der vor
    Dhuhr, der vor Asr, der vor Maghrib, der vor Ischa. Eine vertauschte
@@ -216,7 +216,7 @@ for (const ziel of ZIELE) {
    Geprüft über vier Orte, vier Verfahren für hohe Breiten und fünf Tage
    quer durchs Jahr. Tromsø ist dabei der Fall, um den es geht: Zur Sonnwende
    gibt es dort keine Dämmerung, in der Polarnacht keinen Sonnenaufgang. Die
-   Demo schreibt dann „nicht berechnet", und das ist die richtige Antwort —
+   Demo schreibt dann „nicht berechnet", und das ist die richtige Antwort:
    eine erfundene Uhrzeit wäre die falsche. */
 const ORTE = ["Berlin", "Istanbul", "Kairo", "Tromsø"];
 const VERFAHREN = ["wie in der App", "winkelbasiert", "Siebtel der Nacht", "Mitte der Nacht"];
@@ -300,7 +300,7 @@ for (const ort of ORTE) {
         if (vorher !== null && minuten < vorher) {
           funde.push(
             `${wo}: ${vorherName} steht auf ${String(Math.floor(vorher / 60)).padStart(2, "0")}:` +
-              `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ${paar.wert} — ` +
+              `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ${paar.wert}, ` +
               `die Reihenfolge der Gebetszeiten liegt fest.`,
           );
         }
@@ -316,7 +316,7 @@ for (const ort of ORTE) {
 
    Fünf Stichtage decken die Jahreszeiten ab, aber nicht die zwei Wochen, in
    denen es schwierig wird. Gemessen an der ausgelieferten Seite standen in
-   Tromsø 21 Zeiten in unmöglicher Reihenfolge — am 16. November Asr um 11:25
+   Tromsø 21 Zeiten in unmöglicher Reihenfolge, am 16. November Asr um 11:25
    vor Dhuhr um 11:34, am 20. Januar Asr um 14:44 nach Maghrib um 13:22. Alle
    lagen an den Rändern der Polarnacht, also zwischen den Stichtagen: Der Lauf
    war grün, während die Demo falsche Zeiten zeigte.
@@ -328,7 +328,7 @@ for (const ort of ORTE) {
 
    Der Regler wird im Browser durchgefahren und nicht je Tag von außen
    gesetzt: 365 Runden über die Verbindung kosteten Minuten, hier ist es ein
-   Aufruf je Verfahren. Die Wartezeit von 60 ms je Tag ist gemessen — darunter
+   Aufruf je Verfahren. Die Wartezeit von 60 ms je Tag ist gemessen, darunter
    liest der Lauf denselben Stand zweimal.
    ------------------------------------------------------------------------ */
 let jahrestage = 0;
@@ -401,7 +401,7 @@ for (const verfahren of VERFAHREN) {
           `Tromsø / ${verfahren} / Tag ${tag}: ${vorherName} steht auf ` +
             `${String(Math.floor(vorher / 60)).padStart(2, "0")}:` +
             `${String(vorher % 60).padStart(2, "0")} und ${paar.name} auf ` +
-            `${paar.wert} — die Reihenfolge der Gebetszeiten liegt fest.`,
+            `${paar.wert}, die Reihenfolge der Gebetszeiten liegt fest.`,
         );
       }
       vorher = minuten;
@@ -420,14 +420,14 @@ console.log(
    Die Quellenangabe unter der Kachel
 
    Sie nennt drei nachprüfbare Dinge: „adhan 4.4.4 (MIT), Methode 13 Diyanet,
-   Schule 0 schafiitisch." Das ist keine Beschreibung, sondern eine Zusage —
+   Schule 0 schafiitisch." Das ist keine Beschreibung, sondern eine Zusage:
    wer die Zahlen nachrechnen will, braucht genau diese drei Angaben, und mit
    einer falschen käme er auf andere Zeiten.
 
    Alle drei stehen im eigenen Projekt und lassen sich ohne die Produktivrepos
    prüfen: die Version in `node_modules`, Methode und Schule im Quelltext der
    Kachel. `adhan` steht in `package.json` mit `^4.4.4`, und dieses Zeichen
-   erlaubt jede 4.x — ein `npm update` hebt die installierte Fassung, ohne die
+   erlaubt jede 4.x, ein `npm update` hebt die installierte Fassung, ohne die
    Angabe auf der Seite anzufassen.
    ------------------------------------------------------------------------ */
 {
@@ -475,7 +475,7 @@ console.log(
 /* Und dieselben Zahlen auf der englischen Fassung.
 
    Bis hierher schlug dieser Lauf die englische Startseite nie auf. Die
-   Rechnung dahinter ist dieselbe — es ist derselbe Code —, die Vorführung
+   Rechnung dahinter ist dieselbe, es ist derselbe Code, die Vorführung
    aber nicht: Ein anderer Vorgabewert, ein anderer Datensatz oder ein Reiter,
    der nur in einer Fassung vorausgewählt ist, ergäbe zwei Demos, die
    verschiedene Ergebnisse zeigen und beide für sich richtig rechnen.
@@ -483,7 +483,7 @@ console.log(
    Verglichen werden die Kalorienangaben ohne Trennzeichen und die Zahl der
    gewählten Gerichte. Das Trennzeichen selbst bleibt bewusst draußen: Auf
    Deutsch steht dort „2.200", auf Englisch „2,200", und ob das stimmt, misst
-   `check:typography` genauer — gegengeprüft mit deutscher Formatierung auf
+   `check:typography` genauer, gegengeprüft mit deutscher Formatierung auf
    der englischen Seite, gemeldet als „Tausender trennt das Englische mit
    einem Komma". Zweimal dieselbe Prüfung wäre eine zu viel. */
 {

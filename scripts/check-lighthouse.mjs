@@ -4,7 +4,7 @@
  *
  * Unter den quelloffenen Paketen steht dieses Portfolio selbst, und daneben
  * die Angabe „TypeScript · Lighthouse 100 Barrierefreiheit". Das ist die
- * einzige Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt — und sie
+ * einzige Kennzahl der Seite, die auf ein fremdes Werkzeug zeigt, und sie
  * war als einzige nicht nachgerechnet. `check:a11y` prüft mit axe gegen
  * WCAG 2.2 AA; daraus folgt der Lighthouse-Wert nahe, aber nicht zwingend:
  * Die Kategorie enthält Prüfungen, die axe in dieser Zusammenstellung nicht
@@ -34,7 +34,7 @@ const inhalt = readFileSync("src/content/site.ts", "utf8");
 const treffer = inhalt.match(/Lighthouse (\d+) Barrierefreiheit/);
 if (!treffer) {
   console.log(
-    "Die Seite nennt keine Lighthouse-Zahl mehr — nichts zu prüfen.",
+    "Die Seite nennt keine Lighthouse-Zahl mehr, nichts zu prüfen.",
   );
   process.exit(0);
 }
@@ -59,7 +59,7 @@ try {
       encoding: "utf8",
       stdio: ["ignore", "ignore", "ignore"],
       /* Lighthouse startet Chrome selbst. Ohne diesen Pfad sucht es eine
-         Installation im System, die auf einem Bauserver fehlt — der von
+         Installation im System, die auf einem Bauserver fehlt, der von
          Playwright mitgebrachte Browser ist ohnehin da. */
       env: { ...process.env, CHROME_PATH: chromium.executablePath() },
       timeout: 180000,
@@ -92,7 +92,7 @@ const durchgefallen = Object.values(daten.audits).filter(
 
 if (gemessen < behauptet) {
   console.error(
-    `Die Seite nennt Lighthouse ${behauptet}, gemessen sind ${gemessen}.\n`,
+    `Die Seite nennt Lighthouse ${behauptet}: gemessen sind ${gemessen}.\n`,
   );
   for (const a of durchgefallen) {
     console.error(`  ${a.id}: ${a.title}`);

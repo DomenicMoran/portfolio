@@ -19,7 +19,7 @@ export const metadata: Metadata = {
      Gemessen an der ausgelieferten Seite trugen deshalb alle Seiten außer den
      zehn Artikelseiten denselben Kartentitel: „Domenic Moran – AI Product
      Engineer". Wer die Artikelübersicht teilte, zeigte damit die Startseite.
-     Titel und Text stehen längst da — sie wurden nur nicht weitergereicht.
+     Titel und Text stehen längst da, sie wurden nur nicht weitergereicht.
   */
   // Beide Karten aus einer Angabe: Next ersetzt geerbte Metadaten je Feld,
   // und ein eigenes `openGraph` ohne `twitter` ließ dort den Wert der

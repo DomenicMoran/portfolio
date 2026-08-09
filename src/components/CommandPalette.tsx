@@ -30,7 +30,7 @@ type Action = {
 /**
  * Die ⌘K-Palette. Zwei Gründe, warum sie ihren Platz im Bündel wert ist: Jede
  * Aktion ist auch über die gewöhnliche Navigation erreichbar, sie ist also
- * reine Zugabe — und das Publikum, Entwickler, drückt ⌘K tatsächlich.
+ * reine Zugabe, und das Publikum, Entwickler, drückt ⌘K tatsächlich.
  */
 /** Feste Kennungen, damit `aria-controls` und `aria-activedescendant` auflösen. */
 const LISTEN_ID = "befehlspalette-liste";
@@ -132,7 +132,7 @@ export function CommandPalette({
       },
       /* Die Kurzfassung als Seite gehört ebenso hinein.
          Die Palette führt jede Seite dieser Site, bis hin zu Impressum und
-         Datenschutz — nur den One-Pager kannte sie ausschließlich als Datei
+         Datenschutz, nur den One-Pager kannte sie ausschließlich als Datei
          zum Herunterladen. Wer ihn lesen und nicht speichern will, hatte hier
          keinen Eintrag, und verlinkt war die Seite bis eben nirgends. */
       {
@@ -145,7 +145,7 @@ export function CommandPalette({
       /* Der Kontaktbereich stand nicht in der Liste.
          Die Kopfleiste bietet ihn als eigenen Knopf an, die Palette bildet
          aber nur `navItems` ab, und dort steht er nicht. Wer „Kontakt“ tippte,
-         bekam „Nichts gefunden“ — auf einer Seite, deren Zweck es ist, dass
+         bekam „Nichts gefunden“, auf einer Seite, deren Zweck es ist, dass
          jemand Kontakt aufnimmt. */
       {
         id: "nav-contact",
@@ -186,7 +186,7 @@ export function CommandPalette({
     }
 
     /* Die beiden Rechtsseiten gehoeren dazu.
-       Sie stehen in der Fusszeile jeder Seite, wie § 5 DDG es verlangt — in
+       Sie stehen in der Fusszeile jeder Seite, wie § 5 DDG es verlangt, in
        der Palette fand „Impressum" trotzdem nichts. Wer sie mit der Tastatur
        sucht, sucht sie meistens gezielt. */
     list.push(
@@ -270,7 +270,7 @@ export function CommandPalette({
       Der Fokus bleibt im Dialog.
 
       Gemessen am 03.08.2026 an der ausgelieferten Seite: Bei geöffneter
-      Palette führte die zweite Tabulatortaste hinaus in die Seite dahinter —
+      Palette führte die zweite Tabulatortaste hinaus in die Seite dahinter:
       „Projekte ansehen", „Für Recruiter", die Bildstrecke der ersten
       Fallstudie. Sichtbar verdeckt der Dialog diese Elemente, erreichbar
       blieben sie trotzdem. `aria-modal` sagt Vorleseprogrammen, dass der Rest
@@ -279,7 +279,7 @@ export function CommandPalette({
       Nicht über eine Liste der fokussierbaren Elemente: Die Ergebnisliste ist
       ein Scrollbereich, und Chrome macht solche Bereiche seit Version 127 von
       sich aus tastaturfokussierbar, ohne `tabindex`. Ein Auswahlausdruck
-      übersieht sie deshalb — gemessen sprang der Fokus genau von dort nach
+      übersieht sie deshalb: gemessen sprang der Fokus genau von dort nach
       draußen. Stattdessen wird beobachtet, wo er landet: Verlässt er den
       Dialog, holt ihn das Eingabefeld zurück. Das gilt für jede Art, ihn zu
       bewegen, nicht nur für die Tabulatortaste.
@@ -303,7 +303,7 @@ export function CommandPalette({
 
      React räumt Effekte in der Reihenfolge auf, in der sie stehen. Lag die
      Rückgabe vorher, holte der Fokuswächter den gerade zurückgegebenen Fokus
-     sofort wieder ins Eingabefeld — und weil der Dialog im selben Moment
+     sofort wieder ins Eingabefeld, und weil der Dialog im selben Moment
      verschwand, landete er im `body`. Gemessen: „nach Escape: BODY“ statt am
      Knopf, von dem aus geöffnet wurde.
   */
@@ -315,12 +315,12 @@ export function CommandPalette({
 
       Gemessen am 02.08.2026: Nach `Escape` stand der Fokus im `body`. Wer die
       Palette mit der Tastatur öffnet und wieder schließt, landete damit am
-      Anfang des Dokuments und musste sich erneut durch alles tabben — genau
+      Anfang des Dokuments und musste sich erneut durch alles tabben, genau
       dorthin, wo er vor dem Öffnen schon war.
     */
     const vorher = document.activeElement as HTMLElement | null;
 
-    // Fokus erst, wenn der Auftritt beginnt — sonst scrollt Safari unter iOS.
+    // Fokus erst, wenn der Auftritt beginnt, sonst scrollt Safari unter iOS.
     const id = window.setTimeout(() => inputRef.current?.focus(), 60);
 
     return () => {
@@ -374,7 +374,7 @@ export function CommandPalette({
                   Ohne diese vier Angaben blättert man blind.
 
                   Die Pfeiltasten verschieben die Markierung sichtbar, der
-                  Fokus bleibt aber im Eingabefeld — das ist das richtige
+                  Fokus bleibt aber im Eingabefeld, das ist das richtige
                   Muster. Eine Vorlesesoftware erfährt davon jedoch nur über
                   `aria-activedescendant`. Ohne sie hörte man beim Blättern
                   nichts, gemessen über drei Tastendrücke am 02.08.2026.
@@ -396,7 +396,7 @@ export function CommandPalette({
 
                 Das Combobox-Muster liest die aktive Option vor; wie viele es
                 davon gibt, sagt es nicht, und bei null Treffern gibt es keine
-                aktive — dann steht sichtbar „Nichts gefunden.“ da und ein
+                aktive, dann steht sichtbar „Nichts gefunden.“ da und ein
                 Vorleseprogramm schweigt. Der Bereich hängt von Anfang an im
                 Baum, weil ein Bereich, der erst mit seinem Inhalt erscheint,
                 von einem Teil der Programme verschluckt wird. */}

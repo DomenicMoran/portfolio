@@ -49,7 +49,7 @@ export function generateStaticParams() {
  *
  *  ist ein fester Wert und stand deshalb unter jeder der
  * fünf Karten gleich: „Artikel von Domenic Moran". Er ist das, was ein
- * Vorleseprogramm ansagt, wenn die Karte in einem Verlauf auftaucht — und
+ * Vorleseprogramm ansagt, wenn die Karte in einem Verlauf auftaucht, und
  * damit dasselbe Argument wie beim Titel im Bild: Ohne ihn erfährt jemand
  * nur, dass es um dieses Portfolio geht, nicht worum es geht.
  */

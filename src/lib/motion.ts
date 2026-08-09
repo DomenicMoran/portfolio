@@ -12,7 +12,7 @@ export const ease = {
 
 /*
    Hier standen einmal vier weitere Werte: `springSoft`, `riseIn`, `stagger`
-   und `maskWord`. Keiner davon wurde je benutzt — die Bauteile setzen ihre
+   und `maskWord`. Keiner davon wurde je benutzt, die Bauteile setzen ihre
    Übergänge selbst und nehmen von hier nur die Kurve. Vier dokumentierte
    Varianten, die nichts tun, sind für den, der die Datei liest, vier Fragen
    ohne Antwort.

@@ -3,13 +3,13 @@
  * Prüft, dass jede Ausfuhr aus `src/` auch einen Abnehmer hat.
  *
  * Ein `export` ist eine Aussage: „Das hier wird woanders gebraucht." Wer den
- * Quelltext liest, folgt ihr — und sucht nach der Stelle, die es benutzt.
+ * Quelltext liest, folgt ihr, und sucht nach der Stelle, die es benutzt.
  * Gemessen am 03.08.2026 stimmte die Aussage sechsmal nicht: `ARCHITECTURES`,
  * `ARCHITEKTUR_EN`, `bauzeit`, `slugPaare`, `Akzent` und `OgKarte` standen
  * ausgeführt da und wurden nur in ihrer eigenen Datei benutzt. Nichts davon
  * war kaputt; es war nur sechsmal eine falsche Fährte.
  *
- * Der Lauf zählt Vorkommen des Namens in allen anderen Dateien — auch in
+ * Der Lauf zählt Vorkommen des Namens in allen anderen Dateien, auch in
  * `scripts/`, denn `build-favicon.mjs` liest die Form der Marke aus
  * `src/lib/mark.tsx` mit einem regulären Ausdruck heraus, ohne sie zu
  * importieren. Ein Namensvergleich findet das; ein Import-Graph nicht.
@@ -19,8 +19,8 @@
  * Frage zu beantworten, die vierzig Zeilen beantworten.
  *
  * Was hier **nicht** geprüft wird: Dateien unter `src/app/`. Dort sind
- * Ausfuhren die Schnittstelle zu Next — `metadata`, `generateStaticParams`,
- * die Vorgabe-Ausfuhr einer Seite —, und niemand importiert sie.
+ * Ausfuhren die Schnittstelle zu Next, `metadata`, `generateStaticParams`,
+ * die Vorgabe-Ausfuhr einer Seite, und niemand importiert sie.
  *
  *   npm run check:exports
  */

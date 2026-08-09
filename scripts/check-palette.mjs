@@ -4,11 +4,11 @@
  *
  * Sie ist das einzige Bedienelement, das die ganze Seite erschließt: Suche
  * über Abschnitte, Fallstudien und Artikel, erreichbar mit Strg+K von überall.
- * Wer sie benutzt, hat es eilig — ein Recruiter, der etwas Bestimmtes sucht.
+ * Wer sie benutzt, hat es eilig, ein Recruiter, der etwas Bestimmtes sucht.
  *
  * Und sie ist die Sorte Bauteil, die stumm versagt. Ihre Liste kommt aus dem
  * Inhalt; verschiebt sich dort ein Schlüssel, liefert die Suche nichts mehr
- * und meldet „Nichts gefunden.“ — was aussieht wie eine Antwort und keine ist.
+ * und meldet „Nichts gefunden.“, was aussieht wie eine Antwort und keine ist.
  * Kein anderer Lauf sieht sie: `check:a11y` prüft den geladenen Zustand,
  * `check:focus` die Reihenfolge beim Tabben, `check:links` die Adressen im
  * Dokument. Eine Palette muss man bedienen.
@@ -31,7 +31,7 @@ import { starteServer } from "./lib/local-server.mjs";
  * Getrennt, weil die Titel es sind: Der Kassen-Artikel heißt auf Englisch
  * „German till law in practice", und „kassen“ kommt dort in keinem Wort vor.
  * Der erste Entwurf suchte beidseitig danach und meldete auf `/en` einen
- * Fehler der Palette — es war einer des Suchworts. Der zweite nahm „till“ und
+ * Fehler der Palette, es war einer des Suchworts. Der zweite nahm „till“ und
  * traf damit auch „still“ im Titel eines anderen Artikels: Die Suche geht
  * über Teilzeichenketten, und das Wort muss eindeutig sein.
  */
@@ -197,5 +197,5 @@ if (funde.length > 0) {
 
 console.log(
   `Die Befehlspalette findet und führt hin: ${geprueft} Schritte über beide ` +
-    `Sprachfassungen — öffnen, leerer Fall, schließen, ${SUCHEN.de.length} Suchen je Fassung.`,
+    `Sprachfassungen, öffnen, leerer Fall, schließen, ${SUCHEN.de.length} Suchen je Fassung.`,
 );

@@ -13,7 +13,7 @@ import type { ReactNode } from "react";
  * trotzdem jede Einblendung animieren.
  *
  * `reducedMotion="user"` behält Übergänge von Deckkraft und Farbe, lässt aber
- * Verschiebung und Layout-Animation weg — genau die Unterscheidung, um die es
+ * Verschiebung und Layout-Animation weg, genau die Unterscheidung, um die es
  * bei dieser Einstellung geht: Bewegung stört, Veränderung nicht.
  *
  * Die Kinder laufen als Steckplatz durch, damit Seiten oberhalb dieser Grenze

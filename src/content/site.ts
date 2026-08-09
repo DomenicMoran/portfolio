@@ -10,7 +10,7 @@ import {
 } from "@/lib/duration";
 
 /**
- * Wie lange die vier Systeme in Produktion entstehen — gerechnet, nicht getippt.
+ * Wie lange die vier Systeme in Produktion entstehen, gerechnet, nicht getippt.
  *
  * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
  * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
@@ -29,7 +29,7 @@ const LERNBEGINN = "2022-07-01";
 
 const monate = monateZwischen(new Date(ERSTER_COMMIT), new Date(verified.date));
 
-/** "vier Monaten", "fünf Monaten", … — nie ein eingefrorener Wert. */
+/** "vier Monaten", "fünf Monaten", …, nie ein eingefrorener Wert. */
 const bauzeit = `${alsWort(monate)} Monat${monate === 1 ? "" : "en"}`;
 
 const bauzeitNominativ = grossErstes(
@@ -44,8 +44,8 @@ const lernzeit = grossErstes(
  * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
  *
  * Alles mit `TODO(domenic)` ist ein Wert, den nur der Inhaber liefern kann.
- * Eine Sammelliste dafür gibt es nicht mehr — siehe AGENTS.md. Die Komponenten sind so gebaut,
- * dass ein fehlender Wert — leer oder null — das Element entfernt, statt einen
+ * Eine Sammelliste dafür gibt es nicht mehr, siehe AGENTS.md. Die Komponenten sind so gebaut,
+ * dass ein fehlender Wert, leer oder null, das Element entfernt, statt einen
  * Platzhalter zu rendern: Eine offene Frage darf auf einer Seite, deren ganzer
  * Zweck Glaubwürdigkeit ist, nie als sichtbares „Lorem ipsum" enden.
  */
@@ -81,21 +81,21 @@ export const site = {
     label: "Offen für eine Festanstellung",
     // Die drei Angaben, nach denen ein Recruiter vor dem Anruf sucht: wo, ab
     // wann, in welcher Sprache. `detail` stand hier schon mit dem Hinweis, es
-    // beantworte "wo und ab wann" — es beantwortete nur das Wo, und auf dem
+    // beantworte "wo und ab wann", es beantwortete nur das Wo, und auf dem
     // Kurzprofil fehlten Eintritt und Sprachen ganz. Beide standen bis dahin
     // ausschließlich im Faktenblatt der Startseite, das nicht mitgedruckt
     // wird und niemanden erreicht, der nur das Blatt bekommt.
     detail: "Berlin · remote in der EU · hybrid",
     /* „innerhalb von" und nicht „nach bis zu": Die englische Fassung sagt seit
        jeher „start within three months", die deutsche las sich als frühestens.
-       Dieselbe Auskunft, zwei Richtungen — und die deutsche war die, die ein
+       Dieselbe Auskunft, zwei Richtungen, und die deutsche war die, die ein
        Personalbereich als Verzögerung liest. */
     entry: "Gespräche jederzeit · Eintritt innerhalb von drei Monaten",
     languages: "Deutsch (Muttersprache) · Englisch",
     /* Dieselbe Spanne wie in der Faktenkachel, hier als einzige Quelle.
 
        Sie stand nur auf der Seite. Das Kurzprofil ist aber das Blatt, das
-       weitergereicht wird — und es nennt Rolle, Ort, Eintritt und Sprachen,
+       weitergereicht wird, und es nennt Rolle, Ort, Eintritt und Sprachen,
        also alles außer der Zahl, nach der als nächstes gefragt wird. Wer nur
        das Blatt bekommt, müsste danach zurückfragen; genau das soll es
        ersparen. Neu veröffentlicht wird damit nichts, die Spanne steht
@@ -121,7 +121,7 @@ export const about = {
    *
    * Auf einer Seite, die mit Belegbarkeit argumentiert, wäre ein erfundenes
    * Porträt der eine Fehler, der alles andere infrage stellt. Solange keine
-   * Aufnahme vorlag, blieb dieses Feld leer und das Bildelement entfiel — die
+   * Aufnahme vorlag, blieb dieses Feld leer und das Bildelement entfiel, die
    * Sektion sah dadurch vollständig aus statt lückenhaft.
    *
    * Die Datei ist quadratisch, weil dieselbe Aufnahme auch als Profilbild auf
@@ -326,7 +326,7 @@ export const hero = {
   // Hier stand "Fullstack Product Engineer", während Titel, Kopfleiste,
   // Lebenslauf und das GitHub-Profil "AI Product Engineer" sagen. Auf dem
   // ersten Bildschirm standen damit zwei Berufsbezeichnungen für dieselbe
-  // Person — das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
+  // Person, das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
   // ohnehin selbst, mit der Migration und dem Impressum in einer Aufzählung.
   lede: `AI Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
@@ -357,7 +357,7 @@ export const hero = {
    `CaseStudy` kam aus `types.ts` und stand hier ein zweites Mal.
 
    Zwei Erklärungen für dieselbe Sache: Die hiesige trug zusätzlich ein Feld
-   `status` mit den Werten "live", "beta" und "tool" — gesetzt an allen vier
+   `status` mit den Werten "live", "beta" und "tool", gesetzt an allen vier
    Fallstudien, gelesen an keiner Stelle. Gerendert wird `statusLabel`. Der
    Preis der Doppelung war sichtbar: Ein Feld, das in der einen Erklärung
    ergänzt wird, fehlt in der anderen, und der Typecheck meldet es erst beim
@@ -449,7 +449,7 @@ export const caseStudies: CaseStudy[] = [
       },
       /* Nachgeprüft am 08.08.2026: Beide Einträge sind öffentlich. Apple
          unter id6791867298, Google Play unter dem Paketnamen
-         de.salatibox.de mit dem Titel „Salati — Gebetszeiten & Koran".
+         de.salatibox.de mit dem Titel „Salati. Gebetszeiten & Koran".
          Am 01.08.2026 antwortete Play auf denselben Paketnamen noch mit
          404, und die Zeile stand deshalb nicht hier; das Statuswort nannte
          nur Apple. Eine Seite, die weniger sagt als wahr ist, wird nicht
@@ -467,7 +467,7 @@ export const caseStudies: CaseStudy[] = [
       /* Die Fernseher-Fassung ist ein eigener Store-Eintrag.
 
          Nachgeprüft am 08.08.2026: `de.salatibox.tv` antwortet mit 200 und
-         trägt den Titel „Salati TV — Gebetszeiten". Die Fallstudie nennt
+         trägt den Titel „Salati TV. Gebetszeiten". Die Fallstudie nennt
          Android TV seit Langem als eine der vier Geräteklassen; verlinkt war
          die App nicht, und damit stand die einzige Geräteklasse ohne Beleg
          da, die man nicht auf dem Telefon nachsehen kann. */
@@ -578,7 +578,7 @@ export const caseStudies: CaseStudy[] = [
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       /* „dreistufig" stimmte bis zum 01.05.2026: Resend, Migadu, SES.
          Migadu ist seither abgeschaltet, und `src/lib/smtp.ts` sagt es im
-         Kopf: „Supports two backends — mailcow (default + only primary),
+         Kopf: „Supports two backends, mailcow (default + only primary),
          ses (rescue fallback)". `resend.ts` heißt nur noch so, um 25
          Importeure nicht anzufassen; Migadu kommt in `src/lib` nicht mehr
          vor. Zwei Stufen, und der Prüflauf zählt sie nach. */
@@ -655,8 +655,8 @@ export const caseStudies: CaseStudy[] = [
       {
         group: "Qualität",
         // "Lighthouse-Budgets" hiess es hier, und "Budget" heisst blockieren.
-        // Der Lauf meldet nach Ampel an Slack — ab 90 gruen, ab 70 gelb,
-        // darunter rot — und haelt nichts auf. Was wirklich blockiert, ist das
+        // Der Lauf meldet nach Ampel an Slack, ab 90 gruen, ab 70 gelb,
+        // darunter rot, und haelt nichts auf. Was wirklich blockiert, ist das
         // Bundle-Budget je Route, und das steht als eigenes Werkzeug daneben.
         items: [
           "Vitest",
@@ -704,7 +704,7 @@ export const caseStudies: CaseStudy[] = [
       // App-Store-Einträge fehlten hier: Der Kommentar darüber sagte "in
       // beiden Stores nachgeprüft", verlinkt war nur Play. Zwei
       // ausgelieferte iOS-Apps waren damit auf der ganzen Seite unsichtbar,
-      // obwohl sie der greifbarste Beleg sind — ein Recruiter kann sie in
+      // obwohl sie der greifbarste Beleg sind, ein Recruiter kann sie in
       // dreißig Sekunden selbst öffnen.
       {
         label: "Restaurant-App (Play)",
@@ -893,7 +893,7 @@ export const caseStudies: CaseStudy[] = [
 export const workflow = {
   eyebrow: "Arbeitsweise",
   title: "KI ist ein Werkzeug, keine Ausrede",
-  /* Die einzige Zeitangabe der Seite, die nicht gerechnet wird — und sie
+  /* Die einzige Zeitangabe der Seite, die nicht gerechnet wird, und sie
      bleibt es.
 
      Alle anderen kommen aus einer Quelle: die Bauzeit aus dem ersten Commit,
@@ -901,7 +901,7 @@ export const workflow = {
      Änderungsprotokoll. Diese hier ist getippt, und ableiten lässt sie sich
      nicht: Die früheste Konventionsdatei liegt im ersten MenuCloud-Commit vom
      26.03.2026, die älteste Agenten-Sitzung auf diesem Rechner stammt vom
-     07.07.2026. Beides belegt Monate, kein Jahr — es widerlegt das Jahr aber
+     07.07.2026. Beides belegt Monate, kein Jahr, es widerlegt das Jahr aber
      auch nicht, denn beide Spuren beginnen erst mit den Repos.
 
      Sie steht deshalb unverändert da. Eine belegbare Ersatzformulierung wäre
@@ -919,14 +919,14 @@ export const workflow = {
 
          Nachgezählt trugen vier von sechs Repositories eine Konventionsdatei:
          MenuCloud, Salati (unter `apps/mobile`), diese Seite und die
-         Lernplattform. NOURI und WohnungsJäger nicht — auch nicht unter
+         Lernplattform. NOURI und WohnungsJäger nicht, auch nicht unter
          anderem Namen, gesucht bis in die dritte Ebene. Zwei der vier Systeme,
          die diese Seite als Produktion nennt, standen ohne da.
 
          Der billige Weg wäre gewesen, hier eine Zahl hinzuschreiben. Statt
          dessen liegt die Datei jetzt in beiden: `NOURI/AGENTS.md` und
          `KIWohnung/AGENTS.md`, jede aus dem Code abgelesen. `check-figures`
-         zählt nach und verlangt alle sechs — wer ein Repo dazunimmt, bringt
+         zählt nach und verlangt alle sechs, wer ein Repo dazunimmt, bringt
          die Datei mit. */
       body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
       artifacts: [
@@ -1065,15 +1065,14 @@ export const skillDomains: SkillDomain[] = [
         name: "Postgres / Supabase",
         /* Hier stand „59-Tabellen-Schema, RLS, Migrationen".
 
-           Die 59 sind das Schema von NOURI, RLS ist das Merkmal von MenuCloud
-           — zwei Systeme in einer Zeile, unter einer Überschrift, die von
+           Die 59 sind das Schema von NOURI, RLS ist das Merkmal von MenuCloud, zwei Systeme in einer Zeile, unter einer Überschrift, die von
            mandantenfähigen Systemen mit echtem Geld spricht. Der Abschnitt
            verspricht drei Zeilen darüber genau das Gegenteil: „neben jeder
            Fähigkeit das System, an dem sie entstanden ist."
 
            Nebenbei war die Zahl zu klein: MenuCloud legt in seinen
            Migrationen 844 verschiedene Tabellen an. Die steht hier trotzdem
-           nicht — sie ist aus SQL gezählt und nicht so belegbar wie die
+           nicht, sie ist aus SQL gezählt und nicht so belegbar wie die
            Migrationszahl, die der tägliche Lauf ohnehin auffrischt. */
         evidence: `RLS pro Mandant, ${verified.migrationen} Migrationen (MenuCloud)`,
       },
@@ -1244,14 +1243,14 @@ export const recruiter = {
     /* Dieselbe Kurzfassung als Seite. Es gab sie längst, sie war nur von
        nirgends verlinkt: gezählt an der ausgelieferten Seite kein einziger
        Verweis auf `/onepager`, auf keiner der zwanzig Seiten. Auf einem
-       Telefon ist ein PDF der schlechtere Weg — es öffnet in einem Betrachter,
+       Telefon ist ein PDF der schlechtere Weg, es öffnet in einem Betrachter,
        lässt sich nicht durchsuchen und bricht die Zeilen für DIN A4. */
     /* „Kurzprofil im Browser“ und nicht „oder im Browser lesen“.
 
        Das „oder“ bezog sich auf den Knopf darüber und stand nur solange
        richtig, wie beides nebeneinander gelesen wird. In der Verweisliste
        eines Vorleseprogramms steht der Name für sich, und dort hieß der
-       Eintrag „oder im Browser lesen“ — ohne Bezug und ohne Ziel. Alle
+       Eintrag „oder im Browser lesen“, ohne Bezug und ohne Ziel. Alle
        anderen Verweise dieses Bereichs nennen ihr Ziel selbst („Salati im
        Detail“, „MenuCloud im Detail“), und die Befehlspalette führt dieselbe
        Seite längst als „Kurzprofil im Browser“. */
@@ -1260,7 +1259,7 @@ export const recruiter = {
     copy: {
       label: "Adresse kopieren",
       done: "Adresse kopiert",
-      failed: "Kopieren ging nicht — die Adresse steht daneben",
+      failed: "Kopieren ging nicht, die Adresse steht daneben",
     },
   },
 } as const;
@@ -1270,11 +1269,11 @@ export const recruiter = {
 /* ========================================================================== */
 
 /**
- * Wie schnell eine Antwort kommt — die Zahl steht einmal.
+ * Wie schnell eine Antwort kommt, die Zahl steht einmal.
  *
  * Sie stand zweimal: im Vorspann als „innerhalb von 24 Stunden" und in der
  * Faktenkachel als „In der Regel unter 24 Stunden". Zwei Formulierungen für
- * dieselbe Zusage sind die nächste Stelle, an der eine veraltet — dieselbe
+ * dieselbe Zusage sind die nächste Stelle, an der eine veraltet, dieselbe
  * Begründung, aus der die Eintrittsangabe und die Sprachen hier bereits als
  * Konstante stehen.
  */
@@ -1293,7 +1292,7 @@ export const contact = {
       "Was ihr baut und womit",
       "Wie schnell es losgehen soll",
       // „Euer“ und nicht bloß „Gehaltsrahmen“: Seit die Faktenkachel darüber
-      // die eigene Spanne nennt, wäre die kürzere Fassung zweideutig — sie
+      // die eigene Spanne nennt, wäre die kürzere Fassung zweideutig, sie
       // klingt, als solle der Absender die schon genannte Zahl wiederholen.
       "Bei Rollen: euer Gehaltsrahmen, damit wir beide Zeit sparen",
     ],
@@ -1306,7 +1305,7 @@ export const contact = {
     { label: "Sprachen", wert: "Deutsch · Englisch" },
     /* Dieselbe Quelle wie im Recruiter-Bereich und auf dem Kurzprofil.
        Hier stand „Berlin · Remote EU" und dort „Berlin · remote in der EU ·
-       hybrid" — zwei Formulierungen derselben Angabe, und nur eine nannte die
+       hybrid", zwei Formulierungen derselben Angabe, und nur eine nannte die
        Bereitschaft zu hybrid. Wer beide liest, hält die knappere für eine
        Einschränkung. */
     { label: "Standort", wert: site.availability.detail },

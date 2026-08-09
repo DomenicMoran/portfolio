@@ -28,7 +28,7 @@ export function Counter({
      englischen Fassung las der Zähler „1,276“ damit als eins Komma zwei sieben
      sechs. Sichtbar stimmte es trotzdem, weil eine deutsche Dezimalzahl mit
      drei Nachkommastellen zeichengleich mit einer englischen Tausendergruppe
-     ist — richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
+     ist, richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
      Dreiergruppe hat. Die Zerlegung steht jetzt in `lib/number-format.ts` mit
      Tests daneben; hier bleibt die Bewegung. */
   const { lang } = useContent();
@@ -56,7 +56,7 @@ export function Counter({
    * ließ den Beobachter anspringen, dann standen 4, 4.109, 1.276 und 7.437 da.
    *
    * Deshalb wird nie vorsorglich auf null gesetzt. Springt der Beobachter nie
-   * an, bleibt schlicht die richtige Zahl stehen — der Fehlerfall ist damit
+   * an, bleibt schlicht die richtige Zahl stehen, der Fehlerfall ist damit
    * der stille Normalfall statt einer sichtbaren Falschaussage.
    */
   const [display, setDisplay] = useState(endwert);
@@ -82,7 +82,7 @@ export function Counter({
      * Was schon beim Ankommen im Bild steht, zählt nicht hoch.
      *
      * Sonst spränge die Zahl vom richtigen Wert auf null zurück, nur um
-     * wieder hinaufzulaufen — ein Flackern genau an der Stelle, die Vertrauen
+     * wieder hinaufzulaufen, ein Flackern genau an der Stelle, die Vertrauen
      * herstellen soll. Die Animation ist für das gedacht, was man beim
      * Scrollen erreicht.
      */
@@ -136,7 +136,7 @@ export function Counter({
      * Beim Drucken scrollt niemand. Der Beobachter feuert nie, die Zahl bleibt
      * auf "0", und genau das kommt aufs Papier. Gemessen am 02.08.2026 in der
      * Druckdarstellung der Startseite: Wo 11.892 Rezepte, 59 Tabellen und 12
-     * Migrationen stehen sollten, standen 6.860, 34 und 7 — eingefrorene
+     * Migrationen stehen sollten, standen 6.860, 34 und 7, eingefrorene
      * Zwischenwerte einer Animation, die niemand zu Ende laufen ließ.
      *
      * Eine falsche Zahl ist auf dieser Seite schlimmer als eine fehlende:

@@ -42,7 +42,7 @@ const SALARY = "€55–70k, depending on scope";
  * Tage seit dem ersten Salati-Commit, gerechnet statt getippt.
  *
  * Hier stand „107 days … until today“. Am Tag des Schreibens richtig, am
- * nächsten Morgen 108 — dasselbe wandernde Fenster, das die Commit-Angabe
+ * nächsten Morgen 108, dasselbe wandernde Fenster, das die Commit-Angabe
  * schon abgelegt hat („3.971 Commits in vier Monaten"). Eine Zahl, die sich
  * von allein bewegt, lässt sich von Hand nicht pflegen.
  *
@@ -60,7 +60,7 @@ const SALATI_VERSIONS = SALATI_VERSIONEN;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
- * Wie lange die vier Produktionssysteme entstehen — gerechnet.
+ * Wie lange die vier Produktionssysteme entstehen, gerechnet.
  *
  * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
  * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
@@ -73,7 +73,7 @@ const LEARNING_START = "2022-07-01";
 
 const months = monateZwischen(new Date(FIRST_COMMIT), new Date(verified.date));
 
-/** "four months", "five months", … — never a frozen value. */
+/** "four months", "five months", …, never a frozen value. */
 const buildTime = `${asWord(months)} month${months === 1 ? "" : "s"}`;
 const buildTimeTitle = grossErstes(buildTime);
 const learningYears = grossErstes(
@@ -220,7 +220,7 @@ export const en: Content = {
       year: "2026",
       // „legal“ und nicht „licensing“: Das deutsche „Recht“ meint hier
       // Impressum, Datenschutz, Alterseinstufung und die Kennzeichnung nach
-      // EU AI Act Art. 50 — nicht Lizenzen.
+      // EU AI Act Art. 50, nicht Lizenzen.
       role: "Sole developer · product, code, stores, legal",
       statusLabel: "Live in both stores",
       accent: "acid",
@@ -297,7 +297,7 @@ export const en: Content = {
           kind: "social",
         },
         // The German page linked the App Store listing, the English one did
-        // not — the same shipped app, invisible to half the readers.
+        // not, the same shipped app, invisible to half the readers.
         {
           label: "App Store",
           href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
@@ -734,7 +734,7 @@ export const en: Content = {
     ],
     /* `dateLong` und nicht der rohe Wert: Hier stand „Measured on
        2026-08-06“, während drei andere englische Stellen denselben Stempel
-       als „6 August 2026“ setzen — zwei Datumsformate auf einer Seite, und
+       als „6 August 2026“ setzen, zwei Datumsformate auf einer Seite, und
        das maschinenlesbare mitten im Satz. Die Formatierung liegt seitdem in
        `src/lib/date-format.ts`, für beide Sprachen. */
     statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
@@ -743,7 +743,7 @@ export const en: Content = {
       {
         /* „April 2026" statt „04/2026": Das Zahlenformat ist eine deutsche
            Gewohnheit. Ein englischer Leser liest hier eine Zeitangabe, keine
-           Aktennummer — und die Zeile daneben sagt schon „since 2022", also
+           Aktennummer, und die Zeile daneben sagt schon „since 2022", also
            ohne Monat. */
         period: "since April 2026",
         title: "Founder & sole developer",
@@ -1121,7 +1121,7 @@ export const en: Content = {
     lede: "No cover letter needed. Here is what I can do, what I am looking for, and how to reach me.",
     facts: [
       // Titelschreibung wie überall sonst auf der englischen Fassung. Als
-      // Wert einer Beschriftung ist die Rolle ein Titel, kein Fließtext — im
+      // Wert einer Beschriftung ist die Rolle ein Titel, kein Fließtext, im
       // Positionierungssatz des Kurzprofils bleibt sie klein, weil sie dort
       // mitten im Satz steht. "Full-stack" mit Bindestrich, so schreibt man es
       // im Englischen.
@@ -1190,7 +1190,7 @@ export const en: Content = {
       copy: {
         label: "Copy address",
         done: "Address copied",
-        failed: "Copying failed — the address is right there",
+        failed: "Copying failed, the address is right there",
       },
     },
   },
@@ -1244,7 +1244,7 @@ export const en: Content = {
       /* Kleingeschrieben, weil diese vier zweimal auftauchen: als
          Beschriftung der Kacheln, die das Stylesheet ohnehin in
          Großbuchstaben setzt, und mitten im Satz. Dort stand „198 g
-         Protein“ und „Protein 39 % · Carbs 42 %“ — deutsche Großschreibung
+         Protein“ und „Protein 39 % · Carbs 42 %“, deutsche Großschreibung
          in englischem Fließtext. `kcal` machte es schon richtig. */
       protein: "protein",
       carbs: "carbs",

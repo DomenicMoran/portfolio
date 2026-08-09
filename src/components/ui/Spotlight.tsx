@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
  *
  * **Kein Zustand pro Mausbewegung.** Die Position wandert als CSS-Variable
  * direkt an die Karten, gedrosselt über genau ein `requestAnimationFrame`.
- * React sieht davon nichts und rendert nicht neu — ein `useState` im
+ * React sieht davon nichts und rendert nicht neu, ein `useState` im
  * Zeiger-Ereignis hätte bei sechs Karten pro Bild einen Renderdurchlauf
  * ausgelöst.
  *
@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
  * Karte ein erzwungenes Neuberechnen des Layouts.
  *
  * **Nur wo es hingehört.** Ohne genaues Zeigegerät gibt es kein Überfahren,
- * und bei `prefers-reduced-motion` hängt sich der Zuhörer gar nicht erst ein —
+ * und bei `prefers-reduced-motion` hängt sich der Zuhörer gar nicht erst ein:
  * dasselbe Muster wie beim eigenen Mauszeiger und beim weichen Scrollen.
  */
 export function Spotlight({

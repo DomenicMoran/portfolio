@@ -68,7 +68,7 @@ export function Nav({
     Der Fokus gehört in die Schublade, solange sie offen ist.
 
     Gemessen an der ausgelieferten Seite bei 390 px: Nach dem Öffnen stand er
-    weiter auf dem Menüknopf, der jetzt verdeckt ist — wer die Tastatur
+    weiter auf dem Menüknopf, der jetzt verdeckt ist, wer die Tastatur
     benutzt, musste sich erst hineintabben. Und nach neun Schritten führte der
     Weg wieder hinaus, zu „Projekte ansehen" und „Für Recruiter": Verweise,
     die sichtbar verdeckt sind und trotzdem erreichbar blieben.
@@ -93,7 +93,7 @@ export function Nav({
       schliessKnopf.current?.focus();
     };
 
-    /* Escape schließt — bei einem Dialog erwartet das jeder, und die
+    /* Escape schließt, bei einem Dialog erwartet das jeder, und die
        Befehlspalette macht es seit ihrem Einbau. Hier fehlte es: Die
        Schublade ließ sich nur über ihren eigenen Knopf schließen. Sichtbar
        wurde das erst, als `aria-expanded` den Zustand mitführte; vorher sah
@@ -223,7 +223,7 @@ export function Nav({
               href={sprachZiel}
               prefetch={false}
               /* `lang` neben `hrefLang`: Beschriftung und Ansage stehen in
-                  der Zielsprache — auf der englischen Seite also "Deutsch"
+                  der Zielsprache, auf der englischen Seite also "Deutsch"
                   und "Diese Seite auf Deutsch". Ohne die Auszeichnung liest
                   ein Vorleseprogramm beides mit englischer Aussprache vor.
                   `hrefLang` sagt nur, was am Ziel liegt, nicht in welcher
@@ -291,7 +291,7 @@ export function Nav({
             /* Wie bei der Palette: Lenis reicht Radbewegungen sonst an die
                Seite dahinter weiter, gemessen 0 auf 655 px. */
             data-lenis-prevent
-            /* Ein Überlagerer, der die Seite verdeckt, ist ein Dialog — und
+            /* Ein Überlagerer, der die Seite verdeckt, ist ein Dialog, und
                muss sich auch so verhalten. Gemessen an der ausgelieferten
                Seite bei 390 px: Nach neun Tabulatorschritten führte der Weg
                aus der Schublade hinaus zu „Projekte ansehen" und „Für

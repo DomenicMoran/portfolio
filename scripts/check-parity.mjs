@@ -2,15 +2,15 @@
 /**
  * Prüft, dass die englische Fassung dasselbe zeigt wie die deutsche.
  *
- * Die Typen erzwingen, dass `en.ts` jedes Feld hat — eine Übersetzung kann
+ * Die Typen erzwingen, dass `en.ts` jedes Feld hat, eine Übersetzung kann
  * nicht stillschweigend unvollständig werden. Was sie nicht erzwingen: dass
  * beide Fassungen am Ende gleich viel *rendern*. Ein Eintrag, der nur in der
  * deutschen Liste steht, eine Fallstudie ohne englische Aufnahmen, ein
- * Verweisfeld, das nur auf einer Seite gefüllt ist — all das kommt durch den
+ * Verweisfeld, das nur auf einer Seite gefüllt ist, all das kommt durch den
  * Typecheck und fällt erst jemandem auf, der beide Seiten nebeneinander legt.
  *
  * Genau das macht dieser Lauf, und zwar an der gebauten Seite: Gezählt werden
- * die Dinge, die ein Leser sieht. Absolute Zahlen, keine Stichproben — zwei
+ * die Dinge, die ein Leser sieht. Absolute Zahlen, keine Stichproben, zwei
  * Seiten, die dasselbe sagen, haben dieselbe Anzahl Abschnitte, Überschriften,
  * Verweise, Bilder, Reiter und Kennzahlen.
  *
@@ -39,14 +39,14 @@ if (!basis) {
 /* Die Artikelpaare entstehen aus dem Bau, nicht aus dieser Liste.
 
    Hier standen sie ausgeschrieben, fünf Stück. Der sechste Artikel kam dazu
-   und fehlte — gemessen am 08.08.2026 meldete der Lauf acht Seitenpaare,
+   und fehlte, gemessen am 08.08.2026 meldete der Lauf acht Seitenpaare,
    während neun zu prüfen gewesen wären. Die Lücke sieht man der Ausgabe nicht
    an: „8 Seitenpaare, 97 Vergleiche ohne Abweichung" liest sich wie ein
    vollständiger Lauf.
 
    Die Zuordnung steht in jedem Artikel selbst: Der Kopf nennt die andere
    Sprachfassung als `rel="alternate"` mit `hreflang`. Von dort geholt, ist
-   sie gemessen und nicht gepflegt — und ein Artikel ohne Gegenstück fällt
+   sie gemessen und nicht gepflegt, und ein Artikel ohne Gegenstück fällt
    sofort auf, statt still aus der Prüfung zu fallen.
 
    Die drei festen Paare bleiben ausgeschrieben: Sie folgen keiner Regel, die
@@ -134,8 +134,7 @@ async function zaehle(pfad, mitZahlen = false) {
     /* Und die Zahlen selbst.
        Bis hierher wurde gezählt, wie viele Kennzahlen dastehen, nicht welche.
        Eine aktualisierte Zahl, die nur in einer Fassung nachgezogen wird,
-       ergibt zwei verschiedene öffentliche Aussagen über denselben Gegenstand
-       — und beide Seiten bleiben zählgleich.
+       ergibt zwei verschiedene öffentliche Aussagen über denselben Gegenstand, und beide Seiten bleiben zählgleich.
 
        Verglichen wird ohne Trennzeichen: Dieselbe Zahl heißt „4.318“ und
        „4,318“, und genau dieser Unterschied ist gewollt. Datumsangaben
@@ -155,7 +154,7 @@ async function zaehle(pfad, mitZahlen = false) {
     /* Die Textmenge, nicht als Vergleichswert, sondern als Verhältnis.
 
        Alles bisher Gezählte ist Struktur: Abschnitte, Überschriften, Verweise,
-       Kennzahlen. Ein Absatz, der in einer Fassung fehlt, ändert nichts davon —
+       Kennzahlen. Ein Absatz, der in einer Fassung fehlt, ändert nichts davon:
        er hat keine eigene Marke, die hier vorkäme. Gemessen liegt der englische
        Fließtext durchweg bei 91 bis 96 Prozent des deutschen, weil Englisch
        kompakter ist; ein fehlender Absatz fiele deutlich darunter. */
@@ -183,13 +182,13 @@ for (const paar of PAARE) {
 
   /* Die Textmenge wird als Verhältnis geprüft und nicht auf Gleichstand: Zwei
      Sprachen sind nie gleich lang. Die Grenze liegt großzügig bei 80 Prozent,
-     weit unter den gemessenen 91 bis 96 — sie soll einen fehlenden Absatz
+     weit unter den gemessenen 91 bis 96, sie soll einen fehlenden Absatz
      fangen, nicht eine knappere Formulierung. */
   verglichen++;
   const anteil = de.Zeichen ? en.Zeichen / de.Zeichen : 1;
   if (anteil < ANTEIL_MINDESTENS || anteil > 1 / ANTEIL_MINDESTENS) {
     funde.push(
-      `${paar.name}: Textmenge — deutsch ${de.Zeichen} Zeichen, englisch ` +
+      `${paar.name}: Textmenge, deutsch ${de.Zeichen} Zeichen, englisch ` +
         `${en.Zeichen} (${Math.round(anteil * 100)} %, erwartet zwischen ` +
         `${Math.round(ANTEIL_MINDESTENS * 100)} und ` +
         `${Math.round((1 / ANTEIL_MINDESTENS) * 100)} %)`,
@@ -202,7 +201,7 @@ for (const paar of PAARE) {
     verglichen++;
     if (String(de[schluessel]) !== String(en[schluessel])) {
       funde.push(
-        `${paar.name}: ${schluessel} — deutsch ${de[schluessel]}, englisch ${en[schluessel]}`,
+        `${paar.name}: ${schluessel}, deutsch ${de[schluessel]}, englisch ${en[schluessel]}`,
       );
     }
   }
@@ -213,7 +212,7 @@ for (const paar of PAARE) {
 
    Zwei Fassungen sind nur dann zwei Fassungen, wenn eine Suchmaschine sie
    auseinanderhalten kann. Dafür braucht jede Seite drei Angaben: `de`, `en`
-   und `x-default` — die letzte sagt, welche Fassung jemand bekommt, dessen
+   und `x-default`, die letzte sagt, welche Fassung jemand bekommt, dessen
    Sprache in keiner der beiden vorkommt.
 
    Gemessen an der ausgelieferten Seite fehlte `x-default` auf beiden
@@ -245,7 +244,7 @@ await sprachSeite.close();
 /*
   Die Architekturdiagramme, jedes einzeln aufgeklappt.
 
-  Sie stehen hinter einem Reiter, der nicht der erste ist — im gebauten HTML
+  Sie stehen hinter einem Reiter, der nicht der erste ist, im gebauten HTML
   taucht ihr Text deshalb gar nicht auf, und keiner der Läufe, die Dateien
   lesen, konnte sie je sehen. Gemessen an der ausgelieferten Seite trugen alle
   vier auf `/en` deutsche Beschriftungen: „GETEILTE LOGIK“, „ZUGÄNGE“,
@@ -279,7 +278,7 @@ const NUR_DEUTSCH =
       noch im Dokument. Gemessen an der ausgelieferten Seite: 300 ms nach dem
       Klick auf „Architektur" stand dort noch der Text des vorigen Reiters,
       erst nach rund 900 ms das Diagramm. Eine feste Wartezeit prüft damit
-      mal das eine und mal das andere — ein Wächter, der nicht weiß, was er
+      mal das eine und mal das andere, ein Wächter, der nicht weiß, was er
       gerade misst, ist schlimmer als keiner.
     */
     await seite

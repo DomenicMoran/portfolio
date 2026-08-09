@@ -50,7 +50,7 @@ function untergrenze(zahl: string, sprache: "de" | "en"): string {
 
    Die Zahl steht als Untergrenze auf dem Blatt, damit sie stimmt, solange sie
    wächst. Auf Tausender gerundet wurde daraus bei gemessenen 4.722 Commits
-   „über 4.000" — siebenhundert Belege weniger, als es gibt, und im Lebenslauf
+   „über 4.000", siebenhundert Belege weniger, als es gibt, und im Lebenslauf
    daneben stand „über 4.700". Hunderter sind genauso sicher und lesen sich
    nicht wie eine grobe Schätzung.
 */
@@ -64,7 +64,7 @@ function abgerundet(roh: number, sprache: "de" | "en"): string {
  * Website; hier genügt der erste Satz jedes „schwierigen Teils".
  *
  * Getrennt wird an Satzzeichen, denen ein Leerzeichen und ein Großbuchstabe
- * folgt — so schneiden Abkürzungen und Kommazahlen („§ 146a AO“, „1.44“)
+ * folgt, so schneiden Abkürzungen und Kommazahlen („§ 146a AO“, „1.44“)
  * den Satz nicht vorzeitig ab.
  */
 function firstSentence(text: string) {
@@ -76,7 +76,7 @@ function firstSentence(text: string) {
  * Commit-Zahlen auf dem gedruckten Blatt als Untergrenze, alles andere exakt.
  *
  * Dieselbe Regel wie beim LinkedIn-Titelbild und im Lebenslauf: Was der
- * stündliche Prüflauf nachzählen und neu ausliefern kann, bleibt exakt — die
+ * stündliche Prüflauf nachzählen und neu ausliefern kann, bleibt exakt, die
  * Webseite. Was einmal verschickt wird und danach in einem Postfach liegt,
  * bekommt eine Grenze, die hält.
  *
@@ -142,7 +142,7 @@ export function OnePager({
     // Hauptbereich umschließt allein das Blatt; Bedienleiste und
     // Rechtsverweise stehen daneben, weil `header` und `footer` innerhalb von
     // `main` ihre Rolle verlieren. Gemessen an der ausgelieferten Seite hatten
-    // beide Kurzprofile vorher genau eine Landmarke — auf dem Blatt, das ein
+    // beide Kurzprofile vorher genau eine Landmarke, auf dem Blatt, das ein
     // Recruiter als Erstes bekommt.
     <div
       style={{ colorScheme: "light" }}
@@ -175,7 +175,7 @@ export function OnePager({
                   src={about.portraitPrint}
                   /* Leerer Alternativtext, und das ist die Aussage.
 
-                     Hier stand der Name — derselbe, der einen Zentimeter
+                     Hier stand der Name, derselbe, der einen Zentimeter
                      weiter rechts als `h1` steht. Gemessen an der
                      ausgelieferten Seite las ein Vorleseprogramm damit
                      „Grafik Domenic Moran, Überschrift Ebene 1 Domenic
@@ -197,7 +197,7 @@ export function OnePager({
                      Dieses Blatt wird gedruckt, und auf Papier zählt nicht die
                      Bildschirmgröße, sondern die Dichte. Gemessen am
                      ausgelieferten PDF: das einzige Bild darin war 128 × 128
-                     und stand auf 22,7 mm — 143 dpi, also gut die Hälfte
+                     und stand auf 22,7 mm, 143 dpi, also gut die Hälfte
                      dessen, was ein Druck braucht. Auf dem Bildschirm fällt
                      das nicht auf, auf Papier sieht man es sofort, und
                      ausgerechnet an dem Blatt, das eine Bewerbung begleitet.
@@ -210,7 +210,7 @@ export function OnePager({
 
                      Hier standen 256 px mit „287 dpi auf 22,7 mm". Nachgemessen
                      am 07.08.2026 steht das Bild auf 24,7 mm, und 256 px sind
-                     dort 263 dpi — unter den 300, die ein Druck braucht. Das
+                     dort 263 dpi, unter den 300, die ein Druck braucht. Das
                      Blatt ist gewachsen, die Zahl blieb stehen.
 
                      384 px ergeben auf derselben Fläche 394 dpi. Im PDF sind
@@ -254,7 +254,7 @@ export function OnePager({
 
               `py-1` mit gleich großem `-my-1` allein reichte nicht: Die
               Flächen benachbarter Zeilen ueberlappten sich dann, und axe
-              misst den freien Platz, nicht die Box — gemeldet blieben
+              misst den freien Platz, nicht die Box, gemeldet blieben
               22,8 px. Erst mit einem Zeilenabstand von 26 px statt der 22,75
               aus `leading-relaxed` steht jede Zeile für sich.
 
@@ -291,7 +291,7 @@ export function OnePager({
                 Sprache. `detail` stand im Inhalt und wurde von nichts
                 gerendert; Eintritt und Sprachen standen ausschließlich im
                 Faktenblatt der Startseite und erreichten damit niemanden, der
-                nur dieses Blatt in die Hand bekommt — also genau den Fall, für
+                nur dieses Blatt in die Hand bekommt, also genau den Fall, für
                 den es gemacht ist. Drei Zeilen, das Blatt bleibt eine Seite. */}
               <p>{site.availability.detail}</p>
               <p>{site.availability.entry}</p>
@@ -331,7 +331,7 @@ export function OnePager({
                       color, nicht font-size.
 
                       Auf der hellen Druckseite setzte sonst nichts die Farbe,
-                      also erbte die Überschrift das Weiß des dunklen Themas —
+                      also erbte die Überschrift das Weiß des dunklen Themas:
                       die vier Projektnamen standen weiß auf weiß. */}
                     <h3 className="text-[16px] font-semibold text-[#101014]">
                       {/* Das Leerzeichen gehört in denselben Textknoten wie der
@@ -344,7 +344,7 @@ export function OnePager({
                         Als eigener Knoten hinter diesem Kommentar reichte es
                         nicht: Im DOM stand „Salati Live im App Store", der
                         zugängliche Name aber weiterhin „SalatiLive im App
-                        Store" — die Namensberechnung verwirft einen
+                        Store", die Namensberechnung verwirft einen
                         Textknoten, der nur aus Leerraum besteht. Deshalb
                         hängt das Leerzeichen jetzt am Namen selbst. */}
                       {`${study.name} `}
@@ -355,7 +355,7 @@ export function OnePager({
                     {/* `ml-auto`: Die Kennzahlen schließen rechts ab, auch
                         wenn sie in eine eigene Zeile rutschen.
 
-                        Bei MenuCloud tun sie das — „1.276 API-Routen · 812
+                        Bei MenuCloud tun sie das, „1.276 API-Routen · 812
                         DB-Migrationen · 7.464 Testfälle · EU Hosting &
                         Datenhaltung" passt am Bildschirm nicht neben den
                         Titel. Ohne `ml-auto` beginnt die umbrochene Zeile
@@ -364,12 +364,12 @@ export function OnePager({
                         Sprachen 258 beziehungsweise 246 px Abstand zum rechten
                         Rand, während die drei anderen Projekte bündig
                         abschlossen. Vier gleich gebaute Blöcke, einer davon
-                        anders ausgerichtet — im Druck fällt es nicht auf, dort
+                        anders ausgerichtet, im Druck fällt es nicht auf, dort
                         passt die Zeile. */}
                     {/* 10 px bleibt, und das ist gemessen statt gesetzt.
 
                         Das Blatt trägt `zoom: 0.85`: Hier stehen auf dem Papier
-                        8,5 px, also 6,4 pt — die kleinste Angabe des Blatts,
+                        8,5 px, also 6,4 pt, die kleinste Angabe des Blatts,
                         ausgerechnet bei den Zahlen, die überzeugen sollen.
                         11 px wären 9,35 px und 7 pt, deutlich angenehmer.
 
@@ -377,7 +377,7 @@ export function OnePager({
                         werden 1.017 von 1.040, die Reserve bis zur zweiten
                         Seite fällt von 44 auf 23. Die Ein-Blatt-Zusage ist mehr
                         wert als 0,6 pt, also bleibt es bei 10. `check:print`
-                        hält die Untergrenze von 8 px auf dem Papier dagegen —
+                        hält die Untergrenze von 8 px auf dem Papier dagegen:
                         weiter schrumpfen darf hier nichts. */}
                     <span className="ml-auto font-mono text-[10px] text-[#6a6a76]">
                       {study.metrics
@@ -399,7 +399,7 @@ export function OnePager({
 
                       Der Ausweg war zuerst ein Gedankenstrich, und der war
                       falsch: Nach ihm folgte ein großgeschriebenes Wort, weil
-                      dahinter ein vollständiger Satz steht — auf Papier las
+                      dahinter ein vollständiger Satz steht, auf Papier las
                       sich das wie ein Tippfehler. Ein Punkt trennt dasselbe,
                       ohne etwas zu behaupten, das die Zeichensetzung nicht
                       hergibt. */}
@@ -427,7 +427,7 @@ export function OnePager({
           {/* Zwei Spalten erst ab `sm`, gedruckt immer.
 
               Der Block stand fest auf `grid-cols-2`. Auf dem Papier ist das
-              richtig — 794 px Blattbreite ergeben zwei Spalten von rund
+              richtig, 794 px Blattbreite ergeben zwei Spalten von rund
               340 px. Am Telefon ergaben dieselben zwei Spalten 142 px, und
               darin zerfiel „React / Next.js App Router · React Native /
               Expo · TypeScript · Motion & Interaction“ in fünf Zeilen. Der
@@ -493,7 +493,7 @@ export function OnePager({
 
                 Die Namen kommen aus dem Inhalt, nicht aus dieser Datei: Ein
                 fünftes Paket steht sonst auf der Seite und nicht auf dem Blatt.
-                `portfolio` fällt weg — die Seite selbst nennt die Fußzeile.
+                `portfolio` fällt weg, die Seite selbst nennt die Fußzeile.
 
                 Platz war da: Das Blatt maß 854 px von 1.040 nutzbaren, und
                 diese Spalte endete 54 px über der linken. */}
@@ -505,7 +505,7 @@ export function OnePager({
                     320 px breiter als ihre Spalte, und Namen wie
                     "whisper-ggml-header" bieten dem Browser keinen Punkt, an
                     dem er ohne diese Regel umbricht. Gemessen auf dem
-                    CI-Runner: 152 px nötig, 107 sichtbar — auf dem eigenen
+                    CI-Runner: 152 px nötig, 107 sichtbar, auf dem eigenen
                     Rechner ging es knapp durch, weil die Schrift dort schmaler
                     rät. Das Blatt ist ein Druckdokument; am Bildschirm bei
                     320 px soll es trotzdem lesbar bleiben. */}
@@ -516,7 +516,7 @@ export function OnePager({
                     .join(" · ")}
                   {/* Der Doppelpunkt gehört an das Wort davor. Als eigenes
                       Textstück mit führendem Leerzeichen stand auf dem Blatt
-                      "arabic-normalize : alle mit Tests" — französische
+                      "arabic-normalize : alle mit Tests", französische
                       Setzung in einem deutschen Dokument. */}
                   <span className="text-[#6a6a76]">
                     : {onepager.openSourceNote}
@@ -533,7 +533,7 @@ export function OnePager({
                             Dieser steht mitten in einem Satz, und dort ist
                             Farbe allein kein Unterschied. Gemessen 2,1:1
                             gegenüber dem umgebenden Text, WCAG 1.4.1 verlangt
-                            3:1 — `check:a11y` meldete es auf beiden
+                            3:1, `check:a11y` meldete es auf beiden
                             Sprachfassungen und beiden Breiten. */}
                         <a
                           href={SOCIALS.github}
@@ -578,14 +578,14 @@ export function OnePager({
             {/* Der Stand kommt aus der Uhr, und das hat eine Folge mit Datum.
 
                 Die Seite ist statisch, `new Date()` friert also auf den
-                Bauzeitpunkt ein — hier ist das richtig, denn gemeint ist der
+                Bauzeitpunkt ein, hier ist das richtig, denn gemeint ist der
                 Stand des Blattes und nicht der Tag des Lesers.
 
                 Beim ersten Bau in einem neuen Monat wandert die Angabe
                 trotzdem: Das HTML sagt dann „September 2026", die beiden
                 gedruckten PDF sagen weiter „August 2026“. Der Quellstand ist
                 die Prüfsumme über genau diesen Text, also schlägt
-                `check:onepager` fehl — ohne dass jemand etwas geändert hat.
+                `check:onepager` fehl, ohne dass jemand etwas geändert hat.
 
                 Das ist kein Fehler des Laufs, sondern seine Aufgabe: Das
                 ausgelieferte Blatt trägt dann wirklich den falschen Monat.
@@ -629,7 +629,7 @@ export function OnePager({
 
             Gemessen am 02.08.2026 an elf ausgelieferten Adressen: /onepager
             und /en/onepager waren die einzigen öffentlichen Seiten ohne
-            beide Verweise — und genau diese Adresse verschickt man an
+            beide Verweise, und genau diese Adresse verschickt man an
             Recruiter.
 
             Nur am Bildschirm: `no-print` sitzt schon am umgebenden Kasten.

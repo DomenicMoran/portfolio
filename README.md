@@ -100,7 +100,7 @@ npm test           # die reine Rechenlogik, ohne Browser
 Nach dem Bau laufen 34 Prüfungen, die den Bau nicht ersetzen. 22 davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
-gelesen wird — und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
+gelesen wird, und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
 führt sie bei jedem Push aus:
 
 ```bash
@@ -145,7 +145,7 @@ Startseite kam einmal als 15 fast leere Blätter aus dem Drucker, weil die
 Einblendungen auf ein Hineinscrollen warten, das beim Drucken nie stattfindet.
 
 Das Kurzprofil als PDF entsteht über den Druckweg des Browsers aus derselben
-Seite, die unter `/onepager` liegt — keine zweite Quelle, kein zweites Layout:
+Seite, die unter `/onepager` liegt: keine zweite Quelle, kein zweites Layout:
 
 ```bash
 npm run onepager:pdf    # beide Sprachfassungen nach public/
@@ -163,7 +163,7 @@ npm run build:portrait  # alle drei Porträt-Fassungen aus einem Original
 Repositories, aus denen sie stammt, und ruft jede Adresse ab, die nach außen
 zeigt: Store-Seiten, Live-Systeme, Zertifikatsnachweise. Der Lauf braucht die
 Nachbar-Repos und das Netz und läuft deshalb nicht in der CI, sondern beim
-Zahlen-Automaten — eine Prüfung, die rot wird, weil ein Store gerade langsam
+Zahlen-Automaten. Eine Prüfung, die rot wird, weil ein Store gerade langsam
 ist, würde abgeschaltet statt gelesen.
 
 Voraussetzung: Node.js ≥ 20.9.
@@ -183,7 +183,7 @@ src/
 │  │  ├─ onepager/           dasselbe Blatt auf Englisch, eigenes PDF
 │  │  └─ opengraph-image/    als Route, damit die Adresse ohne Hash feststeht
 │  ├─ .well-known/           security.txt nach RFC 9116, Datum aus dem Bau
-│  ├─ global-not-found.tsx   404 ohne Layout — bei zwei Wurzel-Layouts nötig
+│  ├─ global-not-found.tsx   404 ohne Layout, bei zwei Wurzel-Layouts nötig
 │  ├─ humans.txt/route.ts    liest denselben Prüfstempel wie die Seite
 │  ├─ llms.txt/route.ts      dieselbe Seite als Text für Sprachmodelle
 │  ├─ icon.tsx · apple-icon.tsx   Symbole aus derselben Form wie die Marke
@@ -208,14 +208,14 @@ src/
 ├─ content/
 │  ├─ site.ts                deutsche Quelle: jeder Text, jede Zahl
 │  ├─ de.ts · en.ts          Adapter je Sprache, gegen types.ts deklariert
-│  ├─ types.ts               gemeinsame Form — fehlt ein Feld, bricht der Bau
+│  ├─ types.ts               gemeinsame Form; fehlt ein Feld, bricht der Bau
 │  ├─ ContentProvider.tsx    reicht die Sprachfassung an die Client-Sektionen
 │  ├─ articles/              fünf Fachartikel je Sprache, getippte Blöcke
 │  └─ verified.json          Prüfstempel, nur vom Workflow geschrieben
 └─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks · Marke · OG-Karte
 
 scripts/
-│  Am Browser gemessen — diese sieben laden die gebaute Seite wirklich:
+│  Am Browser gemessen: diese sieben laden die gebaute Seite wirklich:
 ├─ check-a11y.mjs                 axe-core gegen jede gebaute Seite, zwei Breiten
 ├─ check-headings.mjs             keine Überschrift schneidet ihre Unterlängen ab
 ├─ check-landmarks.mjs            jede Seite bietet Hauptbereich, Navigation und Fußzeile
@@ -322,7 +322,7 @@ vorab erzeugt und vom CDN-Rand ausgeliefert.
 
 ## Lizenz
 
-Der Code steht unter der MIT-Lizenz — nimm dir Muster, die dir nützen.
+Der Code steht unter der MIT-Lizenz. Nimm dir Muster, die dir nützen.
 
 Nicht Teil der Lizenz sind die Inhalte: Texte, Fallstudien und Fachartikel
 unter `src/content/` sowie die Bilder unter `public/` sind © Domenic Moran,

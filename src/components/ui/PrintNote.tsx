@@ -2,7 +2,7 @@
  * Die Herkunftszeile am Ende jedes Ausdrucks.
  *
  * Ein ausgedrucktes Blatt verliert die Adresszeile des Browsers. Wer es
- * weitergereicht bekommt, hält Text ohne Absender und ohne Datum in der Hand —
+ * weitergereicht bekommt, hält Text ohne Absender und ohne Datum in der Hand:
  * ausgerechnet bei einer Seite, deren ganzes Argument „jede Zahl ist belegt“
  * lautet.
  *
@@ -12,7 +12,7 @@
  *
  * Das Datum kommt aus `verified.json` und nicht aus `new Date()`: Die Seiten
  * sind vorgerendert, ein Aufruf zur Laufzeit würde beim Bauen einfrieren und
- * beim Hydrieren abweichen. Der Stempel ist ohnehin die ehrlichere Angabe — er
+ * beim Hydrieren abweichen. Der Stempel ist ohnehin die ehrlichere Angabe, er
  * sagt, wann zuletzt geprüft wurde, nicht wann jemand auf Drucken gedrückt hat.
  */
 export function PrintNote({ text }: { text: string }) {

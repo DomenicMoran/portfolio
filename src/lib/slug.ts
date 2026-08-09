@@ -8,7 +8,7 @@
  *
  * Umlaute werden ausgeschrieben und nicht entfernt: „Der zweite Hebel“ und
  * „Der zwiete Hebel“ wären sonst dieselbe Marke. Alles andere fällt weg, und
- * mehrere Trennstriche werden zu einem — eine Marke soll man vorlesen können.
+ * mehrere Trennstriche werden zu einem, eine Marke soll man vorlesen können.
  */
 export function alsSprungmarke(text: string): string {
   return text

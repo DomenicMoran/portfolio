@@ -6,7 +6,7 @@ import { alsWort, asWord, grossErstes, jahreZwischen, monateZwischen } from "./d
 
    Der erste Commit fiel auf den 26. März. Wer am 25. Juli fragt, hat drei
    volle Monate hinter sich, wer am 26. Juli fragt, vier. Ohne die Bedingung
-   auf den Tag im Monat springt die Angabe schon am 1. Juli — und die Seite
+   auf den Tag im Monat springt die Angabe schon am 1. Juli, und die Seite
    behauptet einen Monat mehr, als vergangen ist.
 */
 const ERSTER_COMMIT = new Date("2026-03-26");

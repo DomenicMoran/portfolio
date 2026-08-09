@@ -11,12 +11,12 @@
  * Das ist keine Absichtserklärung, sondern eine Aussage über den Ist-Zustand,
  * und sie steht auf einer Seite, die rechtlich zählt. Sie bricht leise: Ein
  * eingebundenes Video, eine Schrift von einem CDN, ein Zählpixel in einem
- * neuen Bauteil — nichts davon fällt beim Ansehen auf, und die Erklärung wäre
+ * neuen Bauteil, nichts davon fällt beim Ansehen auf, und die Erklärung wäre
  * ab diesem Commit falsch.
  *
  * Gemessen wird deshalb der Netzverkehr der gebauten Seite, nicht der
  * Quelltext. Jede Anfrage an einen anderen Host als den eigenen ist ein
- * Befund, `data:` und `blob:` ausgenommen — die verlassen den Rechner nicht.
+ * Befund, `data:` und `blob:` ausgenommen, die verlassen den Rechner nicht.
  *
  * Aufruf nach `npm run build`:
  *
@@ -60,7 +60,7 @@ const pfade = vorgegebeneBasis
   Die Erklärung nennt sie namentlich: „Alle Seiten mit Inhalt werden vorab
   erzeugt und als fertige Dateien ausgeliefert. Einzige Ausnahme ist die
   Fehlerseite: Sie wird bei der Anfrage zusammengesetzt.“ Genau diese eine
-  Seite fehlte in der Liste — sie liegt als `_not-found.html` im Bau und
+  Seite fehlte in der Liste, sie liegt als `_not-found.html` im Bau und
   fällt damit durch das Filter, das Bau-Interna auslässt.
 
   Die Seite, die als Ausnahme dasteht, war also die einzige, deren
@@ -82,7 +82,7 @@ const seite = await ctx.newPage();
 
 const funde = new Map();
 let regelbewegungen = 0;
-/* Was die Seite auf dem Gerät ablegt — Cookies, localStorage, sessionStorage. */
+/* Was die Seite auf dem Gerät ablegt. Cookies, localStorage, sessionStorage. */
 const speicher = new Set();
 seite.on("request", (anfrage) => {
   const adresse = anfrage.url();
@@ -104,8 +104,8 @@ for (const pfad of pfade) {
      Nicht nur laden, sondern bedienen.
 
      Die Erklärung sagt ausdrücklich „weder beim Aufruf noch bei einer
-     Interaktion". Ein Nachladen bei Klick — eine Karte, ein Video, eine
-     Schrift für ein Symbol — bliebe beim bloßen Aufruf unsichtbar.
+     Interaktion". Ein Nachladen bei Klick, eine Karte, ein Video, eine
+     Schrift für ein Symbol, bliebe beim bloßen Aufruf unsichtbar.
   */
   await seite.evaluate(async () => {
     const hoehe = document.documentElement.scrollHeight;
@@ -130,7 +130,7 @@ for (const pfad of pfade) {
     }
 
   });
-  /* Und jedes Feld, das kein Knopf ist — über echte Tasten, nicht über das DOM.
+  /* Und jedes Feld, das kein Knopf ist, über echte Tasten, nicht über das DOM.
 
      Reiter und Knöpfe wurden bedient, Schieberegler nie. Genau die tragen die
      beiden Demos: Die Startseite hat zwei `input[type="range"]`, an denen
@@ -138,7 +138,7 @@ for (const pfad of pfade) {
      durchgelaufen, obwohl der Satz „weder beim Aufruf noch bei einer
      Interaktion" genau das ausschließt.
 
-     Ein erster Anlauf setzte `value` und schickte `input` und `change` los —
+     Ein erster Anlauf setzte `value` und schickte `input` und `change` los:
      und blieb grün, auch mit einem eingesetzten `fetch` im Änderungshandler.
      React merkt sich den zuletzt gerenderten Wert in einem eigenen Tracker;
      wer das Feld direkt beschreibt, kommt daran nicht vorbei, und die
@@ -152,8 +152,8 @@ for (const pfad of pfade) {
      Er drückt jeden Knopf, darunter den für die Befehlspalette. Die hält den
      Fokus fest, und ein programmatisches `focus()` auf den Regler dahinter
      wird sofort zurückgeholt: Die Pfeiltasten landeten im Suchfeld der
-     Palette. Gemessen blieben beide Regler auf ihrem Ausgangswert — 219 und
-     2200 —, während dieselben Tastendrücke außerhalb dieses Laufs 220 und
+     Palette. Gemessen blieben beide Regler auf ihrem Ausgangswert, 219 und
+     2200, während dieselben Tastendrücke außerhalb dieses Laufs 220 und
      2250 ergaben. */
   await seite.keyboard.press("Escape");
   await seite.waitForTimeout(200);
@@ -169,7 +169,7 @@ for (const pfad of pfade) {
       regelbewegungen++;
     } catch {
       /* Ein Regler, der gerade nicht erreichbar ist, ist kein Befund dieses
-         Laufs — dafür gibt es check:focus. */
+         Laufs, dafür gibt es check:focus. */
     }
   }
   for (const auswahl of await seite.$$("select")) {
@@ -196,7 +196,7 @@ for (const pfad of pfade) {
      liest nichts davon aus: keine Cookies, weder eigene noch fremde, und auch
      nichts im lokalen Speicher deines Browsers." Das ist der Zuschnitt des
      § 25 TDDDG, der nicht Cookies regelt, sondern jedes Speichern von
-     Informationen auf dem Endgerät — also auch `localStorage` und
+     Informationen auf dem Endgerät, also auch `localStorage` und
      `sessionStorage`. Ein gemerkter Reiter oder eine gemerkte Sprachwahl wäre
      technisch eine Kleinigkeit und würde die Erklärung still falsch machen.
 
@@ -264,7 +264,7 @@ if (funde.size > 0) {
    irgendeine Kleinigkeit. Nichts davon sieht beim Ansehen verdächtig aus, und
    ab diesem Commit stünde in einem Rechtsdokument eine falsche Aussage.
 
-   Geprüft wird gegen den Bau, nicht gegen den Quelltext — was ausgeliefert
+   Geprüft wird gegen den Bau, nicht gegen den Quelltext, was ausgeliefert
    wird, entscheidet. Nur bei einer vorgegebenen Adresse fällt der Teil aus:
    Dort gibt es keinen Bau zu lesen. */
 if (!vorgegebeneBasis) {
@@ -316,7 +316,7 @@ if (!vorgegebeneBasis) {
    * Der Bau warnt bei jedem Durchgang zweimal: `metadataBase property in
    * metadata export is not set … using "http://localhost:3000"`. Next löst
    * relative Bildadressen der Vorschaukarten dagegen auf, wenn keine Basis
-   * dasteht — und `ogBildFuer()` liefert genau solche relativen Adressen.
+   * dasteht, und `ogBildFuer()` liefert genau solche relativen Adressen.
    *
    * Gemessen am 07.08.2026 an allen gebauten Seiten: keine einzige trägt
    * `localhost`. Beide Sprachlayouts setzen `metadataBase` über
@@ -328,7 +328,7 @@ if (!vorgegebeneBasis) {
    *
    * Geprüft wird deshalb nicht die Warnung, sondern ihre Folge. Bricht die
    * Vererbung eines Tages, meldet X und LinkedIn jede geteilte Seite ein Bild
-   * auf einem Rechner, den es im Netz nicht gibt — und im Bauprotokoll stünde
+   * auf einem Rechner, den es im Netz nicht gibt, und im Bauprotokoll stünde
    * dieselbe Warnung wie an jedem anderen Tag. */
   for (const datei of gebauteSeiten()) {
     const html = readFileSync(
@@ -337,7 +337,7 @@ if (!vorgegebeneBasis) {
     );
     for (const treffer of html.matchAll(/content="([^"]*localhost[^"]*)"/g)) {
       zusagen.push(
-        `${datei} nennt in einer Metaangabe ${treffer[1]} — eine Adresse, ` +
+        `${datei} nennt in einer Metaangabe ${treffer[1]}, eine Adresse, ` +
           `die es außerhalb dieses Rechners nicht gibt.`,
       );
     }

@@ -2,7 +2,7 @@
  * Eine geschriebene Zahl lesen und in derselben Schreibweise zurückgeben.
  *
  * Der Zähler auf der Startseite bekommt seinen Wert als Zeichenkette aus der
- * Inhaltsdatei — „1.276“ auf Deutsch, „1,276“ auf Englisch — und muss daraus
+ * Inhaltsdatei, „1.276“ auf Deutsch, „1,276“ auf Englisch, und muss daraus
  * eine Zahl gewinnen, um sie hochlaufen zu lassen, und danach wieder eine
  * Zeichenkette in derselben Schreibweise.
  *
@@ -12,7 +12,7 @@
  * drei Nachkommastellen wieder aus. Sichtbar stimmte es trotzdem: Eine
  * deutsche Dezimalzahl mit drei Nachkommastellen ist zeichengleich mit einer
  * englischen Tausendergruppe. Gemessen an der ausgelieferten Seite lief der
- * Zähler auf /en über 1,320 · 2,512 · 3,230 bis 4,318 — richtig, aber aus dem
+ * Zähler auf /en über 1,320 · 2,512 · 3,230 bis 4,318, richtig, aber aus dem
  * falschen Grund.
  *
  * Der Zufall hält nur, solange jede Zahl genau eine Dreiergruppe hat. Ein

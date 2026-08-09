@@ -35,7 +35,7 @@ export const metadata: Metadata = {
  *
  * Sie ist keine Kopie: Beide Fassungen rendern dasselbe Bauteil und
  * unterscheiden sich nur in der Inhaltsdatei. Damit kann das englische Blatt
- * keine anderen Zahlen tragen als das deutsche — gemessen wurde beides gegen
+ * keine anderen Zahlen tragen als das deutsche, gemessen wurde beides gegen
  * dieselbe Quelle in `about.stats`.
  */
 export default function OnePagerPage() {

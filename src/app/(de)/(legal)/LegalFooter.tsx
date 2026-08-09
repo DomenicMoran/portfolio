@@ -13,7 +13,7 @@ import { site } from "@/content/site";
  *
  * Sie steht hier und nicht mehr im Layout, weil sie wissen muss, auf welcher
  * Seite sie sitzt. Ein Verweis auf die Seite, auf der man schon steht, ist für
- * das Auge harmlos — ein Vorleseprogramm sagt aber „Impressum, Link" und
+ * das Auge harmlos, ein Vorleseprogramm sagt aber „Impressum, Link" und
  * verschweigt, dass es die aktuelle Seite ist. Die Kopfleiste der übrigen
  * Seiten führt `aria-current` für den aktiven Abschnitt seit ihrem Einbau;
  * hier fehlte es.
@@ -41,7 +41,7 @@ export function Rechtsfuss({ hier }: { hier: "impressum" | "datenschutz" }) {
       </span>
       {/* Unterstrichen: Die Verweise stehen in derselben Zeile wie die
           Copyright-Angabe und trugen gemessen deren Farbe. In einem Textblock
-          muss ein Verweis mehr als Farbe zur Unterscheidung tragen — hier trug
+          muss ein Verweis mehr als Farbe zur Unterscheidung tragen, hier trug
           er nicht einmal die. */}
       {seiten.map((seite) => (
         <Link

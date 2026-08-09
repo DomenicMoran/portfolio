@@ -3,12 +3,12 @@
  *
  * Vorher gab es zwei: Die Kopfleiste zeigte einen dunklen Buchstaben auf
  * grüner Fläche, das Lesezeichen einen grünen auf dunkler. Zwei Marken für
- * dieselbe Seite, und beide waren ein Buchstabe in einem Kasten — die
+ * dieselbe Seite, und beide waren ein Buchstabe in einem Kasten, die
  * naheliegendste Lösung, die es gibt.
  *
  * Das D ist deshalb gebaut statt gesetzt: Stamm und Bogen sind zwei Teile mit
- * einer Fuge dazwischen. Das ist dieselbe Haltung wie im Rest der Seite —
- * sichtbare Konstruktion statt glatter Oberfläche — und es unterscheidet das
+ * einer Fuge dazwischen. Das ist dieselbe Haltung wie im Rest der Seite:
+ * sichtbare Konstruktion statt glatter Oberfläche, und es unterscheidet das
  * Zeichen von jedem D, das eine Schriftart hergibt.
  *
  * Die Maße stammen aus einem Vergleich in den Größen, in denen das Zeichen

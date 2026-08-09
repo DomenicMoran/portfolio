@@ -40,7 +40,7 @@ export async function generateMetadata({
     description: kurzbeschreibung(artikel.dek),
     keywords: [...artikel.tags],
     // Beide Karten aus einer Angabe: Ein eigenes `openGraph` ohne `twitter`
-    // ließ dort den Titel der Startseite stehen — auf jeder der zehn
+    // ließ dort den Titel der Startseite stehen, auf jeder der zehn
     // Artikelseiten, also genau dort, wo geteilt wird.
     ...vorschaukarten({
       titel: artikel.title,
@@ -56,7 +56,7 @@ export async function generateMetadata({
       // `x-default` benennt die Fassung für Leser, deren Sprache auf keine
       // der beiden passt. Jede andere Seite der Site setzt ihn über
       // buildMetadata; die zehn Artikelseiten bauen ihre Metadaten selbst und
-      // waren dadurch die einzigen ohne — ausgerechnet die, die am ehesten
+      // waren dadurch die einzigen ohne, ausgerechnet die, die am ehesten
       // über eine Suche gefunden werden. Wie überall zeigt er auf die
       // deutsche Fassung, das ist die Hauptfassung.
       languages: anderer
@@ -67,7 +67,7 @@ export async function generateMetadata({
           }
         : undefined,
       // Eine Seite mit eigenem `alternates` ersetzt das des Layouts
-      // vollständig — ohne diese Zeile hätte ausgerechnet die Artikelseite
+      // vollständig, ohne diese Zeile hätte ausgerechnet die Artikelseite
       // keinen Feed-Hinweis.
       types: feedFuer("de"),
     },

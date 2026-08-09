@@ -16,8 +16,8 @@ export const kassensichvDe: Article = {
 
      Der Artikel argumentiert durchgehend aus § 146a AO und der
      Kassensicherungsverordnung, nannte sie aber nur im Fließtext. Ein Leser,
-     der die Aussagen nachschlagen will — und bei einem Text über
-     Steuerrecht will er das —, musste selbst suchen. Die übrigen Belege
+     der die Aussagen nachschlagen will, und bei einem Text über
+     Steuerrecht will er das, musste selbst suchen. Die übrigen Belege
      zeigen auf ein Repo, das niemand von außen öffnet; diese beiden sind
      die einzigen, die jeder prüfen kann. */
   evidence: [

@@ -281,8 +281,8 @@ const ARCHITECTURES: Record<string, Diagram> = {
         /* Die Zahl steht auch im Automatisierungsreiter derselben
            Fallstudie, und dort wird sie geprüft: `check-figures` zählt die
            von git verfolgten Workflow-Dateien im MenuCloud-Repo und hält
-           sie gegen den Text. Hier stand „75+“ — eine zweite, ungeprüfte
-           Fassung derselben Aussage, gemessen sind es 63. */
+           sie gegen den Text. Hier stand „75+“, eine zweite, ungeprüfte
+           Fassung derselben Aussage: gemessen sind es 63. */
         sub: "63 Workflows · Watchdogs",
         x: 594,
         y: 198,
@@ -634,7 +634,7 @@ export function ArchitectureDiagram({
   return (
     <figure className={cn("w-full", className)}>
       {/* Bei 390 px ist das Diagramm 720 px breit: 354 px stehen rechts
-          außerhalb des Bildes. Scrollen geht, nur sah man es nicht — dieselbe
+          außerhalb des Bildes. Scrollen geht, nur sah man es nicht, dieselbe
           Lage wie bei den Codeblöcken in den Artikeln, und deshalb dieselbe
           Lösung. `scroll-hint` legt zwei Deckel und zwei Schatten übereinander;
           die Deckel wandern mit dem Inhalt, die Schatten bleiben stehen. Ist
@@ -642,7 +642,7 @@ export function ArchitectureDiagram({
           erscheint genau dann, wenn er stimmt. */}
       {/* Und er ist anspringbar, weil ein Bereich, der scrollt, mit der
           Tastatur erreichbar sein muss. Gemessen bei 390 px an der
-          ausgelieferten Seite: Der Kasten scrollte, `tabIndex` war -1 — wer
+          ausgelieferten Seite: Der Kasten scrollte, `tabIndex` war -1, wer
           keine Maus benutzt, kam an die rechte Hälfte des Diagramms nicht
           heran. Der Name ist der Diagrammtitel, sonst wird der Bereich nur
           als "Bereich" angesagt. */}
@@ -656,13 +656,13 @@ export function ArchitectureDiagram({
 
             Das Bild rechnet in einem 920 Einheiten breiten Koordinatensystem;
             die kleinste Beschriftung misst darin 10 Einheiten. Bei 720 px
-            Mindestbreite ergibt das einen Faktor von 0,78 — gemessen an der
+            Mindestbreite ergibt das einen Faktor von 0,78, gemessen an der
             ausgelieferten Seite standen damit auf einem Telefon 16 der 29
             Beschriftungen unter 9 px, die kleinste bei 7,8. Am Desktop, wo das
             Bild 1152 px breit wird, sind es 12,5 px und keine darunter.
 
             Der Kasten scrollt ohnehin waagerecht, sobald das Bild breiter ist
-            als das Fenster — bei 720 px tat er das auf einem Telefon bereits.
+            als das Fenster, bei 720 px tat er das auf einem Telefon bereits.
             Mehr Breite kostet also Scrollweg, den es schon gab, und bringt
             dieselbe Schrift wie am Desktop. */}
         <motion.svg
@@ -784,14 +784,14 @@ export function ArchitectureDiagram({
       {/* Das Diagramm als Text, für die, die es nicht sehen.
 
           Das `aria-label` am SVG fasst die Aussage in zwei Sätzen zusammen.
-          Sichtbar stehen aber zwischen 17 und 30 Bausteine darin — iOS, Expo,
-          Whisper, Postgres, TSE —, und die sind der eigentliche Inhalt.
+          Sichtbar stehen aber zwischen 17 und 30 Bausteine darin, iOS, Expo,
+          Whisper, Postgres, TSE, und die sind der eigentliche Inhalt.
           Weil das SVG `role="img"` trägt, werden sie nicht vorgelesen: Ein
           Sehender liest den Stack je Ebene, ein Vorleseprogramm hört zwei
           Sätze. Eine Zusammenfassung ist keine Entsprechung.
 
           Die Liste entsteht aus denselben Daten wie die Zeichnung. Ein Knoten
-          gehört zu der Bahn, deren Oberkante am nächsten über ihm liegt —
+          gehört zu der Bahn, deren Oberkante am nächsten über ihm liegt:
           dieselbe Zuordnung, die das Auge im Bild vornimmt. */}
       <div className="sr-only">
         <p>{`${t(diagram.title)}. ${t(diagram.caption)}`}</p>
@@ -810,7 +810,7 @@ export function ArchitectureDiagram({
                „Oberflächen / Persistenz / 11.892 Rezepte". Gemessen an der
                ausgelieferten Seite fehlten so in allen vier Fallstudien
                zwischen 8 und 17 der Beschriftungen in der Fassung, die ein
-               Vorleseprogramm benutzt — bei NOURI 8 von 17, bei MenuCloud
+               Vorleseprogramm benutzt, bei NOURI 8 von 17, bei MenuCloud
                17 von 30.
 
                Wer sehen kann, merkt davon nichts: Beide Fassungen sind für

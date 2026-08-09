@@ -3,15 +3,15 @@
  * Prüft, dass README.md und AGENTS.md noch beschreiben, was hier wirklich steht.
  *
  * Diese beiden Dateien sind das Erste, was jemand im Repo liest. Sie zählen
- * Dinge — Prüfläufe, Regeln, Skripte —, und gezählte Dinge veralten leise:
+ * Dinge. Prüfläufe, Regeln, Skripte, und gezählte Dinge veralten leise:
  * Wer einen Lauf hinzufügt, ändert package.json und den Workflow, aber nicht
  * den Satz drei Verzeichnisse weiter, der eine Zahl nennt.
  *
  * Gefunden am 03.08.2026 beim Lesen, nicht durch einen Lauf:
  *
- *   - „Drei Regeln, alle nicht verhandelbar“ — darunter standen vier
- *   - „Nach dem Bau laufen dreizehn Prüfungen“ — aufgezählt waren vierzehn
- *   - „Typen, Linter, Bau und die sechs Prüfungen“ — der Workflow hatte 21 Schritte
+ *   - „Drei Regeln, alle nicht verhandelbar“, darunter standen vier
+ *   - „Nach dem Bau laufen dreizehn Prüfungen“, aufgezählt waren vierzehn
+ *   - „Typen, Linter, Bau und die sechs Prüfungen“, der Workflow hatte 21 Schritte
  *   - der Verzeichnisbaum listete 13 von 22 Skripten
  *   - acht deutsche Anführungspaare schlossen mit einem geraden Zoll-Zeichen,
  *     während `check:typography` genau das auf jeder ausgelieferten Seite verbietet
@@ -67,7 +67,7 @@ const ZAHLWORT = {
     Ziffern zählen mit, und das ist keine Bequemlichkeit: Die Tabelle endet bei
     zwanzig, weil Zahlen darüber ausgeschrieben schwer lesbar werden. Als der
     einundzwanzigste Prüflauf dazukam, schlug dieser Lauf „21“ vor und fand
-    seinen eigenen Vorschlag danach nicht wieder — der Satz galt als
+    seinen eigenen Vorschlag danach nicht wieder, der Satz galt als
     verschwunden. */
 const alsZahl = (wort) =>
   ZAHLWORT[wort.toLowerCase()] ??
@@ -82,7 +82,7 @@ const alsWort = (n) =>
 const laeufe = Object.keys(paket.scripts).filter((s) => s.startsWith("check:"));
 /* Gesucht ist die Einfuhr am Zeilenanfang, nicht die Zeichenkette irgendwo.
 
-   Der erste Entwurf suchte nach `from "playwright"` im ganzen Text — und
+   Der erste Entwurf suchte nach `from "playwright"` im ganzen Text, und
    zählte damit diese Datei mit, weil genau diese Suche hier steht. Ein
    Wächter, der sich selbst erkennt, meldet dann eine Abweichung, die es nicht
    gibt: „acht Läufe am Browser“ bei sieben. */
@@ -192,7 +192,7 @@ if (erfunden.length > 0) {
 // 2b. Jedes Skript hat einen Aufrufweg, jeder Prüflauf steht in der CI
 // ---------------------------------------------------------------------------
 
-/* Ein Prüflauf, der nirgends aufgerufen wird, prüft nichts — und sieht
+/* Ein Prüflauf, der nirgends aufgerufen wird, prüft nichts, und sieht
    trotzdem nach Prüfung aus. Das ist die stillste Art, eine Zusage zu
    verlieren: Der Lauf liegt im Repo, steht im Handbuch, und die CI kennt ihn
    nicht.
@@ -206,7 +206,7 @@ const wortlaut = [
   /* Ein Befehl im Handbuch zählt auch: `check-figures` läuft bewusst
      außerhalb der CI, weil er die Nachbar-Repos braucht, und steht in
      AGENTS.md als vollständiger Aufruf. Gesucht wird der Befehl, nicht der
-     bloße Dateiname — im Verzeichnisbaum steht jeder Name, und danach wäre
+     bloße Dateiname, im Verzeichnisbaum steht jeder Name, und danach wäre
      diese Prüfung wirkungslos. */
   ...[readme, agents].flatMap((t) =>
     [...t.matchAll(/node scripts\/[\w-]+\.mjs/g)].map((m) => m[0]),
@@ -247,7 +247,7 @@ if (nichtInDerCi.length > 0) {
 // ---------------------------------------------------------------------------
 
 /* „Vier Regeln, alle nicht verhandelbar:“ gefolgt von einer nummerierten
-   Liste — die Ankündigung und die Liste müssen dieselbe Zahl ergeben. */
+   Liste, die Ankündigung und die Liste müssen dieselbe Zahl ergeben. */
 for (const [datei, text] of [
   ["README.md", readme],
   ["AGENTS.md", agents],
@@ -297,7 +297,7 @@ for (const [datei, text] of [
   if (auf !== zu) {
     melde(
       datei,
-      `${auf} öffnende „ stehen ${zu} schließenden “ gegenüber — ` +
+      `${auf} öffnende „ stehen ${zu} schließenden “ gegenüber, ` +
         `wahrscheinlich schließt eines mit einem geraden Zoll-Zeichen`,
     );
   }
@@ -310,7 +310,7 @@ for (const [datei, text] of [
    AGENTS.md verlangt englische Dateinamen und begründet es hart: Umlaute in
    Dateinamen brechen über Betriebssysteme hinweg, und die Ersatzschreibung
    ist die Krücke, die man sich dafür einhandelt. Die Regel stand da und
-   niemand prüfte sie — gefunden wurde `scripts/lib/onepager-quellstand.mjs`,
+   niemand prüfte sie, gefunden wurde `scripts/lib/onepager-quellstand.mjs`,
    ein deutscher Name zwischen 43 englischen, beim Durchsehen von Hand.
 
    Geprüft wird der mechanische Teil: kein Zeichen außerhalb von ASCII. Ob ein
@@ -319,10 +319,10 @@ for (const [datei, text] of [
    das ist der Grund, aus dem die Regel überhaupt existiert.
 
    Gemessen wird gegen `git ls-files`, also gegen das, was jemand beim Klonen
-   bekommt — nicht gegen das Arbeitsverzeichnis mit seinen Bauordnern. */
+   bekommt, nicht gegen das Arbeitsverzeichnis mit seinen Bauordnern. */
 {
   /* `-z` und `core.quotepath=false`, sonst prüft der Lauf sich selbst blind:
-     Git schreibt einen Namen mit Umlaut als `"prÃ¼fung.mjs"` — in
+     Git schreibt einen Namen mit Umlaut als `"prÃ¼fung.mjs"`, in
      Anführungszeichen und mit Oktalfolgen, also reines ASCII. Gegengeprüft
      mit einer angelegten Datei `scripts/prüfung-test.mjs`: gemeldet haben
      zwei andere Blöcke, dieser nicht. */

@@ -6,7 +6,7 @@ import { en } from "./en";
  * Die Antwortzeit ist eine Zusage und steht an zwei sichtbaren Stellen.
  *
  * Im Vorspann des Kontaktbereichs und in der Faktenkachel daneben, in beiden
- * Sprachen — vier Stellen für dieselbe Zahl. Sie stammt jetzt aus je einer
+ * Sprachen, vier Stellen für dieselbe Zahl. Sie stammt jetzt aus je einer
  * Konstante; dieser Test hält fest, dass dabei überall dieselbe Zahl
  * herauskommt. Ohne ihn merkt es niemand: Die vier Stellen stehen weit
  * auseinander, und auf der Seite sieht eine falsche Zahl genauso aus wie eine

@@ -4,7 +4,7 @@
  * Die Anschrift stand zweimal fest im Quelltext: einmal unter „Angaben gemäß
  * § 5 DDG" im Impressum, einmal unter „Verantwortlicher" in der
  * Datenschutzerklärung. Zwei Stellen für dieselbe Angabe halten genau so
- * lange, bis eine davon geändert wird — und dann widersprechen sich
+ * lange, bis eine davon geändert wird, und dann widersprechen sich
  * ausgerechnet die beiden Dokumente, die eine Behörde nebeneinanderlegt.
  *
  * Hier und nicht in `src/content/site.ts`: Dort steht, was auf der Seite,
