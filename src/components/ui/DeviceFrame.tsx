@@ -67,30 +67,46 @@ export function DeviceFrame({
   const groessen = sizes ?? SIZES[variant];
 
   if (variant === "phone") {
+    /* Auch das Telefon bekommt seine Bildunterschrift.
+
+       Bildschirm und Browserrahmen tragen eine, das Telefon nicht — und
+       genau dort saß die Aufnahme, die es nötig hatte: Die Restaurantseite
+       der MenuCloud-App zeigt „Trattoria San Marco", einen Demo-Eintrag aus
+       den Seed-Daten. MenuCloud selbst hat ihn am 04.05.2026 aus dem
+       Aktivitätsstrom genommen, weil er dort als echter Betrieb gelesen
+       wurde. Im Bildschirmfoto einer Fallstudie liest er sich genauso, und
+       ohne Unterschrift gab es keine Stelle, an der das dastehen konnte. */
     return (
-      <div
+      <figure
         className={cn(
-          "relative mx-auto w-full max-w-[15rem] rounded-[2rem] border border-line bg-raised p-2 shadow-2xl shadow-black/50",
+          "relative mx-auto flex w-full max-w-[15rem] flex-col gap-2.5",
           className,
         )}
       >
-        <div className="relative overflow-hidden rounded-[1.5rem] bg-void">
-          {/* Die Aussparung am oberen Rand */}
-          <span
-            aria-hidden
-            className="absolute top-1.5 left-1/2 z-10 h-4 w-16 -translate-x-1/2 rounded-full bg-void"
-          />
-          <Image
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            priority={priority}
-            sizes={groessen}
-            className="h-auto w-full"
-          />
+        <div className="relative rounded-[2rem] border border-line bg-raised p-2 shadow-2xl shadow-black/50">
+          <div className="relative overflow-hidden rounded-[1.5rem] bg-void">
+            {/* Die Aussparung am oberen Rand */}
+            <span
+              aria-hidden
+              className="absolute top-1.5 left-1/2 z-10 h-4 w-16 -translate-x-1/2 rounded-full bg-void"
+            />
+            <Image
+              src={src}
+              alt={alt}
+              width={width}
+              height={height}
+              priority={priority}
+              sizes={groessen}
+              className="h-auto w-full"
+            />
+          </div>
         </div>
-      </div>
+        {label ? (
+          <figcaption className="text-center font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+            {label}
+          </figcaption>
+        ) : null}
+      </figure>
     );
   }
 
