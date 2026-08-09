@@ -50,15 +50,37 @@ export function SiteShell({
       }
     };
 
-    // Erst greifen, dann prüfen: Ein `in`-Test verengt `window` im Else-Zweig
-    // auf `never`, und der Zeitgeber wäre dort nicht mehr typisiert.
-    const beiLeerlauf = window.requestIdleCallback;
-    if (typeof beiLeerlauf === "function") {
-      const kennung = beiLeerlauf(nachladen, { timeout: 4000 });
-      return () => window.cancelIdleCallback(kennung);
-    }
-    const kennung = window.setTimeout(nachladen, 2500);
-    return () => window.clearTimeout(kennung);
+    /* Nachgeladen wird bei der ersten Berührung, nicht nach fester Zeit.
+
+       Vorher lief das unbedingt nach dem Leerlauf: Gemessen holte die
+       Startseite dadurch auf dem Telefon 12 Bilder mit 255 kB, auch bei
+       jemandem, der nie scrollt und nie druckt.
+
+       Nur auf `beforeprint` zu warten, war die andere Übertreibung: Der
+       Ausdruck kam dann auf 13 bis 20 von 23 Bildobjekten, je nachdem, wie
+       schnell der Druckdialog aufging. Ein Blatt mit leeren Rahmen ist
+       schlechter als 255 kB.
+
+       Die erste Berührung trifft beides: Wer liest, löst sie in der ersten
+       Sekunde aus, und bis zum Druckbefehl sind die Bilder da. Wer die Seite
+       öffnet und wieder schließt, lädt nichts nach. `beforeprint` bleibt als
+       letzter Halt für den, der ohne jede Bewegung druckt. */
+    const ereignisse = [
+      "scroll",
+      "pointerdown",
+      "pointermove",
+      "keydown",
+      "beforeprint",
+    ] as const;
+    const einmal = () => {
+      nachladen();
+      for (const e of ereignisse) window.removeEventListener(e, einmal);
+    };
+    for (const e of ereignisse)
+      window.addEventListener(e, einmal, { passive: true });
+    return () => {
+      for (const e of ereignisse) window.removeEventListener(e, einmal);
+    };
   }, []);
 
   useEffect(() => {
@@ -83,7 +105,10 @@ export function SiteShell({
         otherHref={otherHref}
         hashBase={hashBase}
       />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+      />
     </>
   );
 }
