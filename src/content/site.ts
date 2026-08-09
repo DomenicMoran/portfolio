@@ -345,7 +345,7 @@ export const hero = {
     { value: "4", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
-    { value: "7.400+", label: "Testfälle (MenuCloud)" },
+    { value: "7.800+", label: "Testfälle (MenuCloud)" },
   ],
 } as const;
 
@@ -574,7 +574,7 @@ export const caseStudies: CaseStudy[] = [
       "Mandantenfähige Architektur mit Row Level Security pro Restaurant",
       "Stripe Connect Destination-Charge: Restaurants werden direkt ausgezahlt, die Plattformgebühr wird abgeführt",
       "KassenSichV § 146a AO: Fiskaly Cloud-TSE pro Mandant, Hash-Kette persistiert",
-      "über 7.400 Testfälle (über 7.200 Unit, 174 End-to-End), die End-to-End-Tests gegen Produktion",
+      "über 7.800 Testfälle (über 7.600 Unit, 206 End-to-End), die End-to-End-Tests gegen Produktion",
       "Speisekarten-Scanner: PDF oder Foto rein, strukturierte Karte in der Datenbank raus",
       /* „dreistufig" stimmte bis zum 01.05.2026: Resend, Migadu, SES.
          Migadu ist seither abgeschaltet, und `src/lib/smtp.ts` sagt es im
@@ -671,7 +671,7 @@ export const caseStudies: CaseStudy[] = [
     metrics: [
       { value: verified.apiRouten, label: "API-Routen" },
       { value: verified.migrationen, label: "DB-Migrationen" },
-      { value: "7.400+", label: "Testfälle" },
+      { value: "7.800+", label: "Testfälle" },
       { value: "EU", label: "Hosting & Datenhaltung" },
       // Kunden, MRR, GMV oder Uptime würden hier eine Behauptung durch einen
       // Beleg ersetzen. Sie stehen bewusst nicht da: Erfinden kommt nicht in
