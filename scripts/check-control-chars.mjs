@@ -30,7 +30,7 @@
  *   npm run check:chars
  */
 
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 /** Was gelesen wird: alles, was ein Mensch hier schreibt. */
@@ -55,6 +55,20 @@ const suchen = (ordner) => {
   }
 };
 suchen(".");
+
+/* Dazu die Bauskripte der Bewerbungsunterlagen.
+
+   Sie liegen in `../docs`, ausserhalb dieses Repos, und erzeugen den
+   Lebenslauf, das Anschreiben und die englischen Fassungen. Am 09.08.2026
+   stand in `build-cv-pdf.mjs` ein echtes 0x08 mitten in einem regulaeren
+   Ausdruck — aus einer Wortgrenze, die ein Einfuege-Skript in ein
+   Steuerzeichen verwandelt hatte. Der Ausdruck traf danach nie zu, und der
+   englische Lebenslauf trug still ein deutsches Sprachattribut und ein
+   deutsches Datum.
+   Genau diese Klasse findet dieser Lauf, und er lief an den Dateien vorbei,
+   die die wichtigsten Dokumente setzen. Fehlt der Ordner, wird nichts
+   gemeldet: Wer das Repo allein auscheckt, hat ihn nicht. */
+if (existsSync("../docs")) suchen("../docs");
 
 const verboten = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
 const funde = [];
