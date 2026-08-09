@@ -116,6 +116,23 @@ Nachlesbar bleibt sie in `../ENTSCHIEDEN.md`.
 
 ## Bewegung
 
+**`LazyMotion` bringt hier nichts — dreimal gemessen, am 09.08.2026.** Die
+Bibliothek nennt für ihre Bausteine 121 kB (`motion`) gegen 16 kB (`m`) plus
+83 kB (`domMax`) oder 37 kB (`domAnimation`), und danach sieht die Rechnung
+lohnend aus. Am ausgelieferten Bündel der Startseite ist sie es nicht:
+
+| Fassung | Skript gesamt | davon Bewegung |
+|---|---|---|
+| `motion`, wie jetzt | 1.062 kB | 270 kB |
+| `LazyMotion` + `domMax` | 1.079 kB | 287 kB |
+| `LazyMotion` + `domAnimation`, ohne `layoutId` | 1.030 kB | 238 kB |
+
+Die Lazy-Maschinerie und `m` kosten zusammen mehr, als der kleinere
+Funktionssatz spart. Die dritte Zeile verlangt zusätzlich, die beiden
+gleitenden Pillen aufzugeben — in der Kopfleiste und in der Reiterleiste der
+Fallstudien —, und spart am Ende 32 kB Bewegung bei 19 kB mehr Skript. Wer es
+erneut versuchen will, misst zuerst nach; die Zahlen oben sind der Vergleich.
+
 Fünf Regeln, alle nicht verhandelbar:
 
 1. **`prefers-reduced-motion` gilt für JS-Animationen genauso.** Die CSS-Regel
