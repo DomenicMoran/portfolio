@@ -10,7 +10,7 @@
  *
  * Gemessen am 07.08.2026 in `check-figures.mjs`: Der frisch eingebaute Wächter
  * für die Portalzahl las statt `/\b([a-z0-9]+)\b/` einen Ausdruck mit zwei
- * Rückschritt-Zeichen und fand deshalb null Portale — bei sechs eingetragenen.
+ * Rückschritt-Zeichen und fand deshalb null Portale, bei sechs eingetragenen.
  * Er meldete daraufhin eine Abweichung an der Seite, die keine war. Ein
  * Prüflauf, der falsch misst, ist schlimmer als keiner: Er schickt die Suche in
  * die falsche Richtung, und der Quelltext daneben sieht richtig aus.
@@ -61,7 +61,7 @@ suchen(".");
    Sie liegen in `../docs`, ausserhalb dieses Repos, und erzeugen den
    Lebenslauf, das Anschreiben und die englischen Fassungen. Am 09.08.2026
    stand in `build-cv-pdf.mjs` ein echtes 0x08 mitten in einem regulaeren
-   Ausdruck — aus einer Wortgrenze, die ein Einfuege-Skript in ein
+   Ausdruck, aus einer Wortgrenze, die ein Einfuege-Skript in ein
    Steuerzeichen verwandelt hatte. Der Ausdruck traf danach nie zu, und der
    englische Lebenslauf trug still ein deutsches Sprachattribut und ein
    deutsches Datum.
@@ -83,7 +83,7 @@ for (const pfad of dateien) {
       `${pfad.split("\\").join("/")}:${i + 1} enthält 0x${treffer[0]
         .charCodeAt(0)
         .toString(16)
-        .padStart(2, "0")} — „…${zeile.slice(Math.max(0, stelle - 30), stelle + 20).replace(verboten, "␈")}…“`,
+        .padStart(2, "0")}, „…${zeile.slice(Math.max(0, stelle - 30), stelle + 20).replace(verboten, "␈")}…“`,
     );
   });
 }
@@ -93,7 +93,7 @@ for (const pfad of dateien) {
    AGENTS.md verlangt englische Dateinamen, und der Grund steht dort: Umlaute
    brechen über Betriebssysteme hinweg, und die Ersatzschreibung `ue/ae/oe` ist
    die Krücke, die man sich dafür einhandelt. Ob ein Name englisch ist, kann
-   eine Maschine nicht entscheiden — ob er ausserhalb von ASCII liegt, schon,
+   eine Maschine nicht entscheiden, ob er ausserhalb von ASCII liegt, schon,
    und das ist der Teil der Regel mit dem harten Grund.
 
    Gezählt am 08.08.2026: kein einziger von 186 gelesenen Namen. Die Prüfung

@@ -6,20 +6,20 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
  * Warum das eine eigene Datei ist und keine Selbstverständlichkeit: `next/font`
  * erzeugt je Aufruf einen eigenen Satz Dateien und eigene `@font-face`-Regeln.
  * Zwei Aufrufe mit denselben Werten liefern nicht dieselbe Schrift, sondern
- * zwei — mit unterschiedlichen Dateinamen, die der Browser beide lädt.
+ * zwei, mit unterschiedlichen Dateinamen, die der Browser beide lädt.
  *
  * Genau das lief hier. `global-error.tsx` und `global-not-found.tsx` bringen
  * ihr eigenes Dokument mit und deklarierten deshalb ihre eigenen Schriften.
  * Beide standen auf `preload: false` für Geist Mono, mit dem Kommentar „wie im
- * Hauptdokument auch" — was seit einer Messung nicht mehr stimmte. Das
+ * Hauptdokument auch", was seit einer Messung nicht mehr stimmte. Das
  * Hauptdokument lädt sie vor.
  *
  * Weil Next die Fehlerseite in den Baum jeder Seite hängt, kam ihr Stylesheet
  * auf jede Seite mit. Der Browser fand damit zwei `@font-face` für „Geist
  * Mono", eines auf die vorgeladene Datei, eines auf eine zweite, gleich große,
  * und lud beide. Gemessen an der Startseite auf einem vierfach gedrosselten
- * Telefon bei 1,6 Mbit/s: die vorgeladene Datei bei 845 ms fertig, die zweite —
- * dieselben 23 KiB — von 910 bis 2.254 ms, und der Largest Contentful Paint
+ * Telefon bei 1,6 Mbit/s: die vorgeladene Datei bei 845 ms fertig, die zweite:
+ * dieselben 23 KiB, von 910 bis 2.254 ms, und der Largest Contentful Paint
  * 142 ms danach bei 2.396 ms. Ein Wert über Budget, dessen Ursache in einer
  * Datei stand, die auf der gemessenen Seite gar nicht vorkommt.
  */
@@ -40,7 +40,7 @@ const geistSans = Geist({
  * Der Preis stand in der anderen Kennzahl. Weil sie erst nach dem Stylesheet
  * entdeckt wird, kam sie auf einer schmalen Leitung spät: gemessen an der
  * ausgelieferten Artikelseite bei 0,8 Mbit/s und sechsfach gedrosseltem
- * Prozessor um 3.576 ms, und 75 ms später verschob sich alles, was sie setzt —
+ * Prozessor um 3.576 ms, und 75 ms später verschob sich alles, was sie setzt:
  * Lesezeit, Themen-Chips, der Verweis auf das System. CLS 0,0587, dreimal
  * gleich reproduziert; auf dem CI-Runner 0,0582, auf einem ruhigen Rechner
  * null. Genau die Art Wert, die nur eine Messung findet.
@@ -81,7 +81,7 @@ const geistMono = Geist_Mono({
  * ausgelieferten englischen Startseite, 390 px und 1,6 Mbit/s: Drei Schriften
  * mit zusammen 68 KiB starteten zeitgleich mit dem Stylesheet, und dieses
  * 13 KiB kleine Blatt war erst nach 1.378 ms da. Bis dahin steht die Seite
- * ohne jede Auszeichnung — die Überschrift 32 px statt 44, ohne Höchstbreite,
+ * ohne jede Auszeichnung, die Überschrift 32 px statt 44, ohne Höchstbreite,
  * auf Englisch zwei Zeilen statt drei. Beim Eintreffen des Stylesheets sprang
  * alles darunter um 50 px, und der Beobachter zählte einen neuen Kandidaten:
  * LCP 3.304 ms auf `/en` gegen 2.072 ms auf `/`.
@@ -89,7 +89,7 @@ const geistMono = Geist_Mono({
  * Diese Schrift setzt drei kursive Wörter und steht auf `optional`. Ohne ihre
  * 29 KiB im kritischen Pfad ist das Stylesheet nach 706 ms da. Drei Läufe mit
  * abgeschaltetem Zwischenspeicher: LCP 1.472, 1.472 und 1.488 ms, und die
- * kursiven Wörter stehen in jedem davon in Instrument Serif — `optional`
+ * kursiven Wörter stehen in jedem davon in Instrument Serif, `optional`
  * heißt nicht, dass die Schrift wegfällt, sondern dass der Browser auf sie
  * nicht wartet.
  */

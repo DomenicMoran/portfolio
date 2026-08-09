@@ -4,7 +4,7 @@
  *
  * Sie sind die einzige Stelle, an der die Kernangaben ein zweites Mal stehen:
  * Rolle, Adresse, Profile, die vier Systeme, das Porträt. Und sie sind die
- * einzige Stelle, die niemand sieht — nicht beim Ansehen der Seite, nicht im
+ * einzige Stelle, die niemand sieht, nicht beim Ansehen der Seite, nicht im
  * Ausdruck, nicht beim Vorlesen. Wer eine Fallstudie umbenennt oder ein Bild
  * verschiebt, merkt hier nichts, und ab diesem Commit erzählt die Seite einer
  * Suchmaschine etwas anderes als ihrem Leser.
@@ -38,7 +38,7 @@ import { starteServer } from "./lib/local-server.mjs";
    Hier standen vier Adressen: die zwei Startseiten und ein Artikelpaar. Von
    den zehn Artikelseiten war damit eine geprüft, und vom Artikel-Datensatz
    nur `inLanguage`. Genau dort steht aber, was eine Suchmaschine als
-   Überschrift, Datum und Verfasser anzeigt — Angaben, die niemand beim
+   Überschrift, Datum und Verfasser anzeigt. Angaben, die niemand beim
    Ansehen der Seite bemerkt, wenn sie auseinanderlaufen.
 
    Die Liste kommt aus den gebauten Seiten, damit ein neuer Artikel nicht
@@ -151,7 +151,7 @@ for (const pfad of SEITEN) {
 
   bloecke += stand.anzahl;
   for (const meldung of stand.kaputt) {
-    funde.push(`${pfad}: ein Block ist kein gültiges JSON — ${meldung}`);
+    funde.push(`${pfad}: ein Block ist kein gültiges JSON, ${meldung}`);
   }
   if (stand.anzahl === 0) {
     funde.push(`${pfad}: keine strukturierten Daten`);
@@ -191,7 +191,7 @@ for (const pfad of SEITEN) {
       const zuviel = subjectOf.filter((s) => !stand.fallstudien.includes(s));
       if (fehlend.length || zuviel.length) {
         funde.push(
-          `${pfad}: subjectOf und die Fallstudien decken sich nicht — ` +
+          `${pfad}: subjectOf und die Fallstudien decken sich nicht, ` +
             `${fehlend.length ? `ohne Eintrag: ${fehlend.join(", ")}` : ""}` +
             `${fehlend.length && zuviel.length ? "; " : ""}` +
             `${zuviel.length ? `ohne Fallstudie: ${zuviel.join(", ")}` : ""}`,
@@ -204,7 +204,7 @@ for (const pfad of SEITEN) {
     angaben++;
     if (!stand.profil.name || !stand.profil.url || !stand.profil.inLanguage) {
       funde.push(
-        `${pfad}: ProfilePage nennt sich nicht selbst — ` +
+        `${pfad}: ProfilePage nennt sich nicht selbst, ` +
           `name ${stand.profil.name ? "ok" : "fehlt"}, ` +
           `url ${stand.profil.url ? "ok" : "fehlt"}, ` +
           `inLanguage ${stand.profil.inLanguage ? "ok" : "fehlt"}`,
@@ -259,7 +259,7 @@ if (funde.length > 0) {
   console.error(`${funde.length} Angabe stimmt nicht mit der Seite:\n`);
   for (const f of funde) console.error(`  ${f}`);
   console.error(
-    `\nDiese Daten sieht niemand beim Ansehen der Seite — eine Suchmaschine ` +
+    `\nDiese Daten sieht niemand beim Ansehen der Seite, eine Suchmaschine ` +
       `\nschon. Wer sie stehen lässt, erzählt dort etwas anderes als hier.`,
   );
   process.exit(1);

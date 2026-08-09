@@ -39,7 +39,7 @@ export function Hero() {
     <section
       id="top"
       /* Der Abschnitt traegt die Hauptueberschrift als Namen. Er ist ein
-         Sprungziel — die Marke in der Kopfleiste zeigt darauf —, und ein
+         Sprungziel, die Marke in der Kopfleiste zeigt darauf, und ein
          Sprungziel ohne Namen ist im Barrierefreiheitsbaum keine Landmarke,
          sondern gar nichts. */
       aria-labelledby="top-titel"
@@ -109,7 +109,7 @@ export function Hero() {
                   114 px (line-height 0,88). Unter der Grundlinie bleiben
                   dadurch nur 9 px im Kasten. Die Grundschrift trägt 21 px
                   Tinte unter die Grundlinie, die kursive Auszeichnungsschrift
-                  28 px — das "g" in "fertige" und das "y" in "Prototypen"
+                  28 px, das "g" in "fertige" und das "y" in "Prototypen"
                   endeten flach abgeschnitten.
 
                   0,2 em Polster deckt 25,9 px ab und damit beide Schriften mit
@@ -139,7 +139,7 @@ export function Hero() {
             Überschrift daneben stand zu dem Zeitpunkt schon seit 1,35
             Sekunden da.
 
-            Er ist weiterhin das LCP-Element — deshalb ist die Staffelung im
+            Er ist weiterhin das LCP-Element, deshalb ist die Staffelung im
             ganzen Hero gestaucht: 0,42 s Verzug waren 0,42 s, in denen der
             wichtigste Satz der Seite nicht dasteht. Die Reihenfolge Marke,
             Überschrift, Absatz, Knöpfe, Belegleiste bleibt sichtbar, sie
@@ -148,7 +148,7 @@ export function Hero() {
               das LCP-Element der Startseite, und eine Blende versteckt ihn so
               lange, wie sie läuft. Gemessen unter der Drosselung des
               Prüflaufs: 1.624 ms für den Absatz daneben, 2.232 bis 2.496 ms
-              für diesen — bei einem Budget von 2.500 ms. Die Bewegung bleibt,
+              für diesen, bei einem Budget von 2.500 ms. Die Bewegung bleibt,
               der Text steht ab dem ersten Bild. */}
           <p
             style={{ animationDelay: "0.2s" }}
@@ -162,7 +162,7 @@ export function Hero() {
               Sie stecken in ihrer Fallstudie, also weit unten: Gemessen
               beginnt die erste bei 3.100 px. Wer den Kopf liest und
               weiterzieht, erfährt sonst nie, dass auf dieser Seite etwas zum
-              Anfassen steht — und genau das unterscheidet sie von jedem
+              Anfassen steht, und genau das unterscheidet sie von jedem
               anderen Portfolio.
 
               Eine Zeile und kein dritter Knopf: Zwei Knöpfe führen, ein
@@ -226,7 +226,7 @@ export function Hero() {
           >
             {hero.proof.map((item) => (
               // flex-col-reverse: Im Baum bleibt die Reihenfolge dt → dd, die
-              // einzige Struktur, die eine <dl> enthalten darf — und die Zahl
+              // einzige Struktur, die eine <dl> enthalten darf, und die Zahl
               // steht trotzdem über ihrer Beschriftung. Ein <span> als
               // Geschwister wäre ungültig, und axe meldet das.
               <div key={item.label} className="flex flex-col-reverse gap-1.5">

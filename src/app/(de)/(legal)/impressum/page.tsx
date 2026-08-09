@@ -13,17 +13,17 @@ export const metadata: Metadata = {
   // sie ausserdem inhaltlich falsch.
   description:
     "Anbieterkennzeichnung nach § 5 DDG für domenicmoran.de: Betreiber, ladungsfähige Anschrift und Kontakt.",
-  /* noindex, aber follow — wie beim One-Pager und den beiden PDFs.
+  /* noindex, aber follow, wie beim One-Pager und den beiden PDFs.
 
      Hier stand `follow: false`, und damit standen drei Entscheidungen
      zur selben Frage nebeneinander: /onepager und die PDFs auf
      `noindex, follow`, diese beiden Blätter auf `noindex, nofollow`.
-     Der Unterschied war keiner — er ist entstanden, nicht entschieden.
+     Der Unterschied war keiner, er ist entstanden, nicht entschieden.
 
      `noindex` ist hier Absicht: Die Pflichtangabe nach § 5 DDG soll
      erfüllt sein, ohne die Wohnanschrift in Suchergebnisse zu tragen.
      `nofollow` trägt dazu nichts bei. Es hält einen Crawler nur davon
-     ab, den Verweisen dieser Seite zu folgen — und die zeigen auf die
+     ab, den Verweisen dieser Seite zu folgen, und die zeigen auf die
      Startseite und auf /en, also genau dorthin, wo er hin soll. */
   robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 /**
  * Ladungsfähige Anschrift nach § 5 DDG. Auf ausdrückliche Entscheidung des
  * Betreibers die Privatanschrift: Sie ist damit öffentlich, wird aber nicht
- * indexiert — die Seite trägt `noindex` und steht deshalb auch nicht in der
+ * indexiert, die Seite trägt `noindex` und steht deshalb auch nicht in der
  * Sitemap. Erreichbar bleibt sie über die Fußzeile jeder Seite, was § 5 DDG
  * verlangt; über eine Suche nach der Anschrift findet man sie nicht.
  */
@@ -87,7 +87,7 @@ export default function Impressum() {
         Die Angabe ist Pflicht, weil eine Kennung existiert.
 
         § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
-        sobald es eine gibt — nicht erst ab einer Umsatzgrenze. Hier stand
+        sobald es eine gibt, nicht erst ab einer Umsatzgrenze. Hier stand
         lange ein Vorbehalt („falls eine existiert"), und die Antwort stand
         die ganze Zeit öffentlich im Impressum von menucloud-berlin.de:
         DE461628017, zusammen mit der Kleinunternehmerregelung nach § 19 UStG.

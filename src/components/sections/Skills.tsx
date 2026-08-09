@@ -85,7 +85,7 @@ function DomainCard({
                 Rechtsbündig und zweizeilig sah er vorher aus, als wäre etwas
                 abgerissen: Die zweite Zeile trug oft nur ein Wort. Gemessen an
                 der ausgelieferten Seite bei 1024 px endeten 13 von 24 Zellen
-                auf Deutsch so und 10 von 24 auf Englisch — „Strict überall,
+                auf Deutsch so und 10 von 24 auf Englisch, „Strict überall,
                 0 Fehler / als Merge-Gate", „whisper.rn, Spracherkennung /
                 ohne Netz".
 

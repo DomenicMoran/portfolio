@@ -5,7 +5,7 @@
  * Zwei Sorten von totem Verweis, beide unsichtbar:
  *
  * 1. **Ein Anker ohne Ziel.** `href="#hire"` auf einer Seite ohne `id="hire"`
- *    springt nirgendwohin — der Browser meldet nichts, die Adresse ändert
+ *    springt nirgendwohin, der Browser meldet nichts, die Adresse ändert
  *    sich, und der Leser bleibt stehen. Das trifft die Kopfleiste, die
  *    Fußzeile, die 404-Seite und seit heute die sechs Belegverweise im
  *    Recruiter-Bereich.
@@ -45,7 +45,7 @@ const pfade = gebauteSeiten();
   Dazu die 404, über zwei erfundene Adressen.
 
   Sie liegt als `_not-found` im Bau und fällt damit durch das Filter, das
-  Bau-Interna auslässt — geprüft hat sie hier deshalb niemand. Dabei ist sie
+  Bau-Interna auslässt, geprüft hat sie hier deshalb niemand. Dabei ist sie
   die Seite mit der höchsten Wahrscheinlichkeit für einen toten Verweis: Sie
   zeigt auf sieben Sprungmarken der Startseite, auf beide Rechtsseiten und auf
   die andere Sprachfassung, und sie wird bei keiner Inhaltsänderung
@@ -68,7 +68,7 @@ const funde = [];
    Startseiten ein React-Fehler 418: Die Gebetszeiten-Demo rechnete den
    heutigen Tag im Render, der Server am Bautag und der Browser beim Laden. Ab
    dem ersten Tag nach dem Bau lief beides auseinander, und jeder, der die
-   Entwicklerkonsole öffnete — also genau der Leser, um den es hier geht —,
+   Entwicklerkonsole öffnete, also genau der Leser, um den es hier geht,
    sah einen Fehler auf einer Seite, die mit Nachweisbarkeit wirbt.
 
    Hier und nicht in einem eigenen Lauf: Dieser wartet ohnehin je Seite auf
@@ -148,7 +148,7 @@ for (const pfad of pfade) {
      Ein `img` mit falschem Pfad rendert einen leeren Kasten: kein Fehler im
      Bau, keine Meldung, und der Verweis-Lauf sah es nicht, weil er nur `a`
      zählt. Aufgefallen ist die Lücke, als die elf Produktaufnahmen von PNG
-     auf WebP wechselten — hätte ich einen Pfad falsch geschrieben, wäre die
+     auf WebP wechselten, hätte ich einen Pfad falsch geschrieben, wäre die
      Fallstudie mit leeren Rahmen online gegangen und jeder Lauf grün
      geblieben.
 
@@ -161,7 +161,7 @@ for (const pfad of pfade) {
       .map((bild) => bild.getAttribute("src")?.slice(0, 70) ?? "(ohne src)"),
   );
   for (const quelle of leere)
-    funde.push(`${pfad}: Bild ohne Inhalt — ${quelle}`);
+    funde.push(`${pfad}: Bild ohne Inhalt, ${quelle}`);
   bilder += ergebnis.bilder ?? 0;
 
   /* Die Kopfzeilen dieser Seite, für die Prüfung weiter unten. Gesammelt
@@ -176,7 +176,7 @@ for (const pfad of pfade) {
         sprache: l.getAttribute("hreflang"),
       }))
       /* Nur eigene Adressen. Die Metadaten schreiben sie absolut mit der
-         Produktionsdomain, das Dokumentgerüst relativ — beide gehören hierher,
+         Produktionsdomain, das Dokumentgerüst relativ, beide gehören hierher,
          eine fremde Domain nicht. Geprüft wird gegen das Attribut und nicht
          gegen die Eigenschaft `href`: Die ist im Browser immer absolut und
          aufgelöst gegen den Testserver, womit der Vergleich nichts mehr
@@ -193,7 +193,7 @@ for (const pfad of pfade) {
   );
   /* Zweimal dieselbe Anmeldung ist so schlecht wie keine: Der Leser zeigt den
      Feed dann doppelt an. Gemessen stand er eine Runde lang zweimal auf jeder
-     Seite — einmal aus den Metadaten, einmal aus dem Dokumentgerüst —, weil
+     Seite, einmal aus den Metadaten, einmal aus dem Dokumentgerüst, weil
      die erste Anmeldung bei der Suche nach "rss" nicht auffiel.
 
      Verglichen wird die Adresse und nicht der Medientyp: humans.txt und
@@ -223,7 +223,7 @@ for (const pfad of pfade) {
   /* Die Vorschaukarte ist ein Verweis wie jeder andere, nur sieht ihn niemand
      auf der Seite.
 
-     Sie erscheint erst beim Teilen — in LinkedIn, Slack, WhatsApp —, und wenn
+     Sie erscheint erst beim Teilen, in LinkedIn, Slack, WhatsApp, und wenn
      sie fehlt, merkt das ausgerechnet der, dem man den Link geschickt hat.
      Gemessen an der ausgelieferten Seite trugen sechs Seiten kein `og:image`:
      Artikelübersicht, Kurzprofil und die beiden Rechtsseiten, dazu die
@@ -241,7 +241,7 @@ for (const pfad of pfade) {
   /* Und die Karte muss sagen, wohin sie gehört.
 
      Dieselbe Ursache eine Ebene tiefer: Gemessen an den ausgelieferten Seiten
-     trugen genau zwei von achtzehn ein `og:url` — die beiden Startseiten, die
+     trugen genau zwei von achtzehn ein `og:url`, die beiden Startseiten, die
      als einzige kein eigenes `openGraph` setzen. Wer einen Artikel auf
      LinkedIn stellt, teilt eine Adresse mit `?trk=…` daran; ohne `og:url` ist
      das für jeden Sammler die Kennung des Inhalts, und dieselbe Seite zerfällt
@@ -263,7 +263,7 @@ for (const pfad of pfade) {
   );
   /* Ohne kanonische Adresse keine Kartenadresse.
 
-     Die beiden Fehlerseiten tragen keine — ihre Adresse ist die, die jemand
+     Die beiden Fehlerseiten tragen keine, ihre Adresse ist die, die jemand
      falsch getippt hat, und `noindex` steht ohnehin darüber. Eine Karte mit
      `og:url` auf eine Adresse, die es nicht gibt, wäre schlechter als keine.
      Die Bedingung ist deshalb an `canonical` gebunden und nicht an eine
@@ -292,7 +292,7 @@ for (const pfad of pfade) {
   /* Und er muss überall stehen: Auf den Seiten, die ihr `alternates` selbst
      setzen, fiel er ersatzlos weg, weil Next das geerbte Objekt ersetzt statt
      es zu mischen. Gemessen betraf das Kurzprofil, Impressum und
-     Datenschutz — also drei der zwanzig Seiten. */
+     Datenschutz, also drei der zwanzig Seiten. */
   const istNichtGefunden = /adresse|address/.test(pfad);
   if (
     !istNichtGefunden &&
@@ -322,7 +322,7 @@ for (const pfad of pfade) {
 
    Feed, humans.txt, llms.txt: Jede meldet sich im Kopf mit `rel` und einem
    Medientyp an, und beides ist eine Behauptung. Der Medientyp ist die
-   gefährlichere von beiden — ein falsches Ziel merkt der Leser sofort, einen
+   gefährlichere von beiden, ein falsches Ziel merkt der Leser sofort, einen
    falschen Typ glaubt ihm der Reader.
 
    Gemessen: Der Artikel-Feed wurde als `application/rss+xml` angemeldet und
@@ -358,7 +358,7 @@ for (const [pfad, angemeldet] of nebendateien) {
    Veröffentlichte Adressen bleiben erreichbar
 
    Ein Artikel wird geteilt: in einer Nachricht, in einem Beitrag, in einer
-   Bewerbung. Diese Adresse gehört danach nicht mehr dem Repository — sie
+   Bewerbung. Diese Adresse gehört danach nicht mehr dem Repository, sie
    liegt in fremden Postfächern und Lesezeichen. Ändert jemand den Slug, weil
    die Überschrift besser klingt, stirbt der geteilte Verweis lautlos: keine
    Warnung, kein roter Lauf, nur eine 404 bei jemandem, der etwas lesen
@@ -366,7 +366,7 @@ for (const [pfad, angemeldet] of nebendateien) {
 
    Die Liste ist deshalb keine Ableitung aus dem Inhalt, sondern eine
    Festlegung: Was hier steht, war einmal veröffentlicht. Fällt eine Adresse
-   weg, verlangt der Lauf eine Weiterleitung in `vercel.json` — dieselbe
+   weg, verlangt der Lauf eine Weiterleitung in `vercel.json`, dieselbe
    Antwort, die auch `/cv` und `/blog` bekommen. */
 const VEROEFFENTLICHT = [
   "/artikel/gruen-lokal-rot-in-der-ci",
@@ -401,7 +401,7 @@ for (const adresse of VEROEFFENTLICHT) {
     funde.push(
       `${adresse} war veröffentlicht und antwortet jetzt mit ` +
         `${antwort ? antwort.status : "gar nicht"}. Wer sie geteilt hat, ` +
-        `landet auf der Fehlerseite — eine Weiterleitung in vercel.json hält ` +
+        `landet auf der Fehlerseite, eine Weiterleitung in vercel.json hält ` +
         `den Verweis am Leben.`,
     );
   }
@@ -415,7 +415,7 @@ for (const adresse of VEROEFFENTLICHT) {
    veraltetes und ein vollständiges Atom-Dokument antworten alle mit 200.
 
    Abonnenten sind dabei der stillste Kanal dieser Seite. Wer über den Feed
-   liest, kommt nie wieder vorbei, um nachzusehen, ob etwas fehlt — er hört
+   liest, kommt nie wieder vorbei, um nachzusehen, ob etwas fehlt, er hört
    einfach nichts mehr, und niemand meldet das zurück. Ein sechster Artikel,
    der es nicht in den Feed schafft, bleibt für diese Leser unsichtbar.
 
@@ -459,7 +459,7 @@ for (const adresse of VEROEFFENTLICHT) {
         `${feed.pfad}: ${eintraege.length} Einträge, aber ${erwartet.length} ` +
           `veröffentlichte Artikel. ` +
           (mehrImFeed
-            ? `Ein neuer Artikel gehört in VEROEFFENTLICHT in dieser Datei — ` +
+            ? `Ein neuer Artikel gehört in VEROEFFENTLICHT in dieser Datei, ` +
               `die Liste ist von Hand geführt, damit keine Adresse still ` +
               `verschwindet.`
             : `Wer den Feed abonniert hat, sieht die Differenz nie.`),
@@ -476,7 +476,7 @@ for (const adresse of VEROEFFENTLICHT) {
        Leser deutsche Artikel ins Lesegerät, und zwar ohne es zu merken. */
     if (xml.includes(`${basis}${feed.fremd}`) || xml.includes(feed.fremd)) {
       funde.push(
-        `${feed.pfad} führt Einträge aus ${feed.fremd} — die Sprachfassungen ` +
+        `${feed.pfad} führt Einträge aus ${feed.fremd}, die Sprachfassungen ` +
           `mischen sich im Lesegerät.`,
       );
     }
@@ -500,7 +500,7 @@ for (const adresse of VEROEFFENTLICHT) {
 /* ---------------------------------------------------------------------------
    Die Abkürzungen aus vercel.json
 
-   `/cv`, `/blog`, `/en/resume` — Adressen, die niemand verlinkt und die
+   `/cv`, `/blog`, `/en/resume`. Adressen, die niemand verlinkt und die
    trotzdem jemand tippt. Sie stehen als Weiterleitung in `vercel.json`, und
    genau deshalb sieht sie kein Lauf an: Der Bau liest die Datei nicht, und
    die gebauten Seiten verweisen nicht darauf.
@@ -508,18 +508,18 @@ for (const adresse of VEROEFFENTLICHT) {
    Verschiebt jemand `/onepager`, zeigen sie ins Leere, und gemerkt wird das
    erst, wenn ein Recruiter auf der 404 landet. Geprüft wird deshalb das
    Ziel: Es muss eine Seite sein, die es wirklich gibt. Die Weiterleitung
-   selbst kann hier nicht getestet werden — sie entsteht erst bei Vercel. */
+   selbst kann hier nicht getestet werden, sie entsteht erst bei Vercel. */
 /* Keine Weiterleitung zeigt auf eine andere Weiterleitung.
 
    Die Liste wächst mit jeder Runde, in der jemand eine Adresse ausprobiert
-   und im Leeren landet — inzwischen 77 Regeln. Sobald ein Ziel selbst wieder
+   und im Leeren landet, inzwischen 77 Regeln. Sobald ein Ziel selbst wieder
    eine Quelle ist, kostet jeder Aufruf zwei Umläufe statt einem, und
    Suchmaschinen werten eine Kette schlechter als einen Sprung. Im Quelltext
    sieht man es nicht: Die beiden Zeilen stehen dann zwanzig Einträge
    auseinander.
 
    Gemessen am 08.08.2026: keine Kette. Live nachgesehen springt jede Regel
-   genau einmal — nur eine getippte Adresse mit Schrägstrich am Ende braucht
+   genau einmal, nur eine getippte Adresse mit Schrägstrich am Ende braucht
    zwei, und der erste Sprung ist Vercels eigene Normalisierung, keine
    Regel von hier. */
 {
@@ -533,7 +533,7 @@ for (const adresse of VEROEFFENTLICHT) {
     if (ziele.has(ohneAnker)) {
       funde.push(
         `vercel.json: ${quelle} zeigt auf ${ziel}, und das ist selbst eine ` +
-          `Weiterleitung auf ${ziele.get(ohneAnker)} — zwei Sprünge statt einem`,
+          `Weiterleitung auf ${ziele.get(ohneAnker)}, zwei Sprünge statt einem`,
       );
     }
   }
@@ -571,7 +571,7 @@ for (const w of weiterleitungen) {
   }
 
   /* Dauerhaft heisst 308, nicht 307.
-     Ohne `permanent` antwortet Vercel mit 307 — gemessen an allen sieben
+     Ohne `permanent` antwortet Vercel mit 307, gemessen an allen sieben
      Weiterleitungen, die es gab. 307 sagt "vorübergehend": Suchmaschinen
      lassen die alte Adresse stehen, Browser fragen jedes Mal neu. Bei /cv und
      /lebenslauf ist daran nichts vorübergehend. */
@@ -584,7 +584,7 @@ for (const w of weiterleitungen) {
   /* Ziele mit Platzhalter werden mit einem echten Wert geprüft.
 
      `/en/article/:slug` auf `/en/articles/:slug` fängt die Verwechslung von
-     Einzahl und Mehrzahl für jeden Artikel auf einmal — der deutsche Pfad
+     Einzahl und Mehrzahl für jeden Artikel auf einmal, der deutsche Pfad
      heißt `/artikel`, der englische `/en/articles`, und wer den einen kennt,
      schreibt den anderen falsch. Wörtlich abgerufen antwortet ein solches
      Ziel mit 404, weil `:slug` kein Pfad ist; der Lauf meldete es beim
@@ -629,14 +629,14 @@ for (const w of weiterleitungen) {
    Zwei Fehler gehören zusammen und fallen beide nicht auf:
 
    - Eine Seite, die indexiert werden soll, steht nicht in der Sitemap. Sie
-     wird trotzdem gefunden, nur später und schlechter — und wer die Sitemap
+     wird trotzdem gefunden, nur später und schlechter, und wer die Sitemap
      pflegt, merkt nichts, denn eine Auslassung sieht aus wie Absicht.
    - Eine Seite mit `noindex` steht in der Sitemap. Dann bittet die eine
      Datei um Aufnahme, was die andere verbietet. Suchmaschinen behandeln das
      als Widerspruch und melden es in ihren Werkzeugen.
 
    Gemessen zum Zeitpunkt des Einbaus: 18 gebaute Seiten, 14 in der Sitemap,
-   und genau die vier fehlenden tragen `noindex` — Impressum, Datenschutz und
+   und genau die vier fehlenden tragen `noindex`. Impressum, Datenschutz und
    die beiden One-Pager. Der Stand ist richtig, er stand nur nirgends fest.
 ------------------------------------------------------------------ */
 
@@ -702,7 +702,7 @@ for (const w of weiterleitungen) {
 
    Die Zuordnung ist streng am Pfad: Alles unter `/en` ist englisch, alles
    andere deutsch. Ein Anker wie `/en#work` bleibt damit innerhalb seiner
-   Sprache — ein erster Anlauf ohne diese Unterscheidung meldete 108
+   Sprache, ein erster Anlauf ohne diese Unterscheidung meldete 108
    angebliche Wechsel, von denen 106 keine waren. */
 {
   const seite = await browser.newPage({
@@ -741,7 +741,7 @@ for (const w of weiterleitungen) {
        Es ist die Datei, die weitergereicht wird, und sie hängt an zwei
        Eigenschaften: `download`, damit sie sich sichern lässt statt sich in
        einem Betrachter zu öffnen, und der richtigen Sprachfassung. Beide
-       waren schon einmal auseinander — der Kommentar in `CopyEmail.tsx` hält
+       waren schon einmal auseinander, der Kommentar in `CopyEmail.tsx` hält
        fest, dass zwei von drei Verweisen es anders hielten als der dritte.
 
        Geprüft war seither nur `/onepager` und `/en/onepager`, also zwei von
@@ -762,7 +762,7 @@ for (const w of weiterleitungen) {
       pdfverweise++;
       if (!b.laedt) {
         funde.push(
-          `${route}: „${b.text}" zeigt auf ${b.ziel} ohne download — die Datei ` +
+          `${route}: „${b.text}" zeigt auf ${b.ziel} ohne download, die Datei ` +
             `öffnet sich im Betrachter statt sich zu sichern`,
         );
       }
@@ -794,7 +794,7 @@ for (const w of weiterleitungen) {
 
    Die Sektion heißt „Das Wichtigste in zwei Minuten" und besteht aus sechs
    Sätzen in der ersten Person: „Ich liefere fertig", „Ich weise nach, statt zu
-   behaupten". Jeder davon endet an einem Verweis — auf eine Fallstudie, einen
+   behaupten". Jeder davon endet an einem Verweis, auf eine Fallstudie, einen
    Artikel oder ein Repo. Das ist der ganze Unterschied zwischen dieser Seite
    und einem Anschreiben.
 
@@ -854,7 +854,7 @@ for (const w of weiterleitungen) {
 
        Der Vorspann der Fähigkeiten sagt es ausdrücklich: „Hier stehen keine
        Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent
-       beherrscht." Statt einer Zahl steht neben jeder Fähigkeit ein Beleg —
+       beherrscht." Statt einer Zahl steht neben jeder Fähigkeit ein Beleg:
        „Expo SDK 57, RN 0.86, vier Geräteklassen" neben React Native. Auch
        dieses Feld ist im Inhaltsmodell optional; gemessen tragen heute alle
        24 je Sprachfassung einen. */
@@ -888,12 +888,12 @@ for (const w of weiterleitungen) {
 
    Wer auf `/artikel/kassensichv-in-der-praxis` steht und die Adresse bis
    `/artikel` kürzt, tut das Naheliegende. Kein Verweis wäre tot, wenn dort
-   nichts läge — diese Adressen entstehen nicht durch Klicken, sondern durch
+   nichts läge, diese Adressen entstehen nicht durch Klicken, sondern durch
    Tippen und Kürzen, und dieser Lauf sieht nur, worauf jemand zeigt.
 
    Hier ist gerade alles in Ordnung: 18 Seiten, drei Elternpfade, alle drei
-   beantwortet. Im Prüfstand nebenan waren es vier verwaiste — /aufsagen,
-   /aufsagen/folge, /quiz/folge und /quiz/kapitel —, gefunden mit derselben
+   beantwortet. Im Prüfstand nebenan waren es vier verwaiste, /aufsagen,
+   /aufsagen/folge, /quiz/folge und /quiz/kapitel, gefunden mit derselben
    Rechnung. Was hier stimmt, stimmt nicht von selbst weiter: Ein neuer
    Abschnitt unter einer neuen Ebene bringt den Fall mit. */
 {
@@ -912,7 +912,7 @@ for (const w of weiterleitungen) {
   for (const pfad of [...eltern].sort()) {
     if (seitenmenge.has(pfad) || umgeleitet.has(pfad)) continue;
     funde.push(
-      `${pfad} ist der Elternpfad einer Seite, antwortet aber selbst nicht — ` +
+      `${pfad} ist der Elternpfad einer Seite, antwortet aber selbst nicht, ` +
         `weder gebaut noch in vercel.json weitergeleitet`,
     );
   }
@@ -926,7 +926,7 @@ for (const w of weiterleitungen) {
    und ein `mailto` ist eine Adresse wie jede andere: Windows reicht sie nur
    bis etwa 2.083 Zeichen an das Mailprogramm weiter, Outlook schneidet früher
    ab. Ein Verweis, den niemand mehr öffnen kann, ist so tot wie einer ins
-   Leere — nur sieht man es ihm nicht an.
+   Leere, nur sieht man es ihm nicht an.
 
    Gemessen am 08.08.2026 vor der Begrenzung: ein Pfad aus 4.000 Zeichen ergab
    einen Verweis aus 4.170. Der Proxy kürzt jetzt bei 200 Zeichen, und ein
@@ -954,7 +954,7 @@ for (const w of weiterleitungen) {
     );
   } else if (!/%E2%80%A6/.test(verweis)) {
     funde.push(
-      "Die gekürzte Adresse endet nicht mit einem Auslassungszeichen — " +
+      "Die gekürzte Adresse endet nicht mit einem Auslassungszeichen, " +
         "der Empfänger läse eine Adresse, die es so nie gab.",
     );
   } else {
@@ -965,7 +965,7 @@ for (const w of weiterleitungen) {
 await browser.close();
 beenden();
 
-for (const f of seitenfehler) funde.push(`Fehler in der Konsole — ${f}`);
+for (const f of seitenfehler) funde.push(`Fehler in der Konsole, ${f}`);
 
 if (funde.length > 0) {
   /* "2 toter Verweise" stand hier, und ab jetzt wäre selbst die richtige

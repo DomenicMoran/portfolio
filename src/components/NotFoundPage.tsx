@@ -67,7 +67,7 @@ export function NotFoundPage({
   return (
     /* Ein Rahmen ueber beidem, damit der Fussteil unten im Bild steht und
        nicht darunter. Vorher trug `main` selbst `min-h-svh`; als der Fussteil
-       aus `main` herauswanderte, rutschte er damit unter die Falz — auf einer
+       aus `main` herauswanderte, rutschte er damit unter die Falz, auf einer
        Seite, von der aus § 5 DDG das Impressum unmittelbar erreichbar
        verlangt. */
     <div className="flex min-h-svh flex-col">
@@ -81,7 +81,7 @@ export function NotFoundPage({
           {/* Das Zeichen, wie in der Kopfleiste.
 
             Die 404 bringt ihr eigenes Dokument mit und hat deshalb keine
-            Kopfleiste — gemessen an der ausgelieferten Seite stand hier kein
+            Kopfleiste, gemessen an der ausgelieferten Seite stand hier kein
             einziges Element der Marke. Wer über einen kaputten fremden Verweis
             hier landet, sieht als Erstes eine Seite, die zu niemandem gehört.
             Ein Zeichen mit Namen, das zur Startseite führt, ist genug; mehr
@@ -121,7 +121,7 @@ export function NotFoundPage({
 
                      Next holt zu jedem sichtbaren Verweis die Skripte des
                      Ziels mit. Gemessen an der ausgelieferten Fehlerseite auf
-                     dem Telefon: 1.002 kB Skript und 205 kB vorab — doppelt so
+                     dem Telefon: 1.002 kB Skript und 205 kB vorab, doppelt so
                      viel wie das Impressum, auf einer Seite, die sich
                      ausdrücklich ohne Client-Code versteht. Wer sich vertippt
                      hat, klickt genau einen dieser Wege an. Beim Zeigen mit
@@ -176,11 +176,11 @@ export function NotFoundPage({
         Landmarke: `contentinfo` entsteht nur, wenn er nicht in `main`,
         `article` oder `section` steckt. Gemessen am Baum der ausgelieferten
         404: zwei Landmarken, `main` und die Weiter-zu-Navigation, kein
-        `contentinfo` — als einzige Seite dieser Adresse. Die Zeilen darunter
+        `contentinfo`, als einzige Seite dieser Adresse. Die Zeilen darunter
         sind aber genau das, was ueberall sonst die Fusszeile ist. */}
       {/* Derselbe Aufbau wie `main`: aussen der Rand, innen die Spalte.
           Andersherum stand der Fussteil 23 px weiter rechts als der Text
-          darueber — gemessen an der ausgelieferten Seite bei 1440 px. */}
+          darueber, gemessen an der ausgelieferten Seite bei 1440 px. */}
       <footer className="relative px-6 pb-10">
         <div className="mx-auto w-full max-w-2xl">
           <p className="border-t border-line pt-6 text-sm text-ink-faint">
@@ -190,7 +190,7 @@ export function NotFoundPage({
 
                  `site.mailSubject` lautet „Anfrage über domenicmoran.de“ und
                  ist für den gedacht, der wegen einer Stelle schreibt. Wer von
-                 hier aus schreibt, meldet einen toten Verweis — und die
+                 hier aus schreibt, meldet einen toten Verweis, und die
                  Meldung soll im Postfach als solche ankommen, ohne dass
                  jemand sie erst öffnet. */
               href={mailAdresse(
@@ -208,11 +208,11 @@ export function NotFoundPage({
 
           {/* Auch eine 404 ist eine Seite des Angebots: § 5 DDG verlangt das
             Impressum von jeder aus unmittelbar erreichbar. Gemessen an elf
-            ausgelieferten Adressen fehlte es hier — und diese Seite bekommt
+            ausgelieferten Adressen fehlte es hier, und diese Seite bekommt
             jeder zu sehen, der sich vertippt. */}
           {/* Unterstrichen, nicht nur eingefärbt. Gemessen an der
             ausgelieferten Seite trugen beide Verweise genau die Farbe
-            ihres Umfelds — rgb(132,132,143) auf rgb(132,132,143) — und
+            ihres Umfelds, rgb(132,132,143) auf rgb(132,132,143), und
             keine Unterstreichung. Wer die Zeile liest, kann nicht
             erkennen, dass sie anklickbar ist. */}
           {/* Zwei Zeilen Platz, auch wenn eine reicht.
@@ -221,7 +221,7 @@ export function NotFoundPage({
               118 px, und weil der Inhalt darüber senkrecht zentriert steht,
               rutschte mit ihr die ganze Seite: gemessen in der CI CLS 0,1626
               bei einem Budget von 0,1, in allen drei Läufen gleich. Die 15 px
-              sind eine Zeile dieser Zeile — 11 px Schrift, rund 15 px hoch —
+              sind eine Zeile dieser Zeile, 11 px Schrift, rund 15 px hoch:
               und nicht eine des Absatzes darüber, der mit 14 px auf 20 käme.
               In der Ersatzschrift des Linux-Läufers brechen die beiden
               Verweise um, mit Geist stehen sie nebeneinander.

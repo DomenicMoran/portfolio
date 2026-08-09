@@ -11,7 +11,7 @@
  *     Zahlen für Salati, gezählt am 6. August 2026 …
  *
  * Beide Sätze sind Fließtext, beide erklären eine Messung, beide stehen auf
- * der Startseite. Die zweite Form ist die richtige — ein Datum mitten im Satz
+ * der Startseite. Die zweite Form ist die richtige, ein Datum mitten im Satz
  * schreibt man aus. Die erste entstand aus `split("-").reverse().join(".")`,
  * einer Zeile, die dreimal wortgleich im Bestand stand.
  *

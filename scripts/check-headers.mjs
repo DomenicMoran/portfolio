@@ -11,7 +11,7 @@
  * Antwort, die ein Besucher bekommt.
  *
  * Der Lauf liest die Vorgabe aus `vercel.json` und stellt sie gegen die
- * Antwort der Live-Adresse — Wert für Wert, nicht nur „vorhanden".
+ * Antwort der Live-Adresse. Wert für Wert, nicht nur „vorhanden".
  *
  * Er misst damit den Stand, der gerade ausgeliefert wird, nicht den des
  * Arbeitsbaums. Läuft er unmittelbar nach einem Push, gehört die Antwort noch
@@ -54,7 +54,7 @@ const adressen = ["/", "/en", FEHLERSEITEN[0], "/robots.txt"];
    Eine Fehlerseite, die mit 200 ausgeliefert wird, ist der Fehler, den man
    nicht sieht: Im Browser steht dieselbe Seite, und ein Mensch merkt nichts.
    Eine Suchmaschine merkt es sofort und nimmt jede erfundene Adresse als
-   gültige Seite in den Index — mit dem Titel „Diese Seite gibt es nicht“.
+   gültige Seite in den Index, mit dem Titel „Diese Seite gibt es nicht“.
    Die 404 ist hier ausserdem die einzige Route, die bei der Anfrage entsteht,
    also die einzige, deren Status überhaupt von Code abhängt. */
 const ERWARTETER_STATUS = {
@@ -120,14 +120,14 @@ const KANDIDATEN = ["/portrait-dark.jpg", "/domenic-moran-kurzprofil.pdf"];
 for (const block of vorgabe.headers ?? []) {
   if (block.source === "/(.*)" || block.source.startsWith("/api/")) continue;
 
-  /* Der Ausdruck aus der Datei entscheidet, welche Beispieldatei gemeint ist —
+  /* Der Ausdruck aus der Datei entscheidet, welche Beispieldatei gemeint ist:
      eine zweite Liste mit denselben Mustern waere die Stelle, an der beide
      auseinanderlaufen. */
   const muster = new RegExp("^" + block.source + "$");
   const beispiel = KANDIDATEN.find((k) => muster.test(k));
   if (!beispiel) {
     funde.push(
-      `Kein Beispiel fuer ${block.source} — Kandidaten: ${KANDIDATEN.join(", ")}`,
+      `Kein Beispiel fuer ${block.source}. Kandidaten: ${KANDIDATEN.join(", ")}`,
     );
     continue;
   }
@@ -158,7 +158,7 @@ for (const block of vorgabe.headers ?? []) {
 
    `check:links` prüft ihre Ziele und ihre Kennzeichnung in der Datei, mehr
    kann es nicht: Weiterleitungen entstehen bei Vercel und nicht beim Bau. Was
-   dabei herauskommt, sieht nur, wer die Live-Adresse fragt — und genau das
+   dabei herauskommt, sieht nur, wer die Live-Adresse fragt, und genau das
    tut dieser Lauf ohnehin.
 
    Gemessen wurden alle sieben mit 307 statt 308, weil `permanent` fehlte.
@@ -190,12 +190,12 @@ for (const w of vorgabe.redirects ?? []) {
 }
 
 /* ---------------------------------------------------------------------------
-   Nichts nimmt Eingaben entgegen — auch nicht dem Statuscode nach.
+   Nichts nimmt Eingaben entgegen, auch nicht dem Statuscode nach.
 
    Die Datenschutzerklärung sagt: „Es gibt keinen Endpunkt, der Eingaben
    entgegennimmt." Gemessen am 08.08.2026 stimmte das für den Inhalt und
    nicht für die Antwort: `POST /` und `POST /impressum` gaben richtig 405,
-   aber `POST /api/kontakt` und jede andere unbekannte Adresse gaben **200** —
+   aber `POST /api/kontakt` und jede andere unbekannte Adresse gaben **200**:
    dieselbe Fehlerseite wie bei `GET`, nur mit dem Statuscode für Erfolg.
 
    Verarbeitet wurde nichts. Gelesen wird es trotzdem falsch: Wer eine Seite
@@ -236,7 +236,7 @@ for (const pfad of ABGEKLOPFT) {
 
    Einschleusen laesst sich darueber nichts, und wer die Kopfzeile schickt,
    taeuscht nur sich selbst. Die Fehlerseite behandelt den Wert aber als
-   Tatsache ueber die Anfrage — und eine Tatsache ueber die Anfrage darf nicht
+   Tatsache ueber die Anfrage, und eine Tatsache ueber die Anfrage darf nicht
    aus der Anfrage stammen.
 
    Geprueft wird in beide Richtungen: Die deutsche Adresse bleibt deutsch,
@@ -264,7 +264,7 @@ for (const [pfad, mitgeschickt, erwartet] of [
   if (ist !== erwartet) {
     funde.push(
       `${pfad} mit x-sprache: ${mitgeschickt} antwortet in ${ist}, ` +
-        `erwartet ${erwartet} — der Pfad entscheidet, nicht die Anfrage.`,
+        `erwartet ${erwartet}, der Pfad entscheidet, nicht die Anfrage.`,
     );
   }
 }

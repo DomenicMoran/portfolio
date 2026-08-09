@@ -37,13 +37,13 @@ müssen dann aber ohne Umlaute auskommen.**
 
 Das ist keine Geschmacksfrage, sondern folgt aus zwei harten Punkten: Umlaute
 in Dateinamen brechen über Betriebssysteme hinweg, und die Ersatzschreibung
-`ue/ae/oe` ist die Krücke, die man sich dafür einhandelt — sie stand einmal in
+`ue/ae/oe` ist die Krücke, die man sich dafür einhandelt; sie stand einmal in
 sechs Dateinamen neben sechzig englischen. Wer diese Datei liest, sieht sonst
 zwei Sprachen und zwei Konventionen in einem Verzeichnis.
 
 Bei **Bezeichnern im Code** gilt dieser Grund nicht: Sie verlassen das Repo
 nie und kollidieren mit keinem Dateisystem. Hier stand trotzdem „englisch“,
-und der Code hielt sich nie daran — gezählt rund 1.400 deutsche gegen 2.500
+und der Code hielt sich nie daran. Gezählt rund 1.400 deutsche gegen 2.500
 englische Vorkommen, quer durch `src/` und `scripts/`. Eine Regel, die
 niemand befolgt, macht das Dokument wertlos und nicht den Code besser: Die
 Regel wandert dorthin, wo sie einen Grund hat. Deutsch ist erlaubt, wo die
@@ -88,7 +88,7 @@ beide Sprachfassungen, einen Eintrag in `articles/index.ts` samt Slug-Paar,
 drei Weiterleitungen in `vercel.json` für die Slugs in der falschen Fassung,
 die Zahl in den Überschriften der Übersicht, die Repo-Beschreibung auf GitHub
 und eine Zeile in `VEROEFFENTLICHT` in `scripts/check-links.mjs`. Die letzte
-ist die, die man vergisst — sie hält fest, welche Adresse einmal öffentlich
+ist die, die man vergisst. Sie hält fest, welche Adresse einmal öffentlich
 war, und ohne sie zählt der Feed einen Eintrag mehr, als die Liste kennt.
 `node scripts/check-figures.mjs` nennt die übrigen Punkte von selbst.
 
@@ -116,7 +116,7 @@ Nachlesbar bleibt sie in `../ENTSCHIEDEN.md`.
 
 ## Bewegung
 
-**`LazyMotion` bringt hier nichts — dreimal gemessen, am 09.08.2026.** Die
+**`LazyMotion` bringt hier nichts, dreimal gemessen, am 09.08.2026.** Die
 Bibliothek nennt für ihre Bausteine 121 kB (`motion`) gegen 16 kB (`m`) plus
 83 kB (`domMax`) oder 37 kB (`domAnimation`), und danach sieht die Rechnung
 lohnend aus. Am ausgelieferten Bündel der Startseite ist sie es nicht:
@@ -129,8 +129,8 @@ lohnend aus. Am ausgelieferten Bündel der Startseite ist sie es nicht:
 
 Die Lazy-Maschinerie und `m` kosten zusammen mehr, als der kleinere
 Funktionssatz spart. Die dritte Zeile verlangt zusätzlich, die beiden
-gleitenden Pillen aufzugeben — in der Kopfleiste und in der Reiterleiste der
-Fallstudien —, und spart am Ende 32 kB Bewegung bei 19 kB mehr Skript. Wer es
+gleitenden Pillen aufzugeben, in der Kopfleiste und in der Reiterleiste der
+Fallstudien, und spart am Ende 32 kB Bewegung bei 19 kB mehr Skript. Wer es
 erneut versuchen will, misst zuerst nach; die Zahlen oben sind der Vergleich.
 
 Fünf Regeln, alle nicht verhandelbar:
@@ -155,7 +155,7 @@ Fünf Regeln, alle nicht verhandelbar:
    jede Verzögerung plus ein Teil der Dauer unmittelbar im Kernwert. Gemessen
    am Vorspann des Kopfes, dem größten Textstück über der Falz: mit
    `animate-fade-rise` 2.232 bis 2.496 ms, während der Absatz darunter schon
-   bei 1.624 ms stand — 20 ms unter dem Budget von 2.500. Mit `animate-rise`,
+   bei 1.624 ms stand, 20 ms unter dem Budget von 2.500. Mit `animate-rise`,
    derselben Bewegung ohne Blende, sind es 1.656 ms. Wer im Kopf ein neues
    Textelement anlegt, prüft mit `npm run check:vitals`, ob es das
    LCP-Element geworden ist.
@@ -171,7 +171,7 @@ zusammengefaltet. Die Wörter kleben dann aneinander. Betrifft `Hero` und
 `RevealWords`.
 
 Der Hero löst es mit einem Leerzeichen **zwischen** den Masken, also außerhalb
-des schneidenden Kastens — dasselbe Ergebnis, und gemessen am 07.08.2026 sind
+des schneidenden Kastens: dasselbe Ergebnis, und gemessen am 07.08.2026 sind
 es 24,8 px bei 129,6 px Schrift und 8,4 px bei 44 px, beide Male 19 Prozent.
 `check:headings` verlangt seither 8 Prozent und meldet sonst Wortpaar,
 Schriftgröße und Abstand. Gegengeprüft ohne das Leerzeichen: drei Paare mit
@@ -185,7 +185,7 @@ an die Sektion, weil er am Sektions-Container auch den Inhalt abschneidet,
 sobald eine Parallaxe ihn verschiebt. Der erste Teil ist gemessen falsch: Die
 Kreise sind selbst absolut positioniert, und ein `overflow-x: clip` an der
 Hülle hält sie nicht. Umgestellt und bei 390 px an der gebauten Seite
-nachgesehen, wuchs das Dokument von 380 px auf 1488 px — genau das Scrollen,
+nachgesehen, wuchs das Dokument von 380 px auf 1488 px, genau das Scrollen,
 das die Regel verhindern soll. Der Clip steht deshalb in allen fünf Sektionen
 an der Sektion, und das bleibt so.
 
@@ -198,18 +198,18 @@ Scrollcontainer. `#hire` meldet bei 390 px 504 px Inhaltsbreite auf 390 px
 sichtbar, `#workflow` 467 und `#contact` 435; bei 320 px kommt `#about` mit
 322 auf 320 dazu, ein einzelner Glüh-Kreis. Das Dokument scrollt nicht, alle
 fokussierbaren Elemente liegen innerhalb, und der Überstand stammt
-ausschließlich aus der Deko — heute also ohne Wirkung. Wer einen Verweis so
+ausschließlich aus der Deko, heute also ohne Wirkung. Wer einen Verweis so
 weit nach rechts setzt, dass er in diesen Bereich fällt, bekommt beim
 Fokussieren einen Versatz, der nicht zurückspringt. Im Hero hat das bei 320 px die untere
 Kennzahlenreihe waagerecht mitten durch die Ziffern getrennt. Zusätzlich
 `overflow-x: clip` an `html`/`body` als Netz.
 
-Der letzte Satz war bis zum 07.08.2026 ein Merksatz — also eine Regel, die
+Der letzte Satz war bis zum 07.08.2026 ein Merksatz, also eine Regel, die
 niemand prüft und die beim ersten Umbau still fällt. `check:focus` sieht sie
 jetzt an jeder der 1.132 Stationen nach: Steht ein Vorfahr des fokussierten
 Elements auf `scrollLeft > 1`, nennt der Lauf Seite, Breite, Element, Sektion
 und Versatz. Gegengeprüft mit einem Verweis auf `left: 460px` in `#hire`:
-gemeldet mit 161 px, und die Station danach gleich mit — weil die Sektion
+gemeldet mit 161 px, und die Station danach gleich mit, weil die Sektion
 verschoben bleibt, was der Satz oben behauptet.
 
 ## Das Zeichen
@@ -220,13 +220,13 @@ Die Form steht in `src/lib/mark.tsx` und **nur dort**. Kopfleiste, `icon.tsx`,
 mitliest. Wer die Form ändert, ruft den Lauf hinterher auf.
 
 Vorher gab es zwei Marken: dunkler Buchstabe auf grüner Fläche in der
-Kopfleiste, grüner auf dunkler im Lesezeichen. So entsteht das — nicht durch
+Kopfleiste, grüner auf dunkler im Lesezeichen. So entsteht das, nicht durch
 eine Entscheidung, sondern durch eine zweite Stelle.
 
 ## Die Schrift der Vorschaubilder
 
 `next/og` bringt genau einen Schnitt mit: Geist Regular. Satori erfindet keine
-Fettung — ein `fontWeight`, für den kein Schnitt registriert ist, rendert still
+Fettung: ein `fontWeight`, für den kein Schnitt registriert ist, rendert still
 als 400. Kein Fehler, keine Warnung, und im Bild sieht man es erst im direkten
 Vergleich. Gemessen an den ausgelieferten Karten verlangten alle drei Erzeuger
 600 oder 700 und bekamen 400.
@@ -241,7 +241,7 @@ Dieselbe Trennung wie beim Porträt: Die Originale liegen in `../assets/shots`
 außerhalb des Repos, ausgeliefert wird `public/shots/*.webp`, erzeugt von
 `npm run build:shots`.
 
-Gemessen: Die elf Aufnahmen lagen als PNG im Repo und wogen zusammen 5,6 MB —
+Gemessen: Die elf Aufnahmen lagen als PNG im Repo und wogen zusammen 5,6 MB.
 jeder Klon zog sie mit. Als WebP bei Qualität 92 sind es 1,1 MB, ohne dass an
 einer Oberfläche etwas zu sehen wäre; es sind Bildschirmfotos, keine Fotos.
 Für den Besucher ändert sich nichts, `next/image` rechnet sie ohnehin herunter.
@@ -251,7 +251,7 @@ Lauf. Wer eine WebP-Datei von Hand bearbeitet, hat wieder zwei Fassungen.
 
 ## Das Porträt
 
-Dasselbe in Grün, nur mit einem Foto: Es liegt an drei Stellen — groß auf der
+Dasselbe in Grün, nur mit einem Foto: Es liegt an drei Stellen: groß auf der
 Seite (`public/portrait-dark.jpg`), klein auf dem One-Pager
 (`public/portrait.jpg`), eingebettet in der Vorschaukarte
 (`src/lib/og-portrait.jpg`). Alle drei schreibt `npm run build:portrait` aus
@@ -259,7 +259,7 @@ den Originalen in `../assets/pb/`, die bewusst neben dem Repo liegen: 3,1 MB
 verlustfreies PNG liefert niemand aus.
 
 Wer das Foto tauscht, tauscht das Original und ruft den Lauf. Wer eine der
-drei Dateien von Hand bearbeitet, hat wieder ein zweites Gesicht — und merkt
+drei Dateien von Hand bearbeitet, hat wieder ein zweites Gesicht, und merkt
 es erst, wenn jemand die Seite teilt.
 
 ## Server/Client-Grenze
@@ -295,7 +295,7 @@ Sechs Gruppen, gemessen am 08.08.2026:
 | Kurzprofil | 8 | `/cv`, `/lebenslauf`, `/resume` |
 | Übersichten und Reste | 9 | `/blog` → `/artikel` |
 
-Drei Regeln hält `check:links` dagegen. Jedes Ziel muss mit 200 antworten —
+Drei Regeln hält `check:links` dagegen. Jedes Ziel muss mit 200 antworten.
 auch eines mit Platzhalter, das der Lauf dafür mit einem echten Slug einsetzt.
 Jede Regel trägt `permanent: true`, sonst antwortet Vercel mit 307, und 307
 sagt „vorübergehend“. Und kein Ziel ist selbst wieder eine Quelle: Eine Kette
@@ -320,7 +320,7 @@ Fehlernummer.
 
 Der Rumpf nennt den Grund und die Messung, auf die sich die Änderung stützt.
 Eine Zahl ohne Messmethode gehört nicht hinein. Was geprüft wurde und
-unverändert blieb, darf mit — das ist der Teil, den man später sucht.
+unverändert blieb, darf mit; das ist der Teil, den man später sucht.
 
 Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 „Commit-Zahlen aufgefrischt“.
@@ -400,14 +400,14 @@ Alle vier fallen hier auf, bevor sie jemand sieht.
 
 Gestartet wird er nicht von Hand: `.githooks/pre-push` ruft ihn vor jedem Push
 auf, und `prepare` hängt den Hook-Pfad nach `npm install` ein. Der Aufruf steht
-in einem `try` — auf einem Bauserver ohne `.git` würde ein nacktes `git config`
+in einem `try`. Auf einem Bauserver ohne `.git` würde ein nacktes `git config`
 die Installation abbrechen und damit den ganzen Bau.
 
 Dazu, außerhalb der CI, weil er die Nachbar-Repos braucht:
 
 ```bash
 node scripts/check-figures.mjs  # jede Zahl der Seite gegen die Repos, aus
-                                # denen sie stammt — dazu Lebenslauf,
+                                # denen sie stammt, dazu Lebenslauf,
                                 # Bewerbungsunterlagen, Lernplattform und
                                 # jede Adresse, die nach außen zeigt
 ```
@@ -415,7 +415,7 @@ node scripts/check-figures.mjs  # jede Zahl der Seite gegen die Repos, aus
 `check:print` gehört dazu, weil der Ausdruck ein eigener Auslieferungsweg ist,
 den niemand ansieht. Gemessen: Die Startseite kam ohne vorheriges Scrollen als
 15 fast leere Seiten aus dem Drucker, weil die Einblendungen auf ein
-Hineinscrollen warten, das beim Drucken nie stattfindet — und die Kennzahlen
+Hineinscrollen warten, das beim Drucken nie stattfindet, und die Kennzahlen
 standen auf eingefrorenen Zwischenwerten statt auf ihren belegten Zahlen.
 
 Dazu: sichtbare Änderungen im Browser prüfen, mindestens bei 390 px und
@@ -426,7 +426,7 @@ Der One-Pager muss **eine** Seite bleiben: nach Inhaltsänderungen die
 Druckansicht gegenprüfen (`.onepager`-Höhe < ~1040 px bei 794 px Breite).
 
 Und er muss **neu gedruckt** werden: `npm run build && npm run onepager:pdf`.
-Die beiden PDFs entstehen nicht beim Bau — dafür bräuchte Vercel ein Chromium.
+Die beiden PDFs entstehen nicht beim Bau; dafür bräuchte Vercel ein Chromium.
 Sie sind damit die einzigen ausgelieferten Dateien, die veralten können, und
 ausgerechnet die, die weitergereicht werden. `npm run check:onepager` hält den
 Quellstand im Dokument gegen die Quellen und scheitert sonst.

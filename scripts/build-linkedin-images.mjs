@@ -14,7 +14,7 @@
  *
  * Gebaut werden das Titelbild und die Kachel der Im-Fokus-Karte zu MenuCloud.
  * Die Kachel lag als handgemachte Datei vom 31.07.2026 im Repo und trug
- * "298 TESTS" — gemessen sind es 7.437. Genau der Fehler, den dieses Skript
+ * "298 TESTS": gemessen sind es 7.437. Genau der Fehler, den dieses Skript
  * für die Commit-Zahl schon verhindert, nur an einer zweiten Stelle.
  *
  *   node scripts/build-linkedin-images.mjs
@@ -30,7 +30,7 @@ const KACHEL = "../assets/linkedin-menucloud.png";
 const quelle = readFileSync("src/content/site.ts", "utf8");
 
 /**
- * Die Kennzahl aus dem Prüfstempel holen — und prüfen, dass die Seite sie
+ * Die Kennzahl aus dem Prüfstempel holen, und prüfen, dass die Seite sie
  * auch von dort bezieht.
  *
  * Zwei Umbauten haben dieses Skript schon zu Recht anhalten lassen. Erst
@@ -45,7 +45,7 @@ const quelle = readFileSync("src/content/site.ts", "utf8");
  * auch Kachel, Konsolenmeldung und humans.txt lesen. Der Wächter bleibt
  * trotzdem: Er verlangt, dass site.ts die Kennzahl mit dieser Beschriftung
  * ebenfalls aus dem Stempel bezieht. Stünde dort wieder eine feste Zahl,
- * könnten Bild und Seite auseinanderlaufen — und genau davor schützt er.
+ * könnten Bild und Seite auseinanderlaufen, und genau davor schützt er.
  */
 function kennzahl(anfangDerBeschriftung) {
   const stempel = JSON.parse(readFileSync("src/content/verified.json", "utf8"));

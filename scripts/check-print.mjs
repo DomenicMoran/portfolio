@@ -6,7 +6,7 @@
  * **Abgeschnittener Inhalt.** Ein Codeblock steht als `white-space: pre` in
  * einem Kasten mit `overflow-x: auto`. Am Bildschirm schiebt man die lange
  * Zeile nach rechts; auf Papier gibt es diese Bewegung nicht, und was über die
- * Spaltenkante ragt, fehlt im Ausdruck — ohne Lücke, ohne Hinweis, nur eine
+ * Spaltenkante ragt, fehlt im Ausdruck, ohne Lücke, ohne Hinweis, nur eine
  * Zeile, die früher endet. Gefunden am 02.08.2026 im Artikel „Warum ein
  * kleineres Whisper-Modell mein größeres schlug".
  *
@@ -58,7 +58,7 @@ if (!basis) {
  *
  * Zuerst stand hier die Sitemap. Das war falsch, und zwar auf eine Art, die
  * still ist: Als /onepager, /impressum und /datenschutz aus der Sitemap flogen
- * — sie tragen `noindex`, gehören dort also nicht hin —, verschwanden sie
+ *, sie tragen `noindex`, gehören dort also nicht hin, verschwanden sie
  * damit auch aus dieser Prüfung. Ausgerechnet der One-Pager, dessen einziger
  * Zweck der Ausdruck ist, wurde nicht mehr auf den Ausdruck geprüft, und die
  * Meldung sagte weiter „alle Seiten sauber", nur eben über weniger Seiten.
@@ -80,8 +80,7 @@ const gepruefteSeiten = [...pfade];
 /*
   Die 404-Seite wird über eine erfundene Adresse geprüft und nicht über ihre
   Datei im Bau. Nur so entsteht, was ein Besucher wirklich bekommt: `Next`
-  liefert dafür `global-not-found.tsx` aus, das sein eigenes Dokument mitbringt
-  — eigene Schriften, eigenes Stylesheet, kein gemeinsames Layout. Genau dort
+  liefert dafür `global-not-found.tsx` aus, das sein eigenes Dokument mitbringt, eigene Schriften, eigenes Stylesheet, kein gemeinsames Layout. Genau dort
   ist eine vergessene Druckregel am wahrscheinlichsten.
 */
 gepruefteSeiten.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
@@ -159,7 +158,7 @@ async function messen() {
       // trotzdem alles darunter blasser. Ohne diesen Faktor meldete die
       // Prüfung 28 Stellen auf der Startseite, die es nicht gibt: Sie maß
       // mitten in der Einblend-Animation. Der wandernde Grauton von Lauf zu
-      // Lauf — 175, dann 170 — war der Beleg dafür, dass hier die Zeit
+      // Lauf, 175, dann 170, war der Beleg dafür, dass hier die Zeit
       // mitgemessen wurde und nicht die Seite.
       const geerbteDeckkraft = (el) => {
         let wert = 1;
@@ -172,7 +171,7 @@ async function messen() {
       /* Wie gross steht der Text wirklich auf dem Papier?
 
          `fontSize` liefert CSS-Pixel. Das Kurzprofil sitzt in einem Kasten mit
-         `zoom: 0.85`, damit es auf ein Blatt passt — jede Angabe darin ist auf
+         `zoom: 0.85`, damit es auf ein Blatt passt, jede Angabe darin ist auf
          dem Papier also 15 Prozent kleiner, als sie hier gemessen wird.
 
          Fuer die Schwelle zwischen grossem und normalem Text ist das der
@@ -180,7 +179,7 @@ async function messen() {
          gezoomt auf 20,4 px und ist damit kein grosser Text mehr; geprueft
          wurde er trotzdem gegen den milderen Wert.
 
-         Gemessen am 07.08.2026 hat das auf dem Blatt keinen Fall getroffen —
+         Gemessen am 07.08.2026 hat das auf dem Blatt keinen Fall getroffen:
          der groesste Text steht bei 36 px CSS und bleibt auch gezoomt darueber.
          Die Rechnung war trotzdem falsch, und sie stimmt jetzt. */
       const geerbterZoom = (el) => {
@@ -218,14 +217,14 @@ async function messen() {
         // Unsichtbares kann nicht schlecht aussehen. Das betrifft die
         // ausgeblendete Kopfleiste am Seitenanfang ebenso wie den
         // Sprunglink, der nur bei Tastaturfokus aus seinem 1-Pixel-Kasten
-        // heraustritt — dessen Inhalt ragte sonst als „abgeschnitten“ in den
+        // heraustritt, dessen Inhalt ragte sonst als „abgeschnitten“ in den
         // Bericht.
         const deckkraft = geerbteDeckkraft(el);
         if (deckkraft === 0) continue;
 
         // Größe über das Rechteck, nicht über `clientWidth`.
         //
-        // `clientWidth` ist bei jedem nicht ersetzten Inline-Element 0 — bei
+        // `clientWidth` ist bei jedem nicht ersetzten Inline-Element 0, bei
         // jedem `span`, `a`, `time`, `code`. Die erste Fassung dieser Zeile
         // hat damit genau die Elemente übersprungen, die den Fließtext
         // tragen, und meldete eine saubere Seite. Eine Prüfung, die das
@@ -294,7 +293,7 @@ async function messen() {
       /* Und: Ist der Text auf dem Papier ueberhaupt noch lesbar?
 
          Bisher pruefte dieser Lauf den Kontrast und nicht die Groesse. Auf
-         einem Bildschirm ist das vertretbar — dort zoomt man. Auf Papier
+         einem Bildschirm ist das vertretbar, dort zoomt man. Auf Papier
          nicht: Was gedruckt zu klein ist, bleibt zu klein.
 
          Gemessen am 07.08.2026 auf dem Kurzprofil: Die kleinste Angabe steht
@@ -364,7 +363,7 @@ async function messen() {
  * Damit lässt sich die stärkste Zusage dieser Prüfung belegen: Drucken darf
  * Text weder verlieren noch verändern. Ein Zähler, der auf Papier "0" zeigt,
  * ein Karussell, von dem nur die erste Karte kommt, ein Abschnitt, der
- * unsichtbar bleibt — alle drei fallen hier auf, ohne dass die Prüfung sie
+ * unsichtbar bleibt, alle drei fallen hier auf, ohne dass die Prüfung sie
  * einzeln kennen muss.
  */
 function textEinsammeln() {
@@ -373,8 +372,8 @@ function textEinsammeln() {
     //
     // Der erste Anlauf klonte den Körper und las `textContent`. Das war
     // wertlos, und der Gegentest hat es bewiesen: Mit entfernter
-    // Sichtbarkeitsregel im Druck — also bei einer Seite, die als fast leeres
-    // Papier herauskommt — meldete die Prüfung weiter „alles vollständig“.
+    // Sichtbarkeitsregel im Druck, also bei einer Seite, die als fast leeres
+    // Papier herauskommt, meldete die Prüfung weiter „alles vollständig“.
     // `textContent` kennt kein CSS. Für den Baum ist unsichtbarer Text
     // vorhanden; für den Drucker ist er weg.
     //
@@ -435,7 +434,7 @@ for (const pfad of gepruefteSeiten) {
 
   // Zweiter Durchgang: der schlimmste Fall.
   //
-  // Frisch laden und sofort drucken, ohne eine Zeile gelesen zu haben — genau
+  // Frisch laden und sofort drucken, ohne eine Zeile gelesen zu haben, genau
   // das tut jemand, der die Seite weiterreichen will. Ohne das Neuladen wären
   // die Zähler vom ersten Durchgang längst am Endwert und die Prüfung bliebe
   // grün, während der Ausdruck „0“ zeigt.
@@ -447,7 +446,7 @@ for (const pfad of gepruefteSeiten) {
    * Der Terminalkasten der Startseite füllt sich erst, wenn sein Effekt
    * läuft: Am Bildschirm Zeile für Zeile, im Druck sofort vollständig. Bis
    * dahin steht dort die Serverfassung mit null Zeilen. Der Lauf lud mit
-   * `domcontentloaded` und maß 50 ms später — auf dieser Maschine reichte
+   * `domcontentloaded` und maß 50 ms später, auf dieser Maschine reichte
    * das, auf der langsameren in der CI nicht: Dort fehlten im Ausdruck von
    * `/` dreizehn und von `/en` vierzehn Wörter, alle aus diesem Kasten,
    * während derselbe Lauf hier zweimal grün blieb.
@@ -466,7 +465,7 @@ for (const pfad of gepruefteSeiten) {
     )
     .catch(() => {
       /* Läuft der Kasten nicht an, meldet die Textprüfung darunter das
-         Fehlende — mit den Wörtern, die fehlen. Das ist die bessere
+         Fehlende, mit den Wörtern, die fehlen. Das ist die bessere
          Fehlermeldung als ein Zeitüberlauf hier. */
     });
 
@@ -476,7 +475,7 @@ for (const pfad of gepruefteSeiten) {
   // Zu kurz misst sie die Einblendung, zu lang kostet sie bei 17 Seiten
   // Minuten. `finish()` setzt jede endliche Animation auf ihren Endwert;
   // Endlosschleifen wie der Laufschriftbalken lehnen das mit einem Fehler ab
-  // und laufen weiter, was richtig ist — dort gibt es keinen Endzustand.
+  // und laufen weiter, was richtig ist, dort gibt es keinen Endzustand.
   await seite.evaluate(() => {
     for (const bewegung of document.getAnimations()) {
       try {
@@ -536,7 +535,7 @@ for (const pfad of gepruefteSeiten) {
   }
   for (const s of abgeschnitten) {
     console.log(
-      `        abgeschnitten: <${s.marke} class="${s.klasse}"> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
+      `        abgeschnitten: <${s.marke} class="${s.klasse}">, ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
     );
   }
   for (const s of ungeladen) {
@@ -546,23 +545,23 @@ for (const pfad of gepruefteSeiten) {
   }
   for (const s of toteKnoepfe) {
     console.log(
-      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}") — `
+      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}"), `
         + `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
     );
   }
   for (const s of festgeheftet) {
     console.log(
-      `        festgeheftet: <${s.marke} class="${s.klasse}"> ${s.groesse} px — landet gedruckt über der ersten Seite: „${s.text}“`,
+      `        festgeheftet: <${s.marke} class="${s.klasse}"> ${s.groesse} px, landet gedruckt über der ersten Seite: „${s.text}“`,
     );
   }
   for (const s of schwach) {
     console.log(
-      `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — ${s.farbe} auf ${s.flaeche}: „${s.text}“`,
+      `        Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px, ${s.farbe} auf ${s.flaeche}: „${s.text}“`,
     );
   }
   for (const s of winzig) {
     console.log(
-      `        ${s.px} px auf dem Papier (${s.pt} pt) — unter der Grenze von 8 px: „${s.text}“`,
+      `        ${s.px} px auf dem Papier (${s.pt} pt), unter der Grenze von 8 px: „${s.text}“`,
     );
   }
 }
@@ -573,12 +572,11 @@ for (const pfad of gepruefteSeiten) {
    Der Lauf oben misst jede Seite in ihrem Auslieferungszustand. Bei den
    Fallstudien heißt das: Von drei bis vier Tafeln je Projekt sieht er genau
    eine, nämlich „Was drinsteckt“. Die übrigen entstehen erst, wenn jemand den
-   Reiter anfasst — und wer das getan hat, druckt genau die.
+   Reiter anfasst, und wer das getan hat, druckt genau die.
 
    Gefunden am 06.08.2026 hinter „Architektur“: Das Diagramm ist 1.150 px
    breit, die Papierspalte 736. Über ein Drittel fehlte im Ausdruck, ohne
-   Lücke und ohne Hinweis, also derselbe Fehler wie beim Codeblock im Artikel
-   — nur an einer Stelle, an die der Lauf nie kam.
+   Lücke und ohne Hinweis, also derselbe Fehler wie beim Codeblock im Artikel, nur an einer Stelle, an die der Lauf nie kam.
 
    Gemessen wird nur auf den beiden Startseiten: Nur dort stehen Reiter. Für
    jede Tafel dieselbe Messung wie oben, mit dem Reiternamen in der Meldung.
@@ -627,12 +625,12 @@ for (const pfad of ["/", "/en"]) {
       const { schwach, abgeschnitten } = await messen();
       for (const s of abgeschnitten) {
         reiterfunde.push(
-          `${pfad} · ${gruppe.name} · ${reiter}: <${s.marke}> — ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
+          `${pfad} · ${gruppe.name} · ${reiter}: <${s.marke}>, ${s.fehlt} px fehlen im Ausdruck: „${s.text}“`,
         );
       }
       for (const s of schwach) {
         reiterfunde.push(
-          `${pfad} · ${gruppe.name} · ${reiter}: Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px — „${s.text}“`,
+          `${pfad} · ${gruppe.name} · ${reiter}: Kontrast ${s.ist}:1 statt ${s.soll}:1 bei ${s.px} px, „${s.text}“`,
         );
       }
     }
@@ -656,20 +654,20 @@ if (reiterfunde.length > 0) {
    Bildschirm scrollt die Seite einfach weiter.
 
    Gemessen wird die Höhe von `.onepager` im Druckmodus bei 794 px Papier-
-   breite. Die Grenze liegt bei 1040 px — A4 sind 1123 px bei 96 dpi, davon
+   breite. Die Grenze liegt bei 1040 px. A4 sind 1123 px bei 96 dpi, davon
    gehen die Druckränder ab. Aktuell stehen dort 996 px auf Deutsch und
    962 auf Englisch; die Warnschwelle greift also, bevor etwas umbricht.
 
    Der Abstand zur Grenze ist enger geworden: Hier standen 915 und 883, als
    diese Zeilen entstanden, heute sind es 996 und 962. Von 125 px Luft sind
    44 geblieben, gemessen am 07.08.2026. Wer dem Blatt noch einen Absatz
-   zufügt, kommt an die zweite Seite — der Lauf sagt es dann, aber es ist
+   zufügt, kommt an die zweite Seite, der Lauf sagt es dann, aber es ist
    keine Überraschung mehr.
 
    Gemessen bei der Grundschrift des Browsers, und das ist eine Annahme mit
    Grenze: Wer sie auf 20 px stellt, druckt 1.188 px, bei 24 px sind es
-   1.265 — zwei Seiten. (Die beiden Zahlen wandern mit dem Inhalt, die Zeile
-   darüber nicht — sie wird bei jedem Lauf neu bestimmt.) Der naheliegende Griff wäre `html { font-size: 16px }`
+   1.265, zwei Seiten. (Die beiden Zahlen wandern mit dem Inhalt, die Zeile
+   darüber nicht, sie wird bei jedem Lauf neu bestimmt.) Der naheliegende Griff wäre `html { font-size: 16px }`
    in den Druckregeln. Er bleibt bewusst aus: Damit stünde das Blatt für
    jeden gleich groß auf dem Papier, auch für den, der seine Schrift bewusst
    vergrößert hat, und die Seite hält es sonst überall andersherum. Wer sein
@@ -709,12 +707,12 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
        Die Höhe ist eine Näherung: Sie sagt, dass der Inhalt auf ein Blatt
        passt, nicht, dass er auch auf eines gedruckt wird. Ein `break-inside`,
        das der Browser anders auslegt, ein Kasten, der nicht geteilt werden
-       darf, eine Fußzeile mit eigener Umbruchregel — jedes davon ergibt zwei
+       darf, eine Fußzeile mit eigener Umbruchregel, jedes davon ergibt zwei
        Seiten bei unveränderter Höhe.
 
        Der Knopf auf dem Blatt heißt „Drucken / PDF", und wer ihn drückt,
        bekommt genau das hier: den Druck aus dem Browser, nicht die
-       vorbereitete Datei. Geprüft war bisher nur die vorbereitete —
+       vorbereitete Datei. Geprüft war bisher nur die vorbereitete:
        `check:onepager` zählt die Seiten des fertigen PDF, das von Hand
        entsteht. Der Weg über den Knopf hatte keinen Wächter.
 

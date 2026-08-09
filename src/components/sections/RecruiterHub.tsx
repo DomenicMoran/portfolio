@@ -63,7 +63,7 @@ export function RecruiterHub() {
                   Der Verweis folgte dem Text und stand deshalb je Karte
                   woanders: gemessen bei 1440 px 24, 46 und 24 px über der
                   Unterkante in der ersten Reihe, 68, 24 und 24 in der zweiten.
-                  Ein Recruiter überfliegt genau diese Zeile — sie gehört auf
+                  Ein Recruiter überfliegt genau diese Zeile, sie gehört auf
                   eine Höhe. `mt-auto` schiebt den Verweis ans Ende, der Text
                   bleibt oben. */}
               <div
@@ -76,7 +76,7 @@ export function RecruiterHub() {
                     nicht: „Ich kenne den Weg durch die Stores" passt bei
                     1440 px in eine Zeile, „Ich behandle Regulierung als Teil
                     des Produkts" daneben braucht zwei. Der Fließtext begann
-                    dadurch 22 px versetzt — gemessen bei 1280 und 1440 px auf
+                    dadurch 22 px versetzt, gemessen bei 1280 und 1440 px auf
                     Deutsch, bei 768 und 1280 px auf Englisch.
 
                     `min-h-[2lh]` und nicht `min-h-[3rem]`: Die Einheit `lh`
@@ -96,7 +96,7 @@ export function RecruiterHub() {
                     Dieser Abschnitt ist eine Landeadresse: Kopfleiste,
                     404-Seite und jeder geteilte Verweis auf `#hire` setzen
                     jemanden mitten hinein. Von dort führten vier Verweise
-                    nach draußen — PDF, Mail, LinkedIn, GitHub — und keiner in
+                    nach draußen. PDF, Mail, LinkedIn, GitHub, und keiner in
                     die Fallstudien oder Artikel, die genau diese Sätze
                     belegen. Wer prüfen wollte, musste hochscrollen und raten.
 
@@ -248,7 +248,7 @@ export function RecruiterHub() {
                 ))}
 
                 {/* Die Adresse stand hier als zweiter mailto-Verweis, mit
-                    demselben Pfeilsymbol wie LinkedIn und GitHub — also als
+                    demselben Pfeilsymbol wie LinkedIn und GitHub, also als
                     etwas, das anderswohin führt. Auf einem Arbeitsrechner ohne
                     eingerichtetes Mailprogramm führt sie nirgendwohin, und
                     kopieren liess sie sich nur mit der Maus. */}

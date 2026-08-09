@@ -7,7 +7,7 @@
  * greift sie deshalb nicht:
  *
  * **2.4.11 Focus Not Obscured.** Neu in WCAG 2.2. Wer sich mit der Tastatur
- * bewegt, dem scrollt der Browser zum nächsten Ziel — und rechnet dabei die
+ * bewegt, dem scrollt der Browser zum nächsten Ziel, und rechnet dabei die
  * feste Kopfleiste nicht mit. Das Element hat dann den Fokus und liegt
  * darunter: Der Nutzer sieht keinen Ring, weiß nicht, wo er ist, und drückt
  * blind weiter.
@@ -16,7 +16,7 @@
  * nur überall gleichzeitig.
  *
  * Gemessen wird nicht über eine Liste fester Kästen. Die Kopfleiste trägt
- * ihre Fläche auf einem Kind und fällt durch jede solche Heuristik — der
+ * ihre Fläche auf einem Kind und fällt durch jede solche Heuristik, der
  * erste Anlauf meldete deshalb „kein Befund“, obwohl er nichts prüfte.
  * Gefragt wird stattdessen der Browser: `elementFromPoint` sagt, was an
  * dieser Stelle wirklich obenauf liegt, und überspringt dabei von selbst,
@@ -43,7 +43,7 @@ let basis = vorgegebeneBasis;
 if (!basis) ({ basis, beenden } = await starteServer());
 
 /* Dazu die Fehlerseite unter beiden Sprachen: Sie steht in keiner Liste
-   gebauter Seiten — im Bau liegt sie als `_not-found.html` — und fiel damit
+   gebauter Seiten, im Bau liegt sie als `_not-found.html`, und fiel damit
    aus jedem Lauf heraus, der seine Liste aus dem Bau nimmt. Sie ist die
    Seite, die jeder Vertipper zu sehen bekommt. */
 const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
@@ -59,7 +59,7 @@ for (const breite of BREITEN) {
   for (const pfad of pfade) {
     const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
     /* Die Fehlerseite antwortet mit 404, und das ist ihre richtige
-     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie —
+     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie:
      die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
      standen. */
   const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
@@ -70,7 +70,7 @@ for (const breite of BREITEN) {
        Die Kopfleiste kommt von `y: -80` herein, mit 0,9 s Verzögerung und
        0,9 s Dauer. Eine feste Wartezeit von 500 ms traf mitten hinein: Der
        Lauf meldete auf /en bei 390 px drei Bedienelemente „außerhalb des
-       Sichtfelds, oben -53" — die Leiste war schlicht noch unterwegs. Auf /
+       Sichtfelds, oben -53", die Leiste war schlicht noch unterwegs. Auf /
        ging derselbe Lauf durch, weil die Zeit dort knapp reichte. Ein
        Wächter, der je nach Seite etwas anderes meldet, ist keiner.
 
@@ -127,7 +127,7 @@ for (const breite of BREITEN) {
 
         /* An fünf Stellen nachsehen: Mitte und die vier Ecken, je zwei Pixel
            nach innen. Sichtbar ist das Element, sobald an einer davon es
-           selbst liegt — 2.4.11 verlangt nicht, dass alles frei ist, sondern
+           selbst liegt, 2.4.11 verlangt nicht, dass alles frei ist, sondern
            dass nicht alles verdeckt ist. */
         const punkte = [
           [r.left + r.width / 2, r.top + r.height / 2],
@@ -174,7 +174,7 @@ for (const breite of BREITEN) {
              Er hat aber eine Bedingung, und die steht bisher nur als Merksatz
              in AGENTS.md: Sobald ein Bedienelement so weit rechts sitzt, dass
              es in diesen Bereich faellt, scrollt der Browser die Sektion beim
-             Fokussieren seitwaerts — und scrollt nicht zurueck. Der Nutzer
+             Fokussieren seitwaerts, und scrollt nicht zurueck. Der Nutzer
              sieht die Seite verschoben und findet keinen Weg heraus.
 
              Gemessen am 07.08.2026 bei 390 und 320 px: kein einziges
@@ -232,7 +232,7 @@ for (const breite of BREITEN) {
    Beide Fälle standen einmal offen und wurden einzeln gefunden, jeder beim
    Bedienen: die Befehlspalette am 03.08.2026, das Telefonmenü am 05.08. Zwei
    Bauteile mit demselben Fehler und zwei Monaten dazwischen sind ein Muster,
-   kein Zufall — deshalb steht die Prüfung hier und nicht bei einem von beiden.
+   kein Zufall, deshalb steht die Prüfung hier und nicht bei einem von beiden.
 
    Geprüft wird, was ein Nutzer merkt: Der Fokus liegt nach dem Öffnen im
    Kasten, bleibt über eine ganze Runde Tabulator darin, Escape schließt, und
@@ -246,7 +246,7 @@ for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
   /* Jedes Bauteil bei der Breite, bei der es bedient wird: Das Telefonmenü
      gibt es nur unterhalb von , und der Knopf der Palette ist dort
      ausgeblendet. Ein verstecktes Element kann den Fokus nicht
-     zurückbekommen — der erste Anlauf maß beides bei 390 px und meldete für
+     zurückbekommen, der erste Anlauf maß beides bei 390 px und meldete für
      die Palette einen Fehler, den es bei ihrer Bedienbreite nicht gibt. */
   const seite = await browser.newPage({ viewport: { width: breite, height: 844 } });
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });

@@ -5,17 +5,17 @@ import { site } from "@/content/site";
  *
  * Vorher lag sie als statische Datei in `public/` mit einem fest
  * eingetragenen `Expires: 2027-07-31`. Ein Datum, das ein Jahr in der Zukunft
- * steht, fällt niemandem auf — bis es vorbei ist. Ab dann behandeln Scanner
+ * steht, fällt niemandem auf, bis es vorbei ist. Ab dann behandeln Scanner
  * die Datei als ungültig, und zwar stillschweigend: Es gibt keine Meldung,
  * keinen Fehler, nur eine Datei, der niemand mehr glaubt.
  *
  * Jetzt entsteht das Datum beim Bauen, sechs Monate voraus. Der Zahlen-Automat
- * baut und liefert täglich aus, also rückt es täglich mit — die Datei kann
+ * baut und liefert täglich aus, also rückt es täglich mit, die Datei kann
  * nicht ablaufen, solange die Seite gepflegt wird. Und hört die Pflege auf,
  * läuft sie nach sechs Monaten aus, was genau die richtige Aussage ist.
  *
  * RFC 9116 verlangt einen Zeitpunkt weniger als ein Jahr in der Zukunft und
- * das Format nach RFC 3339. `toISOString()` liefert genau das — mitsamt
+ * das Format nach RFC 3339. `toISOString()` liefert genau das, mitsamt
  * Millisekunden, und die stehen in einem Ablaufdatum wie eine Zahl, die
  * jemand vergessen hat abzuschneiden. RFC 3339 erlaubt sie, verlangt sie aber
  * nicht. Wer diese Datei liest, sucht nach Schlamperei; sie gehört weg.
@@ -29,7 +29,7 @@ export function GET() {
   gueltigBis.setMonth(gueltigBis.getMonth() + MONATE_GUELTIG);
 
   const zeilen = [
-    "# Sicherheitslücke gefunden? Bitte melden — ich reagiere schnell und danke es.",
+    "# Sicherheitslücke gefunden? Bitte melden, ich reagiere schnell und danke es.",
     "# https://securitytxt.org",
     "",
     `Contact: mailto:${site.email}`,

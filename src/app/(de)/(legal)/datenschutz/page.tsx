@@ -11,17 +11,17 @@ export const metadata: Metadata = {
   title: "Datenschutz",
   description:
     "Was diese Seite technisch tut und welche Daten dabei anfallen. Keine Cookies, keine Analyse, keine Einbindung von Dritten.",
-  /* noindex, aber follow — wie beim One-Pager und den beiden PDFs.
+  /* noindex, aber follow, wie beim One-Pager und den beiden PDFs.
 
      Hier stand `follow: false`, und damit standen drei Entscheidungen
      zur selben Frage nebeneinander: /onepager und die PDFs auf
      `noindex, follow`, diese beiden Blätter auf `noindex, nofollow`.
-     Der Unterschied war keiner — er ist entstanden, nicht entschieden.
+     Der Unterschied war keiner, er ist entstanden, nicht entschieden.
 
      `noindex` ist hier Absicht: Die Pflichtangabe nach § 5 DDG soll
      erfüllt sein, ohne die Wohnanschrift in Suchergebnisse zu tragen.
      `nofollow` trägt dazu nichts bei. Es hält einen Crawler nur davon
-     ab, den Verweisen dieser Seite zu folgen — und die zeigen auf die
+     ab, den Verweisen dieser Seite zu folgen, und die zeigen auf die
      Startseite und auf /en, also genau dorthin, wo er hin soll. */
   robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
  * keine Cookies, kein Zählpixel, keine Schriften von fremden Servern, keine
  * Datenbank, kein Endpunkt, der Eingaben entgegennimmt.
  *
- * Käme je ein Dienst dazu, der Daten verarbeitet — eine Analyse, ein
- * Formular, eine Einbindung —, gehört ein eigener Abschnitt hierher und der
+ * Käme je ein Dienst dazu, der Daten verarbeitet, eine Analyse, ein
+ * Formular, eine Einbindung, gehört ein eigener Abschnitt hierher und der
  * Stand unten muss mitwandern. Der Stand nennt bewusst das Datum der letzten
  * inhaltlichen Änderung und nicht den heutigen Tag: Eine Erklärung, die sich
  * jeden Morgen selbst neu datiert, sagt nichts darüber aus, was sich geändert
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
    Beide Stellen hießen STAND, und die lokale gewann: `check:legal` prüfte
    den Wert aus `stand.ts` gegen den ausgelieferten Text, die Seite zeigte
    den anderen. Gemessen an der ausgelieferten Seite standen dort der
-   3. August und in der Datei der 4. — der Lauf war grün, weil er die Zeile
+   3. August und in der Datei der 4., der Lauf war grün, weil er die Zeile
    gar nicht ansah, die ein Leser vor sich hat.
 
    Eine Quelle: Wer den Text ändert, ändert Datum und Prüfsumme in
@@ -79,7 +79,7 @@ export default function Datenschutz() {
             href={mailAdresse(site.email, site.mailSubject)}
             /* `-my-1 py-1`: Der Verweis maß 174 x 18 px und lag damit unter den
              24 px aus WCAG 2.5.8. Das Impressum nebenan hatte den Ausgleich
-             schon, diese Stelle nicht — dieselbe Regel, zwei Fassungen.
+             schon, diese Stelle nicht, dieselbe Regel, zwei Fassungen.
              Optisch ändert sich nichts. */
             className="-my-1 py-1 text-acid underline underline-offset-4"
           >
@@ -92,7 +92,7 @@ export default function Datenschutz() {
           Art. 13 Abs. 2 lit. a DSGVO verlangt die Dauer der Speicherung oder,
           wenn das nicht geht, die Kriterien dafür. Der Abschnitt nannte beides
           nicht: Er sagte, welche Logdaten anfallen und warum, und ließ offen,
-          wie lange sie liegen — auf einer Seite, die sonst jede Angabe belegt.
+          wie lange sie liegen, auf einer Seite, die sonst jede Angabe belegt.
 
           Die Stunde ist keine Schätzung: Vercel nennt in der eigenen
           Dokumentation zu den Laufzeitprotokollen je Tarif eine
@@ -124,7 +124,7 @@ export default function Datenschutz() {
             Wirklichkeit.
 
             § 25 TDDDG regelt nicht Cookies, sondern jedes Speichern von
-            Informationen auf dem Endgerät und jeden Zugriff darauf —
+            Informationen auf dem Endgerät und jeden Zugriff darauf:
             `localStorage` und `sessionStorage` fallen genauso darunter. Wer
             nur Cookies verneint, hat die halbe Zusage gegeben, obwohl die
             ganze zutrifft: `check:privacy` liest nach dem Bedienen jeder
@@ -185,7 +185,7 @@ export default function Datenschutz() {
           Art. 21 Abs. 4 DSGVO verlangt den Hinweis darauf „ausdrücklich und
           in einer verständlichen und von anderen Informationen getrennten
           Form“. Vorher stand er als sechster Halbsatz in der Aufzählung der
-          Rechte — inhaltlich vollständig, der Form nach aber nicht das, was
+          Rechte, inhaltlich vollständig, der Form nach aber nicht das, was
           die Vorschrift verlangt.
 
           Er greift hier auch wirklich: Die Server-Logdaten laufen über Art. 6

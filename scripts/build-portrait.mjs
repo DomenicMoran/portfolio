@@ -5,7 +5,7 @@
  * Dasselbe Gesicht liegt an vier Stellen: gross auf der Seite, klein auf dem
  * One-Pager, winzig und eingebettet in der Vorschaukarte, und im Briefkopf des
  * Lebenslaufs. Bis hierher waren das von Hand erzeugte Dateien ohne
- * gemeinsame Quelle — genau die Lage, die `build-favicon.mjs` fuer das Zeichen schon einmal aufgeloest
+ * gemeinsame Quelle, genau die Lage, die `build-favicon.mjs` fuer das Zeichen schon einmal aufgeloest
  * hat. Eine Binaerdatei liest nicht mit: Wer das Foto tauscht und eine
  * davon vergisst, sieht den Fehler erst, wenn jemand die Seite teilt.
  *
@@ -32,12 +32,12 @@ const ORIGINALE = "../assets/pb";
  * `next/image` erzeugt nie mehr Pixel als das Original hat, und der Browser
  * waehlt aus dem srcset. Fuer das Bild auf der Seite steht
  * `sizes="(max-width: 640px) 60vw, 220px"`: 220 CSS-Pixel bei dreifacher
- * Pixeldichte sind 660, auf dem Telefon 60 vw von 390 px mal drei sind 702 —
+ * Pixeldichte sind 660, auf dem Telefon 60 vw von 390 px mal drei sind 702:
  * der Browser greift damit zur 750er-Fassung, in keinem realistischen Fall
  * ueber 828. 1200 laesst Luft nach oben und ist trotzdem nicht das
  * Vierfache dessen, was je ausgeliefert wird. Die Datei davor hatte 1967
- * Pixel Kantenlaenge; auf 660 und 750 Pixel heruntergerechnet — also so, wie
- * der Browser sie zeigt — betraegt der Unterschied zur 1200er Fassung im
+ * Pixel Kantenlaenge; auf 660 und 750 Pixel heruntergerechnet, also so, wie
+ * der Browser sie zeigt, betraegt der Unterschied zur 1200er Fassung im
  * Mittel 0,6 von 255 Helligkeitsstufen, im Spitzenwert 13.
  *
  * Der One-Pager zeigt 110 px und wird gedruckt; bei 300 dpi sind das rund 460
@@ -74,7 +74,7 @@ const FASSUNGEN = [
      Der Lebenslauf setzt sein Bild als Datenadresse in den Briefkopf und lag
      dafür als eigene Datei in `../docs`. Genau die Lage, die dieser Lauf für
      die anderen drei aufgelöst hat: Wer das Foto tauscht und diese vergisst,
-     verschickt einen Lebenslauf mit dem alten Gesicht — und merkt es nie,
+     verschickt einen Lebenslauf mit dem alten Gesicht, und merkt es nie,
      weil der Lebenslauf nicht öffentlich ist und niemand die beiden
      nebeneinander sieht.
 
@@ -97,7 +97,7 @@ const fehlend = [...new Set(FASSUNGEN.map((f) => f.quelle))].filter(
 if (fehlend.length) {
   console.error(
     `Original fehlt: ${fehlend.join(", ")}\n` +
-      `Erwartet in ${ORIGINALE}/ — dieser Ordner liegt bewusst neben dem Repo, ` +
+      `Erwartet in ${ORIGINALE}/, dieser Ordner liegt bewusst neben dem Repo, ` +
       `nicht darin.`,
   );
   process.exit(1);

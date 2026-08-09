@@ -6,7 +6,7 @@
  * PNG-Symbol, dem Startbildschirm-Symbol und der Vorschaukarte gelesen. Die
  * `.ico` konnte das nicht: Sie ist eine Binärdatei und lag als Rest eines
  * früheren Entwurfs im Verzeichnis. Zwei Formen für dieselbe Seite entstehen
- * genau so — nicht durch eine Entscheidung, sondern durch eine Datei, die
+ * genau so, nicht durch eine Entscheidung, sondern durch eine Datei, die
  * niemand mitzieht.
  *
  * Drei Größen, weil Windows und ältere Browser aus einer `.ico` die passende
@@ -68,7 +68,7 @@ await browser.close();
 /* Python setzt die .ico zusammen: Node hat dafür nichts an Bord, und eine
    Abhängigkeit für drei Bilder lohnt nicht. */
 /* Die groesste Fassung ist die Vorlage. Pillow rechnet aus ihr herunter und
-   laesst jede angeforderte Groesse aus, die groesser waere als das Original —
+   laesst jede angeforderte Groesse aus, die groesser waere als das Original:
    mit der 16er als Vorlage enthielt die Datei am Ende genau eine Groesse. */
 const skript = `
 from PIL import Image

@@ -10,7 +10,7 @@ export const kassensichvEn: Article = {
   tags: ["KassenSichV", "§ 146a AO", "Postgres", "Multi-tenant"],
   /* Siehe die deutsche Fassung: die beiden Rechtsquellen zuerst. Sie sind
      die einzigen Belege dieses Artikels, die ein Leser selbst öffnen kann.
-     Der amtliche Text bleibt deutsch — eine englische Übersetzung wäre für
+     Der amtliche Text bleibt deutsch, eine englische Übersetzung wäre für
      eine Rechtsnorm keine Quelle. */
   evidence: [
     {

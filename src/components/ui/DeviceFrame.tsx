@@ -24,7 +24,7 @@ type Props = {
    * Wie breit der Rahmen im Layout wirklich wird.
    *
    * Der Wert entscheidet, welche Auflösung der Browser lädt, und er stand
-   * hier fest verdrahtet auf `(max-width: 1024px) 100vw, 700px` — für jeden
+   * hier fest verdrahtet auf `(max-width: 1024px) 100vw, 700px`, für jeden
    * Rahmen derselbe, obwohl die Rahmen verschieden breit sind. Gemessen an
    * der ausgelieferten Startseite bei 1.280, 1.440 und 1.920 px:
    *
@@ -69,7 +69,7 @@ export function DeviceFrame({
   if (variant === "phone") {
     /* Auch das Telefon bekommt seine Bildunterschrift.
 
-       Bildschirm und Browserrahmen tragen eine, das Telefon nicht — und
+       Bildschirm und Browserrahmen tragen eine, das Telefon nicht, und
        genau dort saß die Aufnahme, die es nötig hatte: Die Restaurantseite
        der MenuCloud-App zeigt „Trattoria San Marco", einen Demo-Eintrag aus
        den Seed-Daten. MenuCloud selbst hat ihn am 04.05.2026 aus dem

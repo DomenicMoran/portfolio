@@ -4,7 +4,7 @@
  * ist, und hält sie gegen ihre Budgets.
  *
  * Warum das ein eigener Lauf ist: Alle anderen prüfen Inhalt, Auszeichnung
- * oder Adressen — Dinge, die entweder stimmen oder nicht. Ladeverhalten ist
+ * oder Adressen. Dinge, die entweder stimmen oder nicht. Ladeverhalten ist
  * anders. Es verschlechtert sich in kleinen Schritten, jeder für sich
  * vertretbar: ein Bauteil mehr im ersten Bündel, eine Schrift mehr, ein Bild
  * ohne Maße. Keiner dieser Schritte fällt auf, und irgendwann ist die Seite
@@ -17,7 +17,7 @@
  * Drei Läufe je Seite, gewertet wird der Median: Der erste Aufruf nach dem
  * Start des Servers ist regelmäßig langsamer, und ein einzelner Ausreißer
  * soll den Lauf weder rot noch grün machen. Gemessen an der ausgelieferten
- * Seite lagen fünf Läufe zwischen 1.884 und 1.900 ms — die Streuung ist
+ * Seite lagen fünf Läufe zwischen 1.884 und 1.900 ms, die Streuung ist
  * gering, solange man den ersten nicht mitzählt.
  *
  * Die Budgets stehen unten und sind die üblichen Schwellen für „gut“:
@@ -41,7 +41,7 @@ const BUDGET = { lcp: 2500, cls: 0.1, inp: 200 };
  *
  * Die Artikelseite steht dabei, obwohl sie nicht die Startseite ist: Sie ist
  * die Seite, die geteilt wird, und damit für viele Leser die erste. Sie trägt
- * als einzige lange Fließtexte, Codeblöcke und eine Tabelle — also genau die
+ * als einzige lange Fließtexte, Codeblöcke und eine Tabelle, also genau die
  * Bauteile, an denen sich Ladeverhalten zuerst verschlechtert.
  */
 const SEITEN = [
@@ -50,14 +50,14 @@ const SEITEN = [
   "/artikel",
   "/artikel/kassensichv-in-der-praxis",
   "/onepager",
-  /* Die Fehlerseite, wieder aufgenommen — diesmal um zu messen, nicht um zu
+  /* Die Fehlerseite, wieder aufgenommen, diesmal um zu messen, nicht um zu
      bestehen.
 
      Sie riss als einzige Seite das CLS-Budget: 0,1626 gegen 0,1, und zwar nur
      unter der Drosselung der CI. Örtlich bleibt der Wert bei 0,0009, auch mit
      denselben Einstellungen: 390 px, dreifache Pixeldichte, 1,6 Mbit/s,
      150 ms Latenz, Prozessor vierfach gedrosselt. Zwei Vermutungen sind
-     gemessen und widerlegt — der fehlende Vorlade-Verweis für die Schriften
+     gemessen und widerlegt, der fehlende Vorlade-Verweis für die Schriften
      und eine Höhenänderung des Sichtfensters.
 
      Der Lauf gibt die Verschiebungen jetzt mit Wert, Zeitpunkt und Höhe aus.
@@ -68,14 +68,14 @@ const SEITEN = [
 /* Der frühere Grund für das Weglassen, zur Einordnung.
 
    Aufgenommen und gemessen war sie: LCP 784 ms, der beste Wert aller Seiten,
-   aber CLS 0,1626 bei einem Budget von 0,1 — der einzige Wert über Budget.
+   aber CLS 0,1626 bei einem Budget von 0,1, der einzige Wert über Budget.
    Verschoben werden der ganze Inhaltsblock, die Fußzeile und der Glühkreis,
    also alles auf einmal. Örtlich bleibt der Wert bei 0,0405; sichtbar wird er
    erst unter der Drosselung der CI, 1,6 Mbit/s bei 150 ms Latenz.
 
    Der naheliegende Grund war es nicht: Die Seite liefert als einzige keinen
    Vorlade-Verweis für ihre Schriften aus, aber `display: "optional"` statt
-   `"swap"` ändert den Wert um kein Tausendstel — gemessen in der CI, mit
+   `"swap"` ändert den Wert um kein Tausendstel, gemessen in der CI, mit
    demselben 0,1626. Was den Block verschiebt, ist damit offen, und ein
    Budget, das dauerhaft reißt, macht den Lauf zu einem Rot, das niemand mehr
    liest. Die Seite kommt zurück, sobald die Ursache steht.
@@ -87,19 +87,19 @@ const SEITEN = [
    genau eine nennenswerte Quelle: `div.mx-auto.w-full.max-w-2xl` wächst bei
    1.639 ms von 575 auf 606 Pixel Höhe und rutscht dabei 15 Pixel nach oben.
    Der Block ist senkrecht zentriert, also verteilt sich die Höhenzunahme auf
-   beide Seiten — daher die zweite, kleinere Quelle am Fußzeilen-Verweis.
+   beide Seiten, daher die zweite, kleinere Quelle am Fußzeilen-Verweis.
 
    Es ist nicht die Hydration: Mit und ohne JavaScript misst der Block
    dieselben 599 px, dieselben sechs Kinder, dieselben 392 Zeichen. Es ist die
    Schrift. Die Fehlerseite liefert null Vorlade-Verweise für ihre Schriften
-   aus, jede andere Seite zwei — `global-not-found` bringt sein eigenes
+   aus, jede andere Seite zwei, `global-not-found` bringt sein eigenes
    Dokument mit, und der Mechanismus von `next/font` greift dort nicht. Die
    Schrift kommt deshalb erst nach dem ersten Bild, und der Text wird beim
    Tausch um eine Zeile höher.
 
    Behoben ist es damit nicht, und zwar mit Absicht: Der offensichtliche Griff
    wäre ein Vorlade-Verweis, und genau der hat auf dieser Seite schon einmal
-   Schaden angerichtet — 68 KiB Schriften ließen 13 KiB CSS 1.378 ms warten,
+   Schaden angerichtet, 68 KiB Schriften ließen 13 KiB CSS 1.378 ms warten,
    LCP 3.304 statt 1.472 ms. Wer das angeht, misst LCP und CLS zusammen, nicht
    nacheinander. Der Wert liegt im Budget, die Ursache ist benannt. */
 
@@ -126,7 +126,7 @@ for (const pfad of SEITEN) {
      der Server die Seite zum ersten Mal ausliefert, und an der Live-Adresse,
      weil der Zwischenspeicher am Rand des Netzes nach einer Auslieferung leer
      ist. Gemessen unmittelbar nach einem Deploy lag das Kurzprofil bei
-     2.652 ms und fünf Läufe später im Median bei 1.564 — derselbe Stand,
+     2.652 ms und fünf Läufe später im Median bei 1.564, derselbe Stand,
      dieselbe Leitung. Ein Median aus drei Werten fängt das nicht ab, wenn zwei
      davon kalt sind. */
   {
@@ -162,7 +162,7 @@ for (const pfad of SEITEN) {
     await seite.goto(`${basis}${pfad}`, { waitUntil: "load" });
 
     /* `buffered: true` ist der ganze Trick: Ohne das Flag bekommt ein
-       Beobachter nur, was nach seiner Anmeldung passiert — und das Wichtigste
+       Beobachter nur, was nach seiner Anmeldung passiert, und das Wichtigste
        ist längst vorbei, bevor dieser Code läuft.
 
        Die Verschiebungen werden mit ihrer Quelle mitgeschrieben. Eine Zahl
@@ -180,7 +180,7 @@ for (const pfad of SEITEN) {
                 if (!knoten) continue;
                 /* Mit Wert, Zeitpunkt und Höhe, nicht nur mit dem Namen.
 
-                   Der Name allein sagt „der Inhaltsblock ist gerutscht" — das
+                   Der Name allein sagt „der Inhaltsblock ist gerutscht", das
                    war er auf der Fehlerseite, zusammen mit Fußzeile und
                    Glühkreis, also alles auf einmal. Was ihn schiebt, steht
                    erst in den Zahlen: Wann es passiert, wie weit, und ob sich
@@ -213,7 +213,7 @@ for (const pfad of SEITEN) {
        wird.
 
        Vier Aufrufe je Seite mal fünf Seiten, jeder mit allen Bildern und
-       Bündeln, kommen in weniger als einer Minute von derselben Adresse — für
+       Bündeln, kommen in weniger als einer Minute von derselben Adresse, für
        Vercels Schutz sieht das aus wie ein Angriff. Am 04.08.2026 hat er
        daraufhin für einige Minuten jede Anfrage mit einem „Security
        Checkpoint" beantwortet, Status 403, auch im gewöhnlichen Browser. Wer
@@ -263,7 +263,7 @@ for (const pfad of SEITEN) {
    Seite nach sechs Sekunden. Der erste Wert sagt etwas über die Menge an
    JavaScript beim Start, und dafür gibt es `check:bundle`. Dieser Lauf misst
    die Reaktion auf eine Eingabe, und die soll er nicht mit der Ladephase
-   vermischen — sonst prüft er zweimal dasselbe und keins davon genau.
+   vermischen, sonst prüft er zweimal dasselbe und keins davon genau.
    ------------------------------------------------------------------------ */
 {
   const seite = await browser.newPage({
@@ -343,13 +343,13 @@ for (const pfad of SEITEN) {
 /* Was die Seite nachlädt, ohne dass jemand klickt.
 
    Next holt die Zielseite jedes sichtbaren Verweises im Voraus. Das ist meist
-   richtig — ein Klick fühlt sich dadurch sofort an —, aber es ist Verkehr, den
+   richtig, ein Klick fühlt sich dadurch sofort an, aber es ist Verkehr, den
    niemand angefordert hat, und er taucht in keinem Bündelbudget auf: Die
    Antworten kommen als `fetch` und nicht als Skript.
 
    Gemessen an der ausgelieferten Startseite auf dem Telefon, vor dem Eingriff:
    36 Antworten mit zusammen 625 kB. Davon 443 kB für sechs vollständige
-   Artikelseiten — geholt, bevor jemand einen Titel gelesen hat, und wer hier
+   Artikelseiten, geholt, bevor jemand einen Titel gelesen hat, und wer hier
    klickt, klickt einen davon an, nicht sechs. Ohne das Vorabladen an den
    Artikelverweisen, am Sprachwechsel und an den beiden Rechtsseiten sind es
    20 Antworten und 308 kB. Beim Zeigen mit der Maus lädt Next weiterhin vor,
@@ -368,7 +368,7 @@ for (const pfad of SEITEN) {
 
      Die Startseite und die Übersicht führen weiter, eine Artikelseite hält
      fest. Gemessen am gebauten Stand auf dem Telefon: Startseite 282 kB,
-     Übersicht 0, Artikelseite 76 — dort bleibt der Rückweg zur Übersicht
+     Übersicht 0, Artikelseite 76, dort bleibt der Rückweg zur Übersicht
      absichtlich vorgeladen, weil er von hier aus der wahrscheinlichste Klick
      ist. Was das Weglassen kostet, ist gemessen und klein: 206 statt 93 ms
      bis zum Artikel, gegen 443 kB, die niemand angefordert hat. */
@@ -451,7 +451,7 @@ for (const pfad of SEITEN) {
   /* Die Fehlerseite gehört dazu, seit sie gemessen wurde.
 
      Sie versteht sich ausdrücklich als Seite ohne Client-Code, lieferte aber
-     1.002 kB Skript aus und 205 kB vorab — doppelt so viel wie das Impressum.
+     1.002 kB Skript aus und 205 kB vorab, doppelt so viel wie das Impressum.
      Ursache waren wieder die Verweise: Sie führen auf die Startseite und ihre
      Anker, und Next holt zu jedem sichtbaren Verweis die Skripte des Ziels
      mit. Ohne Vorabladen sind es 558 kB und 0 kB, davon 0 kB Bewegung. */

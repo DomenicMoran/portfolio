@@ -10,7 +10,7 @@ import { Marke } from "@/lib/mark";
  * Vorher gab es sie nur einmal, mit dem deutschen Inhalt fest verdrahtet, und
  * `buildMetadata` verwies aus beiden Sprachen darauf. Wer die englische Seite
  * teilte, bekam eine Karte mit "BERLIN, DEUTSCHLAND" und "Vier Plattformen in
- * Produktion" — die Sprache, die er gerade nicht liest.
+ * Produktion", die Sprache, die er gerade nicht liest.
  *
  * Der Text stand zusätzlich in der Komponente statt in `src/content/`, gegen
  * die Regel in AGENTS.md. Beides hängt zusammen: Solange die Zeile im Bauteil
@@ -39,7 +39,7 @@ const STACK = ["TypeScript", "React Native", "Next.js", "Postgres", "AI Engineer
  *
  * Der OG-Renderer läuft ohne Ursprung und kann `/portrait.jpg` nicht
  * auflösen; eine absolute Adresse wäre ein Abruf nach außen zur Bauzeit.
- * Die Datei wird deshalb eingelesen und eingebettet — 320 Pixel, 9 kB, mehr
+ * Die Datei wird deshalb eingelesen und eingebettet, 320 Pixel, 9 kB, mehr
  * braucht ein Kreis von 150 Pixeln nicht.
  *
  * Sie wird nicht von Hand gepflegt: `npm run build:portrait` schreibt sie aus

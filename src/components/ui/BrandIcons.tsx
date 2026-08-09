@@ -3,7 +3,7 @@
  *
  * lucide-react hat die Markenzeichen mit Fassung 1 entfernt, deshalb stehen
  * diese beiden direkt hier. Beide sind die offiziellen Zeichen und beschriften
- * ausschließlich Links auf die jeweiligen Profile — die eine Verwendung, die
+ * ausschließlich Links auf die jeweiligen Profile, die eine Verwendung, die
  * jede Markenrichtlinie erlaubt. Sie nehmen dieselben Eigenschaften wie die
  * lucide-Symbole und passen damit in dieselben Stellen.
  */

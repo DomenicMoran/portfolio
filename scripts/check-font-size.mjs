@@ -4,7 +4,7 @@
  *
  * Chrome bietet in seinen Einstellungen 20 und 24 px als Standardschrift an,
  * Firefox und Safari genauso. Wer sie braucht, stellt sie einmal ein und lässt
- * sie stehen — auf jeder Seite, für immer. Das ist keine Randgruppe, und WCAG
+ * sie stehen, auf jeder Seite, für immer. Das ist keine Randgruppe, und WCAG
  * 1.4.4 verlangt ausdrücklich, dass Text sich vergrößern lässt, ohne dass
  * Inhalt verlorengeht.
  *
@@ -14,14 +14,14 @@
  * alles gleichmäßig mit, hier nicht.
  *
  * Gemessen wird die rechte Kante des Textes gegen die rechte Kante des
- * Fensters — nicht `scrollWidth > clientWidth`. Der Unterschied ist wesentlich:
+ * Fensters, nicht `scrollWidth > clientWidth`. Der Unterschied ist wesentlich:
  * `html` und `body` tragen `overflow-x: clip`, damit auf Telefonen nichts
  * seitwärts scrollt. Was über die Kante ragt, erzeugt deshalb keine
  * Bildlaufleiste. Es ist einfach weg, ohne Hinweis und ohne Weg dorthin.
  *
  * Gemessen am 05.08.2026 bei 24 px Grundschrift und 320 px Breite, der
  * Bezugsbreite von WCAG 1.4.10: 58 Elemente der Startseite ragten über die
- * Kante, bis zu 63 px weit — Überschriften, Fließtext, Kennzahlen. Bei 16 px
+ * Kante, bis zu 63 px weit. Überschriften, Fließtext, Kennzahlen. Bei 16 px
  * war dieselbe Messung leer, deshalb sah kein bestehender Lauf etwas.
  *
  * Behoben wurden dabei fuenf Muster, keine 88 Einzelfaelle: `overflow-wrap`
@@ -32,7 +32,7 @@
  *
  * Der letzte Fall ist der lehrreiche: `overflow-wrap: break-word` half der
  * LinkedIn-Adresse im Kurzprofil nicht. Es aendert die Mindestbreite eines
- * Elements nicht, und ein `inline-block` misst sich genau daran — eine
+ * Elements nicht, und ein `inline-block` misst sich genau daran, eine
  * Adresse ohne Leerzeichen bleibt damit so breit wie sie ist. Erst
  * `break-all` bricht sie.
  *
@@ -112,7 +112,7 @@ for (const grundschrift of GROESSEN) {
              gehört dazu, obwohl es keinen solchen Vorfahren hat: Es läuft
              absichtlich aus dem Bild und verlässt sich dabei auf die Klemmung
              an `body`. Seine Position hängt außerdem am Zeitpunkt der
-             Messung — ein Befund daraus wäre je nach Lauf ein anderer. */
+             Messung, ein Befund daraus wäre je nach Lauf ein anderer. */
           let frei = true;
           for (let v = el.parentElement; v && v !== document.body; v = v.parentElement) {
             if (getComputedStyle(v).overflowX !== "visible") { frei = false; break; }

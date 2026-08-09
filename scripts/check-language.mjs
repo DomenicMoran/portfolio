@@ -17,13 +17,13 @@
  * er gerade liest.
  *
  * **Der Rückweg aus den Rechtsseiten.** Impressum und Datenschutzerklärung
- * gibt es nur auf Deutsch — ein deutsches Rechtsdokument ist in Übersetzung
+ * gibt es nur auf Deutsch, ein deutsches Rechtsdokument ist in Übersetzung
  * nicht mehr dieselbe Erklärung. Wer aus der englischen Fassung dorthin
  * klickt, braucht deshalb einen ausdrücklichen Weg zurück.
  *
  * Dazu WCAG 3.1.2 (Stufe AA): Ein deutscher Textteil auf einer englischen
  * Seite braucht `lang="de"`, sonst spricht ein Vorleseprogramm ihn englisch
- * aus. Eigennamen sind ausgenommen — „WohnungsJäger" bleibt „WohnungsJäger".
+ * aus. Eigennamen sind ausgenommen, „WohnungsJäger" bleibt „WohnungsJäger".
  *
  * Aufruf nach `npm run build`:
  *
@@ -40,14 +40,14 @@ const NUR_DEUTSCH = ["/impressum", "/datenschutz"];
 /**
  * Die Fehlerseite, unter zwei erfundenen Adressen.
  *
- * Sie steht in keiner Seitenliste des Baus — sie entsteht erst bei der
+ * Sie steht in keiner Seitenliste des Baus, sie entsteht erst bei der
  * Anfrage, denn sie soll in der Sprache antworten, unter der jemand gekommen
  * ist. Damit fiel ausgerechnet die einzige Seite aus diesem Lauf, deren
  * Sprache überhaupt zur Laufzeit entschieden wird.
  *
  * Sie trägt kein `hreflang` und braucht auch keines: Sie ist `noindex`, es
  * gibt keine Entsprechung, die eine Suchmaschine kennen müsste. Geprüft wird
- * deshalb nur, was für den Leser zählt — die richtige Dokumentsprache, der
+ * deshalb nur, was für den Leser zählt, die richtige Dokumentsprache, der
  * ausgezeichnete Satz in der anderen Sprache und der Weg dorthin.
  */
 const FEHLERSEITEN = ["/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist"];
@@ -98,7 +98,7 @@ for (const pfad of pfade) {
 
     /* Der Umschalter braucht zwei Angaben, nicht eine.
 
-       `hreflang` sagt, was am anderen Ende wartet — das prüft dieser Lauf
+       `hreflang` sagt, was am anderen Ende wartet, das prüft dieser Lauf
        weiter unten. `lang` sagt, in welcher Sprache die Beschriftung selbst
        steht, und darauf kommt es hier besonders an: Der Knopf trägt auf der
        englischen Seite `aria-label="Diese Seite auf Deutsch"`. Ohne `lang`
@@ -131,7 +131,7 @@ for (const pfad of pfade) {
        aus der deutschen Fassung entstehen: „Jeder Mandant bekommt seine
        eigene Signatureinheit“, „Das System wurde komplett selbst gebaut“,
        „Die Daten liegen in der EU“, „Ein Beleg ist wichtiger als eine
-       Behauptung“ — keiner trägt einen Umlaut, keiner ein Wort der alten
+       Behauptung“, keiner trägt einen Umlaut, keiner ein Wort der alten
        Liste, alle vier wären durchgerutscht.
 
        Aufgenommen sind nur Wörter, die es im Englischen nicht gibt. `die`,
@@ -152,7 +152,7 @@ for (const pfad of pfade) {
       deutsch.push(text.slice(0, 44));
     }
 
-    /* Und englischer Text auf einer deutschen Seite — dieselbe Regel in die
+    /* Und englischer Text auf einer deutschen Seite, dieselbe Regel in die
        andere Richtung. Sie greift nur auf der Fehlerseite, weil sonst keine
        deutsche Seite einen englischen Satz trägt; dort steht einer, und zwar
        genau der, der zur englischen Fassung führt. */
@@ -169,7 +169,7 @@ for (const pfad of pfade) {
     }
 
     /* Die Rechtsseiten gibt es nur auf Deutsch. Wer von einer englischen
-       Seite dorthin verweist, sagt das mit `hreflang` — sonst kündigt der
+       Seite dorthin verweist, sagt das mit `hreflang`, sonst kündigt der
        Verweis eine englische Seite an und liefert eine deutsche, und ein
        Vorleseprogramm wechselt die Aussprache nicht. */
     const rechtsverweise = [...document.querySelectorAll("a")]
@@ -184,7 +184,7 @@ for (const pfad of pfade) {
        Die Prüfung darüber springt über jeden Knoten ohne `offsetParent`. Bei
        `sr-only` ist das immer der Fall: Solcher Text steht absolut
        positioniert und weggeschnitten im Baum. Unsichtbar heißt hier aber
-       nicht unbenutzt — er ist die Fassung, die ein Vorleseprogramm benutzt.
+       nicht unbenutzt, er ist die Fassung, die ein Vorleseprogramm benutzt.
        Dasselbe gilt für `aria-label`, `alt` und `title`, die als Attribute
        gar nicht erst im Textbaum stehen: Auf `/en` sind das 19 Stellen, und
        keine davon war bis hierhin geprüft.
@@ -257,7 +257,7 @@ for (const [pfad, daten] of stand) {
   }
 
   if (FEHLERSEITEN.includes(pfad)) {
-    /* Kein hreflang, keine Gegenfassung im Verzeichnis — sie ist `noindex`.
+    /* Kein hreflang, keine Gegenfassung im Verzeichnis, sie ist `noindex`.
        Was zählt, ist der Weg weiter und der ausgezeichnete Satz dorthin. */
     const zielAndereFassung = englisch ? "/" : "/en";
     if (!daten.wechsel.some((z) => alsPfad(z) === zielAndereFassung) && !daten.rueckweg) {
@@ -265,13 +265,13 @@ for (const [pfad, daten] of stand) {
     }
     if (englisch && daten.deutsch.length > 0) {
       funde.push(
-        `${pfad}: deutscher Text ohne lang="de" — ` +
+        `${pfad}: deutscher Text ohne lang="de", ` +
           daten.deutsch.map((t) => `„${t}“`).join(", "),
       );
     }
     if (!englisch && daten.englischerText.length > 0) {
       funde.push(
-        `${pfad}: englischer Text ohne lang="en" — ` +
+        `${pfad}: englischer Text ohne lang="en", ` +
           daten.englischerText.map((t) => `„${t}“`).join(", "),
       );
     }
@@ -279,7 +279,7 @@ for (const [pfad, daten] of stand) {
   }
 
   if (NUR_DEUTSCH.includes(pfad)) {
-    // Kein hreflang — es gibt keine Gegenfassung. Aber ein Weg zurück.
+    // Kein hreflang, es gibt keine Gegenfassung. Aber ein Weg zurück.
     if (Object.keys(daten.alternativen).length > 0) {
       funde.push(`${pfad}: nennt eine Gegenfassung, die es nicht gibt`);
     }
@@ -304,7 +304,7 @@ for (const [pfad, daten] of stand) {
     funde.push(`${pfad}: x-default zeigt auf ${standard ?? "-"}, die deutsche Fassung ist ${de}`);
   }
 
-  /* Die eigene Seite muss unter ihrer Sprache stehen — sonst zeigt die
+  /* Die eigene Seite muss unter ihrer Sprache stehen, sonst zeigt die
      Angabe an ihr vorbei. */
   const selbst = englisch ? en : de;
   if (alsPfad(selbst) !== pfad) {
@@ -349,14 +349,14 @@ for (const [pfad, daten] of stand) {
 
   if (englisch && daten.deutsch.length > 0) {
     funde.push(
-      `${pfad}: deutscher Text ohne lang="de" — ` +
+      `${pfad}: deutscher Text ohne lang="de", ` +
         daten.deutsch.map((t) => `„${t}“`).join(", "),
     );
   }
 
   if (englisch && daten.unsichtbar.length > 0) {
     funde.push(
-      `${pfad}: deutscher Text in der Fassung, die vorgelesen wird — ` +
+      `${pfad}: deutscher Text in der Fassung, die vorgelesen wird, ` +
         daten.unsichtbar.join(", ") +
         `\n        Sichtbar ist die Seite übersetzt, hörbar nicht.`,
     );

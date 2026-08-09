@@ -16,7 +16,7 @@
  *
  * Gemessen an der ausgelieferten Seite am 03.08.2026: Auf `/en` standen zehn
  * deutsche Öffner, dazu „100 %" in den Kennzahlen. Nach der ersten Korrektur
- * stand dort zwanzigmal derselbe Schließer — falsch in die andere Richtung,
+ * stand dort zwanzigmal derselbe Schließer, falsch in die andere Richtung,
  * und ein Lauf, der nur nach dem deutschen Öffner suchte, meldete sauber.
  * Deshalb die Reihenfolge.
  *
@@ -26,7 +26,7 @@
  *   englisch:  “ …  ”   (“ …  ”)
  *
  * Gemessen am gebauten HTML und ohne Browser: Es geht um Zeichen im Text,
- * nicht um Darstellung. Skripte bleiben draußen — im Datenstrom von React
+ * nicht um Darstellung. Skripte bleiben draußen, im Datenstrom von React
  * steht Auszeichnung, kein Fließtext.
  *
  *   npm run check:typography
@@ -53,7 +53,7 @@ const NAME = {
 };
 
 /**
- * Tausendertrennung je Sprache — gesucht wird jeweils die *fremde*.
+ * Tausendertrennung je Sprache, gesucht wird jeweils die *fremde*.
  *
  * Die Zahlen dieser Seite kommen aus `toLocaleString`, aber nicht alle:
  * Einige stehen als Text in den Inhaltsdateien, und dort merkt es niemand.
@@ -68,7 +68,7 @@ const FREMDER_TRENNER = {
  * Amerikanische Schreibweisen auf einer Seite, die britisch sein will.
  *
  * Die Metadaten melden `en_GB`, und der Text hält sich daran: licence, fibre,
- * catalogue, recognise. Genau deshalb fällt jede amerikanische Form auf —
+ * catalogue, recognise. Genau deshalb fällt jede amerikanische Form auf:
  * einem britischen Leser sofort, einem deutschen Autor nie.
  *
  * Gefunden am 08.08.2026 auf dem englischen Kurzprofil: „in the print dialog".
@@ -103,7 +103,7 @@ const AMERIKANISCH = new Map([
   ["gotten", "got"],
   /* Nachgetragen am 07.08.2026. „shifts probabilities toward those words"
      stand im Whisper-Artikel und ist die einzige Stelle gewesen, die dieser
-     Liste entkam — geprüft war die Endung -ize, nicht die auf -ward.
+     Liste entkam, geprüft war die Endung -ize, nicht die auf -ward.
 
      Die elf Ergänzungen sind gegen die gebauten englischen Seiten gemessen:
      keine schlägt heute an, keine trifft einen Eigennamen. `normalize` fehlt
@@ -124,14 +124,14 @@ const AMERIKANISCH = new Map([
 ]);
 
 /**
- * Der Text einer gebauten Seite — auch der, der erst im Browser entsteht.
+ * Der Text einer gebauten Seite, auch der, der erst im Browser entsteht.
  *
  * `sichtbarerText` wirft `<script>` weg, und das ist für die
  * Anführungszeichen richtig: Dort stehen JSON-Anführungszeichen zu Tausenden.
  * Für den Apostroph ist es die Falle. Die Kontaktüberschrift „Let’s build
  * something" setzt `RevealWords` wortweise im Browser zusammen; im
  * ausgelieferten HTML steht sie nur in der RSC-Nutzlast, also in genau dem
- * `<script>`, das weggeworfen wird. Der Lauf sah sie deshalb nie — und hätte
+ * `<script>`, das weggeworfen wird. Der Lauf sah sie deshalb nie, und hätte
  * bei einem geraden Apostroph in der größten Schrift des Abschnitts Erfolg
  * gemeldet.
  *
@@ -153,7 +153,7 @@ function sichtbarerText(pfad) {
       .replace(/<style[\s\S]*?<\/style>/g, " ")
       .replace(/<[^>]+>/g, " ")
       /* React schreibt jeden Apostroph als `&#x27;` ins HTML. Wer im Rohtext
-         nach `'` sucht, findet ihn nur dort, wo er ohnehin schon steht — die
+         nach `'` sucht, findet ihn nur dort, wo er ohnehin schon steht, die
          Prüfung auf gerade Apostrophe lief deshalb ins Leere und meldete
          Erfolg. Dieselbe Falle wie bei jedem Lauf, der Markup liest statt
          Text. */
@@ -181,7 +181,7 @@ const NUR_DEUTSCH = new RegExp(
   "g",
 );
 
-/** Eigennamen heißen, wie sie heißen — auch auf einer englischen Seite. */
+/** Eigennamen heißen, wie sie heißen, auch auf einer englischen Seite. */
 const EIGENNAMEN =
   /WohnungsJäger|WG-Gesucht|Kleinanzeigen|Immowelt|ImmoScout24|Salati|MenuCloud|NOURI/g;
 
@@ -213,7 +213,7 @@ for (const route of gebauteSeiten()) {
     const luecken = [...text.matchAll(/\d[\s  ]%/g)];
     if (luecken.length > 0) {
       funde.push(
-        `${route}: ${luecken.length}× Leerzeichen vor dem Prozentzeichen — ` +
+        `${route}: ${luecken.length}× Leerzeichen vor dem Prozentzeichen, ` +
           `im Englischen steht es direkt an der Zahl (100%).`,
       );
     }
@@ -230,7 +230,7 @@ for (const route of gebauteSeiten()) {
     }
     if (amerikanisch.length > 0) {
       funde.push(
-        `${route} (en): amerikanische Schreibweise — ${amerikanisch
+        `${route} (en): amerikanische Schreibweise, ${amerikanisch
           .slice(0, 5)
           .join(", ")}`,
       );
@@ -244,7 +244,7 @@ for (const route of gebauteSeiten()) {
     ];
     if (deutsch.length > 0) {
       funde.push(
-        `${route}: deutsche Wörter auf einer englischen Seite — ${deutsch.slice(0, 6).join(", ")}`,
+        `${route}: deutsche Wörter auf einer englischen Seite, ${deutsch.slice(0, 6).join(", ")}`,
       );
     }
   }
@@ -254,7 +254,7 @@ for (const route of gebauteSeiten()) {
   ];
   if (falsch.length > 0) {
     funde.push(
-      `${route} (${sprache}): ${falsch.slice(0, 5).join(", ")} — Tausender trennt ` +
+      `${route} (${sprache}): ${falsch.slice(0, 5).join(", ")}. Tausender trennt ` +
         `${sprache === "en" ? "das Englische mit einem Komma" : "das Deutsche mit einem Punkt"}.`,
     );
   }
@@ -264,7 +264,7 @@ for (const route of gebauteSeiten()) {
      Gemessen an den gebauten Seiten am 07.08.2026 standen auf der Startseite
      zwei Schreibweisen desselben Tages: „Gemessen am 06.08.2026 über die
      GitHub-API“ unter den Kennzahlen und „gezählt am 6. August 2026“ unter dem
-     Liefertempo. Auf drei Artikelseiten dasselbe Paar — die Kopfzeile datiert
+     Liefertempo. Auf drei Artikelseiten dasselbe Paar, die Kopfzeile datiert
      auf „30. Juli 2026“, die Belegliste darunter nennt „Commit 71bd8d2b vom
      30.07.2026“. Die englischen Fassungen derselben Artikel schrieben an
      derselben Stelle „30 July 2026“.
@@ -285,7 +285,7 @@ for (const route of gebauteSeiten()) {
   ];
   if (sprache === "de" && ziffernDatum.length > 0) {
     funde.push(
-      `${route} (de): ${ziffernDatum.slice(0, 4).join(", ")} — ein Datum im ` +
+      `${route} (de): ${ziffernDatum.slice(0, 4).join(", ")}, ein Datum im ` +
         `Fließtext wird ausgeschrieben (6. August 2026).`,
     );
   }
@@ -293,12 +293,12 @@ for (const route of gebauteSeiten()) {
   /* Der Apostroph in englischen Verkürzungen.
 
      „Let's build something" stand als Überschrift des Kontaktabschnitts auf
-     /en — mit dem Schreibmaschinen-Apostroph, dem geraden U+0027. Gezählt an
+     /en, mit dem Schreibmaschinen-Apostroph, dem geraden U+0027. Gezählt an
      der ausgelieferten Seite am 03.08.2026: 29 gerade und kein einziger
      typografischer, quer über alle englischen Seiten.
 
      Auf einer Seite, die auf jeder anderen Zeile typografische
-     Anführungszeichen setzt, ist das der eine Rest Schreibmaschine — und er
+     Anführungszeichen setzt, ist das der eine Rest Schreibmaschine, und er
      steht ausgerechnet in der größten Schrift des Abschnitts.
 
      Geprüft wird nur die Verkürzung (`it's`, `doesn't`, `we've`): Ein
@@ -307,7 +307,7 @@ for (const route of gebauteSeiten()) {
   const geradeApostrophe = [...nutztext(datei).matchAll(APOSTROPH)];
   if (sprache === "en" && geradeApostrophe.length > 0) {
     funde.push(
-      `${route} (en): ${geradeApostrophe.length}× gerader Apostroph statt ’ — ` +
+      `${route} (en): ${geradeApostrophe.length}× gerader Apostroph statt ’, ` +
         `${[...new Set(geradeApostrophe.map((m) => m[0]))].slice(0, 4).join(", ")}`,
     );
   }
@@ -317,16 +317,16 @@ for (const route of gebauteSeiten()) {
      Er ist im Deutschen wie im Englischen richtiges Satzzeichen. Auf einer
      Bewerbungsseite ist er trotzdem das Falsche: Er ist das deutlichste
      Erkennungsmerkmal für maschinell geschriebenen Text, und diese Seite
-     argumentiert mit Eigenleistung. Was ein Mensch schreibt — Doppelpunkt,
-     Komma, Punkt, Klammer — sagt dasselbe und weckt keinen Zweifel.
+     argumentiert mit Eigenleistung. Was ein Mensch schreibt. Doppelpunkt,
+     Komma, Punkt, Klammer, sagt dasselbe und weckt keinen Zweifel.
 
      Gezählt am 03.08.2026 an den ausgelieferten Seiten: elf Stellen. Kommentare
      im Quelltext bleiben aussen vor, sie stehen auf keiner Seite. */
-  const striche = (text.match(/—/g) ?? []).length;
+  const striche = (text.match(/,/g) ?? []).length;
   if (striche > 0) {
-    const stelle = text.indexOf("—");
+    const stelle = text.indexOf(",");
     funde.push(
-      `${route}: ${striche}× Gedankenstrich im sichtbaren Text — ` +
+      `${route}: ${striche}× Gedankenstrich im sichtbaren Text, ` +
         `„…${text.slice(Math.max(0, stelle - 45), stelle + 35).replace(/\s+/g, " ")}…“`,
     );
   }
@@ -334,7 +334,7 @@ for (const route of gebauteSeiten()) {
   /* Und dieselbe Regel für das, was nicht auf der Seite steht.
 
      Titel, Beschreibung und der Alternativtext der Vorschaukarte erscheinen
-     im Reiter des Browsers, im Suchergebnis und in jedem geteilten Verlauf —
+     im Reiter des Browsers, im Suchergebnis und in jedem geteilten Verlauf:
      also genau dort, wo jemand die Seite zum ersten Mal sieht. Der Lauf las
      bis hierher nur den sichtbaren Text, und ein Gedankenstrich in einer
      dieser Zeilen kam durch. Genau so einer stand seit heute in den fünf
@@ -352,9 +352,9 @@ for (const route of gebauteSeiten()) {
   for (const feld of metafelder) {
     const wert = feld[2] ?? feld[1];
     const name = feld[2] ? feld[1] : "<title>";
-    if (!wert.includes("—")) continue;
+    if (!wert.includes(",")) continue;
     funde.push(
-      `${route}: Gedankenstrich in „${name}" — „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
+      `${route}: Gedankenstrich in „${name}", „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
     );
   }
 

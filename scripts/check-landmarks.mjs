@@ -4,7 +4,7 @@
  *
  * Wer mit einem Vorleseprogramm arbeitet, springt nicht durch die Seite,
  * sondern durch ihre Landmarken: Navigation, Hauptbereich, Fußzeile. Fehlt
- * eine, fehlt der Sprung — und gemeldet wird das von niemandem. axe prüft, ob
+ * eine, fehlt der Sprung, und gemeldet wird das von niemandem. axe prüft, ob
  * eine vorhandene Landmarke richtig gebaut ist, nicht, ob sie da ist.
  *
  * Dreimal gefunden, jedes Mal von Hand:
@@ -13,7 +13,7 @@
  *     keine Landmarke
  *   - die Artikelliste war eine `ul` statt einer benannten Navigation
  *   - die beiden Rechtsseiten hatten genau eine Landmarke, den Hauptbereich:
- *     kein Rückweg, keine Fußzeile — ausgerechnet dort, wo jemand eine
+ *     kein Rückweg, keine Fußzeile, ausgerechnet dort, wo jemand eine
  *     Anschrift oder eine Rechtsgrundlage sucht
  *
  * Zwei Fallen, die dieser Lauf kennt:
@@ -47,7 +47,7 @@ if (!basis) {
 }
 
 /* Dazu die Fehlerseite unter beiden Sprachen: Sie steht in keiner Liste
-   gebauter Seiten — im Bau liegt sie als `_not-found.html` — und fiel damit
+   gebauter Seiten, im Bau liegt sie als `_not-found.html`, und fiel damit
    aus jedem Lauf heraus, der seine Liste aus dem Bau nimmt. Sie ist die
    Seite, die jeder Vertipper zu sehen bekommt. */
 const pfade = [...gebauteSeiten(), ...FEHLERSEITEN];
@@ -61,7 +61,7 @@ const seite = await umgebung.newPage();
 
    Hier stand ein eigener Nachbau: Klon nehmen, `aria-hidden`-Kinder
    entfernen, `textContent` lesen. Der übersieht alles, was die Norm sonst
-   noch tut — und genau daran ist er am 06.08.2026 gescheitert. Der
+   noch tut, und genau daran ist er am 06.08.2026 gescheitert. Der
    Abschnittsverweis in den Artikeln trug ein `aria-label`, das den
    Überschriftentext wiederholt; als Kind des `h2` ging es in dessen Namen ein.
    Der Nachbau las „Der erste Hebel: dem Modell sagen, was es hören wird“ und
@@ -136,7 +136,7 @@ for (const pfad of pfade) {
     waitUntil: "domcontentloaded",
   });
   /* Die Fehlerseite antwortet mit 404, und das ist ihre richtige
-     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie —
+     Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie:
      die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
      standen. */
   const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
@@ -203,7 +203,7 @@ for (const pfad of pfade) {
      Zweite Regel, aus demselben Anlass: Der Abschnittsverweis neben der
      Überschrift trug ein `aria-label` mit dem Überschriftentext darin. Als
      Kind des `h2` ging es in dessen Namen ein, und ein Vorleseprogramm las
-     jede Zwischenüberschrift zweimal — sieben mal je Artikel, aber nur ab
+     jede Zwischenüberschrift zweimal, sieben mal je Artikel, aber nur ab
      1024 px, weil der Verweis darunter `display: none` trägt.
 
      Geprüft wird gegen den sichtbaren Text: Was der Baum als Namen führt,
@@ -212,11 +212,11 @@ for (const pfad of pfade) {
   for (const h of await ueberschriftenNamen()) {
     if (/[#*•·→↗]$/.test(h.name)) {
       funde.push(
-        `${pfad}: Überschrift endet auf ein Zierzeichen — „…${h.name.slice(-45)}“`,
+        `${pfad}: Überschrift endet auf ein Zierzeichen, „…${h.name.slice(-45)}“`,
       );
     } else if (h.name !== h.sichtbar) {
       funde.push(
-        `${pfad}: Überschrift heißt im Baum anders, als sie dasteht —\n` +
+        `${pfad}: Überschrift heißt im Baum anders, als sie dasteht ,\n` +
           `          sichtbar: „${h.sichtbar.slice(0, 60)}“\n` +
           `          Name:     „${h.name.slice(0, 90)}“`,
       );
@@ -233,7 +233,7 @@ for (const pfad of pfade) {
      neue Ebene 3 den vorigen Zweig schließt, hing Salatis „Ausführlich
      nachzulesen" anschließend unter der Vorführung statt unter Salati.
 
-     Die Stufen selbst sprangen dabei nie, es fehlte keine Ebene — genau
+     Die Stufen selbst sprangen dabei nie, es fehlte keine Ebene, genau
      deshalb meldet axe hier nichts. Geprüft wird die Zugehörigkeit, nicht die
      Reihenfolge. */
   const fallstudien = await seite.evaluate(() =>
@@ -247,7 +247,7 @@ for (const pfad of pfade) {
   for (const f of fallstudien) {
     if (f.titel.length !== 1) {
       funde.push(
-        `${pfad}: #${f.id} hat ${f.titel.length} Überschriften der Ebene 3 statt einer — ` +
+        `${pfad}: #${f.id} hat ${f.titel.length} Überschriften der Ebene 3 statt einer, ` +
           `„${f.titel.join("“, „")}“`,
       );
     }
@@ -266,7 +266,7 @@ for (const pfad of pfade) {
     const schluessel = `${l.rolle} ${l.name}`;
     if (gesehen.has(schluessel)) {
       funde.push(
-        `${pfad}: ${l.rolle} „${l.name || "(ohne Namen)"}" kommt mehrfach vor — ` +
+        `${pfad}: ${l.rolle} „${l.name || "(ohne Namen)"}" kommt mehrfach vor, ` +
           `in der Landmarkenliste nicht zu unterscheiden`,
       );
     }
@@ -281,7 +281,7 @@ await seite.close();
    Der Fund, für den diese Messung gebaut wurde, hing an der Breite: Der
    Abschnittsverweis in den Artikeln trägt `display: none` unterhalb von
    1024 px und ging deshalb nur am Schreibtisch in den Namen der Überschrift
-   ein. Ein Lauf bei einer Breite hätte ihn genauso gut verfehlen können —
+   ein. Ein Lauf bei einer Breite hätte ihn genauso gut verfehlen können:
    nächstes Mal in die andere Richtung, wenn etwas nur auf dem Telefon
    erscheint.
 
@@ -304,7 +304,7 @@ await seite.close();
     for (const h of await ueberschriftenNamen(engeSeite, engesWerkzeug)) {
       if (h.name !== h.sichtbar) {
         funde.push(
-          `${pfad} bei 390 px: Überschrift heißt im Baum anders, als sie dasteht —\n` +
+          `${pfad} bei 390 px: Überschrift heißt im Baum anders, als sie dasteht ,\n` +
             `          sichtbar: „${h.sichtbar.slice(0, 60)}“\n` +
             `          Name:     „${h.name.slice(0, 90)}“`,
         );
@@ -332,5 +332,5 @@ if (funde.length > 0) {
 console.log(
   `Jede Seite bietet ihre Landmarken an: ${landmarken} auf ${geprueft} Seiten, ` +
     `keine Rolle doppelt benannt. Jede Überschrift heißt im ` +
-    `Barrierefreiheitsbaum, wie sie dasteht — gemessen bei 1440 und 390 px.`,
+    `Barrierefreiheitsbaum, wie sie dasteht, gemessen bei 1440 und 390 px.`,
 );

@@ -10,7 +10,7 @@
  * Gemessen am 04.08.2026 im Recruiter-Bereich: 22 px Versatz bei 1280 und
  * 1440 px auf Deutsch, bei 768 und 1280 px auf Englisch. Auf 1024 px fiel es
  * nicht auf, weil dort zufällig alle drei Überschriften der Reihe zweizeilig
- * waren — genau deshalb reicht eine Breite nicht.
+ * waren, genau deshalb reicht eine Breite nicht.
  *
  * Geprüft wird die ausgelieferte Seite: Ob ein Titel umbricht, entscheidet die
  * Schrift, nicht der Quelltext.
@@ -128,7 +128,7 @@ for (const breite of BREITEN) {
     reihen += messung.gezaehlt;
     for (const f of messung.raus) {
       funde.push(
-        `${pfad} bei ${breite} px: ${f.versatz} px Versatz — ${f.karten.join(" · ")}`,
+        `${pfad} bei ${breite} px: ${f.versatz} px Versatz, ${f.karten.join(" · ")}`,
       );
     }
   }

@@ -8,7 +8,7 @@
  * ausgerechnet in dem Bild, das eine fachliche Führung als Erstes aufmacht.
  *
  * Aufgefallen ist es keinem Lauf: `check-parity` zählt Elemente, nicht Wörter,
- * und ein Suchlauf über `innerText` sieht Text in einem SVG nicht — dort steht
+ * und ein Suchlauf über `innerText` sieht Text in einem SVG nicht, dort steht
  * er in `<text>`-Knoten.
  *
  * Übersetzt wird über diese Zuordnung statt über eine zweite Datei mit
@@ -118,7 +118,7 @@ const ARCHITEKTUR_EN: Record<string, string> = {
  *
  * Ohne Eintrag bleibt der deutsche Text stehen. Das ist die richtige Wahl
  * gegenüber einem leeren Feld: Ein Eigenname braucht keine Zeile, und eine
- * vergessene Übersetzung ist als deutsches Wort erkennbar — als Lücke wäre
+ * vergessene Übersetzung ist als deutsches Wort erkennbar, als Lücke wäre
  * sie unsichtbar.
  */
 export function architekturText(text: string, lang: "de" | "en"): string {

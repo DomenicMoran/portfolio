@@ -26,7 +26,7 @@ import {
  * Tage seit dem ersten Salati-Commit, gerechnet statt getippt.
  *
  * Hier stand "107 Tage … bis heute". Zum Zeitpunkt des Schreibens richtig, am
- * Tag darauf 108 — dasselbe wandernde Fenster, das bei den Commits schon
+ * Tag darauf 108, dasselbe wandernde Fenster, das bei den Commits schon
  * abgeschafft wurde ("3.971 Commits in 4 Monaten"). Eine Zahl, die von selbst
  * weiterläuft, kann man nicht pflegen.
  *
@@ -156,7 +156,7 @@ export const de: Content = {
           value: String(salatiTage),
           label: "Tage",
           // Beide Daten in derselben Schreibweise. In einem Satz standen
-          // "16.04.2026" und "2. August 2026" nebeneinander — zwei Formate
+          // "16.04.2026" und "2. August 2026" nebeneinander, zwei Formate
           // für dieselbe Sache, und das auf einer Seite, deren Argument
           // Genauigkeit ist. Die englische Fassung war schon einheitlich.
           note: `erster Commit am ${datumLang(SALATI_ERSTER_COMMIT)} bis zum Prüfdatum ${datumLang(verified.date)}`,

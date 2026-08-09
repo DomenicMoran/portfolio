@@ -2,11 +2,11 @@
 /**
  * Prüft, dass der Code in den Artikeln syntaktisch aufgeht.
  *
- * Die fünf Artikel zeigen Code — das ist ihr Kern: Ursache, Fix und der
+ * Die fünf Artikel zeigen Code, das ist ihr Kern: Ursache, Fix und der
  * Commit, an dem sich beides nachlesen lässt. Wer sie liest, ist mit hoher
  * Wahrscheinlichkeit jemand, der Code liest, und ein Tippfehler in einem
  * gezeigten Ausschnitt ist für diesen Leser das sichtbarste Zeichen von
- * Nachlässigkeit — sichtbarer als jede Kennzahl daneben.
+ * Nachlässigkeit, sichtbarer als jede Kennzahl daneben.
  *
  * Geprüft wird nur die Syntax, nicht die Typen. Die Blöcke sind Ausschnitte:
  * Sie bringen keine Importe mit, ihre Bezeichner stammen aus einer Datei, die
@@ -31,7 +31,7 @@ const ORDNER = join("src", "content", "articles");
  * Gepaart wird über die Stelle im Text und nicht über den Abstand: Zwischen
  * `lang` und `code` steht meist eine `caption`, manchmal mehrere Zeilen
  * Erklärung. Ein Muster mit fester Obergrenze fand deshalb zehn von zwölf
- * Blöcken — und die beiden übersehenen wären genau die gewesen, die niemand
+ * Blöcken, und die beiden übersehenen wären genau die gewesen, die niemand
  * mehr angesehen hat.
  */
 function bloeckeAus(quelle) {
@@ -112,14 +112,14 @@ for (const datei of readdirSync(ORDNER).sort()) {
  * Dort läuft ein Block um mehrere hundert Pixel über, man wischt, fertig.
  *
  * Am Schreibtisch ist es das Gegenteil von offensichtlich. Gemessen an der
- * ausgelieferten Seite lief ein Block im Whisper-Artikel um 14 px über —
+ * ausgelieferten Seite lief ein Block im Whisper-Artikel um 14 px über:
  * eine Zeile von 75 Zeichen, davon sechs arabische, die breiter setzen. Der
  * Leser sieht einen Kommentar, der vollständig aussieht, und ihm fehlt das
  * letzte Wort. Die anderen neun Artikel hielten die Grenze; die englische
  * Fassung derselben Stelle war schon umbrochen.
  *
  * Gerechnet passen 614 px bei 8,4 px je Zeichen auf rund 73. Geprüft wird
- * gegen 72, und die längste Zeile im Bestand hat 70 — der Abstand ist Absicht,
+ * gegen 72, und die längste Zeile im Bestand hat 70, der Abstand ist Absicht,
  * weil nicht jedes Zeichen gleich breit setzt.
  */
 const GRENZE = 72;
@@ -140,7 +140,7 @@ if (funde.length > 0) {
   console.error(`${funde.length} Codeblock ist nicht in Ordnung:\n`);
   for (const f of funde) console.error(`  ${f}`);
   console.error(
-    `\nDie Artikel zeigen Code als Beleg. Wer sie liest, liest Code — ein ` +
+    `\nDie Artikel zeigen Code als Beleg. Wer sie liest, liest Code, ein ` +
       `\nTippfehler darin wiegt mehr als jede Kennzahl daneben, und eine Zeile,` +
       `\ndie am Schreibtisch abgeschnitten wird, sieht vollständig aus.`,
   );

@@ -1,5 +1,5 @@
 /**
- * Der Stand der Datenschutzerklärung — Datum und Prüfsumme des Textes.
+ * Der Stand der Datenschutzerklärung. Datum und Prüfsumme des Textes.
  *
  * Das Datum wird von Hand gepflegt, und das ist Absicht: Hier stand einmal
  * `new Date()`. Damit trug die Erklärung das Datum des letzten Bauvorgangs,
@@ -11,7 +11,7 @@
  * Von Hand gepflegt heißt aber auch: Es kann stehen bleiben, während der Text
  * weiterwandert. Deshalb steht die Prüfsumme daneben. `check:legal` liest den
  * ausgelieferten Text, rechnet sie neu und scheitert, wenn beide nicht mehr
- * zusammenpassen — der Abschnitt „Stand“ selbst bleibt dabei außen vor, sonst
+ * zusammenpassen, der Abschnitt „Stand“ selbst bleibt dabei außen vor, sonst
  * änderte jedes neue Datum die Prüfsumme und der Lauf wäre eine Schleife.
  *
  * Wer den Text ändert, ändert beide Zeilen mit. Der Lauf sagt, welche

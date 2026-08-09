@@ -4,7 +4,7 @@
  *
  * Jede Fallstudie listet ihren Stack, und die Architekturdiagramme nennen
  * dieselben Namen noch einmal. Das ist eine Behauptung über fremden Code, die
- * niemand von außen prüfen kann — die Repos sind privat. Geprüft wurden bisher
+ * niemand von außen prüfen kann, die Repos sind privat. Geprüft wurden bisher
  * die Dateipfade aus den Artikeln und die Commit-Kennungen daneben; die
  * Technik selbst nicht.
  *
@@ -15,7 +15,7 @@
  *
  * Gesucht wird in zwei Quellen je Repo: in den Abhängigkeiten aller
  * `package.json` und im Quelltext. Ein Name gilt als belegt, wenn er in einer
- * der beiden vorkommt — vieles ist kein npm-Paket (Hetzner, Coolify, Mailcow,
+ * der beiden vorkommt, vieles ist kein npm-Paket (Hetzner, Coolify, Mailcow,
  * n8n stehen in Konfigurationen und Skripten).
  *
  * Was hier bewusst **nicht** geprüft wird: Versionsnummern. „React Native
@@ -79,11 +79,11 @@ const KEINE_TECHNIK = new Set([
    Was auf der Seite steht, heißt im Repo oft anders: Der Name ist für Leser
    gewählt, der Suchbegriff muss zum Code passen. Ohne diese Zuordnung meldete
    der Lauf „Turborepo" als fehlend, obwohl `turbo.json` im Wurzelverzeichnis
-   liegt — ein Fehlalarm, und ein Wächter mit Fehlalarmen wird abgeschaltet.
+   liegt, ein Fehlalarm, und ein Wächter mit Fehlalarmen wird abgeschaltet.
 */
 const ANDERS_IM_CODE = {
   /* Diese beiden standen in KEINE_TECHNIK und wurden damit von niemandem
-     geprüft — ein Zirkelschluss: Die Seite nennt für MenuCloud einen
+     geprüft, ein Zirkelschluss: Die Seite nennt für MenuCloud einen
      Lighthouse-Cron und ein Bundle-Budget, und die Prüfung nahm genau diese
      beiden Angaben von der Prüfung aus. Beide gibt es, sie heißen im Repo nur
      anders:  und . */
@@ -108,13 +108,13 @@ const ANDERS_IM_CODE = {
 
    Die Textsuche allein reicht dafür nicht, und das ist gemessen: Nach dem
    Entfernen von `llama.rn` steht in `features/ki/model.ts` weiterhin ein
-   Kommentar, der die Abschaffung erklärt — die Suche nach „llama“ findet ihn
+   Kommentar, der die Abschaffung erklärt, die Suche nach „llama“ findet ihn
    und meldet die Technik als belegt. Ein Wort im Quelltext ist kein Beweis
    dafür, dass etwas benutzt wird; ein Eintrag in `dependencies` schon.
 */
 const ALS_PAKET = {
   /* Dienste stehen bewusst nicht hier: Supabase wird über `DATABASE_URL` und
-     die REST-Schnittstelle benutzt, nicht zwingend über das npm-Paket —
+     die REST-Schnittstelle benutzt, nicht zwingend über das npm-Paket:
      gemessen in Salati (`@salatibox/db` gegen dieselbe Instanz) und in NOURI
      (reine `fetch`-Aufrufe). Für sie gilt die Textsuche. */
   "llama.cpp / GGUF": "llama.rn",
@@ -159,8 +159,8 @@ function suchbegriffe(eintrag) {
  * Sucht im Quelltext eines Repos.
  *
  * Zuerst über `git grep`, weil das schnell ist und `node_modules` ohnehin
- * auslässt. Nicht jedes dieser Verzeichnisse ist ein git-Arbeitsbaum —
- * WohnungsJäger ist keiner —, und dort scheiterte `git grep` an jedem Begriff.
+ * auslässt. Nicht jedes dieser Verzeichnisse ist ein git-Arbeitsbaum:
+ * WohnungsJäger ist keiner, und dort scheiterte `git grep` an jedem Begriff.
  * Der Lauf meldete daraufhin vier Techniken als fehlend, die im Code stehen:
  * `node:sqlite` in `src/core/db.ts`, die Ereignisströme in `src/core/bus.ts`.
  * Ein Wächter, der die Abwesenheit seines eigenen Werkzeugs als Befund
@@ -246,7 +246,7 @@ for (const [id, repo] of Object.entries(REPOS)) {
      Gelesen wird ein Stück Quelltext von `stack: [` bis zur schließenden
      Klammer, und darin stehen auch Erklärungen. Eine davon nennt in
      Anführungszeichen einen Namen, der früher einmal dastand
-     („Lighthouse-Budgets“) — der Lauf hielt ihn für einen Eintrag und
+     („Lighthouse-Budgets“), der Lauf hielt ihn für einen Eintrag und
      verlangte einen Beleg für etwas, das auf der Seite gar nicht mehr steht. */
   const ohneKommentare = block[1]
     .replace(/\/\*[\s\S]*?\*\//g, " ")
@@ -287,7 +287,7 @@ for (const [id, repo] of Object.entries(REPOS)) {
       /* Ein Paketname trennt mit Bindestrich, die Seite schreibt ihn aus:
          „React Native“ gegen `react-native`. Ohne diese Schreibweise fiel der
          Vergleich auf die Quelltextsuche zurück und war dann schon mit einer
-         beiläufigen Erwähnung in einer Notizdatei zufrieden — geprüft wurde
+         beiläufigen Erwähnung in einer Notizdatei zufrieden, geprüft wurde
          damit nicht mehr die Abhängigkeit, sondern das Vorkommen des Wortes. */
       const varianten = [
         klein,

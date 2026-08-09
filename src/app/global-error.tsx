@@ -9,11 +9,11 @@ import "./globals.css";
 /**
  * Die Seite, die erscheint, wenn im Browser etwas zerbricht.
  *
- * Ohne diese Datei zeigt Next seine eigene: „This page couldn't load — A
+ * Ohne diese Datei zeigt Next seine eigene: „This page couldn't load. A
  * server error occurred. Reload to try again." Gemessen am gebauten
  * `_global-error.html`: englischer Text auf einer deutschsprachigen Seite,
- * **kein `lang` am Dokument** — also ein Verstoß gegen WCAG 3.1.1 auf der
- * einen Seite, die niemand vorher zu Gesicht bekommt —, keine Marke und kein
+ * **kein `lang` am Dokument**, also ein Verstoß gegen WCAG 3.1.1 auf der
+ * einen Seite, die niemand vorher zu Gesicht bekommt, keine Marke und kein
  * Weg zurück.
  *
  * Sie ist selten, aber nicht unmöglich: Alle Routen sind statisch, ein Fehler
@@ -31,7 +31,7 @@ import "./globals.css";
  *
  * Erreichbar ist diese Fassung damit nur über den Weg, für den sie gebaut
  * ist. Wer den anderen abdecken will, braucht einen Serverfehler auf einer
- * Seite, die keinen Server hat — den gibt es hier nicht.
+ * Seite, die keinen Server hat, den gibt es hier nicht.
  *
  * Zwei Unterschiede zur 404, beide mit Grund:
  *
@@ -48,7 +48,7 @@ export default function GlobalError({
   error: Error & { digest?: string };
   /* In Next 16 heißt der Rückweg `unstable_retry`, nicht mehr `reset`.
      Mit dem alten Namen wäre der Knopf hier ein Knopf, der beim Drücken
-     wirft — auf genau der Seite, die einen Fehler auffangen soll. Nachgelesen
+     wirft, auf genau der Seite, die einen Fehler auffangen soll. Nachgelesen
      in `node_modules/next/dist/docs`, nicht geraten. */
   unstable_retry: () => void;
 }) {
@@ -129,7 +129,7 @@ export default function GlobalError({
 
             {/* Impressum und Datenschutz, wie auf jeder anderen Seite.
 
-                Gemessen an den 19 gebauten Seiten trugen 18 beide Verweise —
+                Gemessen an den 19 gebauten Seiten trugen 18 beide Verweise:
                 diese hier als einzige keinen. § 5 DDG verlangt sie „von jeder
                 Seite unmittelbar erreichbar", und eine Fehlerseite ist kein
                 Sonderfall: Sie ist die Seite, auf der jemand hängen bleibt.

@@ -3,7 +3,7 @@
  * Holt die Commit-Zahlen direkt von GitHub und schreibt den Prüfstempel.
  *
  * Warum nicht im Browser des Besuchers: Der größte Teil der Zahl kommt aus
- * privaten Repos — MenuCloud, Salati und NOURI tragen Kundendaten und
+ * privaten Repos. MenuCloud, Salati und NOURI tragen Kundendaten und
  * lizenzierte Inhalte. Sie öffentlich lesbar zu machen, nur damit eine Zahl
  * live ist, wäre der falsche Tausch, und ein Zugriffstoken im ausgelieferten
  * JavaScript wäre schlicht ein veröffentlichtes Token.
@@ -33,7 +33,7 @@ const ZIEL = "src/content/verified.json";
  */
 const REPOS = [
   // Die Produktivsysteme liegen unter der Organisation, nicht unter dem
-  // persönlichen Konto — und heißen dort anders als die Ordner auf der Platte.
+  // persönlichen Konto, und heißen dort anders als die Ordner auf der Platte.
   // Die Namen stammen deshalb aus der API und nicht aus einer Annahme.
   "MenuCloud-Berlin/MenuCloud-app",
   "MenuCloud-Berlin/salatibox",
@@ -74,7 +74,7 @@ async function commitsIn(repo) {
   if (antwort.status === 403) return { repo, fehler: "abgelehnt (403)" };
   if (!antwort.ok) return { repo, fehler: `HTTP ${antwort.status}` };
 
-  // "…&page=1234>; rel=\"last\"" — die letzte Seite bei einem Eintrag je Seite
+  // "…&page=1234>; rel=\"last\"", die letzte Seite bei einem Eintrag je Seite
   // ist die Anzahl der Commits.
   const link = antwort.headers.get("link");
   if (link) {
@@ -93,11 +93,11 @@ async function commitsIn(repo) {
  * `.sql` unter `supabase/migrations`. Beide standen getippt im Inhalt.
  *
  * Gemessen am 08.08.2026: 1.276 und 812 auf der Seite, 1.278 und 815 im Repo
- * — und zwei Stunden später 1.279. Zahlen, die mit jedem Arbeitstag wachsen,
+ *, und zwei Stunden später 1.279. Zahlen, die mit jedem Arbeitstag wachsen,
  * lassen sich von Hand nicht pflegen; genau dafür gibt es diesen Lauf.
  *
  * Ein Aufruf je Repository: Der rekursive Baum liefert alle Pfade auf einmal.
- * `truncated` sagt, wenn GitHub abgeschnitten hat — dann wird nichts
+ * `truncated` sagt, wenn GitHub abgeschnitten hat, dann wird nichts
  * geschrieben, statt eine zu kleine Zahl zu melden.
  */
 async function dateienIn(repo, treffer) {
@@ -162,7 +162,7 @@ console.log(`  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repo
    Die Salati-Fallstudie führt sie als Kennzahl. Sie stand dort als getippte
    Zahl und war damit die einzige Commit-Angabe der Seite, die niemand
    auffrischt: Gemessen am 08.08.2026 sagte die Seite 1.070, das Repo zählte
-   1.071 — einen Tag nach der letzten Berichtigung von Hand. Eine Zahl, die
+   1.071, einen Tag nach der letzten Berichtigung von Hand. Eine Zahl, die
    sich täglich bewegt, lässt sich so nicht pflegen; dieselbe Lehre steht an
    zwei anderen Stellen dieses Repos schon.
 

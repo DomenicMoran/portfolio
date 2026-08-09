@@ -4,7 +4,7 @@
  * „Vier Monate ausgeliefert" und „vier Produktionssysteme in vier Monaten"
  * kommen aus derselben Rechnung: erster Commit gegen den Prüfstempel aus
  * `verified.json`. Das ist eine Zahl, die täglich wandert, öffentlich steht
- * und die niemand nachrechnet — genau die Sorte, bei der ein Fehler um eins
+ * und die niemand nachrechnet, genau die Sorte, bei der ein Fehler um eins
  * monatelang unbemerkt bleibt.
  *
  * Deshalb liegt sie hier als reine Funktion und nicht als Rechnung mitten in
@@ -70,7 +70,7 @@ const WOERTER_NOMINATIV = [
  * Kleine Zahlen als Wort, wie es im Fließtext üblich ist.
  *
  * Zwei Listen, weil der Fall unterschiedlich ist: „in **einem** Monat“
- * gegenüber „**ein** Monat ausgeliefert". Ab dreizehn steht die Ziffer da —
+ * gegenüber „**ein** Monat ausgeliefert". Ab dreizehn steht die Ziffer da:
  * ausgeschriebene Zahlwörter werden dann länger als die Aussage.
  */
 export function alsWort(n: number, fall: "dativ" | "nominativ" = "dativ"): string {
@@ -96,7 +96,7 @@ const WORDS_EN = [
 /**
  * Dasselbe auf Englisch.
  *
- * Die englische Fassung hatte ihre eigene Rechnung samt eigener Wortliste —
+ * Die englische Fassung hatte ihre eigene Rechnung samt eigener Wortliste:
  * dieselbe Logik ein zweites Mal, und damit die zweite Stelle, an der ein
  * Fehler um eins entstehen kann, ohne dass die erste ihn zeigt.
  */

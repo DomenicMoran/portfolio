@@ -7,12 +7,12 @@ import { artikelIn } from "@/content/articles";
 import verified from "@/content/verified.json";
 
 /**
- * llms.txt — die Fassung dieser Seite für Sprachmodelle.
+ * llms.txt, die Fassung dieser Seite für Sprachmodelle.
  *
  * Der Anlass ist beobachtbares Verhalten, kein Trend: Wer heute eine Bewerbung
  * prüft, wirft die URL zunehmend in ChatGPT oder Claude und fragt "passt der?".
  * Was das Modell dann liest, ist gerendertes HTML mit Navigation, Fußzeile und
- * Bildbeschriftungen — und es rät sich den Rest zusammen. Bei einer Seite,
+ * Bildbeschriftungen, und es rät sich den Rest zusammen. Bei einer Seite,
  * deren Kernaussage Belegbarkeit ist, ist genau das der falsche Ausgang.
  *
  * Diese Datei gibt stattdessen die Fakten in der Form, in der ein Modell sie
@@ -21,7 +21,7 @@ import verified from "@/content/verified.json";
  *
  * Englisch, obwohl die Hauptfassung deutsch ist: Die Datei wird von Werkzeugen
  * gelesen, nicht von Besuchern, und sie nennt beide Sprachfassungen. Ein
- * zweites, deutsches llms.txt wäre dieselbe Information ein zweites Mal — und
+ * zweites, deutsches llms.txt wäre dieselbe Information ein zweites Mal, und
  * damit die nächste Stelle, die auseinanderläuft.
  *
  * Erzeugt aus `src/content` und dem Prüfstempel, nicht getippt. Eine Datei mit
@@ -31,7 +31,7 @@ import verified from "@/content/verified.json";
 /*
    Die veröffentlichten Pakete kommen aus derselben Quelle wie die Seite.
 
-   Vorher standen sie hier von Hand, mit eigenen Kurzbeschreibungen — und nur
+   Vorher standen sie hier von Hand, mit eigenen Kurzbeschreibungen, und nur
    das erste trug eine Adresse. Ein Modell, das nach `cron-last-due` gefragt
    wird, konnte also weder sagen, wo es liegt, noch was die Seite selbst
    darüber schreibt. Zwei Fassungen derselben Angabe sind außerdem genau die
@@ -42,7 +42,7 @@ import verified from "@/content/verified.json";
 */
 const pakete = en.about.openSource.items
   .map((p) =>
-    [`- ${p.name} — ${p.body}`, `  ${p.meta}`, `  ${p.href}`].join("\n"),
+    [`- ${p.name}, ${p.body}`, `  ${p.meta}`, `  ${p.href}`].join("\n"),
   )
   .join("\n");
 
@@ -63,10 +63,10 @@ export function GET() {
 
   // Kurzbeschreibung und Problem sind zwei Sätze aus zwei Feldern. Ohne
   // Trennung dazwischen lief beides ineinander: "…runs offline Existing
-  // prayer apps are…" — ein Satz, den so niemand geschrieben hat.
+  // prayer apps are…", ein Satz, den so niemand geschrieben hat.
   /* Mit den Adressen, unter denen das System wirklich liegt.
 
-     Vorher standen hier Name, Jahr, Status und das Problem — und keine
+     Vorher standen hier Name, Jahr, Status und das Problem, und keine
      einzige Adresse. Ein Modell, das nach den Apps gefragt wird, konnte aus
      dieser Datei nicht antworten, obwohl sie genau dafür geschrieben ist:
      Vier Apps im Play Store, drei im App Store, dazu die Live-Adressen. Wer
@@ -78,7 +78,7 @@ export function GET() {
         .map((l) => `- ${l.label}: ${l.href}`)
         .join("\n");
       return (
-        `### ${p.name} — ${p.tagline}\n${p.year} · ${p.statusLabel}\n\n${p.problem}` +
+        `### ${p.name}, ${p.tagline}\n${p.year} · ${p.statusLabel}\n\n${p.problem}` +
         (adressen ? `\n\n${adressen}` : "")
       );
     })
@@ -89,10 +89,10 @@ export function GET() {
     .join("\n");
 
   const schriften = artikel
-    .map((a) => `- [${a.title}](${site.url}/en/articles/${a.slug}) — ${a.dek}`)
+    .map((a) => `- [${a.title}](${site.url}/en/articles/${a.slug}), ${a.dek}`)
     .join("\n");
 
-  const text = `# ${site.name} — ${site.role}
+  const text = `# ${site.name}, ${site.role}
 
 > ${site.meta.description}
 > Written for language models. Humans want ${site.url}/en (English) or
@@ -117,7 +117,7 @@ ${fakten}
 ${projekte}
 
 The production repositories are private: they carry customer data and licensed
-content. Read access on request. What could be separated out is published — see
+content. Read access on request. What could be separated out is published, see
 below.
 
 ## Published code

@@ -8,7 +8,7 @@ import { Check, Copy } from "lucide-react";
  *
  * Die Kästen sind Auszüge aus dem Produktivcode, fünf bis sechzehn Zeilen, und
  * einer davon läuft seitlich über. Wer sie ausprobieren will, musste sie
- * markieren — in einem waagerecht scrollenden Kasten auf einem Telefon ist das
+ * markieren, in einem waagerecht scrollenden Kasten auf einem Telefon ist das
  * eine Geduldsprobe, und am Ende hat man die halbe Seite mit.
  *
  * Aufbau wie bei `CopyEmail`, aus denselben Gründen: Die Rückmeldung hängt von

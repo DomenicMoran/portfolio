@@ -37,7 +37,7 @@ const WURZEL = resolve(OEFFENTLICH);
  * Was dort liegen darf. Der Rest fällt auf.
  *
  * Bewusst eine Erlaubnisliste und keine Verbotsliste. Der erste Entwurf
- * verbot bestimmte Namen und ließ alles andere durch — dann genügt es, die
+ * verbot bestimmte Namen und ließ alles andere durch, dann genügt es, die
  * private Datei `notizen.pdf` zu nennen, und der Wächter schweigt. Eine
  * Verbotsliste schützt nur vor dem Fehler, den man schon einmal gemacht hat.
  */
@@ -93,7 +93,7 @@ const VERBOTENE_INHALTE = [/Gehaltsvorstellung/i, /Untergrenze/i];
  * Und die, die nicht im Klartext stehen dürfen.
  *
  * Eine Prüfung, die bestimmte Begriffe aus dem öffentlichen Ordner
- * heraushalten soll, darf sie nicht selbst als Suchmuster veröffentlichen —
+ * heraushalten soll, darf sie nicht selbst als Suchmuster veröffentlichen:
  * dieses Repository ist öffentlich. Wer sie läse, bekäme genau das, was sie
  * zurückhält.
  *
@@ -103,7 +103,7 @@ const VERBOTENE_INHALTE = [/Gehaltsvorstellung/i, /Untergrenze/i];
  * das ganze Paar. Die Klartextfassung liegt außerhalb aller Repositories.
  *
  * Das ist keine Verschlüsselung und soll keine sein. Es verhindert, dass ein
- * Leser die Wörter beim Überfliegen mitnimmt — und genau darum geht es.
+ * Leser die Wörter beim Überfliegen mitnimmt, und genau darum geht es.
  */
 const VERBOTENE_HASHES = new Set(["1ea8b03c92f6d22f", "c5088451e38012e0"]);
 
@@ -176,7 +176,7 @@ function durchgehen(ordner) {
     if (!UNBEDENKLICH.has(endung) && !FREIGEGEBEN.has(relativ)) {
       befunde.push(
         `${relativ}: keine Freigabe. Wenn die Datei öffentlich sein soll, in ` +
-          `FREIGEGEBEN eintragen — das ist die Stelle, an der jemand hinsieht.`,
+          `FREIGEGEBEN eintragen, das ist die Stelle, an der jemand hinsieht.`,
       );
     }
 
@@ -213,7 +213,7 @@ durchgehen(OEFFENTLICH);
    Eine gelöschte Datei ist aus dem Arbeitsbaum weg und aus dem Repository
    nicht: Git hält jede Fassung. Gemessen wiegt dieses Repository 18,9 MiB
    gepackt, und die größten Brocken darin sind Bildschirmfotos, die längst
-   durch WebP ersetzt wurden — 1,4 MiB für eine einzige alte PNG. Dazu eine
+   durch WebP ersetzt wurden, 1,4 MiB für eine einzige alte PNG. Dazu eine
    Arbeitsdatei namens `_kontrast.png`, die einmal versehentlich mitkam.
 
    Die Historie lässt sich nicht mehr aufräumen, ohne Schaden anzurichten: Die
@@ -228,7 +228,7 @@ const GRENZE = 300 * 1024;
 const ERLAUBT_GROSS = new Set([
   "public/domenic-moran-kurzprofil.pdf",
   "public/domenic-moran-one-pager.pdf",
-  /* Die Sperrdatei wächst mit den Abhängigkeiten und gehört ins Repository —
+  /* Die Sperrdatei wächst mit den Abhängigkeiten und gehört ins Repository:
      ohne sie installiert jeder Bau andere Fassungen. Diese Prüfung zielt auf
      Bilder und Binärdateien, die einmal hineingeraten und für immer in der
      Historie bleiben; eine Sperrdatei ist beides nicht. Sie überschritt die
@@ -259,7 +259,7 @@ const wurzelfunde = [];
 {
   /* Ohne Git kein Verzeichnis der Dateien.
 
-     Dieser Lauf ist `prebuild`, läuft also auch bei Vercel — und dort liegt
+     Dieser Lauf ist `prebuild`, läuft also auch bei Vercel, und dort liegt
      kein Repository, der Code kommt als Archiv an. `git ls-files` scheitert
      dann, und ein Bau, der daran stirbt, wäre die Seite. Gemessen: Der erste
      Deploy nach dieser Prüfung endete mit "Command failed: git ls-files".
@@ -298,7 +298,7 @@ const wurzelfunde = [];
      Wer das Repository öffnet, liest zuerst die Dateiliste, und dort steht
      alles nebeneinander: die Konfiguration, die Dokumentation und, wenn es
      schiefgeht, ein Überbleibsel. Am 04.08.2026 lag `ar-tmp.mjs` in der
-     Wurzel — ein Messskript aus einer früheren Runde, mit `git add -A` in
+     Wurzel, ein Messskript aus einer früheren Runde, mit `git add -A` in
      einen Commit geraten, der von etwas anderem handelte.
 
      Erlaubnisliste und keine Verbotsliste, aus demselben Grund wie oben: Eine

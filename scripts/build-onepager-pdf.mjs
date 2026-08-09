@@ -16,7 +16,7 @@
  *   npm run onepager:pdf
  *
  * Das Skript startet seinen Server selbst und beendet ihn wieder. Vorher war
- * das ein Zweischritt von Hand — `next start -p 3131 &`, dann drucken —, und
+ * das ein Zweischritt von Hand, `next start -p 3131 &`, dann drucken, und
  * genau daraus entstand der Fehler, gegen den weiter unten die BUILD_ID-Prüfung
  * steht: Ein Server aus einer früheren Sitzung blieb auf dem Port liegen und
  * lieferte einen alten Stand. Ein Ablauf, der einen manuellen Handgriff
@@ -38,7 +38,7 @@ import { starteServer } from "./lib/local-server.mjs";
  *
  * Empirisch bestimmt: Bei 794 px Breite kippt das Blatt zwischen `zoom: 0.87`
  * und `0.88` auf zwei Seiten. Die gezoomte Höhe an der Kippstelle ist die
- * nutzbare Höhe — gemessen rund 1.030 px, nicht die vollen 1.123 px der
+ * nutzbare Höhe, gemessen rund 1.030 px, nicht die vollen 1.123 px der
  * Seitenhöhe.
  */
 const NUTZBAR = 1030;
@@ -55,7 +55,7 @@ const MINDESTNUTZUNG = 90;
  * Zwei Blätter, eines je Sprache.
  *
  * Die englische Fußzeile verlinkte lange auf das deutsche PDF: Wer
- * „One-pager as PDF" anklickte, bekam ein deutsches Dokument — ausgerechnet
+ * „One-pager as PDF" anklickte, bekam ein deutsches Dokument, ausgerechnet
  * das Blatt, das an eine fachliche Führung weitergereicht wird. Beide
  * entstehen aus derselben Route und demselben Bauteil, nur mit anderer
  * Inhaltsdatei.
@@ -163,7 +163,7 @@ for (const blatt of BLAETTER) {
   /* Wie viel der Seite das Blatt wirklich nutzt.
 
      Die Regel „eine Seite" ist einseitig geprüft: Der Lauf meldet, wenn zwei
-     daraus werden. Er meldete nie, wenn der Zoom mehr schrumpft als nötig —
+     daraus werden. Er meldete nie, wenn der Zoom mehr schrumpft als nötig:
      und genau das war der Fall. Gemessen am 08.08.2026 stand `zoom: 0.78`
      zu einem Kommentar, der 1.302 px Inhalt annahm; gemessen waren es 1.172.
      Der Inhalt war geschrumpft, die Zahl geblieben. Das Blatt füllte 915 von
@@ -204,7 +204,7 @@ for (const blatt of BLAETTER) {
   // Dokumenteigenschaften nachtragen.
   //
   // Chromium setzt nur den Titel aus <title> und sich selbst als Producer.
-  // Autor, Betreff und Schlagwörter bleiben leer — und genau die liest ein
+  // Autor, Betreff und Schlagwörter bleiben leer, und genau die liest ein
   // Bewerbermanagement-System aus, wenn die Datei dort abgelegt wird. Eine PDF
   // ohne Autor ist im Archiv eines Unternehmens eine Datei ohne Absender.
   doc.setAuthor("Domenic Moran");
@@ -214,7 +214,7 @@ for (const blatt of BLAETTER) {
 
     `setKeywords` nimmt eine Liste und fügt sie mit Leerzeichen zusammen. Im
     fertigen Dokument stand damit „AI Product Engineer Fullstack TypeScript
-    React Native Next.js Berlin" — ein einziger Wortstrom. Ein
+    React Native Next.js Berlin", ein einziger Wortstrom. Ein
     Bewerbermanagement-System, das dieses Feld ausliest, macht daraus zehn
     falsche Schlagwörter statt sechs richtigen: „React Native" zerfällt in
     „React" und „Native", „AI Product Engineer" in drei Wörter, von denen
@@ -227,7 +227,7 @@ for (const blatt of BLAETTER) {
 
     `pdf-lib` trägt sich ungefragt als "pdf-lib (https://github.com/Hopding/
     pdf-lib)" ein. In den Dokumenteigenschaften eines Bewerbungsblattes steht
-    damit ein fremder Werkzeugname mit fremdem Verweis — die einzige Stelle im
+    damit ein fremder Werkzeugname mit fremdem Verweis, die einzige Stelle im
     ganzen Auftritt, an der etwas steht, das niemand ausgesucht hat. Wer die
     Eigenschaften öffnet, tut das nicht zufällig.
   */
@@ -238,7 +238,7 @@ for (const blatt of BLAETTER) {
 
     Chromium und pdf-lib schreiben die Uhrzeit des Drucks in die Datei.
     Gemessen an zwei Läufen ohne jede Inhaltsänderung: gleiche Größe,
-    gleiche Seitenzahl, gleicher Quellstand — und trotzdem verschiedene
+    gleiche Seitenzahl, gleicher Quellstand, und trotzdem verschiedene
     Bytes, weil `/CreationDate` um fünfzig Minuten auseinanderlag. Jeder
     Nachdruck erzeugte damit eine Änderung im Repo, die keine war, und die
     Frage „ist das Blatt aktuell?“ ließ sich nicht am Vergleich beantworten.
@@ -256,7 +256,7 @@ for (const blatt of BLAETTER) {
     Die Datei wird von Hand erzeugt und nicht vom Bau: Auf Vercel gibt es
     kein Chromium, also kann `next build` nicht drucken. Damit ist sie die
     einzige ausgelieferte Datei dieser Seite, die veralten kann, ohne dass
-    es jemand merkt — und sie ist ausgerechnet die, die ein Recruiter
+    es jemand merkt, und sie ist ausgerechnet die, die ein Recruiter
     weiterreicht.
 
     Die Kennung ist die Prüfsumme über die Dateien, aus denen das Blatt
@@ -278,7 +278,7 @@ for (const blatt of BLAETTER) {
   */
   /* `PDFString` und nicht `context.obj`: Letzteres macht aus einer
      Zeichenkette einen Namen, und im Katalog stand dann `/Lang /de` statt
-     `/Lang (de)`. Der Eintrag war vorhanden und trotzdem wirkungslos — die
+     `/Lang (de)`. Der Eintrag war vorhanden und trotzdem wirkungslos, die
      Norm verlangt an dieser Stelle eine Textzeichenkette. */
   doc.catalog.set(PDFName.of("Lang"), PDFString.of(blatt.sprache));
 
@@ -312,7 +312,7 @@ for (const blatt of BLAETTER) {
   }
 
   /* Die Sprache aus dem fertigen Dokument zurücklesen, nicht aus der Absicht.
-     Sie steht im Katalog und der landet beim Speichern in einem Objektstrom —
+     Sie steht im Katalog und der landet beim Speichern in einem Objektstrom:
      eine Suche im Rohtext findet sie dort nicht, genau wie bei den Verweisen. */
   const fertig = await PDFDocument.load(readFileSync(blatt.ziel));
   const sprache = fertig.catalog.get(PDFName.of("Lang"));
@@ -322,7 +322,7 @@ for (const blatt of BLAETTER) {
   /*
     Die Dokumenteigenschaften aus dem fertigen Blatt zurücklesen.
 
-    Sie werden oben gesetzt, und ob sie ankommen, hat bisher niemand geprüft —
+    Sie werden oben gesetzt, und ob sie ankommen, hat bisher niemand geprüft:
     genau dort ist schon einmal etwas verlorengegangen. Gelesen wird über
     `pdf-lib`, weil die Eigenschaften beim Speichern in einem Objektstrom
     landen und als UTF-16 kodiert werden; im Rohtext steht dort nichts
@@ -385,7 +385,7 @@ for (const blatt of BLAETTER) {
   if (verweise.length < 4) {
     console.error(
       `${blatt.route}: nur ${verweise.length} anklickbare Verweise. Erwartet sind ` +
-        `mindestens vier — E-Mail, GitHub, LinkedIn und die Seite selbst.`,
+        `mindestens vier. E-Mail, GitHub, LinkedIn und die Seite selbst.`,
     );
     fehler++;
   }

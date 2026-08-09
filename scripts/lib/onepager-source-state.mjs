@@ -26,7 +26,7 @@ const BLAETTER = [
  * Prüfsumme über das, was auf den Blättern steht.
  *
  * Gehasht wurden zuvor die fünf Quelldateien im Ganzen. Das war bewusst grob
- * — und die Grobheit hat zweimal in zwei Tagen einen Neudruck verlangt, ohne
+ *, und die Grobheit hat zweimal in zwei Tagen einen Neudruck verlangt, ohne
  * dass sich am Blatt ein Zeichen geändert hatte: einmal für einen Kommentar
  * über der Anschrift in `site.ts`, einmal für einen Satz auf der Fehlerseite
  * in `de.ts` und `en.ts`. Ein Wächter, der regelmäßig ohne Grund anschlägt,
@@ -56,7 +56,7 @@ export function quellstand() {
 
   /* Dazu der Zoom, mit dem das Blatt gedruckt wird.
 
-     Gehasht wird sonst nur der sichtbare Text — bewusst, damit ein Kommentar
+     Gehasht wird sonst nur der sichtbare Text, bewusst, damit ein Kommentar
      daneben keinen Neudruck verlangt. Der Zoom ändert keinen Buchstaben und
      trotzdem jede Schriftgröße auf dem Papier: Am 08.08.2026 ging er von 0,78
      auf 0,85, die kleinste Schrift von 5,9 auf 6,4 pt. Ohne diese Zeile wäre

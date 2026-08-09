@@ -90,7 +90,7 @@ export function Contact() {
 
                 {/* Dieselbe Überlegung wie beim Druck, eine Ebene weiter:
                     Ohne Skript kann der Knopf nicht kopieren, und er trägt
-                    keine Auskunft, die verloren ginge — die Adresse steht als
+                    keine Auskunft, die verloren ginge, die Adresse steht als
                     Verweis darüber. Der Knopf im Recruiter-Bereich ist der
                     andere Fall: Dort ist die Adresse die Beschriftung. */}
                 <noscript>

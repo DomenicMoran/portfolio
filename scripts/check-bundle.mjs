@@ -4,7 +4,7 @@
  *
  * Die Seite nennt unter „Core Web Vitals" ein Bundle-Budget je Route. Bis
  * hierher gab es keines: `check:vitals` misst, was am Ende herauskommt, und
- * das ist die richtige Kennzahl — aber sie schlägt erst an, wenn es schon
+ * das ist die richtige Kennzahl, aber sie schlägt erst an, wenn es schon
  * langsam ist. Ein Budget schlägt vorher an, beim Zuwachs.
  *
  * Gemessen wird, was im ausgelieferten HTML als `<script src>` steht, mit den
@@ -53,12 +53,12 @@ let geprueft = 0;
 
 /* Die Fehlerseite fehlt hier, und das lässt sich nicht nachholen.
 
-   Sie ist die einzige Seite, die bei der Anfrage zusammengesetzt wird — sie
+   Sie ist die einzige Seite, die bei der Anfrage zusammengesetzt wird, sie
    liest eine Kopfzeile, um in der Sprache zu antworten, unter der jemand
    gekommen ist. Im Bau liegt deshalb kein `_not-found.html`, sondern ein
    Ordner, und dieser Lauf misst ausdrücklich den Bau: kein Netz, kein
    Browser. Wer sie messen will, braucht einen laufenden Server, wie ihn
-   `check:a11y` und `check:print` mitbringen — dort ist sie über eine
+   `check:a11y` und `check:print` mitbringen, dort ist sie über eine
    erfundene Adresse abgedeckt. */
 for (const route of gebauteSeiten()) {
   const datei = join(

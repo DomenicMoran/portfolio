@@ -7,7 +7,7 @@ import { ogSchriften } from "./index";
  * Schnitt zurück.
  *
  * Satori erfindet keine Fettung. Fehlt der Schnitt, rendert es den
- * nächstbesten — und das ist der eingebaute reguläre. Es gibt keine Warnung,
+ * nächstbesten, und das ist der eingebaute reguläre. Es gibt keine Warnung,
  * keinen Fehler und kein Bild, dem man es ansieht, solange man nicht zwei
  * Fassungen nebeneinander legt. Gemessen an den ausgelieferten Karten
  * verlangten alle drei Erzeuger `fontWeight` 600 oder 700 und bekamen 400.

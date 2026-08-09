@@ -4,7 +4,7 @@
  *
  * Der Lauf begann als reine Datumsprüfung und heißt deshalb noch so. Er prüft
  * inzwischen sieben Dinge, und alle sieben haben denselben Grund: Auf diesen
- * beiden Seiten steht nichts, was man glauben soll — es steht dort, weil es
+ * beiden Seiten steht nichts, was man glauben soll, es steht dort, weil es
  * stimmt, und was stimmt, lässt sich nachsehen.
  *
  *   1. Das Datum passt zum Text, über eine Prüfsumme (unten ausführlich).
@@ -26,7 +26,7 @@
  * dass der Text an diesem Tag so galt.
  *
  * Von Hand gepflegt heißt aber: Es kann stehen bleiben, während der Text
- * weiterwandert — die stillere und schlechtere Hälfte desselben Problems.
+ * weiterwandert, die stillere und schlechtere Hälfte desselben Problems.
  * Deshalb liegt neben dem Datum eine Prüfsumme über den ausgelieferten Text.
  * Dieser Lauf rechnet sie neu.
  *
@@ -46,7 +46,7 @@ import { ANBIETER, ANSCHRIFT } from "../src/app/(de)/(legal)/provider.ts";
 const STAND_DATEI = join("src", "app", "(de)", "(legal)", "stand.ts");
 
 /* Gelesen und nicht importiert: `stand.ts` ist TypeScript, und Node müsste
-   dafür die Typen entfernen. Die Datei hat zwei Zeilen mit festem Aufbau —
+   dafür die Typen entfernen. Die Datei hat zwei Zeilen mit festem Aufbau:
    sie zu lesen ist ehrlicher als eine Abhängigkeit dafür einzugehen. */
 function ausStandDatei(name) {
   const quelle = readFileSync(STAND_DATEI, "utf8");
@@ -107,7 +107,7 @@ try {
 /* Ein alter Bau macht diesen Lauf wertlos.
 
    Die Prüfsumme soll erzwingen, dass mit dem Text auch der Stand wandert.
-   Sie liest dafür `.next/server/app/datenschutz.html` — das ausgelieferte
+   Sie liest dafür `.next/server/app/datenschutz.html`, das ausgelieferte
    Blatt, und das ist richtig so. Nur hat das eine Lücke, die genau in die
    Gegenrichtung zeigt: Wer die Quelle ändert und nicht baut, bekommt ein
    grünes „passt zu ihrem Stand", gemessen an der Fassung von vorhin.
@@ -119,7 +119,7 @@ try {
    Geprüft wird über `pruefeBaustand` und nicht über einen eigenen Vergleich.
    Hier stand zuerst einer: drei Dateien der Rechtsseiten gegen den
    Zeitstempel des Blatts. Er hätte den gemessenen Fall gefunden und den
-   nächsten nicht — eine Änderung an `provider.ts`, an einer geteilten
+   nächsten nicht, eine Änderung an `provider.ts`, an einer geteilten
    Komponente oder am Layout wäre durchgelaufen. Die zwanzig Läufe, die einen
    Browser öffnen, benutzen längst den vollständigen Vergleich über `src/`;
    dieser hier las das Blatt direkt und kam deshalb nie daran vorbei. */
@@ -130,7 +130,7 @@ pruefeBaustand();
    Die Seite hatte eine eigene Konstante desselben Namens, und die gewann:
    Geprüft wurde der Wert aus `stand.ts`, angezeigt der andere. Gemessen an
    der ausgelieferten Seite standen dort der 3. August und in der Datei der
-   4. — der Lauf war grün, weil er die Zeile gar nicht ansah, die ein Leser
+   4., der Lauf war grün, weil er die Zeile gar nicht ansah, die ein Leser
    vor sich hat. */
 const angezeigt = textMitStand();
 if (!angezeigt.includes(STAND)) {
@@ -158,7 +158,7 @@ if (!angezeigt.includes(STAND)) {
    Gemessen an der Historie: Commit `40bd768` setzte am 07.08.2026 um 19:33
    Uhr den Stand von „5. August 2026" auf „8. August 2026". Von da bis
    Mitternacht trug die ausgelieferte Erklärung ein Datum, das es noch nicht
-   gab — knapp viereinhalb Stunden lang. Grün war dabei alles: Datei und
+   gab, knapp viereinhalb Stunden lang. Grün war dabei alles: Datei und
    Blatt zeigten dasselbe, die Prüfsumme passte zum Text.
 
    Bei einem Rechtstext ist das Datum die Zusage, dass der Text an diesem Tag
@@ -223,7 +223,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
   console.error(
     `Die Datenschutzerklärung benennt die Fehlerseite nicht mehr als Ausnahme ` +
       `von „vorab erzeugt". Sie ist die einzige Seite, die bei der Anfrage ` +
-      `zusammengesetzt wird — entweder steht das im Text, oder die Ausnahme ` +
+      `zusammengesetzt wird, entweder steht das im Text, oder die Ausnahme ` +
       `gehört aus diesem Lauf heraus.`,
   );
   process.exit(1);
@@ -234,7 +234,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
    § 5 DDG verlangt eine Angabe für die schnelle elektronische Kontaktaufnahme,
    Art. 13 DSGVO die Kontaktdaten des Verantwortlichen, und RFC 9116 verlangt
    in `security.txt` einen erreichbaren Kanal. Alle drei zeigen hier auf
-   dieselbe Adresse — und genau deshalb ist eine zweite, die irgendwo
+   dieselbe Adresse, und genau deshalb ist eine zweite, die irgendwo
    hineingerät, so teuer: Eine Auskunftsanfrage oder eine Sicherheitsmeldung
    liefe an ein Postfach, das niemand liest, und beides hat Fristen.
 
@@ -295,14 +295,14 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
    Bis Juli 2025 verlangte Art. 14 der ODR-Verordnung von fast jeder
    gewerblichen Website einen Verweis auf die Online-Streitbeilegung der EU.
    Die Verordnung ist aufgehoben, und die Plattform hat den Betrieb am
-   20. Juli 2025 eingestellt — nachgesehen unter der alten Adresse, die heute
+   20. Juli 2025 eingestellt, nachgesehen unter der alten Adresse, die heute
    nur noch die Abschaltung meldet: „discontinued as of 20 July 2025".
 
    Das Impressum hier nennt sie richtigerweise nicht. Nur ist die Floskel das
    meistkopierte Stück Text im deutschen Netz, sie steht in jeder Vorlage und
    in jedem Generator, und sie kommt bei der nächsten Überarbeitung mit einer
    Zeile zurück. Herauskäme ein Impressum, das auf eine tote Plattform
-   verweist — die eine Stelle, an der ein Mitbewerber zuerst nachsieht.
+   verweist, die eine Stelle, an der ein Mitbewerber zuerst nachsieht.
 
    Der Satz über die Verbraucherschlichtungsstelle daneben bleibt richtig und
    ist etwas anderes: Er beruht auf § 36 VSBG und gilt weiter. */
@@ -357,7 +357,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
 
    Und sie kann leicht wandern. `provider.ts` ist eine gewöhnliche Datei,
    ANSCHRIFT ist ausgeführt und importierbar; ein Fuß auf jeder Seite, eine
-   Kontaktkachel, ein strukturierter Datensatz mit `PostalAddress` — jedes
+   Kontaktkachel, ein strukturierter Datensatz mit `PostalAddress`, jedes
    davon wäre eine plausible Änderung und würde die Anschrift auf achtzehn
    indexierte Seiten setzen, ohne dass jemand es beabsichtigt hätte.
 
@@ -374,7 +374,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
      Hier stand `.html`, und das ließ die Hälfte der Auslieferung draußen:
      llms.txt, humans.txt, robots.txt, die Sitemap und beide Feeds entstehen
      als Route und liegen im Bau als `.body`. Gerade llms.txt ist der Fall, um
-     den es geht — es fasst die ganze Seite für ein Sprachmodell zusammen,
+     den es geht, es fasst die ganze Seite für ein Sprachmodell zusammen,
      wird aus demselben Inhalt erzeugt und wäre die naheliegende Stelle, an
      der eine Anschrift mitwandert, ohne dass jemand sie dort sucht.
 
@@ -426,7 +426,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
    speichert nichts und gibt nichts weiter."
 
    Das ist die einzige Stelle, an der diese Seite über laufenden Code auf einem
-   fremden Server spricht — und der letzte Satz ist eine Zusage, die sich mit
+   fremden Server spricht, und der letzte Satz ist eine Zusage, die sich mit
    einer Zeile brechen lässt. Ein `console.log` in `proxy.ts` landet im
    Protokoll des Hosters, ein `fetch` gibt weiter, ein gesetztes Cookie
    speichert. Keines davon fällt beim Lesen der Seite auf.
@@ -439,7 +439,7 @@ if (!/Ausnahme ist die Fehlerseite/.test(text)) {
     console.log("  --  src/proxy.ts fehlt, Zusage über die Funktion übersprungen.");
   } else if (/Vor jeder Auslieferung läuft beim Hoster/.test(text)) {
     const code = readFileSync(quelle, "utf8")
-      /* Kommentare erklären, was der Code nicht tut — sie sind kein Code. */
+      /* Kommentare erklären, was der Code nicht tut, sie sind kein Code. */
       .replace(/\/\*[\s\S]*?\*\//g, " ")
       .replace(/^\s*\/\/.*$/gm, " ");
 
@@ -500,14 +500,14 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
    Der erste Satz fällt, sobald eine Seite auf Anfrage gerendert wird, der
    zweite, sobald ein Route Handler etwas anderes als GET annimmt. Beides kann
    an einem gewöhnlichen Arbeitstag entstehen, ohne dass jemand an die
-   Datenschutzerklärung denkt — und dann steht dort eine Zusage, die nicht
+   Datenschutzerklärung denkt, und dann steht dort eine Zusage, die nicht
    mehr gilt. `check:privacy` misst, was die fertige Seite tut; hier steht,
    was der Bau daraus macht.
 
    Die interne Not-found-Route bleibt draußen: Next erzeugt sie immer als
    dynamisch, weil sie eine Kopfzeile liest, um in der Sprache zu antworten,
    unter der jemand gekommen ist. Diese Ausnahme stand hier still im Code,
-   während die Erklärung „sämtliche Seiten“ behauptete — eine Zeile, die man
+   während die Erklärung „sämtliche Seiten“ behauptete, eine Zeile, die man
    einmal einträgt und dann vergisst. Sie steht jetzt auch im Text der
    Erklärung, und der Block darunter hält sie dort fest. */
 const AUSNAHMEN = new Set(["/_not-found"]);
@@ -605,7 +605,7 @@ if (dynamische.length || schreibend.length) {
    sondern eine Tatsachenbehauptung über ein fremdes Unternehmen, und sie kann
    ohne Zutun falsch werden: Eine Zertifizierung läuft jährlich aus und wird
    nicht immer erneuert. Steht sie nicht mehr, fehlt der Übermittlung ihre
-   Grundlage — und im Rechtstext steht dann etwas Unwahres.
+   Grundlage, und im Rechtstext steht dann etwas Unwahres.
 
    Geprüft wird gegen die Teilnehmerliste des US-Handelsministeriums, gefiltert
    auf `Status: Active`. Die Suchmaske der Website selbst übergibt den
@@ -691,7 +691,7 @@ const DPF = "https://dpfapi.azurewebsites.net/api/participants";
 
    Die Erklärung sagt: „Der Hoster hält diese Protokolle eine Stunde lang vor
    und löscht sie danach automatisch." Das ist keine Formulierung, sondern eine
-   Frist — und sie gilt genau für einen Tarif. Vercel hält Laufzeitprotokolle
+   Frist, und sie gilt genau für einen Tarif. Vercel hält Laufzeitprotokolle
    auf Hobby eine Stunde, auf Pro einen Tag, mit Observability Plus dreißig
    Tage. Ein Tarifwechsel ist ein Klick, und danach steht im Rechtstext eine
    Frist, die nicht mehr stimmt.
@@ -783,7 +783,7 @@ const FRISTEN = new Map([
 
    Sie stand zweimal fest im Quelltext: unter „Angaben gemäß § 5 DDG“ im
    Impressum und unter „Verantwortlicher" in der Datenschutzerklärung. Seit
-   `app/(de)/(legal)/provider.ts` gibt es eine Quelle — dieser Block hält das
+   `app/(de)/(legal)/provider.ts` gibt es eine Quelle, dieser Block hält das
    Ergebnis dagegen, an den ausgelieferten Seiten und nicht am Quelltext. Wer
    die Angabe an einer Seite wieder von Hand einträgt, fällt hier auf.
 
@@ -820,7 +820,7 @@ const FRISTEN = new Map([
     /* Die Umsatzsteuer-Identifikationsnummer gegen das EU-Register.
        ------------------------------------------------------------
        § 5 Abs. 1 Nr. 6 DDG verlangt sie, sobald es eine gibt. Sie ist damit
-       Pflichtangabe — und die einzige Angabe im Impressum, die ohne Zutun
+       Pflichtangabe, und die einzige Angabe im Impressum, die ohne Zutun
        des Betreibers falsch werden kann: Wer die Kleinunternehmerregelung
        aufgibt, das Gewerbe umstellt oder eine neue Nummer bekommt, hat auf
        der Seite weiterhin die alte stehen. Name und Anschrift ändert man
@@ -829,7 +829,7 @@ const FRISTEN = new Map([
        Geprüft wird gegen VIES, das Bestätigungsverfahren der EU-Kommission.
        Dessen Antwort braucht Sorgfalt: `isValid` steht auch dann auf `false`,
        wenn gar nicht geprüft werden konnte. Der deutsche Teildienst ist
-       regelmäßig nicht erreichbar und antwortet dann mit `MS_UNAVAILABLE` —
+       regelmäßig nicht erreichbar und antwortet dann mit `MS_UNAVAILABLE`:
        gemessen dreimal hintereinander beim Einbau. Wer nur `isValid` liest,
        baut sich einen Wächter, der nachts eine gültige Nummer für ungültig
        erklärt. Angeschlagen wird deshalb nur bei einer Antwort, die
@@ -899,7 +899,7 @@ const FRISTEN = new Map([
    sofort abzubrechen: Ein `process.exit` unmittelbar nach einem `fetch` reißt
    Node aus einer offenen Verbindung und schreibt eine Assertion hinter den
    Befund. Ohne diese Abfrage stand danach aber „Die Datenschutzerklärung passt
-   zu ihrem Stand" unter einer Fehlermeldung — Erfolg gemeldet, obwohl etwas
+   zu ihrem Stand" unter einer Fehlermeldung. Erfolg gemeldet, obwohl etwas
    nicht stimmt, und genau das ist der Fehler, den dieser Lauf sonst sucht. */
 if (!process.exitCode) {
   console.log(
@@ -911,7 +911,7 @@ if (!process.exitCode) {
     `Die Rechtsseiten halten, was sie zusagen: ${text.split(" ").length} Wörter, ` +
       `Stand ${STAND}, Prüfsumme passend. Alle Seiten mit Inhalt vorab erzeugt, ` +
       `die Fehlerseite als benannte Ausnahme, kein Endpunkt nimmt Eingaben ` +
-      `entgegen — dazu die sieben Punkte darüber.`,
+      `entgegen, dazu die sieben Punkte darüber.`,
   );
 }
 

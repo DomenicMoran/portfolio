@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  *
  * Nicht im Ausdruck. Auf Papier steht nichts still und nichts scrollt: Von
  * 6.221 px Inhalt blieben gemessen 794 px übrig, der Rest fehlte ohne Hinweis.
- * Ein Verlust ist das nicht — die Leiste ist `aria-hidden`, und jeder Begriff
+ * Ein Verlust ist das nicht, die Leiste ist `aria-hidden`, und jeder Begriff
  * darauf steht an anderer Stelle noch einmal im Fließtext.
  */
 export function Marquee({

@@ -40,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
      `canonical` der Seite.
 
      Für die deutsche Startseite stand hier `"/"`, also
-     `https://domenicmoran.de/` mit Schrägstrich — während `<loc>` und das
+     `https://domenicmoran.de/` mit Schrägstrich, während `<loc>` und das
      `canonical` im Dokument `https://domenicmoran.de` ohne schreiben. Ein
      hreflang-Verweis auf sich selbst, der nicht auf das Zeichen mit dem
      Kanonischen übereinstimmt, lässt eine Suchmaschine die ganze Gruppe
@@ -50,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
      Gemessen an der ausgelieferten Sitemap standen dort je Adresse zwei
      Alternativen, `de` und `en`; jede Seite im Kopf nennt drei. Google liest
-     beide Quellen und erwartet dieselbe Gruppe — fehlt `x-default` in der
+     beide Quellen und erwartet dieselbe Gruppe, fehlt `x-default` in der
      einen, ist die Angabe, welche Fassung ein Besucher ohne passende Sprache
      bekommt, nur an einer von zwei Stellen hinterlegt.
 

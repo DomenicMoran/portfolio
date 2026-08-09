@@ -29,7 +29,7 @@ export function SiteShell({
    *
    * Gemessen am 02.08.2026, Startseite frisch geladen und sofort gedruckt:
    * 17 Bildobjekte und 1.771 KB im PDF gegen 23 Objekte und 3.098 KB nach
-   * vollständigem Durchfahren. Sechs von elf Produktaufnahmen fehlten also —
+   * vollständigem Durchfahren. Sechs von elf Produktaufnahmen fehlten also:
    * leere Rahmen genau dort, wo das Blatt zeigen soll, dass es die Produkte
    * gibt.
    *
@@ -39,7 +39,7 @@ export function SiteShell({
    * Dokument.
    *
    * In der Leerlaufzeit, nicht mit `priority`: Der kritische Pfad bleibt
-   * unberührt — gemessener LCP 232 und 240 ms, vorher wie nachher. Ohne
+   * unberührt, gemessener LCP 232 und 240 ms, vorher wie nachher. Ohne
    * `requestIdleCallback`, das Safari bis heute nicht kennt, greift ein
    * Zeitgeber.
    */

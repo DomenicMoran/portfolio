@@ -4,7 +4,7 @@
  *
  * Wer Zeilen, Buchstaben, Wörter und Absätze auseinanderzieht, darf keinen
  * Inhalt und keine Funktion verlieren. Das trifft Leser mit Legasthenie und
- * alle, die eine eigene Stilvorlage benutzen — und es ist das einzige
+ * alle, die eine eigene Stilvorlage benutzen, und es ist das einzige
  * Kriterium der Stufe AA, das axe grundsätzlich nicht prüfen kann: Es verlangt,
  * die Seite zu verändern und danach zu messen.
  *
@@ -14,7 +14,7 @@
  *
  * Absichtlich verborgener Text bleibt draußen: `sr-only` klemmt seinen Kasten
  * auf 1 × 1 px, und das ist kein Verlust, sondern der Zweck. Ohne diese
- * Ausnahme meldete der Lauf jede Sprungmarke „Zum Inhalt springen“ als Fund —
+ * Ausnahme meldete der Lauf jede Sprungmarke „Zum Inhalt springen“ als Fund:
  * vierzehn Zeilen, in denen keine einzige stimmte.
  *
  * Nach `npm run build`:
@@ -90,7 +90,7 @@ for (const pfad of [...gebauteSeiten(), ...FEHLERSEITEN]) {
           el.clientHeight > 0
         )
           raus.push(
-            `${el.tagName.toLowerCase()}: ${el.scrollHeight} px Inhalt in ${el.clientHeight} px — „${eigen.slice(0, 34)}“`,
+            `${el.tagName.toLowerCase()}: ${el.scrollHeight} px Inhalt in ${el.clientHeight} px, „${eigen.slice(0, 34)}“`,
           );
       }
       return {

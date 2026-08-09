@@ -7,7 +7,7 @@
  * Screenreader sonst deutsche Ansagen vor." Nachgesehen hat es niemand.
  *
  * Gefunden am 07.08.2026: Der Kopf beider Fassungen trug am Verweis auf
- * llms.txt `title="Facts for language models"` — ein englischer Satz im
+ * llms.txt `title="Facts for language models"`, ein englischer Satz im
  * deutschen Dokument, unsichtbar auf der Seite und sichtbar für jedes
  * Werkzeug, das den Kopf liest.
  *
@@ -18,8 +18,8 @@
  * ein Ausdruck, `"…"` ist ein fester Text.
  *
  * Ausgenommen sind die Rechtsseiten. Impressum und Datenschutzerklärung gibt
- * es nur auf Deutsch — ein deutsches Rechtsdokument ist in Übersetzung nicht
- * mehr dieselbe Erklärung —, und ihre Abschnittsüberschriften sind deshalb
+ * es nur auf Deutsch, ein deutsches Rechtsdokument ist in Übersetzung nicht
+ * mehr dieselbe Erklärung, und ihre Abschnittsüberschriften sind deshalb
  * keine zweisprachige Beschriftung, sondern Teil des Dokuments.
  *
  * Aufruf:
@@ -33,7 +33,7 @@ import { join } from "node:path";
 /** Attribute, deren Wert ein Mensch liest oder hört. */
 const ATTRIBUTE = /\b(title|aria-label|aria-description|placeholder|alt)="([^"{}]{4,})"/g;
 
-/** Nur auf Deutsch, mit Absicht — siehe oben. */
+/** Nur auf Deutsch, mit Absicht, siehe oben. */
 const AUSGENOMMEN = /\(legal\)/;
 
 const funde = [];

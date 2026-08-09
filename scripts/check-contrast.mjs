@@ -3,7 +3,7 @@
  * Misst den Kontrast dort, wo axe keine Antwort gibt.
  *
  * `check:a11y` zählt Verstöße. axe kennt aber ein drittes Ergebnis neben
- * bestanden und verletzt: „incomplete" — geprüft, aber nicht entscheidbar. Bei
+ * bestanden und verletzt: „incomplete", geprüft, aber nicht entscheidbar. Bei
  * der Kontrastregel passiert das, sobald die Fläche hinter dem Text nicht aus
  * den Stilangaben folgt: halbdurchsichtige Karten, Verläufe, die geblurrten
  * Glüh-Kreise, das Grain-SVG, ein Element, das ein anderes überlappt. Genau
@@ -11,7 +11,7 @@
  *
  * Gemessen an der ausgelieferten Startseite am 07.08.2026: 0 Verstöße, und
  * 63 Textknoten, über die axe nichts gesagt hat. Der Lauf blieb grün, weil
- * niemand widersprochen hatte — nicht, weil jemand nachgesehen hätte. In
+ * niemand widersprochen hatte, nicht, weil jemand nachgesehen hätte. In
  * `check-a11y.mjs` stand dazu „Alles darüber bleibt axes Sache"; für diese
  * 63 Stellen war das eine Annahme ohne Deckung.
  *
@@ -19,7 +19,7 @@
  *
  * 1. axe nennt die unentschiedenen Knoten. Über alle achtzehn Seiten und
  *    beide Breiten sind das rund 1.400.
- * 2. Von jedem wird der Ausschnitt zweimal aufgenommen — einmal wie er ist,
+ * 2. Von jedem wird der Ausschnitt zweimal aufgenommen, einmal wie er ist,
  *    einmal mit durchsichtiger Schrift. Die zweite Aufnahme ist der
  *    Untergrund, Punkt für Punkt, mit allem was darüber und darunter liegt.
  * 3. Gerechnet wird nur innerhalb der Zeilenkästen des Textes und nur an den
@@ -87,7 +87,7 @@ let schwaechster = { wert: Infinity, wo: "" };
 /* Dazu die Fehlerseite unter beiden Sprachen.
 
    Sie steht in keiner Liste gebauter Seiten und fiel damit aus jedem Lauf,
-   der seine Liste aus dem Bau nimmt — ausgerechnet die Seite, die jeder
+   der seine Liste aus dem Bau nimmt, ausgerechnet die Seite, die jeder
    Vertipper zu sehen bekommt. Ihr Text steht auf demselben Untergrund wie
    der Rest, also gilt hier dieselbe Frage. */
 for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
@@ -124,7 +124,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
        es nie. Zehn ihrer Begriffe blieben dadurch ungemessen.
 
        Und die Weichzeichner-Masken. Die Laufschrift blendet an beiden Rändern
-       aus; ein Begriff, der dort gerade steht, misst 1,03:1 — richtig
+       aus; ein Begriff, der dort gerade steht, misst 1,03:1, richtig
        gerechnet und trotzdem keine Aussage über die Schriftfarbe, denn eine
        Sekunde später steht er in der Mitte und misst 5,28:1. Ohne Maske
        gemessen kommt der Wert heraus, den der Leser sieht, solange der Text
@@ -140,7 +140,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
        Anhalten friert die Laufschrift dort ein, wo sie gerade steht, und das
        ist auf jedem Rechner woanders. Gemessen am 08.08.2026: Der Lauf war
        hier grün und in der CI rot, mit dem Befund „Text vorhanden, aber kein
-       Punkt deckt voll" an der zweiten Begriffsreihe der Startseite — dort
+       Punkt deckt voll" an der zweiten Begriffsreihe der Startseite, dort
        stand sie halb aus dem Bild geschoben. Ein Prüflauf, der je nach
        Maschine anders ausgeht, ist keine Messung.
 
@@ -186,7 +186,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
              Tailwind 4 schreibt jede Farbe mit Deckkraft als `oklab(0.616
              0.0045 -0.0157 / 0.8)`. Wer daraus die Zahlen zieht, bekommt vier
-             Werte in der richtigen Anzahl und der falschen Bedeutung — und
+             Werte in der richtigen Anzahl und der falschen Bedeutung, und
              rechnet damit weiter, ohne dass etwas auffällt. Gemessen kamen so
              159 Fundstellen heraus, darunter jede Achsenbeschriftung beider
              Diagramme mit angeblich 1,05:1. Der Canvas kennt jeden Farbraum,
@@ -204,7 +204,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
              Die Legende des Gebetszeiten-Diagramms trägt neben ihrem Text ein
              Linienmuster, das in `currentColor` gezeichnet ist. Wer die
-             Schriftfarbe durchsichtig schaltet, löscht auch dieses Muster —
+             Schriftfarbe durchsichtig schaltet, löscht auch dieses Muster:
              seine Punkte sehen dann aus wie Buchstaben und wurden gegen die
              Linie darunter gerechnet: gemessen 1,63:1 für „die beiden
              anderen", während die Schrift selbst auf 5,25:1 steht.
@@ -228,7 +228,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
               (n) => n.nodeType === 3 && n.textContent.trim() !== "",
             ),
             versteckt: el.closest("[aria-hidden='true']") !== null,
-            nurZeichen: /^[·•|/–—,.:;›»→←↑↓+*-]+$/.test((el.textContent || "").trim()),
+            nurZeichen: /^[·•|/–,,.:;›»→←↑↓+*-]+$/.test((el.textContent || "").trim()),
             groesse: parseFloat(stil.fontSize),
             gewicht: parseInt(stil.fontWeight, 10) || 400,
             text: (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40),
@@ -241,7 +241,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
           };
         });
       } catch {
-        funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)} — nicht messbar`);
+        funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)}, nicht messbar`);
         continue;
       }
 
@@ -250,13 +250,13 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
          Das Trennzeichen: Auf beiden One-Pagern steht der Mittelpunkt
          zwischen „Impressum" und „Datenschutz" auf 2,75:1. Er ist
          `aria-hidden`, besteht nur aus Satzzeichen und trägt nichts, was
-         jemand lesen müsste — die Verweise daneben stehen für sich,
+         jemand lesen müsste, die Verweise daneben stehen für sich,
          unterstrichen und mit Abstand.
 
          Und der Namenszug am Fuß jeder Artikelseite: „Domenic Moran" in
          Riesenschrift, `aria-hidden`, `select-none`, gemalt aus einem
          Verlauf von 14 % Deckung über `bg-clip-text`. Seine Schriftfarbe ist
-         `rgba(0,0,0,0)` — die Farbe kommt nicht aus `color`, und damit lässt
+         `rgba(0,0,0,0)`, die Farbe kommt nicht aus `color`, und damit lässt
          sich dieser Text nicht durchsichtig schalten. Messbar wäre er nur
          über den Umweg, ihn ganz zu entfernen; die Aussage wäre dieselbe wie
          beim Punkt.
@@ -269,7 +269,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         continue;
       if (unsichtbareSchriftfarbe) {
         funde.push(
-          `${route} @ ${breite}: ${wahl.slice(0, 60)} — Schriftfarbe ist ` +
+          `${route} @ ${breite}: ${wahl.slice(0, 60)}. Schriftfarbe ist ` +
             `durchsichtig, der Text kommt aus dem Hintergrund; von Hand nachsehen`,
         );
         continue;
@@ -292,7 +292,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
          Laufschrift ist 5.880 px breit und beginnt bei x = −56; wer dort nur
          auf 0 hochsetzt und die Breite stehen lässt, nimmt ein um 56 px
          verschobenes Fenster auf. Gemessen kam für „TypeScript" 1,03:1 heraus,
-         während dasselbe Wort in der Mitte der Leiste 5,28:1 hat — der Wert
+         während dasselbe Wort in der Mitte der Leiste 5,28:1 hat, der Wert
          war nicht knapp, er war von der falschen Stelle.
 
          Die Aufnahme am Element (`ort.screenshot()`) hilft nicht: Sie liefert
@@ -315,7 +315,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       try {
         mitSchrift = await seite.screenshot({ clip: ausschnitt });
       } catch {
-        funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)} — nicht aufnehmbar`);
+        funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)}, nicht aufnehmbar`);
         continue;
       }
       await ort.evaluate((el) => {
@@ -340,7 +340,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       const { data: ohne } = await roh(ohneSchrift);
 
       /* Die Schriftfarbe darf durchsichtig sein. Dann ist die gemalte Farbe
-         nicht die angegebene, sondern deren Mischung mit dem Untergrund — und
+         nicht die angegebene, sondern deren Mischung mit dem Untergrund, und
          der ist an jedem Punkt ein anderer. */
       const kanaele = stelle.rgba;
       const deckkraft = kanaele[3];
@@ -360,7 +360,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
          dieser Größe ist jeder Strich schmaler als ein Bildpunkt, und die
          Kantenglättung verteilt die Farbe: Gemessen erreichte dort kein
          einziger Punkt 90 % Deckung, und 46 Beschriftungen blieben
-         unentschieden — wieder eine stille Lücke, diesmal in der eigenen
+         unentschieden, wieder eine stille Lücke, diesmal in der eigenen
          Prüfung.
 
          Der erste Durchgang sucht deshalb die höchste vorkommende Deckung.
@@ -402,20 +402,20 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
          Bis hierher liefen beide Fragen über dieselbe Schleife: Sie ging nur
          die voll gedeckten Punkte durch und rechnete dort den Kontrast. Das
-         bindet das Ergebnis an die Kantenglättung — und die entscheidet je
+         bindet das Ergebnis an die Kantenglättung, und die entscheidet je
          Renderer anders, welcher Punkt voll gedeckt ist. Auf einem Verlauf
          oder einer durchscheinenden Tönung liegt hinter jedem Punkt eine
          andere Farbe, und damit wird der gemeldete Wert zur Stichprobe.
 
          Gemessen am 08.08.2026: derselbe Codeblock 4,58:1 unter Windows und
-         4,50:1 unter Linux — lokal grün, in der CI rot, ohne Änderung am
+         4,50:1 unter Linux, lokal grün, in der CI rot, ohne Änderung am
          Code. Und zwei Läufe hintereinander auf derselben Maschine meldeten
          für dieselbe 10-px-Achsenbeschriftung einmal 4,13:1 und einmal
          nichts.
 
          Die Deckung beantwortet weiterhin die erste Frage: Steht hier
-         überhaupt Text, und mit welcher Deckkraft. Die zweite Frage — wie
-         dunkel ist der Grund im schlimmsten Fall — beantwortet der Grund
+         überhaupt Text, und mit welcher Deckkraft. Die zweite Frage, wie
+         dunkel ist der Grund im schlimmsten Fall, beantwortet der Grund
          selbst, über jeden Punkt in den Zeilenkästen des Textes. Das hängt
          an keiner Kantenglättung und fällt auf jedem Renderer gleich aus. */
       let schlechtester = Infinity;
@@ -444,7 +444,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
       if (!kernpunkte) {
         funde.push(
-          `${route} @ ${breite}: ${wahl.slice(0, 60)} — Text vorhanden, aber ` +
+          `${route} @ ${breite}: ${wahl.slice(0, 60)}. Text vorhanden, aber ` +
             `kein Punkt deckt voll; von Hand nachsehen`,
         );
         continue;
@@ -461,7 +461,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         };
       if (schlechtester < soll)
         funde.push(
-          `${route} @ ${breite}: ${schlechtester.toFixed(2)}:1 statt ${soll}:1 — ` +
+          `${route} @ ${breite}: ${schlechtester.toFixed(2)}:1 statt ${soll}:1, ` +
             `${stelle.groesse}px/${stelle.gewicht} „${stelle.text}“`,
         );
     }

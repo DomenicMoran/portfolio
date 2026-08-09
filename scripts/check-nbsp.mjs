@@ -2,7 +2,7 @@
 /**
  * Prüft, dass keine Rechtsangabe zwischen Kürzel und Ziffer umbricht.
  *
- * „§ 146a AO“, „Art. 30 DSGVO", „Abs. 1 lit. f“ — ein Kürzel und die Zahl
+ * „§ 146a AO“, „Art. 30 DSGVO", „Abs. 1 lit. f“, ein Kürzel und die Zahl
  * dahinter sind eine Einheit. Bricht die Zeile dazwischen um, steht am Ende
  * der einen Zeile „Art." und am Anfang der nächsten „30“, und beides sagt für
  * sich nichts:
@@ -12,7 +12,7 @@
  *
  * Gefunden am 03.08.2026 an der ausgelieferten Seite: auf der Startseite bei
  * 390 px, auf /en bei 320 px und zweimal in der Datenschutzerklärung. Kein
- * bestehender Lauf sah es — es ist kein Verstoß gegen WCAG, kein toter
+ * bestehender Lauf sah es, es ist kein Verstoß gegen WCAG, kein toter
  * Verweis und keine falsche Zahl, sondern ein Satzfehler, und der fällt nur
  * im Bild auf. Dieselbe Klasse wie der Trennpunkt am Zeilenende, den
  * `check:separators` abfängt.
@@ -72,7 +72,7 @@ for (const pfad of pfade) {
   });
   await seite.waitForTimeout(300);
 
-  /* Je Seite ein Aufruf, dann die Breiten durchfahren — dieselbe Aufteilung
+  /* Je Seite ein Aufruf, dann die Breiten durchfahren, dieselbe Aufteilung
      wie bei `check:separators`, aus demselben Grund: Gemessen wird dasselbe
      Dokument, nur schmaler oder breiter. */
   for (const breite of BREITEN) {

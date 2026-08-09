@@ -4,7 +4,7 @@
  *
  * Jede andere Datei dieser Seite entsteht beim Bau. Die beiden PDFs nicht:
  * Sie werden gedruckt, und Drucken braucht einen Browser, den es auf Vercel
- * nicht gibt. `npm run onepager:pdf` läuft deshalb von Hand — und ein Schritt,
+ * nicht gibt. `npm run onepager:pdf` läuft deshalb von Hand, und ein Schritt,
  * der von Hand läuft, wird irgendwann vergessen.
  *
  * Das Blatt ist ausgerechnet die Datei, die weitergereicht wird. Ein
@@ -13,7 +13,7 @@
  *
  * Verglichen wird die Prüfsumme über die Quellen: Der Druck schreibt sie als
  * `/Quellstand` in die Dokumenteigenschaften, dieser Lauf rechnet sie neu.
- * Gelesen wird mit `pdf-lib` und nicht mit einer Textsuche — die Eigenschaften
+ * Gelesen wird mit `pdf-lib` und nicht mit einer Textsuche, die Eigenschaften
  * landen beim Speichern in einem Objektstrom, im Rohtext steht dort nichts.
  *
  *   npm run check:onepager
@@ -60,7 +60,7 @@ for (const pfad of BLAETTER) {
 
   if (!gefunden) {
     funde.push(
-      `${pfad} nennt keinen Quellstand — vor dem nächsten Vergleich einmal neu drucken`,
+      `${pfad} nennt keinen Quellstand, vor dem nächsten Vergleich einmal neu drucken`,
     );
     continue;
   }
@@ -76,7 +76,7 @@ for (const pfad of BLAETTER) {
      Das steht als Regel in AGENTS.md und war der einzige Handgriff daran, den
      niemand nachgezählt hat: „nach Inhaltsänderungen die Druckansicht
      gegenprüfen". Wer eine Zeile ergänzt und neu druckt, bekommt ein zweites
-     Blatt — und sieht es nur, wenn er die Datei öffnet.
+     Blatt, und sieht es nur, wenn er die Datei öffnet.
      Die zweite Seite trüge dann drei Zeilen Rest, und genau so kommt sie beim
      Empfänger an. */
   const seiten = doc.getPageCount();
@@ -94,7 +94,7 @@ for (const pfad of BLAETTER) {
      Bildschirmgröße. Gemessen am ausgelieferten PDF stand dort ein Bild mit
      128 × 128 Pixeln auf 22,7 mm Kantenlänge: 143 dpi, gut die Hälfte dessen,
      was ein Druck braucht. Auf dem Bildschirm sieht man das nicht, auf Papier
-     sofort — und ausgerechnet an dem Blatt, das eine Bewerbung begleitet.
+     sofort, und ausgerechnet an dem Blatt, das eine Bewerbung begleitet.
 
      Die Ursache lag in `sizes="110px"` an der Bildkomponente: Bei einfacher
      Pixeldichte, und mit der druckt Chromium immer, nimmt der Browser daraus
@@ -110,7 +110,7 @@ for (const pfad of BLAETTER) {
 
        Zwei Anläufe gingen daneben, beide still: `seite.node.Resources()` fand
        nichts, und `doc.context.enumerateIndirectObjects()` sieht nur, was
-       außerhalb der Ströme steht — gemessen `/Type3` und `/Link`, kein
+       außerhalb der Ströme steht, gemessen `/Type3` und `/Link`, kein
        einziges Bild. Beide Male blieb der Lauf grün, weil er nichts zu
        melden hatte. Aufgefallen ist es erst, als die Schwelle testweise auf
        512 stand und der Lauf trotzdem durchging.
@@ -156,7 +156,7 @@ for (const pfad of BLAETTER) {
      Überschrift, Absatz und Listeneintrag sind darin nicht unterscheidbar,
      und ein Screenreader liest sie in der Reihenfolge des Zeichenstroms vor
      statt in der des Dokuments. Der Katalog beider Dateien trug `/Lang`, aber
-     kein `/MarkInfo` — die Sprache stand also fest, die Gliederung nicht.
+     kein `/MarkInfo`, die Sprache stand also fest, die Gliederung nicht.
 
      Die Option steht auf `false`, wenn niemand sie setzt. Sie fällt damit
      genau so weg, wie sie entstanden ist: unbemerkt beim nächsten Umbau des
@@ -169,7 +169,7 @@ for (const pfad of BLAETTER) {
      einmal verschickt, lässt sich ein falsches Ziel nicht mehr korrigieren.
 
      Zwei Fehler sind hier möglich, ohne dass jemand etwas Falsches tut. Das
-     englische Blatt kann auf die deutsche Startseite zeigen — dieselbe
+     englische Blatt kann auf die deutsche Startseite zeigen, dieselbe
      Verwechslung, die es bei der Verknüpfung der beiden PDF schon einmal gab
      und die im Bau-Skript oben dokumentiert ist. Und die Mailadresse steht
      im Blatt als Verweisziel und nicht nur als Text, kann also von der
@@ -252,7 +252,7 @@ for (const pfad of BLAETTER) {
    leer, ohne dass es jemand merkt.
 
    Chromium bettet die Schriften dieses Blattes als Type3 ein, also als
-   Vektorzeichnungen statt als Schriftdatei — bei variablen Schriften der
+   Vektorzeichnungen statt als Schriftdatei, bei variablen Schriften der
    Normalfall. Lesbar bleibt der Text trotzdem, aber nur über die
    ToUnicode-Tabellen. Genau die benutzt dieser Lauf: Was er herausbekommt,
    bekommt ein Extraktor auch.
@@ -270,7 +270,7 @@ const KERNANGABEN = [
 ];
 
 /**
- * Welche Zeichen auf einem Blatt stehen — aus der gebauten Seite, nicht aus
+ * Welche Zeichen auf einem Blatt stehen, aus der gebauten Seite, nicht aus
  * dem PDF.
  *
  * Eine Schrift bettet nur ein, was gebraucht wird: Auf dem englischen Blatt
@@ -303,7 +303,7 @@ for (const pfad of BLAETTER) {
   /* Und was hier gerade nicht stehen darf.
 
      Die Privatanschrift steht auf zwei Blättern der Seite, beide mit
-     `noindex` — die Pflichtangabe nach § 5 DDG soll erfüllt sein, ohne die
+     `noindex`, die Pflichtangabe nach § 5 DDG soll erfüllt sein, ohne die
      Wohnanschrift in Suchergebnisse zu tragen. `check:legal` hält das über
      den ganzen Bau. Diese beiden Dateien fallen dort durch: Sie liegen unter
      `public/` und tragen ihren Text in komprimierten Strömen, sind also
@@ -324,7 +324,7 @@ for (const pfad of BLAETTER) {
 
   /* Jedes Zeichen des Blattes muss eine Zuordnung haben.
 
-     Ohne ToUnicode-Eintrag kann kein Extraktor es lesen, egal wie gut er ist —
+     Ohne ToUnicode-Eintrag kann kein Extraktor es lesen, egal wie gut er ist:
      und ein Kurzprofil wird eingelesen, bevor ein Mensch es sieht. Geprüft
      wird gegen das ausgelieferte HTML desselben Blattes, also gegen eine
      Quelle außerhalb des PDF. */
@@ -336,7 +336,7 @@ for (const pfad of BLAETTER) {
     );
     if (ohne.length) {
       funde.push(
-        `${pfad}: ${ohne.length} Zeichen ohne Zuordnung — ` +
+        `${pfad}: ${ohne.length} Zeichen ohne Zuordnung, ` +
           `${ohne.map((z) => `„${z}“`).join(", ")}. Ohne ToUnicode-Eintrag ` +
           `kann kein Extraktor sie lesen.`,
       );
@@ -347,11 +347,11 @@ for (const pfad of BLAETTER) {
 /* ---------------------------------------------------------------------------
    Der Verweis auf der Seite führt zu genau diesem Blatt
 
-   Geprüft war bisher die Datei im Repository — ihr Quellstand, ihre
+   Geprüft war bisher die Datei im Repository, ihr Quellstand, ihre
    Seitenzahl, ihr lesbarer Text. Nicht geprüft war der Weg dorthin: Auf der
    Seite steht ein Verweis mit `download`, und wenn jemand die Datei umbenennt
    und den Verweis vergisst, bekommt ein Recruiter einen 404 an genau der
-   Stelle, an der er das Blatt haben will. Umgekehrt genauso — ein Verweis auf
+   Stelle, an der er das Blatt haben will. Umgekehrt genauso, ein Verweis auf
    eine Datei, die es nicht mehr gibt, sieht im Quelltext richtig aus.
 
    Gelesen wird das gebaute HTML, nicht die Komponente: Was ausgeliefert wird,
@@ -387,7 +387,7 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
 /* Die beiden Blätter tragen nicht dieselben Angaben im Dokumentkopf.
 
    `/Subject` und `/Keywords` liest ein Bewerbermanagement-System aus, wenn die
-   Datei dort abgelegt wird — es sind die einzigen Felder, in denen eine
+   Datei dort abgelegt wird, es sind die einzigen Felder, in denen eine
    Sprachfassung stillschweigend die andere abschreiben kann. Genau das war der
    Fall: Beide trugen „AI Product Engineer, Fullstack, TypeScript, …", und
    „Fullstack" ohne Bindestrich steht auf keiner englischen Seite dieser Site.
@@ -397,7 +397,7 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
 {
   const kopf = BLAETTER.filter((p) => existsSync(p)).map((p) => {
     /* Die Angaben liegen in einem komprimierten Objektstrom, nicht im
-       Klartext — ein Suchlauf über die rohe Datei findet sie nicht. Deshalb
+       Klartext, ein Suchlauf über die rohe Datei findet sie nicht. Deshalb
        jeden Strom aufblasen und dann suchen. */
     const daten = readFileSync(p);
     const teile = [daten.toString("latin1")];
@@ -420,7 +420,7 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
     const roh = teile.join(String.fromCharCode(10));
     /* Zwei Schreibweisen: Klartext in Klammern oder UTF-16 als Hex in spitzen
        Klammern. pdf-lib nimmt die zweite, sobald ein Zeichen außerhalb von
-       Latin-1 vorkommt — und eine Meldung mit „<FEFF0041…“ liest niemand. */
+       Latin-1 vorkommt, und eine Meldung mit „<FEFF0041…“ liest niemand. */
     const MUSTER = {
       Subject: /\/Subject\s*(?:\(([^)]*)\)|<([0-9A-Fa-f]+)>)/,
       Keywords: /\/Keywords\s*(?:\(([^)]*)\)|<([0-9A-Fa-f]+)>)/,
@@ -446,7 +446,7 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
     ]) {
       if (kopf[0][feld] && kopf[0][feld] === kopf[1][feld]) {
         funde.push(
-          `Beide Blätter tragen dasselbe ${name}: "${kopf[0][feld].slice(0, 60)}" — ` +
+          `Beide Blätter tragen dasselbe ${name}: "${kopf[0][feld].slice(0, 60)}", ` +
             "eine Sprachfassung schreibt die andere ab.",
         );
       }
@@ -510,7 +510,7 @@ function stroeme(daten) {
  *
  * Ohne ToUnicode-Eintrag kann kein Extraktor ein Zeichen lesen, egal wie gut
  * er ist. Diese Menge beantwortet damit die Frage, die für ein
- * Bewerbermanagementsystem zählt — und sie hängt nicht daran, ob die
+ * Bewerbermanagementsystem zählt, und sie hängt nicht daran, ob die
  * Zusammensetzung unten die Schriften auseinanderhält.
  */
 function abgebildeteZeichen(daten) {

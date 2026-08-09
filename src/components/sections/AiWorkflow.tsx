@@ -108,7 +108,7 @@ function AgentTerminal() {
 
   const lines = workflow.demo.lines;
 
-  // Zurückspulen während des Renderns, wenn die Schaltfläche runId erhöht —
+  // Zurückspulen während des Renderns, wenn die Schaltfläche runId erhöht:
   // dasselbe Muster wie bei der Palette: kein Effekt, kein Nachziehen-Rendern,
   // kein Aufblitzen der alten Zeilen.
   const [playedRun, setPlayedRun] = useState(runId);
@@ -121,7 +121,7 @@ function AgentTerminal() {
    * Bei reduzierter Bewegung steht die Aufzeichnung sofort vollständig da.
    *
    * Der Kasten füllt sich Zeile für Zeile, alle 620 ms eine. Gemessen an der
-   * ausgelieferten Seite braucht er damit 6,6 Sekunden bis zum Endstand — und
+   * ausgelieferten Seite braucht er damit 6,6 Sekunden bis zum Endstand, und
    * zwar genauso lange, wenn jemand Bewegung abgeschaltet hat. Die Einstellung
    * heißt aber nicht „langsamer", sondern „zeig mir das Ergebnis, nicht den
    * Weg dorthin". Wer sie setzt, tut das oft nicht aus Geschmack: Bewegung
@@ -152,7 +152,7 @@ function AgentTerminal() {
    *
    * Die Aufzeichnung läuft erst los, wenn der Kasten in den Sichtbereich
    * kommt. Beim Drucken kommt er das nie: `shown` bleibt auf 0, und auf dem
-   * Papier steht ein leerer Terminalrahmen mit Überschrift — die Stelle, an
+   * Papier steht ein leerer Terminalrahmen mit Überschrift, die Stelle, an
    * der die Seite ihre Arbeitsweise zeigt, ausgerechnet leer.
    */
   /* Abgeleitet statt im Effekt gesetzt: Ein `setShown` direkt im Effekt
@@ -206,7 +206,7 @@ function AgentTerminal() {
 
       {/* `data-agent-session`: die Kennung, an der `check:print` erkennt, ob
           dieser Kasten schon läuft. Er ist die einzige Stelle der Startseite,
-          deren Inhalt erst nach der Hydration entsteht — im Druck vollständig,
+          deren Inhalt erst nach der Hydration entsteht, im Druck vollständig,
           am Bildschirm Zeile für Zeile. Ohne ein Signal misst der Prüflauf die
           Serverfassung mit null Zeilen und meldet fehlenden Text, sobald die
           Maschine langsam genug ist. Eine Wartezeit dafür wäre eine Wette. */}
@@ -229,7 +229,7 @@ function AgentTerminal() {
                   › für den Befehl, · für die Notiz, → für das Ergebnis. Ein
                   Vorleseprogramm sagte bisher „größer als" vor jeder
                   Befehlszeile. Sichtbar bleibt es und trägt auf 60 % Deckung
-                  2,60:1 — als Schmuck ist das die Ausnahme, die die WCAG
+                  2,60:1, als Schmuck ist das die Ausnahme, die die WCAG
                   dafür vorsieht, und `check:contrast` nimmt es an derselben
                   Regel heraus wie den Trennpunkt im One-Pager. */}
               <span aria-hidden className="shrink-0 opacity-60">

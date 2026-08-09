@@ -5,7 +5,7 @@
  * Seite gemessen.
  *
  * **Er zeigte auf `#work`.** Damit übersprang er nicht die Navigation, sondern
- * den ganzen Hero — also die h1, die Positionierung, den Verfügbarkeitshinweis
+ * den ganzen Hero, also die h1, die Positionierung, den Verfügbarkeitshinweis
  * und den wichtigsten Knopf der Seite. Wer mit der Tastatur oder einer
  * Vorlesesoftware genau die Abkürzung nimmt, die für ihn gedacht ist, bekam
  * das Wichtigste nie zu hören. Gemessen sprang er auf 950 px Scrollhöhe.

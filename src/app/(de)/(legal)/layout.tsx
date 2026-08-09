@@ -17,7 +17,7 @@ export default function LegalLayout({
 
           Die beiden Rechtsseiten hatten im Barrierefreiheitsbaum genau eine
           Landmarke: den Hauptbereich. Wer die Landmarkenliste benutzt, fand
-          weder den Weg zurück noch die Fußzeile — auf jeder anderen Seite
+          weder den Weg zurück noch die Fußzeile, auf jeder anderen Seite
           dieser Webseite gibt es beide, und ausgerechnet hier landet jemand,
           der eine Anschrift oder eine Rechtsgrundlage sucht.
 
@@ -30,7 +30,7 @@ export default function LegalLayout({
 
              Next holt zu jedem sichtbaren Verweis auch die Skripte der
              Zielseite. Gemessen am gebauten Stand lud /impressum dadurch
-             989 kB Skript, davon 269 kB Animationsbibliothek — für eine
+             989 kB Skript, davon 269 kB Animationsbibliothek, für eine
              Textseite, auf der sich nichts bewegt, geholt für einen Klick,
              den die wenigsten tun. Beim Zeigen mit der Maus lädt Next
              weiterhin vor, der Rückweg bleibt also gleich schnell. */

@@ -33,7 +33,7 @@ export type Article = {
    * Die Artikelseiten setzen ihren Titel `absolute`, also ohne den Zusatz
    * „ – Domenic Moran": Mit ihm lägen sie bei 64 bis 79 Zeichen, und
    * Suchmaschinen schneiden ab 60 ab. Gemessen am 08.08.2026 überschritten
-   * zwei von zehn die Grenze auch ohne Zusatz — 62 und 61 Zeichen, also
+   * zwei von zehn die Grenze auch ohne Zusatz, 62 und 61 Zeichen, also
    * genau der Fall, für den die Regel gedacht war.
    *
    * Steht hier nichts, gilt `title`. Die Überschrift auf der Seite bleibt in
@@ -52,7 +52,7 @@ export type Article = {
    *
    * Ein Eintrag darf eine Adresse tragen. Der Grund ist der Unterschied
    * zwischen Beleg und Nachweis: Bis hierher zeigte jede Zeile auf eine Datei
-   * in einem Repo, das niemand außer mir öffnen kann — gemessen am 02.08.2026
+   * in einem Repo, das niemand außer mir öffnen kann, gemessen am 02.08.2026
    * waren das alle 21 Belege der damals fünf Artikel. Wo derselben Arbeit ein
    * öffentliches Paket entstammt, gehört es hierher, denn das ist die einzige
    * Zeile, die ein Leser selbst ausführen kann.
@@ -98,7 +98,7 @@ export type ArticleChrome = {
   /**
    * Beschriftung des Feed-Verweises unter der Übersicht.
    *
-   * Den Feed gibt es seit Langem, und der Seitenkopf nennt ihn — sichtbar
+   * Den Feed gibt es seit Langem, und der Seitenkopf nennt ihn, sichtbar
    * stand er nirgends. Wer den Texten folgen wollte, musste in den Quelltext
    * sehen.
    */

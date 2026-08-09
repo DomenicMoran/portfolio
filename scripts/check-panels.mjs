@@ -4,18 +4,18 @@
  *
  * Die Fallstudien legen ihren Inhalt auf vier Reiter: Überblick, Automation,
  * Architektur, Stack. Sichtbar ist immer nur einer. Was hinter den anderen
- * liegt, sieht niemand — auch kein Prüflauf, denn `check:a11y`, `check:links`
+ * liegt, sieht niemand, auch kein Prüflauf, denn `check:a11y`, `check:links`
  * und `check:parity` messen die Seite, wie sie geladen wird.
  *
  * Damit ist ein leerer Reiter der unauffälligste Fehler, den diese Seite
  * haben kann: Ein Diagramm, dessen Schlüssel nicht mehr passt, rendert
  * nichts, und der Reiter darüber verspricht es weiter. Das Kurzprofil, das
  * ein Recruiter weiterreicht, endet mit „Vollständige Fallstudien mit
- * Architekturdiagrammen: domenicmoran.de" — die Zusage steht also auch auf
+ * Architekturdiagrammen: domenicmoran.de", die Zusage steht also auch auf
  * dem Blatt, das aus der Hand gegeben wird.
  *
  * Geprüft wird je Reiter: Die Tafel trägt Text, und wo ein Diagramm hingehört,
- * trägt sie ein beschriftetes SVG. Beschriftet ist der entscheidende Teil —
+ * trägt sie ein beschriftetes SVG. Beschriftet ist der entscheidende Teil:
  * eine leere Fläche in der richtigen Größe würde eine Größenprüfung bestehen.
  *
  * Aufruf nach `npm run build`:
@@ -86,7 +86,7 @@ for (const pfad of SEITEN) {
           if (!tafel) return { fehlt: true };
           const text = tafel.innerText.trim();
 
-          /* Das größte SVG der Tafel ist das Diagramm — die kleinen sind
+          /* Das größte SVG der Tafel ist das Diagramm, die kleinen sind
              Symbole aus der Icon-Bibliothek, und eines davon ist eine
              Deko-Fläche ohne Beschriftung. Der erste Anlauf nahm das erste
              gefundene und hielt zwei fertige Diagramme für leer. */
@@ -108,7 +108,7 @@ for (const pfad of SEITEN) {
                   /* Die Textfassung muss dasselbe sagen wie die Zeichnung.
 
                      Das Diagramm trägt `role="img"`, und damit liest ein
-                     Screenreader seine Beschriftungen nicht vor — das ist der
+                     Screenreader seine Beschriftungen nicht vor, das ist der
                      Sinn der Rolle. Vorgelesen wird stattdessen die
                      `sr-only`-Definitionsliste daneben, die dieselbe
                      Architektur in Worten aufführt.
@@ -149,7 +149,7 @@ for (const pfad of SEITEN) {
         continue;
       }
       if (stand.laenge < MINDESTTEXT) {
-        funde.push(`${wo}: nur ${stand.laenge} Zeichen — „${stand.text.slice(0, 30)}“`);
+        funde.push(`${wo}: nur ${stand.laenge} Zeichen, „${stand.text.slice(0, 30)}“`);
       }
       // Wo ein Diagramm steht, muss es beschriftet sein.
       if (/architek|architec/i.test(beschriftung)) {
@@ -158,13 +158,13 @@ for (const pfad of SEITEN) {
         } else if (!stand.diagramm.reicht) {
           funde.push(
             `${wo}: Diagramm ${stand.diagramm.breite}×${stand.diagramm.hoehe} px ` +
-              `mit ${stand.diagramm.texte} Beschriftungen — eine leere Fläche`,
+              `mit ${stand.diagramm.texte} Beschriftungen, eine leere Fläche`,
           );
         } else if (stand.diagramm.fehlendeInText.length) {
           funde.push(
             `${wo}: ${stand.diagramm.fehlendeInText.length} von ` +
               `${stand.diagramm.texte} Beschriftungen stehen nicht in der ` +
-              `Textfassung — ` +
+              `Textfassung, ` +
               `${stand.diagramm.fehlendeInText.slice(0, 6).join(", ")}` +
               `\n        Wer das Diagramm nicht sehen kann, bekommt eine ` +
               `Architektur ohne diese Knoten.`,
@@ -180,7 +180,7 @@ for (const pfad of SEITEN) {
 
    Eine Bildstrecke muss man durchklicken, und genau deshalb sah sie kein Lauf:
    `check:links` prüft Adressen, `check:a11y` den Barrierefreiheitsbaum, dieser
-   hier die Reiter. Gefunden wurde der Fehler beim Bedienen — der Zähler blieb
+   hier die Reiter. Gefunden wurde der Fehler beim Bedienen, der Zähler blieb
    bei „7 von 8“, weil das letzte Bild am rechten Anschlag nie einrastet, und
    der Weiter-Knopf blieb dabei aktiv, ohne noch etwas zu bewirken.
 

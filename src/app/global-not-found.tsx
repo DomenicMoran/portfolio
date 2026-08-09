@@ -19,8 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
        Hier stand, die Zeile bringe die beiden Bauwarnungen zum Schweigen, die
        Next beim Erzeugen der statischen Seiten ausgibt. Nachgemessen stimmt
        das nicht: Mit und ohne diese Zeile meldet der Bau dieselben zwei
-       Warnungen. Sie stammen aus Seiten, die Next selbst anlegt — die interne
-       Not-found-Route und `_global-error` —, und die hängen an keinem der
+       Warnungen. Sie stammen aus Seiten, die Next selbst anlegt, die interne
+       Not-found-Route und `_global-error`, und die hängen an keinem der
        beiden Wurzel-Layouts, weil es hier bewusst kein gemeinsames
        `app/layout.tsx` gibt.
 
@@ -41,11 +41,11 @@ export async function generateMetadata(): Promise<Metadata> {
  * kann, in welchem es rendern soll.
  *
  * Keine Bewegungs-Provider: Wer hier landet, hat sich verlaufen und soll
- * schnell weiterkommen. Die Schriften kommen aus `@/lib/web-fonts` — eine
+ * schnell weiterkommen. Die Schriften kommen aus `@/lib/web-fonts`, eine
  * eigene Deklaration erzeugte einen zweiten Satz Dateien, den der Browser
  * zusätzlich lud, auf jeder Seite.
  *
- * Diese Seite beantwortet jede Adresse, die auf gar keine Route passt — auch
+ * Diese Seite beantwortet jede Adresse, die auf gar keine Route passt, auch
  * `/en/irgendwas`. Welche Sprache gemeint war, weiß sie als einzige Seite
  * nicht von sich aus: `src/proxy.ts` sagt es ihr über eine Kopfzeile. Ohne
  * die Angabe bleibt es beim Deutschen, und der Hinweis in der jeweils anderen
@@ -55,14 +55,14 @@ export async function generateMetadata(): Promise<Metadata> {
  * beide wurden nie gerendert, weil eine Adresse ohne Route auch kein Layout
  * hat. Auch der Umbau dahin führt nicht hin: Ein Fangsegment unter `/en`, das
  * `notFound()` wirft, bekommt bei zwei Wurzel-Layouts keine Grenze mehr
- * gerendert, sondern das leere Fehlerdokument — gemessen am 02.08.2026 mit
+ * gerendert, sondern das leere Fehlerdokument, gemessen am 02.08.2026 mit
  * der Grenze auf beiden Ebenen und mit wie ohne `globalNotFound`: Status 404,
  * aber kein `lang`, keine Überschrift, nichts. Dasselbe gilt für
  * `dynamicParams = true` auf den Artikelrouten.
  */
 export default async function GlobalNotFound() {
   const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
-  /* Der Proxy kürzt lange Pfade und setzt dafür `GEKUERZT` ans Ende — eine
+  /* Der Proxy kürzt lange Pfade und setzt dafür `GEKUERZT` ans Ende, eine
      Marke aus Latin-1, weil eine Kopfzeile nichts anderes tragen darf. Gelesen
      wird sie hier, und hier steht auch das Zeichen, das ein Mensch erwartet. */
   const gemeldet = (await headers()).get(PFAD_KOPFZEILE) ?? undefined;

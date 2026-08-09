@@ -19,7 +19,7 @@ describe("mailAdresse", () => {
 
   it("kodiert das kaufmännische Und", () => {
     /* Ohne Kodierung endet der Betreff vor dem Zeichen, und der Rest wird zu
-       einem eigenen Feld — die Nachricht käme mit halbem Betreff an. */
+       einem eigenen Feld, die Nachricht käme mit halbem Betreff an. */
     const adresse = mailAdresse("a@b.de", "Recruiting & Hiring");
     expect(adresse).toBe("mailto:a@b.de?subject=Recruiting%20%26%20Hiring");
     expect(adresse.split("&")).toHaveLength(1);

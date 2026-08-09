@@ -8,7 +8,7 @@ import { useCallback, useSyncExternalStore } from "react";
  * `useSyncExternalStore` statt `useState` und `useEffect`: Der Serverwert steht
  * ausdrücklich da (`false`), damit die Auszeichnung vom Server und die, mit der
  * React hydriert, immer übereinstimmen. Die Fassung über einen Effekt setzt den
- * Zustand erst nach dem Einhängen — das verstößt gegen die
+ * Zustand erst nach dem Einhängen, das verstößt gegen die
  * set-state-in-effect-Regel und zeigt für ein Bild den falschen Zweig.
  */
 export function useMediaQuery(query: string) {

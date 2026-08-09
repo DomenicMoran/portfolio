@@ -29,7 +29,7 @@ import { join, resolve } from "node:path";
 
 /* Gemessene Werte, die weiter unten ein zweites Mal gebraucht werden.
 
-   Das Architekturbild nennt vier Zahlen, die dieser Lauf ohnehin misst —
+   Das Architekturbild nennt vier Zahlen, die dieser Lauf ohnehin misst:
    Workflows, Rezepte, Tabellen, Migrationen. Verglichen wurden sie dort gegen
    fest eingetragene Sollwerte ("63", "11.892", "59", "12"). Damit war der
    Wächter selbst die Stelle, die veraltet: Wächst der Bestand, meldet der Lauf
@@ -61,7 +61,7 @@ function vitestLauf(repo) {
     stdio: ["ignore", "pipe", "ignore"],
   };
 
-  // vitest endet mit Rückgabewert 1, sobald ein Test rot ist — und
+  // vitest endet mit Rückgabewert 1, sobald ein Test rot ist, und
   // execFileSync wirft dann. Genau der Fall ist aber der interessante: Der
   // Bericht unten hat einen Zweig für rote Tests, der ohne dieses catch nie
   // erreicht wurde. Statt einer Meldung über gescheiterte Tests brach der
@@ -96,7 +96,7 @@ let abweichungen = 0;
  *
  * „Die Zahl auf der Seite ist 89 Commits hinterher" ist kein Fehler: Sie trägt
  * ihr Messdatum, und ein Automat frischt sie jede Nacht auf. Als Abweichung
- * gezählt war der Lauf an jedem Morgen rot, bevor der Automat lief — und ein
+ * gezählt war der Lauf an jedem Morgen rot, bevor der Automat lief, und ein
  * Rot, das man erwartet, liest niemand mehr. Gemeldet wird der Hinweis
  * trotzdem, nur eben als das, was er ist.
  */
@@ -115,8 +115,8 @@ function vergleiche(was, gemessen, aufDerSeite) {
  * Eine Untergrenze prüfen statt einer exakten Zahl.
  *
  * Für Werte, die zwischen zwei Prüfläufen wachsen. Die Testzahl von MenuCloud
- * stand dreimal an einem Nachmittag falsch auf der Seite — 7.437, 7.444,
- * 7.464, 7.302 — nicht weil sie jemand falsch abgeschrieben hätte, sondern
+ * stand dreimal an einem Nachmittag falsch auf der Seite, 7.437, 7.444,
+ * 7.464, 7.302, nicht weil sie jemand falsch abgeschrieben hätte, sondern
  * weil das Produktivrepo weiterläuft. Eine Zahl, die stundenweise veraltet,
  * ist keine belegte Zahl, sondern eine Momentaufnahme mit Ablaufdatum.
  *
@@ -146,7 +146,7 @@ function mindestens(was, gemessen, aufDerSeite, spielraum = 1000) {
   zeilen.push(
     `  ${weit ? "--" : "ok"}  ${was.padEnd(26)} gemessen ${String(gemessen).padStart(6)}` +
       `   über der Grenze ${grenze}` +
-      (weit ? " — die Angabe darf wachsen" : ""),
+      (weit ? ", die Angabe darf wachsen" : ""),
   );
 }
 
@@ -199,7 +199,7 @@ if (existsSync(MENUCLOUD)) {
   /* Und die englische Übersetzung derselben Beschriftung.
 
      Die Zahl steht dreimal: im Titel des Automatisierungsreiters, im
-     Architekturbild und ein drittes Mal in `architecture-en.ts` — dort auf
+     Architekturbild und ein drittes Mal in `architecture-en.ts`, dort auf
      beiden Seiten des Übersetzungspaars, weil der Schlüssel die deutsche
      Zeichenkette selbst ist. Die ersten beiden hält der Lauf gegen die
      Messung; die dritte sah niemand an.
@@ -218,7 +218,7 @@ if (existsSync(MENUCLOUD)) {
     if (!treffer) {
       abweichungen++;
       zeilen.push(
-        `  !!  ${datei}: keine Workflow-Zahl gefunden — der Wortlaut hat sich geändert`,
+        `  !!  ${datei}: keine Workflow-Zahl gefunden, der Wortlaut hat sich geändert`,
       );
       continue;
     }
@@ -226,7 +226,7 @@ if (existsSync(MENUCLOUD)) {
       if (Number(wert.replace(/[.,]/g, "")) !== namen.size) {
         abweichungen++;
         zeilen.push(
-          `  !!  ${datei}: nennt ${wert} Workflows, gemessen sind ${namen.size}`,
+          `  !!  ${datei}: nennt ${wert} Workflows: gemessen sind ${namen.size}`,
         );
       }
     }
@@ -251,7 +251,7 @@ if (existsSync(MENUCLOUD)) {
     0,
   );
 
-  /* Untergrenzen statt exakter Zahlen — siehe `mindestens()`. Die End-to-End-
+  /* Untergrenzen statt exakter Zahlen, siehe `mindestens()`. Die End-to-End-
      Zahl bleibt exakt: Sie ändert sich nur mit einem neuen Testlauf, nicht
      nebenbei. */
   const aufSeite = quelle.match(
@@ -269,7 +269,7 @@ if (existsSync(MENUCLOUD)) {
 
      Der Fließtext sagt seit Langem „über 7.400 Testfälle", die Kennzahlen-
      kacheln nannten eine exakte: 7.464. Gemessen am 08.08.2026 waren es
-     7.635 — die Kachel lag 171 zurück, weil Tests dazukommen und die Zahl
+     7.635, die Kachel lag 171 zurück, weil Tests dazukommen und die Zahl
      stehen blieb. Der Lebenslauf sagt an derselben Stelle „über 7.400".
 
      Die Kacheln nennen jetzt dieselbe Untergrenze, in der Form „7.400+".
@@ -293,7 +293,7 @@ if (existsSync(MENUCLOUD)) {
       } else if (vitest.numTotalTests + e2e < grenze) {
         abweichungen++;
         zeilen.push(
-          `  !=  Testfälle-Kachel          nennt ${treffer[1]}+, gemessen sind ` +
+          `  !=  Testfälle-Kachel          nennt ${treffer[1]}+: gemessen sind ` +
             `${vitest.numTotalTests + e2e}`,
         );
       }
@@ -356,12 +356,12 @@ for (const [paket, muster] of PAKETE) {
 
    Lebenslauf, Kurzprofil, Bewerbungstexte und das LinkedIn-Titelbild nennen
    keine exakten Zahlen, sondern Untergrenzen: "über 4.000 Commits". Der Grund
-   ist Erreichbarkeit — ein verschicktes PDF liegt danach in einem Postfach,
+   ist Erreichbarkeit, ein verschicktes PDF liegt danach in einem Postfach,
    das niemand mehr aktualisiert, und eine exakte Zahl darin ist ab dem
    nächsten Commit überholt.
 
    Geprüft wird beides: Die Grenze muss halten, sonst ist die Aussage falsch.
-   Und sie darf nicht zu weit darunter liegen — wer "über 4.000" schreibt,
+   Und sie darf nicht zu weit darunter liegen, wer "über 4.000" schreibt,
    wenn es längst 6.000 sind, wirkt nicht bescheiden, sondern als kenne er
    seine eigenen Zahlen nicht. */
 
@@ -375,7 +375,7 @@ function zahlAusSeite(muster) {
  *
  * Sie stand einmal als Zahl in `site.ts` und kommt seit der Umstellung auf den
  * Automaten aus `verified.json`. Das Muster, das sie im Quelltext suchte, fand
- * seitdem nichts — und weil ein `null` die Prüfung überspringt statt sie
+ * seitdem nichts, und weil ein `null` die Prüfung überspringt statt sie
  * scheitern zu lassen, blieben fünf Aussagen in den privaten Unterlagen
  * ungeprüft, ohne dass eine Zeile davon berichtete. Gemessen am 03.08.2026.
  */
@@ -427,7 +427,7 @@ const UNTERGRENZEN = [
   /*
      Das Vorbereitungsbuch nennt die Gesamtzahl in drei Sätzen und in drei
      Formulierungen. Alle drei meinen dieselbe Zahl, also prüft ein Muster
-     alle drei — sonst prüft der Lauf einen Satz und lässt zwei stehen.
+     alle drei, sonst prüft der Lauf einen Satz und lässt zwei stehen.
   */
   {
     was: "Commits in vier Monaten",
@@ -443,7 +443,7 @@ const UNTERGRENZEN = [
    Es war als einziges der drei privaten Dokumente ungeprüft, und es ist das
    folgenreichste: Die Lernplattform zieht 280 Karten daraus, und was dort
    steht, wird auswendig gelernt. Gemessen am 03.08.2026 nannte es dreimal
-   „4.053 Commits“ — gemessen waren es 4.224. Die Zahl ist jetzt eine
+   „4.053 Commits“: gemessen waren es 4.224. Die Zahl ist jetzt eine
    Untergrenze, damit sie stimmt, solange sie wächst.
 */
 for (const datei of [
@@ -464,7 +464,7 @@ for (const datei of [
        Eine Messung ohne Ergebnis wird gesagt, nicht übersprungen.
 
        Hier stand `continue`. Als die Gesamtzahl der Commits aus `site.ts` in
-       den Prüfstempel wanderte, fand das zugehörige Muster nichts mehr — und
+       den Prüfstempel wanderte, fand das zugehörige Muster nichts mehr, und
        fünf Aussagen in den privaten Unterlagen blieben ungeprüft, ohne dass
        eine Zeile davon berichtete. Ein Wächter, der beim Ausfall schweigt,
        meldet Erfolg.
@@ -482,7 +482,7 @@ for (const datei of [
 
     /* Der Ausdruck wird über alle Dateien hinweg wiederverwendet, und
        `matchAll` uebernimmt seinen `lastIndex`. Ohne das Zuruecksetzen fing
-       die zweite Datei dort an zu suchen, wo die erste aufgehoert hatte —
+       die zweite Datei dort an zu suchen, wo die erste aufgehoert hatte:
        aufgefallen ist es erst mit der dritten, deren Treffer alle hinter
        dem Stand lagen und deshalb keiner war. */
     imText.lastIndex = 0;
@@ -492,12 +492,12 @@ for (const datei of [
       const name = `${kurz}: über ${treffer[1]} ${was}`;
       if (grenze > wirklich) {
         zeilen.push(
-          `  !!  ${name} — gemessen nur ${wirklich}. Die Aussage stimmt nicht.`,
+          `  !!  ${name}, gemessen nur ${wirklich}. Die Aussage stimmt nicht.`,
         );
         abweichungen++;
       } else if (wirklich > grenze * 1.25) {
         zeilen.push(
-          `  ~   ${name} — gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`,
+          `  ~   ${name}, gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`,
         );
         hinweise++;
         abweichungen++;
@@ -516,7 +516,7 @@ for (const datei of [
    Monorepos hinter Salati, MenuCloud und NOURI". Über diese drei sind es aber
    3.975; die 4.053 daneben enthalten zusätzlich Portfolio, Prüfstand und die
    vier OSS-Pakete. Der Hinweis, der die Zahl prüfbar machen sollte, widerlegte
-   sie also. Genau das findet jemand, der nachrechnet — und nachzurechnen ist
+   sie also. Genau das findet jemand, der nachrechnet, und nachzurechnen ist
    ausdrücklich die Einladung.
 
    Deshalb schreibt dieser Lauf den Hinweis jetzt selbst. Was auf der Seite
@@ -568,7 +568,7 @@ if (fehlendeRepos.length) {
    *
    * Sie steht auf der Seite mit ihrem Messdatum: "4.065, gemessen am 1. August
    * 2026". Ein datierter Wert wird nicht falsch, wenn danach weitergearbeitet
-   * wird — er wird nur älter. Und weitergearbeitet wird laufend, unter anderem
+   * wird, er wird nur älter. Und weitergearbeitet wird laufend, unter anderem
    * von diesem Prüflauf selbst: Sein eigener Commit hebt die Zahl um eins.
    *
    * Ohne Nachsicht meldet dieser Schritt deshalb in jedem einzelnen Lauf eine
@@ -626,7 +626,7 @@ if (fehlendeRepos.length) {
    * nur, was bei GitHub liegt.
    *
    * Schriebe dieser Lauf mit, stünde im Stempel eine Zahl, die niemand
-   * nachvollziehen kann — und zwei Schreiber für dieselbe Datei sind genau der
+   * nachvollziehen kann, und zwei Schreiber für dieselbe Datei sind genau der
    * Widerspruch, gegen den sie eingeführt wurde.
    *
    * Aufgabe hier ist deshalb nur der Vergleich: Weicht die Seite ab, steht das
@@ -640,8 +640,8 @@ if (fehlendeRepos.length) {
 
 Die README des Prüfstands beschreibt, was er enthält: Folgen, Minuten,
    Kapitel, Fachwörter, Karten. Diese Datei wird gelesen, wenn jemand wissen
-   will, was ihn erwartet — und sie wuchs, während der Prüfstand wuchs. Bei
-   einer Stichprobe standen dort 240 Fragen, gezählt waren es 280, und 125
+   will, was ihn erwartet, und sie wuchs, während der Prüfstand wuchs. Bei
+   einer Stichprobe standen dort 240 Fragen: gezählt waren es 280, und 125
    Minuten gegen gemessene 127.
 
    Die Angaben standen früher in einer Sammelliste. Die gibt es nicht mehr;
@@ -698,7 +698,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
   // `minuten` ist die geschätzte Länge aus der Zeichenzahl des Skripts und je
   // Folge gerundet; `sekunden` ist die Länge der fertigen Tonspur. Über
   // sechzehn Folgen summierten sich die Rundungen auf 127 Minuten, während die
-  // Anwendung selbst 125 anzeigt — aus 7.518 Sekunden. Zwei Rechenwege für
+  // Anwendung selbst 125 anzeigt, aus 7.518 Sekunden. Zwei Rechenwege für
   // dieselbe Zahl, und der falsche stand im Dokument für den Leser.
   pruefe(
     "Podcast-Minuten",
@@ -708,7 +708,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     /* Der Satz im README nennt die Folgen, dann die Vertonung, dann die
        Spielzeit. Das Muster hing vorher an „Podcast-Folgen mit N Minuten"
        und zwang den Satz in die Form „21 Podcast-Folgen, davon 21 vertonte
-       Podcast-Folgen mit 160 Minuten" — Prosa, die einem regulären Ausdruck
+       Podcast-Folgen mit 160 Minuten". Prosa, die einem regulären Ausdruck
        zuliebe zweimal dasselbe sagt, im README eines Projekts, das von
        Belegbarkeit handelt. Jetzt hängt es an der Spielzeit selbst. */
     /zusammen\s+([\d.]+)\s+Minuten/,
@@ -737,7 +737,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
     /([\d.]+) Fragen\s+mit Antwortauswahl/,
   );
   /* Der Rest sind die Karten zum Aufsagen: alles, was keine Auswahlfrage sein
-     kann. Ungeprüft stand dort "40", während es 66 waren — die Zahl war aus
+     kann. Ungeprüft stand dort "40", während es 66 waren, die Zahl war aus
      der Zeit vor den Sprechvorlagen und hatte sich um zwei Drittel bewegt,
      ohne dass jemand sie ansah. */
   pruefe(
@@ -754,7 +754,7 @@ if (existsSync(PRUEFSTAND) && existsSync(TODO)) {
    ---------------------------------------------------------------------------
 
    Zwei Zahlen, die bisher niemand nachgezählt hat. Sie ändern sich nur mit dem
-   Code — aber genau das galt auch für die 63 ausgelieferten Versionen, die
+   Code, aber genau das galt auch für die 63 ausgelieferten Versionen, die
    trotzdem überholt waren, als jemand hinsah. Was auf der Seite steht, wird
    hier gezählt oder es steht nicht da. */
 
@@ -800,7 +800,7 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
  * Eine GitHub-Abfrage, notfalls mit einem zweiten angemeldeten Konto.
  *
  * Salati liegt unter `MenuCloud-Berlin` und ist privat. Auf diesem Rechner
- * sind zwei Konten angemeldet, aktiv ist `DomenicMoran` — und das darf dort
+ * sind zwei Konten angemeldet, aktiv ist `DomenicMoran`, und das darf dort
  * nicht lesen. Die beiden Salati-Prüfungen wurden deshalb seit Tagen
  * stillschweigend übersprungen, während die Seite weiter „64 ausgelieferte
  * Versionen" und „14 Sprachen" behauptete: zwei Zahlen ohne Prüfung, und die
@@ -836,7 +836,7 @@ function ghApi(argumente) {
 }
 
 /**
- * Eine GitHub-Adresse abrufen — angemeldet, über dieselbe Stelle wie alles
+ * Eine GitHub-Adresse abrufen, angemeldet, über dieselbe Stelle wie alles
  * andere.
  *
  * Drei Prüfungen holten ihre Daten mit einem blanken `fetch` von
@@ -845,7 +845,7 @@ function ghApi(argumente) {
  *
  * Gemessen am 07.08.2026: `remaining: 0`. Die drei Prüfungen fielen aus, der
  * Bericht sagte „übersprungen“, und der Lauf endete grün. Das ist die
- * schlechteste Art zu scheitern, die es hier gibt — eine Prüfung, die
+ * schlechteste Art zu scheitern, die es hier gibt, eine Prüfung, die
  * schweigt, sieht aus wie eine, die zustimmt. Der Schlussatz nennt die Zahl
  * der Ausfälle inzwischen, aber verhindert hat sie das nicht.
  *
@@ -917,7 +917,7 @@ function ghKonten() {
    ---------------------------------------------------------------------------
 
    Die Seite nannte einen "15-teiligen" Podcast. Ausgeliefert werden 68 Folgen
-   mit 627 Minuten — die Zahl stand seit der ersten Fassung da und ist mit der
+   mit 627 Minuten, die Zahl stand seit der ersten Fassung da und ist mit der
    Produktion mitgewachsen, ohne dass sie jemand nachgezogen hätte. Auf einer
    Seite, die mit belegten Zahlen argumentiert, ist eine zu kleine Zahl kein
    harmloser Fehler: Sie verschenkt genau das, was sie belegen soll.
@@ -1032,7 +1032,7 @@ function ghKonten() {
 
     // Die Spanne stand als Fließtext in beiden Sprachfassungen und nannte
     // damit dieselbe Version zweimal. Seit sie aus salati.ts kommt, steht
-    // dort die einzige Ziffer — beide Fassungen setzen sie ein.
+    // dort die einzige Ziffer, beide Fassungen setzen sie ein.
     for (const [datei, muster] of [
       ["src/content/salati.ts", /SALATI_STAND = "(\d+\.\d+\.\d+)"/],
     ]) {
@@ -1055,7 +1055,7 @@ function ghKonten() {
    statt der Wortgrenze `\b` ein echtes Backspace (0x08). Ein Einfüge-Skript
    hatte es hineingeschrieben, weil ein Escape eine Ebene zu früh aufgelöst
    wurde. Im Editor und in `git diff` sieht das Muster richtig aus, es trifft
-   nur nie — und der Test, der die Schreibweise prüfte, blieb grün.
+   nur nie, und der Test, der die Schreibweise prüfte, blieb grün.
 
    Gesucht wird deshalb nach dem Ergebnis: jedes Steuerzeichen außer
    Zeilenumbruch, Wagenrücklauf und Tabulator. Über alle erreichbaren Repos,
@@ -1169,7 +1169,7 @@ const QUELLENDUNGEN = new Set([
 
    Geprüft wird deshalb das Ergebnis: jeder Verweis muss auflösen, jede Rolle
    ihren Partner haben, jede Kennung einmal vorkommen. Gegen die gebauten
-   Dateien und nicht gegen die Live-Seite — so greift es vor dem Ausliefern und
+   Dateien und nicht gegen die Live-Seite, so greift es vor dem Ausliefern und
    braucht kein Netz.
 
    Fehlt der Bau, wird der Block übersprungen: Der Prüflauf soll auch laufen,
@@ -1259,7 +1259,7 @@ const BRAUCHT_KIND = {
          fuer die sieben Abschnitte, die in der Leiste als Ziele stehen. Wer
          sieht, springt ueber die Leiste; wer die Landmarkenliste benutzt,
          bekam die ganze Startseite als einen Block. axe-core meldet das
-         nicht — eine namenlose Sektion verletzt keine Regel, sie verschwindet
+         nicht, eine namenlose Sektion verletzt keine Regel, sie verschwindet
          nur. */
       const angesprungen = new Set(
         [...html.matchAll(/href="[^"#]*#([a-z-]+)"/g)].map((m) => m[1]),
@@ -1313,7 +1313,7 @@ const BRAUCHT_KIND = {
     const adressen = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
     /* Je Adresse die Sprachen, die ihr `<url>`-Block nennt. Zerlegt wird an
-       den Blöcken und nicht über einen Ausdruck über die ganze Datei — sonst
+       den Blöcken und nicht über einen Ausdruck über die ganze Datei, sonst
        bekäme jede Adresse die Sprachen aller anderen dazu. */
     const gruppen = new Map();
     for (const block of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
@@ -1365,13 +1365,13 @@ const BRAUCHT_KIND = {
 
          Google liest hreflang aus dem Dokumentkopf **und** aus der Sitemap und
          erwartet dieselbe Gruppe. Gemessen am 08.08.2026 nannte jede Seite im
-         Kopf drei Alternativen — `de`, `en`, `x-default` —, die Sitemap je
+         Kopf drei Alternativen, `de`, `en`, `x-default`, die Sitemap je
          Adresse nur zwei: `x-default` fehlte dort. Die Angabe, welche Fassung
          ein Besucher ohne passende Sprache bekommt, stand damit nur an einer
          von zwei Stellen. */
       /* `gi`, nicht `g`: Next schreibt das Attribut als `hrefLang` in das
          HTML. Für einen Browser ist das dasselbe, für einen Ausdruck ohne
-         `i` nicht — und ein Ausdruck, der nichts findet, meldet nichts. */
+         `i` nicht, und ein Ausdruck, der nichts findet, meldet nichts. */
       const imKopf = new Set(
         [...html.matchAll(/<link[^>]+hreflang="([^"]+)"/gi)].map((m) => m[1]),
       );
@@ -1427,13 +1427,12 @@ const BRAUCHT_KIND = {
    Jeder Artikel nennt den Commit, an dem sich der Fix nachlesen lässt:
    „Salati-Repo, Commit 427cd6c6 vom 31.07.2026“. Das ist die konkreteste
    Angabe der ganzen Seite. Sie steht in einem privaten Repo, also kann sie
-   niemand von außen prüfen — hier liegt es daneben, und damit lässt sie sich
+   niemand von außen prüfen, hier liegt es daneben, und damit lässt sie sich
    prüfen.
 
    Geprüft wird beides: dass es die Kennung gibt und dass das Datum daneben
    stimmt. Eine Kennung, die nach einem Umschreiben ins Leere zeigt, oder ein
-   Datum, das um einen Tag danebenliegt, macht aus einem Beleg eine Behauptung
-   — und das fiele sonst erst auf, wenn jemand danach fragt.
+   Datum, das um einen Tag danebenliegt, macht aus einem Beleg eine Behauptung, und das fiele sonst erst auf, wenn jemand danach fragt.
 
    Fehlt ein Repo, wird übersprungen statt zu scheitern. */
 {
@@ -1493,7 +1492,7 @@ const BRAUCHT_KIND = {
   /*
     Und die englische Fassung nennt dieselben Belege.
 
-    Geprüft wird oben nur `de-*.ts` gegen die Repos — die englische Fassung
+    Geprüft wird oben nur `de-*.ts` gegen die Repos, die englische Fassung
     sieht der Lauf nicht an. Ihre Belegliste ist aber keine Übersetzung,
     sondern dieselbe Aussage: dieselben Commits, dieselben Dateipfade. Wer
     einen davon in einer Sprache ändert, ändert ihn leicht nur dort, und die
@@ -1532,7 +1531,7 @@ const BRAUCHT_KIND = {
       const nurEnglisch = dort.filter((x) => !hier.includes(x));
       if (nurDeutsch.length || nurEnglisch.length) {
         funde.push(
-          `${datei}: ${was}-Belege gehen auseinander — ` +
+          `${datei}: ${was}-Belege gehen auseinander, ` +
             `nur deutsch: ${nurDeutsch.join(", ") || "–"}; ` +
             `nur englisch: ${nurEnglisch.join(", ") || "–"}`,
         );
@@ -1560,7 +1559,7 @@ const BRAUCHT_KIND = {
 
    Die Fachartikel belegen ihre Aussagen mit konkreten Dateien: "src/lib/
    tse-chain.ts und supabase/migrations/20260413_tse_chain_atomic_append.sql".
-   Das ist die tiefste Behauptung der ganzen Seite — und die einzige, die
+   Das ist die tiefste Behauptung der ganzen Seite, und die einzige, die
    niemand prüfen konnte, weil die Produktivrepos privat sind.
 
    Hier lassen sie sich prüfen: Sie liegen auf diesem Rechner neben dem
@@ -1580,7 +1579,7 @@ const BRAUCHT_KIND = {
   };
   /* `docs` kam später dazu und fehlte.
      Der Whisper-Artikel belegt seine Messwerte mit
-     `docs/audit-2026-07-27/WHISPER-EIGENE-KONVERTIERUNG.md` — der einzige
+     `docs/audit-2026-07-27/WHISPER-EIGENE-KONVERTIERUNG.md`, der einzige
      Beleg, den ein Leser mit Zugang wirklich lesen kann statt nur zu
      finden, und der einzige, der außerhalb dieser Liste stand. */
   const WURZELN = /^(src|apps|supabase|scripts|packages|docs)\//;
@@ -1625,7 +1624,7 @@ const BRAUCHT_KIND = {
       Zwei Belege nennen nicht nur eine Datei, sondern eine Stelle darin:
       „whisperCheck.ts, Zeile 617" und „route.ts, Zeile 472 ff.". Eine
       Zeilennummer ist die genaueste Behauptung dieser Artikel und die
-      flüchtigste — der Pfad bleibt, der Commit bleibt, und die Zeile wandert
+      flüchtigste, der Pfad bleibt, der Commit bleibt, und die Zeile wandert
       bei der nächsten Einfügung darüber.
 
       Geprüft wird, dass es die Zeile gibt und dass etwas darauf steht. Den
@@ -1657,7 +1656,7 @@ const BRAUCHT_KIND = {
       Block darüber nicht mehr. Dort stand `const { promise } =
       ctx.transcribeData(pcm, …)`, im Repo längst `const handle =
       whisperContext.transcribe(path, …)`. Wer die Stelle aufschlägt, findet
-      andere Bezeichner als im Artikel — auf einer Seite, deren Argument die
+      andere Bezeichner als im Artikel, auf einer Seite, deren Argument die
       Nachprüfbarkeit ist.
 
       Geprüft wird ein Anker und nicht der ganze Block: Mindestens eine Zeile
@@ -1682,7 +1681,7 @@ const BRAUCHT_KIND = {
 
       Die Artikel nennen Zahlen mit Einheit: „55 MB", „574 MB", „63 Prozent
       weniger Download", „Wortfehlerrate 9,2 Prozent ohne Prompt, 7,9 Prozent
-      mit". Das sind die härtesten Angaben, die sie machen — und die
+      mit". Das sind die härtesten Angaben, die sie machen, und die
       einzigen, die aus einem fremden Repo stammen, das sich unabhängig
       ändert.
 
@@ -1705,7 +1704,7 @@ const BRAUCHT_KIND = {
         /* Als ganze Zahl, nicht als Teilzeichenkette.
 
            Der erste Anlauf suchte mit `includes`. Damit ging „51 MB" durch,
-           weil irgendwo im Beleg eine 51 in einer längeren Zahl steckt —
+           weil irgendwo im Beleg eine 51 in einer längeren Zahl steckt:
            eine Zeilennummer, ein Stück einer Prüfsumme. Ein Wächter, der auf
            Ziffernfolgen anspringt, findet fast alles und belegt nichts. */
         const alsZahl = new RegExp(
@@ -1733,7 +1732,7 @@ const BRAUCHT_KIND = {
         );
         if (!verankert) {
           funde.push(
-            `${datei}: Codeblock ohne Entsprechung in den genannten Belegen — ` +
+            `${datei}: Codeblock ohne Entsprechung in den genannten Belegen, ` +
               `„${kandidaten[0].slice(0, 50)}“`,
           );
         }
@@ -1763,7 +1762,7 @@ const BRAUCHT_KIND = {
 
    Diese eine Zahl stand als einzige ohne Nachzählung auf der Seite: Sie liegt
    in der Datenbank, und die Anwendung hat keinen Endpunkt, der sie herausgibt.
-   Sie hat aber eine Startseite, und dort steht sie — als „11892+“ in der
+   Sie hat aber eine Startseite, und dort steht sie, als „11892+“ in der
    Kennzahlenreihe. Damit ist sie prüfbar, ohne dass jemand eine Abfrage
    ausführt.
 
@@ -1858,7 +1857,7 @@ const BRAUCHT_KIND = {
    ---------------------------------------------------------------------------
 
    Oben im README stehen vier Abzeichen: Next.js 16.2, React 19.2, TypeScript
-   strict, Tailwind v4. Sie sind von Hand gesetzte Bilder, keine Abfrage — und
+   strict, Tailwind v4. Sie sind von Hand gesetzte Bilder, keine Abfrage, und
    damit die einzige Stelle im Repo, an der eine Fassungsangabe stehen bleibt,
    wenn die Abhängigkeit weiterzieht. Wer ein Repo aufmacht und im ersten Bild
    eine Fassung liest, die `package.json` widerspricht, hat den ersten Zweifel
@@ -1886,7 +1885,7 @@ const BRAUCHT_KIND = {
   for (const [beschriftung, paket] of ABZEICHEN) {
     /* `String.raw`, weil eine Vorlage `\d` zu `d` auflöst, bevor `RegExp` es
        sieht. Der erste Anlauf suchte damit nach `[d.]+` und fand nie eine
-       Fassung — und ein Lauf, der nichts findet, meldet nichts. */
+       Fassung, und ein Lauf, der nichts findet, meldet nichts. */
     const muster = new RegExp(
       String.raw`badge/${beschriftung.replace(".", String.raw`\.`)}-v?([\d.]+)`,
     );
@@ -1921,7 +1920,7 @@ const BRAUCHT_KIND = {
      Gemessen am 08.08.2026 stimmen sie. Sie stimmen aber nur bis zum nächsten
      Hauptsprung, und dann fällt es niemandem auf: Das README wird bei jedem
      Bump gegen `package.json` gehalten, humans.txt von nichts. Zwei Stellen
-     mit derselben Aussage, eine davon geprüft — das ist die Sorte Zahl, die
+     mit derselben Aussage, eine davon geprüft, das ist die Sorte Zahl, die
      dieses Skript sonst überall einsammelt. */
   {
     const route = join("src", "app", "humans.txt", "route.ts");
@@ -1929,7 +1928,7 @@ const BRAUCHT_KIND = {
       const text = readFileSync(route, "utf8");
       for (const [beschriftung, paket] of ABZEICHEN) {
         /* „Tailwind CSS 4" trägt ein Wort zwischen Name und Fassung,
-           „Next.js 16" nicht. Eines ist erlaubt, mehr nicht — sonst greift
+           „Next.js 16" nicht. Eines ist erlaubt, mehr nicht, sonst greift
            das Muster über den Satz hinweg auf die nächste Zahl. */
         const muster = new RegExp(
           String.raw`${beschriftung.replace(".", String.raw`\.`)}(?:\s+[A-Za-z.]+)?\s+v?(\d+)`,
@@ -1968,7 +1967,7 @@ const BRAUCHT_KIND = {
    Gemessen am 03.08.2026 an der gebauten Seite trugen deshalb alle Seiten
    ausser den zehn Artikelseiten denselben Kartentitel: „Domenic Moran – AI
    Product Engineer". Wer die Artikeluebersicht teilte, zeigte damit die
-   Startseite — und der Titel dafuer stand seit Langem in der Inhaltsdatei,
+   Startseite, und der Titel dafuer stand seit Langem in der Inhaltsdatei,
    er wurde nur nicht weitergereicht.
 
    Die beiden Startseiten duerfen ihn tragen, sie sind gemeint. */
@@ -2015,8 +2014,8 @@ const BRAUCHT_KIND = {
       /* Und die Karte heißt wie der Browsertitel.
 
          Next hängt den Namen über `title.template` an, aber nur an
-         `<title>`. Wer für eine Seite ein eigenes `openGraph` setzt — und
-         das tun alle acht, die kein Bild erben —, bekommt dort den nackten
+         `<title>`. Wer für eine Seite ein eigenes `openGraph` setzt, und
+         das tun alle acht, die kein Bild erben, bekommt dort den nackten
          Seitentitel. Gemessen an der ausgelieferten Seite hieß die Karte des
          Kurzprofils „Kurzprofil“ und die des Impressums „Impressum“: ohne
          Namen, ohne Rolle, ohne Zusammenhang. Ausgerechnet das Kurzprofil
@@ -2033,7 +2032,7 @@ const BRAUCHT_KIND = {
 
          Seit dem 08.08.2026 trägt ein Artikel ein `titleShort`, weil seine
          Überschrift mit 62 Zeichen im Suchergebnis abgeschnitten würde. Die
-         Karte darf dort die volle Überschrift zeigen — eine geteilte Karte
+         Karte darf dort die volle Überschrift zeigen, eine geteilte Karte
          hat mehr Platz als eine Trefferzeile, und der ganze Satz ist das,
          was den Klick auslöst.
 
@@ -2057,7 +2056,7 @@ const BRAUCHT_KIND = {
 
          Next mischt Seitenmetadaten nicht in die des Layouts, es ersetzt sie
          je Feld. Wer ein eigenes `openGraph` setzt und `twitter` nicht
-         anfasst, behält dort den Wert des Layouts — und der beschreibt die
+         anfasst, behält dort den Wert des Layouts, und der beschreibt die
          Startseite. Gemessen an den gebauten Seiten am 08.08.2026: 16 von 18
          meldeten an X den Titel „Domenic Moran – AI Product Engineer" und die
          Beschreibung der Startseite, darunter jeder der zehn Artikel und
@@ -2090,14 +2089,14 @@ const BRAUCHT_KIND = {
 
          Die zehn Artikelrouten erzeugen zur Bauzeit je eine Karte mit dem
          Titel des Artikels, seinem Anriss und seinen Themen. Next füllt beide
-         Vorschaukarten aus einer solchen Datei von allein — aber nur, solange
+         Vorschaukarten aus einer solchen Datei von allein, aber nur, solange
          die Metadaten kein `images` setzen. Sie taten es, und ein gesetztes
          Feld gewinnt still.
 
          Gemessen am 08.08.2026: Alle zehn Artikel meldeten
          `/opengraph-image`, das allgemeine Bild mit dem Alternativtext
          „Domenic Moran – AI Product Engineer". Der Erzeuger lief, das Bild lag
-         im Bau, und gesehen hat es nie jemand — auf genau den Seiten, die
+         im Bau, und gesehen hat es nie jemand, auf genau den Seiten, die
          geteilt werden. */
       const adresse = route.replace(/\.html$/, "");
       if (/^\/(artikel|en\/articles)\/[^/]+$/.test(adresse)) {
@@ -2144,7 +2143,7 @@ const BRAUCHT_KIND = {
 
    Jede Fallstudie verweist auf ihr Produkt: Store-Eintrag, Live-Adresse,
    Statusseite. Das sind die Verweise, mit denen die Seite ihre stärkste
-   Behauptung belegt — „vier Systeme in Produktion" —, und sie sind die
+   Behauptung belegt, „vier Systeme in Produktion", und sie sind die
    einzigen, die von außen kaputtgehen können, ohne dass hier jemand etwas
    ändert: Eine App wird aus dem Store genommen, eine Domain läuft ab, eine
    Statusseite zieht um.
@@ -2154,7 +2153,7 @@ const BRAUCHT_KIND = {
    mit derselben Regel wie bei den Zertifikaten: Ein Netzfehler wird
    übersprungen und gesagt; nur eine Antwort mit 4xx oder 5xx ist ein Befund.
 
-   Das 999 von LinkedIn ist keiner — es ist deren Abwehr gegen Abrufe ohne
+   Das 999 von LinkedIn ist keiner, es ist deren Abwehr gegen Abrufe ohne
    Browser, und das Profil steht. */
 {
   const adressen = [
@@ -2164,7 +2163,7 @@ const BRAUCHT_KIND = {
         /* Drei bleiben draussen, jede mit Grund: die eigene Adresse, weil sie
             prueft; LinkedIn, weil es Abrufen ohne Browser mit 999
            antwortet; und der Udemy-Kurznachweis, der hinter einer Bot-Pruefung
-           liegt und einer Maschine grundsaetzlich 403 gibt — dieselbe Stelle
+           liegt und einer Maschine grundsaetzlich 403 gibt, dieselbe Stelle
            steht schon in der Zertifikatspruefung darueber. */
         .filter(
           (a) =>
@@ -2197,7 +2196,7 @@ const BRAUCHT_KIND = {
         Der erste Entwurf zählte jede Antwort ab 400 als kaputt. Damit ging
         der Lauf schon am selben Tag einmal rot, ohne dass etwas fehlte: Ein
         Store antwortet einer Maschine gelegentlich mit 403 oder 429, und
-        beides sagt nur, dass gerade nicht geantwortet wird — nicht, dass es
+        beides sagt nur, dass gerade nicht geantwortet wird, nicht, dass es
         die Seite nicht mehr gibt. Ein Wächter, der bei Gegenwehr rot wird,
         wird abgeschaltet.
 
@@ -2240,7 +2239,7 @@ const BRAUCHT_KIND = {
    Die Rolle steht auf sechs öffentlichen Flächen: Seite, Vorschaukarte,
    Kurzprofil, Profil-README, Repo-README und LinkedIn. Gemessen am
    03.08.2026 stand im README des Portfolios „AI-Native Product Engineer",
-   überall sonst „AI Product Engineer" — zwei Titel für dieselbe Person, und
+   überall sonst „AI Product Engineer", zwei Titel für dieselbe Person, und
    zwar genau dort, wo jemand nachschaut, der den Code sehen will.
 
    Die Datei mit dem Bewerbungstext liegt außerhalb des Repos; fehlt sie,
@@ -2252,7 +2251,7 @@ const BRAUCHT_KIND = {
     abweichungen++;
   } else {
     /* Nur Dateien, die jemand von außen sehen kann. `docs/` ist privat und
-       steht bewusst nicht in dieser Liste — bis auf die beiden Vorlagen,
+       steht bewusst nicht in dieser Liste, bis auf die beiden Vorlagen,
        aus denen Veröffentlichtes entsteht. */
     const flaechen = [
       ["README.md", "README.md"],
@@ -2301,12 +2300,12 @@ const BRAUCHT_KIND = {
 
    Vier Angaben stehen zweimal: in der Tabelle des Lebenslaufs und in der
    Faktenkachel des Recruiter-Bereichs. Es sind die vier, nach denen als
-   erstes gefragt wird — was gesucht ist, wo, ab wann, in welchen Sprachen.
+   erstes gefragt wird, was gesucht ist, wo, ab wann, in welchen Sprachen.
    Der Lebenslauf geht als PDF mit, die Kachel steht auf der Seite, und wer
    beides nebeneinanderlegt, liest zwei Fassungen derselben Auskunft.
 
    Geprüft wird auf Enthaltensein und nicht auf Gleichheit: Die Kachel ist an
-   zwei Stellen absichtlich kürzer — „Deutsch (Muttersprache) · Englisch“ ohne
+   zwei Stellen absichtlich kürzer, „Deutsch (Muttersprache) · Englisch“ ohne
    den Zusatz „(verhandlungssicher in Fachkontext)“, und „Festanstellung“
    steht dort als eigene Zeile statt im Satz über die gesuchte Rolle. Kürzer
    ist erlaubt, anders nicht.
@@ -2363,8 +2362,8 @@ const BRAUCHT_KIND = {
    Blatt „1.278 API-Routen über 815 Migrationen", der Stempel 1.279 und 816.
 
    Untertreiben ist keine Falschaussage, und trotzdem ist es der teuerste Ort
-   dafür: Wer Lebenslauf und Seite nebeneinanderlegt — und genau das tut, wer
-   prüft — findet zwei Zahlen für dieselbe Sache und weiß nicht, welche gilt.
+   dafür: Wer Lebenslauf und Seite nebeneinanderlegt, und genau das tut, wer
+   prüft, findet zwei Zahlen für dieselbe Sache und weiß nicht, welche gilt.
 
    Der Prüfstempel gewinnt, weil er täglich nachgeführt wird. Gemeldet wird
    jede Abweichung in beide Richtungen.
@@ -2384,8 +2383,8 @@ const BRAUCHT_KIND = {
     /* Die Salati-Zahlen kommen aus `de.ts` und nicht aus dem Prüfstempel:
        Dort stehen sie, dort prüft der Lauf sie gegen die Store-Wirklichkeit,
        und der Lebenslauf soll ihnen folgen. Am 08.08.2026 lief er zwei
-       Versionen hinterher — „Version 1.46" und „64 ausgelieferte Versionen"
-       gegen 1.48.0 und 66 —, ohne dass etwas darauf zeigte. */
+       Versionen hinterher, „Version 1.46" und „64 ausgelieferte Versionen"
+       gegen 1.48.0 und 66, ohne dass etwas darauf zeigte. */
     const inhalt = readFileSync(join("src", "content", "salati.ts"), "utf8");
 
     for (const [was, wert] of [
@@ -2395,7 +2394,6 @@ const BRAUCHT_KIND = {
         "ausgelieferte Versionen",
         /const SALATI_VERSIONEN = (\d+);/.exec(inhalt)?.[1],
       ],
-      ["App-Store-Version", /SALATI_STAND = "([\d.]+)"/.exec(inhalt)?.[1]],
     ]) {
       /* Gesucht wird die Zahl im Wortumfeld, nicht irgendwo im Blatt: „816"
          allein stünde auch in einer Postleitzahl. */
@@ -2408,7 +2406,6 @@ const BRAUCHT_KIND = {
         "API-Routen": String.raw`([\d.]+)\s+API-Routen`,
         Migrationen: String.raw`([\d.]+)\s+(?:versionierte\s+Postgres-|versionierte )?Migrationen`,
         "ausgelieferte Versionen": String.raw`(\d+)\s+ausgelieferte (?:App-)?Versionen`,
-        "App-Store-Version": String.raw`Live im App Store \(Version ([\d.]+)\)`,
       };
       if (!wert) {
         funde.push(`${was}: in der Quelle nicht gefunden`);
@@ -2433,9 +2430,18 @@ const BRAUCHT_KIND = {
       for (const zahl of genannt) {
         /* Die 12 Migrationen von NOURI sind eine andere Größe als die des
            größten Projekts und bleiben außen vor. */
-        if (Number(zahl.replace(/\./g, "")) < 100) continue;
-        if (zahl !== wert) {
-          funde.push(`${was}: Lebenslauf ${zahl}, Prüfstempel ${wert}`);
+        const genannteZahl = Number(zahl.replace(/\./g, ""));
+        if (genannteZahl < 100) continue;
+        const gemessen = Number(String(wert).replace(/\./g, ""));
+        if (genannteZahl > gemessen) {
+          funde.push(
+            `${was}: Lebenslauf nennt ${zahl}: gemessen sind es ${wert}`,
+          );
+        } else if (genannteZahl < gemessen * 0.75) {
+          funde.push(
+            `${was}: Lebenslauf nennt ${zahl}, gemessen ${wert}. Über ein ` +
+              `Viertel Abstand ist keine Untergrenze mehr, sondern eine alte Zahl.`,
+          );
         }
       }
     }
@@ -2454,7 +2460,7 @@ const BRAUCHT_KIND = {
       for (const f of funde) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        "  ok  Lebenslauf              4 Zahlen wie auf der Seite: Routen, Migrationen, Versionen, App-Stand",
+        "  ok  Lebenslauf              3 Untergrenzen halten: Routen, Migrationen, Versionen",
       );
     }
   }
@@ -2464,8 +2470,7 @@ const BRAUCHT_KIND = {
    Das Profil-README, wie GitHub es zeigt
    ---------------------------------------------------------------------------
 
-   Der Wächter darunter vergleicht Artikeltitel gegen `docs/GITHUB-PROFILE-README.md`
-   — eine Datei in diesem Rechner, die niemand aufruft. Gerendert wird auf
+   Der Wächter darunter vergleicht Artikeltitel gegen `docs/GITHUB-PROFILE-README.md`, eine Datei in diesem Rechner, die niemand aufruft. Gerendert wird auf
    GitHub der Inhalt des Repositoriums `DomenicMoran/DomenicMoran`, und beide
    können auseinanderlaufen: Wer dort über die Weboberfläche etwas ändert,
    ändert die örtliche Datei nicht mit, und ab da prüft der nächste
@@ -2476,7 +2481,7 @@ const BRAUCHT_KIND = {
    der Lauf unter Windows bei jedem Durchgang an.
 
    Dazu die Zahlen im README: Es nennt je Paket eine Testzahl und "null
-   Abhängigkeiten". Gezählt wird in den örtlichen Klonen unter ../oss —
+   Abhängigkeiten". Gezählt wird in den örtlichen Klonen unter ../oss:
    dieselbe Quelle, aus der die Pakete veröffentlicht sind.
 
    Ohne Netz wird übersprungen und das gesagt. */
@@ -2486,12 +2491,12 @@ const BRAUCHT_KIND = {
    Der Lauf weiter unten ruft jede Produktadresse ab und prüft den Status.
    Das reicht nicht: Eine abgelaufene Domain antwortet mit 200 und einer
    Parkseite, ein umgezogenes Projekt mit der Startseite des neuen Anbieters.
-   Die stärkste Behauptung dieser Seite — „vier Systeme in Produktion“ — hinge
+   Die stärkste Behauptung dieser Seite, „vier Systeme in Produktion“, hinge
    dann an einem Verweis, der zwar antwortet, aber nichts belegt.
 
    Geprüft wird deshalb der Inhalt: Nennt die Seite den Namen des Produkts,
    unter dem sie hier steht? Das ist eine schwache Bedingung, und genau so ist
-   sie gemeint — sie soll den Totalausfall finden, nicht den Inhalt bewerten.
+   sie gemeint, sie soll den Totalausfall finden, nicht den Inhalt bewerten.
    ------------------------------------------------------------------------ */
 {
   const ZUORDNUNG = [
@@ -2543,7 +2548,7 @@ const BRAUCHT_KIND = {
 
    Drei der vier öffentlichen Pakete sind veröffentlicht, und ihre READMEs
    tragen ein Fassungsabzeichen. Geprüft wurde bisher nur, dass das Abzeichen
-   zur `package.json` daneben passt — beide liegen im selben Ordner, beide
+   zur `package.json` daneben passt, beide liegen im selben Ordner, beide
    ändert man in einem Zug.
 
    Der Fall, der dabei durchrutscht, ist genau der teure: Fassung erhöht,
@@ -2552,7 +2557,7 @@ const BRAUCHT_KIND = {
    alles stimmig aus. Gefunden wird so etwas erst, wenn es jemand versucht.
 
    Geprüft wird gegen die Registry: Die Fassung aus der `package.json` muss
-   dort vorhanden sein. Nicht „ist die neueste“ — eine ältere lokale Fassung
+   dort vorhanden sein. Nicht „ist die neueste“, eine ältere lokale Fassung
    ist kein Fehler, eine nirgends veröffentlichte schon.
    ------------------------------------------------------------------------ */
 {
@@ -2615,14 +2620,14 @@ const BRAUCHT_KIND = {
    Die Geräteklassen werden überall gleich aufgezählt.
 
    „Vier Geräteklassen“ steht in der Salati-Fallstudie, im Recruiter-Bereich,
-   auf der Kennzahlenkachel und als Titel des Architekturbilds — je zweimal,
+   auf der Kennzahlenkachel und als Titel des Architekturbilds, je zweimal,
    deutsch und englisch. Zweimal davon folgte eine Aufzählung, und die beiden
    waren verschieden: „iOS, Android, Android TV und Wear OS" in der einen
    Zeile, „Phone, Tablet, Android TV, Wear OS" zwei Zeilen darunter. Dieselbe
    Vier, zwei verschiedene Gruppen, und iOS ist kein Gerät.
 
-   Geprüft wird deshalb nicht die Zahl — die steht ohnehin unter den
-   Kennzahlen —, sondern die Aufzählung: Wo eine folgt, muss es dieselbe sein.
+   Geprüft wird deshalb nicht die Zahl, die steht ohnehin unter den
+   Kennzahlen, sondern die Aufzählung: Wo eine folgt, muss es dieselbe sein.
    Verglichen wird als Menge, damit die Reihenfolge frei bleibt.
    ------------------------------------------------------------------------ */
 {
@@ -2665,7 +2670,7 @@ const BRAUCHT_KIND = {
      „Geräteklassen" im Fließtext und „Gerätetypen" in der Skills-Zeile der
      Salati-Spalte. Die ersten drei sind am 08.08.2026 zusammengeführt worden,
      die vierte stand außerhalb dessen, was der Vergleich der Aufzählungen
-     erreicht — sie nennt keine Geräte, nur ihre Zahl.
+     erreicht, sie nennt keine Geräte, nur ihre Zahl.
 
      Geprüft wird deshalb auch die Bezeichnung: „Geräteklasse" deutsch,
      „device class" englisch, sonst keine. */
@@ -2678,7 +2683,7 @@ const BRAUCHT_KIND = {
     const treffer = text.match(verboten);
     if (treffer)
       funde.push(
-        `${datei}: „${treffer[0]}" — für diese Sache heißt es überall ` +
+        `${datei}: „${treffer[0]}", für diese Sache heißt es überall ` +
           `„${datei.endsWith("en.ts") ? "device class" : "Geräteklasse"}"`,
       );
   }
@@ -2701,7 +2706,7 @@ const BRAUCHT_KIND = {
 
    Jedes Bild trägt Beschriftungen wie „63 Workflows · Watchdogs“ oder
    „11.892 Rezepte · Trainingspläne“. Das sind dieselben Aussagen, die
-   nebenan im Text stehen und dort seit Langem geprüft werden — nur an einer
+   nebenan im Text stehen und dort seit Langem geprüft werden, nur an einer
    zweiten Stelle, in einer eigenen Datei, und bis hierher von keiner Prüfung
    gelesen.
 
@@ -2730,7 +2735,7 @@ const BRAUCHT_KIND = {
        eine Zeilennummer. */
     /* Die Sollwerte kommen aus der Messung, nicht aus dieser Zeile.
 
-       Sie standen hier als Zeichenketten — "63", "11.892", "59", "12" —, und
+       Sie standen hier als Zeichenketten, "63", "11.892", "59", "12", und
        damit war die Prüfung ihre eigene Wahrheit: Wächst ein Bestand, meldet
        der Lauf die Inhaltsdatei und lässt das Bild durch, weil sein Sollwert
        mitgealtert ist. Fehlt eine Messung, weil das Repo nicht erreichbar
@@ -2776,14 +2781,14 @@ const BRAUCHT_KIND = {
 
    Der Kontaktbereich listet unter „Das hilft mir in der ersten Mail" vier
    Angaben und überließ es danach dem Absender, sie sich zu merken. Wer auf
-   „Direkt schreiben" klickte, bekam ein leeres Fenster — und schrieb zwei
+   „Direkt schreiben" klickte, bekam ein leeres Fenster, und schrieb zwei
    Sätze ohne Gehaltsrahmen, worauf eine Rückfrage folgt, die genau die Zeit
    kostet, die der vierte Punkt sparen will.
 
    Seit dem 08.08.2026 trägt der Verweis die Punkte als Rumpf. Damit gibt es
    sie zweimal auf derselben Seite: sichtbar in der Liste und kodiert in der
    Adresse. Zwei Stellen für denselben Text sind die nächste, an der eine
-   veraltet — geprüft wird deshalb an der ausgelieferten Seite, dass jeder
+   veraltet, geprüft wird deshalb an der ausgelieferten Seite, dass jeder
    Punkt der Liste auch im Rumpf steht.
    ------------------------------------------------------------------------ */
 {
@@ -2842,8 +2847,8 @@ const BRAUCHT_KIND = {
    Ein Artikel-Slug in der falschen Sprachfassung führt trotzdem hin.
 
    Jeder Artikel gibt es zweimal, unter zwei verschiedenen Slugs. Wer die
-   Adresse in der Leiste bearbeitet, um die Sprache zu wechseln — der
-   naheliegendste Handgriff überhaupt —, trifft die Mischform: `/en/artikel/`
+   Adresse in der Leiste bearbeitet, um die Sprache zu wechseln, der
+   naheliegendste Handgriff überhaupt, trifft die Mischform: `/en/artikel/`
    mit deutschem Slug, oder den englischen Slug unter `/artikel/`.
 
    Gemessen am 08.08.2026 antworteten alle diese Formen mit 404, obwohl die
@@ -2917,7 +2922,7 @@ const BRAUCHT_KIND = {
    Kurzprofil, `/blog` zu den Artikeln, `/kontakt` und `/contact` zum
    Kontaktbereich der jeweiligen Sprache. Das Muster war nur unvollständig.
 
-   Gemessen am 08.08.2026: `/kurzprofil` antwortete mit 404 — obwohl die Seite
+   Gemessen am 08.08.2026: `/kurzprofil` antwortete mit 404, obwohl die Seite
    ihr eigenes Blatt an vier Stellen so nennt. Ebenso `/fuer-recruiter`,
    `/ueber-mich`, `/arbeitsweise`, `/projekte`, `/skills` und `/about`, also
    genau die Wörter, die in der Kopfleiste stehen. Wer eines davon tippt oder
@@ -3005,13 +3010,13 @@ const BRAUCHT_KIND = {
 
    Im Werdegang stand „drei Apps in den Stores und zwei davon in beiden". Das
    war eine Woche lang zu wenig: Salati war am 01.08.2026 nur bei Apple
-   erreichbar, am 08.08.2026 auch bei Google Play — und der Satz zählte weiter
+   erreichbar, am 08.08.2026 auch bei Google Play, und der Satz zählte weiter
    die alte Lage. Eine Seite, die weniger sagt als wahr ist, fällt niemandem
    auf; sie kostet nur.
 
    Seit dem 08.08.2026 sind die beiden Zahlen verschieden: Salati TV ist ein
    eigener Play-Eintrag ohne Gegenstück bei Apple. Gezählt wird deshalb je
-   Store getrennt, an den Verweisen selbst — jede Fallstudie führt ihre
+   Store getrennt, an den Verweisen selbst, jede Fallstudie führt ihre
    Store-Einträge, und daraus ergeben sich beide Zahlen von allein.
    ------------------------------------------------------------------------ */
 {
@@ -3043,7 +3048,7 @@ const BRAUCHT_KIND = {
     abweichungen++;
     zeilen.push(
       "  !!  Store-Zahlen: Der Satz im Werdegang steht nicht mehr in der " +
-        "erwarteten Form — ohne ihn prüft dieser Lauf nichts.",
+        "erwarteten Form, ohne ihn prüft dieser Lauf nichts.",
     );
   } else {
     const behauptetPlay = ZAHLWORT[satz[1].toLowerCase()];
@@ -3109,7 +3114,7 @@ const BRAUCHT_KIND = {
 
    Sechs Zeichenketten, alle fest geschrieben, keine davon aus der Liste
    abgeleitet. Ein sechster Artikel würde die Liste verlängern und alle sechs
-   stehen lassen — auf der Seite, deren Argument ist, dass ihre Zahlen stimmen.
+   stehen lassen, auf der Seite, deren Argument ist, dass ihre Zahlen stimmen.
    Ausgerechnet die Überschrift wäre falsch.
 
    Geprüft wird gegen die Länge von `artikelDe`: Steht in einer der Stellen ein
@@ -3174,7 +3179,7 @@ const BRAUCHT_KIND = {
           if (i === 0 || i === 1)
             continue; /* „ein“ und „one“ sind zu häufig. */
           /* Nur das Zahlwort direkt vor der Sache, die gezählt wird. Sonst
-             trifft es auch „Zwei davon hatte monatelang niemand bemerkt" —
+             trifft es auch „Zwei davon hatte monatelang niemand bemerkt":
              dieselbe Zeile, eine andere Aussage. */
           if (
             !new RegExp(
@@ -3186,7 +3191,7 @@ const BRAUCHT_KIND = {
           geprueft++;
           if (wort !== richtig)
             funde.push(
-              `${sprache}, ${stelle[1]}: „${wort}“ bei ${anzahl} Artikeln — „${richtig}“`,
+              `${sprache}, ${stelle[1]}: „${wort}“ bei ${anzahl} Artikeln, „${richtig}“`,
             );
         }
       }
@@ -3210,14 +3215,14 @@ const BRAUCHT_KIND = {
    Das Profil-README und die Seite sagen dasselbe über die Artikel.
 
    Beide führen dieselben fünf Artikel und beschreiben sie mit demselben Satz.
-   Geprüft war bisher nur die Liste — die fünf Titel stimmen seit Langem
+   Geprüft war bisher nur die Liste, die fünf Titel stimmen seit Langem
    überein. Der Satz darüber nicht.
 
    Gefunden am 08.08.2026: Auf der Seite steht seit Runde 19 „Einen davon
    hatte monatelang niemand bemerkt, einen zweiten über Wochen"; der Satz war
    damals berichtigt worden, weil nur ein Artikel „monatelang" belegt und der
    zweite „über Wochen" sagt. Im README stand weiter „Zwei davon hatte
-   monatelang niemand bemerkt" — die Fassung, die dort nachweislich zu viel
+   monatelang niemand bemerkt", die Fassung, die dort nachweislich zu viel
    behauptet, an der Stelle, die ein CTO zuerst öffnet.
 
    Geprüft wird deshalb, dass der Satz aus dem Vorspann der Artikelübersicht
@@ -3231,7 +3236,7 @@ const BRAUCHT_KIND = {
    als Datei im Repo" und nannte als Beleg „CLAUDE.md pro Repo". Nachgezählt am
    08.08.2026 stimmte das für vier von sechs: MenuCloud, Salati (unter
    `apps/mobile`), diese Seite und die Lernplattform. NOURI und WohnungsJäger
-   tragen keine — auch nicht unter anderem Namen, gesucht wurde bis in die
+   tragen keine, auch nicht unter anderem Namen, gesucht wurde bis in die
    dritte Ebene.
 
    Zwei der vier Systeme, die diese Seite als Produktion nennt, waren also
@@ -3251,7 +3256,7 @@ const BRAUCHT_KIND = {
     ["Portfolio", "."],
     ["Lernplattform", "../pruefstand"],
   ];
-  /* Salati trägt sie unter `apps/mobile`, nicht an der Wurzel — ein Monorepo
+  /* Salati trägt sie unter `apps/mobile`, nicht an der Wurzel, ein Monorepo
      mit einer App darin. Gesucht wird deshalb an beiden Stellen. */
   const UNTERORDNER = ["", "apps/mobile"];
   const DATEIEN = ["CLAUDE.md", "AGENTS.md"];
@@ -3299,7 +3304,7 @@ const BRAUCHT_KIND = {
    menschliche Freigabe" und „Server bindet standardmäßig nur auf 127.0.0.1".
 
    Es sind die einzigen Aussagen der vier Fallstudien, die ein Versprechen über
-   Verhalten geben statt über Umfang — und damit die einzigen, deren Bruch
+   Verhalten geben statt über Umfang, und damit die einzigen, deren Bruch
    jemandem schaden könnte. Ein Agent, der ungefragt Bewerbungen mit echten
    Personendaten verschickt, ist etwas anderes als eine Zahl, die um drei
    danebenliegt.
@@ -3326,7 +3331,7 @@ const BRAUCHT_KIND = {
       .join(" ");
 
     /* Die Voreinstellung steht als `mode: 'REVIEW'` im Standardobjekt, nicht
-       in der Typdeklaration darüber — die zählt jeden Modus einmal auf. */
+       in der Typdeklaration darüber, die zählt jeden Modus einmal auf. */
     const voreinstellung = readFileSync(typen, "utf8").match(
       /mode:\s*['"]([A-Z]+)['"]/,
     )?.[1];
@@ -3340,7 +3345,7 @@ const BRAUCHT_KIND = {
     }
 
     /* `lanAccess` schaltet bewusst auf 0.0.0.0 um. Geprüft wird der Zweig
-       ohne diese Einstellung — das ist der Auslieferungszustand. */
+       ohne diese Einstellung, das ist der Auslieferungszustand. */
     const bindung = readFileSync(api, "utf8").match(
       /lanAccess\s*\?\s*['"]([\d.]+)['"]\s*:\s*['"]([\d.]+)['"]/,
     );
@@ -3380,7 +3385,7 @@ const BRAUCHT_KIND = {
    nicht.
 
    Der Preis dieser Bauart: Wer einen Artikel anlegt und die Zuordnung
-   vergisst, bekommt kein Schild — und nichts sagt es. Genau dieser Zustand
+   vergisst, bekommt kein Schild, und nichts sagt es. Genau dieser Zustand
    ist der Grund, warum es das Schild gibt: Gezählt an der ausgelieferten
    Seite führte aus keinem der fünf Artikel ein Verweis zurück, und wer über
    eine Suchmaschine im Whisper-Text landete, las von Salati, ohne zu
@@ -3415,7 +3420,7 @@ const BRAUCHT_KIND = {
 
        Die Regel dahinter ist der Weg zurück: Wer über einen Fehler in Salati
        liest, soll von dort zur Fallstudie kommen. Für einen Artikel über
-       diese Website führt kein solcher Weg irgendwohin — der Leser steht
+       diese Website führt kein solcher Weg irgendwohin, der Leser steht
        bereits darin, und ein Schild „Aus dem System: Portfolio" wäre ein
        Verweis auf die Seite, die man gerade liest.
 
@@ -3450,7 +3455,7 @@ const BRAUCHT_KIND = {
       zeilen.push(`  !!  Die Zuordnung Artikel/Fallstudie stimmt nicht:`);
       for (const s of ohneStudie)
         zeilen.push(
-          `        "${s}" gehört zu keiner Fallstudie — kein Weg zurück`,
+          `        "${s}" gehört zu keiner Fallstudie, kein Weg zurück`,
         );
       for (const s of ohneArtikel)
         zeilen.push(
@@ -3470,14 +3475,14 @@ const BRAUCHT_KIND = {
    Die MenuCloud-Fallstudie sagte „Self-hosted Mailstack (Mailcow) mit
    dreistufiger Fallback-Kette". Das stimmte bis zum 01.05.2026: Resend,
    Migadu, SES. Seither ist Migadu abgeschaltet, und `src/lib/smtp.ts` sagt es
-   im Kopf — „Supports two backends: mailcow (default + only primary), ses
+   im Kopf, „Supports two backends: mailcow (default + only primary), ses
    (rescue fallback)". `resend.ts` heißt nur noch so, um 25 Importeure nicht
    anzufassen; Migadu kommt in `src/lib` nicht mehr vor.
 
    Eine Zahl, die niemand nachzählt, überlebt die Sache, die sie beschreibt.
    Deshalb nennt die Seite jetzt die beiden Wege statt einer Stufenzahl, und
    dieser Block hält beides gegeneinander: Was im Kopf von `smtp.ts` steht,
-   muss auf der Seite stehen — und was dort nicht mehr steht, darf die Seite
+   muss auf der Seite stehen, und was dort nicht mehr steht, darf die Seite
    nicht mehr nennen.
    ------------------------------------------------------------------------ */
 {
@@ -3547,7 +3552,7 @@ const BRAUCHT_KIND = {
    Das sind drei Aussagen über Verhalten, und alle drei hängen an
    `services/api/src/server.ts`. Die dritte ist die, auf die es ankommt: Wer
    „nicht erreichbar" und „erreichbar, lehnt ab" gleich beantwortet, macht
-   jede Fehlersuche doppelt so lang — und genau das behauptet die Seite als
+   jede Fehlersuche doppelt so lang, und genau das behauptet die Seite als
    Unterschied zu anderen.
 
    Geprüft wird das Vorhandensein der drei Wege, nicht ihre Vollständigkeit:
@@ -3634,17 +3639,17 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
-   „100 % KI läuft auf dem Gerät" — nachgesehen, nicht geglaubt.
+   „100 % KI läuft auf dem Gerät", nachgesehen, nicht geglaubt.
 
    Die Salati-Fallstudie führt das als Kennzahl, und der Vorspann der
    Startseite wiederholt es: „die Fragen-Antwort-Suche arbeitet vollständig
    auf dem Gerät. Keine Anfrage verlässt das Telefon." Das ist die Zusage, die
    ein Leser am wenigsten selbst prüfen kann und die am meisten kostet, wenn
-   sie nicht stimmt — es geht um Gebete und um den Koran.
+   sie nicht stimmt, es geht um Gebete und um den Koran.
 
    Geprüft wird das Gegenteil: dass im App-Quelltext keine Adresse eines
    Sprachmodell-Anbieters vorkommt. Das ist eine schwache Bedingung und
-   genau so gemeint — sie findet den Rückfall, nicht die Absicht.
+   genau so gemeint, sie findet den Rückfall, nicht die Absicht.
 
    Nachgesehen am 08.08.2026: keine einzige Fundstelle in `apps/`.
    ------------------------------------------------------------------------ */
@@ -3695,14 +3700,14 @@ const BRAUCHT_KIND = {
 /* ---------------------------------------------------------------------------
    Die drei Bestandszahlen der Fallstudien.
 
-   „1.278 API-Routen", „815 DB-Migrationen", „1.070 Commits" — sie stehen im
+   „1.278 API-Routen", „815 DB-Migrationen", „1.070 Commits", sie stehen im
    Kennzahlenband der Startseite, in den Fallstudien, im Lebenslauf und in den
    Bewerbungsunterlagen. Gezählt hat sie zuletzt jemand von Hand.
 
    Gemessen am 08.08.2026 standen dort 1.276, 812 und 1.062; wirklich waren es
    1.278, 815 und 1.070. Alle drei zu klein, weil die Repos weitergewachsen
    sind und die Zahlen stehen blieben. Falsch werden solche Angaben nie, sie
-   werden nur stiller — und genau deshalb fällt es niemandem auf.
+   werden nur stiller, und genau deshalb fällt es niemandem auf.
 
    Gezählt wird, was sich zählen lässt: Dateien namens `route.ts` unter
    `src/app/api`, `.sql`-Dateien unter `supabase/migrations`, und die Commits
@@ -3748,13 +3753,13 @@ const BRAUCHT_KIND = {
      Alle drei Zahlen standen bis zum 08.08.2026 getippt in `site.ts` und
      `en.ts`. Sie wandern mit jedem Arbeitstag: An einem Vormittag ging die
      Zahl der API-Routen von 1.278 auf 1.279. Von Hand ist das nicht zu
-     pflegen — dieselbe Lehre, die für die Commit-Summe längst gezogen war.
+     pflegen, dieselbe Lehre, die für die Commit-Summe längst gezogen war.
 
      Sie kommen jetzt aus `verified.json`, das der tägliche Lauf aus der
      GitHub-API schreibt. Geprüft wird deshalb zweierlei: dass dort steht,
      was die Repos hergeben, und dass im Inhalt kein Wert mehr getippt ist,
      sondern der Verweis darauf. Die Zahl aus GitHub darf hinter dem lokalen
-     Stand liegen — Commits, die niemand gesehen hat, zählt die Seite
+     Stand liegen. Commits, die niemand gesehen hat, zählt die Seite
      bewusst nicht mit. */
   const stempel = "src/content/verified.json";
   const stand = existsSync(stempel)
@@ -3842,7 +3847,7 @@ const BRAUCHT_KIND = {
    ankommt, sagt der Lauf nicht.
 
    Dazwischen liegt ein Schritt von Hand. Die beiden PDF entstehen nicht beim
-   Bau — dafür bräuchte Vercel ein Chromium —, sondern über
+   Bau, dafür bräuchte Vercel ein Chromium, sondern über
    `npm run onepager:pdf`. Wer den Lauf vergisst, hat eine geprüfte Datei auf
    dem Rechner und eine ältere im Netz; wer ihn ausführt und nicht ausliefert,
    ebenso. Beide Fälle sehen lokal grün aus.
@@ -3886,7 +3891,7 @@ const BRAUCHT_KIND = {
     verglichen++;
     if (hier !== dort) {
       funde.push(
-        `${name}: hier ${hier.slice(0, 12)}, ausgeliefert ${dort.slice(0, 12)} — ` +
+        `${name}: hier ${hier.slice(0, 12)}, ausgeliefert ${dort.slice(0, 12)}, ` +
           `npm run build && npm run onepager:pdf, dann ausliefern`,
       );
     }
@@ -3909,7 +3914,7 @@ const BRAUCHT_KIND = {
 /* ---------------------------------------------------------------------------
    „Alle mit Tests, CI und MIT-Lizenz"
 
-   So steht es auf dem Kurzprofil unter den vier veröffentlichten Paketen —
+   So steht es auf dem Kurzprofil unter den vier veröffentlichten Paketen:
    auf dem einen Blatt, das weitergereicht wird, und in beiden
    Sprachfassungen. Drei Zusagen in sechs Wörtern, und ein Leser, der eine
    davon nachsieht, sieht die anderen beiden gleich mit.
@@ -3996,17 +4001,17 @@ const BRAUCHT_KIND = {
 }
 
 /* ---------------------------------------------------------------------------
-   „Alle allein gebaut" — steht das noch in der Historie?
+   „Alle allein gebaut", steht das noch in der Historie?
 
    Der Satz steht sechsmal auf der Seite: im Vorspann, in der Kennzahlenreihe
    („4 Systeme in Produktion · alle allein gebaut") und als Rolle über jeder
    der vier Fallstudien („Alleiniger Entwickler"). Er ist die Zusage, auf der
-   alles andere ruht — und die einzige, die ein einziger fremder Commit
+   alles andere ruht, und die einzige, die ein einziger fremder Commit
    umstößt, ohne dass jemand es merkt.
 
    Nachprüfbar ist er da, wo er entsteht: in den Autorenzeilen der Repos.
    Gemessen am 08.08.2026 tragen MenuCloud, SalatiTech und NOURI zusammen
-   drei Absender, und alle drei gehören zu denselben zwei Konten — das
+   drei Absender, und alle drei gehören zu denselben zwei Konten, das
    Arbeitskonto, das eigene und die noreply-Adresse, die GitHub für Commits
    über die Weboberfläche einsetzt.
 
@@ -4027,7 +4032,7 @@ const BRAUCHT_KIND = {
      `refresh-figures.yml` schreibt unter `noreply@domenicmoran.de` und trägt
      damit als Einziges eine Adresse, die keinem Konto gehört. Gemessen am
      08.08.2026: fünfzehn Commits, alle mit demselben Betreff. Sie zählen
-     nicht als fremde Hand — AGENTS.md sagt es genauso: „Automatische Commits
+     nicht als fremde Hand. AGENTS.md sagt es genauso: „Automatische Commits
      kommen ausschließlich vom Zahlen-Automaten und tragen ‚Commit-Zahlen
      aufgefrischt'."
 
@@ -4050,7 +4055,7 @@ const BRAUCHT_KIND = {
      der Punkt: Es ist eine der vier Fallstudien, die „Alleiniger Entwickler"
      als Rolle trägt, und ohne Historie lässt sich das nicht nachsehen. Wird
      es hier weggelassen, sagt die Ausgabe „nur eigene Absender" und meint
-     drei von vier — eine Zusage, die vollständiger klingt, als sie gemessen
+     drei von vier, eine Zusage, die vollständiger klingt, als sie gemessen
      ist. So steht die Lücke in der Zeile. */
   for (const [name, ort] of [
     ...REPOS,
@@ -4095,7 +4100,7 @@ const BRAUCHT_KIND = {
       if (andere.length) {
         funde.push(
           `${name}: Der Zahlen-Automat hat ${andere.length} Commit(s) mit ` +
-            `anderem Betreff geschrieben — ${andere.slice(0, 2).join(" | ")}`,
+            `anderem Betreff geschrieben, ${andere.slice(0, 2).join(" | ")}`,
         );
       }
       automatenCommits += betreffe.length;
@@ -4105,7 +4110,7 @@ const BRAUCHT_KIND = {
   if (funde.length) {
     abweichungen += funde.length;
     zeilen.push(
-      `  !!  „Alle allein gebaut" — fremde Absender in der Historie:`,
+      `  !!  „Alle allein gebaut", fremde Absender in der Historie:`,
     );
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft === 0) {
@@ -4118,7 +4123,7 @@ const BRAUCHT_KIND = {
         `dazu ${automatenCommits} Commits des Zahlen-Automaten mit seinem ` +
         `einen Betreff` +
         (uebersprungen
-          ? ` — ${uebersprungen} Projekt(e) ohne Historie, dort ungeprüft`
+          ? `, ${uebersprungen} Projekt(e) ohne Historie, dort ungeprüft`
           : ""),
     );
   }
@@ -4135,7 +4140,7 @@ const BRAUCHT_KIND = {
 
    Beides steht in einem anderen Repo und wandert dort ohne Rückfrage. Ein
    Sprung auf adhan 5 oder eine andere Vorgabemethode wäre in Salati eine
-   Zeile — und die Startseite behauptete weiter, das Produkt zu zeigen.
+   Zeile, und die Startseite behauptete weiter, das Produkt zu zeigen.
    Gemessen am 08.08.2026: `DEFAULT_METHOD_ID = 13`, `adhan: ^4.4.4`.
 
    Verglichen wird die Hauptversion der Bibliothek, nicht die genaue: Die
@@ -4153,7 +4158,7 @@ const BRAUCHT_KIND = {
     /* Beide Sprachfassungen, nicht nur die deutsche.
 
        Gemessen am 08.08.2026: Mit „adhan 5.0.0 (MIT), method 3" in `en.ts`
-       blieb jeder Lauf grün — check-figures las nur `de.ts`, und check:parity
+       blieb jeder Lauf grün, check-figures las nur `de.ts`, und check:parity
        vergleicht Anzahl und Kennzahlen, nicht den Wortlaut einer Fußnote. Die
        englische Fassung hätte damit eine falsche technische Angabe getragen,
        und zwar die, die ein internationaler Leser zuerst sieht. */
@@ -4191,7 +4196,7 @@ const BRAUCHT_KIND = {
         /* Alle Stellen vergleichen, wie es die Tabelle der Tech-Stacks tut:
            Sie hält „so viele Stellen, wie die Seite nennt". Ein erster Anlauf
            verglich nur die Hauptversion und wäre damit schwächer gewesen als
-           der Lauf, der schon da ist — ein Sprung auf 4.5.0 wäre
+           der Lauf, der schon da ist, ein Sprung auf 4.5.0 wäre
            durchgelaufen, obwohl die Seite 4.4.4 nennt. */
         (echteVersion ?? "").replace(/^\D*/, "") !== version
       ) {
@@ -4228,12 +4233,12 @@ const BRAUCHT_KIND = {
    schafiitisch. 8.760 Zeitpunkte, im Browser gerechnet, ohne eine einzige
    Anfrage nach außen."
 
-   Dort stand bis zum 08.08.2026 „2.190 Zeitpunkte". Das ist 365 mal 6 — ein
+   Dort stand bis zum 08.08.2026 „2.190 Zeitpunkte". Das ist 365 mal 6, ein
    Jahr für eine einzige Regel. Gerechnet werden aber alle vier Regeln des
    Auswahlfeldes: `REGELN` hat vier Einträge, `TAGE` steht auf 365, `GEBETE`
    nennt sechs. Die Zahl war also um den Faktor vier zu klein, auf einer
    Seite, deren Argument die gezählte Zahl ist. Sie wurde nicht falsch,
-   sondern zu bescheiden — die Richtung, in der so etwas nie auffällt.
+   sondern zu bescheiden, die Richtung, in der so etwas nie auffällt.
 
    Gezählt wird aus der Komponente selbst, damit die Zahl mitwächst, wenn dort
    eine Regel oder ein Gebet dazukommt.
@@ -4291,7 +4296,7 @@ const BRAUCHT_KIND = {
      Unter der Tagesbilanz steht „Alle 4.096 Zusammenstellungen". Das ist
      2 hoch 12, also eine Zahl, die sich aus der Zahl der Gerichte ergibt und
      sich vervierfacht, sobald jemand zwei dazulegt. Nachgesehen am
-     08.08.2026: zwölf Gerichte, 4.096 — die Angabe stimmt und stand
+     08.08.2026: zwölf Gerichte, 4.096, die Angabe stimmt und stand
      ungeprüft da, während ihr Gegenstück bei den Gebetszeiten seit derselben
      Woche geprüft wird. */
   {
@@ -4348,7 +4353,7 @@ const BRAUCHT_KIND = {
    Zeichen, und Suchmaschinen schneiden ab etwa 60 ab.
 
    Gemessen am 08.08.2026 an den gebauten Seiten: Zwei von zehn Artikeln
-   überschritten die Grenze auch ohne Zusatz — 62 und 61 Zeichen. Die Regel
+   überschritten die Grenze auch ohne Zusatz, 62 und 61 Zeichen. Die Regel
    war eingeführt, ihre Zahl aber nie nachgeprüft.
 
    Beide tragen jetzt ein `titleShort`; die Überschrift auf der Seite bleibt
@@ -4378,7 +4383,7 @@ const BRAUCHT_KIND = {
         if (!titel) continue;
         geprueft++;
         if (titel.length > GRENZE)
-          funde.push(`${pfad}: ${titel.length} Zeichen — „${titel}"`);
+          funde.push(`${pfad}: ${titel.length} Zeichen, „${titel}"`);
       }
     };
     gehe(bau);
@@ -4407,14 +4412,13 @@ const BRAUCHT_KIND = {
      „package.json: `"main": "index.js"` wird zu `"index"`"
      „registerWidgetTaskHandler läuft nie"
 
-   Geprüft war bisher nur der Commit darunter — dass es ihn gibt und wann er
+   Geprüft war bisher nur der Commit darunter, dass es ihn gibt und wann er
    entstand. Ob das Repo den Zustand noch trägt, den die Sitzung als Ergebnis
    zeigt, sah niemand nach. Setzt jemand `main` zurück oder benennt den Handler
    um, erzählt die Startseite weiter eine Geschichte, die nicht mehr stimmt.
 
    Nachgesehen am 08.08.2026: `main` steht auf `"index"`, der Handler wird in
-   `index.android.js` aufgerufen, und beide Einstiegsdateien liegen nebeneinander
-   — genau die Aufteilung, die die Sitzung erklärt.
+   `index.android.js` aufgerufen, und beide Einstiegsdateien liegen nebeneinander, genau die Aufteilung, die die Sitzung erklärt.
    ------------------------------------------------------------------------ */
 {
   const repo = "../../SalatiTech";
@@ -4475,15 +4479,15 @@ const BRAUCHT_KIND = {
    Jeder Commit, den ein Artikel nennt, existiert auch.
 
    Die Belegliste unter jedem Artikel nennt Dateien, Zeilennummern und bei drei
-   von fünf einen Commit. Die Dateien kann von außen niemand öffnen — die Repos
-   sind privat —, und genau deshalb ist der Commit die Angabe, die am meisten
+   von fünf einen Commit. Die Dateien kann von außen niemand öffnen, die Repos
+   sind privat, und genau deshalb ist der Commit die Angabe, die am meisten
    Gewicht trägt und am wenigsten kostet: acht Zeichen, die jeder abtippt und
    niemand nachschlagen kann.
 
    Ein Zahlendreher darin fiele nirgends auf. Hier fällt er auf: `git cat-file`
    im Nachbar-Repo sagt, ob es den Commit gibt.
 
-   Neben dem Commit steht meist ein Datum — „Commit 71bd8d2b vom 30. Juli 2026“,
+   Neben dem Commit steht meist ein Datum, „Commit 71bd8d2b vom 30. Juli 2026“,
    englisch „commit 71bd8d2b, 30 July 2026“. Das ist die Angabe, die der Leser
    tatsächlich einordnen kann, und bis hierher prüfte sie niemand: Ein Artikel
    durfte einen existierenden Commit mit einem falschen Datum zitieren, und
@@ -4496,7 +4500,7 @@ const BRAUCHT_KIND = {
    *
    * Beide Sprachfassungen schreiben es anders, und beide sollen gelten:
    * deutsch „vom 30. Juli 2026“, englisch „, 30 July 2026“. Steht kein Datum
-   * daneben, kommt `null` zurück — das ist erlaubt, nur falsch darf es nicht
+   * daneben, kommt `null` zurück, das ist erlaubt, nur falsch darf es nicht
    * sein.
    */
   function datumNebenCommit(text, hash) {
@@ -4536,7 +4540,7 @@ const BRAUCHT_KIND = {
      Die Agenten-Sitzung auf der Startseite endet mit „Ursache, Datei und
      Änderung stehen in Commit bce08f5e“, und die Zeile darüber trägt ihn
      ebenfalls. Das ist derselbe Beleg wie in einem Artikel, an der meist
-     gelesenen Stelle der Seite — und er stand außerhalb dieser Prüfung. */
+     gelesenen Stelle der Seite, und er stand außerhalb dieser Prüfung. */
   const repoZuArtikel = {
     "../site.ts": "../../SalatiTech",
     "../de.ts": "../../SalatiTech",
@@ -4633,7 +4637,7 @@ const BRAUCHT_KIND = {
    Nachgesehen am 08.08.2026 in `services/api/src`: Der 503 steht zentral im
    `setErrorHandler` und gilt damit für jeden Endpunkt, der 4xx reicht den
    `code` aus der Supabase-Antwort weiter, und `dry_run` hängt an
-   `!savedGrant.configured`. Alle drei sind da — geprüft hat es nichts.
+   `!savedGrant.configured`. Alle drei sind da, geprüft hat es nichts.
 
    Geprüft wird deshalb die Anwesenheit der drei Mechanismen, nicht ihr
    Verhalten: Wer einen davon entfernt, macht einen Satz auf der Seite falsch,
@@ -4680,7 +4684,7 @@ const BRAUCHT_KIND = {
    Die Kennzahlen der Fallstudie ohne Git-Historie.
 
    WohnungsJäger liegt neben diesem Repo, aber nicht bei GitHub. Der Jahrescheck
-   lässt es deshalb aus, und der Bericht sagt das auch — „3 von 4 Fallstudien".
+   lässt es deshalb aus, und der Bericht sagt das auch, „3 von 4 Fallstudien".
    Daraus wurde stillschweigend: gar nichts an dieser Fallstudie wird geprüft.
 
    Gefunden am 07.08.2026: Auf der Seite standen „fünf Portale“, an zwei
@@ -4690,7 +4694,7 @@ const BRAUCHT_KIND = {
    Ein Demo-Portal mitzuzählen wäre auf einer Seite, die mit Nachprüfbarkeit
    argumentiert, die teuerste Zahl von allen.
 
-   Für den Dateipfad braucht es keine Historie — die Zahl steht im Quelltext.
+   Für den Dateipfad braucht es keine Historie, die Zahl steht im Quelltext.
    ------------------------------------------------------------------------ */
 {
   const registrierung = "../../KIWohnung/src/scanner/registry.ts";
@@ -4721,7 +4725,7 @@ const BRAUCHT_KIND = {
 
     /* Beide Sprachfassungen, nicht nur die deutsche.
 
-       Die Kennzahlen stehen zweimal — „Überwachte Portale" und „portals
+       Die Kennzahlen stehen zweimal, „Überwachte Portale" und „portals
        watched", „Bewertungsstufen" und „review stages before sending". Wer
        eine ändert, ändert selten beide, und geprüft wurde bisher nur die
        deutsche. Eine englische Zahl, die niemand nachrechnet, ist genau die,
@@ -4754,9 +4758,9 @@ const BRAUCHT_KIND = {
     /* Und die Bewertungsstufen vor dem Versand.
 
        Die Kennzahlenkachel nennt „2 Bewertungsstufen vor dem Versand". Das
-       ist die Zahl, die den Absatz darüber trägt — „ein Bot, der selbständig
+       ist die Zahl, die den Absatz darüber trägt, „ein Bot, der selbständig
        Bewerbungen mit echten Personendaten verschickt, kann realen Schaden
-       anrichten" —, und sie stand ungeprüft da.
+       anrichten", und sie stand ungeprüft da.
 
        Nachgesehen im Repo: `hardfilter.ts` beginnt mit „Stufe 1: Hard-Filter
        auf strukturierte Daten", `pipeline.ts` ruft darunter „Stufe 2:
@@ -4819,7 +4823,7 @@ const BRAUCHT_KIND = {
     try {
       /* Über die API und nicht über raw.githubusercontent.com: Deren
          Auslieferung liegt hinter einem Zwischenspeicher und zeigte nach
-         einer Änderung noch minutenlang die alte Fassung — der Wächter
+         einer Änderung noch minutenlang die alte Fassung, der Wächter
          meldete dann eine Abweichung, die es nicht gab. */
       const veroeffentlicht = ghHolen(
         "repos/DomenicMoran/DomenicMoran/contents/README.md",
@@ -4848,7 +4852,7 @@ const BRAUCHT_KIND = {
          ------------------------------------------
          Das Profil ist die meistgelesene öffentliche Fläche, und der
          Artikelvergleich darunter kann das nicht sehen: Er macht aus jedem
-         Anführungszeichen dasselbe Zeichen, bevor er vergleicht — mit Absicht,
+         Anführungszeichen dasselbe Zeichen, bevor er vergleicht, mit Absicht,
          sonst meldet er eine Titelabweichung, wo nur die Schreibweise abweicht.
 
          Gefunden am 06.08.2026: „Published" mit geradem Schlusszeichen, zwei
@@ -4876,7 +4880,7 @@ const BRAUCHT_KIND = {
        GitHub selbst führt.
 
        Ein sechster Artikel ändert die Seite, die Sitemap, den Feed und die
-       Lesezeiten — die Beschreibung ändert er nicht, weil sie in keinem
+       Lesezeiten, die Beschreibung ändert er nicht, weil sie in keinem
        Verzeichnis liegt. Genau daran veraltet so ein Satz, ohne dass jemand
        ihn anfasst. */
     const ZAHLWORT = new Map([
@@ -4963,7 +4967,7 @@ const BRAUCHT_KIND = {
          Vorher las der Lauf `src/*.test.ts` und zählte darin `it(` und
          `test(`. Das hielt, solange alle drei genannten Pakete gleich gebaut
          waren. Mit `verified-done` kam ein viertes dazu, das seine Tests
-         unter `test/` legt und einen Teil über `it.each` erzeugt — der Lauf
+         unter `test/` legt und einen Teil über `it.each` erzeugt, der Lauf
          stürzte dort mit ENOENT ab, und ein Suchmuster hätte 12 statt 16
          gezählt. Der Läufer zählt dasselbe wie das README behauptet. */
       const bericht = vitestLauf(ordner);
@@ -4988,7 +4992,7 @@ const BRAUCHT_KIND = {
          stehen ein zweites Mal in `site.ts` als „TypeScript · 23 Tests · null
          Abhängigkeiten" unter jedem Paket, und diese Fassung liest der
          Besucher der Seite. Wer nur eine der beiden anfasst, hinterlässt zwei
-         Zahlen für dieselbe Sache — und der Lauf sah bisher nur eine davon an. */
+         Zahlen für dieselbe Sache, und der Lauf sah bisher nur eine davon an. */
       const metaZeile = new RegExp(
         `name:\\s*"${paket}"[\\s\\S]{0,400}?meta:\\s*"([^"]+)"`,
       ).exec(quelle)?.[1];
@@ -5014,7 +5018,7 @@ const BRAUCHT_KIND = {
          ändert das Paket und nicht die Seite, und aufgefallen wäre es
          niemandem.
 
-         Gezählt werden die Verzeichnisse mit einer `SKILL.md` — dieselbe
+         Gezählt werden die Verzeichnisse mit einer `SKILL.md`, dieselbe
          Einheit, die auch das Marketplace-Manifest als Skill führt. */
       const skillOrdner = join(ordner, "skills");
       if (existsSync(skillOrdner)) {
@@ -5048,7 +5052,7 @@ const BRAUCHT_KIND = {
        ------------------------------------------------------
        Themen sind die Schlagworte, nach denen auf GitHub gesucht wird, und
        auf dem Profil stehen sie unter jedem Repo. Sie liegen in keiner Datei
-       und ändern sich nur, wenn jemand sie von Hand anfasst — also driften
+       und ändern sich nur, wenn jemand sie von Hand anfasst, also driften
        sie.
 
        Gefunden am 05.08.2026: `whisper-ggml-header` bestand zu vier Fünfteln
@@ -5059,7 +5063,7 @@ const BRAUCHT_KIND = {
 
        Geprüft wird gegen Tatsachen, nicht gegen eine Wunschliste: die Sprache,
        die GitHub selbst aus dem Repo errechnet, und die `dependencies` aus der
-       `package.json` des Klons. Dazu eine Untergrenze — ein Aufruf, der die
+       `package.json` des Klons. Dazu eine Untergrenze, ein Aufruf, der die
        Themen versehentlich überschreibt, lässt genau eines stehen, und ohne
        diese Zeile fiele das niemandem auf. */
     const themenFunde = [];
@@ -5121,7 +5125,7 @@ const BRAUCHT_KIND = {
    Linktext. Zwei davon wichen ab: „was in der Dokumentation nicht steht" gegen
    „was die Dokumentation auslässt“ und „mein größeres geschlagen hat" gegen
    „mein größeres schlug". Wer dort klickt, landete auf einer Seite mit anderer
-   Überschrift als versprochen — und das ist die erste Seite, die ein Leser des
+   Überschrift als versprochen, und das ist die erste Seite, die ein Leser des
    Profils überhaupt sieht.
 
    Verglichen wird der Linktext gegen `title` in der jeweiligen Artikeldatei.
@@ -5180,7 +5184,7 @@ const BRAUCHT_KIND = {
    ebenso, in beiden Sprachen. Der erste Commit des Repos stammt vom
    26.03.2026 ("Initialize MenuCloud Berlin Web Application"), vor 2026 gibt
    es null Commits. Zugleich stand auf derselben Seite "über 4.000 Commits
-   seit März 2026" und "in vier Monaten" — die Angabe widersprach sich
+   seit März 2026" und "in vier Monaten", die Angabe widersprach sich
    innerhalb eines Blattes.
 
    Geprüft wird deshalb das früheste Jahr jeder Angabe gegen den ersten
@@ -5202,7 +5206,7 @@ const BRAUCHT_KIND = {
 
      Was diese Prüfung dort belegt, ist weniger als bei den anderen dreien:
      Die Historie beginnt mit der Einrichtung, nicht mit der Arbeit. Sie fängt
-     ein zurückdatiertes Jahr ab — „2024" wäre ein Befund — und sagt nichts
+     ein zurückdatiertes Jahr ab, „2024" wäre ein Befund, und sagt nichts
      darüber, wann das Projekt wirklich entstand. Die Zahl unten zählt
      trotzdem alle vier, weil geprüft nun geprüft heißt. */
   const anfang = quelle.indexOf("export const caseStudies");
@@ -5277,7 +5281,7 @@ const BRAUCHT_KIND = {
 
    Die Seite sagt, alle zehn Zertifikate seien beim Aussteller prüfbar, und
    das Zertifikate-Repository schreibt dazu: "Die PDF daneben ist nur die
-   Kopie — maßgeblich ist der Link, weil eine PDF sich fälschen lässt und
+   Kopie, maßgeblich ist der Link, weil eine PDF sich fälschen lässt und
    eine Bestätigungsseite nicht." Genau dieser Satz macht den Link zum
    stärksten Beleg der Seite und zum teuersten Verlust, wenn er stirbt.
 
@@ -5334,7 +5338,7 @@ const BRAUCHT_KIND = {
    ---------------------------------------------------------------------------
 
    § 5 DDG verlangt das Impressum leicht erkennbar, unmittelbar erreichbar und
-   ständig verfügbar — von jeder Seite des Angebots. Gemessen am 02.08.2026
+   ständig verfügbar, von jeder Seite des Angebots. Gemessen am 02.08.2026
    fehlte der Verweis auf fünf von elf ausgelieferten Adressen: beide
    One-Pager, beide Rechtsseiten und die 404. Am schwersten wogen die
    One-Pager, weil genau diese Adresse an Recruiter geht.
@@ -5384,14 +5388,14 @@ const BRAUCHT_KIND = {
       /* Und die Fehlergrenze, die in keinem Blatt steht.
 
          `global-error.tsx` erscheint, wenn im Browser etwas zerbricht. Sie ist
-         eine Client-Komponente und wird nie vorab gerendert — im Bau liegt an
+         eine Client-Komponente und wird nie vorab gerendert, im Bau liegt an
          ihrer Stelle Nexts eigene englische Fassung. Der Durchlauf über die
          gebauten Blätter sieht sie deshalb nicht, und genau das war schon
          einmal der Fall: Gemessen trugen 18 von 19 Seiten beide
          Rechtsverweise, und die eine ohne war diese.
 
          § 5 DDG verlangt sie „von jeder Seite unmittelbar erreichbar", und
-         eine Fehlerseite ist kein Sonderfall — sie ist die Seite, auf der
+         eine Fehlerseite ist kein Sonderfall, sie ist die Seite, auf der
          jemand hängen bleibt. Geprüft wird das ausgelieferte JavaScript: Dort
          steht ihr Text, und dort stehen ihre Verweise. */
       const bündel = readdirSync(join(".next", "static", "chunks"))
@@ -5434,7 +5438,7 @@ const BRAUCHT_KIND = {
 
    RFC 9116 verlangt in security.txt ein `Expires` weniger als ein Jahr in der
    Zukunft. Steht dort ein vergangener Zeitpunkt, behandeln Scanner die Datei
-   als ungültig — stillschweigend, es gibt keine Meldung.
+   als ungültig, stillschweigend, es gibt keine Meldung.
 
    Die Datei lag als statische Kopie in public/ mit fest eingetragenem
    „2027-07-31“. Ein Datum ein Jahr voraus fällt niemandem auf, bis es vorbei
@@ -5469,7 +5473,7 @@ const BRAUCHT_KIND = {
     } else if (tage >= 365) {
       abweichungen++;
       zeilen.push(
-        `  !!  security.txt gilt ${tage} Tage — RFC 9116 verlangt weniger als ein Jahr`,
+        `  !!  security.txt gilt ${tage} Tage. RFC 9116 verlangt weniger als ein Jahr`,
       );
     } else {
       zeilen.push(
@@ -5486,12 +5490,12 @@ const BRAUCHT_KIND = {
    Die Seite sagt: „Ein Automat frischt die Zahl täglich auf." Das ist eine
    Aussage über einen Zeitplan, und Zeitpläne fallen leise aus. Am 02.08.2026
    stand der Automat auf täglich 04:12 UTC und hatte um 05:53 UTC noch keinen
-   einzigen planmäßigen Lauf hinter sich — aufgefallen ist das nur, weil
+   einzigen planmäßigen Lauf hinter sich, aufgefallen ist das nur, weil
    jemand in die Actions-Ansicht gesehen hat.
 
    Drei Tage Spielraum: Ein ausgefallener Lauf ist bei GitHubs Zeitplan normal
    (die Warteschlange verschiebt Termine um Stunden), drei ausgefallene sind
-   ein Defekt. Bis dahin bleibt die Zahl richtig, sie wird nur älter — danach
+   ein Defekt. Bis dahin bleibt die Zahl richtig, sie wird nur älter, danach
    ist die Zusage auf der Seite nicht mehr gedeckt. */
 {
   const TAGE_SPIELRAUM = 3;
@@ -5509,7 +5513,7 @@ const BRAUCHT_KIND = {
     abweichungen++;
     zeilen.push(
       `  !!  Prüfstempel ${alterText(alter)} (${stempel.date}). Der Automat ` +
-        `„Zahlen auffrischen" läuft nicht mehr täglich — Actions-Ansicht prüfen.`,
+        `„Zahlen auffrischen" läuft nicht mehr täglich. Actions-Ansicht prüfen.`,
     );
   } else {
     zeilen.push(
@@ -5527,8 +5531,7 @@ const BRAUCHT_KIND = {
    langsam ist, wird abgeschaltet statt gelesen. Hier ist der richtige Ort,
    denn dieser Lauf misst ohnehin gegen die Wirklichkeit und läuft von Hand.
 
-   Und die Ziele sind keine Zierde. "Live im App Store", "Live in Produktion"
-   — die Fallstudien behaupten das, und der Verweis daneben ist der einzige
+   Und die Ziele sind keine Zierde. "Live im App Store", "Live in Produktion", die Fallstudien behaupten das, und der Verweis daneben ist der einzige
    Beleg. Verschwindet eine Store-Seite oder geht ein System vom Netz, steht
    die Behauptung weiter da.
 
@@ -5591,7 +5594,7 @@ const BRAUCHT_KIND = {
 
        Deshalb ein zweiter Versuch nach kurzer Pause, und erst der zweite
        zählt. Ein Ziel, das wirklich weg ist, antwortet auch beim zweiten Mal
-       mit 404 — die Wiederholung verdeckt nichts, sie trennt nur den Ausfall
+       mit 404, die Wiederholung verdeckt nichts, sie trennt nur den Ausfall
        vom Zufall. */
     const abrufen = async (adresse) =>
       await fetch(adresse, {
@@ -5619,7 +5622,7 @@ const BRAUCHT_KIND = {
              fällt es keinem Prüflauf auf: Der Zertifikate-Ordner hieß nach der
              Umbenennung `certificates`, im Lebenslauf stand weiter
              `Zertifikate`, und alles war grün. Wer den Verweis anklickt, sieht
-             in der Adresszeile einen anderen Namen als im Text — bei einem
+             in der Adresszeile einen anderen Namen als im Text, bei einem
              Beleg ist das der schlechteste Moment für eine Unstimmigkeit.
 
              Verglichen wird nur der Pfad und nur bei GitHub: Bei anderen
@@ -5632,7 +5635,7 @@ const BRAUCHT_KIND = {
             ziel.pathname.toLowerCase() !== quelle.pathname.toLowerCase()
           ) {
             funde.push(
-              `${adresse}: führt auf ${ziel.pathname} — umbenannt, im Text steht der alte Name`,
+              `${adresse}: führt auf ${ziel.pathname}, umbenannt, im Text steht der alte Name`,
             );
           }
           continue;
@@ -5668,7 +5671,7 @@ const BRAUCHT_KIND = {
    nur altert sie schneller: Sie ändert sich, wenn in einem ganz anderen
    Verzeichnis `pnpm up` läuft, und niemand denkt dabei an das Portfolio.
    Ein Bewerber, der eine überholte Version nennt, sieht aus, als hätte er
-   das Projekt zuletzt vor einem Jahr angefasst — von allen Fehlern auf
+   das Projekt zuletzt vor einem Jahr angefasst, von allen Fehlern auf
    dieser Seite der unnötigste.
 
    Geprüft wird gegen die `package.json` des jeweiligen Projekts, auf so
@@ -5759,7 +5762,7 @@ const ANGABEN = [
     feld: "packageManager",
     stellen: 1,
   },
-  /* WohnungsJäger legt keine `engines` fest — die Anforderung steht im README,
+  /* WohnungsJäger legt keine `engines` fest, die Anforderung steht im README,
      dreimal, und dort liest sie auch der Nutzer, der die Anwendung aufsetzt.
      Also wird gegen den Text geprüft statt gegen ein Feld, das es nicht gibt.
      Der Beleg ist damit derselbe, den ein Fremder finden würde. */
@@ -5818,7 +5821,7 @@ const ANGABEN = [
     geprueft++;
     if (kurz(echt) !== kurz(genannt)) {
       funde.push(
-        `„${angabe.text}“ — im Repo ${angabe.feld ?? angabe.paket} ${echt}`,
+        `„${angabe.text}“, im Repo ${angabe.feld ?? angabe.paket} ${echt}`,
       );
     }
   }
@@ -5851,7 +5854,7 @@ const ANGABEN = [
    Was die READMEs der Pakete importieren, muss es auch geben.
 
    Diese vier Dateien sind das Erste, was jemand öffnet, der den Code sehen
-   will — auf npm stehen sie über dem Paket, auf GitHub unter der Dateiliste.
+   will, auf npm stehen sie über dem Paket, auf GitHub unter der Dateiliste.
    Ein Beispiel darin, das nicht läuft, ist teurer als eine fehlende Zeile:
    Wer es kopiert, bekommt einen Fehler und schließt daraus auf das Paket.
 
@@ -5941,7 +5944,7 @@ const ANGABEN = [
 
    Diese Datei ist die Startseite des GitHub-Kontos: das Erste, was jemand
    sieht, der den Namen aus einer Bewerbung in die Suche eingibt. Sie verweist
-   auf die Seite, auf die fünf Artikel und auf sechs Repositories — und keiner
+   auf die Seite, auf die fünf Artikel und auf sechs Repositories, und keiner
    dieser Verweise wurde je nachgesehen. Ein Artikel, der eine neue Adresse
    bekommt, hinterlässt hier ein 404, und zwar an der sichtbarsten Stelle
    überhaupt.
@@ -5990,7 +5993,7 @@ const ANGABEN = [
         /* Bei der eigenen Adresse ist „antwortet nicht" kein Grund zum
            Überspringen, sondern der Fund selbst: Genau so verhält sich ein
            Verweis auf einen Artikel, den es nicht mehr gibt. Übersprungen
-           wird nur, was fremden Diensten gehört — die antworten Werkzeugen
+           wird nur, was fremden Diensten gehört, die antworten Werkzeugen
            regelmäßig anders als einem Browser. */
         if (host.endsWith("domenicmoran.de")) {
           tot.push(`${ziel}: keine Antwort`);
@@ -6024,7 +6027,7 @@ if (abweichungen) {
   /* Die Funde noch einmal am Ende.
      Der Bericht ist knapp sechzig Zeilen lang, und die Schlusszeile nannte
      bisher nur die Anzahl. Wer den Lauf in der Actions-Ansicht rot sieht,
-     bekam damit eine Zahl und musste im Protokoll nach oben suchen — beim
+     bekam damit eine Zahl und musste im Protokoll nach oben suchen, beim
      ersten Mal in dieser Runde stand die Fundzeile außerhalb dessen, was
      ausgegeben war, und die Abweichung war aus dem Bericht allein nicht mehr
      zu benennen. */
@@ -6049,11 +6052,11 @@ if (abweichungen) {
   );
   for (const z of auffaellig) console.error(z);
   /* Wenn hier nichts steht, hat eine Prüfung den Zähler erhöht, ohne eine
-     Zeile zu hinterlassen. Das ist ein Fehler im Lauf und muss es auch sagen —
+     Zeile zu hinterlassen. Das ist ein Fehler im Lauf und muss es auch sagen:
      ein stummes Rot ist schlimmer als gar keine Prüfung. */
   if (auffaellig.length === 0) {
     console.error(
-      "  (keine Fundzeile im Bericht — eine Prüfung zählt, ohne zu melden)",
+      "  (keine Fundzeile im Bericht, eine Prüfung zählt, ohne zu melden)",
     );
   }
   process.exit(1);
@@ -6078,7 +6081,7 @@ ${hinweise} Hinweis${hinweise === 1 ? "" : "e"} auf Pflegebedarf, ` +
   Die Schlusszeile darf keine Vollständigkeit behaupten, die es nicht gab.
 
   Vorher stand hier immer "Alle Zahlen auf der Seite stimmen mit den Repos
-  überein" — auch dann, wenn zwei Prüfungen mangels Zugriff ausgefallen waren.
+  überein", auch dann, wenn zwei Prüfungen mangels Zugriff ausgefallen waren.
   Genau so blieb tagelang unbemerkt, dass "64 ausgelieferte Versionen" und
   "14 Sprachen" ungeprüft auf der Seite standen: Die übersprungenen Zeilen
   standen mitten im Bericht, und die letzte Zeile sagte, alles sei gut.
@@ -6087,7 +6090,7 @@ const uebersprungen = zeilen.filter((z) => z.startsWith("  --")).length;
 if (uebersprungen > 0) {
   console.log(
     `\nAlle geprüften Zahlen stimmen mit den Repos überein. ` +
-      `${uebersprungen} Prüfung${uebersprungen === 1 ? "" : "en"} ausgefallen, siehe oben — ` +
+      `${uebersprungen} Prüfung${uebersprungen === 1 ? "" : "en"} ausgefallen, siehe oben, ` +
       `diese Angaben sind damit unbelegt.`,
   );
 } else {

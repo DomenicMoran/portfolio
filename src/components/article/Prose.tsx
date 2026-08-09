@@ -45,7 +45,7 @@ export function Prose({
 
                Das Doppelkreuz steht **außerhalb des Textflusses** im linken
                Rand. Der erste Anlauf setzte es inline hinter die Überschrift,
-               unsichtbar bis zum Überfahren — und genau das war der Fehler:
+               unsichtbar bis zum Überfahren, und genau das war der Fehler:
                `text-balance` rechnet das Zeichen mit, auch wenn es niemand
                sieht. Gemessen brachen dadurch 13 von 232 Überschriften anders
                um. Ein unsichtbares Element, das die Typografie verschiebt,
@@ -71,13 +71,13 @@ export function Prose({
                     Gemessen an der ausgelieferten Seite an allen sieben
                     Überschriften des Artikels.
 
-                    `aria-hidden` nimmt es aus dem Namen — der Verweis behält
+                    `aria-hidden` nimmt es aus dem Namen, der Verweis behält
                     seinen eigenen über `aria-label`. `select-none` hält es aus
                     der Zwischenablage.
 
                     Nachtrag vom 06.08.2026: Der eigene Name war das nächste
                     Problem. Ein beschrifteter Verweis als Kind des `h2` geht
-                    in dessen Namen ein — der Name einer Überschrift entsteht
+                    in dessen Namen ein, der Name einer Überschrift entsteht
                     aus ihren Kindern. Im Barrierefreiheitsbaum stand bei
                     1440 px „Der erste Hebel: dem Modell sagen, was es hören
                     wird Verweis auf diesen Abschnitt: Der erste Hebel: dem
@@ -108,7 +108,7 @@ export function Prose({
 
                Die `id` stand hier von Anfang an, die Sprungmarke nicht.
                Gemessen an den ausgelieferten Artikeln: sechs Überschriften mit
-               Adresse, fünf Marken — die Ausnahme unter „Drittens" im
+               Adresse, fünf Marken, die Ausnahme unter „Drittens" im
                Kassenartikel ließ sich verlinken, nur nicht von der Seite aus.
                Eine Adresse, die niemand kopieren kann, ist keine.
 
@@ -184,7 +184,7 @@ export function Prose({
                     Und er ist fokussierbar, weil ein Bereich, der scrollt, mit
                     der Tastatur erreichbar sein muss. Gemessen bei 390 px an
                     der ausgelieferten Seite: zwei der drei Kästen liefen
-                    seitlich über, keiner war anspringbar — wer keine Maus
+                    seitlich über, keiner war anspringbar, wer keine Maus
                     benutzt, kam an die rechte Hälfte des Codes nicht heran.
 
                     Der Rahmen trägt einen Namen, weil ein anspringbarer
@@ -220,7 +220,7 @@ export function Prose({
             /* Der Merkkasten trägt seine Überschrift als Namen.
 
                `aside` ist eine Landmarke, und eine Landmarke ohne Namen steht
-               in der Liste als „Ergänzung" — zweimal auf einer Seite also
+               in der Liste als „Ergänzung", zweimal auf einer Seite also
                zweimal derselbe Eintrag. Gemessen an sechs Artikelseiten war
                genau das der Fall. Die Überschrift steht ohnehin darüber; sie
                wird über `aria-labelledby` verknüpft, statt den Text ein
@@ -246,7 +246,7 @@ export function Prose({
                 {/* Wie beim Codekasten: Was scrollt, muss anspringbar sein.
                     Heute passt die eine Tabelle in beide Breiten, aber eine
                     Spalte mehr, und die rechte Haelfte waere ohne Maus nicht
-                    erreichbar — lautlos, weil nichts danach aussieht. */}
+                    erreichbar, lautlos, weil nichts danach aussieht. */}
                 <div
                   tabIndex={0}
                   role="region"
@@ -261,7 +261,7 @@ export function Prose({
                       benennt die Abbildung, nicht die Tabelle darin.
                       Gemessen im Barrierefreiheitsbaum stand dort `""`, und
                       in der Tabellenliste eines Vorleseprogramms erscheint
-                      sie damit ohne Titel — neben Codekästen und
+                      sie damit ohne Titel, neben Codekästen und
                       Abbildungen, die alle einen haben.
 
                       `aria-labelledby` auf die sichtbare Unterschrift statt

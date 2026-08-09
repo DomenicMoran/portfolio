@@ -7,7 +7,7 @@
  * Fassung unter `public/shots`.
  *
  * Der Grund ist gemessen. Die elf Aufnahmen lagen als PNG im Repo und wogen
- * zusammen 5,6 MB — jeder Klon zog sie mit, jede Prüfung, jeder Agent. Als
+ * zusammen 5,6 MB, jeder Klon zog sie mit, jede Prüfung, jeder Agent. Als
  * WebP bei Qualität 92 sind es 1,1 MB, also 82 Prozent weniger, ohne dass an
  * einer Oberfläche etwas zu sehen wäre: Es sind Bildschirmfotos, keine Fotos.
  *
@@ -16,7 +16,7 @@
  * Format aus; gemessen kamen auf der Startseite zwölf Bilder mit zusammen
  * 178 kB an. Der Gewinn liegt im Repo, nicht auf der Leitung.
  *
- * Umgewandelt wird mit Python und Pillow, wie beim Porträt auch — dieselbe
+ * Umgewandelt wird mit Python und Pillow, wie beim Porträt auch, dieselbe
  * Werkzeugkette statt einer zweiten für dieselbe Aufgabe.
  *
  *   npm run build:shots

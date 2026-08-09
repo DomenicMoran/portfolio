@@ -35,7 +35,7 @@ export function ArticleIndex({
   /*
     Die Übersicht ist eine Sammlung, kein Werk und keine Person.
 
-    Artikel tragen `TechArticle`, die Startseite `Person` — nur diese Seite
+    Artikel tragen `TechArticle`, die Startseite `Person`, nur diese Seite
     trug gar nichts, obwohl sie die einzige ist, die alle fünf Artikel
     zusammenfasst. `Blog` mit `blogPost` ist die Form, die eine Suchmaschine
     dafür kennt: Sie verbindet die Einzelseiten zu einer Reihe, statt sie als
@@ -93,7 +93,7 @@ export function ArticleIndex({
           />
 
           {/* Die Liste ist der Zweck dieser Seite und deshalb eine benannte
-              Navigation — dieselbe Auszeichnung wie die Liste am Fuß jedes
+              Navigation, dieselbe Auszeichnung wie die Liste am Fuß jedes
               Artikels. Gemessen am Barrierefreiheitsbaum der ausgelieferten
               Übersicht: zwei Navigationen (Kopfleiste, Fußzeile) und für die
               fünf Artikel keine. Wer die Landmarkenliste benutzt, bekam eine
@@ -105,7 +105,7 @@ export function ArticleIndex({
           <nav aria-label={chrome.allArticles}>
             <ul className="mt-16 flex flex-col gap-4">
               {articles.map((article, i) => {
-                /* Das System, aus dem der Artikel stammt — abgeleitet aus der
+                /* Das System, aus dem der Artikel stammt, abgeleitet aus der
                  Fallstudie, die ihn führt, und nicht am Artikel notiert.
 
                  Warum es in der Übersicht steht und nicht nur im Artikel:
@@ -145,7 +145,7 @@ export function ArticleIndex({
                         Karte.
 
                         Die Karte ist als Ganzes anklickbar, und das soll sie
-                        bleiben — aber damit wurde alles darin zum Namen des
+                        bleiben, aber damit wurde alles darin zum Namen des
                         Verweises. Gemessen im Barrierefreiheitsbaum der
                         ausgelieferten Seite: 44 bis 47 Wörter je Karte,
                         beginnend mit „31. Juli 2026 5 Min. Lesezeit Salati“.
@@ -161,12 +161,12 @@ export function ArticleIndex({
                       href={`${chrome.base}/${article.slug}`}
                       /* Kein Vorabladen, wie unter dem gelesenen Artikel: Die
                          Übersicht führt in genau einen Artikel, holte aber
-                         gemessen alle sechs — 443 kB auf dem Telefon. */
+                         gemessen alle sechs, 443 kB auf dem Telefon. */
                       prefetch={false}
                       aria-labelledby={`artikel-${article.slug}`}
                       className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
                     >
-                      {/* Kopfdaten links, Text rechts — aber erst ab `lg`.
+                      {/* Kopfdaten links, Text rechts, aber erst ab `lg`.
 
                           Vorher lief alles über die volle Kartenbreite: Die
                           Karte ist 1.024 px breit, der Vorspann auf 62 Zeichen
@@ -181,7 +181,7 @@ export function ArticleIndex({
                           Mittelpunkt liest man sie einzeln.
 
                           Darunter bleibt die Zeile, weil ein Telefon keine
-                          zweite Spalte hat — und dort gehört jeder Trennpunkt
+                          zweite Spalte hat, und dort gehört jeder Trennpunkt
                           mit dem, was er einleitet, in dieselbe Einheit.
                           Standen die drei Angaben als fünf gleichrangige
                           Kästchen nebeneinander, brach die Zeile bei 390 px
@@ -252,7 +252,7 @@ export function ArticleIndex({
               `link rel="alternate"`, und beide Sprachfassungen haben einen
               eigenen. Sichtbar stand er nirgends: Wer den Texten folgen
               wollte, musste in den Quelltext sehen. Eine Zeile unter der
-              Liste reicht — dort, wo jemand am Ende der fünf Artikel
+              Liste reicht, dort, wo jemand am Ende der fünf Artikel
               angekommen ist und wissen will, ob noch etwas kommt. */}
           <p className="mt-10 font-mono text-[11px] text-ink-faint">
             <a

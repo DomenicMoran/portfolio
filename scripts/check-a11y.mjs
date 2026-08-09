@@ -5,7 +5,7 @@
  * Warum ein eigener Lauf, obwohl es schon Prüfungen für Druckbild, Unterlängen
  * und Zahlen gibt: Die messen je eine Sache, die einmal falsch war. axe prüft
  * gut hundert Regeln auf einmal und findet damit auch das, wonach hier noch
- * niemand gesucht hat — fehlende Beschriftungen, zu schwache Kontraste,
+ * niemand gesucht hat, fehlende Beschriftungen, zu schwache Kontraste,
  * Überschriften-Sprünge, doppelte Kennungen, Landmarken ohne Namen.
  *
  * Gemessen wird die ausgelieferte Seite im Browser, nicht das Bauteil: Ein
@@ -56,7 +56,7 @@ const pfade = gebauteSeiten();
   Die 404-Seite über eine erfundene Adresse, nicht über ihre Datei.
 
   Sie liegt als `_not-found.html` im Bau und fällt damit durch das Filter, das
-  Bau-Interna auslässt — der erste Lauf dieses Wächters prüfte sie deshalb
+  Bau-Interna auslässt, der erste Lauf dieses Wächters prüfte sie deshalb
   nicht. Ausgerechnet die Seite, die jeder Vertipper zu sehen bekommt. Über eine
   erfundene Adresse kommt sie so heraus, wie Next sie ausliefert, samt eigenem
   Dokument und Sprachauszeichnung.
@@ -90,7 +90,7 @@ let geprueft = 0;
 
    Hier stand, alles darüber bleibe axes Sache. Das war eine Annahme ohne
    Deckung: axe meldet für jede Stelle, deren Untergrund es nicht bestimmen
-   kann, weder bestanden noch verletzt, sondern „incomplete" — auf der
+   kann, weder bestanden noch verletzt, sondern „incomplete", auf der
    Startseite allein 63 Textknoten, über die dieser Lauf nichts sagt und nie
    etwas gesagt hat. Sie entscheidet `check:contrast` am Bild.
    ------------------------------------------------------------------------ */
@@ -180,7 +180,7 @@ async function unsichtbarPruefen(seite, pfad) {
 
   for (const f of funde) {
     unsichtbar.push(
-      `${pfad}: „${f.text}“ steht in ${f.farbe} auf ${f.grund} — ` +
+      `${pfad}: „${f.text}“ steht in ${f.farbe} auf ${f.grund}, ` +
         `${f.wert}:1 (class="${f.klasse}")`,
     );
   }
@@ -215,7 +215,7 @@ for (const breite of BREITEN) {
 
       Die Abschnitte unterhalb der Falz stehen bis zum Hineinscrollen auf
       `opacity: 0`, und axe überspringt, was nicht sichtbar ist. Ohne diesen
-      Durchlauf prüfte der Lauf die halbe Seite und meldete trotzdem "sauber" —
+      Durchlauf prüfte der Lauf die halbe Seite und meldete trotzdem "sauber":
       derselbe blinde Fleck, an dem der Druck-Wächter schon einmal hing.
     */
     await seite.evaluate(async () => {
@@ -231,7 +231,7 @@ for (const breite of BREITEN) {
       Auf gerechnete Kacheln warten, bevor gemessen wird.
 
       Die Gebetszeiten-Kachel lädt ihre Bibliothek erst beim Hineinscrollen und
-      füllt ihre Felder danach. Wer vorher misst, misst leere Felder — und
+      füllt ihre Felder danach. Wer vorher misst, misst leere Felder, und
       leerer Text hat keinen Kontrast. Genau so ging eine Zahl in der Farbe des
       Hintergrunds durch diesen Lauf: `text-base` ist in diesem Farbsystem
       nicht nur eine Schriftgröße, sondern auch eine Farbe (`--color-base`),
@@ -354,7 +354,7 @@ const ohneSkript = [];
 
      Ein `button` außerhalb eines `form` hat ohne JavaScript keine eigene
      Wirkung: Er nimmt den Klick an und schweigt. Gefunden am 08.08.2026 auf
-     dem Kurzprofil — „Drucken / PDF" ist `window.print()` und sonst nichts,
+     dem Kurzprofil, „Drucken / PDF" ist `window.print()` und sonst nichts,
      stand aber sichtbar in der Leiste. Daneben lag die fertige Datei als
      gewöhnlicher Verweis, also gab es sogar einen Weg, der funktioniert.
 
@@ -435,7 +435,7 @@ const ohneSkript = [];
 /* ---------------------------------------------------------------------------
    Wartezeit, die nur aus einer Animation kommt
 
-   `prefers-reduced-motion` nimmt die Bewegung heraus — die Zeit nimmt es nicht
+   `prefers-reduced-motion` nimmt die Bewegung heraus, die Zeit nimmt es nicht
    mit. Bei den Reitern der Fallstudien blendet `AnimatePresence mode="wait"`
    die alte Tafel aus, bevor die neue kommt; gemessen dauerte der Wechsel mit
    der Einstellung 452 ms und ohne sie 439. Wer Bewegung abstellt, wartete also
@@ -443,7 +443,7 @@ const ohneSkript = [];
 
    Geprueft wird das Ergebnis und nicht die Umsetzung: Nach dem Klick auf einen
    Reiter muss die zugehoerige Tafel da sein, und zwar schnell. Die Grenze ist
-   grosszuegig — sie soll eine halbe Sekunde Animation finden, nicht ein paar
+   grosszuegig, sie soll eine halbe Sekunde Animation finden, nicht ein paar
    Millisekunden Renderzeit. */
 const GRENZE_MS = 200;
 const wartefunde = [];
@@ -513,8 +513,8 @@ if (wartefunde.length > 0) {
    Zielgröße auf dem Telefon, WCAG 2.2 Erfolgskriterium 2.5.8 (AA).
 
    Warum das hier von Hand steht, obwohl axe oben läuft: axe prüft die Regel
-   nicht. Sie verlangt Geometrie über den ganzen Baum hinweg — Größe eines
-   Ziels und Abstand zum nächsten —, und genau das kann ein Regelwerk, das
+   nicht. Sie verlangt Geometrie über den ganzen Baum hinweg. Größe eines
+   Ziels und Abstand zum nächsten, und genau das kann ein Regelwerk, das
    Knoten einzeln ansieht, nicht entscheiden.
 
    Gemessen wird bei 390 px, weil die Regel für Zeigegeräte gilt und der
@@ -529,7 +529,7 @@ if (wartefunde.length > 0) {
 
    Zum Zeitpunkt des Einbaus gemessen: sechs Seiten, kein Verstoß. Die
    kleinsten Ziele im Recruiter-Bereich sind 37 px hoch und liegen damit über
-   der Grenze — die Prüfung steht hier, damit das so bleibt.
+   der Grenze, die Prüfung steht hier, damit das so bleibt.
 ------------------------------------------------------------------ */
 
 const ZIELGROESSE = 24;
@@ -625,7 +625,7 @@ if (zielfunde.length > 0) {
    Die Regel oben prüft die Reiterleisten, also eine Wartezeit nach einem
    Klick. Hier geht es um die stillere Hälfte: Text, der von allein nachrückt.
    Der Terminalkasten im Abschnitt „Arbeitsweise" füllte sich Zeile für Zeile,
-   alle 620 ms eine — gemessen 6,7 Sekunden bis zum Endstand, und bei
+   alle 620 ms eine, gemessen 6,7 Sekunden bis zum Endstand, und bei
    abgeschalteter Bewegung genauso lange. Nach dem Eingriff: 218 ms.
 
    Gemessen wird die Textmenge zweimal, mit acht Sekunden Abstand, nachdem die
@@ -646,7 +646,7 @@ const uhrfunde = [];
     await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
 
     /* Einmal durch, damit alles eingehängt ist, was auf das Hineinscrollen
-       wartet — sonst misst der Lauf eine Seite, die noch gar nicht angefangen
+       wartet, sonst misst der Lauf eine Seite, die noch gar nicht angefangen
        hat. */
     await seite.evaluate(async () => {
       const hoehe = document.documentElement.scrollHeight;
@@ -662,7 +662,7 @@ const uhrfunde = [];
 
     /* In Schritten statt einmal acht Sekunden warten.
        Eine zeitgesteuerte Folge rückt regelmäßig nach, die erste Änderung
-       kommt lange vor dem Ende — beim Terminalkasten nach 620 ms. Wer bis
+       kommt lange vor dem Ende, beim Terminalkasten nach 620 ms. Wer bis
        zum Schluss wartet, misst dasselbe und kostet auf zwanzig Seiten
        160 Sekunden. Der Lauf hört auf, sobald er etwas gefunden hat, und
        nach spätestens drei. Gegengeprüft mit dem Terminalkasten vor seinem
@@ -702,14 +702,14 @@ if (uhrfunde.length > 0) {
    Sie stehen in einem SVG mit `viewBox`, rechnen also in eigenen Einheiten:
    Was dort „10“ heißt, wird auf dem Bildschirm zu 10 mal dem Faktor, mit dem
    das Bild skaliert. Der Faktor hängt an der Breite des Kastens, und der
-   ändert sich mit dem Fenster — eine Schriftgröße, die am Desktop stimmt,
+   ändert sich mit dem Fenster, eine Schriftgröße, die am Desktop stimmt,
    kann auf einem Telefon unter jede Lesbarkeit fallen, ohne dass im Quelltext
    irgendetwas anders aussieht.
 
    Genau das war der Fall: bei 720 px Mindestbreite standen auf einem Telefon
    16 der 29 Beschriftungen unter 9 px, die kleinste bei 7,8. Am Desktop waren
-   es 12,5 px und keine darunter. Kein Regelwerk schlägt hier an — WCAG kennt
-   keine Mindestschriftgröße —, und gesehen hätte es nur jemand, der das Bild
+   es 12,5 px und keine darunter. Kein Regelwerk schlägt hier an. WCAG kennt
+   keine Mindestschriftgröße, und gesehen hätte es nur jemand, der das Bild
    auf einem Telefon aufklappt.
 
    Geprüft wird bei 390 px an allen vier Bildern der Startseite. Sie stehen
@@ -807,7 +807,7 @@ if (unsichtbar.length > 0) {
    ohne dass sich das Layout ändert: die Befehlspalette filtert von 23
    Einträgen herunter, die Tagesbilanz rechnet ihre Summe neu, und die
    Gebetszeiten wechseln Ort und Regel. Wer sieht, merkt es sofort; wer sich
-   vorlesen lässt, hört ohne Live-Region gar nichts — bei der Palette nicht
+   vorlesen lässt, hört ohne Live-Region gar nichts, bei der Palette nicht
    einmal, dass nichts mehr übrig ist.
 
    Alle drei sind versorgt. Dieser Block hält es fest: Eine Region, die jemand
@@ -819,7 +819,7 @@ const ANSAGEFUNDE = [];
     viewport: { width: 1440, height: 1000 },
     /* Für den Kopierknopf weiter unten. Ohne die Erlaubnis wirft
        `navigator.clipboard.writeText`, und der Knopf meldete dann seinen
-       Fehlerfall — geprüft wäre damit das Gegenteil dessen, was hier
+       Fehlerfall, geprüft wäre damit das Gegenteil dessen, was hier
        gemeint ist. */
     permissions: ["clipboard-read", "clipboard-write"],
   });
@@ -917,7 +917,7 @@ const ANSAGEFUNDE = [];
     }
     if (!stand.sichtbar.includes(stand.angesagt) && !/check/.test(stand.symbol)) {
       ANSAGEFUNDE.push(
-        "Kopierknopf: nichts Sichtbares ändert sich — wer sieht, weiß nicht, " +
+        "Kopierknopf: nichts Sichtbares ändert sich, wer sieht, weiß nicht, " +
           "ob kopiert wurde",
       );
     }
@@ -942,7 +942,7 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
    Die Artikel zeigen Code, und Code ist breiter als ein Telefon: Gemessen bei
    390 px sind von den Blöcken zwischen 53 und 100 Prozent zu sehen, der Rest
    liegt hinter einem eigenen Bildlauf. Wer keine Maus benutzt, kommt nur
-   heran, wenn der Bereich den Fokus annehmen kann — sonst fehlt ihm die
+   heran, wenn der Bereich den Fokus annehmen kann, sonst fehlt ihm die
    Hälfte des Belegs, um den es im Artikel geht.
 
    Und er braucht einen Namen. Ein Vorleseprogramm sagt sonst „Region“ und
@@ -952,7 +952,7 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
 
    Zum Zeitpunkt des Einbaus gemessen: 14 Bereiche über beide Sprachfassungen,
    alle mit `tabindex` und Namen. Die Prüfung steht hier, damit das so
-   bleibt — ein neuer Codeblock ohne Beschriftung fiele sonst niemandem auf. */
+   bleibt, ein neuer Codeblock ohne Beschriftung fiele sonst niemandem auf. */
 const BILDLAUFFUNDE = [];
 
 {
@@ -1020,7 +1020,7 @@ if (BILDLAUFFUNDE.length > 0) {
    Das Kriterium nennt eine Zahl, und die ist nicht 390: Inhalt muss sich bei
    320 CSS-Pixeln Breite darstellen lassen, ohne dass in zwei Richtungen
    gescrollt werden muss. 320 px ist keine willkürliche Grenze, sondern ein
-   Telefon bei 400 % Zoom — also das, was jemand mit schwacher Sehkraft
+   Telefon bei 400 % Zoom, also das, was jemand mit schwacher Sehkraft
    tatsächlich vor sich hat.
 
    Dieser Lauf misst 1440 und 390. Vier andere Läufe messen 320 (`check:nbsp`,
@@ -1029,7 +1029,7 @@ if (BILDLAUFFUNDE.length > 0) {
    WCAG im Namen führt, sah die Breite nie an.
 
    Geprüft wird genau das, was das Kriterium verlangt: dass das Dokument nicht
-   waagerecht scrollt. Nicht, ob einzelne Elemente über den Rand ragen — das
+   waagerecht scrollt. Nicht, ob einzelne Elemente über den Rand ragen, das
    tun der Glühkreis und die Laufschrift mit Absicht, beide sind geclippt, und
    eine Liste von Ausnahmen wäre eine Liste, die veraltet. Gemessen beim
    Einbau: alle Seiten bei 310 px Inhaltsbreite auf 320 px Sichtfeld.
@@ -1061,7 +1061,7 @@ const reflowfunde = [];
     }));
     if (masse.scroll > masse.sicht + 1) {
       reflowfunde.push(
-        `${pfad}: ${masse.scroll} px Inhalt auf ${masse.sicht} px Sichtfeld — ` +
+        `${pfad}: ${masse.scroll} px Inhalt auf ${masse.sicht} px Sichtfeld, ` +
           `waagerechtes Scrollen bei ${REFLOW_BREITE} px`,
       );
     }

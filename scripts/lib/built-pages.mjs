@@ -4,7 +4,7 @@ import { join } from "node:path";
 /**
  * Die Adressen aller gebauten Seiten, aus dem Bau gelesen.
  *
- * Fünf Prüfläufe brauchen dieselbe Liste und brachten sie fünfmal mit —
+ * Fünf Prüfläufe brauchen dieselbe Liste und brachten sie fünfmal mit:
  * denselben Baumdurchlauf, dieselbe Umwandlung von Dateipfad zu Adresse,
  * dieselbe Ausnahme für Bau-Interna. Wortgleich, Zeichen für Zeichen. Beim
  * sechsten Mal hätte jemand eine der fünf Fassungen erwischt und die anderen
@@ -15,7 +15,7 @@ import { join } from "node:path";
  *
  * - **Namen mit führendem Unterstrich fallen heraus.** `_not-found.html` und
  *   `_global-error.html` sind Bau-Interna und keine Adressen. Die 404 wird
- *   trotzdem geprüft, aber über eine erfundene Adresse — nur so kommt sie so
+ *   trotzdem geprüft, aber über eine erfundene Adresse, nur so kommt sie so
  *   heraus, wie Next sie ausliefert.
  * - **`/index` wird zu `/`.** Der Bau legt die Startseite als `index.html` ab;
  *   ausgeliefert wird sie unter der Wurzel.
@@ -89,7 +89,7 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
  *
  * Für Läufe gegen Produktion gibt es keinen Bau, aus dem sich die Liste lesen
  * ließe: Der tägliche Lauf checkt aus und misst, ohne zu bauen. Gemessen an
- * `.next/server/app` scheitert er mit ENOENT — und ein Wächter, der wegen
+ * `.next/server/app` scheitert er mit ENOENT, und ein Wächter, der wegen
  * seiner Seitenliste stirbt, prüft gar nichts.
  *
  * Die Sitemap ist für diesen Fall auch die richtige Quelle: Sie nennt genau
@@ -100,7 +100,7 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
  * Die beiden Adressen, unter denen die Fehlerseite herauskommt.
  *
  * Sie steht in keiner Liste gebauter Seiten: Im Bau liegt sie als
- * `_not-found.html`, und der führende Unterstrich schließt sie aus — mit
+ * `_not-found.html`, und der führende Unterstrich schließt sie aus, mit
  * gutem Grund, denn die Datei ist nicht die Antwort, die ein Besucher
  * bekommt. Die entsteht pro Anfrage und liest ihre Sprache aus einer
  * Kopfzeile, die der Proxy setzt.
@@ -108,7 +108,7 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
  * Die Folge war eine Lücke mit System: Ausgerechnet die Seite, die jeder
  * Vertipper zu sehen bekommt, fiel aus jedem Lauf heraus, der seine Liste
  * aus dem Bau nimmt. `check-a11y` und `check-privacy` trugen die beiden
- * Adressen deshalb je einmal selbst ein — zweimal dieselbe Zeile, und beim
+ * Adressen deshalb je einmal selbst ein, zweimal dieselbe Zeile, und beim
  * dritten Lauf hätte sie jemand vergessen.
  *
  * Nur für Läufe, die einen Server befragen. Wer Dateien liest, kann diese

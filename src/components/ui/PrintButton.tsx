@@ -8,7 +8,7 @@ import { Download, Printer } from "lucide-react";
  * Der Verweis auf das PDF steht zuerst und trägt die kräftige Farbe. Das ist
  * der Grund, aus dem es die Datei überhaupt gibt: Wer ein Profil an die
  * fachliche Führung weiterreicht, braucht eine Datei, keine Anleitung. Bis
- * hierher stand auf dieser Seite nur der Druckknopf — ausgerechnet dort, wo
+ * hierher stand auf dieser Seite nur der Druckknopf, ausgerechnet dort, wo
  * jemand landet, der auf „One-Pager" geklickt hat, war die fertige Datei
  * nicht verlinkt. Sie hing nur im Recruiter-Bereich.
  *
@@ -31,7 +31,7 @@ export function PrintButton({
   /**
    * Der Weg zum Blatt in der anderen Sprache.
    *
-   * Das Kurzprofil ist die einzige Seite ohne Kopfleiste — und damit war es
+   * Das Kurzprofil ist die einzige Seite ohne Kopfleiste, und damit war es
    * die einzige ohne Sprachwechsel. Maschinenlesbar stand er da
    * (`link rel=alternate`), sichtbar nicht: Wer die deutsche Fassung offen
    * hatte und die englische brauchte, musste die Adresse von Hand ändern.
@@ -50,7 +50,7 @@ export function PrintButton({
           {/* Der Hinweis erklärt den Druckknopf, also die zweite von zwei
               Möglichkeiten. Auf schmalen Geräten steht er nicht: Gemessen bei
               390 px brach die Leiste auf zwei Zeilen um und der Satz endete
-              als „im Druckdialog „Als…“ — ein abgeschnittener Satz sieht aus
+              als „im Druckdialog „Als…“, ein abgeschnittener Satz sieht aus
               wie ein Fehler, und die fertige Datei daneben braucht keine
               Erklärung. */}
           <span
@@ -86,7 +86,7 @@ export function PrintButton({
               dort ein Bedienelement, das auf jeden Klick schweigt. Gemessen
               an der ausgelieferten Seite mit abgeschaltetem JavaScript: Text,
               Abschnitte und Portraet identisch, nur dieser eine Knopf ohne
-              Wirkung — sichtbar wie zuvor.
+              Wirkung, sichtbar wie zuvor.
 
               Der Weg daneben bleibt: Die fertige Datei ist ein gewöhnlicher
               Verweis und braucht kein Skript. Wer ohne JavaScript liest,
@@ -104,8 +104,8 @@ export function PrintButton({
             /* Die Zuordnung stand bisher nur im Kommentar darüber: Auf dem
                Bildschirm liegen zwischen Hinweis und Knopf die halbe Leiste
                und der Sprachwechsler, und vorgelesen war der Satz ein loser
-               Text am Anfang der Navigation. Ist der Hinweis ausgeblendet —
-               unter 640 px —, greift die Beschreibung von selbst nicht. */
+               Text am Anfang der Navigation. Ist der Hinweis ausgeblendet:
+               unter 640 px, greift die Beschreibung von selbst nicht. */
             aria-describedby="druck-hinweis"
             className="print-button inline-flex items-center gap-2 rounded-full border border-[#c9c9d2] px-4 py-2 text-sm font-medium text-[#101014] transition-colors hover:border-[#101014]"
           >

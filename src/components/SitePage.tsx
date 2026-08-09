@@ -27,8 +27,8 @@ export function SitePage({ content }: { content: Content }) {
    * Die Person, verpackt in die Seite, die sie beschreibt.
    *
    * Bisher stand hier ein bloßes `Person`-Objekt. `ProfilePage` ist der Typ,
-   * den Suchmaschinen für genau diesen Fall vorsehen — eine Seite, deren
-   * Gegenstand ein Mensch ist —, und Antwortmaschinen lesen daraus, dass die
+   * den Suchmaschinen für genau diesen Fall vorsehen, eine Seite, deren
+   * Gegenstand ein Mensch ist, und Antwortmaschinen lesen daraus, dass die
    * Angaben zusammengehören statt zufällig nebeneinanderzustehen.
    */
   const person = {
@@ -45,7 +45,7 @@ export function SitePage({ content }: { content: Content }) {
     /* Das Porträt gehört in die Angabe, sobald es eines gibt.
        Suchmaschinen und Antwortmaschinen zeigen daraus das Bild neben dem
        Namen; ohne `image` steht dort der Platzhalter, den jede Person ohne
-       Angabe bekommt. Die Bedingung bleibt, weil das Feld leer sein darf —
+       Angabe bekommt. Die Bedingung bleibt, weil das Feld leer sein darf:
        ein Verweis auf eine Datei, die es nicht gibt, wäre schlechter als
        keine Angabe. */
     ...(content.about.portrait
@@ -72,7 +72,7 @@ export function SitePage({ content }: { content: Content }) {
     ],
     /* Der Anwendungstyp kommt aus den Verweisen der Fallstudie, nicht aus
        einer Pauschale. Vorher stand an jedem Produkt "WebApplication", auch
-       an denen, die in beiden Stores liegen — falsch für Salati und
+       an denen, die in beiden Stores liegen, falsch für Salati und
        MenuCloud und damit genau die Sorte Angabe, die eine Maschine
        übernimmt und weiterreicht. */
     subjectOf: content.caseStudies.map((study) => ({
@@ -80,7 +80,7 @@ export function SitePage({ content }: { content: Content }) {
       name: study.name,
       description: study.tagline,
       /* Ein Store-Verweis heißt: Es gibt eine App. Mehr wird hier nicht
-         behauptet — `operatingSystem` stand einen Bau lang mit drin und war
+         behauptet, `operatingSystem` stand einen Bau lang mit drin und war
          unvollständig, weil je Fallstudie nur einer der beiden Stores
          verlinkt ist, obwohl Salati und MenuCloud in beiden liegen. Eine
          halbe Angabe wird von einer Maschine als ganze weitergereicht. */

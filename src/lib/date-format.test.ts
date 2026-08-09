@@ -11,7 +11,7 @@ describe("datumLang", () => {
   });
 
   /* Der Prüfstempel ist ein reines Datum ohne Zeitzone. `new Date("2026-01-01")`
-     liest ihn als Mitternacht UTC — östlich von Greenwich ist das derselbe Tag,
+     liest ihn als Mitternacht UTC, östlich von Greenwich ist das derselbe Tag,
      westlich der Tag davor. Hier steht der Fall, der es zeigen würde. */
   it("hält den Jahreswechsel", () => {
     expect(datumLang("2026-01-01")).toBe("1. Januar 2026");

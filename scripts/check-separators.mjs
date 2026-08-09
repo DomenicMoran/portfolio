@@ -4,7 +4,7 @@
  *
  * Kopfzeilen wie „31. Juli 2026 · 5 Min. Lesezeit · Salati“ bestehen aus
  * gleichrangigen Kästchen in einem umbrechenden Flexkasten. Wird es eng,
- * bricht die Zeile an irgendeiner Fuge — und die Fuge kann hinter dem Punkt
+ * bricht die Zeile an irgendeiner Fuge, und die Fuge kann hinter dem Punkt
  * liegen. Dann steht am Ende der ersten Zeile ein Mittelpunkt, der nichts
  * mehr trennt, und darunter allein das, was er einleiten sollte.
  *
@@ -54,7 +54,7 @@ let geprueft = 0;
    Je Seite ein Aufruf, dann die Breiten durchfahren.
 
    Der erste Entwurf lief andersherum: fuenf Browserfenster, jedes mit allen
-   achtzehn Seiten — neunzig Aufrufe mit je einem Durchscrollen und einer
+   achtzehn Seiten, neunzig Aufrufe mit je einem Durchscrollen und einer
    halben Sekunde Wartezeit, zusammen 112 s im Bauserver. Gemessen wird aber
    dasselbe Dokument, nur schmaler oder breiter. Achtzehn Aufrufe reichen, der
    Rest ist ein Wechsel der Fenstergroesse.
@@ -92,7 +92,7 @@ for (const pfad of pfade) {
 
     const { funde, anzahl } = await seite.evaluate(() => {
       /** Zeichen, die zwischen zwei Angaben stehen und für sich nichts sagen. */
-      const TRENNER = /^[·•|/–—]$/;
+      const TRENNER = /^[·•|/–,]$/;
 
       const alle = [...document.querySelectorAll("body *")];
       const trenner = alle.filter((e) => {
@@ -160,7 +160,7 @@ for (const pfad of pfade) {
           ({ rect }) => rect.left >= meins.right - 0.5,
         );
 
-        /* Ein Trennzeichen trennt zwei Angaben — links von ihm muss also
+        /* Ein Trennzeichen trennt zwei Angaben, links von ihm muss also
            etwas stehen. Steht nichts, ist es kein Trenner, sondern eine
            Marke: Die Konsolenspur auf der Startseite setzt vor jede Zeile
            einen Mittelpunkt, und der gehört ans Ende seiner Zeile genauso
@@ -201,7 +201,7 @@ if (fehler > 0) {
   console.error(
     `\n${fehler} Trennzeichen am Zeilenende. Ein Punkt, hinter dem nichts mehr ` +
       `folgt, trennt nichts. Das Zeichen gehört mit dem, was es einleitet, in ` +
-      `dieselbe Einheit — dann bricht die Zeile davor um statt dahinter.`,
+      `dieselbe Einheit, dann bricht die Zeile davor um statt dahinter.`,
   );
   process.exit(1);
 }
