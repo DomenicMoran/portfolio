@@ -569,7 +569,8 @@ export const en: Content = {
         },
         {
           src: "/shots/menucloud-app.webp",
-          alt: "A restaurant page in the MenuCloud app on iPhone: menu, reservation, opening hours and description of a Berlin restaurant.",
+          label: "Discovery app · demo data",
+          alt: "A restaurant page in the MenuCloud app on iPhone: menu, reservation, opening hours and description of a Berlin restaurant. The listing shown is a demo entry.",
           width: 1242,
           height: 2688,
           variant: "phone",

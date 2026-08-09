@@ -745,7 +745,12 @@ export const caseStudies: CaseStudy[] = [
         // Store-Aufnahme aus dem Projekt selbst, die Fallstudie nennt die
         // Apps, zeigte sie aber vorher nicht.
         src: "/shots/menucloud-app.webp",
-        alt: "Restaurantseite in der MenuCloud-App auf dem iPhone: Speisekarte, Reservierung, Öffnungszeiten und Beschreibung eines Berliner Restaurants.",
+        /* Der gezeigte Betrieb ist ein Demo-Eintrag aus den Seed-Daten.
+           MenuCloud hat ihn am 04.05.2026 aus dem eigenen Aktivitätsstrom
+           genommen, weil er dort als echter Kunde gelesen wurde. Hier steht
+           es unter dem Bild, statt dass es jemand raten muss. */
+        label: "Discovery-App · Demodaten",
+        alt: "Restaurantseite in der MenuCloud-App auf dem iPhone: Speisekarte, Reservierung, Öffnungszeiten und Beschreibung eines Berliner Restaurants. Der gezeigte Betrieb ist ein Demo-Eintrag.",
         width: 1242,
         height: 2688,
         variant: "phone",
