@@ -188,7 +188,7 @@ export const en: Content = {
         value: verified.apiRouten.replace(".", ","),
         label: "API routes (MenuCloud)",
       },
-      { value: "7,400+", label: "test cases (MenuCloud)" },
+      { value: "7,800+", label: "test cases (MenuCloud)" },
     ],
   },
 
@@ -414,7 +414,7 @@ export const en: Content = {
         "Multi-tenant architecture with row level security per restaurant",
         "Stripe Connect destination charges: restaurants are paid directly, the platform fee is settled automatically",
         "§ 146a AO compliance: per-tenant Fiskaly cloud signing unit, hash chain persisted",
-        "over 7,400 test cases (over 7,200 unit, 174 end-to-end), the end-to-end suite running against production",
+        "over 7,800 test cases (over 7,600 unit, 206 end-to-end), the end-to-end suite running against production",
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         /* Siehe die Begründung in `site.ts`: seit dem 01.05.2026 zwei Stufen,
            nicht drei. */
@@ -509,7 +509,7 @@ export const en: Content = {
       metrics: [
         { value: verified.apiRouten.replace(".", ","), label: "API routes" },
         { value: verified.migrationen, label: "DB migrations" },
-        { value: "7,400+", label: "test cases" },
+        { value: "7,800+", label: "test cases" },
         { value: "EU", label: "hosting & data residency" },
       ],
       links: [
