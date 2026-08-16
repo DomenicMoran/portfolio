@@ -5,7 +5,7 @@
 **Portfolio eines AI Product Engineers: gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
 
 Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
-Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
+Sieben Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
 
 [![Prüfen](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml/badge.svg)](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-000?logo=nextdotjs)](https://nextjs.org)
@@ -20,7 +20,7 @@ Vier Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalett
 ## Worum es geht
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
-versucht etwas anderes: für jedes der vier Systeme in Produktion beantwortet es
+versucht etwas anderes: für jedes der sieben Systeme in Produktion beantwortet es
 drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
 Architektur?*, *Was war der schwierige Teil?*
 
@@ -64,7 +64,7 @@ keinerlei Copy. Ein leerer Wert lässt das jeweilige Element verschwinden statt
 einen Platzhalter zu rendern: auf einer Seite, deren Zweck Glaubwürdigkeit ist,
 darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum“ enden.
 
-**Architekturdiagramme sind Daten, kein Bild.** Die vier Diagramme in
+**Architekturdiagramme sind Daten, kein Bild.** Die sieben Diagramme in
 [`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx) sind als
 Knoten- und Kantenliste beschrieben und werden zu SVG gerendert: auflösungsfrei,
 im DOM durchsuchbar, mit `aria-label` beschrieben und ohne einen einzigen
@@ -210,7 +210,7 @@ src/
 │  ├─ de.ts · en.ts          Adapter je Sprache, gegen types.ts deklariert
 │  ├─ types.ts               gemeinsame Form; fehlt ein Feld, bricht der Bau
 │  ├─ ContentProvider.tsx    reicht die Sprachfassung an die Client-Sektionen
-│  ├─ articles/              fünf Fachartikel je Sprache, getippte Blöcke
+│  ├─ articles/              sieben Fachartikel je Sprache, getippte Blöcke
 │  └─ verified.json          Prüfstempel, nur vom Workflow geschrieben
 └─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks · Marke · OG-Karte
 

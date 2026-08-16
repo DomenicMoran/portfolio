@@ -114,7 +114,7 @@ export const de: Content = {
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
-    title: "Vier Produkte. Alle live. Alle allein gebaut.",
+    title: "Sieben Produkte. Alle live. Alle allein gebaut.",
     lede: "Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen, und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet.",
     tabs: {
       highlights: "Was drinsteckt",
@@ -269,11 +269,11 @@ export const de: Content = {
   },
   onepager: {
     title: "Kurzprofil",
-    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: vier Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
+    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: sieben Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
     positioning:
-      "AI Product Engineer mit vier eigenständig gebauten Systemen in " +
+      "AI Product Engineer mit sieben eigenständig gebauten Systemen in " +
       "Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit " +
-      "gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. " +
+      "gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform, ein autonomer Agent. " +
       "{commits} Commits seit März 2026, neben einem Vollzeitjob. " +
       "Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt: " +
       "agentengestützte Entwicklung mit strikter Verifikationsdisziplin, " +
@@ -283,7 +283,7 @@ export const de: Content = {
     path: "Werdegang",
     pathNote:
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
-      "Der Nachweis sind vier Systeme in Produktion.",
+      "Der Nachweis sind sieben Systeme in Produktion.",
     openSource: "Veröffentlicht",
     openSourceNote: "alle mit Tests, CI und MIT-Lizenz auf",
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",

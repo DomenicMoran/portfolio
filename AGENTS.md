@@ -272,9 +272,9 @@ Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 (`if (open !== wasOpen) { … }`), nicht in einem `useEffect`. Die
 `react-hooks/set-state-in-effect`-Regel ist scharf und hat recht.
 
-## Die 77 Weiterleitungen
+## Die 91 Weiterleitungen
 
-`vercel.json` ist mit 464 Zeilen die längste Datei ohne Prosa, und JSON lässt
+`vercel.json` ist mit 534 Zeilen die längste Datei ohne Prosa, und JSON lässt
 keinen Kommentar zu. Deshalb steht hier, was dort steht und warum.
 
 Jede Regel kommt aus derselben Beobachtung: Adressen entstehen nicht nur durch
@@ -284,16 +284,22 @@ tippt `/privacy`. Wer den deutschen Pfad `/artikel` kennt, schreibt `/en/article
 statt `/en/articles`. Keiner dieser Fälle taucht in einem Verweis auf, und keiner
 fällt ohne Messung auf.
 
-Sechs Gruppen, gemessen am 08.08.2026:
+Sieben Gruppen, gemessen am 16.08.2026:
 
 | Gruppe | Anzahl | Beispiel |
 | --- | --- | --- |
 | Abschnitt der Startseite | 20 | `/recruiter` → `/#hire` |
 | Artikel in der falschen Sprachfassung | 18 | `/en/artikel/<slug>` → `/en/articles/<slug>` |
+| Name eines Systems | 14 | `/dartile` → `/#case-dartile` |
 | Feed | 12 | `/rss`, `/artikel/feed` → `/artikel/feed.xml` |
 | Rechtsseiten | 10 | `/imprint`, `/privacy` |
 | Kurzprofil | 8 | `/cv`, `/lebenslauf`, `/resume` |
 | Übersichten und Reste | 9 | `/blog` → `/artikel` |
+
+Die dritte Gruppe kam mit den drei neuen Fallstudien dazu und folgt derselben
+Beobachtung wie die erste: Wer den Namen eines Projekts kennt, tippt ihn. Sieben
+Systeme mal zwei Sprachfassungen sind vierzehn Adressen, die vorher ins Leere
+liefen.
 
 Drei Regeln hält `check:links` dagegen. Jedes Ziel muss mit 200 antworten.
 auch eines mit Platzhalter, das der Lauf dafür mit einem echten Slug einsetzt.

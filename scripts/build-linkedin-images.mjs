@@ -82,6 +82,27 @@ function kennzahl(anfangDerBeschriftung) {
 }
 
 /**
+ * Eine Zahl der Kennzahlenreihe aus `about.stats` holen.
+ *
+ * Hier standen „4" und „2" als Ziffern im Bildmarkup. Sie waren richtig, als
+ * das Bild entstand, und blieben stehen, als aus vier Systemen sieben wurden.
+ * Ein Titelbild liest niemand ein zweites Mal, und genau deshalb gehört keine
+ * Zahl hinein, die jemand von Hand nachziehen müsste.
+ */
+function kachelZahl(beschriftung) {
+  const treffer = new RegExp(
+    `\\{ value: "([^"]+)", label: "${beschriftung}", note:`,
+  ).exec(quelle);
+  if (!treffer) {
+    throw new Error(
+      `Keine Kennzahl "${beschriftung}" in about.stats. Das Titelbild wird ` +
+        `nicht gebaut, bevor klar ist, welche Zahl gilt.`,
+    );
+  }
+  return treffer[1];
+}
+
+/**
  * Auf den nächsten runden Tausender abrunden.
  *
  * Auf dem Titelbild steht bewusst "4.000+" und nicht "4.053". Das Bild liegt
@@ -155,8 +176,8 @@ const html = `<!doctype html>
     </div>
     <div class="rechts">
       <div class="zahlen">
-        <div class="zahl"><div class="wert">4</div><div class="bez">Systeme live</div></div>
-        <div class="zahl"><div class="wert">2</div><div class="bez">App Stores</div></div>
+        <div class="zahl"><div class="wert">${kachelZahl("Systeme in Produktion")}</div><div class="bez">Systeme live</div></div>
+        <div class="zahl"><div class="wert">${kachelZahl("Store-Einträge live")}</div><div class="bez">Store-Einträge</div></div>
         <div class="zahl"><div class="wert">${commits}</div><div class="bez">Commits seit 03/2026</div></div>
       </div>
       <div class="domain">domenicmoran.de</div>
@@ -172,17 +193,42 @@ const html = `<!doctype html>
  * weiterzureichen.
  */
 function menucloudWert(beschriftung) {
-  const muster = new RegExp(
-    `\{ value: "([^"]+)", label: "${beschriftung}" \}`,
-  );
-  const treffer = muster.exec(quelle);
-  if (!treffer) {
-    throw new Error(
-      `Keine Kennzahl "${beschriftung}" in site.ts. Die Kachel wird nicht ` +
-        `gebaut, bevor klar ist, welche Zahl gilt.`,
+  /* Zwei Schreibweisen, weil es zwei gibt.
+
+     Hier stand nur `value: "…"`. Zwei der drei Zahlen kommen aber seit dem
+     Prüfstempel nicht mehr als Zeichenkette, sondern als `verified.apiRouten`
+     und `verified.migrationen`, und damit brach dieser Lauf ab: „Keine
+     Kennzahl API-Routen in site.ts". Er ist seither nicht mehr gelaufen, und
+     das Titelbild trug weiter die Zahlen vom Tag seiner letzten Erzeugung.
+
+     Ein Lauf, der an der eigenen Quelle scheitert, ist schlimmer als eine alte
+     Zahl: Die alte Zahl sieht man, den nicht gelaufenen Lauf nicht. */
+  const alsText = new RegExp(
+    `\\{ value: "([^"]+)", label: "${beschriftung}" \\}`,
+  ).exec(quelle);
+  if (alsText) return alsText[1];
+
+  const alsVerweis = new RegExp(
+    `\\{ value: verified\\.(\\w+), label: "${beschriftung}" \\}`,
+  ).exec(quelle);
+  if (alsVerweis) {
+    const stempel = JSON.parse(
+      readFileSync("src/content/verified.json", "utf8"),
     );
+    const wert = stempel[alsVerweis[1]];
+    if (wert === undefined) {
+      throw new Error(
+        `site.ts nennt verified.${alsVerweis[1]} für "${beschriftung}", der ` +
+          `Prüfstempel kennt das Feld nicht.`,
+      );
+    }
+    return wert;
   }
-  return treffer[1];
+
+  throw new Error(
+    `Keine Kennzahl "${beschriftung}" in site.ts. Die Kachel wird nicht ` +
+      `gebaut, bevor klar ist, welche Zahl gilt.`,
+  );
 }
 
 const kachelHtml = `<!doctype html>

@@ -459,6 +459,91 @@
       "source": "/artikel/green-tests-empty-widget",
       "destination": "/en/articles/green-tests-empty-widget",
       "permanent": true
+    },
+    {
+      "source": "/en/artikel/achtzehn-wege-ueber-das-bull",
+      "destination": "/en/articles/eighteen-routes-over-the-bull",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles/achtzehn-wege-ueber-das-bull",
+      "destination": "/en/articles/eighteen-routes-over-the-bull",
+      "permanent": true
+    },
+    {
+      "source": "/artikel/eighteen-routes-over-the-bull",
+      "destination": "/en/articles/eighteen-routes-over-the-bull",
+      "permanent": true
+    },
+    {
+      "source": "/salati",
+      "destination": "/#case-salati",
+      "permanent": true
+    },
+    {
+      "source": "/en/salati",
+      "destination": "/en#case-salati",
+      "permanent": true
+    },
+    {
+      "source": "/menucloud",
+      "destination": "/#case-menucloud",
+      "permanent": true
+    },
+    {
+      "source": "/en/menucloud",
+      "destination": "/en#case-menucloud",
+      "permanent": true
+    },
+    {
+      "source": "/wohnungsjaeger",
+      "destination": "/#case-wohnungsjaeger",
+      "permanent": true
+    },
+    {
+      "source": "/en/wohnungsjaeger",
+      "destination": "/en#case-wohnungsjaeger",
+      "permanent": true
+    },
+    {
+      "source": "/nouri",
+      "destination": "/#case-nouri",
+      "permanent": true
+    },
+    {
+      "source": "/en/nouri",
+      "destination": "/en#case-nouri",
+      "permanent": true
+    },
+    {
+      "source": "/bitdojo",
+      "destination": "/#case-bitdojo",
+      "permanent": true
+    },
+    {
+      "source": "/en/bitdojo",
+      "destination": "/en#case-bitdojo",
+      "permanent": true
+    },
+    {
+      "source": "/dartile",
+      "destination": "/#case-dartile",
+      "permanent": true
+    },
+    {
+      "source": "/en/dartile",
+      "destination": "/en#case-dartile",
+      "permanent": true
+    },
+    {
+      "source": "/lexipulse",
+      "destination": "/#case-lexipulse",
+      "permanent": true
+    },
+    {
+      "source": "/en/lexipulse",
+      "destination": "/en#case-lexipulse",
+      "permanent": true
     }
   ]
 }

@@ -38,6 +38,13 @@ const REPOS = [
   "MenuCloud-Berlin/MenuCloud-app",
   "MenuCloud-Berlin/salatibox",
   "MenuCloud-Berlin/NOURI",
+  // Seit dem 16.08.2026 auf der Seite, also auch in der Zahl. Wer ein System
+  // als Fallstudie zeigt und seine Commits nicht mitzählt, führt zwei
+  // Wahrheiten: die Seite spricht von sieben Systemen, die Zahl darunter
+  // stünde für vier.
+  "DomenicMoran/bitdojo",
+  "DomenicMoran/dartile",
+  "DomenicMoran/lexipulse",
   "DomenicMoran/portfolio",
   // Private Lernprojekte zählen bewusst nicht mit: Die Zahl auf der Seite soll
   // das abdecken, wovon die Seite handelt. Nebenbei wird sie dadurch

@@ -15,10 +15,10 @@
  */
 
 /** Im Changelog der App gezählt, siehe check-figures.mjs. */
-export const SALATI_VERSIONEN = 66;
+export const SALATI_VERSIONEN = 69;
 
 /** Die höchste ausgelieferte Version, wie sie im Store steht. */
-export const SALATI_STAND = "1.48.0";
+export const SALATI_STAND = "1.50.0";
 
 /** Der erste Commit im Salati-Monorepo. */
 export const SALATI_ERSTER_COMMIT = "2026-04-16";

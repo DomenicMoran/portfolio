@@ -163,7 +163,7 @@ export function OnePager({
       <main>
         <article className="onepager mx-auto max-w-[820px] px-8 py-14 print:px-0 print:py-0">
           {/* Kopf */}
-          <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6">
+          <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#101014] pb-6 print:pb-4">
             <div className="flex items-center gap-5">
               {/* Das Porträt kostet keine Zeile.
                 Die Kontaktspalte rechts ist sechs Zeilen hoch, gemessen
@@ -312,12 +312,12 @@ export function OnePager({
           </section>
 
           {/* Die Projekte */}
-          <section className="mt-8 print:mt-4">
+          <section className="mt-8 print:mt-3">
             <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
               {onepager.projects}
             </h2>
 
-            <div className="flex flex-col gap-5 print:gap-3">
+            <div className="flex flex-col gap-5 print:gap-2">
               {caseStudies.map((study) => (
                 <div key={study.id} className="break-inside-avoid">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -388,7 +388,7 @@ export function OnePager({
                         .join("  ·  ")}
                     </span>
                   </div>
-                  <p className="mt-1 text-[14px] leading-relaxed text-[#25252e]">
+                  <p className="mt-1 text-[13.5px] leading-snug text-[#25252e]">
                     {study.tagline}.{" "}
                     {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
                       hat. Sonst stolpert die Zeile über zwei davon:
@@ -411,12 +411,20 @@ export function OnePager({
                     </strong>{" "}
                     {firstSentence(study.hardPart.body)}
                   </p>
-                  <p className="mt-1 font-mono text-[10.5px] leading-snug text-[#6a6a76]">
-                    {study.stack
-                      .flatMap((g) => g.items)
-                      .slice(0, 7)
-                      .join(" · ")}
-                  </p>
+                  {/* Die Stack-Zeile stand hier und ist am 16.08.2026 raus.
+
+                      Mit vier Projekten passte das Blatt auf eine Seite, mit
+                      sieben nicht mehr: gemessen 121 Prozent der Seitenhöhe,
+                      also zwei Blatt, und die Ein-Seiten-Zusage ist der ganze
+                      Zweck dieses Dokuments.
+
+                      Gestrichen wurde die entbehrlichste Zeile und nicht ein
+                      Projekt. Sieben mal sieben Techniknamen sind 49 Wörter,
+                      die daneben schon einmal stehen: Der Bereich
+                      „Schwerpunkte" nennt dieselben Namen nach Gebiet
+                      geordnet, und die vollständigen Stacks stehen auf der
+                      Webseite, auf die die Fußzeile zeigt. Ein Projekt
+                      wegzulassen hätte dagegen eine Aussage verändert. */}
                 </div>
               ))}
             </div>
@@ -438,7 +446,7 @@ export function OnePager({
               Breite; nur dieser letzte Block tat es nicht. Gedruckt bleibt
               es bei zwei Spalten, weil die Druckdarstellung mit 794 px
               ohnehin über `sm` liegt. */}
-          <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 break-inside-avoid sm:grid-cols-2 print:mt-4 print:gap-y-0">
+          <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 break-inside-avoid sm:grid-cols-2 print:mt-3 print:gap-y-0">
             <section>
               <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
                 {onepager.focus}
@@ -562,7 +570,7 @@ export function OnePager({
             Webseite. Die vier Projekte sind die eigentliche Aussage und
             bleiben. */}
 
-          <footer className="mt-9 flex flex-wrap print:mt-4 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
+          <footer className="mt-9 flex flex-wrap print:mt-3 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
             <span>
               {onepager.fullCaseStudies}{" "}
               {/* Die Adresse fuehrt in die Sprache des Blattes.

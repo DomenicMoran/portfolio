@@ -36,6 +36,9 @@ const REPOS = {
   menucloud: "../../MenuCloud",
   nouri: "../../NOURI",
   wohnungsjaeger: "../../KIWohnung",
+  bitdojo: "../../BitDojo",
+  dartile: "../../Dartile",
+  lexipulse: "../../LexiPulse",
 };
 
 /*
@@ -73,6 +76,30 @@ const KEINE_TECHNIK = new Set([
   "Backend & Delivery",
   "Backend & Daten",
   "Daten & KI",
+  /* Überschriften und Eigenschaften der drei Fallstudien vom 16.08.2026. */
+  "Daten & Konten",
+  "Geld & Auslieferung",
+  "Web",
+  "Mobil",
+  "Daten & Geld",
+  "Inhalte",
+  "App",
+  "Engine",
+  "Web & Daten",
+  "Stimme & Bild",
+  "Kern",
+  "Geteilter Kern",
+  "Markdown als Quelle",
+  "Abgeleitetes JSON",
+  "Reines TypeScript",
+  "Null Abhängigkeiten",
+  "Plattformfrei",
+  /* Kein Paket, sondern die Entscheidung dahinter: vorproduzierte Rufe statt
+     Sprachausgabe zur Laufzeit, und Bilddifferenz statt eines Modells. Der
+     Anbieter selbst steht bei BitDojo als „ElevenLabs" in der Liste und wird
+     dort geprüft. */
+  "ElevenLabs, vorproduziert",
+  "Bilddifferenz statt Modell",
 ]);
 
 /*
@@ -101,6 +128,11 @@ const ANDERS_IM_CODE = {
   "Fiskaly TSE": "fiskaly",
   "Android TV": "leanback",
   "Wear OS": "wear",
+  /* Der Beleg ist der Ordner `supabase/functions` und der Text daneben. Nach
+     „Edge Functions" im Plural sucht sich nichts; die Kontolöschung nach
+     Art. 17 liegt dort und wird in `apps/mobile/src/content/legal.ts` genau
+     so genannt. */
+  "Edge Functions": "edge function",
 };
 
 /*
@@ -124,7 +156,14 @@ const ALS_PAKET = {
   "Reanimated 4": "react-native-reanimated",
   "whisper.rn": "whisper.rn",
   "Next.js 16 App Router": "next",
+  "Next.js 15 App Router": "next",
+  "Next.js 16": "next",
+  "React 19": "react",
   "React 19 RSC": "react",
+  "React Native": "react-native",
+  "expo-iap": "expo-iap",
+  SQLite: "expo-sqlite",
+  "pdf.js": "pdfjs-dist",
   Tailwind: "tailwindcss",
   "Stripe Connect": "stripe",
   Vitest: "vitest",
