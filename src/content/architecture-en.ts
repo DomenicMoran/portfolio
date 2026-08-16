@@ -137,8 +137,8 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "11.892 Rezepte · Nährwerte aus Zutaten":
     "11,892 recipes · nutrition from ingredients",
   "gebaut, nicht in Betrieb": "built, not in operation",
-  "62 Tabellen · RLS · ON DELETE CASCADE":
-    "62 tables · RLS · ON DELETE CASCADE",
+  "63 Tabellen · RLS · ON DELETE CASCADE":
+    "63 tables · RLS · ON DELETE CASCADE",
   "Kontolöschung nach Art. 17": "Account deletion under Art. 17",
   "nur im Browser": "browser only",
 
