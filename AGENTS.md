@@ -390,6 +390,7 @@ npm run check:schema   # die strukturierten Daten decken sich mit der Seite
 npm run check:palette  # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
+npm run check:shots    # jede Aufnahme hat das Maß, das der Inhalt nennt
 ```
 
 Vor jedem Schub die drei schnellen davon zusammen:
