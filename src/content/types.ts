@@ -47,7 +47,7 @@ export type CaseStudy = {
    * Die Fachartikel, die aus genau diesem System stammen, als Adressteil,
    * je Sprachfassung.
    *
-   * Fünf der sechs Artikel handeln von einem Fehler in einem dieser Systeme,
+   * Sechs der sieben Artikel handeln von einem Fehler in einem dieser Systeme,
    * und die Fallstudie verwies auf keinen davon: Gezählt an der
    * ausgelieferten Seite gab es aus dem Fallstudien-Bereich null Verweise in
    * den Artikelbereich. Wer wissen will, wie tief das geht, musste erst

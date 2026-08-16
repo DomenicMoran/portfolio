@@ -585,11 +585,12 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
         {/* Der Weg von der Fallstudie in den Artikel.
 
-            Fünf der sechs Fachartikel handeln von einem Fehler in genau diesen
-            Systemen, und aus dem Fallstudien-Bereich führte kein einziger
-            Verweis dorthin, gezählt an der ausgelieferten Seite. Wer wissen
-            will, wie tief das geht, musste weiterscrollen und dann raten,
-            welcher Artikel zu welchem System gehört. */}
+            Sechs der sieben Fachartikel handeln von einem Fehler in genau
+            diesen Systemen, der siebte von dieser Seite selbst, und aus dem
+            Fallstudien-Bereich führte kein einziger Verweis dorthin, gezählt
+            an der ausgelieferten Seite. Wer wissen will, wie tief das geht,
+            musste weiterscrollen und dann raten, welcher Artikel zu welchem
+            System gehört. */}
         {artikelDazu.length > 0 ? (
           <Reveal delay={0.04}>
             <div className="mt-8 border-t border-line pt-6">
