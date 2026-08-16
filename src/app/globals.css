@@ -848,7 +848,15 @@ textarea:-webkit-autofill {
 
        Beides fällt jetzt beim Drucken auf: `npm run onepager:pdf` nennt
        Seitenzahl, Ausnutzung und die kleinste Punktgröße und bricht unter
-       90 % ab. Wer den Inhalt ändert, lässt den Lauf laufen. */
-    zoom: 0.85;
+       90 % ab. Wer den Inhalt ändert, lässt den Lauf laufen.
+
+       Und ein drittes Mal, am 16.08.2026, in die andere Richtung: Mit sieben
+       Projekten statt vier stand das Blatt bei 0,85 auf 100 % der Seite, also
+       7 px Reserve von 1.040. Nachdem der erste Satz der harten Stelle vom
+       Blatt gefallen ist, füllte es bei 0,85 nur noch 90 %, und die kleinste
+       Schrift stand wieder bei 6,38 pt. Hochgesetzt und abgetastet: 0,93 und
+       0,91 ergeben zwei Seiten, 0,89 eine, mit 94 % Ausnutzung und 6,68 pt.
+       Genau so ist es gemeint, eine Stufe unter dem Umschlag. */
+    zoom: 0.89;
   }
 }

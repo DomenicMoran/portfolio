@@ -59,18 +59,9 @@ function abgerundet(roh: number, sprache: "de" | "en"): string {
   return hunderter.toLocaleString(sprache === "de" ? "de-DE" : "en-GB");
 }
 
-/**
- * Hält die PDF auf einer A4-Seite. Die vollständige Begründung steht auf der
- * Website; hier genügt der erste Satz jedes „schwierigen Teils".
- *
- * Getrennt wird an Satzzeichen, denen ein Leerzeichen und ein Großbuchstabe
- * folgt, so schneiden Abkürzungen und Kommazahlen („§ 146a AO“, „1.44“)
- * den Satz nicht vorzeitig ab.
- */
-function firstSentence(text: string) {
-  const match = text.match(/^.*?[.!?](?=\s+[A-ZÄÖÜ])/);
-  return match ? match[0] : text;
-}
+/* Hier stand `firstSentence`, das den ersten Satz jeder „harten Stelle" für
+   das Blatt abschnitt. Der Satz selbst ist mit den sieben Projekten
+   weggefallen; die Begründung steht unten am Absatz. */
 
 /**
  * Commit-Zahlen auf dem gedruckten Blatt als Untergrenze, alles andere exakt.
@@ -317,6 +308,19 @@ export function OnePager({
               {onepager.projects}
             </h2>
 
+            {/* Auf dem Papier zwei Spalten, am Bildschirm eine.
+
+                Mit vier Projekten stand die Liste untereinander und das Blatt
+                hatte 44 px Reserve. Mit sieben waren es 121 Prozent der Seite,
+                und nach dem Streichen der Stack-Zeile und drei engeren
+                Abständen blieben 7 px von 1.040. Sieben Pixel sind keine
+                Reserve: Der nächste Satz, der eine Zeile länger wird, kostet
+                die Ein-Seiten-Zusage, und die ist der Zweck des Blattes.
+
+                Zwei Spalten sind der strukturelle Ausweg statt des nächsten
+                Zehntelpunkts Schriftgröße. Am Bildschirm bleibt es eine
+                Spalte: Dort gibt es keine Seitenhöhe, und zwei schmale Spalten
+                auf einem Telefon wären schlechter zu lesen. */}
             <div className="flex flex-col gap-5 print:gap-2">
               {caseStudies.map((study) => (
                 <div key={study.id} className="break-inside-avoid">
@@ -403,13 +407,26 @@ export function OnePager({
                       sich das wie ein Tippfehler. Ein Punkt trennt dasselbe,
                       ohne etwas zu behaupten, das die Zeichensetzung nicht
                       hergibt. */}
+                    {/* Nur die Überschrift der harten Stelle, nicht mehr ihr
+                        erster Satz.
+
+                        Der Satz stand hier, solange vier Projekte auf dem
+                        Blatt standen. Mit sieben blieben nach dem Streichen
+                        der Stack-Zeile und drei engeren Abständen 7 px von
+                        1.040 übrig, und sieben Pixel sind keine Reserve: Der
+                        nächste Satz, der eine Zeile länger wird, kostet die
+                        Ein-Seiten-Zusage.
+
+                        Zwei Druckspalten waren der erste Versuch und gemessen
+                        der falsche: In der schmalen Spalte bricht jeder Satz
+                        häufiger um, das Blatt wuchs auf 107 Prozent. Die
+                        Überschrift allein trägt die Aussage ohnehin („Die
+                        Kamera schlägt vor, sie behauptet nicht"), und der
+                        ganze Absatz steht auf der Webseite, auf die die
+                        Fußzeile zeigt. */}
                     <strong className="font-semibold">
                       {study.hardPart.title}
-                      {firstSentence(study.hardPart.body).includes(":")
-                        ? "."
-                        : ":"}
-                    </strong>{" "}
-                    {firstSentence(study.hardPart.body)}
+                    </strong>
                   </p>
                   {/* Die Stack-Zeile stand hier und ist am 16.08.2026 raus.
 

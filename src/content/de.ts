@@ -307,7 +307,18 @@ export const de: Content = {
     pathNote:
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
       "Der Nachweis sind sieben Systeme in Produktion.",
-    openSource: "Veröffentlicht",
+    /* „Open Source" und nicht mehr „Veröffentlicht", und der Grund steht im
+       ausgelieferten PDF.
+
+       Die Überschrift wird in Kapitälchen gesetzt, aus „Veröffentlicht" wird
+       damit „VERÖFFENTLICHT", und Chromium bettete das große Ö beim Drucken
+       als einziges Zeichen ohne ToUnicode-Eintrag ein: `check:onepager`
+       meldete „1 Zeichen ohne Zuordnung". Ein Bewerbermanagement-System, das
+       den Text aus dem Blatt zieht, liest an dieser Stelle nichts.
+
+       Dieselbe Sache heißt im Über-mich-Bereich der Seite ohnehin „Open
+       Source"; die beiden Wörter sind jetzt eines. */
+    openSource: "Open Source",
     openSourceNote: "alle mit Tests, CI und MIT-Lizenz auf",
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
     asOf: "Stand:",
