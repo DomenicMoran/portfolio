@@ -22,7 +22,7 @@
  *   node scripts/check-figures.mjs
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
@@ -1781,30 +1781,59 @@ const BRAUCHT_KIND = {
   if (!behauptet) {
     zeilen.push("  --  Rezeptzahl: Angabe nicht gefunden, übersprungen");
   } else {
+    /* Gegen das Repo, nicht mehr gegen die Marketingseite.
+
+       Hier wurde `nouri-fitness.de` geladen und nach einer Zahl mit `+`
+       gesucht; so stand die Rezeptzahl dort einmal in der Kennzahlenreihe.
+       Gemessen am 16.08.2026 druckt die Seite sie nicht mehr, und der Lauf
+       meldete seither „nicht gefunden": eine Prüfung, deren Zeuge weggezogen
+       ist.
+
+       Der belastbarere Zeuge ist ohnehin das Repo. Der Katalog entsteht aus
+       zwölf handgeschriebenen Rezepten und dem Kreuzprodukt der vier
+       Bausteinlisten, und beide Zahlen stehen im README von NOURI, das mit dem
+       Katalog gepflegt wird. Verglichen wird weiter nach oben offen: Die
+       Seite darf nicht mehr behaupten, als dort steht. */
     const meine = Number(behauptet.replace(/[.,]/g, ""));
-    try {
-      const antwort = await fetch("https://nouri-fitness.vercel.app/", {
-        signal: AbortSignal.timeout(20000),
-      });
-      const seite = await antwort.text();
-      const dort = seite.match(/(\d{4,6})\+/)?.[1];
-      if (!dort) {
+    const readme = "../../NOURI/README.md";
+    if (!existsSync(readme)) {
+      zeilen.push("  --  Rezeptzahl: NOURI nicht vorhanden, übersprungen");
+    } else {
+      const text = readFileSync(readme, "utf8");
+      /* `\p{L}` und nicht `\w`, aus demselben Grund wie beim Satz über die
+         Store-Zahlen: `\w` ist in JavaScript `[A-Za-z0-9_]`, und aus „Zwölf"
+         würde der Treffer „lf". Dieselbe Falle, zweimal an einem Tag. */
+      const ZAHLWORT = {
+        zehn: 10,
+        elf: 11,
+        zwölf: 12,
+        dreizehn: 13,
+      };
+      const wort = /(\p{L}+) handgeschriebene Rezepte/u
+        .exec(text)?.[1]
+        ?.toLowerCase();
+      const hand = ZAHLWORT[wort] ?? Number(wort);
+      const kombis = Number(
+        /([\d.]+) Kombinationen/.exec(text)?.[1]?.replace(/\./g, ""),
+      );
+      const dort = hand + kombis;
+      if (!Number.isFinite(dort)) {
         zeilen.push(
-          "  --  Rezeptzahl: auf nouri-fitness.vercel.app nicht gefunden",
+          "  --  Rezeptzahl: im README von NOURI nicht gefunden, übersprungen",
         );
-      } else if (meine > Number(dort)) {
+      } else if (meine > dort) {
         abweichungen++;
         zeilen.push(
-          `  !!  Rezeptzahl: die Seite sagt ${behauptet}, die Anwendung ${dort}+`,
+          `  !!  Rezeptzahl: die Seite sagt ${behauptet}, das Repo ${dort} ` +
+            `(${hand} handgeschrieben, ${kombis} Kombinationen)`,
         );
       } else {
         GEMESSEN.set("Rezepte", meine);
         zeilen.push(
-          `  ok  Rezepte              ${String(meine).padStart(6)} und die Anwendung sagt ${dort}+`,
+          `  ok  Rezepte              ${String(meine).padStart(6)} wie im Repo: ` +
+            `${hand} handgeschrieben plus ${kombis} Kombinationen`,
         );
       }
-    } catch {
-      zeilen.push("  --  Rezeptzahl: NOURI nicht erreichbar, übersprungen");
     }
   }
 }
@@ -2505,7 +2534,7 @@ const BRAUCHT_KIND = {
   const ZUORDNUNG = [
     ["https://www.salati.pro", "Salati"],
     ["https://menucloud-berlin.de", "MenuCloud"],
-    ["https://nouri-fitness.vercel.app", "NOURI"],
+    ["https://www.nouri-fitness.de", "NOURI"],
   ];
 
   const funde = [];
@@ -3594,16 +3623,60 @@ const BRAUCHT_KIND = {
       ([name]) => name,
     );
 
+    /* Geprüft wird der Weg, den ein Nutzer wirklich trifft.
+
+       Hier stand `/Secrets fehlen|Secrets are missing/`, die Formulierung der
+       alten Fallstudie. Sie ist am 16.08.2026 von der Seite verschwunden, und
+       damit übersprang dieser Lauf sich selbst: eine Prüfung, die dauerhaft
+       „nichts zu tun" meldet, ist keine.
+
+       Die Zusage steht weiter da, nur an der richtigen Stelle: „Fehlende
+       Zugänge sind ein Trockenlauf, eine nicht erreichbare Datenbank ein 503,
+       eine ablehnende Datenbank ein echter 4xx mit Postgres-Fehlercode."
+       Gemeint sind seither die Schreibpfade in `apps/web/app/api`, denn
+       `services/api` ist nirgends deployt. Also wird dort nachgesehen, und die
+       Endpunkte des nicht laufenden Dienstes zählen nur als zusätzlicher
+       Zeuge. */
+    const webRouten = "../../NOURI/apps/web/app/api";
+    const ausWeb = existsSync(webRouten)
+      ? (function sammle(ordner) {
+          const raus = [];
+          for (const name of readdirSync(ordner)) {
+            const pfad = join(ordner, name);
+            if (statSync(pfad).isDirectory()) raus.push(...sammle(pfad));
+            else if (name.endsWith(".ts")) raus.push(readFileSync(pfad, "utf8"));
+          }
+          return raus;
+        })(webRouten).join("\n")
+      : "";
+
+    const WEB_WEGE = [
+      ["Trockenlauf ohne Zugang", /nicht eingerichtet|nicht konfiguriert/],
+      ["503 bei nicht erreichbarer Datenbank", /ServiceUnavailable|status:\s*503/],
+      ["Postgres-Code am Fehler", /stored\.code|error\.code|\.code\b/],
+    ];
+    const fehlendWeb = WEB_WEGE.filter(
+      ([, muster]) => !muster.test(ausWeb),
+    ).map(([name]) => name);
+
     const seite = ["src/content/site.ts", "src/content/en.ts"]
       .filter((d) => existsSync(d))
       .map((d) => readFileSync(d, "utf8"))
       .join(" ");
-    const behauptet = /Secrets fehlen|Secrets are missing/.test(seite);
+    const behauptet =
+      /Trockenlauf|dry run|Secrets fehlen|Secrets are missing/.test(seite);
 
     if (!behauptet) {
       zeilen.push(
-        "  --  Die Seite nennt die API-Zusage nicht mehr, Prüfung übersprungen",
+        "  --  Die Seite nennt die Fehlerzustände nicht mehr, Prüfung übersprungen",
       );
+    } else if (fehlendWeb.length) {
+      abweichungen += fehlendWeb.length;
+      zeilen.push(
+        `  !!  ${fehlendWeb.length} Fehlerzustand/-zustände stehen nicht in ` +
+          `NOURI/apps/web/app/api:`,
+      );
+      for (const f of fehlendWeb) zeilen.push(`        ${f}`);
     } else if (fehlend.length) {
       abweichungen += fehlend.length;
       zeilen.push(
@@ -3612,8 +3685,8 @@ const BRAUCHT_KIND = {
       for (const f of fehlend) zeilen.push(`        ${f}`);
     } else {
       zeilen.push(
-        `  ok  NOURI-API-Zusagen ${String(WEGE.length).padStart(7)} Wege im Code: ` +
-          `Dry-Run, 503, 4xx mit Code`,
+        `  ok  NOURI-Fehlerzustände ${String(WEB_WEGE.length).padStart(4)} in ` +
+          `apps/web/app/api belegt, dazu ${WEGE.length} in services/api`,
       );
     }
   }
