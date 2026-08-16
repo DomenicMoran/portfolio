@@ -42,6 +42,7 @@
     "check:docs": "node scripts/check-docs.mjs",
     "build:linkedin": "node scripts/build-linkedin-images.mjs",
     "build:shots": "node scripts/build-shots.mjs",
+    "capture:shots": "node scripts/capture-shots.mjs",
     "check:lighthouse": "node scripts/check-lighthouse.mjs",
     "check:bundle": "node scripts/check-bundle.mjs",
     "check:cards": "node scripts/check-cards.mjs",
