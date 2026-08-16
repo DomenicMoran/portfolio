@@ -10,7 +10,7 @@ import {
 } from "@/lib/duration";
 
 /**
- * Wie lange die vier Systeme in Produktion entstehen, gerechnet, nicht getippt.
+ * Wie lange die sieben Systeme in Produktion entstehen, gerechnet, nicht getippt.
  *
  * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
  * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
@@ -57,7 +57,7 @@ export const site = {
   location: "Berlin, Deutschland",
   // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
   ogTagline:
-    "Vier Systeme in Produktion: Mobile, SaaS, Infrastruktur, Compliance. Alle allein gebaut.",
+    "Sieben Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "domenicmoran@gmail.com",
@@ -106,7 +106,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Vier Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, ein autonomer Agent.",
+      "Sieben Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
   },
 } as const;
 
@@ -132,7 +132,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: vier Produktionssysteme in ${bauzeit}, vier Apps im Play Store und drei davon auch im App Store, eines mit gesetzlich vorgeschriebener Fiskalisierung, entstanden neben einem Vollzeitjob.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: sieben Produktionssysteme in ${bauzeit}, fünf Apps im Play Store und drei davon auch im App Store, drei weitere liegen dort in der Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -143,8 +143,8 @@ export const about = {
       label: "Commits seit März 2026",
       note: "neben einem Vollzeitjob",
     },
-    { value: "4", label: "Systeme in Produktion", note: "alle allein gebaut" },
-    { value: "2", label: "App Stores", note: "iOS und Android, live" },
+    { value: "7", label: "Systeme in Produktion", note: "alle allein gebaut" },
+    { value: "8", label: "Store-Einträge live", note: "5 Play, 3 App Store" },
     {
       value: "2022",
       label: "Autodidakt seit",
@@ -162,20 +162,20 @@ export const about = {
    * Stempel 4.046, die Konsolenmeldung wieder etwas anderes. Eine Seite, die
    * zum Nachrechnen einlädt, darf sich nicht selbst widersprechen.
    */
-  statsHinweis: `Gemessen am ${datumLang(verified.date)} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die drei Monorepos hinter MenuCloud, Salati und NOURI, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
+  statsHinweis: `Gemessen am ${datumLang(verified.date)} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die sechs Monorepos hinter MenuCloud, Salati, NOURI, BitDojo, Dartile und LexiPulse, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
   timeline: [
     {
       period: "seit 04/2026",
       title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von vier Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      body: "Aufbau und Betrieb von sieben Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind vier Systeme in Produktion und eine prüfbare Git-Historie.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind sieben Systeme in Produktion und eine prüfbare Git-Historie.",
       current: true,
     },
   ],
@@ -211,6 +211,12 @@ export const about = {
         href: "https://github.com/DomenicMoran/arabic-normalize",
         body: "Normalisierung arabischer Schrift für den Vergleich. Löst, dass ein Spracherkenner „علی“ ausgibt, wo die Vorlage „علي“ enthält. Für das Ohr identisch, für === verschieden.",
         meta: "TypeScript · 23 Tests · null Abhängigkeiten",
+      },
+      {
+        name: "darts-checkout",
+        href: "https://github.com/DomenicMoran/darts-checkout",
+        body: "Die Checkout-Tafel aus Dartile. Auf 40 gibt es über achtzig richtige Wege und genau einen, den jemand wirft. Entstanden ist das Paket an einem Fehler: Achtzehn Reste liefen über das Bull, obwohl ein gleich langer Weg daran vorbeiführte, und der Test sah nur auf den Schlusspfeil.",
+        meta: "TypeScript · 25 Tests · null Abhängigkeiten",
       },
       {
         name: "portfolio",
@@ -328,11 +334,11 @@ export const hero = {
   // ersten Bildschirm standen damit zwei Berufsbezeichnungen für dieselbe
   // Person, das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
   // ohnehin selbst, mit der Migration und dem Impressum in einer Aufzählung.
-  lede: `AI Product Engineer aus Berlin. Vier Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
+  lede: `AI Product Engineer aus Berlin. Sieben Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   tryIt: {
-    before: "Zwei der vier Systeme rechnen hier im Browser mit:",
+    before: "Zwei der sieben Systeme rechnen hier im Browser mit:",
     label: "Gebetszeiten und Tagesbilanz ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -342,7 +348,7 @@ export const hero = {
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
   // falsch wäre.
   proof: [
-    { value: "4", label: "Systeme in Produktion" },
+    { value: "7", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.800+", label: "Testfälle (MenuCloud)" },
@@ -817,22 +823,37 @@ export const caseStudies: CaseStudy[] = [
       "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und eigener API",
     year: "2026",
     role: "Alleiniger Entwickler",
-    statusLabel: "Beta",
+    /* Am 16.08.2026 gemessen, nicht angenommen: Die Play-Seite zu
+       `app.nouri.mobile` antwortet mit 200 und trägt den Titel „NOURI – Essen &
+       Training". Die Apple-Seite zu `id6800410318` antwortet mit 404, weil
+       Fassung 1.0 dort in der Prüfung liegt. Hier stand „Beta", und das war
+       schon vor der Freigabe zu wenig: Die Web-App ist seit Wochen öffentlich
+       erreichbar. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "violet",
     problem:
       "Ernährungs-Apps sind entweder Tracker ohne Planung oder Planer ohne echte Datenbasis. Und fast alle behandeln Fehler als Kosmetik: Wenn der Server nicht erreichbar ist, zeigen sie „gespeichert“ an und verlieren die Eingabe.",
     solution:
-      "Eine Plattform aus Web-App, Expo-App und Fastify-API auf einem gemeinsamen Katalog von fast 12.000 Rezepten, mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung und Trainingsplänen. Und mit einer API, die drei Zustände sauber unterscheidet, statt sie zu verschleiern.",
+      "Eine Plattform aus Web-App und Expo-App auf einem gemeinsamen Katalog von fast 12.000 Rezepten, mit Makro-Tracking, Wochenplanung, Einkaufslisten, Vorratsverwaltung, Allergenfilter und Trainingsplänen. Die Nährwerte stehen nicht in einer Tabelle, sie werden aus den Zutaten gerechnet, und ein Test hält den ganzen Katalog gegen die Atwater-Gegenrechnung.",
     hardPart: {
-      title: "Eine API, die nicht lügt",
-      body: "Jeder schreibende Endpunkt unterscheidet explizit: Secrets fehlen (Dry-Run, kein Datenverlust vorgetäuscht), Datenbank nicht erreichbar (503), Datenbank erreichbar aber lehnt ab (echter 4xx mit Postgres-Fehlercode). Das klingt nach Kleinkram, ist aber der Unterschied zwischen einem System, dem man beim Debuggen glauben kann, und einem, das lügt. Genau dieselbe Disziplin wende ich auf KI-Output an: eine Behauptung ohne Beleg zählt nicht.",
+      /* Hier stand „Eine API, die nicht lügt", und das war ausgerechnet an
+         dieser Stelle die falsche Geschichte: Der Fastify-Dienst mit seinen 87
+         Endpunkten ist nirgends deployt, und weder Web noch App rufen ihn auf.
+         Das Diagramm daneben zeichnete ihn trotzdem in den Bestellpfad. Das
+         Repo sagt es im eigenen README deutlich, die Fallstudie sagte das
+         Gegenteil. Die Disziplin, um die es geht, ist dieselbe geblieben, nur
+         steht sie jetzt an der Stelle, an der sie wirklich greift. */
+      title: "Eine Zahl, die niemand nachrechnet, ist erfunden",
+      body: "Ein Rezeptkatalog aus 11.892 Einträgen lädt dazu ein, Kalorien und Makros einfach hinzuschreiben. Genau das tut hier nichts: Die Werte entstehen aus den Zutaten über eine eigene Nährwerttabelle, und ein Test rechnet den gesamten Katalog mit der Atwater-Formel gegen. Der erste Lauf fand Ausreißer bis 30,5 Prozent Abweichung; heute liegt die größte bei 2,07. Ein zweiter Test hält fest, dass kein Rezepttitel eine Zutat nennt, die in der Zutatenliste fehlt. Dieselbe Regel gilt für die Schreibpfade: Fehlende Zugänge sind ein Trockenlauf, eine nicht erreichbare Datenbank ein 503, eine ablehnende Datenbank ein echter 4xx mit Postgres-Fehlercode. Kein „gespeichert“, das nichts gespeichert hat.",
     },
     highlights: [
-      "Monorepo mit geteiltem Katalog über Web, Mobile und API hinweg",
-      "59 Tabellen über 12 versionierte Migrationen, Row Level Security aktiv",
-      "Supabase-Auth mit geräteübergreifender Profilsynchronisation",
-      "Nutzung ohne Account bleibt vollständig lokal, kein Login-Zwang",
-      "Explizite Fehlerzustände statt stiller 500er",
+      "Monorepo mit geteiltem Katalog und geteilter Rechenlogik über Web und App",
+      "62 Tabellen mit Row Level Security, 30 Fremdschlüssel hängen mit ON DELETE CASCADE an den Konten",
+      "Nährwerte aus den Zutaten gerechnet, der ganze Katalog gegen Atwater geprüft: größte Abweichung 2,07 Prozent",
+      "Nutzung ohne Konto bleibt vollständig lokal, kein Login-Zwang",
+      "Kontolöschung nach Art. 17 DSGVO über eine Edge Function, am laufenden Projekt durchgeprüft",
+      "Der Link-Import kann nicht ins eigene Netz zeigen: geprüft wird die aufgelöste IP-Adresse, nicht der Name, und jede Weiterleitung erneut",
+      "Abgerechnet wird nur im Browser; die App liest den Tarif aus dem Konto und schaltet frei, ohne einen Kaufweg zu bewerben (App-Store-Richtlinie 3.1.1 und 3.1.3(b))",
     ],
     stack: [
       {
@@ -846,41 +867,344 @@ export const caseStudies: CaseStudy[] = [
         ],
       },
       {
-        group: "Services",
-        items: [
-          "Fastify 5",
-          "Zod 4",
-          "Supabase / Postgres",
-          "Row Level Security",
-        ],
+        /* Ohne „Fastify 5" und ohne „Zod 4": Beide stehen in
+           `services/api`, und dieser Dienst läuft nirgends. Zod kommt in
+           `apps/web` nicht ein einziges Mal vor, gezählt am 16.08.2026. Ein
+           Tech-Stack, der die stärksten Namen aus einem Ordner nimmt, den
+           kein Nutzer erreicht, ist genau die Sorte Angabe, gegen die diese
+           Seite argumentiert. */
+        group: "Daten & Konten",
+        items: ["Supabase / Postgres", "Row Level Security", "Edge Functions"],
       },
       {
-        group: "Delivery",
-        items: ["Vercel", "Turborepo", "pnpm 10 Workspaces"],
+        group: "Geld & Auslieferung",
+        items: ["Stripe", "Vercel", "Turborepo", "pnpm 10 Workspaces"],
       },
     ],
     metrics: [
       { value: "11.892", label: "Rezepte im Katalog" },
-      { value: "59", label: "Tabellen" },
-      { value: "12", label: "Migrationen" },
+      /* Gezählte Werte, nicht getippte: `check-figures` liest die
+         `create table`-Anweisungen und die Dateien unter
+         `supabase/migrations` und hält sie gegen diese beiden Zahlen. Sie
+         standen hier auf 59 und 12 und waren damit um drei Tabellen und drei
+         Migrationen zu niedrig. */
+      { value: "62", label: "Tabellen" },
+      { value: "15", label: "Migrationen" },
+      { value: "538", label: "Tests" },
     ],
     links: [
       {
-        label: "nouri-fitness.vercel.app",
-        href: "https://nouri-fitness.vercel.app",
+        label: "nouri-fitness.de",
+        href: "https://www.nouri-fitness.de",
         kind: "live",
+      },
+      /* Am 16.08.2026 aufgerufen: 200, Titel „NOURI – Essen & Training".
+         Der Apple-Eintrag fehlt hier bewusst; `id6800410318` antwortet
+         solange mit 404, wie Fassung 1.0 in der Prüfung liegt, und ein
+         Verweis auf eine 404 ist schlimmer als keiner. */
+      {
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=app.nouri.mobile",
+        kind: "store",
       },
     ],
     architecture: "nouri",
     shots: [
       {
         src: "/shots/nouri-desktop.webp",
-        alt: "Startseite der NOURI-Plattform: Sprachwahl, Titelzeile und die Knöpfe zum Öffnen der App.",
+        alt: "Startseite von nouri-fitness.de mit der Titelzeile und den Knöpfen zum Öffnen der App.",
         /* Endet an der Kante des Kopfbereichs. Die vorherige Aufnahme war
            1440 x 900 und schnitt mitten durch die Kennzahlenreihe. */
         width: 1440,
         height: 828,
-        label: "nouri-fitness.vercel.app",
+        label: "nouri-fitness.de",
+      },
+      {
+        src: "/shots/nouri/heute.webp",
+        alt: "Der Tagesbildschirm der App: gegessene Kalorien gegen das Tagesziel, darunter Eiweiß, Kohlenhydrate und Fett je mit Balken, darunter die geplanten Mahlzeiten des Tages.",
+        width: 956,
+        height: 1808,
+        label: "Tagesbilanz · gegen das eigene Ziel",
+        variant: "phone",
+      },
+      {
+        src: "/shots/nouri/wochenplan.webp",
+        alt: "Der Wochenplan: eine Leiste mit den Wochentagen, darunter geplante Kalorien und geplantes Eiweiß gegen das Ziel und die Mahlzeiten des gewählten Tages.",
+        width: 956,
+        height: 1808,
+        label: "Wochenplan · geplant, nicht protokolliert",
+        variant: "phone",
+      },
+      {
+        src: "/shots/nouri/allergene.webp",
+        alt: "Der Allergen-Bildschirm mit dem Hinweis, dass NOURI kein Medizinprodukt ist, und der Auswahl der ausgeschlossenen Allergene.",
+        width: 956,
+        height: 1808,
+        label: "Allergene · kein Medizinprodukt",
+        variant: "phone",
+      },
+      {
+        src: "/shots/nouri/training.webp",
+        alt: "Der Trainingsbereich mit Plänen und dem Protokoll der letzten Einheiten.",
+        width: 956,
+        height: 1808,
+        label: "Training · Plan und Protokoll",
+        variant: "phone",
+      },
+    ],
+  },
+
+  {
+    id: "bitdojo",
+    index: "05",
+    name: "BitDojo",
+    tagline:
+      "Deutschsprachige Lernplattform mit genau einer Lektionsbibliothek",
+    year: "2026",
+    role: "Alleiniger Entwickler · Inhalte, Code, Stores, Recht",
+    /* Am 16.08.2026 gemessen: bitdojo.de antwortet mit 200, beide
+       Ladenseiten mit 404. `node werkzeug/laden-stand.mjs` meldet dazu
+       „Fassung 1.0: WAITING_FOR_REVIEW" bei Apple und „1.0: completed,
+       Pakete 16" auf der Produktionsspur bei Google. */
+    statusLabel: "Web live, Apps in Prüfung",
+    accent: "acid",
+    problem:
+      "Wer auf Deutsch in die Softwareentwicklung will, findet übersetzte englische Kurse oder Videoreihen ohne Prüfung. Und fast jede Plattform schreibt denselben Begriff für jeden Kurs neu. Nach einem halben Jahr stehen zwei Erklärungen für dasselbe Wort nebeneinander, sie widersprechen sich, und keine ist als die falsche erkennbar.",
+    solution:
+      "Eine Plattform mit genau einer Lektionsbibliothek. Ein Kurs ist eine Reihenfolge darüber plus ein Wochenplan; wer eine Lektion in einem Kurs abhakt, hat sie in jedem anderen auch. Dieselben Texte tragen den Podcast, die Karteikarten und die Prüfung, und am Ende jedes Moduls steht ein Zertifikat, dessen Siegel sich nachrechnen lässt.",
+    hardPart: {
+      title: "Inhaltsfehler sind still",
+      body: "Ein Tippfehler im Code bricht den Bau. Eine Karteikarte, deren Antwort im Lektionstext nicht mehr vorkommt, sieht im Betrieb aus wie eine Karte. Sie ist nur nicht mehr beantwortbar, und niemand merkt es. Deshalb prüft ein Lauf im prebuild die Inhalte wie Code und lässt den Bau scheitern: wenn die abgeleiteten Dateien nicht zu den Lektionen passen, wenn ein veröffentlichter Kurs auf eine Lektion zeigt, die es nicht gibt, wenn ein Wochenplan eine Lücke hat, wenn ein Prüfungsvorrat kleiner ist als das, was der Bauplan zieht, wenn ein Begriff an zwei Stellen erklärt wird, oder wenn im erzeugten HTML etwas Ausführbares steht. Die Karte selbst ist derselbe Kasten, den der Leser im Text sieht, dieselben Zeichen. Sie kann gar nicht vom Text abweichen.",
+    },
+    highlights: [
+      "Eine Lektionsbibliothek für elf Kurse: wer eine Lektion abhakt, hat sie überall abgehakt",
+      "Die Karteikarte ist der Begriffskasten im Lektionstext, nicht seine Kopie",
+      "Prüfungsfragen werden bei jedem Versuch neu gezogen, geschichtet über die Module; die Lösungen verlassen den Server nie",
+      "Zertifikate mit Nummer und Siegel über Nummer, Kurs, Name, Datum und Ergebnis; die Prüfseite rechnet das Siegel neu und sieht zusätzlich in der Datenbank nach, weil ein widerrufenes Zertifikat ein gültiges Siegel behält",
+      "Podcast aus denselben Lektionen: 30 Folgen mit zwei Stimmen, blockweise vertont und deshalb abbruchfest",
+      "Der bezahlte Zugang hängt an einem Datum, nicht an einem Ja/Nein: ein ausgefallener Webhook kann niemanden dauerhaft freischalten",
+      "Probewoche genau einmal je Konto, geprüft am Vermerk in der Datenbank und an der Vorgeschichte bei Stripe",
+      "Der Hinweis auf die kostenpflichtige Verlängerung steht außerhalb der Bedingungen; ohne ihn wäre die Klausel nach § 305c BGB überraschend und damit unwirksam",
+      "Der Grundlagenkurs braucht kein Konto und keine Zahlungsdaten",
+    ],
+    stack: [
+      {
+        group: "Web",
+        items: ["Next.js 16", "React 19", "TypeScript", "Tailwind"],
+      },
+      {
+        group: "Mobil",
+        items: ["Expo SDK 57", "React Native", "Geteilter Kern"],
+      },
+      {
+        group: "Daten & Geld",
+        items: ["Supabase / Postgres", "Row Level Security", "Stripe", "Resend"],
+      },
+      {
+        group: "Inhalte",
+        items: ["Markdown als Quelle", "Abgeleitetes JSON", "ElevenLabs"],
+      },
+    ],
+    metrics: [
+      { value: "111", label: "Lektionen" },
+      { value: "813", label: "Karten zum Wiederholen" },
+      { value: "664", label: "Prüfungsaufgaben" },
+      { value: "147", label: "Tests" },
+    ],
+    links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
+    architecture: "bitdojo",
+    shots: [
+      {
+        src: "/shots/bitdojo-desktop.webp",
+        alt: "Startseite von bitdojo.de: die Überschrift „Vom ersten Begriff bis zum eigenen Produkt“, darunter die Kennzahlen der Plattform.",
+        width: 1440,
+        height: 746,
+        label: "bitdojo.de",
+      },
+      {
+        src: "/shots/bitdojo/lektion.webp",
+        alt: "Eine Lektion im Grundlagenkurs: Fließtext mit zwei Begriffskästen für DNS und IP-Adresse, rechts das Verzeichnis der Abschnitte.",
+        width: 1440,
+        height: 1220,
+        label: "Der Begriffskasten ist die Karteikarte",
+      },
+    ],
+  },
+
+  {
+    id: "dartile",
+    index: "06",
+    name: "Dartile",
+    tagline: "Dart-Counter, der jeden Pfeil einzeln aufnimmt",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    /* Am 16.08.2026 gemessen: dartile.de antwortet mit 200, beide Ladenseiten
+       mit 404. `node werkzeug/apple-profil.mjs` meldet „1.0:
+       WAITING_FOR_REVIEW, Freigabe AFTER_APPROVAL"; bei Google liegt 1.0 auf
+       der Produktionsspur in der Prüfung. */
+    statusLabel: "Web live, Apps in Prüfung",
+    accent: "cyan",
+    problem:
+      "Zähl-Apps für Dart speichern die Summe einer Aufnahme. Aus einer Summe lässt sich kein Trefferbild zeichnen, keine Doppelquote rechnen und nicht sagen, ob jemand die 20 oben oder unten verfehlt. Genau diese Zahlen sind aber der Grund, warum jemand eine Zähl-App überhaupt behält.",
+    solution:
+      "Jeder Pfeil wird einzeln aufgenommen, über ein Raster aus fünf mal fünf Kacheln und drei Tastendrücke je Aufnahme. Daher der Name. Gespeichert wird die Ereignisliste und nicht der Punktestand: Zurücknehmen ist ein Abschneiden, Zusammenlegen ein Anhängen, und die Statistik lässt sich rückwirkend neu und genauer auswerten. Dazu acht Spielarten, eine Ansage aus vorproduzierten Rufen und eine Kamera, die vorschlägt statt zu behaupten.",
+    hardPart: {
+      title: "Die Kamera schlägt vor, sie behauptet nicht",
+      body: "Erkennung mit einer Handykamera liegt im Feld bei rund 95 Prozent. Wer das als Gewissheit verkauft, schreibt in jeder zwanzigsten Aufnahme eine falsche Zahl in eine Statistik, die niemand mehr korrigiert. Dartile kalibriert von Hand über vier Punkte, wertet über Bilddifferenz statt über ein Modell aus, zeigt die Sicherheit an und fragt unterhalb der Schwelle nach. Zwei echte Fehler kamen dabei erst am laufenden Bild heraus und aus keinem Test: Von drei Pfeilen innerhalb einer Fünftelsekunde meldete die Auswertung nur den größten veränderten Bereich, und ein Pfeil, der während einer offenen Bestätigung fiel, wurde zum neuen Sollzustand und tauchte nie auf.",
+    },
+    highlights: [
+      "Ereignisliste statt Punktestand: Zurücknehmen ist ein Abschneiden, das Zusammenlegen zweier Geräte ein Anhängen. Es gibt keinen Fall, in dem jemand entscheiden muss, welcher Stand gilt",
+      "Die Spiel-Engine ist ein eigenes Paket, rein: keine Uhr, kein Speicher, kein React, null Abhängigkeiten, 222 Tests",
+      "Acht Spielarten und zwei Trainingsübungen, alle kostenlos, alle ohne Netz",
+      "350 vorproduzierte Rufe je Sprache statt Sprachausgabe zur Laufzeit: keine Serverkosten je Wurf und kein Caller, der ohne Empfang verstummt",
+      "Das Spiel gegen andere überträgt Würfe mit laufender Nummer; fehlt eine, wird nachgeladen, kommt sie zweimal, prallt sie am Schlüssel der Datenbank ab",
+      "Zurufe sind sechs feste Schlüssel und kein Freitext: Freitext zwischen Fremden hebt die Altersfreigabe in beiden Läden an",
+      "24 Ziele und Erfolge, vollständig auf dem Gerät gerechnet, mit Fortschritt statt Schloss",
+      "Acht Sprachen, und die Bezahlschranke fragt zuerst den Server, ob es überhaupt etwas zu kaufen gibt",
+    ],
+    stack: [
+      {
+        group: "App",
+        items: ["Expo SDK 57", "React Native", "TypeScript", "expo-iap"],
+      },
+      {
+        group: "Engine",
+        items: ["Reines TypeScript", "Null Abhängigkeiten", "Vitest"],
+      },
+      {
+        group: "Web & Daten",
+        items: ["Next.js", "Vercel", "Supabase / Postgres", "Row Level Security"],
+      },
+      {
+        group: "Stimme & Bild",
+        items: ["ElevenLabs, vorproduziert", "Bilddifferenz statt Modell"],
+      },
+    ],
+    metrics: [
+      { value: "284", label: "Tests" },
+      { value: "8", label: "Spielarten" },
+      { value: "350", label: "Rufe je Sprache" },
+      { value: "0", label: "Abhängigkeiten der Engine" },
+    ],
+    links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
+    architecture: "dartile",
+    articles: ["achtzehn-wege-ueber-das-bull"],
+    shots: [
+      {
+        src: "/shots/dartile-desktop.webp",
+        alt: "Startseite von dartile.de: die Überschrift „Der Dart-Counter, der im Vereinskeller funktioniert“ neben einer gezeichneten Dartscheibe.",
+        width: 1440,
+        height: 799,
+        label: "dartile.de",
+      },
+      {
+        src: "/shots/dartile/spiel.webp",
+        alt: "Der Zählbildschirm: oben die beiden Spieler mit Restpunkten und Average, darunter die große Restpunktzahl und das Raster aus Kacheln für die Eingabe.",
+        width: 818,
+        height: 1430,
+        label: "Aus zwei Metern lesbar",
+        variant: "phone",
+      },
+      {
+        src: "/shots/dartile/checkout.webp",
+        alt: "Derselbe Bildschirm bei 141 Restpunkten: darunter steht der vorgeschlagene Weg T20, T19, D12.",
+        width: 818,
+        height: 1430,
+        label: "Checkout-Vorschlag · T20 T19 D12",
+        variant: "phone",
+      },
+      {
+        src: "/shots/dartile/statistik.webp",
+        alt: "Die Auswertung einer Partie: 3-Dart-Average, Erste Neun, geworfene Darts, Checkout-Quote, Anzahl der 180er und bestes Leg, je Spieler.",
+        width: 818,
+        height: 1430,
+        label: "Aus jedem Pfeil gerechnet",
+        variant: "phone",
+      },
+    ],
+  },
+
+  {
+    id: "lexipulse",
+    index: "07",
+    name: "LexiPulse",
+    tagline: "RSVP-Reader für EPUB, PDF und Web-Artikel, offline und offen lesbar",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    /* Am 16.08.2026 gemessen: lexipulse.de antwortet mit 200. Der
+       Apple-Eintrag `de.lexipulse.app` steht mit der Kennung 6801979644 im
+       Konto, Fassung 1.0 mit Bau 2 wartet auf die Prüfung. Bei Google steht
+       der Eintrag vollständig und wartet auf das Zahlungsprofil, ohne das
+       eine kostenpflichtige App keinen Preis bekommt.
+
+       Hier stand am selben Tag „quelloffen" und „MIT". Beides war beim
+       Schreiben richtig und eine Stunde später nicht mehr: Das Repo liegt
+       seither unter PolyForm Noncommercial 1.0.0. Der Quelltext ist
+       weiterhin vollständig lesbar, aber die Lizenz erlaubt keine
+       gewerbliche Nutzung, und damit ist es keine Open-Source-Lizenz im
+       Sinne der OSI. Das Wort wandert mit. */
+    statusLabel: "Web live, iOS in Prüfung",
+    accent: "violet",
+    problem:
+      "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
+    solution:
+      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, PDF, TXT, Markdown, HTML und aus einer Web-Adresse.",
+    hardPart: {
+      title: "Gleiches Tempo für jedes Wort ist der Fehler",
+      body: "Flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende, und genau daran bricht das Verstehen weg. Hier multiplizieren sich Faktoren: Wortkern über acht Zeichen mal 1,25, Satzende mal 1,75, Teilsatzende mal 1,75, Absatzende mal 2,0, Ziffern mal 1,4, Kern bis drei Zeichen mal 0,9. Abkürzungen und Ordnungszahlen sind von der Satzregel ausgenommen, damit „z. B.“ und „1.“ den Strom nicht anhalten. Dazu ein Anlauf: Nach jedem Fortsetzen laufen die ersten Wörter auf 40 Prozent des Zieltempos an, weil der Sprung aus dem Stand auf 900 Wörter je Minute der häufigste Grund ist, überhaupt nichts zu lesen. Und die Uhr rechnet mit einem absoluten Zeitstempel statt mit Bildabständen, damit ein ausgefallenes Bild den Strom nicht verschiebt.",
+    },
+    highlights: [
+      "packages/core ohne DOM, ohne React Native, ohne Node-Bausteine: dieselbe Maschine und dieselben Leser auf Web und Gerät, 218 Tests",
+      "Der Fixpunkt ist Arithmetik, keine Näherung: translateX auf einer Festbreitenschrift",
+      "Zeichenindizes sind Codepunkte, nie UTF-16-Abstände: ein Emoji oder ein kombinierendes Zeichen lässt sich damit nicht halbieren",
+      "Der Erkennungspunkt hängt am alphanumerischen Kern eines Wortes: Ein führendes Anführungszeichen verschiebt ihn nicht",
+      "Sechs Importwege, einer davon eine Web-Adresse; der Server holt die Seite nur wegen CORS und speichert die Adresse nicht",
+      "Alles bleibt auf dem Gerät: IndexedDB im Browser, SQLite auf dem Telefon, Datenausfuhr als JSON nach Art. 20 DSGVO",
+      "Der Quelltext liegt vollständig öffentlich, unter PolyForm Noncommercial: lesbar und prüfbar, aber nicht zur gewerblichen Nutzung freigegeben",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "Plattformfrei", "Vitest"],
+      },
+      {
+        group: "Web",
+        items: ["Next.js 15 App Router", "PWA", "IndexedDB", "pdf.js"],
+      },
+      {
+        group: "Mobil",
+        items: ["Expo SDK 57", "React Native", "SQLite"],
+      },
+    ],
+    metrics: [
+      { value: "309", label: "Tests" },
+      { value: "6", label: "Importformate" },
+      { value: "0", label: "Dokumente auf einem Server" },
+      { value: "2", label: "Plattformen, ein Kern" },
+    ],
+    links: [
+      { label: "lexipulse.de", href: "https://lexipulse.de", kind: "live" },
+      {
+        label: "Quellcode",
+        href: "https://github.com/DomenicMoran/lexipulse",
+        kind: "code",
+      },
+    ],
+    architecture: "lexipulse",
+    shots: [
+      {
+        src: "/shots/lexipulse-desktop.webp",
+        alt: "Startseite von lexipulse.de: die Überschrift „Lesen, ohne dass die Augen springen“ neben einer laufenden Vorführung des Readers.",
+        width: 1440,
+        height: 698,
+        label: "lexipulse.de",
+      },
+      {
+        src: "/shots/lexipulse/reader.webp",
+        alt: "Der Reader nach dem Import eines Wikipedia-Artikels: das Wort „Wikipedia“ steht groß in der Mitte, der Erkennungsbuchstabe ist farbig hervorgehoben und liegt zwischen zwei senkrechten Strichen.",
+        width: 1440,
+        height: 900,
+        label: "Ein Artikel, direkt aus der Adresse gelesen",
       },
     ],
   },
@@ -926,8 +1250,15 @@ export const workflow = {
          Der billige Weg wäre gewesen, hier eine Zahl hinzuschreiben. Statt
          dessen liegt die Datei jetzt in beiden: `NOURI/AGENTS.md` und
          `KIWohnung/AGENTS.md`, jede aus dem Code abgelesen. `check-figures`
-         zählt nach und verlangt alle sechs, wer ein Repo dazunimmt, bringt
-         die Datei mit. */
+         zählt nach und verlangt alle, wer ein Repo dazunimmt, bringt die
+         Datei mit.
+
+         Am 16.08.2026 kam der Satz erneut unter Druck: Mit BitDojo, Dartile
+         und LexiPulse standen drei neue Repositories auf der Seite, und
+         keines trug eine Konventionsdatei. Dieselbe Antwort wie beim ersten
+         Mal, also `BitDojo/AGENTS.md`, `Dartile/AGENTS.md` und
+         `LexiPulse/AGENTS.md`, jede aus dem Code abgelesen und nicht aus
+         einer Vorlage kopiert. Neun Repositories, neun Dateien. */
       body: "Jedes Projekt trägt seine Konventionen als Datei im Repo: Import-Regeln, Test-Muster, Design-Tokens, Sicherheits-Defaults. Dazu ein persistentes Gedächtnis über Sessions hinweg: Jede gelernte Lektion wird ein Eintrag mit Begründung, nicht eine Notiz in einem Chatverlauf, der morgen weg ist. Ein Agent ist nur so gut wie der Kontext, den er zuverlässig vorfindet.",
       artifacts: [
         "CLAUDE.md pro Repo",
@@ -1203,9 +1534,9 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Vier Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Sieben Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
-      proofLabel: "Die vier Fallstudien",
+      proofLabel: "Die sieben Fallstudien",
     },
     {
       title: "Ich arbeite über den ganzen Stack",
@@ -1221,7 +1552,7 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen über App Store und Play Store, 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu acht öffentliche Store-Einträge über beide Läden und drei Apps, die gerade in der Prüfung liegen. 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

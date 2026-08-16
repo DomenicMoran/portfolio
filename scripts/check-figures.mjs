@@ -526,6 +526,9 @@ const REPOS = [
   ["MenuCloud", resolve("../../MenuCloud")],
   ["Salati", resolve("../../SalatiTech")],
   ["NOURI", resolve("../../NOURI")],
+  ["BitDojo", resolve("../../BitDojo")],
+  ["Dartile", resolve("../../Dartile")],
+  ["LexiPulse", resolve("../../LexiPulse")],
   ["Portfolio", resolve(".")],
   ["verified-done", join(OSS, "verified-done")],
   ["cron-last-due", join(OSS, "cron-last-due")],
@@ -3040,8 +3043,14 @@ const BRAUCHT_KIND = {
      Gegenstück bei Apple. Ein Satz, der nur eine Zahl nennt, müsste sich
      dann für einen der beiden Stores entscheiden und wäre für den anderen
      falsch. */
+  /* `\p{L}` und nicht `\w`: Am 16.08.2026 wurde aus „vier Apps im Play Store"
+     ein „fünf", und der Lauf meldete „Satz nennt undefined Apps". `\w` ist in
+     JavaScript `[A-Za-z0-9_]`, das Umlaut-ü fällt heraus, und aus „fünf" wurde
+     der Treffer „nf". Ein Prüfwerkzeug, das an einem Umlaut scheitert und dabei
+     wie ein Inhaltsfehler aussieht, ist die teuerste Sorte Fehlalarm: Man sucht
+     ihn im Text. */
   const satz = quelle.match(
-    /(\w+) Apps im Play Store und (\w+) davon auch im App Store/,
+    /(\p{L}+) Apps im Play Store und (\p{L}+) davon auch im App Store/u,
   );
 
   if (!satz) {
@@ -3246,6 +3255,11 @@ const BRAUCHT_KIND = {
 
    Gezählt wird jetzt, was dasteht. Wer die Datei in den beiden übrigen anlegt,
    sieht die Zahl hier steigen und zieht den Satz nach.
+
+   Am 16.08.2026 hat sich genau das wiederholt: Mit BitDojo, Dartile und
+   LexiPulse standen drei neue Systeme auf der Seite, und dieser Lauf meldete
+   drei Repos ohne Datei. Also drei neue Konventionsdateien, jede aus dem Code
+   abgelesen. Neun Orte, neun Dateien.
    ------------------------------------------------------------------------ */
 {
   const ORTE = [
@@ -3253,6 +3267,9 @@ const BRAUCHT_KIND = {
     ["Salati", "../../SalatiTech"],
     ["NOURI", "../../NOURI"],
     ["WohnungsJäger", "../../KIWohnung"],
+    ["BitDojo", "../../BitDojo"],
+    ["Dartile", "../../Dartile"],
+    ["LexiPulse", "../../LexiPulse"],
     ["Portfolio", "."],
     ["Lernplattform", "../pruefstand"],
   ];
@@ -4025,6 +4042,15 @@ const BRAUCHT_KIND = {
     "menucloudberlin@gmail.com",
     "domenicmoran@gmail.com",
     "109432512+domenicmoran@users.noreply.github.com",
+    /* Das Projektkonto von BitDojo, an dem die Domain und der INWX-Zugang
+       hängen. Es ist derselbe Mensch: Gezählt am 16.08.2026 tragen alle fünf
+       Commits daraus den Namen „Domenic Moran", ebenso wie die 66 aus der
+       Hauptadresse. Eine vierte Adresse hier einzutragen ist genau der Schritt,
+       vor dem der Absatz oben warnt, deshalb steht der Beleg daneben: Ein
+       zweites Konto derselben Person stellt die Zusage „allein gebaut" nicht
+       infrage, eine zweite Person täte es. Wer die Liste erweitert, ohne das
+       zeigen zu können, hebt die Prüfung auf. */
+    "bitdojo.de@gmail.com",
   ]);
 
   /* Der Zahlen-Automat ist kein Mensch, aber auch kein Freibrief.
@@ -5744,22 +5770,47 @@ const ANGABEN = [
     paket: "typescript",
     stellen: 2,
   },
-  {
-    text: "Fastify 5",
-    datei: "../../NOURI/services/api/package.json",
-    paket: "fastify",
-    stellen: 1,
-  },
-  {
-    text: "Zod 4",
-    datei: "../../NOURI/services/api/package.json",
-    paket: "zod",
-    stellen: 1,
-  },
+  /* „Fastify 5" und „Zod 4" standen hier und zeigten auf
+     `NOURI/services/api`. Der Dienst ist nirgends deployt, keine Oberfläche
+     ruft ihn auf, und `zod` kommt in `apps/web` kein einziges Mal vor. Beide
+     Angaben sind am 16.08.2026 von der Seite verschwunden, und damit auch aus
+     dieser Tabelle: Ein Prüfeintrag ohne Angabe auf der Seite meldet ab
+     sofort „steht nicht mehr auf der Seite" und wäre selbst der nächste
+     Fehlalarm. */
   {
     text: "pnpm 10 Workspaces",
     datei: "../../NOURI/package.json",
     feld: "packageManager",
+    stellen: 1,
+  },
+  {
+    text: "Next.js 16",
+    datei: "../../BitDojo/apps/web/package.json",
+    paket: "next",
+    stellen: 1,
+  },
+  {
+    text: "Expo SDK 57",
+    datei: "../../BitDojo/apps/mobil/package.json",
+    paket: "expo",
+    stellen: 1,
+  },
+  {
+    text: "Next.js 15 App Router",
+    datei: "../../LexiPulse/apps/web/package.json",
+    paket: "next",
+    stellen: 1,
+  },
+  {
+    text: "Expo SDK 57",
+    datei: "../../LexiPulse/apps/mobile/package.json",
+    paket: "expo",
+    stellen: 1,
+  },
+  {
+    text: "Expo SDK 57",
+    datei: "../../Dartile/apps/mobil/package.json",
+    paket: "expo",
     stellen: 1,
   },
   /* WohnungsJäger legt keine `engines` fest, die Anforderung steht im README,

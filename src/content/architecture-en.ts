@@ -30,10 +30,23 @@ const ARCHITEKTUR_EN: Record<string, string> = {
     "The devices share domain logic and content. The AI path deliberately ends on the device: model and corpus ship with the app, they are not requested.",
   "MenuCloud: mandantenfähig bis in die Fiskalisierung":
     "MenuCloud: multi-tenant all the way into fiscal signing",
-  "NOURI: geteilter Katalog über drei Oberflächen":
-    "NOURI: one shared catalogue across three surfaces",
+  "NOURI: zwei Oberflächen auf einer Rechenlogik":
+    "NOURI: two surfaces on one set of rules",
+  "Web und App teilen sich Typen, Rechenlogik und Katalog und sprechen beide unmittelbar mit Supabase. Die Nährwerte stehen nicht in der Datenbank, sie werden aus den Zutaten gerechnet und gegen die Atwater-Formel geprüft.":
+    "Web and app share types, rules and catalogue, and both talk to Supabase directly. The nutrition values are not stored, they are computed from the ingredients and checked against the Atwater formula.",
   "WohnungsJäger: Scan, Bewertung, menschliche Freigabe":
     "WohnungsJäger: scan, scoring, human approval",
+  "BitDojo: eine Quelle, fünf Wege durch denselben Stoff":
+    "BitDojo: one source, five ways through the same material",
+  "Lesen, Hören, Wiederholen, Machen und Prüfen greifen auf dieselben Markdown-Dateien zu. Der Prüflauf steht vor dem Bau und lässt ihn scheitern, wenn Inhalte und Ableitung auseinanderlaufen.":
+    "Reading, listening, revising, doing and examining all draw on the same Markdown files. The check runs before the build and fails it when content and derived files drift apart.",
+  "Dartile: eine Partie ist die Liste ihrer Würfe":
+    "Dartile: a match is the list of its throws",
+  "Drei Eingabewege münden in dieselbe reine Engine. Gespeichert wird das Ereignis, nicht der Punktestand: Zurücknehmen ist ein Abschneiden, Synchronisieren ein Anhängen.":
+    "Three input paths meet in the same pure engine. What is stored is the event, not the score: undo is a truncation, syncing is an append.",
+  "LexiPulse: ein Kern ohne Plattform": "LexiPulse: a core with no platform",
+  "Leser, Bereinigung und Wiedergabe kennen weder DOM noch React Native. Jede Plattform steuert nur einen Speicher bei; das Dokument verlässt das Gerät nie.":
+    "Parsers, cleanup and playback know neither the DOM nor React Native. Each platform contributes a storage driver and nothing else; the document never leaves the device.",
 
   /* Spurenbeschriftungen */
   Clients: "Clients",
@@ -52,8 +65,17 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   Agent: "Agent",
   Freigabe: "Approval",
   Versand: "Delivery",
-  Service: "Service",
   Stores: "Stores",
+  Quelle: "Source",
+  Ableitung: "Derived files",
+  Eingabe: "Input",
+  Regeln: "Rules",
+  Speicher: "Storage",
+  "Gegen andere": "Against others",
+  Import: "Import",
+  Aufbereitung: "Preparation",
+  Wiedergabe: "Playback",
+  Ablage: "Storage",
 
   /* Knoten */
   "Natives Modul": "Native module",
@@ -74,6 +96,24 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "Fiskaly Cloud-TSE": "Fiskaly cloud TSE",
   "Playwright-Runner": "Playwright runner",
   "EAS Build + Update": "EAS Build + Update",
+  "Öffentliche Seite": "Public site",
+  "Gemeinsame Datenform": "Shared data shape",
+  "Edge Function": "Edge function",
+  "Privater Speicher": "Private storage",
+  "Raster 5 × 5": "5 × 5 grid",
+  Kamera: "Camera",
+  Ansage: "Call-out",
+  "Checkout-Tafel": "Checkout table",
+  Ereignisliste: "Event list",
+  "SQLite auf dem Gerät": "SQLite on the device",
+  "24 Ziele und Erfolge": "24 goals and achievements",
+  "Wurf mit laufender Nummer": "Throw with a sequence number",
+  Bestenlisten: "Leaderboards",
+  "Web-Adresse": "Web address",
+  Bereinigung: "Cleanup",
+  Erkennungspunkt: "Recognition point",
+  Uhr: "Clock",
+  "Ausfuhr als JSON": "Export as JSON",
 
   /* Unterzeilen */
   "Design-Tokens · Komponenten": "Design tokens · components",
@@ -92,9 +132,57 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "explizite Fehlerzustände": "explicit error states",
   "Dry-Run · 503 · echter 4xx": "dry run · 503 · real 4xx",
   "§ 146a AO · Hash-Kette": "§ 146a AO · hash chain",
-  "Planer · Tracking": "Planner · tracking",
-  "11.892 Rezepte · Trainingspläne": "11,892 recipes · training plans",
-  "59 Tabellen · 12 Migrationen · RLS": "59 tables · 12 migrations · RLS",
+  "Planer · Protokoll · Kasse": "Planner · log · checkout",
+  "Marketing · sechs Rechtsseiten": "Marketing · six legal pages",
+  "11.892 Rezepte · Nährwerte aus Zutaten":
+    "11,892 recipes · nutrition from ingredients",
+  "gebaut, nicht in Betrieb": "built, not in operation",
+  "62 Tabellen · RLS · ON DELETE CASCADE":
+    "62 tables · RLS · ON DELETE CASCADE",
+  "Kontolöschung nach Art. 17": "Account deletion under Art. 17",
+  "nur im Browser": "browser only",
+
+  /* BitDojo */
+  "Text, Begriffskästen, Aufgaben, Übung":
+    "Text, term boxes, questions, exercise",
+  "bricht den Bau bei Inhaltsfehlern": "fails the build on content errors",
+  "Markdown zu JSON": "Markdown to JSON",
+  "Wiederholung · Quiz · Prüfung · Siegel":
+    "Revision · quiz · exam · seal",
+  "Kurse · Zertifikatsverzeichnis": "Courses · certificate registry",
+  "Lesen · Hören · Prüfen": "Read · listen · examine",
+  "derselbe Kern, verkauft nichts": "same core, sells nothing",
+  "30 Folgen, zwei Stimmen": "30 episodes, two voices",
+  "Fortschritt · Zeilenschutz": "Progress · row level security",
+  "zwei Pläne · eine Probewoche": "two plans · one trial week",
+  "Tonspuren · Handbücher": "Audio · handbooks",
+
+  /* Dartile */
+  "drei Tastendrücke je Aufnahme": "three taps per visit",
+  "Vorschlag mit sichtbarer Sicherheit": "a suggestion with visible confidence",
+  "350 vorproduzierte Rufe je Sprache":
+    "350 pre-recorded call-outs per language",
+  "Zustand plus Ereignis ergibt Zustand": "state plus event gives state",
+  "kürzester Weg, Hand berücksichtigt": "shortest route, throwing hand included",
+  "Würfe statt Punktestände": "throws, not scores",
+  "voller Betrieb ohne Netz": "fully usable offline",
+  "lokal gerechnet": "computed on the device",
+  "Zeilenschutz · Auslöser": "Row level security · triggers",
+  "fehlt eine, wird nachgeladen": "a gap triggers a refetch",
+  "hinter Plus": "behind Plus",
+
+  /* LexiPulse */
+  "pdf.js je Plattform": "pdf.js per platform",
+  "Server holt nur wegen CORS": "the server fetches only because of CORS",
+  "Kopfzeilen, Seitenzahlen, Trennungen":
+    "Running heads, page numbers, hyphenation",
+  "Codepunkte statt UTF-16": "code points, not UTF-16",
+  "translateX auf Festbreite": "translateX on a monospace face",
+  "Faktoren multiplizieren sich": "factors compose",
+  "absoluter Zeitstempel": "absolute timestamp",
+  "im Browser": "in the browser",
+  "auf dem Telefon": "on the phone",
+  "Art. 20 DSGVO": "Art. 20 GDPR",
   "63 Workflows · Watchdogs": "63 workflows · watchdogs",
   "Alerts nach Slack": "Alerts to Slack",
   "+ SES-Fallback": "+ SES fallback",

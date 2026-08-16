@@ -91,7 +91,7 @@ export const en: Content = {
     role: "AI Product Engineer",
     location: "Berlin, Germany",
     ogTagline:
-      "Four systems in production: mobile, SaaS, infrastructure, compliance. All built solo.",
+      "Seven systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
     email: "domenicmoran@gmail.com",
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
@@ -106,7 +106,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "Four systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent.",
+        "Seven systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
     },
   },
 
@@ -168,18 +168,18 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `AI product engineer in Berlin. Four systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
+    lede: `AI product engineer in Berlin. Seven systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     tryIt: {
-      before: "Two of the four systems run right here in the browser:",
+      before: "Two of the seven systems run right here in the browser:",
       label: "try the prayer times and the daily macros",
       href: "#case-salati",
       after: "without a single request leaving it.",
     },
 
     proof: [
-      { value: "4", label: "systems in production" },
+      { value: "7", label: "systems in production" },
       {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
@@ -194,7 +194,7 @@ export const en: Content = {
 
   work: {
     eyebrow: "Selected work",
-    title: "Four products. All live. All built alone.",
+    title: "Seven products. All live. All built alone.",
     lede: "No practice projects, no tutorial clones. Every system here has real users, real payments or real legal obligations, and I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
@@ -638,25 +638,27 @@ export const en: Content = {
       index: "04",
       name: "NOURI",
       tagline:
-        "Fitness and nutrition platform with a web app, a mobile app and its own API",
+        "Nutrition and training platform: web app, mobile app, one shared catalogue",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Beta",
+      statusLabel: "Live on Google Play, iOS in review",
       accent: "violet",
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
       solution:
-        "A platform of a web app, an Expo app and a Fastify API sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management and training plans. And with an API that separates three states cleanly instead of obscuring them.",
+        "A platform of a web app and an Expo app sharing a catalogue of nearly 12,000 recipes, with macro tracking, weekly planning, shopping lists, pantry management, allergen filters and training plans. The nutrition values are not sitting in a table, they are computed from the ingredients, and a test holds the entire catalogue against the Atwater cross-check.",
       hardPart: {
-        title: "An API that does not lie",
-        body: "Every write endpoint distinguishes explicitly: secrets missing (dry run, no pretence that data was saved), database unreachable (503), database reachable but rejecting (a real 4xx carrying the Postgres error code). It sounds like a detail, but it is the difference between a system you can believe while debugging and one that lies to you.",
+        title: "A number nobody recomputes is a made-up number",
+        body: "A catalogue of 11,892 recipes invites you to simply write the calories and macros down. Nothing here does that: the values are derived from the ingredients through an own nutrition table, and a test recomputes the whole catalogue with the Atwater formula. The first run found outliers up to 30.5 per cent; today the largest deviation is 2.07. A second test asserts that no recipe title names an ingredient missing from its ingredient list. The same rule governs the write paths: missing credentials are a dry run, an unreachable database is a 503, a rejecting database is a real 4xx carrying the Postgres error code. No “saved” that saved nothing.",
       },
       highlights: [
-        "Monorepo with a shared catalogue across web, mobile and API",
-        "59 tables across 12 versioned migrations, row level security active",
-        "Supabase auth with cross-device profile sync",
+        "Monorepo with a shared catalogue and shared rules across web and app",
+        "62 tables with row level security, 30 foreign keys hanging off the accounts with ON DELETE CASCADE",
+        "Nutrition computed from ingredients, the whole catalogue checked against Atwater: largest deviation 2.07 per cent",
         "Using the app without an account stays entirely local, no forced login",
-        "Explicit failure states instead of silent 500s",
+        "Account deletion under Art. 17 GDPR through an edge function, verified against the running project",
+        "The link importer cannot point into my own network: what is checked is the resolved IP address, not the name, and every redirect again",
+        "Billing happens in the browser only; the app reads the plan from the account and unlocks, without advertising a purchase path (App Store guidelines 3.1.1 and 3.1.3(b))",
       ],
       stack: [
         {
@@ -670,39 +672,316 @@ export const en: Content = {
           ],
         },
         {
-          group: "Services",
-          items: [
-            "Fastify 5",
-            "Zod 4",
-            "Supabase / Postgres",
-            "Row Level Security",
-          ],
+          group: "Data & accounts",
+          items: ["Supabase / Postgres", "Row Level Security", "Edge Functions"],
         },
         {
-          group: "Delivery",
-          items: ["Vercel", "Turborepo", "pnpm 10 workspaces"],
+          group: "Money & delivery",
+          items: ["Stripe", "Vercel", "Turborepo", "pnpm 10 workspaces"],
         },
       ],
       metrics: [
         { value: "11,892", label: "recipes in the catalogue" },
-        { value: "59", label: "tables" },
-        { value: "12", label: "migrations" },
+        { value: "62", label: "tables" },
+        { value: "15", label: "migrations" },
+        { value: "538", label: "tests" },
       ],
       links: [
         {
-          label: "nouri-fitness.vercel.app",
-          href: "https://nouri-fitness.vercel.app",
+          label: "nouri-fitness.de",
+          href: "https://www.nouri-fitness.de",
           kind: "live",
+        },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=app.nouri.mobile",
+          kind: "store",
         },
       ],
       architecture: "nouri",
       shots: [
         {
           src: "/shots/nouri-desktop.webp",
-          alt: "Home page of the NOURI platform: language switch, headline and the buttons that open the app.",
+          alt: "Home page of nouri-fitness.de with the headline and the buttons that open the app.",
           width: 1440,
           height: 828,
-          label: "nouri-fitness.vercel.app",
+          label: "nouri-fitness.de",
+        },
+        {
+          src: "/shots/nouri/heute.webp",
+          alt: "The day screen: calories eaten against the daily target, then protein, carbohydrates and fat each with a bar, then the meals planned for the day.",
+          width: 956,
+          height: 1808,
+          label: "Today · against your own target",
+          variant: "phone",
+        },
+        {
+          src: "/shots/nouri/wochenplan.webp",
+          alt: "The weekly plan: a strip of weekdays, below it planned calories and planned protein against the target, and the meals of the selected day.",
+          width: 956,
+          height: 1808,
+          label: "Weekly plan · planned, not logged",
+          variant: "phone",
+        },
+        {
+          src: "/shots/nouri/allergene.webp",
+          alt: "The allergen screen with the note that NOURI is not a medical device, and the selection of excluded allergens.",
+          width: 956,
+          height: 1808,
+          label: "Allergens · not a medical device",
+          variant: "phone",
+        },
+        {
+          src: "/shots/nouri/training.webp",
+          alt: "The training area with plans and the log of recent sessions.",
+          width: 956,
+          height: 1808,
+          label: "Training · plan and log",
+          variant: "phone",
+        },
+      ],
+    },
+
+    {
+      id: "bitdojo",
+      index: "05",
+      name: "BitDojo",
+      tagline: "German-language learning platform with exactly one lesson library",
+      year: "2026",
+      role: "Sole developer · content, code, stores, compliance",
+      statusLabel: "Web live, apps in review",
+      accent: "acid",
+      problem:
+        "Anyone who wants to get into software engineering in German finds translated English courses or video series without an exam. And nearly every platform writes the same term anew for every course. Half a year later two explanations of the same word sit side by side, they contradict each other, and neither is identifiable as the wrong one.",
+      solution:
+        "A platform with exactly one lesson library. A course is an ordering over it plus a weekly schedule; tick a lesson off in one course and it is ticked off in every other. The same texts carry the podcast, the flashcards and the exam, and at the end of each module sits a certificate whose seal can be recomputed.",
+      hardPart: {
+        title: "Content errors are silent",
+        body: "A typo in code breaks the build. A flashcard whose answer no longer appears in the lesson text still looks like a card. It is simply no longer answerable, and nobody notices. So a run in the prebuild checks the content the way it checks code, and fails the build: when the derived files no longer match the lessons, when a published course points at a lesson that does not exist, when a weekly schedule has a gap, when an exam pool is smaller than what the blueprint draws from it, when a term is explained in two places, or when something executable ends up in the generated HTML. The card itself is the very box the reader sees in the text, the same characters. It cannot drift from the text at all.",
+      },
+      highlights: [
+        "One lesson library across eleven courses: tick a lesson off once and it is off everywhere",
+        "The flashcard is the term box inside the lesson text, not a copy of it",
+        "Exam questions are drawn afresh on every attempt, stratified across the modules; the answers never leave the server",
+        "Certificates carry a number and a seal over number, course, name, date and result; the verification page recomputes the seal and also checks the database, because a revoked certificate keeps a valid seal",
+        "A podcast made from the same lessons: 30 episodes with two voices, synthesised block by block and therefore resumable",
+        "Paid access hangs off a date, not off a yes/no: a webhook that fails cannot leave anyone unlocked forever",
+        "The trial week is granted once per account, checked against a database marker and against the history at Stripe",
+        "The notice about the paid renewal sits outside the terms; without it the clause would be a surprising one under § 305c BGB and therefore void",
+        "The foundations course needs no account and no payment details",
+      ],
+      stack: [
+        {
+          group: "Web",
+          items: ["Next.js 16", "React 19", "TypeScript", "Tailwind"],
+        },
+        {
+          group: "Mobile",
+          items: ["Expo SDK 57", "React Native", "Shared core"],
+        },
+        {
+          group: "Data & money",
+          items: [
+            "Supabase / Postgres",
+            "Row Level Security",
+            "Stripe",
+            "Resend",
+          ],
+        },
+        {
+          group: "Content",
+          items: ["Markdown as the source", "Derived JSON", "ElevenLabs"],
+        },
+      ],
+      metrics: [
+        { value: "111", label: "lessons" },
+        { value: "813", label: "cards to revise" },
+        { value: "664", label: "exam questions" },
+        { value: "147", label: "tests" },
+      ],
+      links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
+      architecture: "bitdojo",
+      shots: [
+        {
+          src: "/shots/bitdojo-desktop.webp",
+          alt: "Home page of bitdojo.de: the headline “from your first term to your own product”, below it the platform’s figures.",
+          width: 1440,
+          height: 746,
+          label: "bitdojo.de",
+        },
+        {
+          src: "/shots/bitdojo/lektion.webp",
+          alt: "A lesson in the foundations course: running text with two term boxes for DNS and IP address, on the right the table of contents.",
+          width: 1440,
+          height: 1220,
+          label: "The term box is the flashcard",
+        },
+      ],
+    },
+
+    {
+      id: "dartile",
+      index: "06",
+      name: "Dartile",
+      tagline: "A darts counter that records every single dart",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Web live, apps in review",
+      accent: "cyan",
+      problem:
+        "Darts counters store the total of a visit. From a total you cannot draw a hit map, cannot compute a doubles rate, and cannot say whether someone missed the 20 high or low. Yet those are exactly the numbers that make someone keep a counting app at all.",
+      solution:
+        "Every dart is recorded on its own, through a grid of five by five tiles and three taps per visit. Hence the name. What gets stored is the event list, not the score: undo is a truncation, merging is an append, and the statistics can be recomputed later and more precisely. On top of that eight game types, a call-out built from pre-recorded audio, and a camera that suggests instead of asserting.",
+      hardPart: {
+        title: "The camera suggests, it does not assert",
+        body: "Detection with a phone camera lands around 95 per cent in the field. Sell that as certainty and every twentieth visit writes a wrong number into a statistic nobody ever corrects. Dartile calibrates by hand over four points, evaluates by image difference rather than a model, shows its confidence, and asks below the threshold. Two real bugs surfaced only in the running image and from no test: with three darts inside a fifth of a second the evaluation reported only the largest changed region, and a dart that landed while a confirmation was open became the new reference state and never appeared at all.",
+      },
+      highlights: [
+        "An event list instead of a score: undo is a truncation, merging two devices is an append. There is no case where somebody has to decide which state wins",
+        "The game engine is its own package, pure: no clock, no storage, no React, zero dependencies, 222 tests",
+        "Eight game types and two training drills, all free, all offline",
+        "350 pre-recorded call-outs per language instead of runtime speech: no server cost per throw and no caller that goes silent without reception",
+        "Online play transmits throws with a sequence number; a gap triggers a refetch, a duplicate bounces off the database key",
+        "Shout-outs are six fixed keys and not free text: free text between strangers raises the age rating in both stores",
+        "24 goals and achievements, computed entirely on the device, showing progress instead of a padlock",
+        "Eight languages, and the paywall asks the server first whether there is anything to buy at all",
+      ],
+      stack: [
+        {
+          group: "App",
+          items: ["Expo SDK 57", "React Native", "TypeScript", "expo-iap"],
+        },
+        {
+          group: "Engine",
+          items: ["Plain TypeScript", "Zero dependencies", "Vitest"],
+        },
+        {
+          group: "Web & data",
+          items: [
+            "Next.js",
+            "Vercel",
+            "Supabase / Postgres",
+            "Row Level Security",
+          ],
+        },
+        {
+          group: "Voice & vision",
+          items: ["ElevenLabs, pre-recorded", "Image difference, not a model"],
+        },
+      ],
+      metrics: [
+        { value: "284", label: "tests" },
+        { value: "8", label: "game types" },
+        { value: "350", label: "call-outs per language" },
+        { value: "0", label: "dependencies in the engine" },
+      ],
+      links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
+      architecture: "dartile",
+      articles: ["eighteen-routes-over-the-bull"],
+      shots: [
+        {
+          src: "/shots/dartile-desktop.webp",
+          alt: "Home page of dartile.de: the headline “the darts counter that works in the club cellar” next to a drawn dartboard.",
+          width: 1440,
+          height: 799,
+          label: "dartile.de",
+        },
+        {
+          src: "/shots/dartile/spiel.webp",
+          alt: "The scoring screen: both players with remaining points and average at the top, below the large remaining score and the grid of input tiles.",
+          width: 818,
+          height: 1430,
+          label: "Readable from two metres",
+          variant: "phone",
+        },
+        {
+          src: "/shots/dartile/checkout.webp",
+          alt: "The same screen at 141 remaining: below it the suggested route T20, T19, D12.",
+          width: 818,
+          height: 1430,
+          label: "Checkout suggestion · T20 T19 D12",
+          variant: "phone",
+        },
+        {
+          src: "/shots/dartile/statistik.webp",
+          alt: "The evaluation of a match: three-dart average, first nine, darts thrown, checkout rate, number of 180s and best leg, per player.",
+          width: 818,
+          height: 1430,
+          label: "Computed from every single dart",
+          variant: "phone",
+        },
+      ],
+    },
+
+    {
+      id: "lexipulse",
+      index: "07",
+      name: "LexiPulse",
+      tagline: "An RSVP reader for EPUB, PDF and web articles, offline and open to read",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Web live, iOS in review",
+      accent: "violet",
+      problem:
+        "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
+      solution:
+        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, PDF, TXT, Markdown, HTML and from a web address.",
+      hardPart: {
+        title: "The same pace for every word is the mistake",
+        body: "Flat RSVP gives a three-letter article the same time budget as a sentence boundary, and that is exactly where comprehension collapses. Here the factors compose: a word core longer than eight characters times 1.25, sentence end times 1.75, clause end times 1.75, paragraph end times 2.0, digits times 1.4, a core of three characters or fewer times 0.9. Abbreviations and ordinals are excluded from the sentence rule so that “e.g.” and “1.” do not stall the stream. On top of that a warm-up: after every resume the first words run at 40 per cent of the target pace, because dropping straight into 900 words per minute from a standstill is the single most common reason for reading nothing at all. And the clock consumes an absolute timestamp rather than frame deltas, so a dropped frame cannot make the stream drift.",
+      },
+      highlights: [
+        "packages/core with no DOM, no React Native and no Node built-ins: the same engine and the same parsers on web and on device, 218 tests",
+        "The pivot is arithmetic, not an approximation: translateX on a monospace face",
+        "Character indices are code points, never UTF-16 offsets: an emoji or a combining mark cannot be split in half",
+        "The recognition point derives from a word’s alphanumeric core, so a leading quotation mark does not move it",
+        "Six import paths, one of them a web address; the server fetches the page only to get around CORS and does not store the URL",
+        "Everything stays on the device: IndexedDB in the browser, SQLite on the phone, full data export as JSON under Art. 20 GDPR",
+        "The source is fully public, under PolyForm Noncommercial: readable and checkable, but not licensed for commercial use",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "Platform-free", "Vitest"],
+        },
+        {
+          group: "Web",
+          items: ["Next.js 15 App Router", "PWA", "IndexedDB", "pdf.js"],
+        },
+        {
+          group: "Mobile",
+          items: ["Expo SDK 57", "React Native", "SQLite"],
+        },
+      ],
+      metrics: [
+        { value: "309", label: "tests" },
+        { value: "6", label: "import formats" },
+        { value: "0", label: "documents on a server" },
+        { value: "2", label: "platforms, one core" },
+      ],
+      links: [
+        { label: "lexipulse.de", href: "https://lexipulse.de", kind: "live" },
+        {
+          label: "Source code",
+          href: "https://github.com/DomenicMoran/lexipulse",
+          kind: "code",
+        },
+      ],
+      architecture: "lexipulse",
+      shots: [
+        {
+          src: "/shots/lexipulse-desktop.webp",
+          alt: "Home page of lexipulse.de: the headline “reading without the eyes jumping” next to a running demonstration of the reader.",
+          width: 1440,
+          height: 698,
+          label: "lexipulse.de",
+        },
+        {
+          src: "/shots/lexipulse/reader.webp",
+          alt: "The reader after importing a Wikipedia article: the word “Wikipedia” sits large in the centre, its recognition letter highlighted in colour between two vertical guides.",
+          width: 1440,
+          height: 900,
+          label: "An article read straight from its address",
         },
       ],
     },
@@ -714,7 +993,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: four production systems in ${buildTime}, four apps in the Play Store and three of them in the App Store as well, one carrying statutory fiscal signing, all of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: seven production systems in ${buildTime}, five apps in the Play Store and three of them in the App Store as well, three more sitting in review there, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -724,8 +1003,12 @@ export const en: Content = {
         label: "commits since March 2026",
         note: "alongside a full-time job",
       },
-      { value: "4", label: "systems in production", note: "all built alone" },
-      { value: "2", label: "app stores", note: "iOS and Android, live" },
+      { value: "7", label: "systems in production", note: "all built alone" },
+      {
+        value: "8",
+        label: "store listings live",
+        note: "5 Play, 3 App Store",
+      },
       {
         value: "2022",
         label: "self-taught since",
@@ -737,7 +1020,7 @@ export const en: Content = {
        als „6 August 2026“ setzen, zwei Datumsformate auf einer Seite, und
        das maschinenlesbare mitten im Satz. Die Formatierung liegt seitdem in
        `src/lib/date-format.ts`, für beide Sprachen. */
-    statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the three monorepos behind MenuCloud, Salati and NOURI, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
+    statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the six monorepos behind MenuCloud, Salati, NOURI, BitDojo, Dartile and LexiPulse, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [
       {
@@ -748,14 +1031,14 @@ export const en: Content = {
         period: "since April 2026",
         title: "Founder & sole developer",
         org: "MenuCloud, sole proprietorship, Berlin",
-        body: "Building and running four production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
+        body: "Building and running seven production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
       },
       {
         period: "since 2022",
         title: "Software engineering, self-taught",
         org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is four systems in production and a git history anyone can check.",
+        body: "No CS degree, no bootcamp. The evidence is seven systems in production and a git history anyone can check.",
         current: true,
       },
     ],
@@ -786,6 +1069,12 @@ export const en: Content = {
           href: "https://github.com/DomenicMoran/arabic-normalize",
           body: "Normalising Arabic script for comparison. Solves a speech model emitting “علی” where the source has “علي”. Identical to the ear, different to ===.",
           meta: "TypeScript · 23 tests · zero dependencies",
+        },
+        {
+          name: "darts-checkout",
+          href: "https://github.com/DomenicMoran/darts-checkout",
+          body: "The checkout table out of Dartile. On 40 there are more than eighty correct routes and exactly one that gets thrown. The package exists because of a bug: eighteen remainders ran over the bull although an equally long route avoided it, and the test only looked at the finishing dart.",
+          meta: "TypeScript · 25 tests · zero dependencies",
         },
         {
           name: "portfolio",
@@ -1147,9 +1436,9 @@ export const en: Content = {
     strengths: [
       {
         title: "I ship finished, not nearly finished",
-        body: "Four systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        body: "Seven systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
         proof: "#work",
-        proofLabel: "The four case studies",
+        proofLabel: "The seven case studies",
       },
       {
         title: "I work across the whole stack",
@@ -1165,7 +1454,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: `${SALATI_VERSIONS} versions shipped across the App Store and Play Store, 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus eight public store listings across both stores and three more apps sitting in review right now. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
@@ -1305,11 +1594,11 @@ export const en: Content = {
   onepager: {
     title: "One-pager",
     description:
-      "One-page profile of Domenic Moran, AI product engineer in Berlin: four systems in production, path and contact on a single page.",
+      "One-page profile of Domenic Moran, AI product engineer in Berlin: seven systems in production, path and contact on a single page.",
     positioning:
-      "AI product engineer with four systems in production, each built " +
+      "AI product engineer with seven systems in production, each built " +
       "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
-      "fiscal signing, an autonomous agent. {commits} commits since March 2026, " +
+      "fiscal signing, a learning platform, an autonomous agent. {commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +
       "Focus: agent-assisted development with strict verification discipline: " +
       "a green test run is not proof.",
@@ -1318,7 +1607,7 @@ export const en: Content = {
     path: "Path",
     pathNote:
       "Self-taught in software development: no degree, no bootcamp. " +
-      "The evidence is four systems in production.",
+      "The evidence is seven systems in production.",
     openSource: "Published",
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",

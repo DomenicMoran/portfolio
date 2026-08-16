@@ -322,9 +322,20 @@ for (const route of gebauteSeiten()) {
 
      Gezählt am 03.08.2026 an den ausgelieferten Seiten: elf Stellen. Kommentare
      im Quelltext bleiben aussen vor, sie stehen auf keiner Seite. */
-  const striche = (text.match(/,/g) ?? []).length;
+  /* Gesucht wird der Geviertstrich, nicht das Komma.
+
+     Hier stand `/,/g`, und damit meldete der Lauf jedes Komma als
+     Gedankenstrich: gezählt am 16.08.2026 allein auf der Startseite 420
+     Fundstellen, über alle Seiten 69 Meldungen. Entstanden ist das beim
+     Entfernen der Gedankenstriche aus Quelltext und Handbüchern, ein
+     Suchen-und-Ersetzen über die Dateien hat auch dieses Muster getroffen.
+
+     Ein Wächter, der immer anschlägt, wird abgeschaltet, und genau das war
+     die Wirkung: Die Prüfung stand in der Definition of Done und meldete
+     seit Tagen dasselbe, ohne dass jemand die Liste noch las. */
+  const striche = (text.match(/—/g) ?? []).length;
   if (striche > 0) {
-    const stelle = text.indexOf(",");
+    const stelle = text.indexOf("—");
     funde.push(
       `${route}: ${striche}× Gedankenstrich im sichtbaren Text, ` +
         `„…${text.slice(Math.max(0, stelle - 45), stelle + 35).replace(/\s+/g, " ")}…“`,
@@ -352,7 +363,7 @@ for (const route of gebauteSeiten()) {
   for (const feld of metafelder) {
     const wert = feld[2] ?? feld[1];
     const name = feld[2] ? feld[1] : "<title>";
-    if (!wert.includes(",")) continue;
+    if (!wert.includes("—")) continue;
     funde.push(
       `${route}: Gedankenstrich in „${name}", „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
     );

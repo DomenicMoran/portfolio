@@ -5,14 +5,21 @@
 # war kein Fehler, weil sie ihr Messdatum mitträgt — aber "immer aktuell" ist
 # besser als "damals richtig".
 #
-# Warum hier und nicht im Browser des Besuchers: Drei der acht Repositories
-# sind privat, sie tragen Kundendaten. Sie öffentlich lesbar zu machen, nur
-# damit eine Zahl live ist, wäre der falsche Tausch. Ein Token im
-# ausgelieferten JavaScript wäre ein veröffentlichtes Token. Also liest ein
-# Automat mit einem Token, das GitHub verwahrt, und liefert das Ergebnis aus.
+# Warum hier und nicht im Browser des Besuchers: Fünf der elf Repositories
+# sind privat, sie tragen Kundendaten und lizenzierte Inhalte. Sie öffentlich
+# lesbar zu machen, nur damit eine Zahl live ist, wäre der falsche Tausch. Ein
+# Token im ausgelieferten JavaScript wäre ein veröffentlichtes Token. Also
+# liest ein Automat mit einem Token, das GitHub verwahrt, und liefert das
+# Ergebnis aus.
+#
+# Am 16.08.2026 kamen BitDojo, Dartile und LexiPulse dazu. Die ersten beiden
+# liegen unter dem persönlichen Konto und waren mit dem Token nicht lesbar;
+# statt eines zweiten Tokens ist `MenuCloud-Berlin` dort jetzt Mitarbeiter mit
+# Leserecht. Wer ein weiteres privates Repo aufnimmt, tut dasselbe, sonst
+# scheitert der Lauf mit dem Namen des fehlenden Repos.
 #
 # Zwei Geheimnisse sind nötig, beide in den Repository-Einstellungen:
-#   ZAHLEN_TOKEN   ein Token mit Leserecht auf die acht gezählten Repositories
+#   ZAHLEN_TOKEN   ein Token mit Leserecht auf die elf gezählten Repositories
 #   VERCEL_TOKEN   ein Vercel-Token, damit die neue Zahl auch ausgeliefert wird
 #
 # Kein Deploy-Hook, obwohl das der einfachere Weg wäre: Ein Hook setzt eine
