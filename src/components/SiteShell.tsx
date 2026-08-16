@@ -72,9 +72,36 @@ export function SiteShell({
       "keydown",
       "beforeprint",
     ] as const;
+    /* Nicht im Ereignis selbst, sondern danach.
+
+       `nachladen` läuft über jedes `img` des Dokuments und stellt es von
+       `lazy` auf `eager`; der Browser beginnt daraufhin zu laden und zu
+       rechnen, und das alles fiel bis zum 16.08.2026 in dieselbe Interaktion,
+       die es ausgelöst hat. Solange die Startseite vier Fallstudien mit elf
+       Aufnahmen trug, blieb das unter dem Budget. Mit sieben Fallstudien und
+       23 Aufnahmen nicht mehr: `check:vitals` maß auf dem gedrosselten Telefon
+       384 ms INP für den ersten Tastendruck, Budget sind 200.
+
+       Der Ausweg ist nicht weniger Nachladen, sondern ein späterer Zeitpunkt.
+       Das Ereignis wird sofort quittiert, die Arbeit läuft im nächsten
+       Leerlauf. Für den Zweck ändert sich nichts: Zwischen erster Berührung
+       und Druckbefehl liegen Sekunden, nicht Millisekunden. Ohne
+       `requestIdleCallback`, das Safari bis heute nicht kennt, greift ein
+       Zeitgeber. */
+    const gleichNachher = (arbeit: () => void) => {
+      const w = window as typeof window & {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
+      };
+      if (typeof w.requestIdleCallback === "function") {
+        w.requestIdleCallback(arbeit, { timeout: 2000 });
+      } else {
+        window.setTimeout(arbeit, 200);
+      }
+    };
+
     const einmal = () => {
-      nachladen();
       for (const e of ereignisse) window.removeEventListener(e, einmal);
+      gleichNachher(nachladen);
     };
     for (const e of ereignisse)
       window.addEventListener(e, einmal, { passive: true });
