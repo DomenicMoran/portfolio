@@ -584,7 +584,7 @@ const ARCHITECTURES: Record<string, Diagram> = {
       {
         id: "sb",
         label: "Supabase / Postgres",
-        sub: "62 Tabellen · RLS · ON DELETE CASCADE",
+        sub: "63 Tabellen · RLS · ON DELETE CASCADE",
         x: 20,
         y: 302,
         w: 430,

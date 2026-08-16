@@ -742,9 +742,12 @@ export const caseStudies: CaseStudy[] = [
         /* Der Ausschnitt endet an der Sektionskante, nicht an einer runden
            Zahl: Die vorherige Aufnahme war 1440 x 900 und schnitt quer durch
            die Knopfreihe. Dazu trug sie eine echte Bildlaufleiste am Rand,
-           innerhalb eines gezeichneten Browserrahmens. */
+           innerhalb eines gezeichneten Browserrahmens.
+           Die Kante ist am 16.08.2026 nachgemessen und liegt bei 1375; hier
+           standen 1466 und in der Datei 1480, also drei Zahlen fuer dieselbe
+           Kante. Gemessen wird sie jetzt von `scripts/capture-shots.mjs`. */
         width: 1440,
-        height: 1466,
+        height: 1375,
         label: "menucloud-berlin.de",
       },
       {
@@ -848,7 +851,7 @@ export const caseStudies: CaseStudy[] = [
     },
     highlights: [
       "Monorepo mit geteiltem Katalog und geteilter Rechenlogik über Web und App",
-      "62 Tabellen mit Row Level Security, 30 Fremdschlüssel hängen mit ON DELETE CASCADE an den Konten",
+      "63 Tabellen mit Row Level Security, 30 Fremdschlüssel hängen mit ON DELETE CASCADE an den Konten",
       "Nährwerte aus den Zutaten gerechnet, der ganze Katalog gegen Atwater geprüft: größte Abweichung 2,07 Prozent",
       "Nutzung ohne Konto bleibt vollständig lokal, kein Login-Zwang",
       "Kontolöschung nach Art. 17 DSGVO über eine Edge Function, am laufenden Projekt durchgeprüft",
@@ -888,8 +891,8 @@ export const caseStudies: CaseStudy[] = [
          `supabase/migrations` und hält sie gegen diese beiden Zahlen. Sie
          standen hier auf 59 und 12 und waren damit um drei Tabellen und drei
          Migrationen zu niedrig. */
-      { value: "62", label: "Tabellen" },
-      { value: "15", label: "Migrationen" },
+      { value: "63", label: "Tabellen" },
+      { value: "16", label: "Migrationen" },
       { value: "538", label: "Tests" },
     ],
     links: [
@@ -914,9 +917,12 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/nouri-desktop.webp",
         alt: "Startseite von nouri-fitness.de mit der Titelzeile und den Knöpfen zum Öffnen der App.",
         /* Endet an der Kante des Kopfbereichs. Die vorherige Aufnahme war
-           1440 x 900 und schnitt mitten durch die Kennzahlenreihe. */
+           1440 x 900 und schnitt mitten durch die Kennzahlenreihe.
+           828 tat es am 16.08.2026 wieder: NOURIs Kopfbereich fuellt die
+           Fensterhoehe, und die naechste Kante liegt immer 66 Pixel darueber.
+           Bei einem 828 hohen Fenster faengt die Reihe also bei 762 an. */
         width: 1440,
-        height: 828,
+        height: 762,
         label: "nouri-fitness.de",
       },
       {
@@ -1018,7 +1024,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/bitdojo-desktop.webp",
         alt: "Startseite von bitdojo.de: die Überschrift „Vom ersten Begriff bis zum eigenen Produkt“, darunter die Kennzahlen der Plattform.",
         width: 1440,
-        height: 746,
+        height: 730,
         label: "bitdojo.de",
       },
       {
@@ -1196,7 +1202,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/lexipulse-desktop.webp",
         alt: "Startseite von lexipulse.de: die Überschrift „Lesen, ohne dass die Augen springen“ neben einer laufenden Vorführung des Readers.",
         width: 1440,
-        height: 698,
+        height: 728,
         label: "lexipulse.de",
       },
       {

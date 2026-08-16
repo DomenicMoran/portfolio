@@ -264,6 +264,7 @@ scripts/
 ├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
 ├─ build-portrait.mjs             erzeugt alle drei Porträt-Fassungen aus einem Original
 ├─ build-shots.mjs                erzeugt public/shots/*.webp aus den Originalen daneben
+├─ capture-shots.mjs              nimmt die fünf Website-Aufnahmen neu auf, an gemessenen Kanten
 └─ lib/local-server.mjs           startet den gebauten Stand auf einem freien Port
 
 .github/workflows/

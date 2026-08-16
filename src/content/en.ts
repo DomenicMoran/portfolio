@@ -564,7 +564,7 @@ export const en: Content = {
           src: "/shots/menucloud-desktop.webp",
           alt: "Home page of menucloud-berlin.de promising zero commission, GDPR and cash-register compliance, with a preview of the self-service admin.",
           width: 1440,
-          height: 1466,
+          height: 1375,
           label: "menucloud-berlin.de",
         },
         {
@@ -653,7 +653,7 @@ export const en: Content = {
       },
       highlights: [
         "Monorepo with a shared catalogue and shared rules across web and app",
-        "62 tables with row level security, 30 foreign keys hanging off the accounts with ON DELETE CASCADE",
+        "63 tables with row level security, 30 foreign keys hanging off the accounts with ON DELETE CASCADE",
         "Nutrition computed from ingredients, the whole catalogue checked against Atwater: largest deviation 2.07 per cent",
         "Using the app without an account stays entirely local, no forced login",
         "Account deletion under Art. 17 GDPR through an edge function, verified against the running project",
@@ -682,8 +682,8 @@ export const en: Content = {
       ],
       metrics: [
         { value: "11,892", label: "recipes in the catalogue" },
-        { value: "62", label: "tables" },
-        { value: "15", label: "migrations" },
+        { value: "63", label: "tables" },
+        { value: "16", label: "migrations" },
         { value: "538", label: "tests" },
       ],
       links: [
@@ -704,7 +704,7 @@ export const en: Content = {
           src: "/shots/nouri-desktop.webp",
           alt: "Home page of nouri-fitness.de with the headline and the buttons that open the app.",
           width: 1440,
-          height: 828,
+          height: 762,
           label: "nouri-fitness.de",
         },
         {
@@ -806,7 +806,7 @@ export const en: Content = {
           src: "/shots/bitdojo-desktop.webp",
           alt: "Home page of bitdojo.de: the headline “from your first term to your own product”, below it the platform’s figures.",
           width: 1440,
-          height: 746,
+          height: 730,
           label: "bitdojo.de",
         },
         {
@@ -973,7 +973,7 @@ export const en: Content = {
           src: "/shots/lexipulse-desktop.webp",
           alt: "Home page of lexipulse.de: the headline “reading without the eyes jumping” next to a running demonstration of the reader.",
           width: 1440,
-          height: 698,
+          height: 728,
           label: "lexipulse.de",
         },
         {
