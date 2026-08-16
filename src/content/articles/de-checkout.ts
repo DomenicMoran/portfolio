@@ -87,7 +87,8 @@ export const checkoutDe: Article = {
       kind: "code",
       lang: "ts",
       code: `bewertet.sort((a, b) => {
-  if (a.weg.length !== b.weg.length) return a.weg.length - b.weg.length;
+  if (a.weg.length !== b.weg.length)
+    return a.weg.length - b.weg.length;
   // Vor den Kosten, damit kein Gewicht diese Aussage überstimmen kann.
   if (a.bull !== b.bull) return a.bull - b.bull;
   if (a.kosten !== b.kosten) return a.kosten - b.kosten;
