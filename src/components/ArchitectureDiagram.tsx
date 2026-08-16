@@ -700,7 +700,7 @@ const ARCHITECTURES: Record<string, Diagram> = {
       {
         id: "podcast",
         label: "Podcast",
-        sub: "30 Folgen, zwei Stimmen",
+        sub: "36 Folgen, zwei Stimmen",
         x: 648,
         y: 310,
         w: 252,
@@ -782,7 +782,7 @@ const ARCHITECTURES: Record<string, Diagram> = {
       {
         id: "ansage",
         label: "Ansage",
-        sub: "350 vorproduzierte Rufe je Sprache",
+        sub: "175 vorproduzierte Rufe je Sprache",
         x: 688,
         y: 62,
         w: 212,

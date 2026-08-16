@@ -152,7 +152,7 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "Kurse · Zertifikatsverzeichnis": "Courses · certificate registry",
   "Lesen · Hören · Prüfen": "Read · listen · examine",
   "derselbe Kern, verkauft nichts": "same core, sells nothing",
-  "30 Folgen, zwei Stimmen": "30 episodes, two voices",
+  "36 Folgen, zwei Stimmen": "36 episodes, two voices",
   "Fortschritt · Zeilenschutz": "Progress · row level security",
   "zwei Pläne · eine Probewoche": "two plans · one trial week",
   "Tonspuren · Handbücher": "Audio · handbooks",
@@ -160,8 +160,8 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   /* Dartile */
   "drei Tastendrücke je Aufnahme": "three taps per visit",
   "Vorschlag mit sichtbarer Sicherheit": "a suggestion with visible confidence",
-  "350 vorproduzierte Rufe je Sprache":
-    "350 pre-recorded call-outs per language",
+  "175 vorproduzierte Rufe je Sprache":
+    "175 pre-recorded call-outs per language",
   "Zustand plus Ereignis ergibt Zustand": "state plus event gives state",
   "kürzester Weg, Hand berücksichtigt": "shortest route, throwing hand included",
   "Würfe statt Punktestände": "throws, not scores",

@@ -231,6 +231,29 @@ export const de: Content = {
     },
     note: "Werte aus dem NOURI-Katalog (11.892 Rezepte, hier die zwölf handkuratierten). Energieverteilung über 4/4/9 kcal je Gramm. Das Ziel setzt der Besucher: In der App hängt es am Profil, und ein hier erfundenes wäre die einzige Zahl auf dieser Seite ohne Beleg.",
   },
+  demoDartile: {
+    title: "Die Checkout-Tafel, hier gerechnet",
+    lede: "Kein Nachschlagen in einer hinterlegten Tabelle: Diese Kachel lädt darts-checkout von npm, dasselbe Paket, das in der App rechnet. Bei jedem Zug am Regler werden alle Wege auf den Rest gesucht und danach sortiert, wie sie gespielt werden: hoch anfangen, auf einem großen geraden Doppel enden, das Bull nur, wenn es sein muss.",
+    restLabel: "Restpunkte",
+    outLabel: "Aus-Modus",
+    outs: { doppel: "Doppel-Aus", master: "Master-Aus", gerade: "Straight" },
+    best: "Der Vorschlag",
+    alternatives: "Gleich lang, andere Reihenfolge",
+    noWay: "Mit drei Pfeilen nicht zu schaffen.",
+    bogey:
+      "Genau sieben Reste unterhalb von 170 lassen sich mit drei Pfeilen und Doppel-Aus nicht beenden: {liste}. Sie stehen nirgends als Liste im Code, sie fallen aus der Suche heraus; die Bibliothek führt sie nur als Prüfstein im Test.",
+    speed: "{n} Wege geprüft in {ms} ms",
+    speedOhneZeit: "{n} Wege geprüft",
+    fieldLabel:
+      "Alle Reste von 2 bis 170, eingefärbt nach der Anzahl der nötigen Pfeile; die Lücken sind die Bogey-Zahlen",
+    legend: {
+      eins: "ein Pfeil",
+      zwei: "zwei",
+      drei: "drei",
+      keiner: "Lücke: gar nicht",
+    },
+    note: "darts-checkout 1.0.0 (MIT), im Browser gerechnet, ohne eine Anfrage nach außen. Dasselbe Paket liegt öffentlich auf npm: Wer prüfen will, ob hier gerechnet und nicht abgelesen wird, installiert es und bekommt dieselben Zeichenketten.",
+  },
   demoSalati: {
     title: "Ein Jahr Gebetszeiten, hier gerechnet",
     lede: "Kein Bildschirmfoto und keine Nachbildung: Diese Kachel lädt dieselbe Bibliothek, die in der ausgelieferten App rechnet. Jeder Strich ist ein Tag, jede Linie eine Gebetszeit. Der Schalter rechts ist die Stelle, an der es in Produktion wirklich schwierig wurde.",
