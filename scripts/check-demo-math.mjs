@@ -534,7 +534,100 @@ console.log(
   }
 }
 
-await browser.close();
+/* ------------------------------------------------------------------------
+   Die Checkout-Tafel aus Dartile
+
+   Die dritte Kachel rechnet nicht selbst, sie lädt `darts-checkout` von npm.
+   Damit verschiebt sich die Frage: Nicht „rechnet der Code hier richtig", der
+   hat seine eigenen Tests, sondern „steht auf der Seite, was das Paket
+   ausrechnet, und stimmt das mit der Wirklichkeit überein".
+
+   Der Prüfstein ist deshalb bewusst kein zweiter Aufruf derselben Bibliothek:
+   Das wäre dieselbe Aussage zweimal. Verglichen wird gegen die Wege, die in
+   jeder gedruckten Checkout-Tafel stehen, abgetippt und nicht abgeleitet.
+   Weicht die Kachel davon ab, ist entweder die Sortierung verstellt oder das
+   Paket ausgetauscht, und beides gehört gesehen.
+   ------------------------------------------------------------------------ */
+let tafelgeprueft = 0;
+{
+  /* Die Reste, bei denen die gedruckte Tafel eindeutig ist. Zwei davon sind
+     die, an denen der Fehler saß: 141 und 90 liefen einmal über das Bull. */
+  const TAFEL = [
+    [170, "T20 T20 BULL"],
+    [167, "T20 T19 BULL"],
+    [160, "T20 T20 D20"],
+    [150, "T20 T18 D18"],
+    [141, "T20 T19 D12"],
+    [100, "T20 D20"],
+    [90, "T18 D18"],
+    [81, "T19 D12"],
+    [50, "BULL"],
+    [40, "D20"],
+    [33, "S17 D8"],
+    [32, "D16"],
+  ];
+  /* Die sieben Reste unter 170, die drei Pfeile mit Doppel-Aus nicht schaffen. */
+  const BOGEY = [159, 162, 163, 165, 166, 168, 169];
+
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  await seite.waitForTimeout(1200);
+
+  /* Über ein Datenmerkmal und nicht über eine Beschriftung: Die Kachel gibt
+     es in zwei Sprachfassungen, und ein Lauf, der an einem deutschen Wort
+     hängt, prüft die englische Seite nie. */
+  const kachel = seite.locator('[data-demo="checkout"]');
+  const regler = kachel.locator('input[type="range"]').first();
+
+  if ((await regler.count()) === 0) {
+    funde.push("Die Checkout-Kachel hat keinen Regler, nichts zu prüfen.");
+  } else {
+    for (const [rest, erwartet] of TAFEL) {
+      await regler.fill(String(rest));
+      await seite.waitForTimeout(120);
+      const gezeigt = (
+        await kachel.locator('[data-checkout="weg"]').innerText()
+      ).trim();
+      if (gezeigt !== erwartet) {
+        funde.push(
+          `Checkout auf ${rest}: die Kachel zeigt „${gezeigt}", die gedruckte ` +
+            `Tafel sagt „${erwartet}".`,
+        );
+      }
+      tafelgeprueft++;
+    }
+
+    for (const rest of BOGEY) {
+      await regler.fill(String(rest));
+      await seite.waitForTimeout(120);
+      const text = await kachel.innerText();
+      if (!/nicht zu schaffen/i.test(text)) {
+        funde.push(
+          `Checkout auf ${rest}: Der Rest ist mit drei Pfeilen nicht zu ` +
+            `beenden, die Kachel behauptet trotzdem einen Weg.`,
+        );
+      }
+      tafelgeprueft++;
+    }
+
+    /* Und die Quellenangabe, aus demselben Grund wie bei adhan: Sie nennt
+       eine Fassung, und `npm update` hebt die eingebaute, ohne den Text
+       anzufassen. */
+    const notiz = readFileSync("src/content/de.ts", "utf8");
+    const genannt = /darts-checkout ([\d.]+)/.exec(notiz)?.[1];
+    const eingebaut = JSON.parse(
+      readFileSync("node_modules/darts-checkout/package.json", "utf8"),
+    ).version;
+    if (genannt !== eingebaut) {
+      funde.push(
+        `Die Checkout-Kachel nennt darts-checkout ${genannt}, eingebaut ist ` +
+          `${eingebaut}.`,
+      );
+    }
+    tafelgeprueft++;
+  }
+}
+
+await browser.close();
 beenden();
 
 if (funde.length > 0) {
@@ -549,9 +642,10 @@ if (funde.length > 0) {
 }
 
 console.log(
-  `\nBeide Demos rechnen richtig: ${ZIELE.length} Kalorienziele gegen je ` +
+  `\nAlle drei Demos rechnen richtig: ${ZIELE.length} Kalorienziele gegen je ` +
     `${1 << gerichte.length} Zusammenstellungen nachgerechnet, ` +
     `${kombinationen} Gebetszeiten-Kombinationen und Tromsø an ${jahrestage} Tagen in Reihenfolge ` +
     `(${nichtBerechnet} Angaben ohne Wert, wo es keinen gibt), ` +
-    `${sprachvergleich} Kalorienangaben in beiden Fassungen gleich.`,
+    `${sprachvergleich} Kalorienangaben in beiden Fassungen gleich, ` +
+    `dazu ${tafelgeprueft} Checkout-Angaben gegen die gedruckte Tafel.`,
 );

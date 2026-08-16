@@ -14,6 +14,7 @@ import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
 import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
 import { MacroDemo } from "@/components/demo/Macros";
+import { CheckoutDemo } from "@/components/demo/Checkout";
 import type { CaseStudy } from "@/content/types";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Counter } from "@/components/ui/Counter";
@@ -349,6 +350,18 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <Reveal delay={0.05}>
           <div className="mt-12">
             <MacroDemo inhalt={inhalt} />
+          </div>
+        </Reveal>
+      ) : null}
+
+      {/* Die dritte Vorführung, und die einzige, deren Rechenkern öffentlich
+          liegt: Sie lädt `darts-checkout` von npm statt eine Kopie aus dem
+          Repo. Damit ist sie die einzige Stelle der Seite, an der ein Leser
+          nicht nur nachlesen, sondern nachinstallieren kann. */}
+      {study.id === "dartile" ? (
+        <Reveal delay={0.05}>
+          <div className="mt-12">
+            <CheckoutDemo inhalt={inhalt} />
           </div>
         </Reveal>
       ) : null}

@@ -473,6 +473,55 @@ export type Content = {
   };
 
   /**
+   * Die Checkout-Tafel aus Dartile.
+   *
+   * Die dritte Vorführung und die einzige, deren Rechenkern öffentlich liegt:
+   * Die Kachel lädt `darts-checkout` von npm, dasselbe Paket, das in der App
+   * rechnet. Was hier steht, lässt sich damit nicht nur nachlesen, sondern
+   * nachinstallieren.
+   */
+  demoDartile: {
+    title: string;
+    lede: string;
+    /** Name des Reglers für den Restwert. */
+    restLabel: string;
+    /** Name der Modus-Wahl für Vorleseprogramme. */
+    outLabel: string;
+    /** Die drei Aus-Modi, in der Reihenfolge der Schaltflächen. */
+    outs: { doppel: string; master: string; gerade: string };
+    /** Überschrift über dem vorgeschlagenen Weg. */
+    best: string;
+    /** Überschrift über den gleich langen Alternativen. */
+    alternatives: string;
+    /** Steht, wenn der Rest mit drei Pfeilen nicht zu schaffen ist. */
+    noWay: string;
+    /** Die sieben Bogey-Zahlen im Fließtext. `{liste}` wird ersetzt. */
+    bogey: string;
+    /** Wie viele Wege geprüft wurden und wie lange es dauerte. */
+    speed: string;
+    /**
+     * Dasselbe ohne die Dauer, für den ersten Aufbau.
+     *
+     * Die Kachel wird auch auf dem Server gerendert, und `performance.now()`
+     * liefert dort eine andere Zahl als im Browser: gemessen ein React-Fehler
+     * 418 auf `/` und `/en`. Die Anzahl der Wege ist auf beiden Seiten
+     * dieselbe, die Dauer nicht, also fehlt sie bis zur ersten Bedienung.
+     */
+    speedOhneZeit: string;
+    /** Name des Bandes über den ganzen Wertebereich. */
+    fieldLabel: string;
+    /** Die vier Fälle, die das Band einfärbt. */
+    legend: {
+      eins: string;
+      zwei: string;
+      drei: string;
+      keiner: string;
+    };
+    /** Woher die Rechnung stammt und was sie nicht tut. */
+    note: string;
+  };
+
+  /**
    * Die Beschriftungen des Kurzprofils.
    *
    * Bis eben stand der One-Pager nur auf Deutsch, und die englische Fußzeile

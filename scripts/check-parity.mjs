@@ -264,7 +264,19 @@ const NUR_DEUTSCH =
   const funde2 = [];
   let bilder = 0;
 
-  for (const id of ["salati", "menucloud", "nouri", "wohnungsjaeger"]) {
+  /* Die Liste steht ausgeschrieben und wird nicht aus dem Inhalt abgeleitet:
+     Wer eine Fallstudie dazunimmt, trägt sie hier ein und sieht die Zahl
+     unten steigen. Eine abgeleitete Liste prüft immer genau das, was da ist,
+     und meldet nie, dass etwas fehlt. */
+  for (const id of [
+    "salati",
+    "menucloud",
+    "nouri",
+    "wohnungsjaeger",
+    "bitdojo",
+    "dartile",
+    "lexipulse",
+  ]) {
     await seite.goto(`${basis}/en#case-${id}`, { waitUntil: "networkidle" });
     await seite.waitForTimeout(400);
     const reiter = seite.locator(`#${id}-tab-architecture`);

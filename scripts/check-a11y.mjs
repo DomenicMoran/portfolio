@@ -390,10 +390,16 @@ const ohneSkript = [];
     ],
   ]);
 
-  /* Die Vorführungen tragen ihre Beschriftung im Knopf: Ort, Regel, Gericht.
-     Ein Muster statt zwanzig Einträgen, und es steht an der Stelle, an der
-     jemand nachsieht, warum sein neuer Knopf nicht meckert. */
-  const VORFUEHRUNG = "#case-salati, #case-nouri";
+  /* Die Vorführungen tragen ihre Beschriftung im Knopf: Ort, Regel, Gericht,
+     Aus-Modus. Ein Muster statt zwanzig Einträgen, und es steht an der Stelle,
+     an der jemand nachsieht, warum sein neuer Knopf nicht meckert.
+
+     Warum ausgenommen und nicht ohne Skript ausgeblendet, wie die
+     Reiterleiste: Der Reiter sagt „Architektur" und verspricht damit einen
+     Wechsel, den es ohne Skript nicht gibt. Diese Knöpfe sagen „Doppel-Aus",
+     „Master-Aus", „Straight", und das sind die drei Regeln des Spiels. Wer sie
+     ausblendet, nimmt eine Auskunft weg, statt ein falsches Versprechen. */
+  const VORFUEHRUNG = "#case-salati, #case-nouri, #case-dartile";
 
   const geprueftePfade = ["/", "/onepager", "/artikel"];
   for (const pfad of geprueftePfade) {

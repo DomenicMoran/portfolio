@@ -13,7 +13,7 @@ export const checkoutEn: Article = {
   tags: ["Testing", "Property tests", "TypeScript", "Darts"],
   evidence: [
     "Dartile repo, packages/kern/src/checkout.ts: bullImAufbau and the sort in checkoutWege",
-    "Test: packages/kern/src/checkout.test.ts, “nimmt das Bull nicht als Vorbereitungspfeil”",
+    "Test: packages/kern/src/checkout.test.ts, the property that no bull shows up among the setup darts",
     "Counted across every remainder from 2 to 170 in the double, master and straight modes",
     {
       text: "The table is public as darts-checkout",
@@ -56,7 +56,7 @@ export const checkoutEn: Article = {
     },
     {
       kind: "p",
-      text: "None of those routes appears in a printed table. Read `BULL D20` on 90 once and you will not believe the app's next number either.",
+      text: "None of those routes appears in a printed table. Read `BULL D20` on 90 once and you will not believe the app’s next number either.",
     },
     { kind: "h2", text: "Why no test fired" },
     {
