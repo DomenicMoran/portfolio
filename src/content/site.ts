@@ -523,14 +523,14 @@ export const caseStudies: CaseStudy[] = [
         label: "Qibla · Sensor und Standort",
         variant: "phone",
       },
-      {
-        src: "/shots/salati/shot-study.webp",
-        alt: "Der Lernbereich mit Kursen und Fortschrittsanzeige je Lektion.",
-        width: 720,
-        height: 1477,
-        label: "Lernbereich",
-        variant: "phone",
-      },
+      /* Der Lernbereich fehlt hier bewusst, seit dem 16.08.2026.
+         Die Aufnahme war 720 x 1477, waehrend ihre fuenf Geschwister 720 x 1600
+         sind: Sie war unten abgeschnitten, mitten durch eine Karte, und zeigte
+         dazu zwei leere Zustaende ("Heute: 0/2 Lektionen geschafft", "Nichts
+         faellig"). Ein Bild, das den Ausschnitt bricht und nichts zeigt, ist
+         schlechter als kein Bild. Sie kommt zurueck, sobald eine Aufnahme in
+         720 x 1600 mit echtem Fortschritt vorliegt; `npm run check:shots`
+         besteht seither auf dem Format der Gruppe. */
       {
         src: "/shots/salati/shot-tracker.webp",
         alt: "Die Gebetsverfolgung: je Tag und Gebet ein Häkchen, darüber die Strähne aufeinanderfolgender Tage.",

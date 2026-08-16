@@ -56,6 +56,7 @@
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:images": "node scripts/check-images.mjs",
     "check:chars": "node scripts/check-control-chars.mjs",
+    "check:shots": "node scripts/check-shots.mjs",
     "check:schema": "node scripts/check-structured-data.mjs",
     "check:palette": "node scripts/check-palette.mjs",
     "check:copy": "node scripts/check-hardcoded-copy.mjs"

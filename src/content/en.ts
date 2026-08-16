@@ -357,14 +357,9 @@ export const en: Content = {
           label: "Qibla · sensor and location",
           variant: "phone",
         },
-        {
-          src: "/shots/salati/shot-study.webp",
-          alt: "The study area with courses and a progress indicator per lesson.",
-          width: 720,
-          height: 1477,
-          label: "Study area",
-          variant: "phone",
-        },
+        /* Der Lernbereich fehlt hier bewusst, siehe site.ts: Die Aufnahme war
+           720 x 1477 statt 720 x 1600, unten mitten durch eine Karte
+           geschnitten, und zeigte zwei leere Zustaende. */
         {
           src: "/shots/salati/shot-tracker.webp",
           alt: "Prayer tracking: a tick per day and prayer, with the streak of consecutive days above.",

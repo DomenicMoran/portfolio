@@ -357,6 +357,15 @@ jobs:
       - name: Strukturierte Daten gegen die Seite
         run: npm run check:schema
 
+      # Ein Bild ist dieselbe Sorte Aussage wie eine Zahl, und es veraltet
+      # genauso still. Auf der Startseite stand eine Aufnahme von
+      # nouri-fitness.de vom 2. August mit "14 Tage kostenlos testen",
+      # waehrend live seit dem 15. August sieben Tage stehen. Der Lauf haelt
+      # jede Aufnahme gegen das Mass, das der Inhalt fuer sie deklariert, und
+      # gegen das Format ihrer Geschwister.
+      - name: Aufnahmen gegen ihre Angaben
+        run: npm run check:shots
+
       # Die Befehlspalette ist das einzige Bedienelement, das die ganze
       # Seite erschließt — und die Sorte Bauteil, die stumm versagt: Ihre
       # Liste kommt aus dem Inhalt, und verschiebt sich dort ein Schlüssel,
