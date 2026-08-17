@@ -1135,25 +1135,38 @@ export const caseStudies: CaseStudy[] = [
       {
         src: "/shots/dartile/spiel.webp",
         alt: "Der Zählbildschirm: oben die beiden Spieler mit Restpunkten und Average, darunter die große Restpunktzahl und das Raster aus Kacheln für die Eingabe.",
-        width: 818,
-        height: 1299,
+        width: 1290,
+        height: 2796,
         label: "Aus zwei Metern lesbar",
         variant: "phone",
       },
       {
         src: "/shots/dartile/checkout.webp",
         alt: "Derselbe Bildschirm bei 141 Restpunkten: darunter steht der vorgeschlagene Weg T20, T19, D12.",
-        width: 818,
-        height: 1299,
+        width: 1290,
+        height: 2796,
         label: "Checkout-Vorschlag · T20 T19 D12",
         variant: "phone",
       },
       {
         src: "/shots/dartile/statistik.webp",
         alt: "Die Auswertung einer Partie: 3-Dart-Average, Erste Neun, geworfene Darts, Checkout-Quote, Anzahl der 180er und bestes Leg, je Spieler.",
-        width: 818,
-        height: 1299,
+        width: 1290,
+        height: 2796,
         label: "Aus jedem Pfeil gerechnet",
+        variant: "phone",
+      },
+      /* Am 17.08.2026 dazu. Die Fallstudie zeigte dreimal dieselbe Partie und
+         damit nichts von der Breite der App: Rückmeldung war, die Aufnahmen
+         sähen anfängerhaft aus und zeigten nicht, was das Programm kann.
+         Genommen ist die rohe deutsche Aufnahme, nicht das Store-Bild aus
+         demselben Lauf; das trägt Rahmen und Werbezeile. */
+      {
+        src: "/shots/dartile/spielarten.webp",
+        alt: "Das Einrichten einer Partie: sechs Spielarten von X01 über Cricket bis Killer, drei Startpunktzahlen plus freie Eingabe, darunter sechs Bot-Stufen von Anfänger mit Average 35 bis Weltklasse mit 100 und die Spielerliste.",
+        width: 1290,
+        height: 2796,
+        label: "Sechs Spielarten, sechs Bot-Stufen",
         variant: "phone",
       },
     ],
@@ -1187,7 +1200,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
     solution:
-      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, FB2, PDF, TXT, Markdown, HTML und aus einer Web-Adresse. Wer den Wortstrom nicht mag, liest denselben Text im Fließtext weiter, mit vier mitgelieferten Schriften, Blättern samt Seitenzahl, Volltextsuche, Markierungen in fünf Farben mit Notizen und Lesehilfen von Bionic über ein Leselineal bis zu sechs Farbfiltern. Die Leseposition ist in beiden Fassungen dieselbe.",
+      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, FB2, PDF, TXT, Markdown, HTML und aus einer Web-Adresse. Wer den Wortstrom nicht mag, liest denselben Text im Fließtext weiter, mit vier mitgelieferten Schriften, Blättern samt Seitenzahl, Volltextsuche, Markierungen in fünf Farben mit Notizen und Lesehilfen von Bionic über ein Leselineal bis zu sechs Farbfiltern. Die Leseposition ist in beiden Fassungen dieselbe. Seit dem 17. August 2026 behält der Import die Originaldatei, und über ihr liegt ein Werkzeugkasten: markieren, zeichnen, Textfelder, Notizen, Formulare, unterschreiben, Seiten ordnen. In der Web-Fassung ist das live; in der App kommt es mit 1.1, denn 1.0 liegt in beiden Läden in der Prüfung, und eine Beschreibung, die Funktionen des geprüften Pakets überholt, wäre gegenüber Käufern falsch.",
     hardPart: {
       title: "Gleiches Tempo für jedes Wort ist der Fehler",
       body: "Flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende, und genau daran bricht das Verstehen weg. Hier multiplizieren sich Faktoren: Wortkern über acht Zeichen mal 1,25, Satzende mal 1,75, Teilsatzende mal 1,75, Absatzende mal 2,0, Ziffern mal 1,4, Kern bis drei Zeichen mal 0,9. Abkürzungen und Ordnungszahlen sind von der Satzregel ausgenommen, damit „z. B.“ und „1.“ den Strom nicht anhalten. Dazu ein Anlauf: Nach jedem Fortsetzen laufen die ersten Wörter auf 40 Prozent des Zieltempos an, weil der Sprung aus dem Stand auf 900 Wörter je Minute der häufigste Grund ist, überhaupt nichts zu lesen. Und die Uhr rechnet mit einem absoluten Zeitstempel statt mit Bildabständen, damit ein ausgefallenes Bild den Strom nicht verschiebt.",
@@ -1202,6 +1215,7 @@ export const caseStudies: CaseStudy[] = [
       "Ein Wort nachschlagen geht offline: Der Reader zeigt, wo es im Dokument sonst vorkommt. Die Übergabe an eine andere App ist ein eigener Schritt, die App selbst sendet nichts",
       "Alles bleibt auf dem Gerät: IndexedDB im Browser, SQLite auf dem Telefon, Datenausfuhr als JSON nach Art. 20 DSGVO",
       "Eine Sicherung, die man zurückspielen kann: Beim Zusammenführen erkennt der Reader dasselbe Buch an seinem Inhalt und nicht an der Kennung, damit die Leseposition nicht zurückspringt",
+      "Der Werkzeugkasten über der Originaldatei ist ein eigenes Paket, das Web und App gemeinsam benutzen: In der App läuft dieselbe Oberfläche in einer mitgelieferten WebView, weil pdf.js einen Browser braucht, den React Native nicht mitbringt",
       "Der Quelltext liegt vollständig öffentlich, unter PolyForm Noncommercial: lesbar und prüfbar, aber nicht zur gewerblichen Nutzung freigegeben",
     ],
     stack: [
