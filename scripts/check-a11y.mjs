@@ -451,17 +451,41 @@ const ohneSkript = [];
    Reiter muss die zugehoerige Tafel da sein, und zwar schnell. Die Grenze ist
    grosszuegig, sie soll eine halbe Sekunde Animation finden, nicht ein paar
    Millisekunden Renderzeit. */
-const GRENZE_MS = 200;
+/*
+ * Gemessen wird der Unterschied, nicht eine absolute Zeit.
+ *
+ * Hier stand eine feste Grenze von 200 ms, und der Kommentar darüber sagte
+ * selbst, sie solle „eine halbe Sekunde Animation finden, nicht ein paar
+ * Millisekunden Renderzeit". Genau daran ist sie am 17.08.2026 gescheitert:
+ * Nachdem die Fallstudien fünf Aufnahmen dazubekamen, brauchten drei Tafeln
+ * 209, 223 und 328 ms, während vier unter 200 blieben. Keine davon animierte,
+ * die Seite war nur schwerer geworden. Eine Grenze, die von der Anzahl der
+ * Bilder auf der Seite abhängt, prüft nicht das, was sie behauptet.
+ *
+ * Das Merkmal einer Animation, die `prefers-reduced-motion` nicht entfernt,
+ * ist ein anderes: Sie dauert **mit** der Einstellung genauso lang wie ohne.
+ * Bei den Reitern waren es einmal 452 gegen 439 ms. Renderzeit dagegen fällt
+ * mit der Einstellung nicht weg, sie ist in beiden Fällen dieselbe und klein.
+ *
+ * Also wird zweimal gemessen und verglichen. Beanstandet wird, wenn beide
+ * Zeiten über der Renderschwelle liegen und die Einstellung praktisch nichts
+ * gebracht hat. Damit ist der Lauf gegen zusätzliche Bilder unempfindlich und
+ * findet weiterhin genau den Fall, für den er gebaut wurde.
+ */
+const RENDER_MS = 200;
+const ANIMATION_MS = 350;
 const wartefunde = [];
 
-{
+/** Wie lange die zweite Tafel je Reiterleiste braucht, in einer Einstellung. */
+async function tafelzeiten(reducedMotion) {
   const kontext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
-    reducedMotion: "reduce",
+    reducedMotion,
   });
   const seite = await kontext.newPage();
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
 
+  const zeiten = new Map();
   for (const liste of await seite.locator("[role=tablist]").all()) {
     const name = (await liste.getAttribute("aria-label")) ?? "?";
     const reiter = await liste.locator("[role=tab]").all();
@@ -488,16 +512,35 @@ const wartefunde = [];
       }
       await seite.waitForTimeout(25);
     }
-
-    if (dauer === null || dauer > GRENZE_MS) {
-      wartefunde.push(
-        `${name}: die Tafel steht erst nach ${dauer ?? "über 1.000"} ms, ` +
-          `Grenze ${GRENZE_MS} ms bei reduzierter Bewegung`,
-      );
-    }
+    zeiten.set(name, dauer);
   }
 
   await kontext.close();
+  return zeiten;
+}
+
+{
+  const mit = await tafelzeiten("reduce");
+  const ohne = await tafelzeiten("no-preference");
+
+  for (const [name, dauerMit] of mit) {
+    const dauerOhne = ohne.get(name) ?? null;
+    if (dauerMit === null) {
+      wartefunde.push(`${name}: die Tafel steht auch nach 1.000 ms nicht`);
+      continue;
+    }
+    if (dauerMit <= RENDER_MS) continue;
+
+    /* Über der Renderschwelle. Hat die Einstellung etwas gebracht? */
+    const gewinn = dauerOhne === null ? 0 : dauerOhne - dauerMit;
+    if (dauerMit > ANIMATION_MS && gewinn < dauerMit * 0.3) {
+      wartefunde.push(
+        `${name}: die Tafel steht erst nach ${dauerMit} ms mit reduzierter ` +
+          `Bewegung und nach ${dauerOhne ?? "über 1.000"} ms ohne. Die Einstellung ` +
+          `nimmt die Wartezeit nicht mit, sie kommt also aus einer Animation.`,
+      );
+    }
+  }
 }
 
 if (ohneSkript.length > 0) {
