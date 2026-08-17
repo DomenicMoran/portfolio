@@ -908,25 +908,33 @@ export const en: Content = {
         {
           src: "/shots/dartile/spiel.webp",
           alt: "The scoring screen: both players with remaining points and average at the top, below the large remaining score and the grid of input tiles.",
-          width: 818,
-          height: 1299,
+          width: 1290,
+          height: 2796,
           label: "Readable from two metres",
           variant: "phone",
         },
         {
           src: "/shots/dartile/checkout.webp",
           alt: "The same screen at 141 remaining: below it the suggested route T20, T19, D12.",
-          width: 818,
-          height: 1299,
+          width: 1290,
+          height: 2796,
           label: "Checkout suggestion · T20 T19 D12",
           variant: "phone",
         },
         {
           src: "/shots/dartile/statistik.webp",
           alt: "The evaluation of a match: three-dart average, first nine, darts thrown, checkout rate, number of 180s and best leg, per player.",
-          width: 818,
-          height: 1299,
+          width: 1290,
+          height: 2796,
           label: "Computed from every single dart",
+          variant: "phone",
+        },
+        {
+          src: "/shots/dartile/spielarten.webp",
+          alt: "Setting up a match: six game modes from X01 through Cricket to Killer, three starting scores plus a free entry, below that six bot levels from beginner at an average of 35 to world class at 100, and the player list.",
+          width: 1290,
+          height: 2796,
+          label: "Six game modes, six bot levels",
           variant: "phone",
         },
       ],
@@ -944,7 +952,7 @@ export const en: Content = {
       problem:
         "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
       solution:
-        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, PDF, TXT, Markdown, HTML and from a web address.",
+        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, FB2, PDF, TXT, Markdown, HTML and from a web address. Anyone who dislikes the word stream reads the same text as running text instead, with four bundled faces, paging with page numbers, full-text search, highlights in five colours with notes, and reading aids from bionic through a reading ruler to six colour filters. The reading position is the same in both. Since 17 August 2026 the import keeps the original file, and a toolbox sits on top of it: highlight, draw, text fields, notes, forms, sign, reorder pages. In the web version that is live; in the app it arrives with 1.1, because 1.0 is in review in both stores and a description that outruns the reviewed package would be false to buyers.",
       hardPart: {
         title: "The same pace for every word is the mistake",
         body: "Flat RSVP gives a three-letter article the same time budget as a sentence boundary, and that is exactly where comprehension collapses. Here the factors compose: a word core longer than eight characters times 1.25, sentence end times 1.75, clause end times 1.75, paragraph end times 2.0, digits times 1.4, a core of three characters or fewer times 0.9. Abbreviations and ordinals are excluded from the sentence rule so that “e.g.” and “1.” do not stall the stream. On top of that a warm-up: after every resume the first words run at 40 per cent of the target pace, because dropping straight into 900 words per minute from a standstill is the single most common reason for reading nothing at all. And the clock consumes an absolute timestamp rather than frame deltas, so a dropped frame cannot make the stream drift.",
@@ -959,6 +967,7 @@ export const en: Content = {
         "Looking a word up works offline: the reader shows where else it occurs in the document. Handing it to another app is a separate step; the app itself sends nothing",
         "Everything stays on the device: IndexedDB in the browser, SQLite on the phone, full data export as JSON under Art. 20 GDPR",
         "A backup you can restore: on merge the reader recognises the same book by its content rather than its id, so the reading position does not jump back",
+        "The toolbox over the original file is its own package that web and app share: in the app the same interface runs inside a bundled WebView, because pdf.js needs a browser that React Native does not bring",
         "The source is fully public, under PolyForm Noncommercial: readable and checkable, but not licensed for commercial use",
       ],
       stack: [
