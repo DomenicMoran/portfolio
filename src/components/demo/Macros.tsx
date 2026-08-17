@@ -499,7 +499,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
                   Quelltext als Text und nimmt Kommentare mit. Er schrieb die
                   Regel danach weiter ins Stilblatt, obwohl kein Bauteil sie
                   mehr setzt. */}
-              <span className="font-mono text-[10px]">{g.kcal}</span>
+              <span className="font-mono text-[10px] text-ink-dim">{g.kcal}</span>
             </button>
           );
         })}

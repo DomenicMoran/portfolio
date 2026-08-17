@@ -1249,7 +1249,7 @@ export const caseStudies: CaseStudy[] = [
         alt: "Der Reader nach dem Import eines Wikipedia-Artikels: das Wort „Wikipedia“ steht groß in der Mitte, der Erkennungsbuchstabe ist farbig hervorgehoben und liegt zwischen zwei senkrechten Strichen.",
         width: 1440,
         height: 900,
-        label: "Ein Artikel, direkt aus der Adresse gelesen",
+        label: "Direkt aus der Adresse gelesen",
       },
       /* Die beiden Telefonansichten kamen am 17.08.2026 dazu. Vorher zeigte
          diese Fallstudie nur den Schreibtisch, obwohl die App in beiden Läden
