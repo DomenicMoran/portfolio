@@ -366,6 +366,14 @@ jobs:
       - name: Aufnahmen gegen ihre Angaben
         run: npm run check:shots
 
+      # Die Vorfuehrungen sind der einzige Teil der Seite, an dem ein Besucher
+      # selbst nachrechnen kann. Steht eine still, wirkt sie schlimmer als
+      # keine. Geprueft wurde bis zum 17.08.2026 nur ihre Rechnung, nie ihre
+      # Bedienbarkeit; der Lauf betaetigt jetzt jedes Bedienelement und
+      # verlangt eine sichtbare Wirkung.
+      - name: Vorführungen lassen sich bedienen
+        run: npm run check:interaction
+
       # Die Befehlspalette ist das einzige Bedienelement, das die ganze
       # Seite erschließt — und die Sorte Bauteil, die stumm versagt: Ihre
       # Liste kommt aus dem Inhalt, und verschiebt sich dort ein Schlüssel,

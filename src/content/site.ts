@@ -542,16 +542,16 @@ export const caseStudies: CaseStudy[] = [
       {
         src: "/shots/salati/tv-quran.webp",
         alt: "Der Koran-Reader auf dem Fernseher: der arabische Vers groß gesetzt, darunter Umschrift und Übersetzung, unten die Hinweise für die Fernbedienung.",
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
         label: "Android TV · Leanback",
         variant: "screen",
       },
       {
         src: "/shots/salati/tv-home.webp",
         alt: "Die Startseite auf dem Fernseher mit den Kacheln für Gebetszeiten, Koran und Lernbereich, eine davon im Fokusrahmen.",
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
         label: "Android TV · Fokus-Navigation",
         variant: "screen",
       },
@@ -929,7 +929,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/nouri/heute.webp",
         alt: "Der Tagesbildschirm der App: gegessene Kalorien gegen das Tagesziel, darunter Eiweiß, Kohlenhydrate und Fett je mit Balken, darunter die geplanten Mahlzeiten des Tages.",
         width: 956,
-        height: 1808,
+        height: 1685,
         label: "Tagesbilanz · gegen das eigene Ziel",
         variant: "phone",
       },
@@ -937,7 +937,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/nouri/wochenplan.webp",
         alt: "Der Wochenplan: eine Leiste mit den Wochentagen, darunter geplante Kalorien und geplantes Eiweiß gegen das Ziel und die Mahlzeiten des gewählten Tages.",
         width: 956,
-        height: 1808,
+        height: 1685,
         label: "Wochenplan · geplant, nicht protokolliert",
         variant: "phone",
       },
@@ -945,7 +945,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/nouri/allergene.webp",
         alt: "Der Allergen-Bildschirm mit dem Hinweis, dass NOURI kein Medizinprodukt ist, und der Auswahl der ausgeschlossenen Allergene.",
         width: 956,
-        height: 1808,
+        height: 1685,
         label: "Allergene · kein Medizinprodukt",
         variant: "phone",
       },
@@ -953,7 +953,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/nouri/training.webp",
         alt: "Der Trainingsbereich mit Plänen und dem Protokoll der letzten Einheiten.",
         width: 956,
-        height: 1808,
+        height: 1685,
         label: "Training · Plan und Protokoll",
         variant: "phone",
       },
@@ -1034,6 +1034,35 @@ export const caseStudies: CaseStudy[] = [
         height: 1220,
         label: "Der Begriffskasten ist die Karteikarte",
       },
+      /* Die drei Telefonaufnahmen kamen am 17.08.2026 dazu. Vorher zeigte diese
+         Fallstudie ausschließlich den Schreibtisch, obwohl die App in beiden
+         Läden liegt: Wer die Seite liest, sah von der App nichts. Sie sind
+         rohe Aufnahmen aus dem Gerät, nicht die Store-Bilder, denn die tragen
+         Rahmen und Bildunterschrift. */
+      {
+        src: "/shots/bitdojo/telefon-lektion.webp",
+        alt: "Dieselbe Lektion in der App: Titel, die Kennzeichnung Grundlagen und Kostenlos, zwölf Minuten Lesezeit, darunter der Fließtext mit einem hervorgehobenen Merksatz; unten eine Leiste mit Erledigt und Quiz.",
+        width: 1284,
+        height: 2778,
+        label: "Dieselbe Lektion, in der App",
+        variant: "phone",
+      },
+      {
+        src: "/shots/bitdojo/telefon-quiz.webp",
+        alt: "Die Prüfung zur Lektion: Frage 1 von 6, vier Antworten zur Auswahl, die richtige grün umrandet und mit Haken, darunter die Auflösung im Volltext.",
+        width: 1284,
+        height: 2778,
+        label: "Die Prüfung kommt aus demselben Text",
+        variant: "phone",
+      },
+      {
+        src: "/shots/bitdojo/telefon-hoeren.webp",
+        alt: "Der Hörbereich: zu jedem Modul eine Folge mit Laufzeit, die laufende oben mit der Kennzeichnung läuft, unten die Abspielleiste mit 15 Sekunden zurück, Pause und 30 Sekunden vor.",
+        width: 1284,
+        height: 2778,
+        label: "Und als Podcast, aus denselben Texten",
+        variant: "phone",
+      },
     ],
   },
 
@@ -1107,7 +1136,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/dartile/spiel.webp",
         alt: "Der Zählbildschirm: oben die beiden Spieler mit Restpunkten und Average, darunter die große Restpunktzahl und das Raster aus Kacheln für die Eingabe.",
         width: 818,
-        height: 1430,
+        height: 1299,
         label: "Aus zwei Metern lesbar",
         variant: "phone",
       },
@@ -1115,7 +1144,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/dartile/checkout.webp",
         alt: "Derselbe Bildschirm bei 141 Restpunkten: darunter steht der vorgeschlagene Weg T20, T19, D12.",
         width: 818,
-        height: 1430,
+        height: 1299,
         label: "Checkout-Vorschlag · T20 T19 D12",
         variant: "phone",
       },
@@ -1123,7 +1152,7 @@ export const caseStudies: CaseStudy[] = [
         src: "/shots/dartile/statistik.webp",
         alt: "Die Auswertung einer Partie: 3-Dart-Average, Erste Neun, geworfene Darts, Checkout-Quote, Anzahl der 180er und bestes Leg, je Spieler.",
         width: 818,
-        height: 1430,
+        height: 1299,
         label: "Aus jedem Pfeil gerechnet",
         variant: "phone",
       },
@@ -1134,7 +1163,7 @@ export const caseStudies: CaseStudy[] = [
     id: "lexipulse",
     index: "07",
     name: "LexiPulse",
-    tagline: "RSVP-Reader für EPUB, PDF und Web-Artikel, offline und offen lesbar",
+    tagline: "Vollständiger Reader für EPUB, PDF und Web-Artikel: Wortstrom oder Fließtext",
     year: "2026",
     role: "Alleiniger Entwickler",
     /* Am 16.08.2026 gemessen: lexipulse.de antwortet mit 200. Der
@@ -1149,23 +1178,30 @@ export const caseStudies: CaseStudy[] = [
        weiterhin vollständig lesbar, aber die Lizenz erlaubt keine
        gewerbliche Nutzung, und damit ist es keine Open-Source-Lizenz im
        Sinne der OSI. Das Wort wandert mit. */
-    statusLabel: "Web live, iOS in Prüfung",
+    /* Am 17.08.2026 abgelesen: Bei Google liegt versionCode 9 in der Prüfung,
+       bei Apple Build 10, beide am selben Tag eingereicht. Beide Läden prüfen
+       damit denselben Funktionsstand, und beide Beschreibungen nennen das
+       Sichern, weil beide geprüften Pakete es enthalten. */
+    statusLabel: "Web live, beide Läden in Prüfung",
     accent: "violet",
     problem:
       "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
     solution:
-      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, PDF, TXT, Markdown, HTML und aus einer Web-Adresse.",
+      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, FB2, PDF, TXT, Markdown, HTML und aus einer Web-Adresse. Wer den Wortstrom nicht mag, liest denselben Text im Fließtext weiter, mit vier mitgelieferten Schriften, Blättern samt Seitenzahl, Volltextsuche, Markierungen in fünf Farben mit Notizen und Lesehilfen von Bionic über ein Leselineal bis zu sechs Farbfiltern. Die Leseposition ist in beiden Fassungen dieselbe.",
     hardPart: {
       title: "Gleiches Tempo für jedes Wort ist der Fehler",
       body: "Flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende, und genau daran bricht das Verstehen weg. Hier multiplizieren sich Faktoren: Wortkern über acht Zeichen mal 1,25, Satzende mal 1,75, Teilsatzende mal 1,75, Absatzende mal 2,0, Ziffern mal 1,4, Kern bis drei Zeichen mal 0,9. Abkürzungen und Ordnungszahlen sind von der Satzregel ausgenommen, damit „z. B.“ und „1.“ den Strom nicht anhalten. Dazu ein Anlauf: Nach jedem Fortsetzen laufen die ersten Wörter auf 40 Prozent des Zieltempos an, weil der Sprung aus dem Stand auf 900 Wörter je Minute der häufigste Grund ist, überhaupt nichts zu lesen. Und die Uhr rechnet mit einem absoluten Zeitstempel statt mit Bildabständen, damit ein ausgefallenes Bild den Strom nicht verschiebt.",
     },
     highlights: [
-      "packages/core ohne DOM, ohne React Native, ohne Node-Bausteine: dieselbe Maschine und dieselben Leser auf Web und Gerät, 218 Tests",
+      "packages/core ohne DOM, ohne React Native, ohne Node-Bausteine: dieselbe Maschine und dieselben Leser auf Web und Gerät, 360 der 469 Tests liegen dort",
+      "Zwei Leseweisen auf einer Leseposition: Wer den Wortstrom anhält und in den Fließtext wechselt, steht auf demselben Wort",
       "Der Fixpunkt ist Arithmetik, keine Näherung: translateX auf einer Festbreitenschrift",
       "Zeichenindizes sind Codepunkte, nie UTF-16-Abstände: ein Emoji oder ein kombinierendes Zeichen lässt sich damit nicht halbieren",
       "Der Erkennungspunkt hängt am alphanumerischen Kern eines Wortes: Ein führendes Anführungszeichen verschiebt ihn nicht",
-      "Sechs Importwege, einer davon eine Web-Adresse; der Server holt die Seite nur wegen CORS und speichert die Adresse nicht",
+      "Sieben Importwege, einer davon eine Web-Adresse; der Server holt die Seite nur wegen CORS und speichert die Adresse nicht",
+      "Ein Wort nachschlagen geht offline: Der Reader zeigt, wo es im Dokument sonst vorkommt. Die Übergabe an eine andere App ist ein eigener Schritt, die App selbst sendet nichts",
       "Alles bleibt auf dem Gerät: IndexedDB im Browser, SQLite auf dem Telefon, Datenausfuhr als JSON nach Art. 20 DSGVO",
+      "Eine Sicherung, die man zurückspielen kann: Beim Zusammenführen erkennt der Reader dasselbe Buch an seinem Inhalt und nicht an der Kennung, damit die Leseposition nicht zurückspringt",
       "Der Quelltext liegt vollständig öffentlich, unter PolyForm Noncommercial: lesbar und prüfbar, aber nicht zur gewerblichen Nutzung freigegeben",
     ],
     stack: [
@@ -1183,8 +1219,11 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      { value: "309", label: "Tests" },
-      { value: "6", label: "Importformate" },
+      /* 469 am 17.08.2026 gemessen, nicht geschätzt: `turbo run test` meldet
+         360 im Kern, 80 in der Oberfläche, 20 auf dem Gerät, 9 im Web. Hier
+         standen 309, und in den Merkmalen daneben 218. */
+      { value: "469", label: "Tests" },
+      { value: "7", label: "Importformate" },
       { value: "0", label: "Dokumente auf einem Server" },
       { value: "2", label: "Plattformen, ein Kern" },
     ],
@@ -1211,6 +1250,27 @@ export const caseStudies: CaseStudy[] = [
         width: 1440,
         height: 900,
         label: "Ein Artikel, direkt aus der Adresse gelesen",
+      },
+      /* Die beiden Telefonansichten kamen am 17.08.2026 dazu. Vorher zeigte
+         diese Fallstudie nur den Schreibtisch, obwohl die App in beiden Läden
+         liegt, und die Beschreibung nannte nur den Wortstrom, obwohl es längst
+         ein vollständiger Reader ist. Aufgenommen an lexipulse.de mit einem
+         Artikel, der über die Adresse importiert wurde. */
+      {
+        src: "/shots/lexipulse/wortstrom.webp",
+        alt: "Der Reader auf dem Telefon: oben das Wort „zu“ mit farbigem Erkennungsbuchstaben zwischen zwei Strichen, darunter die Abspielleiste, und ganz unten derselbe Text als Fließtext, in dem genau dieses Wort farbig markiert ist.",
+        width: 860,
+        height: 1864,
+        label: "Wortstrom und Fließtext stehen auf demselben Wort",
+        variant: "phone",
+      },
+      {
+        src: "/shots/lexipulse/bibliothek.webp",
+        alt: "Die Bibliothek: ein Web-Artikel mit 1.656 Wörtern, Restzeit und Fortschritt, dazu Schlagwörter und Löschen. Darunter der Bereich Meine Daten mit Sicherung herunterladen und Sicherung einlesen.",
+        width: 860,
+        height: 1864,
+        label: "Die Sicherung geht auch zurück, nicht nur heraus",
+        variant: "phone",
       },
     ],
   },

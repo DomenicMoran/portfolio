@@ -97,7 +97,7 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 35 Prüfungen, die den Bau nicht ersetzen. 22 davon
+Nach dem Bau laufen 36 Prüfungen, die den Bau nicht ersetzen. 23 davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
 `check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
 gelesen wird, und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
@@ -135,6 +135,7 @@ npm run check:contrast  # der Kontrast dort, wo axe keine Antwort gibt
 npm run check:images    # kein Bild wird größer gezeigt, als es geladen wurde
 npm run check:chars     # kein Steuerzeichen im Quelltext
 npm run check:shots     # jede Aufnahme hat das Maß, das der Inhalt nennt
+npm run check:interaction # jedes Bedienelement der Vorführungen wirkt wirklich
 npm run check:schema    # die strukturierten Daten decken sich mit der Seite
 npm run check:palette   # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
@@ -267,6 +268,8 @@ scripts/
 ├─ build-shots.mjs                erzeugt public/shots/*.webp aus den Originalen daneben
 ├─ capture-shots.mjs              nimmt die fünf Website-Aufnahmen neu auf, an gemessenen Kanten
 ├─ check-shots.mjs                hält jede Aufnahme gegen das Maß, das der Inhalt nennt
+├─ check-interaction.mjs          betätigt jedes Bedienelement der Vorführungen
+├─ trim-shots.mjs                 schneidet den fremden Streifen am oberen Rand weg
 └─ lib/local-server.mjs           startet den gebauten Stand auf einem freien Port
 
 .github/workflows/
