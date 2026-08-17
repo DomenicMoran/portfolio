@@ -1003,7 +1003,7 @@ export const en: Content = {
           alt: "The reader after importing a Wikipedia article: the word “Wikipedia” sits large in the centre, its recognition letter highlighted in colour between two vertical guides.",
           width: 1440,
           height: 900,
-          label: "An article read straight from its address",
+          label: "Read straight from its address",
         },
         {
           src: "/shots/lexipulse/wortstrom.webp",
