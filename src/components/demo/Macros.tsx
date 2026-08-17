@@ -377,7 +377,10 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
        und druckt sofort, und in diesem Moment ist die Rechnung noch nicht
        durch, auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
        Aussage trägt, steht in der Fallstudie darüber. */
-    <div className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
+    <div
+        data-demo="tagesbilanz"
+        className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
+      >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         {/* `h4` aus demselben Grund wie in `PrayerTimes`: Die Kachel gehört
             in die Fallstudie und nicht neben sie. */}

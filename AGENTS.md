@@ -333,7 +333,7 @@ Automatische Commits kommen ausschließlich vom Zahlen-Automaten und tragen
 
 ## Tests
 
-22 der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
+23 der Prüfläufe öffnen einen Browser und messen an der ausgelieferten
 Seite: `check:a11y`, `check:cards`, `check:contrast`, `check:demo`, `check:focus`,
 `check:images`, `check:spacing`,
 `check:font-size`, `check:headings`, `check:language`, `check:lighthouse`,
@@ -391,6 +391,7 @@ npm run check:palette  # die Befehlspalette findet und führt hin
 npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
 npm run check:docs     # die Zahlen in AGENTS.md und README.md stimmen noch
 npm run check:shots    # jede Aufnahme hat das Maß, das der Inhalt nennt
+npm run check:interaction # jedes Bedienelement der Vorführungen wirkt wirklich
 ```
 
 Vor jedem Schub die drei schnellen davon zusammen:

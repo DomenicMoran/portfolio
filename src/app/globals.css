@@ -857,6 +857,16 @@ textarea:-webkit-autofill {
        Schrift stand wieder bei 6,38 pt. Hochgesetzt und abgetastet: 0,93 und
        0,91 ergeben zwei Seiten, 0,89 eine, mit 94 % Ausnutzung und 6,68 pt.
        Genau so ist es gemeint, eine Stufe unter dem Umschlag. */
-    zoom: 0.89;
+    /* Ein viertes Mal nachgezogen, am 17.08.2026: Die LexiPulse-Fallstudie hat
+       drei Merkmale dazubekommen, weil sie vom Wortstrom auf den vollständigen
+       Reader umgeschrieben wurde. Bei 0,89 kippte das Blatt damit auf zwei
+       Seiten; 0,88 ergibt eine, mit 95 % Ausnutzung und 6,6 pt.
+
+       Eine Falle beim Abtasten, die eine Runde gekostet hat: Wer die Zahl mit
+       einem Skript einsetzt, schreibt sie unter deutscher Spracheinstellung als
+       „0,88". Das ist kein gültiges CSS, die Regel fällt aus, und der Lauf
+       meldet danach für jeden Wert dieselben zwei Seiten bei 108 %. Viermal
+       dieselbe Zahl zu sehen ist das Zeichen dafür, dass gar nichts wirkt. */
+    zoom: 0.88;
   }
 }

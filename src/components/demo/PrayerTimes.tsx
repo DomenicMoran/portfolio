@@ -651,7 +651,8 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
          auf schwarzem Grund durch die Barrierefreiheitsprüfung, zur Messzeit
          stand dort noch kein Text, und was nicht dasteht, hat auch keinen
          Kontrast. */
-      data-demo-fertig={jahr ? "" : undefined}
+      data-demo="gebetszeiten"
+        data-demo-fertig={jahr ? "" : undefined}
       className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
