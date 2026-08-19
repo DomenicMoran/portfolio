@@ -38,7 +38,7 @@ export function ConsoleGreeting() {
   Die Zahlen auf dieser Seite werden stündlich gegen die Repos
   nachgezählt. Weicht eine ab, wird sie korrigiert, nicht gerundet.
 
-  domenicmoran@gmail.com`,
+  kontakt@domenicmoran.de`,
       kopf,
       text,
     );

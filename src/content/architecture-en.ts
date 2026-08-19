@@ -147,8 +147,7 @@ const ARCHITEKTUR_EN: Record<string, string> = {
     "Text, term boxes, questions, exercise",
   "bricht den Bau bei Inhaltsfehlern": "fails the build on content errors",
   "Markdown zu JSON": "Markdown to JSON",
-  "Wiederholung · Quiz · Prüfung · Siegel":
-    "Revision · quiz · exam · seal",
+  "Wiederholung · Quiz · Prüfung · Siegel": "Revision · quiz · exam · seal",
   "Kurse · Zertifikatsverzeichnis": "Courses · certificate registry",
   "Lesen · Hören · Prüfen": "Read · listen · examine",
   "derselbe Kern, verkauft nichts": "same core, sells nothing",
@@ -163,7 +162,8 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "175 vorproduzierte Rufe je Sprache":
     "175 pre-recorded call-outs per language",
   "Zustand plus Ereignis ergibt Zustand": "state plus event gives state",
-  "kürzester Weg, Hand berücksichtigt": "shortest route, throwing hand included",
+  "kürzester Weg, Hand berücksichtigt":
+    "shortest route, throwing hand included",
   "Würfe statt Punktestände": "throws, not scores",
   "voller Betrieb ohne Netz": "fully usable offline",
   "lokal gerechnet": "computed on the device",
@@ -199,6 +199,39 @@ const ARCHITEKTUR_EN: Record<string, string> = {
     "Prayer times · qibla · Hijri · mushaf model",
   "Konten · Inhalte": "Accounts · content",
   "Mensch entscheidet (Standard)": "A human decides (default)",
+
+  /* Aegis. Eigennamen und Formatnamen fehlen hier bewusst: „MT940",
+     „camt.053", „CSV", „SQLCipher" heißen in beiden Sprachen gleich. */
+  "Aegis: vom Bon zur EÜR, ohne dass etwas das Gerät verlässt":
+    "Aegis: from till receipt to the accounts, with nothing leaving the device",
+  "Alles zwischen Kamera und Datenbank rechnet auf dem Gerät. Es gibt keinen Dienst, der etwas entgegennimmt: Die Ausfuhr ist eine Datei, die der Nutzer auslöst.":
+    "Everything between the camera and the database is computed on the device. There is no service that accepts anything: the export is a file the user triggers.",
+  Erfassung: "Capture",
+  "Kern, ohne Laufzeit-Abhängigkeit": "Core, no runtime dependency",
+  Rechnen: "Computing",
+  "Ablage auf dem Gerät": "Storage on the device",
+  "Foto vom Bon": "Photo of the receipt",
+  "Texterkennung im Betriebssystem": "Text recognition in the operating system",
+  "Rechnung als PDF": "Invoice as a PDF",
+  Kontoauszug: "Bank statement",
+  "Beleg-Parser": "Receipt parser",
+  "Vertrauensmaß 0 bis 1, Hinweise im Klartext":
+    "Confidence 0 to 1, findings in plain language",
+  "Auszug einlesen": "Read the statement",
+  "neun Bank-Layouts": "nine bank layouts",
+  Abgleich: "Reconciliation",
+  "Umsatz gegen Beleg, bewertet": "Transaction against receipt, scored",
+  EÜR: "Cash-basis accounts",
+  "Einnahmen, Ausgaben, Steuer": "Income, expenses, tax",
+  Fristen: "Deadlines",
+  "Gewährleistung, Beweislast, Garantie":
+    "Statutory warranty, burden of proof, guarantee",
+  "SQLite mit SQLCipher": "SQLite with SQLCipher",
+  "verschlüsselt, beim Start geprüft": "encrypted, verified at startup",
+  "Ausfuhr als Datei": "Export as a file",
+  "vom Nutzer ausgelöst": "triggered by the user",
+  "Kein Server": "No server",
+  "kein Konto, keine Anmeldung": "no account, no sign-in",
 };
 
 /**

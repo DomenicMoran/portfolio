@@ -60,7 +60,7 @@ export const site = {
     "Sieben Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
-  email: "domenicmoran@gmail.com",
+  email: "kontakt@domenicmoran.de",
   mailSubject: "Anfrage über domenicmoran.de",
   // Kein Telefon in dieser Datei, und keine Anschrift: Was hier steht, landet
   // auf der Seite, in llms.txt, in humans.txt und auf den Vorschaukarten. Die
@@ -338,7 +338,8 @@ export const hero = {
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   tryIt: {
-    before: "Drei der sieben Systeme rechnen hier im Browser mit:",
+    before:
+      "Drei der sieben Systeme in Produktion rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -1012,7 +1013,12 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         group: "Daten & Geld",
-        items: ["Supabase / Postgres", "Row Level Security", "Stripe", "Resend"],
+        items: [
+          "Supabase / Postgres",
+          "Row Level Security",
+          "Stripe",
+          "Resend",
+        ],
       },
       {
         group: "Inhalte",
@@ -1116,7 +1122,12 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         group: "Web & Daten",
-        items: ["Next.js", "Vercel", "Supabase / Postgres", "Row Level Security"],
+        items: [
+          "Next.js",
+          "Vercel",
+          "Supabase / Postgres",
+          "Row Level Security",
+        ],
       },
       {
         group: "Stimme & Bild",
@@ -1184,7 +1195,8 @@ export const caseStudies: CaseStudy[] = [
     id: "lexipulse",
     index: "07",
     name: "LexiPulse",
-    tagline: "Vollständiger Reader für EPUB, PDF und Web-Artikel: Wortstrom oder Fließtext",
+    tagline:
+      "Vollständiger Reader für EPUB, PDF und Web-Artikel: Wortstrom oder Fließtext",
     year: "2026",
     role: "Alleiniger Entwickler",
     /* Am 16.08.2026 gemessen: lexipulse.de antwortet mit 200. Der
@@ -1214,7 +1226,7 @@ export const caseStudies: CaseStudy[] = [
       body: "Flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende, und genau daran bricht das Verstehen weg. Hier multiplizieren sich Faktoren: Wortkern über acht Zeichen mal 1,25, Satzende mal 1,75, Teilsatzende mal 1,75, Absatzende mal 2,0, Ziffern mal 1,4, Kern bis drei Zeichen mal 0,9. Abkürzungen und Ordnungszahlen sind von der Satzregel ausgenommen, damit „z. B.“ und „1.“ den Strom nicht anhalten. Dazu ein Anlauf: Nach jedem Fortsetzen laufen die ersten Wörter auf 40 Prozent des Zieltempos an, weil der Sprung aus dem Stand auf 900 Wörter je Minute der häufigste Grund ist, überhaupt nichts zu lesen. Und die Uhr rechnet mit einem absoluten Zeitstempel statt mit Bildabständen, damit ein ausgefallenes Bild den Strom nicht verschiebt.",
     },
     highlights: [
-      "packages/core ohne DOM, ohne React Native, ohne Node-Bausteine: dieselbe Maschine und dieselben Leser auf Web und Gerät, 360 der 469 Tests liegen dort",
+      "packages/core ohne DOM, ohne React Native, ohne Node-Bausteine: dieselbe Maschine und dieselben Leser auf Web und Gerät, 386 der 561 Tests liegen dort",
       "Zwei Leseweisen auf einer Leseposition: Wer den Wortstrom anhält und in den Fließtext wechselt, steht auf demselben Wort",
       "Der Fixpunkt ist Arithmetik, keine Näherung: translateX auf einer Festbreitenschrift",
       "Zeichenindizes sind Codepunkte, nie UTF-16-Abstände: ein Emoji oder ein kombinierendes Zeichen lässt sich damit nicht halbieren",
@@ -1241,10 +1253,15 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     metrics: [
-      /* 469 am 17.08.2026 gemessen, nicht geschätzt: `turbo run test` meldet
-         360 im Kern, 80 in der Oberfläche, 20 auf dem Gerät, 9 im Web. Hier
-         standen 309, und in den Merkmalen daneben 218. */
-      { value: "469", label: "Tests" },
+      /* Am 19.08.2026 nachgemessen: `pnpm run test` meldet 386 im Kern, 80 in
+         der Oberfläche, 52 im PDF-Paket, 34 auf dem Gerät, 9 im Web, zusammen
+         561. Hier standen 469, gemessen am 17.08., und davor 309.
+
+         Die Zahl wächst zwischen zwei Messungen, und keine Prüfung hält sie
+         nach: `check-figures` misst die Testzahlen von MenuCloud, nicht die
+         der Nachbarprojekte. Sie wird deshalb nur dann angefasst, wenn sie
+         gerade gemessen wurde, und das Datum steht hier. */
+      { value: "561", label: "Tests" },
       { value: "7", label: "Importformate" },
       { value: "0", label: "Dokumente auf einem Server" },
       { value: "2", label: "Plattformen, ein Kern" },
@@ -1296,7 +1313,118 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
   },
+  {
+    id: "aegis",
+    index: "08",
+    name: "Aegis",
+    tagline:
+      "Belege, Fristen und die EÜR eines Kleinunternehmers, gerechnet auf dem Gerät",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    /* Am 19.08.2026 gemessen und nicht abgeschrieben: `vitest run` in
+       `packages/kern` meldet 14 von 14 Dateien und 304 von 304 Tests, mit
+       `--coverage` 92,16 Prozent der Anweisungen. Der Bau von `apps/web`
+       gibt 15 Routen aus, jede mit dem Kreis für „statisch". `apps/mobil`
+       meldet 6 Dateien und 107 Tests.
+
+       Und der Grund, warum an dieser Fallstudie kein einziger Verweis steht:
+       Es gibt keinen Eintrag bei Apple und keinen bei Google, das
+       Repository ist privat, und `apps/mobil` hat weder `ios/` noch
+       `android/`, ist also noch nie für ein Gerät gebaut worden. Ein Knopf
+       „im Store ansehen" wäre hier genau die Behauptung ohne Beleg, gegen
+       die diese Seite argumentiert. */
+    statusLabel: "Gebaut und geprüft, in keinem Laden",
+    nochNichtAusgeliefert: true,
+    accent: "violet",
+    problem:
+      "Ein Kleinunternehmer sammelt drei Sorten Papier, die nichts voneinander wissen: Bons für die Einnahmenüberschussrechnung, Rechnungen für die Gewährleistung, Kontoauszüge, die beides bestätigen sollen. Die Fristen daran sind hart und ungleich lang, und die eine, auf die es ankommt, ist nicht die, die jeder kennt. Die Werkzeuge, die diese Arbeit abnehmen, laden dafür jeden Beleg zu einem Anbieter hoch: Kontostände, Einkäufe, Aufenthaltsorte, alles in einer Datei.",
+    solution:
+      "Eine App, die den Beleg fotografiert, ihn auf dem Gerät liest und daraus drei Dinge gleichzeitig führt: die EÜR, die Fristenliste und den Abgleich mit dem Kontoauszug. Die Texterkennung läuft im Betriebssystem, die Auswertung in einem Kern ohne jede Laufzeit-Abhängigkeit, die Ablage in einer mit SQLCipher verschlüsselten Datenbank auf dem Gerät. Es gibt keinen Server, kein Konto und keine Anmeldung. Die Web-Fassung ist vollständig statisch: fünfzehn Routen und keine einzige, die etwas entgegennehmen könnte.",
+    hardPart: {
+      title: "Ein schlecht gelesener Bon darf keine Ausnahme werfen",
+      body: "Eine Kamera bei schlechtem Licht ist der Normalfall und nicht der Fehlerfall. Ein Parser, der bei unklarem Text abbricht, verlangt vom Nutzer, den Bon noch einmal zu fotografieren, und genau dort hört jeder auf. Die Erkennung gibt deshalb immer einen Beleg zurück, dazu ein Vertrauensmaß zwischen 0 und 1 und eine Liste von Hinweisen im Klartext. Widersprüche senken das Maß, statt den Lauf zu beenden: Wenn die Summe der Posten nicht zum Gesamtbetrag passt, ist eine Zeile falsch gelesen oder eine fehlt, und beides gehört vor die Augen des Nutzers, statt still übernommen zu werden. Dieselbe Regel trägt die Fristenrechnung. Gewährleistung und Beweislastumkehr sind zwei verschiedene Termine, sie werden regelmäßig für einen gehalten, und die App führt sie deshalb getrennt und warnt vor beiden einzeln.",
+    },
+    highlights: [
+      "Der Kern hat keine einzige Laufzeit-Abhängigkeit: 17 Quelldateien, 14 Testdateien, 304 Tests, 92 Prozent der Anweisungen abgedeckt",
+      "Drei Eingangsformate für den Kontoauszug: MT940, camt.053 und CSV in neun Bank-Layouts. Der Abgleich bewertet jede Zuordnung, statt sie zu behaupten",
+      "Zwei Fristen statt einer: die Gewährleistung nach § 438 BGB und die kürzere Beweislastumkehr nach § 477 BGB, getrennt gerechnet und getrennt gemeldet",
+      "Bei der Bewirtung sind die Aufwendungen anteilig abziehbar, die Vorsteuer dagegen voll. Die beiden Sätze werden verwechselt, deshalb rechnet der Kern sie getrennt",
+      "Die steuerlichen Zahlen stehen an genau zwei Stellen, im Code und in der Spezifikation. Ein Prüflauf hält beide gegeneinander und bricht ab, sobald sie auseinanderlaufen",
+      "Die Datenbank liegt mit SQLCipher verschlüsselt auf dem Gerät, und beim Start wird nachgesehen, ob es wirklich SQLCipher ist, statt es anzunehmen",
+      "Die rechtliche Landkarte liegt im Repository, jede Pflicht mit Fundstelle und Abrufdatum. Zwei verbreitete Annahmen haben sich beim Nachlesen als falsch herausgestellt und stehen dort als Korrektur",
+      "Kein Netzzugriff im Kern, kein Konto in der App, keine API-Route im Web: Es gibt keine Stelle, an der ein Beleg das Gerät verlassen könnte. Netz braucht genau ein Bauteil, das Werbebanner der freien Fassung, und es bekommt keinen Beleg zu sehen",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "Vitest", "Ohne Abhängigkeiten"],
+      },
+      {
+        group: "Web",
+        items: ["Next.js 16 App Router", "React 19", "Statisch erzeugt"],
+      },
+      {
+        group: "Mobil",
+        items: [
+          "Expo SDK 57",
+          "React Native",
+          "op-sqlite mit SQLCipher",
+          "Texterkennung des Systems",
+        ],
+      },
+    ],
+    metrics: [
+      { value: "304", label: "Tests im Kern" },
+      { value: "107", label: "Tests in der App" },
+      { value: "15", label: "Routen, alle statisch" },
+      { value: "0", label: "Server, kein Konto" },
+    ],
+    links: [],
+    architecture: "aegis",
+    keinScreenshot:
+      "Hier steht kein Bildschirmfoto, weil es noch nichts Öffentliches zu zeigen gibt. Die App ist gebaut, sie läuft, und sie liegt in keinem Laden. Ein Bild aus dem Entwicklungsstand wäre ein Versprechen auf etwas, das niemand nachprüfen kann, und dieselbe Überlegung hat schon bei drei Apps in der Prüfung den Verweis weggelassen, bis die Ladenseite antwortete. Das Bild kommt dazu, wenn es etwas belegt. Die Architektur daneben ist echt.",
+  },
 ];
+
+/* ========================================================================== */
+/* Werkbank: was angelegt ist und noch keine Fallstudie trägt                  */
+/* ========================================================================== */
+
+/*
+   Drei Repositories, angelegt am 19.08.2026, mit je zwei Commits.
+
+   Was dort liegt, ist der Arbeitsbereich, ein gemeinsamer Kern aus
+   Datums- und Stammdatenlogik und die Prüfläufe. Eine Fallstudie mit
+   Merkmalen, Kennzahlen und Architekturbild wäre an dieser Stelle erfunden:
+   Die Rechenlogik, die sie beschreiben würde, ist noch nicht geschrieben.
+
+   Sie ganz wegzulassen wäre die andere Hälfte derselben Unehrlichkeit. Die
+   Namen existieren als Marke und als Repository, und wer die Seite in einem
+   Monat wieder aufmacht, soll sehen, dass sie nicht aus dem Nichts kamen.
+   Also drei Zeilen mit dem, was da ist, und ohne alles, was noch nicht da
+   ist: kein Verweis, keine Zahl, kein Bild.
+*/
+export const werkbank = {
+  title: "Was gerade entsteht",
+  lede: "Drei weitere Systeme sind angelegt und tragen Marke und Repository. Darin stehen bisher der Arbeitsbereich, ein gemeinsamer Kern und die Prüfläufe; die Fachlogik wird gerade geschrieben. Sie stehen hier ohne Kennzahl, ohne Bild und ohne Verweis, weil es davon noch nichts zu belegen gibt.",
+  items: [
+    {
+      name: "Vesper",
+      body: "Bewerbungen, Vorhaben und Kontakte auf einem Kanban-Brett, das den Rechner nicht verlässt. Bewerten und Zusammenfassen soll ein Sprachmodell übernehmen, das lokal läuft, über Ollama oder LM Studio.",
+      stand: "Gerüst steht, der Kern entsteht",
+    },
+    {
+      name: "Aether",
+      body: "Der eigene Tag als durchsuchbares Gedächtnis: Kontext und Notizen, ausgewertet auf dem Gerät statt in einem Rechenzentrum.",
+      stand: "Gerüst steht",
+    },
+    {
+      name: "Synapse",
+      body: "Aus PDFs und Notizen werden Lernkarten, wiederholt im Rhythmus von SM-2, vollständig offline.",
+      stand: "Gerüst steht",
+    },
+  ],
+} as const;
 
 /* ========================================================================== */
 /* AI workflow                                                                */
@@ -1624,7 +1752,7 @@ export const recruiter = {
       title: "Ich liefere fertig, nicht fast fertig",
       body: "Sieben Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
-      proofLabel: "Die sieben Fallstudien",
+      proofLabel: "Die acht Fallstudien",
     },
     {
       title: "Ich arbeite über den ganzen Stack",

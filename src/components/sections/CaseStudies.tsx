@@ -79,8 +79,47 @@ export function CaseStudies() {
             <CaseStudyPanel key={study.id} study={study} />
           ))}
         </div>
+
+        <Werkbank />
       </div>
     </section>
+  );
+}
+
+/**
+ * Drei Namen, die es gibt, und drei Fallstudien, die es noch nicht gibt.
+ *
+ * Bewusst keine Karte mit Verweis wie bei den Paketen im Über-mich-Bereich:
+ * Die Repositories sind privat, und ein Verweis darauf antwortet einem
+ * Besucher mit 404. Ein Kasten ohne Verweis sieht schwächer aus und ist die
+ * einzige Fassung, die stimmt.
+ */
+function Werkbank() {
+  const { werkbank } = useContent();
+
+  return (
+    <div className="mt-24 border-t border-line pt-12 sm:mt-36">
+      <h3 className="text-eyebrow mb-3">{werkbank.title}</h3>
+      <p className="mb-8 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+        {werkbank.lede}
+      </p>
+
+      <ul className="grid gap-4 sm:grid-cols-3">
+        {werkbank.items.map((item, i) => (
+          <Reveal as="li" key={item.name} delay={i * 0.05}>
+            <div className="flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5">
+              <span className="font-mono text-sm text-ink">{item.name}</span>
+              <span className="mt-2.5 block text-sm leading-relaxed text-ink-dim text-pretty">
+                {item.body}
+              </span>
+              <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
+                {item.stand}
+              </span>
+            </div>
+          </Reveal>
+        ))}
+      </ul>
+    </div>
   );
 }
 

@@ -1865,7 +1865,7 @@ const BRAUCHT_KIND = {
     const PFLICHT = [
       ["Anschrift", /Heidelberger Stra(ß|ss)e 36/],
       ["Postleitzahl und Ort", /12059 Berlin/],
-      ["Kontakt", /domenicmoran@gmail\.com/],
+      ["Kontakt", /kontakt@domenicmoran\.de/],
       ["inhaltlich Verantwortlicher", /§ ?18 Abs\. ?2 MStV/],
       ["Umsatzsteuer-Identifikationsnummer", /DE\d{9}/],
     ];
@@ -5295,6 +5295,7 @@ const BRAUCHT_KIND = {
     menucloud: resolve("../../MenuCloud"),
     nouri: resolve("../../NOURI"),
     wohnungsjaeger: resolve("../../KIWohnung"),
+    aegis: resolve("../../Aegis"),
   };
 
   const quelle = readFileSync("src/content/site.ts", "utf8");

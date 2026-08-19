@@ -44,6 +44,18 @@ export type CaseStudy = {
   shots?: readonly Shot[];
   keinScreenshot?: string;
   /**
+   * Gesetzt an allem, was gebaut, aber noch nicht ausgeliefert ist.
+   *
+   * Die Seite argumentiert damit, dass jede Zusage nachprüfbar ist, und das
+   * Kurzprofil ist das Blatt, das weitergereicht wird: Dort stehen die
+   * Systeme in Produktion, und der Platz reicht für genau diese sieben
+   * (`OnePager.tsx` nennt die gemessenen sieben Pixel Rest). Ein System ohne
+   * Adresse und ohne Ladeneintrag gehört nicht in dieselbe Liste wie eines,
+   * das jemand aufrufen kann. Auf der Seite steht es trotzdem, mit dem Stand
+   * im Kopf der Fallstudie und ohne einen Verweis, der ins Leere führte.
+   */
+  nochNichtAusgeliefert?: true;
+  /**
    * Die Fachartikel, die aus genau diesem System stammen, als Adressteil,
    * je Sprachfassung.
    *
@@ -208,6 +220,25 @@ export type Content = {
   };
 
   caseStudies: readonly CaseStudy[];
+
+  /**
+   * Was gerade entsteht und noch keine Fallstudie trägt.
+   *
+   * Drei Repositories, in denen bisher der Arbeitsbereich, ein gemeinsamer
+   * Kern und die Prüfläufe stehen. Eine Fallstudie mit Merkmalen,
+   * Architekturbild und Kennzahlen wäre an dieser Stelle erfunden: Es gibt
+   * die Rechenlogik noch nicht, die sie beschreiben würde. Sie ganz
+   * wegzulassen wäre die andere Hälfte derselben Unehrlichkeit, weil die
+   * Namen bereits als Marke und Repository existieren.
+   *
+   * Also drei Zeilen mit dem, was da ist, und ohne alles, was noch nicht da
+   * ist: kein Verweis, keine Zahl, kein Bild.
+   */
+  werkbank: {
+    title: string;
+    lede: string;
+    items: readonly { name: string; body: string; stand: string }[];
+  };
 
   about: {
     eyebrow: string;
@@ -468,7 +499,13 @@ export type Content = {
     /** Beschriftung der Punktwolke für Vorleseprogramme. */
     fieldLabel: string;
     /** Die drei Achsen- und Legendenwörter der Punktwolke. */
-    field: { x: string; y: string; best: string; chosen: string; target: string };
+    field: {
+      x: string;
+      y: string;
+      best: string;
+      chosen: string;
+      target: string;
+    };
     note: string;
   };
 

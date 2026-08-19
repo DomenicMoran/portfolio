@@ -385,7 +385,7 @@ const ohneSkript = [];
     ["Nächstes Bild", "die Strecke lässt sich auch schieben"],
     ["Ablauf erneut abspielen", "die Zeilen stehen ohne Skript vollständig da"],
     [
-      "Adresse kopieren: domenicmoran@gmail.com",
+      "Adresse kopieren: kontakt@domenicmoran.de",
       "seine Beschriftung ist die Adresse; ausgeblendet fehlte sie ohne Skript ganz",
     ],
   ]);

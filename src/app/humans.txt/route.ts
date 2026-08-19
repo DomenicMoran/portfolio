@@ -20,7 +20,7 @@ export function GET() {
   Name:     Domenic Moran
   Rolle:    AI Product Engineer
   Ort:      Berlin, Deutschland
-  Kontakt:  domenicmoran@gmail.com
+  Kontakt:  kontakt@domenicmoran.de
   Profil:   https://github.com/DomenicMoran
 
 /* WOMIT */

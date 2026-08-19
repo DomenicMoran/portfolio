@@ -1010,6 +1010,141 @@ const ARCHITECTURES: Record<string, Diagram> = {
       { from: "uhr", to: "ausfuhr", dashed: true },
     ],
   },
+
+  /* Das erste Bild in dieser Datei, zu dem es noch keine öffentliche Adresse
+     gibt. Gezeichnet ist deshalb nur, was im Repository steht: die drei
+     Eingänge, der Kern und die verschlüsselte Ablage. Ein Kasten „Sync" oder
+     „Cloud-Backup" wäre die bequeme Ergänzung und in diesem Projekt eine
+     Lüge, denn es gibt keine Stelle im Code, die eine Adresse aufruft. Der
+     gestrichelte Kasten rechts unten hält genau das fest, ohne eine Kante. */
+  aegis: {
+    title: "Aegis: vom Bon zur EÜR, ohne dass etwas das Gerät verlässt",
+    caption:
+      "Alles zwischen Kamera und Datenbank rechnet auf dem Gerät. Es gibt keinen Dienst, der etwas entgegennimmt: Die Ausfuhr ist eine Datei, die der Nutzer auslöst.",
+    height: 480,
+    lanes: [
+      { label: "Erfassung", y: 40 },
+      { label: "Kern, ohne Laufzeit-Abhängigkeit", y: 176 },
+      { label: "Rechnen", y: 288 },
+      { label: "Ablage auf dem Gerät", y: 396 },
+    ],
+    nodes: [
+      {
+        id: "foto",
+        label: "Foto vom Bon",
+        sub: "Texterkennung im Betriebssystem",
+        x: 20,
+        y: 62,
+        w: 270,
+        tone: "muted",
+      },
+      {
+        id: "pdf",
+        label: "Rechnung als PDF",
+        x: 304,
+        y: 62,
+        w: 250,
+        tone: "muted",
+      },
+      {
+        id: "auszug",
+        label: "Kontoauszug",
+        sub: "MT940 · camt.053 · CSV",
+        x: 568,
+        y: 62,
+        w: 332,
+        tone: "muted",
+      },
+
+      {
+        id: "bon",
+        label: "Beleg-Parser",
+        sub: "Vertrauensmaß 0 bis 1, Hinweise im Klartext",
+        x: 20,
+        y: 198,
+        w: 430,
+        tone: "violet",
+      },
+      {
+        id: "einlesen",
+        label: "Auszug einlesen",
+        sub: "neun Bank-Layouts",
+        x: 464,
+        y: 198,
+        w: 436,
+        tone: "violet",
+      },
+
+      {
+        id: "abgleich",
+        label: "Abgleich",
+        sub: "Umsatz gegen Beleg, bewertet",
+        x: 20,
+        y: 310,
+        w: 280,
+        tone: "acid",
+      },
+      {
+        id: "euer",
+        label: "EÜR",
+        sub: "Einnahmen, Ausgaben, Steuer",
+        x: 314,
+        y: 310,
+        w: 280,
+        tone: "acid",
+      },
+      {
+        id: "fristen",
+        label: "Fristen",
+        sub: "Gewährleistung, Beweislast, Garantie",
+        x: 608,
+        y: 310,
+        w: 292,
+        tone: "acid",
+      },
+
+      {
+        id: "db",
+        label: "SQLite mit SQLCipher",
+        sub: "verschlüsselt, beim Start geprüft",
+        x: 20,
+        y: 418,
+        w: 330,
+        tone: "neutral",
+      },
+      {
+        id: "export",
+        label: "Ausfuhr als Datei",
+        sub: "vom Nutzer ausgelöst",
+        x: 364,
+        y: 418,
+        w: 270,
+        tone: "neutral",
+      },
+      {
+        id: "kein",
+        label: "Kein Server",
+        sub: "kein Konto, keine Anmeldung",
+        x: 648,
+        y: 418,
+        w: 252,
+        tone: "muted",
+        external: true,
+      },
+    ],
+    edges: [
+      { from: "foto", to: "bon" },
+      { from: "pdf", to: "bon" },
+      { from: "auszug", to: "einlesen" },
+      { from: "bon", to: "abgleich" },
+      { from: "bon", to: "euer" },
+      { from: "bon", to: "fristen" },
+      { from: "einlesen", to: "abgleich" },
+      { from: "abgleich", to: "db" },
+      { from: "euer", to: "db" },
+      { from: "fristen", to: "export" },
+    ],
+  },
 };
 
 /* ==========================================================================
