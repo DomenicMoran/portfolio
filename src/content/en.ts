@@ -92,7 +92,7 @@ export const en: Content = {
     location: "Berlin, Germany",
     ogTagline:
       "Seven systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
-    email: "domenicmoran@gmail.com",
+    email: "kontakt@domenicmoran.de",
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
       label: "Open to a permanent role",
@@ -172,7 +172,8 @@ export const en: Content = {
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     tryIt: {
-      before: "Three of the seven systems run right here in the browser:",
+      before:
+        "Three of the seven production systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
@@ -194,8 +195,8 @@ export const en: Content = {
 
   work: {
     eyebrow: "Selected work",
-    title: "Seven products. All live. All built alone.",
-    lede: "No practice projects, no tutorial clones. Every system here has real users, real payments or real legal obligations, and I owned each one from the first line to the store review.",
+    title: "Eight systems, all built alone. Seven are live.",
+    lede: "No practice projects, no tutorial clones. Seven of them have real users, real payments or real legal obligations; the eighth is built and checked and sits in no store. I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
       automation: "Automation",
@@ -668,7 +669,11 @@ export const en: Content = {
         },
         {
           group: "Data & accounts",
-          items: ["Supabase / Postgres", "Row Level Security", "Edge Functions"],
+          items: [
+            "Supabase / Postgres",
+            "Row Level Security",
+            "Edge Functions",
+          ],
         },
         {
           group: "Money & delivery",
@@ -749,7 +754,8 @@ export const en: Content = {
       id: "bitdojo",
       index: "05",
       name: "BitDojo",
-      tagline: "German-language learning platform with exactly one lesson library",
+      tagline:
+        "German-language learning platform with exactly one lesson library",
       year: "2026",
       role: "Sole developer · content, code, stores, compliance",
       statusLabel: "Web live, apps in review",
@@ -802,7 +808,9 @@ export const en: Content = {
         { value: "664", label: "exam questions" },
         { value: "147", label: "tests" },
       ],
-      links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
+      links: [
+        { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
+      ],
       architecture: "bitdojo",
       shots: [
         {
@@ -902,7 +910,9 @@ export const en: Content = {
         { value: "350", label: "call-outs, two languages" },
         { value: "0", label: "dependencies in the engine" },
       ],
-      links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
+      links: [
+        { label: "dartile.de", href: "https://dartile.de", kind: "live" },
+      ],
       architecture: "dartile",
       articles: ["eighteen-routes-over-the-bull"],
       shots: [
@@ -952,7 +962,8 @@ export const en: Content = {
       id: "lexipulse",
       index: "07",
       name: "LexiPulse",
-      tagline: "A complete reader for EPUB, PDF and web articles: word stream or running text",
+      tagline:
+        "A complete reader for EPUB, PDF and web articles: word stream or running text",
       year: "2026",
       role: "Sole developer",
       statusLabel: "Web live, both stores in review",
@@ -966,7 +977,7 @@ export const en: Content = {
         body: "Flat RSVP gives a three-letter article the same time budget as a sentence boundary, and that is exactly where comprehension collapses. Here the factors compose: a word core longer than eight characters times 1.25, sentence end times 1.75, clause end times 1.75, paragraph end times 2.0, digits times 1.4, a core of three characters or fewer times 0.9. Abbreviations and ordinals are excluded from the sentence rule so that “e.g.” and “1.” do not stall the stream. On top of that a warm-up: after every resume the first words run at 40 per cent of the target pace, because dropping straight into 900 words per minute from a standstill is the single most common reason for reading nothing at all. And the clock consumes an absolute timestamp rather than frame deltas, so a dropped frame cannot make the stream drift.",
       },
       highlights: [
-        "packages/core with no DOM, no React Native and no Node built-ins: the same engine and the same parsers on web and on device, 360 of the 469 tests live there",
+        "packages/core with no DOM, no React Native and no Node built-ins: the same engine and the same parsers on web and on device, 386 of the 561 tests live there",
         "Two ways to read on one position: pause the word stream, switch to running text, and you are on the same word",
         "The pivot is arithmetic, not an approximation: translateX on a monospace face",
         "Character indices are code points, never UTF-16 offsets: an emoji or a combining mark cannot be split in half",
@@ -993,7 +1004,7 @@ export const en: Content = {
         },
       ],
       metrics: [
-        { value: "469", label: "tests" },
+        { value: "561", label: "tests" },
         { value: "7", label: "import formats" },
         { value: "0", label: "documents on a server" },
         { value: "2", label: "platforms, one core" },
@@ -1040,7 +1051,88 @@ export const en: Content = {
         },
       ],
     },
+    {
+      id: "aegis",
+      index: "08",
+      name: "Aegis",
+      tagline:
+        "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Built and checked, in no store",
+      nochNichtAusgeliefert: true,
+      accent: "violet",
+      problem:
+        "A sole trader collects three kinds of paper that know nothing about each other: till receipts for the cash-basis accounts, invoices for the warranty, bank statements meant to confirm both. The deadlines attached to them are hard and of unequal length, and the one that matters is not the one everybody knows. The tools that take this work off your hands upload every receipt to a provider: balances, purchases, whereabouts, all in one file.",
+      solution:
+        "An app that photographs the receipt, reads it on the device and keeps three things from it at once: the cash-basis accounts, the deadline list, and the reconciliation against the bank statement. Text recognition runs in the operating system, the evaluation in a core with no runtime dependency at all, storage in a database encrypted with SQLCipher on the device. There is no server, no account and no sign-in. The web build is entirely static: fifteen routes and not one that could accept anything.",
+      hardPart: {
+        title: "A badly read receipt must not throw an exception",
+        body: "A camera in poor light is the normal case, not the error case. A parser that gives up on unclear text asks the user to photograph the receipt again, and that is exactly where everyone stops. So the reader always returns a receipt, plus a confidence between 0 and 1 and a list of findings in plain language. Contradictions lower the confidence instead of ending the run: if the line items do not add up to the total, either a line was misread or one is missing, and the user has to see both rather than inherit them. The same rule carries the deadline maths. The statutory warranty and the reversed burden of proof are two different dates, they are routinely taken for one, and the app therefore keeps them apart and warns about each separately.",
+      },
+      highlights: [
+        "The core has not a single runtime dependency: 17 source files, 14 test files, 304 tests, 92 percent of statements covered",
+        "Three input formats for the bank statement: MT940, camt.053 and CSV in nine bank layouts. The reconciliation scores every match instead of asserting it",
+        "Two deadlines instead of one: the statutory warranty under § 438 BGB and the shorter reversed burden of proof under § 477 BGB, computed apart and reported apart",
+        "For business entertainment the expense is only partly deductible while the input VAT is deductible in full. The two rates get confused, so the core computes them separately",
+        "The tax figures live in exactly two places, the code and the specification. A check run holds them against each other and fails as soon as they drift apart",
+        "The database sits on the device encrypted with SQLCipher, and at startup the app checks that it really is SQLCipher instead of assuming it",
+        "The legal map lives in the repository, every obligation with its source and the date it was read. Two widespread assumptions turned out to be wrong on reading and are recorded there as corrections",
+        "No network access in the core, no account in the app, no API route on the web: there is no place where a receipt could leave the device. Exactly one component needs the network, the ad banner in the free version, and it never gets to see a receipt",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "Vitest", "No dependencies"],
+        },
+        {
+          group: "Web",
+          items: ["Next.js 16 App Router", "React 19", "Statically generated"],
+        },
+        {
+          group: "Mobile",
+          items: [
+            "Expo SDK 57",
+            "React Native",
+            "op-sqlite with SQLCipher",
+            "System text recognition",
+          ],
+        },
+      ],
+      metrics: [
+        { value: "304", label: "tests in the core" },
+        { value: "107", label: "tests in the app" },
+        { value: "15", label: "routes, all static" },
+        { value: "0", label: "servers, no account" },
+      ],
+      links: [],
+      architecture: "aegis",
+      keinScreenshot:
+        "There is no screenshot here because there is nothing public to show yet. The app is built, it runs, and it sits in no store. An image from the development build would promise something nobody can check, and the same reasoning already left out the store links for three apps in review until their store pages answered. The image comes when it proves something. The architecture beside it is real.",
+    },
   ],
+
+  werkbank: {
+    title: "What is being built",
+    lede: "Three more systems exist, with a brand and a repository. So far they hold the workspace, a shared core and the check runs; the domain logic is being written. They stand here with no figure, no image and no link, because there is nothing yet to back one up.",
+    items: [
+      {
+        name: "Vesper",
+        body: "Applications, projects and contacts on a kanban board that never leaves the machine. Scoring and summarising are to be handled by a language model running locally, through Ollama or LM Studio.",
+        stand: "Scaffold in place, core under way",
+      },
+      {
+        name: "Aether",
+        body: "Your own day as a searchable memory: context and notes, evaluated on the device rather than in a data centre.",
+        stand: "Scaffold in place",
+      },
+      {
+        name: "Synapse",
+        body: "PDFs and notes become flashcards, repeated on the SM-2 schedule, entirely offline.",
+        stand: "Scaffold in place",
+      },
+    ],
+  },
 
   about: {
     eyebrow: "Who I am",
@@ -1493,7 +1585,7 @@ export const en: Content = {
         title: "I ship finished, not nearly finished",
         body: "Seven systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
         proof: "#work",
-        proofLabel: "The seven case studies",
+        proofLabel: "The eight case studies",
       },
       {
         title: "I work across the whole stack",

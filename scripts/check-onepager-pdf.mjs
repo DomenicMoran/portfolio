@@ -220,7 +220,7 @@ for (const pfad of BLAETTER) {
     const post = ziele.find((z) => z.startsWith("mailto:"));
     if (!post) {
       funde.push(`${pfad}: keine Mailadresse als Verweis.`);
-    } else if (!post.includes("domenicmoran@gmail.com")) {
+    } else if (!post.includes("kontakt@domenicmoran.de")) {
       funde.push(
         `${pfad}: der Mailverweis geht an ${post.slice(0, 60)}, nicht an die ` +
           `Adresse der Seite.`,
@@ -264,7 +264,7 @@ const KERNANGABEN = [
   "Domenic Moran",
   "AI Product Engineer",
   "Berlin",
-  "gmail.com",
+  "domenicmoran.de",
   "Salati",
   "MenuCloud",
 ];

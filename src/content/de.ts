@@ -10,6 +10,7 @@ import {
   recruiter as recruiterDe,
   site as siteDe,
   skillDomains,
+  werkbank as werkbankDe,
   workflow as workflowDe,
 } from "./site";
 
@@ -114,8 +115,8 @@ export const de: Content = {
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
-    title: "Sieben Produkte. Alle live. Alle allein gebaut.",
-    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Jedes System hier hat echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen, und ich habe jedes davon von der ersten Zeile bis zum Store-Review verantwortet.",
+    title: "Acht Systeme, alle allein gebaut. Sieben laufen.",
+    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Sieben davon haben echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen; das achte ist gebaut und geprüft und liegt in keinem Laden. Verantwortet habe ich jedes von der ersten Zeile bis zum Store-Review.",
     tabs: {
       highlights: "Was drinsteckt",
       automation: "Automatisierung",
@@ -131,6 +132,8 @@ export const de: Content = {
   },
 
   caseStudies,
+
+  werkbank: werkbankDe,
 
   about: {
     ...aboutDe,

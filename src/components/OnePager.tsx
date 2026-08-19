@@ -321,11 +321,22 @@ export function OnePager({
                 Zehntelpunkts Schriftgröße. Am Bildschirm bleibt es eine
                 Spalte: Dort gibt es keine Seitenhöhe, und zwei schmale Spalten
                 auf einem Telefon wären schlechter zu lesen. */}
+            {/* Auf dem Blatt stehen die Systeme in Produktion, nicht alles,
+                was gebaut ist.
+
+                Das ist keine Schönung, sondern die Zusage des Blattes: eine
+                Seite. Der Kommentar darüber nennt die Messung, mit sieben
+                Projekten blieben 7 px von 1.040. Ein achtes Projekt kostet
+                die Ein-Seiten-Zusage, und ein Kurzprofil, das auf zwei Seiten
+                läuft, ist keins mehr. Wer wissen will, was daneben entsteht,
+                findet es auf der Seite; sie hat keine Seitenhöhe. */}
             <div className="flex flex-col gap-5 print:gap-2">
-              {caseStudies.map((study) => (
-                <div key={study.id} className="break-inside-avoid">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    {/* Größe und Farbe stehen hier beide ausdrücklich, und das
+              {caseStudies
+                .filter((study) => !study.nochNichtAusgeliefert)
+                .map((study) => (
+                  <div key={study.id} className="break-inside-avoid">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      {/* Größe und Farbe stehen hier beide ausdrücklich, und das
                       hat einen gemessenen Grund.
 
                       `text-base` ist auf dieser Seite keine Schriftgröße. Das
@@ -337,8 +348,8 @@ export function OnePager({
                       Auf der hellen Druckseite setzte sonst nichts die Farbe,
                       also erbte die Überschrift das Weiß des dunklen Themas:
                       die vier Projektnamen standen weiß auf weiß. */}
-                    <h3 className="text-[16px] font-semibold text-[#101014]">
-                      {/* Das Leerzeichen gehört in denselben Textknoten wie der
+                      <h3 className="text-[16px] font-semibold text-[#101014]">
+                        {/* Das Leerzeichen gehört in denselben Textknoten wie der
                         Unterschied zwischen „Salati Live im App Store" und
                         „SalatiLive im App Store". Optisch trennt der
                         Außenabstand, im Text stand nichts: Ein Screenreader
@@ -351,12 +362,12 @@ export function OnePager({
                         Store", die Namensberechnung verwirft einen
                         Textknoten, der nur aus Leerraum besteht. Deshalb
                         hängt das Leerzeichen jetzt am Namen selbst. */}
-                      {`${study.name} `}
-                      <span className="ml-1 text-[13px] font-normal text-[#5a5a66]">
-                        {study.statusLabel} · {study.year}
-                      </span>
-                    </h3>
-                    {/* `ml-auto`: Die Kennzahlen schließen rechts ab, auch
+                        {`${study.name} `}
+                        <span className="ml-1 text-[13px] font-normal text-[#5a5a66]">
+                          {study.statusLabel} · {study.year}
+                        </span>
+                      </h3>
+                      {/* `ml-auto`: Die Kennzahlen schließen rechts ab, auch
                         wenn sie in eine eigene Zeile rutschen.
 
                         Bei MenuCloud tun sie das, „1.276 API-Routen · 812
@@ -370,7 +381,7 @@ export function OnePager({
                         abschlossen. Vier gleich gebaute Blöcke, einer davon
                         anders ausgerichtet, im Druck fällt es nicht auf, dort
                         passt die Zeile. */}
-                    {/* 10 px bleibt, und das ist gemessen statt gesetzt.
+                      {/* 10 px bleibt, und das ist gemessen statt gesetzt.
 
                         Das Blatt trägt `zoom: 0.85`: Hier stehen auf dem Papier
                         8,5 px, also 6,4 pt, die kleinste Angabe des Blatts,
@@ -383,18 +394,18 @@ export function OnePager({
                         wert als 0,6 pt, also bleibt es bei 10. `check:print`
                         hält die Untergrenze von 8 px auf dem Papier dagegen:
                         weiter schrumpfen darf hier nichts. */}
-                    <span className="ml-auto font-mono text-[10px] text-[#6a6a76]">
-                      {study.metrics
-                        .map(
-                          (m) =>
-                            `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`,
-                        )
-                        .join("  ·  ")}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-[13.5px] leading-snug text-[#25252e]">
-                    {study.tagline}.{" "}
-                    {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
+                      <span className="ml-auto font-mono text-[10px] text-[#6a6a76]">
+                        {study.metrics
+                          .map(
+                            (m) =>
+                              `${gedruckt(m, onepager.atLeast, sprache)} ${m.label}`,
+                          )
+                          .join("  ·  ")}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[13.5px] leading-snug text-[#25252e]">
+                      {study.tagline}.{" "}
+                      {/* Doppelpunkt nur, wenn der Satz dahinter keinen eigenen
                       hat. Sonst stolpert die Zeile über zwei davon:
                       "Ein Agent, der nicht ungefragt handelt: Der Reiz eines
                       solchen Systems ist auch sein Risiko: ein Bot, der …".
@@ -407,7 +418,7 @@ export function OnePager({
                       sich das wie ein Tippfehler. Ein Punkt trennt dasselbe,
                       ohne etwas zu behaupten, das die Zeichensetzung nicht
                       hergibt. */}
-                    {/* Nur die Überschrift der harten Stelle, nicht mehr ihr
+                      {/* Nur die Überschrift der harten Stelle, nicht mehr ihr
                         erster Satz.
 
                         Der Satz stand hier, solange vier Projekte auf dem
@@ -424,11 +435,11 @@ export function OnePager({
                         Kamera schlägt vor, sie behauptet nicht"), und der
                         ganze Absatz steht auf der Webseite, auf die die
                         Fußzeile zeigt. */}
-                    <strong className="font-semibold">
-                      {study.hardPart.title}
-                    </strong>
-                  </p>
-                  {/* Die Stack-Zeile stand hier und ist am 16.08.2026 raus.
+                      <strong className="font-semibold">
+                        {study.hardPart.title}
+                      </strong>
+                    </p>
+                    {/* Die Stack-Zeile stand hier und ist am 16.08.2026 raus.
 
                       Mit vier Projekten passte das Blatt auf eine Seite, mit
                       sieben nicht mehr: gemessen 121 Prozent der Seitenhöhe,
@@ -442,8 +453,8 @@ export function OnePager({
                       geordnet, und die vollständigen Stacks stehen auf der
                       Webseite, auf die die Fußzeile zeigt. Ein Projekt
                       wegzulassen hätte dagegen eine Aussage verändert. */}
-                </div>
-              ))}
+                  </div>
+                ))}
             </div>
           </section>
 
