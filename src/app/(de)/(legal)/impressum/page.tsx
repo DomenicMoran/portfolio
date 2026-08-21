@@ -84,24 +84,17 @@ export default function Impressum() {
         </section>
 
         {/*
-        Die Angabe ist Pflicht, weil eine Kennung existiert.
-
-        § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
-        sobald es eine gibt, nicht erst ab einer Umsatzgrenze. Die Kennung
-        DE461628017 ist gesetzt; sie wird nur an umsatzsteuerpflichtige
-        Betriebe vergeben. Der frühere Zusatz Kleinunternehmer nach § 19
-        UStG, keine Umsatzsteuer, widersprach der Kennung und den AGB und ist
-        am 21.08.2026 entfernt. Der Steuerstatus ist abschließend vom
-        Steuerberater zu bestätigen.
+        Kleinunternehmer nach § 19 UStG: Es wird keine Umsatzsteuer berechnet
+        und keine ausgewiesen. Deshalb steht hier keine USt-IdNr. — die
+        Kennung bleibt Datenbestand, wird aber nicht angezeigt. Die
+        Einstufung ist abschließend vom Steuerberater zu bestätigen.
       */}
         <section className="mb-10">
           <h2 className="mb-3 text-lg font-semibold text-ink">
-            Umsatzsteuer-Identifikationsnummer
+            Umsatzsteuer
           </h2>
           <p className="text-sm leading-relaxed text-ink-dim">
-            USt-IdNr. gemäß § 27a UStG: DE461628017
-            <br />
-            Umsatzsteuerpflichtig gemäß § 2 UStG — alle Preise inkl. Umsatzsteuer.
+            Kleinunternehmer nach § 19 UStG — es wird keine Umsatzsteuer berechnet.
           </p>
         </section>
 

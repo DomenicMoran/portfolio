@@ -1844,12 +1844,11 @@ const BRAUCHT_KIND = {
 
    § 5 DDG zählt auf, was dort stehen muss. Vier davon lassen sich prüfen,
    ohne den Text zu lesen: Anschrift, Kontakt, inhaltlich Verantwortlicher und
-   die Umsatzsteuer-Identifikationsnummer.
+   die Steuerangabe.
 
-   Die letzte stand lange nicht da. Im Quelltext hing ein Vorbehalt („falls
-   eine existiert"), und die Antwort stand die ganze Zeit öffentlich im
-   Impressum von menucloud-berlin.de. § 5 Abs. 1 Nr. 6 DDG verlangt sie,
-   sobald es eine gibt.
+   Die Steuerangabe lautet seit dem 21.08.2026 wieder „Kleinunternehmer nach
+   § 19 UStG — es wird keine Umsatzsteuer berechnet". Eine USt-IdNr. wird
+   deshalb nicht ausgewiesen; die Einstufung bestätigt der Steuerberater.
 
    Geprüft wird die gebaute Seite: Was im Quelltext hinter einer Bedingung
    steht, kann fehlen, ohne dass es jemandem auffällt. */
@@ -1867,7 +1866,7 @@ const BRAUCHT_KIND = {
       ["Postleitzahl und Ort", /12059 Berlin/],
       ["Kontakt", /kontakt@domenicmoran\.de/],
       ["inhaltlich Verantwortlicher", /§ ?18 Abs\. ?2 MStV/],
-      ["Umsatzsteuer-Identifikationsnummer", /DE\d{9}/],
+      ["Kleinunternehmer nach § 19 UStG", /§ ?19 ?UStG/],
     ];
 
     const fehlend = PFLICHT.filter(([, muster]) => !muster.test(text)).map(
