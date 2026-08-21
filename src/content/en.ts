@@ -111,7 +111,7 @@ export const en: Content = {
   },
 
   nav: [
-    { label: "Work", href: "#work" },
+    { label: "Products", href: "#produkte" },
     { label: "About", href: "#about" },
     { label: "How I work", href: "#workflow" },
     { label: "Skills", href: "#skills" },
@@ -159,18 +159,18 @@ export const en: Content = {
   },
 
   hero: {
-    eyebrow: "Berlin · available",
+    /* Same rationale as the German original: the brand leads, the hire pitch
+       moved down. */
+    eyebrow: "Moran Software · Berlin",
     headline: [
-      { text: "I" },
-      { text: "ship" },
-      { text: "finished", accent: true },
+      { text: "Finished", accent: true },
       { text: "products," },
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `AI product engineer in Berlin. Eight systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
-    ctaPrimary: { label: "See the work", href: "#work" },
-    ctaSecondary: { label: "For recruiters", href: "#hire" },
+    lede: `Moran Software is the brand behind eight systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog — €49.99 one-time, no subscription.`,
+    ctaPrimary: { label: "See the products", href: "#produkte" },
+    ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
     tryIt: {
       before:
         "Three of the eight production systems run right here in the browser:",
@@ -191,6 +191,51 @@ export const en: Content = {
       },
       { value: "7,800+", label: "test cases (MenuCloud)" },
     ],
+  },
+
+  produkte: {
+    eyebrow: "Products",
+    title: "Moran Software",
+    lede:
+      "Autonomous apps and micro-SaaS from Berlin. Every system runs in production, all built and operated by one person — from the first line to the store review.",
+    mfc: {
+      name: "MFC — Moran Fleet Control",
+      beschreibung:
+        "Chat, agents, tools and backlog in one interface — local, no subscription.",
+      preis: "€49.99 one-time, no subscription",
+      kaufen: "Buy MFC",
+      href: "https://mfc.domenicmoran.de",
+    },
+    proAppsTitel: "Pro apps",
+    proAppsLede:
+      "Four Android apps, built and set up in the Play Console — each with its own landing.",
+    proApps: [
+      {
+        name: "Aegis",
+        beschreibung:
+          "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
+        href: "https://aegis.domenicmoran.de",
+      },
+      {
+        name: "Synapse",
+        beschreibung:
+          "PDFs, photos and notes become flashcards, on the SM-2 schedule, offline",
+        href: "https://synapse.domenicmoran.de",
+      },
+      {
+        name: "Vesper",
+        beschreibung:
+          "Applications, projects and contacts on a local board",
+        href: "https://vesper.domenicmoran.de",
+      },
+      {
+        name: "Aether",
+        beschreibung:
+          "Your own day as a searchable memory, processed locally",
+        href: "https://aether.domenicmoran.de",
+      },
+    ],
+    uebersicht: { label: "See the full product overview", href: "#work" },
   },
 
   work: {
@@ -1181,7 +1226,13 @@ export const en: Content = {
         { value: "15", label: "routes, all static" },
         { value: "0", label: "servers, no account" },
       ],
-      links: [],
+      links: [
+        {
+          label: "aegis.domenicmoran.de",
+          href: "https://aegis.domenicmoran.de",
+          kind: "live",
+        },
+      ],
       architecture: "aegis",
       shots: [
         {
@@ -1339,7 +1390,13 @@ export const en: Content = {
         { value: "48", label: "tests in the app" },
         { value: "3", label: "import paths" },
       ],
-      links: [],
+      links: [
+        {
+          label: "synapse.domenicmoran.de",
+          href: "https://synapse.domenicmoran.de",
+          kind: "live",
+        },
+      ],
       architecture: "",
       shots: [
         {
@@ -1411,7 +1468,13 @@ export const en: Content = {
         { value: "2", label: "local model paths" },
         { value: "0", label: "data in a cloud" },
       ],
-      links: [],
+      links: [
+        {
+          label: "vesper.domenicmoran.de",
+          href: "https://vesper.domenicmoran.de",
+          kind: "live",
+        },
+      ],
       architecture: "",
       shots: [
         {
@@ -1457,7 +1520,7 @@ export const en: Content = {
         "Aether keeps context, voice notes and thoughts together and makes them searchable — evaluated on the device. Capture sources like location or calendar are individually switchable and off by default; a voice note about yourself is possible, a recording of others is not.",
       hardPart: {
         title: "The line a device must not cross",
-        body: "An app that captures your own day always sits at the line to recording third parties. Aether captures nothing in the background by default, every source is individually switchable, and recording other people's conversations is deliberately impossible — § 201 StGB is not a formality but a line the store text must not even hint at.",
+        body: "An app that captures your own day always sits at the line to recording third parties. Aether captures nothing in the background by default, every source is individually switchable, and recording other people's conversations is deliberately impossible — § 201 StGB is not a formality but a line the store text must not even hint at.",
       },
       highlights: [
         "Searchable notes with review; the core has 239 tests at 96 % coverage",
@@ -1485,7 +1548,13 @@ export const en: Content = {
         { value: "65", label: "tests in the app" },
         { value: "4", label: "capture sources" },
       ],
-      links: [],
+      links: [
+        {
+          label: "aether.domenicmoran.de",
+          href: "https://aether.domenicmoran.de",
+          kind: "live",
+        },
+      ],
       architecture: "",
       shots: [
         {

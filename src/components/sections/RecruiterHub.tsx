@@ -119,6 +119,12 @@ export function RecruiterHub() {
                   ) : (
                     <Link
                       href={item.proof}
+                      /* Zwei der Belege sind Artikelseiten, die niemand
+                         angefordert hat, bevor er den Beleg gelesen hat.
+                         Für Sprungmarken ist das Vorabladen ohnehin wirkungslos,
+                         für die Artikel spart es Bandbreite. `check:vitals`
+                         hält die Menge offen. */
+                      prefetch={false}
                       className="group/beleg mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
                     >
                       {item.proofLabel}

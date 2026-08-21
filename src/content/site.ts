@@ -332,26 +332,27 @@ export const about = {
 /* ========================================================================== */
 
 export const hero = {
-  eyebrow: "Berlin · verfügbar",
+  /* Die Marke steht vorn, nicht die Person. Vorher las der erste Bildschirm
+     wie ein Bewerbungsanschreiben: „Berlin · verfügbar", „Ich liefere …",
+     „Für Recruiter". Für den, der etwas kaufen will, war das die falsche
+     erste Seite. Die Marke ist belegt: Sie trägt die Social-Konten
+     („Moran Software", Bio „Autonome Apps & Micro-SaaS aus Berlin") und
+     verlinkt auf genau diese Seite. */
+  eyebrow: "Moran Software · Berlin",
   // Wort für Wort gerendert; `accent` schaltet auf die Serifenschrift um.
   headline: [
-    { text: "Ich" },
-    { text: "liefere" },
-    { text: "fertige", accent: true },
+    { text: "Fertige", accent: true },
     { text: "Produkte," },
     { text: "keine" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  // Dieselbe Berufsbezeichnung wie überall sonst.
-  //
-  // Hier stand "Fullstack Product Engineer", während Titel, Kopfleiste,
-  // Lebenslauf und das GitHub-Profil "AI Product Engineer" sagen. Auf dem
-  // ersten Bildschirm standen damit zwei Berufsbezeichnungen für dieselbe
-  // Person, das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
-  // ohnehin selbst, mit der Migration und dem Impressum in einer Aufzählung.
-  lede: `AI Product Engineer aus Berlin. Acht Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
-  ctaPrimary: { label: "Projekte ansehen", href: "#work" },
-  ctaSecondary: { label: "Für Recruiter", href: "#hire" },
+  /* Produkt-Einstieg statt Bewerbung: Die Marke, die Systeme und der
+     Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
+     Produktivrepo; „acht Systeme" ist dieselbe Angabe wie überall sonst.
+     Der persönliche Werdegang bleibt im Abschnitt „Über mich" weiter unten. */
+  lede: `Moran Software ist die Marke hinter acht Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog — 49,99 € einmalig, kein Abo.`,
+  ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
+  ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
   tryIt: {
     before:
       "Drei der acht Systeme in Produktion rechnen hier im Browser mit:",
@@ -369,6 +370,62 @@ export const hero = {
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.800+", label: "Testfälle (MenuCloud)" },
   ],
+} as const;
+
+/* ========================================================================== */
+/* Produkte: die Marke „Moran Software" mit dem Kaufpfad                      */
+/* ========================================================================== */
+
+/*
+   Der Einstieg in die Produkte, direkt unter dem Kopf. Der Kaufweg ist
+   MFC — das einzige Produkt mit Kaufknopf — plus die vier Pro-Apps, deren
+   Android-Bauten in der Play Console liegen. Der Verweis unten führt zur
+   vollständigen Übersicht, den Fallstudien, damit sich hier keine zweite
+   Beschreibung derselben Produkte ablagert.
+*/
+export const produkte = {
+  eyebrow: "Produkte",
+  title: "Moran Software",
+  lede:
+    "Autonome Apps und Micro-SaaS aus Berlin. Jedes System läuft in Produktion, alle allein gebaut und betrieben — von der ersten Zeile bis zum Store-Review.",
+  mfc: {
+    name: "MFC — Moran Fleet Control",
+    beschreibung:
+      "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche — lokal, ohne Abo.",
+    preis: "49,99 € einmalig, kein Abo",
+    kaufen: "MFC kaufen",
+    href: "https://mfc.domenicmoran.de",
+  },
+  proAppsTitel: "Pro-Apps",
+  proAppsLede:
+    "Vier Android-Apps, gebaut und in der Play Console eingerichtet — jede mit eigener Landing.",
+  proApps: [
+    {
+      name: "Aegis",
+      beschreibung:
+        "Belege, Fristen und die EÜR eines Kleinunternehmers, auf dem Gerät gerechnet",
+      href: "https://aegis.domenicmoran.de",
+    },
+    {
+      name: "Synapse",
+      beschreibung:
+        "PDFs, Fotos und Notizen werden Lernkarten, im SM-2-Rhythmus, offline",
+      href: "https://synapse.domenicmoran.de",
+    },
+    {
+      name: "Vesper",
+      beschreibung:
+        "Bewerbungen, Vorhaben und Kontakte auf einem lokalen Brett",
+      href: "https://vesper.domenicmoran.de",
+    },
+    {
+      name: "Aether",
+      beschreibung:
+        "Der eigene Tag als durchsuchbares Gedächtnis, lokal verarbeitet",
+      href: "https://aether.domenicmoran.de",
+    },
+  ],
+  uebersicht: { label: "Zur vollständigen Produkt-Übersicht", href: "#work" },
 } as const;
 
 /* ========================================================================== */
@@ -1461,7 +1518,13 @@ export const caseStudies: CaseStudy[] = [
       { value: "15", label: "Routen, alle statisch" },
       { value: "0", label: "Server, kein Konto" },
     ],
-    links: [],
+    links: [
+      {
+        label: "aegis.domenicmoran.de",
+        href: "https://aegis.domenicmoran.de",
+        kind: "live",
+      },
+    ],
     architecture: "aegis",
     shots: [
       {
@@ -1619,7 +1682,13 @@ export const caseStudies: CaseStudy[] = [
       { value: "48", label: "Tests in der App" },
       { value: "3", label: "Importwege" },
     ],
-    links: [],
+    links: [
+      {
+        label: "synapse.domenicmoran.de",
+        href: "https://synapse.domenicmoran.de",
+        kind: "live",
+      },
+    ],
     architecture: "",
     shots: [
       {
@@ -1691,7 +1760,13 @@ export const caseStudies: CaseStudy[] = [
       { value: "2", label: "lokale Modell-Wege" },
       { value: "0", label: "Daten in einer Cloud" },
     ],
-    links: [],
+    links: [
+      {
+        label: "vesper.domenicmoran.de",
+        href: "https://vesper.domenicmoran.de",
+        kind: "live",
+      },
+    ],
     architecture: "",
     shots: [
       {
@@ -1737,7 +1812,7 @@ export const caseStudies: CaseStudy[] = [
       "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar — ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
     hardPart: {
       title: "Die Grenze, die ein Gerät nicht überschreiten darf",
-      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich — § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
+      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich — § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
     },
     highlights: [
       "Durchsuchbare Notizen mit Rückblick; der Kern hat 239 Tests bei 96 % Abdeckung",
@@ -1765,7 +1840,13 @@ export const caseStudies: CaseStudy[] = [
       { value: "65", label: "Tests in der App" },
       { value: "4", label: "Erfassungsquellen" },
     ],
-    links: [],
+    links: [
+      {
+        label: "aether.domenicmoran.de",
+        href: "https://aether.domenicmoran.de",
+        kind: "live",
+      },
+    ],
     architecture: "",
     shots: [
       {

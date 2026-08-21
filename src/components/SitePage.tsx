@@ -6,6 +6,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
 import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
+import { Produkte } from "@/components/sections/Produkte";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { About } from "@/components/sections/About";
 import { AiWorkflow, DeliverySpeed } from "@/components/sections/AiWorkflow";
@@ -130,6 +131,7 @@ export function SitePage({ content }: { content: Content }) {
 
       <main id={INHALT_ID} tabIndex={-1} className="flex-1">
         <Hero />
+        <Produkte produkte={content.produkte} />
         <CaseStudies />
         <About />
         <AiWorkflow />
