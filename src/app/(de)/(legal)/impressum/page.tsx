@@ -87,13 +87,12 @@ export default function Impressum() {
         Die Angabe ist Pflicht, weil eine Kennung existiert.
 
         § 5 Abs. 1 Nr. 6 DDG verlangt die Umsatzsteuer-Identifikationsnummer,
-        sobald es eine gibt, nicht erst ab einer Umsatzgrenze. Hier stand
-        lange ein Vorbehalt („falls eine existiert"), und die Antwort stand
-        die ganze Zeit öffentlich im Impressum von menucloud-berlin.de:
-        DE461628017, zusammen mit der Kleinunternehmerregelung nach § 19 UStG.
-
-        Beide Angaben gehören zusammen. Eine Kennung ohne den Hinweis auf § 19
-        legt nahe, dass Umsatzsteuer ausgewiesen wird; sie wird es nicht.
+        sobald es eine gibt, nicht erst ab einer Umsatzgrenze. Die Kennung
+        DE461628017 ist gesetzt; sie wird nur an umsatzsteuerpflichtige
+        Betriebe vergeben. Der frühere Zusatz Kleinunternehmer nach § 19
+        UStG, keine Umsatzsteuer, widersprach der Kennung und den AGB und ist
+        am 21.08.2026 entfernt. Der Steuerstatus ist abschließend vom
+        Steuerberater zu bestätigen.
       */}
         <section className="mb-10">
           <h2 className="mb-3 text-lg font-semibold text-ink">
@@ -102,8 +101,7 @@ export default function Impressum() {
           <p className="text-sm leading-relaxed text-ink-dim">
             USt-IdNr. gemäß § 27a UStG: DE461628017
             <br />
-            Als Kleinunternehmer im Sinne von § 19 UStG wird keine Umsatzsteuer
-            berechnet.
+            Umsatzsteuerpflichtig gemäß § 2 UStG — alle Preise inkl. Umsatzsteuer.
           </p>
         </section>
 
