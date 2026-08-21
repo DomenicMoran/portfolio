@@ -334,7 +334,7 @@ export const hero = {
   // ersten Bildschirm standen damit zwei Berufsbezeichnungen für dieselbe
   // Person, das erste, woran ein Leser zweifelt. Die Breite belegt der Satz
   // ohnehin selbst, mit der Migration und dem Impressum in einer Aufzählung.
-  lede: `AI Product Engineer aus Berlin. Sieben Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
+  lede: `AI Product Engineer aus Berlin. Acht Systeme in Produktion, in ${bauzeit} neben einem Vollzeitjob entstanden: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Alles selbst gebaut, von der Migration bis zum Impressum.`,
   ctaPrimary: { label: "Projekte ansehen", href: "#work" },
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   tryIt: {
@@ -349,7 +349,7 @@ export const hero = {
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
   // falsch wäre.
   proof: [
-    { value: "7", label: "Systeme in Produktion" },
+    { value: "8", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.800+", label: "Testfälle (MenuCloud)" },
@@ -372,6 +372,74 @@ export const hero = {
 */
 
 export const caseStudies: CaseStudy[] = [
+  {
+    id: "mfc",
+    index: "00",
+    name: "Moran Fleet Control",
+    tagline:
+      "Die eine Anwendung für den Builder-Alltag: LLM-Chat, Agenten, Werkzeuge, Backlog – lokal, ohne Abo",
+    year: "2026",
+    role: "Alleiniger Entwickler · Produkt, Code, Verkauf, Recht",
+    statusLabel: "Live mit Kaufknopf",
+    accent: "acid",
+    problem:
+      "Der Arbeitsalltag eines Builders ist auf zehn Werkzeuge verteilt: Terminal für Agenten, Tabs für Modelle, Tabellen für Backlog, Ordner für Projekte. Jeder Wechsel kostet Kontext, und jede Cloud-Schicht, die mitfährt, kostet Vertrauen und Geld.",
+    solution:
+      "Eine Desktop-Anwendung (Windows, macOS, Linux) plus Web-Fassung: Multi-LLM-Router mit sechs Anbietern, Agenten über die lokale Claude-CLI – Berechtigungen, MCP, Skills und Memory werden unverändert übernommen –, elf Micro-SaaS-Werkzeuge, Projektbrowser mit Git-Status, Backlog aller Projekte, Marketing-Pipeline mit harten Rate-Limits und ein Vault, der AES-256-verschlüsselt im OS-Keyring liegt. 49,99 Euro einmalig, kein Abo.",
+    hardPart: {
+      title: "Claude Code übernehmen, ohne es zu duplizieren",
+      body: "Wer vom Terminal wechselt, will nichts neu einrichten. Statt Berechtigungen, MCP-Server und Skills nachzubauen, startet MFC die lokale Claude-CLI als Agenten-Backend – die bestehende Einrichtung gilt unverändert weiter. Der Stream aus 204 Ereignissen je Sitzung wird in der Oberfläche gerendert, mit Abbruch und Live-Protokoll. Was ohne Schlüssel nicht geht, sagt die Oberfläche ehrlich – Simulationen sind als solche markiert.",
+    },
+    highlights: [
+      "Claude-Code-Übernahme: Berechtigungen, MCP, Skills und Memory werden gelesen und unverändert genutzt",
+      "Chat mit Modellwahl je Nachricht, Streaming, Verlauf und Kostenprotokoll auf dem Gerät",
+      "Elf Micro-SaaS-Module, acht laufen direkt im Browser, drei über Server oder Desktop",
+      "Supervisor-Loop: Anthropic plant und prüft, DeepSeek führt aus, hart begrenzt auf drei Runden",
+      "Mobil-Begleit-App (Android/iOS) mit Kopplung per Code und Geheimnis über ein eigenes Relay",
+      "Clean-Room-Distribution: keine Founder-Daten im Paket, Setup-Wizard, Zero-Personal-Data-Scanner",
+      "Windows-Installer und Linux-Bundles lokal gebaut, Web live unter mfc.domenicmoran.de",
+    ],
+    stack: [
+      {
+        group: "Desktop",
+        items: [
+          "Tauri 1 (Rust)",
+          "Next.js 14",
+          "WebView2 / WebKitGTK",
+          "TypeScript",
+        ],
+      },
+      {
+        group: "Agenten & LLM",
+        items: [
+          "Claude-CLI als Agenten-Backend",
+          "Anthropic / DeepSeek / OpenAI / Gemini",
+          "Ollama / LM Studio lokal",
+          "SSE-Streaming",
+        ],
+      },
+    ],
+    metrics: [
+      { value: "6", label: "LLM-Anbieter" },
+      { value: "11", label: "Micro-SaaS-Module" },
+      { value: "49,99 €", label: "Lifetime, kein Abo" },
+      { value: "3", label: "Desktop-Plattformen" },
+    ],
+    links: [
+      { label: "mfc.domenicmoran.de", href: "https://mfc.domenicmoran.de", kind: "live" },
+      { label: "Quellcode", href: "https://github.com/DomenicMoran/mfc", kind: "code" },
+    ],
+    architecture: "",
+    shots: [
+      {
+        src: "/shots/mfc/dashboard.webp",
+        alt: "Das MFC-Dashboard: dunkle Oberfläche mit Seitenleiste, Statuskarten für Core, Router-Anbieter, Module und Backlog, darunter die Systemkacheln.",
+        width: 1280,
+        height: 800,
+        label: "Dashboard · live",
+      },
+    ],
+  },
   {
     id: "salati",
     index: "01",
@@ -1327,13 +1395,12 @@ export const caseStudies: CaseStudy[] = [
        gibt 15 Routen aus, jede mit dem Kreis für „statisch". `apps/mobil`
        meldet 6 Dateien und 107 Tests.
 
-       Und der Grund, warum an dieser Fallstudie kein einziger Verweis steht:
-       Es gibt keinen Eintrag bei Apple und keinen bei Google, das
-       Repository ist privat, und `apps/mobil` hat weder `ios/` noch
-       `android/`, ist also noch nie für ein Gerät gebaut worden. Ein Knopf
-       „im Store ansehen" wäre hier genau die Behauptung ohne Beleg, gegen
-       die diese Seite argumentiert. */
-    statusLabel: "Gebaut und geprüft, in keinem Laden",
+       Stand 21.08.2026: Das Android-AAB ist gebaut und die App in der Play
+       Console eingerichtet, öffentlich im Laden liegt sie noch nicht. Ein
+       Knopf „im Store ansehen" wäre deshalb weiterhin die Behauptung ohne
+       Beleg, gegen die diese Seite argumentiert; die Aufnahmen unten stammen
+       vom gebauten Android-Paket, nicht aus dem Entwicklungsstand. */
+    statusLabel: "Android gebaut, Play Console eingerichtet",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1381,8 +1448,320 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [],
     architecture: "aegis",
-    keinScreenshot:
-      "Hier steht kein Bildschirmfoto, weil es noch nichts Öffentliches zu zeigen gibt. Die App ist gebaut, sie läuft, und sie liegt in keinem Laden. Ein Bild aus dem Entwicklungsstand wäre ein Versprechen auf etwas, das niemand nachprüfen kann, und dieselbe Überlegung hat schon bei drei Apps in der Prüfung den Verweis weggelassen, bis die Ladenseite antwortete. Das Bild kommt dazu, wenn es etwas belegt. Die Architektur daneben ist echt.",
+    shots: [
+      {
+        src: "/shots/aegis/aufnahme-01-uebersicht.webp",
+        alt: "Die Übersicht von Aegis: oben die Bilanz des laufenden Jahres, darunter die jüngsten Belege und die offenen Fristen.",
+        width: 1080,
+        height: 2160,
+        label: "Übersicht · Einnahmen und Fristen",
+        variant: "phone",
+      },
+      {
+        src: "/shots/aegis/aufnahme-02-belegliste.webp",
+        alt: "Die Belegliste: erfasste Bons und Rechnungen mit Kategorie und Betrag.",
+        width: 1080,
+        height: 2160,
+        label: "Belegliste · erkannt und kategorisiert",
+        variant: "phone",
+      },
+      {
+        src: "/shots/aegis/aufnahme-05-euer.webp",
+        alt: "Die Einnahmenüberschussrechnung: Einnahmen und Ausgaben je Kategorie, darunter der Gewinn.",
+        width: 1080,
+        height: 2160,
+        label: "EÜR · auf Knopfdruck",
+        variant: "phone",
+      },
+    ],
+  },
+  {
+    id: "vortex",
+    index: "09",
+    name: "Vortex",
+    tagline:
+      "Erkennt Dropshipping und zeigt den Originalpreis, gerechnet auf dem Gerät",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    statusLabel: "Web live, Android eingereicht",
+    nochNichtAusgeliefert: true,
+    accent: "cyan",
+    problem:
+      "Dropshipping-Shops verkaufen billige Ware mit großem Aufschlag, und der Käufer kann den Unterschied nicht sehen: dieselbe Ware, dasselbe Foto, ein anderer Preis. Bewertungen sind gekauft, Siegel austauschbar, und niemand hat die Zeit, jede Seite gegen ihre Quellen zu prüfen.",
+    solution:
+      "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät — kein geprüfter Shop-Aufruf verlässt es.",
+    hardPart: {
+      title: "Eine ehrliche Bewertung darf kein Urteil über ein Unternehmen sein",
+      body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100 — allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
+    },
+    highlights: [
+      "36 Merkmale, jedes mit Beleg im Ergebnis, bewertet in Log-Odds statt als Punktesumme",
+      "HTML wird ohne Parser-Abhängigkeit gelesen, Produktdaten aus JSON-LD, Open Graph und Shopify",
+      "AliExpress-Vergleich mit serverseitiger Unterschrift; ein Partnerlink trägt die Kennzeichnung WERBUNG",
+      "Der Kern kennt weder Netz noch Uhr noch node:: 204 Tests halten ihn rein",
+      "Teilen mit Vortex: ein geteilter Shop-Link löst dieselbe Prüfung aus, ohne neue Berechtigung",
+      "Die Grenzen der Bewertung stehen offen auf der Seite, nicht im Kleingedruckten",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "Log-Odds", "Ohne Abhängigkeiten"],
+      },
+      {
+        group: "Web",
+        items: ["Next.js 16", "SSRF-Abwehr", "Signierter Vergleich"],
+      },
+      {
+        group: "Mobil",
+        items: ["Expo SDK 57", "React Native", "Lokaler Verlauf"],
+      },
+    ],
+    metrics: [
+      { value: "36", label: "Merkmale mit Beleg" },
+      { value: "204", label: "Tests im Kern" },
+      { value: "60", label: "Klickprüfungen" },
+      { value: "0,00 €", label: "Betriebskosten" },
+    ],
+    links: [
+      {
+        label: "vortex.domenicmoran.de",
+        href: "https://vortex.domenicmoran.de",
+        kind: "live",
+      },
+    ],
+    architecture: "",
+    shots: [
+      {
+        src: "/shots/vortex/aufnahme-02-ergebnis-web.webp",
+        alt: "Das Ergebnis der Prüfung: oben die Punktzahl mit Urteil, darunter die geprüften Merkmale mit Begründung und der Preisvergleich zum Original.",
+        width: 1265,
+        height: 2274,
+        label: "Bewertung · mit Begründung",
+        variant: "phone",
+      },
+    ],
+  },
+  {
+    id: "synapse",
+    index: "10",
+    name: "Synapse",
+    tagline:
+      "Aus PDFs, Fotos und Notizen werden Lernkarten, wiederholt im SM-2-Rhythmus, vollständig offline",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    statusLabel: "Android gebaut, Play Console eingerichtet",
+    nochNichtAusgeliefert: true,
+    accent: "violet",
+    problem:
+      "Wer aus einem Lehrbuch, einer Vorlesung oder einem Foto lernen will, tippt Karten ab oder bezahlt einen Dienst, der den Lernstoff in eine Cloud lädt. Der Wiederholungsrhythmus, der über Behalten und Vergessen entscheidet, sitzt dann auf einem Server, den man nicht sieht.",
+    solution:
+      "PDF, Foto oder Text rein, Karten raus. Vor dem Schreiben zeigt die App, was aus jeder Seite wird; die Karten liegen in einer SQLCipher-verschlüsselten Ablage auf dem Gerät, und der Wiederholungsrhythmus rechnet lokal. Eine unterbrochene Lernsitzung setzt dort fort, wo sie aufgehört hat.",
+    hardPart: {
+      title: "Ein Import, der nichts übernimmt, was man nicht gesehen hat",
+      body: "Aus einem PDF Karten zu machen ist eine Heuristik, keine Garantie. Deshalb steht vor dem Schreiben die Vorschau: Was aus jeder Seite wird, entscheidet der Nutzer, nicht das Skript. Die Ablage ist mit SQLCipher verschlüsselt, und der Kern hält den Wiederholungsrhythmus mit 216 Tests und 92,6 Prozent Abdeckung fest.",
+    },
+    highlights: [
+      "Import aus PDF, Foto und Text, mit Vorschau vor dem Schreiben",
+      "SM-2-Wiederholungsrhythmus, auf dem Gerät gerechnet, mit Wiederaufnahme der Sitzung",
+      "SQLCipher-Ablage: die Karten verlassen das Gerät nicht",
+      "Statistik, Sicherung und Export; der Kern hat 216 Tests bei 92,6 % Abdeckung",
+      "Pro-Schranke und tägliche Erinnerung, beide ohne dass die Daten die App verlassen",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "SM-2-Rhythmus", "Vitest"],
+      },
+      {
+        group: "Mobil",
+        items: [
+          "Expo SDK 57",
+          "React Native",
+          "op-sqlite mit SQLCipher",
+          "ML Kit Texterkennung",
+        ],
+      },
+    ],
+    metrics: [
+      { value: "216", label: "Tests im Kern" },
+      { value: "92,6 %", label: "Abdeckung" },
+      { value: "48", label: "Tests in der App" },
+      { value: "3", label: "Importwege" },
+    ],
+    links: [],
+    architecture: "",
+    shots: [
+      {
+        src: "/shots/synapse/aufnahme-02-lernkarte.webp",
+        alt: "Eine Lernkarte im Wiederholungsmodus: die Frage vorne, die Antwort wird aufgedeckt.",
+        width: 1080,
+        height: 2160,
+        label: "Lernkarte · SM-2-Rhythmus",
+        variant: "phone",
+      },
+      {
+        src: "/shots/synapse/aufnahme-06-importieren.webp",
+        alt: "Der Import: aus einem PDF wird eine Vorschau der Karten, bevor sie geschrieben werden.",
+        width: 1080,
+        height: 2160,
+        label: "Import · Vorschau vor dem Schreiben",
+        variant: "phone",
+      },
+      {
+        src: "/shots/synapse/aufnahme-07-statistik.webp",
+        alt: "Die Statistik: wiederholte Karten und der Verlauf der letzten Sitzungen.",
+        width: 1080,
+        height: 2160,
+        label: "Statistik · Fortschritt",
+        variant: "phone",
+      },
+    ],
+  },
+  {
+    id: "vesper",
+    index: "11",
+    name: "Vesper",
+    tagline:
+      "Bewerbungen, Vorhaben und Kontakte auf einem lokalen Brett, mit einem Sprachmodell auf dem eigenen Rechner",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    statusLabel: "Android gebaut, Play Console eingerichtet",
+    nochNichtAusgeliefert: true,
+    accent: "acid",
+    problem:
+      "Bewerbungen liegen in Ordnern, Vorhaben in Tabellen, Kontakte im Telefon — nichts davon zusammen. Und wer ein lokales Sprachmodell nutzen will, bedient es über eine Kommandozeile statt über sein Brett.",
+    solution:
+      "Ein Kanban-Brett, das den Rechner nicht verlässt: Bewerbungen, Vorhaben und Kontakte in einer verschlüsselten Ablage, Karten per Ziehen und Ablegen. Für das Zusammenfassen und Bewerten spricht die App mit einem Sprachmodell, das der Nutzer selbst betreibt — Ollama oder LM Studio, beide lokal.",
+    hardPart: {
+      title: "Ein Sprachmodell ansprechen, ohne eines mitzubringen",
+      body: "Vesper lädt kein Modell nach. Es spricht über eine Brücke mit Ollama oder LM Studio, die der Nutzer selbst installiert hat — das hält die App klein und die Daten auf dem Rechner, verlangt aber, dass die App mit beiden Schnittstellen umgehen kann und ehrlich sagt, wenn keiner der beiden läuft.",
+    },
+    highlights: [
+      "Kanban-Brett mit Ziehen und Ablegen, Zustand und Ablage verschlüsselt auf dem Gerät",
+      "Modellbrücke zu Ollama und LM Studio: Bewerten und Zusammenfassen über ein lokales Modell",
+      "Benachrichtigungen, Sicherung und ein Kasse-Gerüst; 94 Tests laufen grün",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "Vitest"],
+      },
+      {
+        group: "Mobil",
+        items: ["Expo SDK 57", "React Native", "op-sqlite mit SQLCipher"],
+      },
+      {
+        group: "Lokales Modell",
+        items: ["Ollama", "LM Studio"],
+      },
+    ],
+    metrics: [
+      { value: "94", label: "Tests" },
+      { value: "2", label: "lokale Modell-Wege" },
+      { value: "0", label: "Daten in einer Cloud" },
+    ],
+    links: [],
+    architecture: "",
+    shots: [
+      {
+        src: "/shots/vesper/aufnahme-01-heute.webp",
+        alt: "Der Heute-Bildschirm: was heute ansteht, aus Vorhaben und Bewerbungen.",
+        width: 1080,
+        height: 2160,
+        label: "Heute · das Brett auf einen Blick",
+        variant: "phone",
+      },
+      {
+        src: "/shots/vesper/aufnahme-02-brett.webp",
+        alt: "Das Kanban-Brett: Karten in Spalten, per Ziehen und Ablegen verschoben.",
+        width: 1080,
+        height: 2160,
+        label: "Brett · Ziehen und Ablegen",
+        variant: "phone",
+      },
+      {
+        src: "/shots/vesper/aufnahme-03-karte.webp",
+        alt: "Eine Karte im Detail: Vorhaben oder Bewerbung mit ihren Feldern.",
+        width: 1080,
+        height: 2160,
+        label: "Karte · im Detail",
+        variant: "phone",
+      },
+    ],
+  },
+  {
+    id: "aether",
+    index: "12",
+    name: "Aether",
+    tagline:
+      "Der eigene Tag als durchsuchbares Gedächtnis: Kontext, Sprachnotizen und Gedanken, lokal verarbeitet",
+    year: "2026",
+    role: "Alleiniger Entwickler",
+    statusLabel: "Android gebaut, Play Console eingerichtet",
+    nochNichtAusgeliefert: true,
+    accent: "violet",
+    problem:
+      "Wer sich fragt, was er letzten Dienstag gemacht hat, durchsucht Kalender, Fotos und Chat-Verläufe einzeln. Ein Gedächtnis, das alles zusammenführt, verlangt normalerweise, den ganzen Tag in eine Cloud hochzuladen.",
+    solution:
+      "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar — ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
+    hardPart: {
+      title: "Die Grenze, die ein Gerät nicht überschreiten darf",
+      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich — § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
+    },
+    highlights: [
+      "Durchsuchbare Notizen mit Rückblick; der Kern hat 239 Tests bei 96 % Abdeckung",
+      "Vier Erfassungsquellen — Standort, Sprachnotiz, Foto-Metadaten, Kalender — einzeln abschaltbar, standardmäßig aus",
+      "SQLCipher-Ablage, Volltextsuche, Datensicherung und Pro-Schranke",
+    ],
+    stack: [
+      {
+        group: "Kern",
+        items: ["TypeScript", "Vitest"],
+      },
+      {
+        group: "Mobil",
+        items: [
+          "Expo SDK 57",
+          "React Native",
+          "op-sqlite mit SQLCipher",
+          "expo-audio",
+        ],
+      },
+    ],
+    metrics: [
+      { value: "239", label: "Tests im Kern" },
+      { value: "96 %", label: "Abdeckung" },
+      { value: "65", label: "Tests in der App" },
+      { value: "4", label: "Erfassungsquellen" },
+    ],
+    links: [],
+    architecture: "",
+    shots: [
+      {
+        src: "/shots/aether/aufnahme-01-uebersicht.webp",
+        alt: "Die Übersicht: der Tag als Zeitleiste aus Notizen und Kontext.",
+        width: 1080,
+        height: 2160,
+        label: "Übersicht · der Tag als Gedächtnis",
+        variant: "phone",
+      },
+      {
+        src: "/shots/aether/aufnahme-02-suchen.webp",
+        alt: "Die Suche: Volltext über alle Notizen und erfassten Kontexte.",
+        width: 1080,
+        height: 2160,
+        label: "Suche · über alles",
+        variant: "phone",
+      },
+      {
+        src: "/shots/aether/aufnahme-03-notiz.webp",
+        alt: "Eine Notiz: Text mit Quelle und Zeitpunkt.",
+        width: 1080,
+        height: 2160,
+        label: "Notiz · mit Kontext",
+        variant: "phone",
+      },
+    ],
   },
 ];
 
@@ -1391,39 +1770,15 @@ export const caseStudies: CaseStudy[] = [
 /* ========================================================================== */
 
 /*
-   Drei Repositories, angelegt am 19.08.2026, mit je zwei Commits.
-
-   Was dort liegt, ist der Arbeitsbereich, ein gemeinsamer Kern aus
-   Datums- und Stammdatenlogik und die Prüfläufe. Eine Fallstudie mit
-   Merkmalen, Kennzahlen und Architekturbild wäre an dieser Stelle erfunden:
-   Die Rechenlogik, die sie beschreiben würde, ist noch nicht geschrieben.
-
-   Sie ganz wegzulassen wäre die andere Hälfte derselben Unehrlichkeit. Die
-   Namen existieren als Marke und als Repository, und wer die Seite in einem
-   Monat wieder aufmacht, soll sehen, dass sie nicht aus dem Nichts kamen.
-   Also drei Zeilen mit dem, was da ist, und ohne alles, was noch nicht da
-   ist: kein Verweis, keine Zahl, kein Bild.
+   Stand 21.08.2026: Die vier Werkbank-Systeme — Vortex, Synapse, Vesper und
+   Aether — sind inzwischen eigene Fallstudien: Ihre Android-AABs sind gebaut
+   und liegen in der Play Console. Die Werkbank ist damit leer, und die
+   Sektion blendet sich aus, solange `items` leer bleibt.
 */
 export const werkbank = {
   title: "Was gerade entsteht",
-  lede: "Drei weitere Systeme sind angelegt und tragen Marke und Repository. Darin stehen bisher der Arbeitsbereich, ein gemeinsamer Kern und die Prüfläufe; die Fachlogik wird gerade geschrieben. Sie stehen hier ohne Kennzahl, ohne Bild und ohne Verweis, weil es davon noch nichts zu belegen gibt.",
-  items: [
-    {
-      name: "Vesper",
-      body: "Bewerbungen, Vorhaben und Kontakte auf einem Kanban-Brett, das den Rechner nicht verlässt. Bewerten und Zusammenfassen soll ein Sprachmodell übernehmen, das lokal läuft, über Ollama oder LM Studio.",
-      stand: "Gerüst steht, der Kern entsteht",
-    },
-    {
-      name: "Aether",
-      body: "Der eigene Tag als durchsuchbares Gedächtnis: Kontext und Notizen, ausgewertet auf dem Gerät statt in einem Rechenzentrum.",
-      stand: "Gerüst steht",
-    },
-    {
-      name: "Synapse",
-      body: "Aus PDFs und Notizen werden Lernkarten, wiederholt im Rhythmus von SM-2, vollständig offline.",
-      stand: "Gerüst steht",
-    },
-  ],
+  lede: "Zurzeit entsteht hier nichts Neues: Die vier Werkbank-Projekte sind inzwischen eigene Fallstudien.",
+  items: [],
 } as const;
 
 /* ========================================================================== */

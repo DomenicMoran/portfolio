@@ -213,6 +213,82 @@ export const en: Content = {
 
   caseStudies: [
     {
+      id: "mfc",
+      index: "00",
+      name: "Moran Fleet Control",
+      tagline:
+        "The one application for the builder's day: LLM chat, agents, tools, backlog — local, no subscription",
+      year: "2026",
+      role: "Sole developer · product, code, sales, legal",
+      statusLabel: "Live with buy button",
+      accent: "acid",
+      problem:
+        "A builder's working day is spread across ten tools: a terminal for agents, tabs for models, spreadsheets for the backlog, folders for projects. Every switch costs context, and every cloud layer that rides along costs trust and money.",
+      solution:
+        "A desktop application (Windows, macOS, Linux) plus a web build: multi-LLM router with six providers, agents over the local Claude CLI — permissions, MCP, skills and memory are adopted unchanged —, eleven micro-SaaS tools, project browser with git status, backlog of all projects, marketing pipeline with hard rate limits, and a vault that sits AES-256-encrypted in the OS keyring. 49.99 euros one-time, no subscription.",
+      hardPart: {
+        title: "Take over Claude Code without duplicating it",
+        body: "Whoever leaves the terminal does not want to set anything up again. Instead of rebuilding permissions, MCP servers and skills, MFC runs the local Claude CLI as the agent backend — the existing setup keeps applying unchanged. The stream of 204 events per session is rendered in the interface, with abort and a live log. Where something cannot work without a key, the interface says so honestly — simulations are marked as such.",
+      },
+      highlights: [
+        "Claude Code takeover: permissions, MCP, skills and memory are read and used unchanged",
+        "Chat with model choice per message, streaming, history and cost log on the device",
+        "Eleven micro-SaaS modules, eight run directly in the browser, three over server or desktop",
+        "Supervisor loop: Anthropic plans and checks, DeepSeek executes, hard-capped at three rounds",
+        "Mobile companion app (Android/iOS) paired by code and secret over its own relay",
+        "Clean-room distribution: no founder data in the package, setup wizard, zero-personal-data scanner",
+        "Windows installer and Linux bundles built locally, web live at mfc.domenicmoran.de",
+      ],
+      stack: [
+        {
+          group: "Desktop",
+          items: [
+            "Tauri 1 (Rust)",
+            "Next.js 14",
+            "WebView2 / WebKitGTK",
+            "TypeScript",
+          ],
+        },
+        {
+          group: "Agents & LLM",
+          items: [
+            "Claude CLI as agent backend",
+            "Anthropic / DeepSeek / OpenAI / Gemini",
+            "Ollama / LM Studio locally",
+            "SSE streaming",
+          ],
+        },
+      ],
+      metrics: [
+        { value: "6", label: "LLM providers" },
+        { value: "11", label: "micro-SaaS modules" },
+        { value: "49.99 €", label: "lifetime, no subscription" },
+        { value: "3", label: "desktop platforms" },
+      ],
+      links: [
+        {
+          label: "mfc.domenicmoran.de",
+          href: "https://mfc.domenicmoran.de",
+          kind: "live",
+        },
+        {
+          label: "Source code",
+          href: "https://github.com/DomenicMoran/mfc",
+          kind: "code",
+        },
+      ],
+      architecture: "",
+      shots: [
+        {
+          src: "/shots/mfc/dashboard.webp",
+          alt: "The MFC dashboard: dark interface with sidebar, status cards for core, router providers, modules and backlog, and the system tiles below.",
+          width: 1280,
+          height: 800,
+          label: "Dashboard · live",
+        },
+      ],
+    },
+    {
       id: "salati",
       index: "01",
       name: "Salati",
@@ -1059,7 +1135,7 @@ export const en: Content = {
         "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Built and checked, in no store",
+      statusLabel: "Android built, Play Console set up",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1107,31 +1183,327 @@ export const en: Content = {
       ],
       links: [],
       architecture: "aegis",
-      keinScreenshot:
-        "There is no screenshot here because there is nothing public to show yet. The app is built, it runs, and it sits in no store. An image from the development build would promise something nobody can check, and the same reasoning already left out the store links for three apps in review until their store pages answered. The image comes when it proves something. The architecture beside it is real.",
+      shots: [
+        {
+          src: "/shots/aegis/aufnahme-01-uebersicht.webp",
+          alt: "Aegis overview: the current year's balance at the top, the latest receipts and the open deadlines below.",
+          width: 1080,
+          height: 2160,
+          label: "Overview · income and deadlines",
+          variant: "phone",
+        },
+        {
+          src: "/shots/aegis/aufnahme-02-belegliste.webp",
+          alt: "The receipt list: captured till receipts and invoices with category and amount.",
+          width: 1080,
+          height: 2160,
+          label: "Receipt list · recognised and categorised",
+          variant: "phone",
+        },
+        {
+          src: "/shots/aegis/aufnahme-05-euer.webp",
+          alt: "The cash-basis accounts: income and expenses by category, profit below.",
+          width: 1080,
+          height: 2160,
+          label: "Cash-basis accounts · at the push of a button",
+          variant: "phone",
+        },
+      ],
+    },
+    {
+      id: "vortex",
+      index: "09",
+      name: "Vortex",
+      tagline:
+        "Spots dropshipping and shows the original price, computed on the device",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Web live, Android submitted",
+      nochNichtAusgeliefert: true,
+      accent: "cyan",
+      problem:
+        "Dropshipping shops sell cheap goods at a large markup, and the buyer cannot see the difference: same goods, same photo, different price. Reviews are bought, badges interchangeable, and nobody has the time to check every page against its sources.",
+      solution:
+        "One shop link is enough. Vortex reads the page, checks 36 features with evidence and returns a score with reasoning, plus the price comparison: what does the same goods cost in the original on AliExpress? The evaluation runs on the device — no checked shop request leaves it.",
+      hardPart: {
+        title: "An honest assessment must not be a verdict on a company",
+        body: "The first run against a real US manufacturer gave 70 out of 100 — only for a missing German imprint, a missing VAT ID and no purchase on invoice. That is not imprecision, it is an untenable claim about a company. The answer was target-market and product-page detection and three narrowed patterns; six tests pin the case down. After that: 4 out of 100.",
+      },
+      highlights: [
+        "36 features, each with evidence in the result, scored in log-odds instead of a points sum",
+        "HTML is read without a parser dependency, product data from JSON-LD, Open Graph and Shopify",
+        "AliExpress comparison with a server-side signature; an affiliate link carries the ADVERTISING label",
+        "The core knows neither network nor clock nor node:: 204 tests keep it pure",
+        "Share with Vortex: a shared shop link triggers the same check, without a new permission",
+        "The limits of the assessment are stated openly on the page, not in the fine print",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "Log-odds", "No dependencies"],
+        },
+        {
+          group: "Web",
+          items: ["Next.js 16", "SSRF guard", "Signed comparison"],
+        },
+        {
+          group: "Mobile",
+          items: ["Expo SDK 57", "React Native", "Local history"],
+        },
+      ],
+      metrics: [
+        { value: "36", label: "features with evidence" },
+        { value: "204", label: "tests in the core" },
+        { value: "60", label: "click checks" },
+        { value: "0.00 €", label: "running costs" },
+      ],
+      links: [
+        {
+          label: "vortex.domenicmoran.de",
+          href: "https://vortex.domenicmoran.de",
+          kind: "live",
+        },
+      ],
+      architecture: "",
+      shots: [
+        {
+          src: "/shots/vortex/aufnahme-02-ergebnis-web.webp",
+          alt: "The result of the check: the score with verdict at the top, the checked features with reasoning below, and the price comparison to the original.",
+          width: 1265,
+          height: 2274,
+          label: "Assessment · with reasoning",
+          variant: "phone",
+        },
+      ],
+    },
+    {
+      id: "synapse",
+      index: "10",
+      name: "Synapse",
+      tagline:
+        "PDFs, photos and notes become flashcards, repeated on the SM-2 schedule, entirely offline",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Android built, Play Console set up",
+      nochNichtAusgeliefert: true,
+      accent: "violet",
+      problem:
+        "Whoever wants to learn from a textbook, a lecture or a photo either types cards by hand or pays a service that loads the material into a cloud. The repetition schedule that decides between keeping and forgetting then sits on a server you cannot see.",
+      solution:
+        "PDF, photo or text in, cards out. Before writing, the app shows what will come out of each page; the cards sit in a SQLCipher-encrypted store on the device, and the repetition schedule computes locally. An interrupted session resumes where it stopped.",
+      hardPart: {
+        title: "An import that takes nothing you have not seen",
+        body: "Turning a PDF into cards is a heuristic, not a guarantee. So the preview comes before the write: what comes out of each page is the user's call, not the script's. The store is encrypted with SQLCipher, and the core pins the repetition schedule with 216 tests and 92.6 percent coverage.",
+      },
+      highlights: [
+        "Import from PDF, photo and text, with a preview before writing",
+        "SM-2 repetition schedule, computed on the device, with session resume",
+        "SQLCipher store: the cards never leave the device",
+        "Statistics, backup and export; the core has 216 tests at 92.6 % coverage",
+        "Pro gate and daily reminder, both without the data leaving the app",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "SM-2 schedule", "Vitest"],
+        },
+        {
+          group: "Mobile",
+          items: [
+            "Expo SDK 57",
+            "React Native",
+            "op-sqlite with SQLCipher",
+            "ML Kit text recognition",
+          ],
+        },
+      ],
+      metrics: [
+        { value: "216", label: "tests in the core" },
+        { value: "92.6 %", label: "coverage" },
+        { value: "48", label: "tests in the app" },
+        { value: "3", label: "import paths" },
+      ],
+      links: [],
+      architecture: "",
+      shots: [
+        {
+          src: "/shots/synapse/aufnahme-02-lernkarte.webp",
+          alt: "A flashcard in review mode: the question on the front, the answer revealed.",
+          width: 1080,
+          height: 2160,
+          label: "Flashcard · SM-2 schedule",
+          variant: "phone",
+        },
+        {
+          src: "/shots/synapse/aufnahme-06-importieren.webp",
+          alt: "The import: a PDF becomes a preview of the cards before they are written.",
+          width: 1080,
+          height: 2160,
+          label: "Import · preview before writing",
+          variant: "phone",
+        },
+        {
+          src: "/shots/synapse/aufnahme-07-statistik.webp",
+          alt: "The statistics: reviewed cards and the course of the last sessions.",
+          width: 1080,
+          height: 2160,
+          label: "Statistics · progress",
+          variant: "phone",
+        },
+      ],
+    },
+    {
+      id: "vesper",
+      index: "11",
+      name: "Vesper",
+      tagline:
+        "Applications, projects and contacts on a local board, with a language model on your own machine",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Android built, Play Console set up",
+      nochNichtAusgeliefert: true,
+      accent: "acid",
+      problem:
+        "Applications sit in folders, projects in spreadsheets, contacts in the phone — none of it together. And whoever wants to use a local language model drives it from a command line instead of from their board.",
+      solution:
+        "A kanban board that never leaves the machine: applications, projects and contacts in an encrypted store, cards moved by dragging and dropping. For summarising and scoring, the app talks to a language model the user runs themselves — Ollama or LM Studio, both local.",
+      hardPart: {
+        title: "Talk to a language model without shipping one",
+        body: "Vesper downloads no model. It talks over a bridge to Ollama or LM Studio, which the user installed — that keeps the app small and the data on the machine, but demands that the app handle both interfaces and say honestly when neither is running.",
+      },
+      highlights: [
+        "Kanban board with drag and drop, state and store encrypted on the device",
+        "Model bridge to Ollama and LM Studio: scoring and summarising over a local model",
+        "Notifications, backup and a checkout scaffold; 94 tests run green",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "Vitest"],
+        },
+        {
+          group: "Mobile",
+          items: ["Expo SDK 57", "React Native", "op-sqlite with SQLCipher"],
+        },
+        {
+          group: "Local model",
+          items: ["Ollama", "LM Studio"],
+        },
+      ],
+      metrics: [
+        { value: "94", label: "tests" },
+        { value: "2", label: "local model paths" },
+        { value: "0", label: "data in a cloud" },
+      ],
+      links: [],
+      architecture: "",
+      shots: [
+        {
+          src: "/shots/vesper/aufnahme-01-heute.webp",
+          alt: "The today screen: what is due today, from projects and applications.",
+          width: 1080,
+          height: 2160,
+          label: "Today · the board at a glance",
+          variant: "phone",
+        },
+        {
+          src: "/shots/vesper/aufnahme-02-brett.webp",
+          alt: "The kanban board: cards in columns, moved by dragging and dropping.",
+          width: 1080,
+          height: 2160,
+          label: "Board · drag and drop",
+          variant: "phone",
+        },
+        {
+          src: "/shots/vesper/aufnahme-03-karte.webp",
+          alt: "A card in detail: a project or application with its fields.",
+          width: 1080,
+          height: 2160,
+          label: "Card · in detail",
+          variant: "phone",
+        },
+      ],
+    },
+    {
+      id: "aether",
+      index: "12",
+      name: "Aether",
+      tagline:
+        "Your own day as a searchable memory: context, voice notes and thoughts, processed locally",
+      year: "2026",
+      role: "Sole developer",
+      statusLabel: "Android built, Play Console set up",
+      nochNichtAusgeliefert: true,
+      accent: "violet",
+      problem:
+        "Whoever wonders what they did last Tuesday searches calendar, photos and chat history one by one. A memory that brings it all together usually means uploading your whole day to a cloud.",
+      solution:
+        "Aether keeps context, voice notes and thoughts together and makes them searchable — evaluated on the device. Capture sources like location or calendar are individually switchable and off by default; a voice note about yourself is possible, a recording of others is not.",
+      hardPart: {
+        title: "The line a device must not cross",
+        body: "An app that captures your own day always sits at the line to recording third parties. Aether captures nothing in the background by default, every source is individually switchable, and recording other people's conversations is deliberately impossible — § 201 StGB is not a formality but a line the store text must not even hint at.",
+      },
+      highlights: [
+        "Searchable notes with review; the core has 239 tests at 96 % coverage",
+        "Four capture sources — location, voice note, photo metadata, calendar — individually switchable, off by default",
+        "SQLCipher store, full-text search, data backup and a Pro gate",
+      ],
+      stack: [
+        {
+          group: "Core",
+          items: ["TypeScript", "Vitest"],
+        },
+        {
+          group: "Mobile",
+          items: [
+            "Expo SDK 57",
+            "React Native",
+            "op-sqlite with SQLCipher",
+            "expo-audio",
+          ],
+        },
+      ],
+      metrics: [
+        { value: "239", label: "tests in the core" },
+        { value: "96 %", label: "coverage" },
+        { value: "65", label: "tests in the app" },
+        { value: "4", label: "capture sources" },
+      ],
+      links: [],
+      architecture: "",
+      shots: [
+        {
+          src: "/shots/aether/aufnahme-01-uebersicht.webp",
+          alt: "The overview: the day as a timeline of notes and context.",
+          width: 1080,
+          height: 2160,
+          label: "Overview · the day as memory",
+          variant: "phone",
+        },
+        {
+          src: "/shots/aether/aufnahme-02-suchen.webp",
+          alt: "The search: full text across all notes and captured context.",
+          width: 1080,
+          height: 2160,
+          label: "Search · across everything",
+          variant: "phone",
+        },
+        {
+          src: "/shots/aether/aufnahme-03-notiz.webp",
+          alt: "A note: text with source and timestamp.",
+          width: 1080,
+          height: 2160,
+          label: "Note · with context",
+          variant: "phone",
+        },
+      ],
     },
   ],
 
   werkbank: {
     title: "What is being built",
-    lede: "Three more systems exist, with a brand and a repository. So far they hold the workspace, a shared core and the check runs; the domain logic is being written. They stand here with no figure, no image and no link, because there is nothing yet to back one up.",
-    items: [
-      {
-        name: "Vesper",
-        body: "Applications, projects and contacts on a kanban board that never leaves the machine. Scoring and summarising are to be handled by a language model running locally, through Ollama or LM Studio.",
-        stand: "Scaffold in place, core under way",
-      },
-      {
-        name: "Aether",
-        body: "Your own day as a searchable memory: context and notes, evaluated on the device rather than in a data centre.",
-        stand: "Scaffold in place",
-      },
-      {
-        name: "Synapse",
-        body: "PDFs and notes become flashcards, repeated on the SM-2 schedule, entirely offline.",
-        stand: "Scaffold in place",
-      },
-    ],
+    lede: "Nothing new is in the works right now: the four workbench projects have become full case studies.",
+    items: [],
   },
 
   about: {

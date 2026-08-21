@@ -58,7 +58,7 @@ const TAB_ICONS = {
 type TabId = (typeof TAB_IDS)[number];
 
 export function CaseStudies() {
-  const { work, caseStudies } = useContent();
+  const { work, caseStudies, werkbank } = useContent();
 
   return (
     <section
@@ -80,7 +80,7 @@ export function CaseStudies() {
           ))}
         </div>
 
-        <Werkbank />
+        {werkbank.items.length > 0 && <Werkbank />}
       </div>
     </section>
   );
