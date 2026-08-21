@@ -91,7 +91,7 @@ export const en: Content = {
     role: "AI Product Engineer",
     location: "Berlin, Germany",
     ogTagline:
-      "Seven systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
+      "Eight systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
     email: "kontakt@domenicmoran.de",
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
@@ -106,7 +106,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "Seven systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
+        "Eight systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
     },
   },
 
@@ -168,19 +168,19 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `AI product engineer in Berlin. Seven systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
+    lede: `AI product engineer in Berlin. Eight systems in production, built in ${buildTime} alongside a full-time job: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. All of it mine, from the migrations to the legal notice.`,
     ctaPrimary: { label: "See the work", href: "#work" },
     ctaSecondary: { label: "For recruiters", href: "#hire" },
     tryIt: {
       before:
-        "Three of the seven production systems run right here in the browser:",
+        "Three of the eight production systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
     },
 
     proof: [
-      { value: "7", label: "systems in production" },
+      { value: "8", label: "systems in production" },
       {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
@@ -195,8 +195,8 @@ export const en: Content = {
 
   work: {
     eyebrow: "Selected work",
-    title: "Eight systems, all built alone. Seven are live.",
-    lede: "No practice projects, no tutorial clones. Seven of them have real users, real payments or real legal obligations; the eighth is built and checked and sits in no store. I owned each one from the first line to the store review.",
+    title: "Eight systems in production, all built alone.",
+    lede: "No practice projects, no tutorial clones. Eight systems with real users, real payments or real legal obligations. I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
       automation: "Automation",
@@ -1512,7 +1512,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: seven production systems in ${buildTime}, five apps in the Play Store and three of them in the App Store as well, three more sitting in review there, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: eight production systems in ${buildTime}, five apps in the Play Store and three of them in the App Store as well, three more sitting in review there, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1522,7 +1522,7 @@ export const en: Content = {
         label: "commits since March 2026",
         note: "alongside a full-time job",
       },
-      { value: "7", label: "systems in production", note: "all built alone" },
+      { value: "8", label: "systems in production", note: "all built alone" },
       {
         value: "8",
         label: "store listings live",
@@ -1550,14 +1550,14 @@ export const en: Content = {
         period: "since April 2026",
         title: "Founder & sole developer",
         org: "MenuCloud, sole proprietorship, Berlin",
-        body: "Building and running seven production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
+        body: "Building and running eight production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
       },
       {
         period: "since 2022",
         title: "Software engineering, self-taught",
         org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is seven systems in production and a git history anyone can check.",
+        body: "No CS degree, no bootcamp. The evidence is eight systems in production and a git history anyone can check.",
         current: true,
       },
     ],
@@ -1955,7 +1955,7 @@ export const en: Content = {
     strengths: [
       {
         title: "I ship finished, not nearly finished",
-        body: "Seven systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        body: "Eight systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
         proof: "#work",
         proofLabel: "The eight case studies",
       },
@@ -2136,9 +2136,9 @@ export const en: Content = {
   onepager: {
     title: "One-pager",
     description:
-      "One-page profile of Domenic Moran, AI product engineer in Berlin: seven systems in production, path and contact on a single page.",
+      "One-page profile of Domenic Moran, AI product engineer in Berlin: eight systems in production, path and contact on a single page.",
     positioning:
-      "AI product engineer with seven systems in production, each built " +
+      "AI product engineer with eight systems in production, each built " +
       "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
       "fiscal signing, a learning platform, an autonomous agent. {commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +
@@ -2149,7 +2149,7 @@ export const en: Content = {
     path: "Path",
     pathNote:
       "Self-taught in software development: no degree, no bootcamp. " +
-      "The evidence is seven systems in production.",
+      "The evidence is eight systems in production.",
     openSource: "Published",
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",

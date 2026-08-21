@@ -20,7 +20,7 @@ Sieben Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspale
 ## Worum es geht
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
-versucht etwas anderes: für jedes der sieben Systeme in Produktion beantwortet es
+versucht etwas anderes: für jedes der acht Systeme in Produktion beantwortet es
 drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
 Architektur?*, *Was war der schwierige Teil?*
 
