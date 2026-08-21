@@ -178,6 +178,21 @@ export const about = {
       body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind acht Systeme in Produktion und eine prüfbare Git-Historie.",
       current: true,
     },
+    /* Der Vollzeitjob, auf den die Seite überall verweist, ohne ihn zu nennen.
+
+       „neben einem Vollzeitjob“ steht im Vorspann, in der Über-mich-Sektion und
+       im Kurzprofil — woraus der Job besteht, stand nirgends, und ein Werdegang
+       ohne diese Station lässt genau die Frage offen, die sie beantworten soll.
+       Belegt ist sie im Lebenslauf unter docs/ (außerhalb des Repos); Name und
+       Arbeitgeber sind keine private Angabe. Die Schulstationen bleiben weiter
+       dem vollständigen Lebenslauf vorbehalten. */
+    {
+      period: "seit 03/2018",
+      title: "Polizeibeamter",
+      org: "Polizei Berlin",
+      body: "Vollzugsdienst im mittleren Dienst — der Vollzeitjob, neben dem alle acht Systeme entstanden sind. Die Belegpflicht aus dem Einsatzbericht ist heute meine Definition of Done.",
+      current: true,
+    },
   ],
   /**
    * Öffentlicher Code. Bewusst kein Produktcode, die Produktivsysteme bleiben
