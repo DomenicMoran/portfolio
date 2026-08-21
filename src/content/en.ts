@@ -1560,6 +1560,15 @@ export const en: Content = {
         body: "No CS degree, no bootcamp. The evidence is eight systems in production and a git history anyone can check.",
         current: true,
       },
+      // The full-time job the site refers to everywhere without naming it,
+      // see the rationale in site.ts. School stages stay in the full CV.
+      {
+        period: "since March 2018",
+        title: "Police officer",
+        org: " Berlin",
+        body: "Uniformed police service — the full-time job alongside which all eight systems were built. The duty of evidence from an incident report is now my definition of done.",
+        current: true,
+      },
     ],
     openSource: {
       label: "Open source",

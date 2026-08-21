@@ -866,7 +866,12 @@ textarea:-webkit-autofill {
        einem Skript einsetzt, schreibt sie unter deutscher Spracheinstellung als
        „0,88". Das ist kein gültiges CSS, die Regel fällt aus, und der Lauf
        meldet danach für jeden Wert dieselben zwei Seiten bei 108 %. Viermal
-       dieselbe Zahl zu sehen ist das Zeichen dafür, dass gar nichts wirkt. */
-    zoom: 0.88;
+       dieselbe Zahl zu sehen ist das Zeichen dafür, dass gar nichts wirkt.
+
+       Ein fünftes Mal nachgezogen, am 21.08.2026: Mit acht Projekten statt
+       sieben stand das Blatt bei 0,88 auf 103 % der Seite und kippte auf zwei
+       Seiten. 0,83 ergibt wieder eine, mit rund 97 % Ausnutzung (deutsche
+       Fassung) und 6,2 pt kleinster Schrift. */
+    zoom: 0.83;
   }
 }

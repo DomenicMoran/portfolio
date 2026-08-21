@@ -498,9 +498,15 @@ export function OnePager({
                 {onepager.path}
               </h2>
               <dl className="flex flex-col gap-1.5">
-                {/* Schulstationen bleiben dem vollständigen Lebenslauf vorbehalten,
-                  auf einer Seite zählt, was die Projekte erklärt. */}
-                {about.timeline.slice(0, 3).map((entry) => (
+                {/* Der Werdegang hat drei Stationen, auf dem Blatt stehen zwei.
+
+                  Die dritte — der  seit 2018 — steht auf der
+                  Webseite und im vollständigen Lebenslauf. Auf diesem Blatt ist
+                  die Zeile der Preis für die Ein-Seiten-Zusage: ein dritter
+                  Eintrag schiebt auf 106 Prozent der Seite, gemessen am
+                  21.08.2026. Schulstationen bleiben ohnehin dem vollständigen
+                  Lebenslauf vorbehalten. */}
+                {about.timeline.slice(0, 2).map((entry) => (
                   <div
                     key={entry.period}
                     className="text-[12.5px] leading-snug"
