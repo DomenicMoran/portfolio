@@ -201,6 +201,29 @@ export type Content = {
     proof: readonly { value: string; label: string }[];
   };
 
+  /**
+   * Der Produkt-Einstieg unter dem Kopf: die Marke „Moran Software" mit dem
+   * Kaufpfad. MFC ist das Produkt, das heute gekauft werden kann, die
+   * Pro-Apps sind gebaut und in der Play Console eingerichtet. Der Verweis
+   * unten führt zur vollständigen Übersicht, dem Fallstudien-Abschnitt.
+   */
+  produkte: {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    mfc: {
+      name: string;
+      beschreibung: string;
+      preis: string;
+      kaufen: string;
+      href: string;
+    };
+    proAppsTitel: string;
+    proAppsLede: string;
+    proApps: readonly { name: string; beschreibung: string; href: string }[];
+    uebersicht: { label: string; href: string };
+  };
+
   work: {
     eyebrow: string;
     title: string;

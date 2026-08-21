@@ -124,6 +124,10 @@ export function Writing() {
         <Reveal delay={0.12}>
           <Link
             href={chrome.base}
+            /* Dieselbe Regel wie an den Karten darüber: Die Übersicht liegt
+               eine Ebene tiefer, und niemand hat sie angefordert, bevor er
+               den Knopf gelesen hat. `check:vitals` hält die Menge offen. */
+            prefetch={false}
             className="group mt-8 inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
           >
             {chrome.home.cta}

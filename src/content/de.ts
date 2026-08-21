@@ -7,6 +7,7 @@ import {
   caseStudies,
   contact as contactDe,
   hero as heroDe,
+  produkte as produkteDe,
   recruiter as recruiterDe,
   site as siteDe,
   skillDomains,
@@ -64,7 +65,7 @@ export const de: Content = {
   },
 
   nav: [
-    { label: "Projekte", href: "#work" },
+    { label: "Produkte", href: "#produkte" },
     { label: "Über mich", href: "#about" },
     { label: "Arbeitsweise", href: "#workflow" },
     { label: "Skills", href: "#skills" },
@@ -112,6 +113,8 @@ export const de: Content = {
   },
 
   hero: heroDe,
+
+  produkte: produkteDe,
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
