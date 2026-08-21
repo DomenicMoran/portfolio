@@ -137,15 +137,21 @@ async function zaehle(pfad, mitZahlen = false) {
        ergibt zwei verschiedene öffentliche Aussagen über denselben Gegenstand, und beide Seiten bleiben zählgleich.
 
        Verglichen wird ohne Trennzeichen: Dieselbe Zahl heißt „4.318“ und
-       „4,318“, und genau dieser Unterschied ist gewollt. Datumsangaben
-       fallen heraus, weil sie in beiden Sprachen anders geschrieben werden;
+       „4,318“, und genau dieser Unterschied ist gewollt. Dasselbe gilt für
+       das Dezimaltrennzeichen: „49,99“ und „49.99“ sind dieselbe Zahl, nur
+       deutsch und englisch gesetzt. Datumsangaben fallen heraus, weil sie in
+       beiden Sprachen anders geschrieben werden;
        ihren Gleichstand prüft `check:legal-date`. */
     Zahlen: [
       ...new Set(
         (document.body.innerText.match(/\b\d[\d.,]*\b/g) ?? [])
           .filter((z) => z.length > 2)
           .filter((z) => !/^\d{1,2}[.,]\d{1,2}[.,]\d{2,4}$/.test(z))
-          .map((z) => z.replace(/[.,](?=\d{3}\b)/g, "")),
+          .map((z) =>
+            z
+              .replace(/[.,](?=\d{3}\b)/g, "")
+              .replace(/[.,](?=\d{2}\b)/g, "."),
+          ),
       ),
     ]
       .sort()
