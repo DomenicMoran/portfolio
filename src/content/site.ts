@@ -10,7 +10,7 @@ import {
 } from "@/lib/duration";
 
 /**
- * Wie lange die sieben Systeme in Produktion entstehen, gerechnet, nicht getippt.
+ * Wie lange die acht Systeme in Produktion entstehen, gerechnet, nicht getippt.
  *
  * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
  * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
@@ -57,7 +57,7 @@ export const site = {
   location: "Berlin, Deutschland",
   // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
   ogTagline:
-    "Sieben Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
+    "Acht Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "kontakt@domenicmoran.de",
@@ -106,7 +106,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Sieben Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
+      "Acht Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
   },
 } as const;
 
@@ -132,7 +132,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: sieben Produktionssysteme in ${bauzeit}, fünf Apps im Play Store und drei davon auch im App Store, drei weitere liegen dort in der Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: acht Produktionssysteme in ${bauzeit}, fünf Apps im Play Store und drei davon auch im App Store, drei weitere liegen dort in der Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -143,7 +143,7 @@ export const about = {
       label: "Commits seit März 2026",
       note: "neben einem Vollzeitjob",
     },
-    { value: "7", label: "Systeme in Produktion", note: "alle allein gebaut" },
+    { value: "8", label: "Systeme in Produktion", note: "alle allein gebaut" },
     { value: "8", label: "Store-Einträge live", note: "5 Play, 3 App Store" },
     {
       value: "2022",
@@ -168,14 +168,14 @@ export const about = {
       period: "seit 04/2026",
       title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von sieben Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      body: "Aufbau und Betrieb von acht Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind sieben Systeme in Produktion und eine prüfbare Git-Historie.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind acht Systeme in Produktion und eine prüfbare Git-Historie.",
       current: true,
     },
   ],
@@ -339,7 +339,7 @@ export const hero = {
   ctaSecondary: { label: "Für Recruiter", href: "#hire" },
   tryIt: {
     before:
-      "Drei der sieben Systeme in Produktion rechnen hier im Browser mit:",
+      "Drei der acht Systeme in Produktion rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -2105,7 +2105,7 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Sieben Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Acht Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
       proofLabel: "Die acht Fallstudien",
     },

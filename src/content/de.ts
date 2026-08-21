@@ -115,8 +115,8 @@ export const de: Content = {
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
-    title: "Acht Systeme, alle allein gebaut. Sieben laufen.",
-    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Sieben davon haben echte Nutzer, echte Zahlungen oder echte rechtliche Verpflichtungen; das achte ist gebaut und geprüft und liegt in keinem Laden. Verantwortet habe ich jedes von der ersten Zeile bis zum Store-Review.",
+    title: "Acht Systeme in Produktion, alle allein gebaut.",
+    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Acht Systeme mit echten Nutzern, echten Zahlungen oder echten rechtlichen Verpflichtungen. Verantwortet habe ich jedes von der ersten Zeile bis zum Store-Review.",
     tabs: {
       highlights: "Was drinsteckt",
       automation: "Automatisierung",
@@ -295,9 +295,9 @@ export const de: Content = {
   },
   onepager: {
     title: "Kurzprofil",
-    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: sieben Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
+    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: acht Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
     positioning:
-      "AI Product Engineer mit sieben eigenständig gebauten Systemen in " +
+      "AI Product Engineer mit acht eigenständig gebauten Systemen in " +
       "Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit " +
       "gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform, ein autonomer Agent. " +
       "{commits} Commits seit März 2026, neben einem Vollzeitjob. " +
@@ -309,7 +309,7 @@ export const de: Content = {
     path: "Werdegang",
     pathNote:
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
-      "Der Nachweis sind sieben Systeme in Produktion.",
+      "Der Nachweis sind acht Systeme in Produktion.",
     /* „Open Source" und nicht mehr „Veröffentlicht", und der Grund steht im
        ausgelieferten PDF.
 
