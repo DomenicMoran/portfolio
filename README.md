@@ -5,7 +5,7 @@
 **Portfolio eines AI Product Engineers: gebaut wie ein Produkt, nicht wie eine Visitenkarte.**
 
 Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null Tracker
-Sieben Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
+Über zehn Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspalette · Druckfertiger One-Pager
 
 [![Prüfen](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml/badge.svg)](https://github.com/DomenicMoran/portfolio/actions/workflows/check.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-000?logo=nextdotjs)](https://nextjs.org)
@@ -20,7 +20,7 @@ Sieben Fallstudien mit rekonstruierten Architekturdiagrammen · ⌘K-Befehlspale
 ## Worum es geht
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
-versucht etwas anderes: für jedes der acht Systeme in Produktion beantwortet es
+versucht etwas anderes: für jedes der über zehn Systeme in Produktion beantwortet es
 drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
 Architektur?*, *Was war der schwierige Teil?*
 
