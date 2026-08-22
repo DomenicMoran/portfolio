@@ -499,7 +499,6 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       { label: "mfc.domenicmoran.de", href: "https://mfc.domenicmoran.de", kind: "live" },
-      { label: "Quellcode", href: "https://github.com/DomenicMoran/mfc", kind: "code" },
     ],
     architecture: "",
     shots: [

@@ -316,11 +316,6 @@ export const en: Content = {
           href: "https://mfc.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Source code",
-          href: "https://github.com/DomenicMoran/mfc",
-          kind: "code",
-        },
       ],
       architecture: "",
       shots: [
