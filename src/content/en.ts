@@ -208,7 +208,7 @@ export const en: Content = {
     },
     proAppsTitel: "Pro apps",
     proAppsLede:
-      "Four Android apps, built and set up in the Play Console — each with its own landing.",
+      "Four apps, submitted for review in both stores — each with its own landing.",
     proApps: [
       {
         name: "Aegis",
@@ -1175,7 +1175,7 @@ export const en: Content = {
         "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Android built, Play Console set up",
+      statusLabel: "Web live, both stores in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1264,7 +1264,7 @@ export const en: Content = {
         "Spots dropshipping and shows the original price, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, Android submitted",
+      statusLabel: "Web live, both stores in review",
       nochNichtAusgeliefert: true,
       accent: "cyan",
       problem:
@@ -1346,7 +1346,7 @@ export const en: Content = {
         "PDFs, photos and notes become flashcards, repeated on the SM-2 schedule, entirely offline",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Android built, Play Console set up",
+      statusLabel: "Web live, both stores in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1428,7 +1428,7 @@ export const en: Content = {
         "Applications, projects and contacts on a local board, with a language model on your own machine",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Android built, Play Console set up",
+      statusLabel: "Web live, both stores in review",
       nochNichtAusgeliefert: true,
       accent: "acid",
       problem:
@@ -1506,7 +1506,7 @@ export const en: Content = {
         "Your own day as a searchable memory: context, voice notes and thoughts, processed locally",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Android built, Play Console set up",
+      statusLabel: "Web live, both stores in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:

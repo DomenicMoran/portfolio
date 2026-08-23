@@ -378,8 +378,8 @@ export const hero = {
 
 /*
    Der Einstieg in die Produkte, direkt unter dem Kopf. Der Kaufweg ist
-   MFC — das einzige Produkt mit Kaufknopf — plus die vier Pro-Apps, deren
-   Android-Bauten in der Play Console liegen. Der Verweis unten führt zur
+   MFC — das einzige Produkt mit Kaufknopf — plus die vier Pro-Apps, die in
+   beiden Läden zur Prüfung liegen. Der Verweis unten führt zur
    vollständigen Übersicht, den Fallstudien, damit sich hier keine zweite
    Beschreibung derselben Produkte ablagert.
 */
@@ -398,7 +398,7 @@ export const produkte = {
   },
   proAppsTitel: "Pro-Apps",
   proAppsLede:
-    "Vier Android-Apps, gebaut und in der Play Console eingerichtet — jede mit eigener Landing.",
+    "Vier Apps, in beiden Läden zur Prüfung eingereicht — jede mit eigener Landing.",
   proApps: [
     {
       name: "Aegis",
@@ -1471,7 +1471,7 @@ export const caseStudies: CaseStudy[] = [
        Knopf „im Store ansehen" wäre deshalb weiterhin die Behauptung ohne
        Beleg, gegen die diese Seite argumentiert; die Aufnahmen unten stammen
        vom gebauten Android-Paket, nicht aus dem Entwicklungsstand. */
-    statusLabel: "Android gebaut, Play Console eingerichtet",
+    statusLabel: "Web live, beide Läden in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1560,7 +1560,7 @@ export const caseStudies: CaseStudy[] = [
       "Erkennt Dropshipping und zeigt den Originalpreis, gerechnet auf dem Gerät",
     year: "2026",
     role: "Alleiniger Entwickler",
-    statusLabel: "Web live, Android eingereicht",
+    statusLabel: "Web live, beide Läden in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "cyan",
     problem:
@@ -1642,7 +1642,7 @@ export const caseStudies: CaseStudy[] = [
       "Aus PDFs, Fotos und Notizen werden Lernkarten, wiederholt im SM-2-Rhythmus, vollständig offline",
     year: "2026",
     role: "Alleiniger Entwickler",
-    statusLabel: "Android gebaut, Play Console eingerichtet",
+    statusLabel: "Web live, beide Läden in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1724,7 +1724,7 @@ export const caseStudies: CaseStudy[] = [
       "Bewerbungen, Vorhaben und Kontakte auf einem lokalen Brett, mit einem Sprachmodell auf dem eigenen Rechner",
     year: "2026",
     role: "Alleiniger Entwickler",
-    statusLabel: "Android gebaut, Play Console eingerichtet",
+    statusLabel: "Web live, beide Läden in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "acid",
     problem:
@@ -1802,7 +1802,7 @@ export const caseStudies: CaseStudy[] = [
       "Der eigene Tag als durchsuchbares Gedächtnis: Kontext, Sprachnotizen und Gedanken, lokal verarbeitet",
     year: "2026",
     role: "Alleiniger Entwickler",
-    statusLabel: "Android gebaut, Play Console eingerichtet",
+    statusLabel: "Web live, beide Läden in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1881,9 +1881,9 @@ export const caseStudies: CaseStudy[] = [
 /* ========================================================================== */
 
 /*
-   Stand 21.08.2026: Die vier Werkbank-Systeme — Vortex, Synapse, Vesper und
-   Aether — sind inzwischen eigene Fallstudien: Ihre Android-AABs sind gebaut
-   und liegen in der Play Console. Die Werkbank ist damit leer, und die
+   Stand 23.08.2026: Die vier Werkbank-Systeme — Vortex, Synapse, Vesper und
+   Aether — sind inzwischen eigene Fallstudien: Sie liegen in beiden Läden
+   zur Prüfung. Die Werkbank ist damit leer, und die
    Sektion blendet sich aus, solange `items` leer bleibt.
 */
 export const werkbank = {
