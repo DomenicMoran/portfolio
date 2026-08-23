@@ -34,6 +34,14 @@ import sharp from "sharp";
 const AUSGELIEFERT = "public/shots";
 const ORIGINALE = "../assets/shots";
 
+/* Der Ordner liegt bewusst neben dem Repo, nicht darin: Originale sind
+   verlustfreie PNGs, mehrere MB je Stueck, und niemand soll sie mitklonen.
+   Ein Bauserver checkt aber nur das Repo aus, der Nachbarordner existiert
+   dort gar nicht. Punkt 4 unten ("Original existiert und ist nicht zu alt")
+   liesse sich dort also fuer jede einzelne Aufnahme nicht erfuellen, egal
+   wie aktuell sie ist. Das faellt hier einmal auf, nicht 45 Mal einzeln. */
+const ORIGINALE_ERREICHBAR = existsSync(ORIGINALE);
+
 /** Ab wann eine Aufnahme im Bericht als alt auffaellt. */
 const ALTER_TAGE = 21;
 
@@ -79,6 +87,7 @@ for (const [datei, soll] of genannt) {
   gruppen.get(gruppe).push({ datei, verhaeltnis: width / height });
 
   // Das Original tragen die Aufnahmen als PNG neben dem Repo.
+  if (!ORIGINALE_ERREICHBAR) continue;
   const original = join(ORIGINALE, datei.replace(/\.webp$/, ".png"));
   if (!existsSync(original)) {
     befunde.push(`${datei}: kein Original unter ${original}, neu erzeugen geht damit nicht`);
@@ -156,4 +165,10 @@ console.log(
 if (hinweise.length) {
   console.log(`\n  Aelter als ${ALTER_TAGE} Tage, ohne Beanstandung:`);
   for (const h of hinweise) console.log(`    ${h}`);
+}
+if (!ORIGINALE_ERREICHBAR) {
+  console.log(
+    `\n  ${ORIGINALE} nicht erreichbar, Original- und Altersabgleich ausgelassen: ` +
+      "so auf jedem Bauserver, der nur das Repo auscheckt.",
+  );
 }
