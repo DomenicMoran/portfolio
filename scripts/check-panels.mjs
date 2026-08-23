@@ -78,6 +78,26 @@ for (const pfad of SEITEN) {
       const beschriftung = ((await knopf.textContent()) ?? "").trim();
       await knopf.click();
       await seite.waitForTimeout(500);
+
+      /* Das Architekturdiagramm laedt seit dem Buendel-Budget-Fix per
+         next/dynamic nach, nicht mehr statisch mit der Seite. Beim ersten
+         Reiter auf der Seite, der es zeigt, kommt zu den festen 500 ms noch
+         der Netzwerk- und Parse-Weg des eigenen Chunks dazu; jeder weitere
+         Reiter auf derselben Seite findet ihn schon im Zwischenspeicher.
+         Gemessen im CI-Lauf 32639910049: Salati als erste Fallstudie der
+         Seite blieb bei „kein Diagramm", waehrend keine der sechs anderen
+         Fallstudien das Problem zeigte. Gewartet wird deshalb auf das Bild,
+         nicht auf die Uhr, wie beim Sprachabgleich in check-parity.mjs. */
+      if (/architek|architec/i.test(beschriftung)) {
+        await studie
+          .waitForSelector('[role="tabpanel"] svg text', {
+            state: "attached",
+            timeout: 8000,
+          })
+          .catch(() => {
+            // Bleibt es leer, meldet die Messung unten "kein Diagramm".
+          });
+      }
       tafeln++;
 
       const stand = await studie.evaluate(
