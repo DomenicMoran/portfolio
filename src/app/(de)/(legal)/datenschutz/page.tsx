@@ -94,10 +94,16 @@ export default function Datenschutz() {
           nicht: Er sagte, welche Logdaten anfallen und warum, und ließ offen,
           wie lange sie liegen, auf einer Seite, die sonst jede Angabe belegt.
 
-          Die Stunde ist keine Schätzung: Vercel nennt in der eigenen
+          Der Tag ist keine Schätzung: Vercel nennt in der eigenen
           Dokumentation zu den Laufzeitprotokollen je Tarif eine
-          Aufbewahrungszeit, und für den hier genutzten Tarif steht dort eine
-          Stunde. Wer den Tarif wechselt, muss diesen Satz nachziehen.
+          Aufbewahrungszeit, und für den hier genutzten Tarif „pro“ steht
+          dort ein Tag. Hier stand bis zum 23.08.2026 „eine Stunde“ – das ist
+          der Wert des Hobby-Tarifs, auf dem das Projekt einmal lief. Der
+          Wechsel auf „pro“ war ein Klick, der Rechtstext blieb stehen, und
+          damit nannte die Erklärung eine Frist, die kürzer war als die
+          tatsächliche. check:legal fragt den Tarif jetzt bei Vercel ab und
+          hält ihn gegen diesen Satz; ein Tarifwechsel kann dadurch nicht
+          mehr stillschweigend am Text vorbeigehen.
 
           Zur Rechtsgrundlage des Drittlandtransfers stand hier nur die
           Standardvertragsklausel. Das ist nicht falsch, aber es ist die
@@ -112,7 +118,7 @@ export default function Datenschutz() {
           Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer).
           Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte
           Interesse am sicheren und stabilen Betrieb. Der Hoster hält diese
-          Protokolle eine Stunde lang vor und löscht sie danach automatisch;
+          Protokolle einen Tag lang vor und löscht sie danach automatisch;
           eine eigene Speicherung, Auswertung oder Weitergabe findet nicht
           statt. Vercel ist nach dem EU-US-Datenschutzrahmen zertifiziert; die
           Übermittlung in die USA stützt sich damit auf den
