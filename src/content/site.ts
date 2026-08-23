@@ -199,7 +199,7 @@ export const about = {
       period: "seit 03/2018",
       title: "",
       org: " Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst — der Vollzeitjob, neben dem alle acht Systeme entstanden sind. ",
+      body: "Vollzeittätigkeit im öffentlichen Dienst – der Vollzeitjob, neben dem alle acht Systeme entstanden sind. ",
       current: true,
     },
   ],
@@ -359,7 +359,7 @@ export const hero = {
      Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
      Produktivrepo; „acht Systeme" ist dieselbe Angabe wie überall sonst.
      Der persönliche Werdegang bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Moran Software ist die Marke hinter acht Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog — 49,99 € einmalig, kein Abo.`,
+  lede: `Moran Software ist die Marke hinter acht Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
   tryIt: {
@@ -396,18 +396,18 @@ export const produkte = {
   eyebrow: "Produkte",
   title: "Moran Software",
   lede:
-    "Autonome Apps und Micro-SaaS aus Berlin. Jedes System läuft in Produktion, alle allein gebaut und betrieben — von der ersten Zeile bis zum Store-Review.",
+    "Autonome Apps und Micro-SaaS aus Berlin. Jedes System läuft in Produktion, alle allein gebaut und betrieben – von der ersten Zeile bis zum Store-Review.",
   mfc: {
-    name: "MFC — Moran Fleet Control",
+    name: "MFC – Moran Fleet Control",
     beschreibung:
-      "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche — lokal, ohne Abo.",
+      "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche – lokal, ohne Abo.",
     preis: "49,99 € einmalig, kein Abo",
     kaufen: "MFC kaufen",
     href: "https://mfc.domenicmoran.de",
   },
   proAppsTitel: "Pro-Apps",
   proAppsLede:
-    "Vier Apps, in beiden Läden zur Prüfung eingereicht — jede mit eigener Landing.",
+    "Vier Apps, in beiden Läden zur Prüfung eingereicht – jede mit eigener Landing.",
   proApps: [
     {
       name: "Aegis",
@@ -1031,7 +1031,7 @@ export const caseStudies: CaseStudy[] = [
       "63 Tabellen mit Row Level Security, 30 Fremdschlüssel hängen mit ON DELETE CASCADE an den Konten",
       "Nährwerte aus den Zutaten gerechnet, der ganze Katalog gegen Atwater geprüft: größte Abweichung 2,07 Prozent",
       "Nutzung ohne Konto bleibt vollständig lokal, kein Login-Zwang",
-      "Kontolöschung nach Art. 17 DSGVO über eine Edge Function, am laufenden Projekt durchgeprüft",
+      "Kontolöschung nach Art. 17 DSGVO über eine Edge Function, am laufenden Projekt durchgeprüft",
       "Der Link-Import kann nicht ins eigene Netz zeigen: geprüft wird die aufgelöste IP-Adresse, nicht der Name, und jede Weiterleitung erneut",
       "Abgerechnet wird nur im Browser; die App liest den Tarif aus dem Konto und schaltet frei, ohne einen Kaufweg zu bewerben (App-Store-Richtlinie 3.1.1 und 3.1.3(b))",
     ],
@@ -1409,7 +1409,7 @@ export const caseStudies: CaseStudy[] = [
       "Der Erkennungspunkt hängt am alphanumerischen Kern eines Wortes: Ein führendes Anführungszeichen verschiebt ihn nicht",
       "Sieben Importwege, einer davon eine Web-Adresse; der Server holt die Seite nur wegen CORS und speichert die Adresse nicht",
       "Ein Wort nachschlagen geht offline: Der Reader zeigt, wo es im Dokument sonst vorkommt. Die Übergabe an eine andere App ist ein eigener Schritt, die App selbst sendet nichts",
-      "Alles bleibt auf dem Gerät: IndexedDB im Browser, SQLite auf dem Telefon, Datenausfuhr als JSON nach Art. 20 DSGVO",
+      "Alles bleibt auf dem Gerät: IndexedDB im Browser, SQLite auf dem Telefon, Datenausfuhr als JSON nach Art. 20 DSGVO",
       "Eine Sicherung, die man zurückspielen kann: Beim Zusammenführen erkennt der Reader dasselbe Buch an seinem Inhalt und nicht an der Kennung, damit die Leseposition nicht zurückspringt",
       "Der Werkzeugkasten über der Originaldatei ist ein eigenes Paket, das Web und App gemeinsam benutzen: In der App läuft dieselbe Oberfläche in einer mitgelieferten WebView, weil pdf.js einen Browser braucht, den React Native nicht mitbringt",
       "Der Quelltext liegt vollständig öffentlich, unter PolyForm Noncommercial: lesbar und prüfbar, aber nicht zur gewerblichen Nutzung freigegeben",
@@ -1603,10 +1603,10 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Dropshipping-Shops verkaufen billige Ware mit großem Aufschlag, und der Käufer kann den Unterschied nicht sehen: dieselbe Ware, dasselbe Foto, ein anderer Preis. Bewertungen sind gekauft, Siegel austauschbar, und niemand hat die Zeit, jede Seite gegen ihre Quellen zu prüfen.",
     solution:
-      "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät — kein geprüfter Shop-Aufruf verlässt es.",
+      "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät – kein geprüfter Shop-Aufruf verlässt es.",
     hardPart: {
       title: "Eine ehrliche Bewertung darf kein Urteil über ein Unternehmen sein",
-      body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100 — allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
+      body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100 – allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
     },
     highlights: [
       "36 Merkmale, jedes mit Beleg im Ergebnis, bewertet in Log-Odds statt als Punktesumme",
@@ -1765,12 +1765,12 @@ export const caseStudies: CaseStudy[] = [
     nochNichtAusgeliefert: true,
     accent: "acid",
     problem:
-      "Bewerbungen liegen in Ordnern, Vorhaben in Tabellen, Kontakte im Telefon — nichts davon zusammen. Und wer ein lokales Sprachmodell nutzen will, bedient es über eine Kommandozeile statt über sein Brett.",
+      "Bewerbungen liegen in Ordnern, Vorhaben in Tabellen, Kontakte im Telefon – nichts davon zusammen. Und wer ein lokales Sprachmodell nutzen will, bedient es über eine Kommandozeile statt über sein Brett.",
     solution:
-      "Ein Kanban-Brett, das den Rechner nicht verlässt: Bewerbungen, Vorhaben und Kontakte in einer verschlüsselten Ablage, Karten per Ziehen und Ablegen. Für das Zusammenfassen und Bewerten spricht die App mit einem Sprachmodell, das der Nutzer selbst betreibt — Ollama oder LM Studio, beide lokal.",
+      "Ein Kanban-Brett, das den Rechner nicht verlässt: Bewerbungen, Vorhaben und Kontakte in einer verschlüsselten Ablage, Karten per Ziehen und Ablegen. Für das Zusammenfassen und Bewerten spricht die App mit einem Sprachmodell, das der Nutzer selbst betreibt – Ollama oder LM Studio, beide lokal.",
     hardPart: {
       title: "Ein Sprachmodell ansprechen, ohne eines mitzubringen",
-      body: "Vesper lädt kein Modell nach. Es spricht über eine Brücke mit Ollama oder LM Studio, die der Nutzer selbst installiert hat — das hält die App klein und die Daten auf dem Rechner, verlangt aber, dass die App mit beiden Schnittstellen umgehen kann und ehrlich sagt, wenn keiner der beiden läuft.",
+      body: "Vesper lädt kein Modell nach. Es spricht über eine Brücke mit Ollama oder LM Studio, die der Nutzer selbst installiert hat – das hält die App klein und die Daten auf dem Rechner, verlangt aber, dass die App mit beiden Schnittstellen umgehen kann und ehrlich sagt, wenn keiner der beiden läuft.",
     },
     highlights: [
       "Kanban-Brett mit Ziehen und Ablegen, Zustand und Ablage verschlüsselt auf dem Gerät",
@@ -1845,14 +1845,14 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Wer sich fragt, was er letzten Dienstag gemacht hat, durchsucht Kalender, Fotos und Chat-Verläufe einzeln. Ein Gedächtnis, das alles zusammenführt, verlangt normalerweise, den ganzen Tag in eine Cloud hochzuladen.",
     solution:
-      "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar — ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
+      "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar – ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
     hardPart: {
       title: "Die Grenze, die ein Gerät nicht überschreiten darf",
-      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich — § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
+      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich – § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
     },
     highlights: [
       "Durchsuchbare Notizen mit Rückblick; der Kern hat 239 Tests bei 96 % Abdeckung",
-      "Vier Erfassungsquellen — Standort, Sprachnotiz, Foto-Metadaten, Kalender — einzeln abschaltbar, standardmäßig aus",
+      "Vier Erfassungsquellen – Standort, Sprachnotiz, Foto-Metadaten, Kalender – einzeln abschaltbar, standardmäßig aus",
       "SQLCipher-Ablage, Volltextsuche, Datensicherung und Pro-Schranke",
     ],
     stack: [

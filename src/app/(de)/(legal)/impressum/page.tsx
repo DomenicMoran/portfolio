@@ -94,7 +94,7 @@ export default function Impressum() {
             Umsatzsteuer
           </h2>
           <p className="text-sm leading-relaxed text-ink-dim">
-            Kleinunternehmer nach § 19 UStG — es wird keine Umsatzsteuer berechnet.
+            Kleinunternehmer nach § 19 UStG – es wird keine Umsatzsteuer berechnet.
           </p>
         </section>
 

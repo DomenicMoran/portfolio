@@ -168,7 +168,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `Moran Software is the brand behind eight systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog — €49.99 one-time, no subscription.`,
+    lede: `Moran Software is the brand behind eight systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog – €49.99 one-time, no subscription.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
     tryIt: {
@@ -197,18 +197,18 @@ export const en: Content = {
     eyebrow: "Products",
     title: "Moran Software",
     lede:
-      "Autonomous apps and micro-SaaS from Berlin. Every system runs in production, all built and operated by one person — from the first line to the store review.",
+      "Autonomous apps and micro-SaaS from Berlin. Every system runs in production, all built and operated by one person – from the first line to the store review.",
     mfc: {
-      name: "MFC — Moran Fleet Control",
+      name: "MFC – Moran Fleet Control",
       beschreibung:
-        "Chat, agents, tools and backlog in one interface — local, no subscription.",
+        "Chat, agents, tools and backlog in one interface – local, no subscription.",
       preis: "€49.99 one-time, no subscription",
       kaufen: "Buy MFC",
       href: "https://mfc.domenicmoran.de",
     },
     proAppsTitel: "Pro apps",
     proAppsLede:
-      "Four apps, submitted for review in both stores — each with its own landing.",
+      "Four apps, submitted for review in both stores – each with its own landing.",
     proApps: [
       {
         name: "Aegis",
@@ -262,18 +262,18 @@ export const en: Content = {
       index: "00",
       name: "Moran Fleet Control",
       tagline:
-        "The one application for the builder's day: LLM chat, agents, tools, backlog — local, no subscription",
+        "The one application for the builder’s day: LLM chat, agents, tools, backlog – local, no subscription",
       year: "2026",
       role: "Sole developer · product, code, sales, legal",
       statusLabel: "Live with buy button",
       accent: "acid",
       problem:
-        "A builder's working day is spread across ten tools: a terminal for agents, tabs for models, spreadsheets for the backlog, folders for projects. Every switch costs context, and every cloud layer that rides along costs trust and money.",
+        "A builder’s working day is spread across ten tools: a terminal for agents, tabs for models, spreadsheets for the backlog, folders for projects. Every switch costs context, and every cloud layer that rides along costs trust and money.",
       solution:
-        "A desktop application (Windows, macOS, Linux) plus a web build: multi-LLM router with six providers, agents over the local Claude CLI — permissions, MCP, skills and memory are adopted unchanged —, eleven micro-SaaS tools, project browser with git status, backlog of all projects, marketing pipeline with hard rate limits, and a vault that sits AES-256-encrypted in the OS keyring. 49.99 euros one-time, no subscription.",
+        "A desktop application (Windows, macOS, Linux) plus a web build: multi-LLM router with six providers, agents over the local Claude CLI – permissions, MCP, skills and memory are adopted unchanged –, eleven micro-SaaS tools, project browser with git status, backlog of all projects, marketing pipeline with hard rate limits, and a vault that sits AES-256-encrypted in the OS keyring. 49.99 euros one-time, no subscription.",
       hardPart: {
         title: "Take over Claude Code without duplicating it",
-        body: "Whoever leaves the terminal does not want to set anything up again. Instead of rebuilding permissions, MCP servers and skills, MFC runs the local Claude CLI as the agent backend — the existing setup keeps applying unchanged. The stream of 204 events per session is rendered in the interface, with abort and a live log. Where something cannot work without a key, the interface says so honestly — simulations are marked as such.",
+        body: "Whoever leaves the terminal does not want to set anything up again. Instead of rebuilding permissions, MCP servers and skills, MFC runs the local Claude CLI as the agent backend – the existing setup keeps applying unchanged. The stream of 204 events per session is rendered in the interface, with abort and a live log. Where something cannot work without a key, the interface says so honestly – simulations are marked as such.",
       },
       highlights: [
         "Claude Code takeover: permissions, MCP, skills and memory are read and used unchanged",
@@ -344,7 +344,7 @@ export const en: Content = {
       year: "2026",
       // „legal“ und nicht „licensing“: Das deutsche „Recht“ meint hier
       // Impressum, Datenschutz, Alterseinstufung und die Kennzeichnung nach
-      // EU AI Act Art. 50, nicht Lizenzen.
+      // EU AI Act Art. 50, nicht Lizenzen.
       role: "Sole developer · product, code, stores, legal",
       statusLabel: "Live in both stores",
       accent: "acid",
@@ -783,7 +783,7 @@ export const en: Content = {
         "63 tables with row level security, 30 foreign keys hanging off the accounts with ON DELETE CASCADE",
         "Nutrition computed from ingredients, the whole catalogue checked against Atwater: largest deviation 2.07 per cent",
         "Using the app without an account stays entirely local, no forced login",
-        "Account deletion under Art. 17 GDPR through an edge function, verified against the running project",
+        "Account deletion under Art. 17 GDPR through an edge function, verified against the running project",
         "The link importer cannot point into my own network: what is checked is the resolved IP address, not the name, and every redirect again",
         "Billing happens in the browser only; the app reads the plan from the account and unlocks, without advertising a purchase path (App Store guidelines 3.1.1 and 3.1.3(b))",
       ],
@@ -1115,7 +1115,7 @@ export const en: Content = {
         "The recognition point derives from a word’s alphanumeric core, so a leading quotation mark does not move it",
         "Seven import paths, one of them a web address; the server fetches the page only to get around CORS and does not store the URL",
         "Looking a word up works offline: the reader shows where else it occurs in the document. Handing it to another app is a separate step; the app itself sends nothing",
-        "Everything stays on the device: IndexedDB in the browser, SQLite on the phone, full data export as JSON under Art. 20 GDPR",
+        "Everything stays on the device: IndexedDB in the browser, SQLite on the phone, full data export as JSON under Art. 20 GDPR",
         "A backup you can restore: on merge the reader recognises the same book by its content rather than its id, so the reading position does not jump back",
         "The toolbox over the original file is its own package that web and app share: in the app the same interface runs inside a bundled WebView, because pdf.js needs a browser that React Native does not bring",
         "The source is fully public, under PolyForm Noncommercial: readable and checkable, but not licensed for commercial use",
@@ -1247,7 +1247,7 @@ export const en: Content = {
       shots: [
         {
           src: "/shots/aegis/aufnahme-01-uebersicht.webp",
-          alt: "Aegis overview: the current year's balance at the top, the latest receipts and the open deadlines below.",
+          alt: "Aegis overview: the current year’s balance at the top, the latest receipts and the open deadlines below.",
           width: 1080,
           height: 2160,
           label: "Overview · income and deadlines",
@@ -1285,10 +1285,10 @@ export const en: Content = {
       problem:
         "Dropshipping shops sell cheap goods at a large markup, and the buyer cannot see the difference: same goods, same photo, different price. Reviews are bought, badges interchangeable, and nobody has the time to check every page against its sources.",
       solution:
-        "One shop link is enough. Vortex reads the page, checks 36 features with evidence and returns a score with reasoning, plus the price comparison: what does the same goods cost in the original on AliExpress? The evaluation runs on the device — no checked shop request leaves it.",
+        "One shop link is enough. Vortex reads the page, checks 36 features with evidence and returns a score with reasoning, plus the price comparison: what does the same goods cost in the original on AliExpress? The evaluation runs on the device – no checked shop request leaves it.",
       hardPart: {
         title: "An honest assessment must not be a verdict on a company",
-        body: "The first run against a real US manufacturer gave 70 out of 100 — only for a missing German imprint, a missing VAT ID and no purchase on invoice. That is not imprecision, it is an untenable claim about a company. The answer was target-market and product-page detection and three narrowed patterns; six tests pin the case down. After that: 4 out of 100.",
+        body: "The first run against a real US manufacturer gave 70 out of 100 – only for a missing German imprint, a missing VAT ID and no purchase on invoice. That is not imprecision, it is an untenable claim about a company. The answer was target-market and product-page detection and three narrowed patterns; six tests pin the case down. After that: 4 out of 100.",
       },
       highlights: [
         "36 features, each with evidence in the result, scored in log-odds instead of a points sum",
@@ -1329,7 +1329,7 @@ export const en: Content = {
       shots: [
         {
           src: "/shots/vortex/aufnahme-01-start.webp",
-          alt: "The app's start screen: the wordmark at the top, the input field for the shop link below, and the note that the analysis runs on the device.",
+          alt: "The app’s start screen: the wordmark at the top, the input field for the shop link below, and the note that the analysis runs on the device.",
           width: 1170,
           height: 2340,
           label: "Start · paste a shop link",
@@ -1345,7 +1345,7 @@ export const en: Content = {
         },
         {
           src: "/shots/vortex/aufnahme-03-so-funktioniert-es.webp",
-          alt: "The explanation “How it works”: paste a link, check the features, see the original price — three steps, all on the device.",
+          alt: "The explanation “How it works”: paste a link, check the features, see the original price – three steps, all on the device.",
           width: 1170,
           height: 2340,
           label: "How it works · three steps",
@@ -1370,13 +1370,13 @@ export const en: Content = {
         "PDF, photo or text in, cards out. Before writing, the app shows what will come out of each page; the cards sit in a SQLCipher-encrypted store on the device, and the repetition schedule computes locally. An interrupted session resumes where it stopped.",
       hardPart: {
         title: "An import that takes nothing you have not seen",
-        body: "Turning a PDF into cards is a heuristic, not a guarantee. So the preview comes before the write: what comes out of each page is the user's call, not the script's. The store is encrypted with SQLCipher, and the core pins the repetition schedule with 216 tests and 92.6 percent coverage.",
+        body: "Turning a PDF into cards is a heuristic, not a guarantee. So the preview comes before the write: what comes out of each page is the user’s call, not the script’s. The store is encrypted with SQLCipher, and the core pins the repetition schedule with 216 tests and 92.6 percent coverage.",
       },
       highlights: [
         "Import from PDF, photo and text, with a preview before writing",
         "SM-2 repetition schedule, computed on the device, with session resume",
         "SQLCipher store: the cards never leave the device",
-        "Statistics, backup and export; the core has 216 tests at 92.6 % coverage",
+        "Statistics, backup and export; the core has 216 tests at 92.6% coverage",
         "Pro gate and daily reminder, both without the data leaving the app",
       ],
       stack: [
@@ -1396,7 +1396,7 @@ export const en: Content = {
       ],
       metrics: [
         { value: "216", label: "tests in the core" },
-        { value: "92.6 %", label: "coverage" },
+        { value: "92.6%", label: "coverage" },
         { value: "48", label: "tests in the app" },
         { value: "3", label: "import paths" },
       ],
@@ -1447,12 +1447,12 @@ export const en: Content = {
       nochNichtAusgeliefert: true,
       accent: "acid",
       problem:
-        "Applications sit in folders, projects in spreadsheets, contacts in the phone — none of it together. And whoever wants to use a local language model drives it from a command line instead of from their board.",
+        "Applications sit in folders, projects in spreadsheets, contacts in the phone – none of it together. And whoever wants to use a local language model drives it from a command line instead of from their board.",
       solution:
-        "A kanban board that never leaves the machine: applications, projects and contacts in an encrypted store, cards moved by dragging and dropping. For summarising and scoring, the app talks to a language model the user runs themselves — Ollama or LM Studio, both local.",
+        "A kanban board that never leaves the machine: applications, projects and contacts in an encrypted store, cards moved by dragging and dropping. For summarising and scoring, the app talks to a language model the user runs themselves – Ollama or LM Studio, both local.",
       hardPart: {
         title: "Talk to a language model without shipping one",
-        body: "Vesper downloads no model. It talks over a bridge to Ollama or LM Studio, which the user installed — that keeps the app small and the data on the machine, but demands that the app handle both interfaces and say honestly when neither is running.",
+        body: "Vesper downloads no model. It talks over a bridge to Ollama or LM Studio, which the user installed – that keeps the app small and the data on the machine, but demands that the app handle both interfaces and say honestly when neither is running.",
       },
       highlights: [
         "Kanban board with drag and drop, state and store encrypted on the device",
@@ -1527,14 +1527,14 @@ export const en: Content = {
       problem:
         "Whoever wonders what they did last Tuesday searches calendar, photos and chat history one by one. A memory that brings it all together usually means uploading your whole day to a cloud.",
       solution:
-        "Aether keeps context, voice notes and thoughts together and makes them searchable — evaluated on the device. Capture sources like location or calendar are individually switchable and off by default; a voice note about yourself is possible, a recording of others is not.",
+        "Aether keeps context, voice notes and thoughts together and makes them searchable – evaluated on the device. Capture sources like location or calendar are individually switchable and off by default; a voice note about yourself is possible, a recording of others is not.",
       hardPart: {
         title: "The line a device must not cross",
-        body: "An app that captures your own day always sits at the line to recording third parties. Aether captures nothing in the background by default, every source is individually switchable, and recording other people's conversations is deliberately impossible — § 201 StGB is not a formality but a line the store text must not even hint at.",
+        body: "An app that captures your own day always sits at the line to recording third parties. Aether captures nothing in the background by default, every source is individually switchable, and recording other people’s conversations is deliberately impossible – § 201 StGB is not a formality but a line the store text must not even hint at.",
       },
       highlights: [
-        "Searchable notes with review; the core has 239 tests at 96 % coverage",
-        "Four capture sources — location, voice note, photo metadata, calendar — individually switchable, off by default",
+        "Searchable notes with review; the core has 239 tests at 96% coverage",
+        "Four capture sources – location, voice note, photo metadata, calendar – individually switchable, off by default",
         "SQLCipher store, full-text search, data backup and a Pro gate",
       ],
       stack: [
@@ -1554,7 +1554,7 @@ export const en: Content = {
       ],
       metrics: [
         { value: "239", label: "tests in the core" },
-        { value: "96 %", label: "coverage" },
+        { value: "96%", label: "coverage" },
         { value: "65", label: "tests in the app" },
         { value: "4", label: "capture sources" },
       ],
@@ -1662,7 +1662,7 @@ export const en: Content = {
         period: "since March 2018",
         title: "Police officer",
         org: " Berlin",
-        body: "Uniformed police service — the full-time job alongside which all eight systems were built. The duty of evidence from an incident report is now my definition of done.",
+        body: "Uniformed police service – the full-time job alongside which all eight systems were built. The duty of evidence from an incident report is now my definition of done.",
         current: true,
       },
     ],

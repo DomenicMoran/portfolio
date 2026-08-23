@@ -655,7 +655,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                         className="mt-1 size-3.5 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
                         aria-hidden
                       />
-                      <span className="underline decoration-ink-faint/60 underline-offset-4 transition-colors group-hover:decoration-acid">
+                      <span className="underline decoration-line underline-offset-4 transition-colors group-hover:decoration-acid">
                         {artikel.title}
                       </span>
                     </Link>
