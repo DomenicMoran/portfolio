@@ -171,7 +171,7 @@ export function Hero() {
             {hero.tryIt.before}{" "}
             <a
               href={hero.tryIt.href}
-              className="-my-1 py-1 text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+              className="-my-1 py-1 text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
             >
               {hero.tryIt.label}
             </a>{" "}

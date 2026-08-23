@@ -132,7 +132,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: acht Produktionssysteme in ${bauzeit}, fünf Apps zur Überprüfung im Play Store eingereicht, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: acht Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und acht weitere Apps in der Prüfung bei Google Play, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -144,7 +144,16 @@ export const about = {
       note: "neben einem Vollzeitjob",
     },
     { value: "8", label: "Systeme in Produktion", note: "alle allein gebaut" },
-    { value: "8", label: "Store-Einträge live", note: "5 Play, 3 App Store" },
+    /* Am 23.08.2026 je Laden einzeln nachgezählt, nicht fortgeschrieben.
+
+       Hier stand „8 — 5 Play, 3 App Store". Beide Teilzahlen waren zu
+       niedrig: Bei Apple nennt die iTunes-Lookup-API zur Kennung 1895108325
+       genau vier Einträge (Salati, Salati TV, MenuCloud, MenuCloud
+       Discovery), bei Play sind es sechs — die fünf verlinkten plus die
+       MFC-Companion-App, die in keiner Fallstudie stand. Die Zahl ergibt
+       sich aus den Store-Verweisen der Fallstudien; solange ein Eintrag dort
+       fehlt, zählt die Kachel ihn nicht mit und die Seite untertreibt. */
+    { value: "10", label: "Store-Einträge live", note: "6 Play, 4 App Store" },
     {
       value: "2022",
       label: "Autodidakt seit",
@@ -499,6 +508,19 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       { label: "mfc.domenicmoran.de", href: "https://mfc.domenicmoran.de", kind: "live" },
+      /* Die Begleit-App zu MFC steht öffentlich bei Google Play und war hier
+         nirgends verlinkt. Sie fehlte damit auch in der Zählung der
+         Store-Einträge, die sich aus genau diesen Verweisen ergibt — die
+         Kachel sagte acht, öffentlich waren zehn. Eine Seite, die weniger
+         sagt als wahr ist, fällt niemandem auf; sie kostet nur.
+
+         Nachgeprüft am 23.08.2026: `de.domenicmoran.mfc.companion` antwortet
+         mit 200 und trägt den Titel „MFC Companion". */
+      {
+        label: "Companion-App (Play)",
+        href: "https://play.google.com/store/apps/details?id=de.domenicmoran.mfc.companion",
+        kind: "store",
+      },
     ],
     architecture: "",
     shots: [
@@ -620,6 +642,21 @@ export const caseStudies: CaseStudy[] = [
       {
         label: "Google Play (TV)",
         href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
+        kind: "store",
+      },
+      /* Die Fernseher-Fassung steht seit dem 23.08.2026 auch bei Apple, und
+         hier stand nur der Play-Eintrag. Derselbe Fehler wie am 08.08.2026,
+         nur mit vertauschten Läden: Die Fallstudie zählte vier Geräteklassen
+         und belegte den Fernseher an einem von zwei Läden.
+
+         Nachgeprüft am 23.08.2026 über die iTunes-Lookup-API: Zur
+         Entwickler-Kennung 1895108325 („Domenic Moran") stehen genau vier
+         Einträge, darunter `trackId` 6800283177 mit dem Titel „Salati TV",
+         Fassung 1.9.1. Nicht über die Store-Seite geprüft — die antwortete
+         beim Abruf mit 429, und ein Ratenlimit ist kein Befund. */
+      {
+        label: "App Store (TV)",
+        href: "https://apps.apple.com/de/app/salati-tv/id6800283177",
         kind: "store",
       },
     ],
@@ -2234,7 +2271,7 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu acht öffentliche Store-Einträge über beide Läden und drei Apps, die gerade in der Prüfung liegen. 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu zehn öffentliche Store-Einträge über beide Läden und acht Apps, die gerade in der Prüfung liegen. 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

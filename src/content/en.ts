@@ -316,6 +316,13 @@ export const en: Content = {
           href: "https://mfc.domenicmoran.de",
           kind: "live",
         },
+        // Siehe `site.ts`: Der Play-Eintrag der Begleit-App ist am
+        // 23.08.2026 mit Status 200 belegt und fehlte in beiden Fassungen.
+        {
+          label: "Companion app (Play)",
+          href: "https://play.google.com/store/apps/details?id=de.domenicmoran.mfc.companion",
+          kind: "store",
+        },
       ],
       architecture: "",
       shots: [
@@ -431,6 +438,14 @@ export const en: Content = {
         {
           label: "Google Play (TV)",
           href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
+          kind: "store",
+        },
+        // Siehe `site.ts`: Der Apple-Eintrag der Fernseher-Fassung ist am
+        // 23.08.2026 über die iTunes-Lookup-API belegt. Beide Fassungen
+        // führen ihn, sonst wiederholt sich der Fall von oben.
+        {
+          label: "App Store (TV)",
+          href: "https://apps.apple.com/de/app/salati-tv/id6800283177",
           kind: "store",
         },
       ],
@@ -1592,7 +1607,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: eight production systems in ${buildTime}, five apps in the Play Store and three of them in the App Store as well, three more sitting in review there, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: eight production systems in ${buildTime}, ten public store listings across both stores and eight more apps sitting in review at Google Play, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1603,10 +1618,11 @@ export const en: Content = {
         note: "alongside a full-time job",
       },
       { value: "8", label: "systems in production", note: "all built alone" },
+      // Siehe `site.ts`: am 23.08.2026 je Laden einzeln nachgezählt.
       {
-        value: "8",
+        value: "10",
         label: "store listings live",
-        note: "5 Play, 3 App Store",
+        note: "6 Play, 4 App Store",
       },
       {
         value: "2022",
@@ -2062,7 +2078,7 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus eight public store listings across both stores and three more apps sitting in review right now. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus ten public store listings across both stores and eight more apps sitting in review right now. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
