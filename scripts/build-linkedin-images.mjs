@@ -82,27 +82,6 @@ function kennzahl(anfangDerBeschriftung) {
 }
 
 /**
- * Eine Zahl der Kennzahlenreihe aus `about.stats` holen.
- *
- * Hier standen „4" und „2" als Ziffern im Bildmarkup. Sie waren richtig, als
- * das Bild entstand, und blieben stehen, als aus vier Systemen sieben wurden.
- * Ein Titelbild liest niemand ein zweites Mal, und genau deshalb gehört keine
- * Zahl hinein, die jemand von Hand nachziehen müsste.
- */
-function kachelZahl(beschriftung) {
-  const treffer = new RegExp(
-    `\\{ value: "([^"]+)", label: "${beschriftung}", note:`,
-  ).exec(quelle);
-  if (!treffer) {
-    throw new Error(
-      `Keine Kennzahl "${beschriftung}" in about.stats. Das Titelbild wird ` +
-        `nicht gebaut, bevor klar ist, welche Zahl gilt.`,
-    );
-  }
-  return treffer[1];
-}
-
-/**
  * Auf den nächsten runden Tausender abrunden.
  *
  * Auf dem Titelbild steht bewusst "4.000+" und nicht "4.053". Das Bild liegt
@@ -125,6 +104,25 @@ function untergrenze(zahl) {
 }
 
 const commits = untergrenze(kennzahl("Commits seit"));
+
+/**
+ * Systeme live und Store-Einträge: bewusst nicht aus about.stats.
+ *
+ * about.stats zählt eng (nur Systeme mit eigener Fallstudie, aktuell "8"
+ * Systeme, "10" Store-Einträge) und bleibt exakt, weil der tägliche Lauf sie
+ * nachzieht. Das Titelbild liegt bei LinkedIn und wird nur von Hand
+ * ausgetauscht: Dieselbe enge, exakte Zahl wäre binnen Tagen wieder falsch,
+ * bei einem neuen System pro Woche schneller als jedes Nachpflegen.
+ *
+ * docs/LINKEDIN.md führt seit dem 22.08.2026 deshalb eine weiter gefasste
+ * Zählung (eigenständige Produkte statt nur Fallstudien, siehe dort für die
+ * Liste) und rundet bewusst weit nach unten auf "über 10". Diese beiden
+ * Werte folgen derselben Formulierung wie Kopfzeile und Info-Text dort.
+ * Ändert sich die Zählung, wird hier von Hand nachgezogen — LINKEDIN.md ist
+ * die Quelle, nicht about.stats.
+ */
+const systemeLive = "10+";
+const storeEintraege = "10+";
 
 const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8">
@@ -176,8 +174,8 @@ const html = `<!doctype html>
     </div>
     <div class="rechts">
       <div class="zahlen">
-        <div class="zahl"><div class="wert">${kachelZahl("Systeme in Produktion")}</div><div class="bez">Systeme live</div></div>
-        <div class="zahl"><div class="wert">${kachelZahl("Store-Einträge live")}</div><div class="bez">Store-Einträge</div></div>
+        <div class="zahl"><div class="wert">${systemeLive}</div><div class="bez">Systeme live</div></div>
+        <div class="zahl"><div class="wert">${storeEintraege}</div><div class="bez">Store-Einträge</div></div>
         <div class="zahl"><div class="wert">${commits}</div><div class="bez">Commits seit 03/2026</div></div>
       </div>
       <div class="domain">domenicmoran.de</div>
