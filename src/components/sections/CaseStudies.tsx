@@ -158,10 +158,23 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
   const artikelDazu = (study.articles ?? [])
     .map((slug) => artikel.find((a) => a.slug === slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a));
-  /** Der Automatisierungs-Reiter erscheint nur, wo es etwas zu zeigen gibt. */
-  const sichtbareTabs = TAB_IDS.filter(
-    (id) => id !== "automation" || study.automation,
-  );
+  /* Ein Reiter erscheint nur, wo es etwas zu zeigen gibt.
+
+     Für die Automatisierung galt das schon. Für die Architektur nicht, und
+     das kostete: Fünf Fallstudien führen `architecture: ""` – MFC, Vortex,
+     Synapse, Vesper und Aether. Ihr Reiter „Architektur“ stand trotzdem da
+     und öffnete eine leere Tafel: null Zeichen, kein Diagramm, in beiden
+     Sprachfassungen. `check:panels` hat dafür 20 Befunde gemeldet, gesehen
+     hat sie niemand, weil die Kette davor bei `check:nbsp` abbrach.
+
+     Ein Reiter ist ein Versprechen. Wer ihn anklickt und nichts bekommt,
+     hält das für einen Fehler der Seite – zu Recht. Solange kein Diagramm
+     hinterlegt ist, gibt es den Reiter nicht. */
+  const sichtbareTabs = TAB_IDS.filter((id) => {
+    if (id === "automation") return Boolean(study.automation);
+    if (id === "architecture") return Boolean(study.architecture);
+    return true;
+  });
 
   /**
    * Pfeiltasten in der Reiterleiste, und nur ein Tabstopp je Fallstudie.
@@ -535,7 +548,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   <TafelAutomation daten={study.automation} akzent={accent} />
                 ) : null}
 
-                {tab === "architecture" ? (
+                {tab === "architecture" && study.architecture ? (
                   <ArchitectureDiagram name={study.architecture} />
                 ) : null}
 
