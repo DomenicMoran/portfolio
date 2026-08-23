@@ -10,7 +10,7 @@ import {
 } from "@/lib/duration";
 
 /**
- * Wie lange die acht Systeme in Produktion entstehen, gerechnet, nicht getippt.
+ * Wie lange die über zehn Systeme in Produktion entstehen, gerechnet, nicht getippt.
  *
  * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
  * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
@@ -57,7 +57,7 @@ export const site = {
   location: "Berlin, Deutschland",
   // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
   ogTagline:
-    "Acht Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
+    "Über zehn Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "kontakt@domenicmoran.de",
@@ -106,7 +106,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Acht Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
+      "Über zehn Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
   },
 } as const;
 
@@ -132,7 +132,7 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: acht Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und acht weitere Apps in der Prüfung bei Google Play, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und acht weitere Apps in der Prüfung bei Google Play, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -143,7 +143,7 @@ export const about = {
       label: "Commits seit März 2026",
       note: "neben einem Vollzeitjob",
     },
-    { value: "8", label: "Systeme in Produktion", note: "alle allein gebaut" },
+    { value: "10+", label: "Systeme in Produktion", note: "alle allein gebaut" },
     /* Am 23.08.2026 je Laden einzeln nachgezählt, nicht fortgeschrieben.
 
        Hier stand „8 — 5 Play, 3 App Store". Beide Teilzahlen waren zu
@@ -171,20 +171,20 @@ export const about = {
    * Stempel 4.046, die Konsolenmeldung wieder etwas anderes. Eine Seite, die
    * zum Nachrechnen einlädt, darf sich nicht selbst widersprechen.
    */
-  statsHinweis: `Gemessen am ${datumLang(verified.date)} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die sechs Monorepos hinter MenuCloud, Salati, NOURI, BitDojo, Dartile und LexiPulse, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Ein Automat frischt die Zahl täglich auf; der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
+  statsHinweis: `Gemessen am ${datumLang(verified.date)} über die GitHub-API, mit git rev-list --count über alle ${verified.repos} Repositories: die sechs Monorepos hinter MenuCloud, Salati, NOURI, BitDojo, Dartile und LexiPulse, diese Webseite und die vier veröffentlichten Pakete. Gezählt wird der Hauptzweig, und nur, was auch bei GitHub liegt. Lokale Stände zählen nicht mit. Die Zahl trägt deshalb ihr Prüfdatum und kein Versprechen: Aufgefrischt wird sie von Hand, nicht laufend. Der Stand wächst weiter, abweichende Werte sind daher höher, nicht niedriger.`,
   timeline: [
     {
       period: "seit 04/2026",
       title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von acht Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      body: "Aufbau und Betrieb von über zehn Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind acht Systeme in Produktion und eine prüfbare Git-Historie.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind über zehn Systeme in Produktion und eine prüfbare Git-Historie.",
       current: true,
     },
     /* Der Vollzeitjob, auf den die Seite überall verweist, ohne ihn zu nennen.
@@ -199,7 +199,7 @@ export const about = {
       period: "seit 03/2018",
       title: "",
       org: " Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst – der Vollzeitjob, neben dem alle acht Systeme entstanden sind. ",
+      body: "Vollzeittätigkeit im öffentlichen Dienst – der Vollzeitjob, neben dem alle über zehn Systeme entstanden sind. ",
       current: true,
     },
   ],
@@ -357,14 +357,15 @@ export const hero = {
   ] as { text: string; accent?: boolean }[],
   /* Produkt-Einstieg statt Bewerbung: Die Marke, die Systeme und der
      Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
-     Produktivrepo; „acht Systeme" ist dieselbe Angabe wie überall sonst.
-     Der persönliche Werdegang bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Moran Software ist die Marke hinter acht Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
+     Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
+     belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
+     bleibt im Abschnitt „Über mich" weiter unten. */
+  lede: `Moran Software ist die Marke hinter über zehn Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
   tryIt: {
     before:
-      "Drei der acht Systeme in Produktion rechnen hier im Browser mit:",
+      "Drei von über zehn Systemen in Produktion rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -374,7 +375,7 @@ export const hero = {
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
   // falsch wäre.
   proof: [
-    { value: "8", label: "Systeme in Produktion" },
+    { value: "10+", label: "Systeme in Produktion" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.800+", label: "Testfälle (MenuCloud)" },
@@ -2253,7 +2254,7 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Acht Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Über zehn Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
       proofLabel: "Die dreizehn Fallstudien",
     },

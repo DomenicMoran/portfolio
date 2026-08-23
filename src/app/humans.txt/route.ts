@@ -37,8 +37,8 @@ export function GET() {
   prefers-reduced-motion schaltet Lenis und den Cursor gar nicht erst ein.
 
 /* BELEGE */
-  Ein Automat bei GitHub zählt täglich die Commits über alle
-  ${verified.repos} Repositories, schreibt sie in diese Seite und liefert aus.
+  Die Commits über alle ${verified.repos} Repositories werden über die
+  GitHub-API gezählt und von Hand in diese Seite geschrieben.
   Stand ${stand}: ${verified.commitsHead} Commits, über die GitHub-API gezählt.
   Nur was auch bei GitHub liegt, zählt mit, lokale Stände nicht.
   Der Bau scheitert, wenn eine private Datei in public/ liegt.

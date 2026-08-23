@@ -60,7 +60,7 @@ const SALATI_VERSIONS = SALATI_VERSIONEN;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
- * Wie lange die vier Produktionssysteme entstehen, gerechnet.
+ * Wie lange die über zehn Produktionssysteme entstehen, gerechnet.
  *
  * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
  * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
@@ -91,7 +91,7 @@ export const en: Content = {
     role: "AI Product Engineer",
     location: "Berlin, Germany",
     ogTagline:
-      "Eight systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
+      "More than ten systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
     email: "kontakt@domenicmoran.de",
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
@@ -106,7 +106,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "Eight systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
+        "More than ten systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
     },
   },
 
@@ -168,19 +168,19 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `Moran Software is the brand behind eight systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog – €49.99 one-time, no subscription.`,
+    lede: `Moran Software is the brand behind more than ten systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog – €49.99 one-time, no subscription.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
     tryIt: {
       before:
-        "Three of the eight production systems run right here in the browser:",
+        "Three of the more than ten production systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
     },
 
     proof: [
-      { value: "8", label: "systems in production" },
+      { value: "10+", label: "systems in production" },
       {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
@@ -240,8 +240,8 @@ export const en: Content = {
 
   work: {
     eyebrow: "Selected work",
-    title: "Eight systems in production, all built alone.",
-    lede: "No practice projects, no tutorial clones. Eight systems with real users, real payments or real legal obligations. I owned each one from the first line to the store review.",
+    title: "More than ten systems in production, all built alone.",
+    lede: "No practice projects, no tutorial clones. More than ten systems with real users, real payments or real legal obligations. I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
       automation: "Automation",
@@ -1607,7 +1607,7 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: eight production systems in ${buildTime}, ten public store listings across both stores and eight more apps sitting in review at Google Play, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, ten public store listings across both stores and eight more apps sitting in review at Google Play, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1617,7 +1617,7 @@ export const en: Content = {
         label: "commits since March 2026",
         note: "alongside a full-time job",
       },
-      { value: "8", label: "systems in production", note: "all built alone" },
+      { value: "10+", label: "systems in production", note: "all built alone" },
       // Siehe `site.ts`: am 23.08.2026 je Laden einzeln nachgezählt.
       {
         value: "10",
@@ -1635,7 +1635,7 @@ export const en: Content = {
        als „6 August 2026“ setzen, zwei Datumsformate auf einer Seite, und
        das maschinenlesbare mitten im Satz. Die Formatierung liegt seitdem in
        `src/lib/date-format.ts`, für beide Sprachen. */
-    statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the six monorepos behind MenuCloud, Salati, NOURI, BitDojo, Dartile and LexiPulse, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. A scheduled job refreshes the number daily; it keeps growing, so any deviation is higher, not lower.`,
+    statsHinweis: `Measured on ${dateLong(verified.date)} through the GitHub API, with git rev-list --count across all ${verified.repos} repositories: the six monorepos behind MenuCloud, Salati, NOURI, BitDojo, Dartile and LexiPulse, this site and the four published packages. Counted on the main branch, and only what is actually on GitHub. Local commits do not count. The number therefore carries its measurement date rather than a promise: it is refreshed by hand, not continuously. It keeps growing, so any deviation is higher, not lower.`,
     timelineLabel: "Path",
     timeline: [
       {
@@ -1646,14 +1646,14 @@ export const en: Content = {
         period: "since April 2026",
         title: "Founder & sole developer",
         org: "MenuCloud, sole proprietorship, Berlin",
-        body: "Building and running eight production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
+        body: "Building and running more than ten production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
       },
       {
         period: "since 2022",
         title: "Software engineering, self-taught",
         org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is eight systems in production and a git history anyone can check.",
+        body: "No CS degree, no bootcamp. The evidence is more than ten systems in production and a git history anyone can check.",
         current: true,
       },
       // The full-time job the site refers to everywhere without naming it,
@@ -1662,7 +1662,7 @@ export const en: Content = {
         period: "since March 2018",
         title: "Police officer",
         org: " Berlin",
-        body: "Uniformed police service – the full-time job alongside which all eight systems were built. The duty of evidence from an incident report is now my definition of done.",
+        body: "Uniformed police service – the full-time job alongside which more than ten systems were built. The duty of evidence from an incident report is now my definition of done.",
         current: true,
       },
     ],
@@ -2060,7 +2060,7 @@ export const en: Content = {
     strengths: [
       {
         title: "I ship finished, not nearly finished",
-        body: "Eight systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        body: "More than ten systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
         proof: "#work",
         proofLabel: "The eight case studies",
       },
@@ -2241,9 +2241,9 @@ export const en: Content = {
   onepager: {
     title: "One-pager",
     description:
-      "One-page profile of Domenic Moran, AI product engineer in Berlin: eight systems in production, path and contact on a single page.",
+      "One-page profile of Domenic Moran, AI product engineer in Berlin: more than ten systems in production, path and contact on a single page.",
     positioning:
-      "AI product engineer with eight systems in production, each built " +
+      "AI product engineer with more than ten systems in production, each built " +
       "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
       "fiscal signing, a learning platform, an autonomous agent. {commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +
@@ -2254,7 +2254,7 @@ export const en: Content = {
     path: "Path",
     pathNote:
       "Self-taught in software development: no degree, no bootcamp. " +
-      "The evidence is eight systems in production.",
+      "The evidence is more than ten systems in production.",
     openSource: "Published",
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",

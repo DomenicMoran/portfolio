@@ -66,7 +66,7 @@ const BLAETTER = [
     sprache: "de",
     ziel: "public/domenic-moran-kurzprofil.pdf",
     betreff:
-      "Kurzprofil: acht Systeme in Produktion, Werdegang und Kontakt auf einer Seite",
+      "Kurzprofil: über zehn Systeme in Produktion, Werdegang und Kontakt auf einer Seite",
     schlagwoerter: [
       "AI Product Engineer",
       "Fullstack",
@@ -81,7 +81,7 @@ const BLAETTER = [
     sprache: "en",
     ziel: "public/domenic-moran-one-pager.pdf",
     betreff:
-      "One-page profile: eight systems in production, path and contact on a single page",
+      "One-page profile: more than ten systems in production, path and contact on a single page",
     /* „Full-stack" mit Bindestrich, wie die englische Fassung es überall
        schreibt. Beide Blätter trugen dieselbe Liste, und die stammte vom
        deutschen: Ein Bewerbermanagement-System, das dieses Feld indiziert,

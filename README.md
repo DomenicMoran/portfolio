@@ -138,7 +138,7 @@ npm run check:shots     # jede Aufnahme hat das Maß, das der Inhalt nennt
 npm run check:interaction # jedes Bedienelement der Vorführungen wirkt wirklich
 npm run check:schema    # die strukturierten Daten decken sich mit der Seite
 npm run check:palette   # die Befehlspalette findet und führt hin
-npm run check:lighthouse # die Zahl „Lighthouse 100" gegen einen echten Lauf
+npm run check:lighthouse # die Zahl „Lighthouse 100“ gegen einen echten Lauf
 npm run check:docs      # die Zahlen in dieser Datei und in AGENTS.md stimmen noch
 ```
 
@@ -217,7 +217,7 @@ src/
 └─ lib/                      cn() · Metadaten · Motion-Tokens · Hooks · Marke · OG-Karte
 
 scripts/
-│  Am Browser gemessen: diese sieben laden die gebaute Seite wirklich:
+│  Am Browser gemessen: diese neun laden die gebaute Seite wirklich:
 ├─ check-a11y.mjs                 axe-core gegen jede gebaute Seite, zwei Breiten
 ├─ check-headings.mjs             keine Überschrift schneidet ihre Unterlängen ab
 ├─ check-landmarks.mjs            jede Seite bietet Hauptbereich, Navigation und Fußzeile
@@ -252,7 +252,7 @@ scripts/
 ├─ check-control-chars.mjs        kein Steuerzeichen im Quelltext
 ├─ check-structured-data.mjs      die strukturierten Daten decken sich mit der Seite
 ├─ check-palette.mjs              die Befehlspalette findet und führt hin
-├─ check-lighthouse.mjs           die Zahl „Lighthouse 100" gegen einen echten Lauf
+├─ check-lighthouse.mjs           die Zahl „Lighthouse 100“ gegen einen echten Lauf
 ├─ check-vitals.mjs               LCP und CLS auf einem gedrosselten Telefon
 │
 │  An der Auslieferung und an den Nachbar-Repos:
