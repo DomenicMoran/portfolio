@@ -153,7 +153,7 @@ export function RecruiterHub() {
             {hero.tryIt.before}{" "}
             <a
               href={hero.tryIt.href}
-              className="-my-1 py-1 text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+              className="-my-1 py-1 text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
             >
               {hero.tryIt.label}
             </a>{" "}
@@ -225,7 +225,7 @@ export function RecruiterHub() {
                      Telefon liest, will genau diese und nicht das PDF. Jetzt
                      `ink-dim` und über den Innenabstand 32 px hoch; die
                      negativen Außenabstände halten die optische Position. */
-                  className="-my-1.5 self-center py-1.5 text-sm text-ink-dim underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                  className="-my-1.5 self-center py-1.5 text-sm text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
                 >
                   {recruiter.cta.web.label}
                 </Link>

@@ -311,10 +311,35 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       };
       if (ausschnitt.width < 1 || ausschnitt.height < 1) continue;
 
+      /* Die Unterstreichung gehört in keine der beiden Aufnahmen.
+
+         Der schlimmste Grund wird über jeden Punkt in den Zeilenkästen des
+         Textes gesucht – und eine Unterstreichung liegt in genau diesem
+         Kasten. Sie wird dadurch als Grund gezählt, obwohl sie keiner ist:
+         `color: transparent` nimmt die Glyphen weg, `text-decoration-color`
+         bleibt stehen und malt weiter.
+
+         Gemessen am 23.08.2026: Der Verweis „Kurzprofil im Browser“ steht in
+         `text-ink-dim` (#a5a5b0) auf fast schwarzem Grund, echte ~9:1. Sobald
+         die Unterstreichung sichtbar gesetzt wurde, meldete dieser Lauf
+         2,67:1 – nicht die Schrift war schlecht, die Probe war falsch. Der
+         Befund verhinderte damit genau die Korrektur, die er erzwingen soll:
+         Solange der Lauf eine sichtbare Unterstreichung bestraft, bleibt die
+         unsichtbare stehen.
+
+         WCAG 1.4.3 fragt nach dem Kontrast der Schriftzeichen. Die Linie ist
+         Zierrat und wird deshalb aus beiden Aufnahmen genommen, nicht nur aus
+         einer – stünde sie nur in der ersten, zählte sie als Schrift. */
+      await ort.evaluate((el) => {
+        el.style.setProperty("text-decoration-line", "none", "important");
+      });
       let mitSchrift;
       try {
         mitSchrift = await seite.screenshot({ clip: ausschnitt });
       } catch {
+        await ort.evaluate((el) => {
+          el.style.removeProperty("text-decoration-line");
+        });
         funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)}, nicht aufnehmbar`);
         continue;
       }
@@ -332,6 +357,7 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         el.style.removeProperty("color");
         el.style.removeProperty("text-shadow");
         el.style.removeProperty("-webkit-text-fill-color");
+        el.style.removeProperty("text-decoration-line");
       });
 
       const roh = async (bild) =>

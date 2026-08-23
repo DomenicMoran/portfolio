@@ -9,6 +9,7 @@ import {
 import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, Bot, Layers, Smartphone, Workflow } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
@@ -16,7 +17,34 @@ import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
 import { MacroDemo } from "@/components/demo/Macros";
 import { CheckoutDemo } from "@/components/demo/Checkout";
 import type { CaseStudy } from "@/content/types";
-import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+/* Das Architekturdiagramm kommt erst, wenn jemand den Reiter öffnet.
+
+   Es ist mit Abstand das größte Bauteil dieser Seite und liegt in einem
+   Reiter, der beim Laden nie offen ist – die Startseite beginnt auf
+   „Was drinsteckt“. Statisch eingebunden wanderte es trotzdem ins erste
+   Bündel und half mit, das Budget von 1200 KiB zu reißen.
+
+   `ssr: false` kostet hier nichts: Ohne JavaScript blendet der
+   `<noscript>`-Block unten die Reiterleiste ganz aus, sichtbar bleibt der
+   erste Reiter. Das Diagramm war also noch nie ohne JavaScript zu
+   erreichen; es wird jetzt nur nicht mehr im Voraus bezahlt. */
+const ArchitectureDiagram = dynamic(
+  () =>
+    import("@/components/ArchitectureDiagram").then(
+      (m) => m.ArchitectureDiagram,
+    ),
+  {
+    /* Der Platzhalter hält die Höhe, bis das Diagramm da ist.
+
+       Ohne ihn springt die Seite beim Öffnen des Reiters: erst eine
+       Tafel von null Höhe, dann das volle Diagramm. Das ist genau der
+       Sprung, den CLS misst – und `check:panels` lief deshalb in einen
+       Zeitfehler, weil Playwright einen Reiter erst anklickt, wenn er
+       stillsteht. Ein Bauteil nachzuladen heißt, seinen Platz vorher
+       freizuhalten. */
+    loading: () => <div className="min-h-[420px]" aria-hidden="true" />,
+  },
+);
 import { Counter } from "@/components/ui/Counter";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
 import { RichText } from "@/components/ui/InlineCode";
@@ -668,7 +696,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                         className="mt-1 size-3.5 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
                         aria-hidden
                       />
-                      <span className="underline decoration-line underline-offset-4 transition-colors group-hover:decoration-acid">
+                      <span className="underline decoration-ink-faint/60 underline-offset-4 transition-colors group-hover:decoration-acid">
                         {artikel.title}
                       </span>
                     </Link>
