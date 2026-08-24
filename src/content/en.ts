@@ -1608,7 +1608,36 @@ export const en: Content = {
     portraitPrint: "/portrait.jpg",
     title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
     paragraphs: [
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, ten public store listings across both stores and eight more apps sitting in review at Google Play, one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      /* Store counts keep growing, so a visible as-of date instead of a
+         timeless claim.
+
+         "eight ... at Google Play" stood here until 24.08.2026 and was
+         already stale by then: BitDojo, Dartile and LexiPulse cleared
+         Google Play review on 23.08. between 10:19 and 20:46, well before
+         anyone recounted the tile.
+
+         Re-checked on 24.08.2026, on two different footings: at Apple via a
+         real live call (`GET /v1/apps` + `.../appStoreVersions`, signed
+         with the team key H73GL4Q2AQ) ten versions sit at
+         WAITING_FOR_REVIEW — Aegis, Aether, Synapse, Vesper, Vortex,
+         BitDojo, Dartile, LexiPulse, NOURI, MFC Companion. At Google Play
+         the Publisher API only reads through a write (`edits.insert`
+         first); rather than risk a write against someone else's live
+         listings, this uses a read-only console check from 23.08.2026,
+         20:46 instead: five of those ten are still in review there (Aegis,
+         Aether, Synapse, Vesper, Vortex), the other five are already live
+         on Google Play.
+
+         Combined: ten apps with at least one open store review right now.
+
+         Deliberately left out of this change: the "Store listings live"
+         tile (6 Play, 4 App Store) and the individual case studies'
+         status labels still only count case studies with a real, checked
+         store link — BitDojo, Dartile and LexiPulse are still missing
+         their fresh Play link. Raising a number in a paragraph without
+         also adding the link and status in the matching case study would
+         recreate exactly the gap this paragraph exists to avoid. */
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, ten public store listings across both stores and ten more apps with an open store review at Apple or Google Play (as of 24 August 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -2079,7 +2108,12 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus ten public store listings across both stores and eight more apps sitting in review right now. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        /* Same figure as the bio paragraph, same evidence: on 24.08.2026 ten
+           versions sit at Apple in WAITING_FOR_REVIEW (a real API call) plus
+           five at Google Play per a console check from 23.08.2026, 20:46 —
+           together ten apps with at least one open review. Sources live
+           with the bio paragraph, not duplicated here. */
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus ten public store listings across both stores and ten more apps with an open store review right now (as of 24 August 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },

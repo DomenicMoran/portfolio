@@ -132,7 +132,38 @@ export const about = {
   portraitPrint: "/portrait.jpg" as string,
   title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
   paragraphs: [
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und acht weitere Apps in der Prüfung bei Google Play, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    /* Die Store-Zahlen wachsen weiter, deshalb ein sichtbares Stand-Datum
+       statt einer zeitlosen Behauptung.
+
+       „acht ... bei Google Play" stand hier bis 24.08.2026 und war zu diesem
+       Zeitpunkt bereits überholt: BitDojo, Dartile und LexiPulse waren am
+       23.08. zwischen 10:19 und 20:46 Uhr bei Google Play freigegeben,
+       lange bevor jemand die Kachel nachgezählt hätte.
+
+       Neu ermittelt am 24.08.2026, zweigleisig: Bei Apple per echtem
+       Live-Aufruf (`GET /v1/apps` + `.../appStoreVersions`, signiert mit dem
+       Team-Key H73GL4Q2AQ) stehen zehn Fassungen auf WAITING_FOR_REVIEW —
+       Aegis, Aether, Synapse, Vesper, Vortex, BitDojo, Dartile, LexiPulse,
+       NOURI, MFC Companion. Bei Google Play ist die Publisher-API nur mit
+       einem schreibenden `edits.insert`-Aufruf lesbar; ohne einen Schreib-
+       zugriff auf fremde Store-Einträge zu riskieren, zählt hier stattdessen
+       ein rein lesender Konsolen-Check vom 23.08.2026, 20:46 Uhr: fünf davon
+       liegen dort noch in Prüfung (Aegis, Aether, Synapse, Vesper, Vortex),
+       die übrigen fünf sind bei Google Play bereits live.
+
+       Zusammengenommen: zehn Apps mit mindestens einer noch offenen
+       Store-Prüfung, keine davon zufällig dieselbe Zahl wie die zehn
+       öffentlichen Einträge weiter unten.
+
+       Offen als Folgearbeit, absichtlich nicht Teil dieser Änderung: Die
+       Kachel „Store-Einträge live" (6 Play, 4 App Store) und die
+       Status-Label der einzelnen Fallstudien zählen weiterhin nur die
+       Fallstudien mit echtem, geprüftem Store-Verweis; BitDojo, Dartile und
+       LexiPulse fehlt der frische Play-Verweis noch. Eine Zahl in einem
+       Absatz zu erhöhen, ohne den Beleg (Verweis + Status) in der jeweiligen
+       Fallstudie nachzuziehen, würde genau die Lücke reproduzieren, die
+       dieser Absatz vermeiden soll. */
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung bei Apple oder Google Play (Stand 24.08.2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -2280,7 +2311,13 @@ export const recruiter = {
     },
     {
       title: "Ich kenne den Weg durch die Stores",
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu zehn öffentliche Store-Einträge über beide Läden und acht Apps, die gerade in der Prüfung liegen. 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      /* Dieselbe Zahl wie im Werdegang oben, aus demselben Beleg: Am
+         24.08.2026 zehn Fassungen live bei Apple in WAITING_FOR_REVIEW
+         (echter API-Aufruf) plus fünf bei Google Play laut Konsolen-Check
+         vom 23.08.2026, 20:46 Uhr — zusammen zehn Apps mit mindestens einer
+         offenen Prüfung. Details und Einzelquellen stehen beim Werdegang,
+         nicht zweimal. */
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung (Stand 24.08.2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },
