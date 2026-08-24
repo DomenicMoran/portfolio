@@ -75,7 +75,7 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
                   href={app.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-ink-faint"
+                  className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className="font-mono text-sm text-ink">

@@ -53,13 +53,10 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
         <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
-        {/* Die beiden hinteren Glühkreise sind reine Dekoration und erscheinen
-            erst, wenn der Sichtbereich breit genug ist, dass ihr Preis nicht
-            mehr ins Gewicht fällt. */}
-        <div
-          className="glow-orb animate-float top-[10%] right-[2%] hidden size-[30rem] bg-cyan/12 sm:block"
-          style={{ animationDelay: "-5s" }}
-        />
+        {/* Nur noch ein zweiter Kreis, nicht zwei: Drei gleichzeitig aktive
+            Akzentfarben (violett, cyan, acid) im ersten Sichtbereich lenken
+            vom Kopf ab, statt ihn zu tragen. Acid bleibt die einzige zweite
+            Farbe, dieselbe, die auch Knopf und Auszeichnungswort tragen. */}
         <div
           className="glow-orb animate-float bottom-[6%] left-[38%] hidden size-[26rem] bg-acid/10 sm:block"
           style={{ animationDelay: "-9s" }}
