@@ -222,7 +222,7 @@ export const about = {
 
        „neben einem Vollzeitjob“ steht im Vorspann, in der Über-mich-Sektion und
        im Kurzprofil — ein Werdegang ohne diese Station lässt genau die Frage
-       offen, die sie beantworten soll. Aus dienstlichen Gründen bewusst
+       offen, die sie beantworten soll. Aus beruflichen Gründen bewusst
        allgemein gehalten: keine Amts- oder Behördenbezeichnung, kein
        Arbeitgeber. Die Schulstationen bleiben weiter dem vollständigen
        Lebenslauf vorbehalten. */
@@ -230,7 +230,7 @@ export const about = {
       period: "seit 03/2018",
       title: "Hauptberuflich im öffentlichen Dienst",
       org: "Öffentlicher Dienst, Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem alle über zehn Systeme entstanden sind. ",
+      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem alle über zehn Systeme entstanden sind.",
       current: true,
     },
   ],

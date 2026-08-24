@@ -1682,7 +1682,7 @@ export const en: Content = {
         period: "since March 2018",
         title: "Full-time in public service",
         org: "Public sector, Berlin",
-        body: "Full-time role alongside which more than ten systems were built. ",
+        body: "Full-time role in public service, alongside which more than ten systems were built.",
         current: true,
       },
     ],
