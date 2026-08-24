@@ -1736,6 +1736,16 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         src: "/shots/synapse/aufnahme-06-importieren.webp",
+        /* Ersetzt am 24.08.2026: Die vorige Aufnahme zeigte das leere
+           Import-Formular mit einer sichtbaren AdMob-Testanzeige
+           ("Test Ad · This is a 320x50 test ad.") am unteren Rand, ein
+           Entwickler-Artefakt, das kein Nutzer je sieht. Diese Aufnahme
+           zeigt stattdessen die Vorschau selbst, die im Fließtext der
+           Fallstudie beschrieben wird, stammt aus den vorhandenen
+           Emulator-Aufnahmen des Repos (.emulator-logs/shots) und ist auf
+           1080 x 2160 zugeschnitten, das Seitenverhältnis der übrigen
+           Synapse-Aufnahmen; der Originalschnitt war 1080 x 2400 und zeigte
+           darunter nur die leere Navigationsleiste. */
         alt: "Der Import: aus einem PDF wird eine Vorschau der Karten, bevor sie geschrieben werden.",
         width: 1080,
         height: 2160,
