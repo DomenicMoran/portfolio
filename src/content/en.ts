@@ -1660,9 +1660,9 @@ export const en: Content = {
       // see the rationale in site.ts. School stages stay in the full CV.
       {
         period: "since March 2018",
-        title: "Police officer",
-        org: " Berlin",
-        body: "Uniformed police service – the full-time job alongside which more than ten systems were built. The duty of evidence from an incident report is now my definition of done.",
+        title: "Full-time in public service",
+        org: "Public sector, Berlin",
+        body: "Full-time role alongside which more than ten systems were built. ",
         current: true,
       },
     ],

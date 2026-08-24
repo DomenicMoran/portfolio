@@ -500,12 +500,12 @@ export function OnePager({
               <dl className="flex flex-col gap-1.5">
                 {/* Der Werdegang hat drei Stationen, auf dem Blatt stehen zwei.
 
-                  Die dritte — der  seit 2018 — steht auf der
-                  Webseite und im vollständigen Lebenslauf. Auf diesem Blatt ist
-                  die Zeile der Preis für die Ein-Seiten-Zusage: ein dritter
-                  Eintrag schiebt auf 106 Prozent der Seite, gemessen am
-                  21.08.2026. Schulstationen bleiben ohnehin dem vollständigen
-                  Lebenslauf vorbehalten. */}
+                  Die dritte Station steht auf der Webseite und im
+                  vollständigen Lebenslauf. Auf diesem Blatt ist die Zeile der
+                  Preis für die Ein-Seiten-Zusage: ein dritter Eintrag schiebt
+                  auf 106 Prozent der Seite, gemessen am 21.08.2026.
+                  Schulstationen bleiben ohnehin dem vollständigen Lebenslauf
+                  vorbehalten. */}
                 {about.timeline.slice(0, 2).map((entry) => (
                   <div
                     key={entry.period}
