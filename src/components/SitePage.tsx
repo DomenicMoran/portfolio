@@ -131,9 +131,18 @@ export function SitePage({ content }: { content: Content }) {
 
       <main id={INHALT_ID} tabIndex={-1} className="flex-1">
         <Hero />
+        {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
+
+            Nutzer-Feedback: Die Seite ist zuerst Bewerbung für die Person,
+            erst danach Marketing für die Projekte, wie ein Lebenslauf. Vorher
+            stand dieser Abschnitt hinter allen Produkten und Fallstudien,
+            also am Ende der Seite, wo ihn kaum jemand erreicht. Dieselbe
+            Reihenfolge tragen die Portfolios, an denen sich Entwickler-Seiten
+            in der Branche orientieren: kurzer Vorspann, dann die Person, erst
+            danach die ausgewählte Arbeit im Detail. */}
+        <About />
         <Produkte produkte={content.produkte} />
         <CaseStudies />
-        <About />
         <AiWorkflow />
         <DeliverySpeed />
         <Skills />

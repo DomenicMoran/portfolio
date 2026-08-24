@@ -12,6 +12,8 @@ type RevealProps = {
   /** Weg, den das Element beim Erscheinen zurücklegt, in Pixeln. */
   y?: number;
   as?: "div" | "section" | "li" | "span" | "p";
+  /** Für ein Element, das ein Sprungziel ist, z. B. ein Ankerverweis. */
+  id?: string;
 };
 
 /**
@@ -24,11 +26,13 @@ export function Reveal({
   delay = 0,
   y = 28,
   as = "div",
+  id,
 }: RevealProps) {
   const Component = motion[as];
 
   return (
     <Component
+      id={id}
       className={cn(className)}
       /* Das Merkmal ist der Griff für den Rückfall ohne JavaScript. Siehe die
          `noscript`-Regel in RootDocument. */

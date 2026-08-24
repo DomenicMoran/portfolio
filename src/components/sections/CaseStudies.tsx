@@ -6,8 +6,22 @@ import {
   TafelHighlights,
   TafelStack,
 } from "@/components/sections/case-study/Panels";
-import { useState, type KeyboardEvent } from "react";
-import { ArrowUpRight, Bot, Layers, Smartphone, Workflow } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+} from "react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpRight,
+  Bot,
+  Layers,
+  Smartphone,
+  Workflow,
+} from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { GithubIcon } from "@/components/ui/BrandIcons";
@@ -85,8 +99,23 @@ const TAB_ICONS = {
 
 type TabId = (typeof TAB_IDS)[number];
 
+/**
+ * Nur die drei stärksten Fallstudien ausführlich, der Rest eingeklappt.
+ *
+ * Dreizehn volle Tafeln mit Bildschirmfotos, Reitern und Vorführungen sind
+ * eine halbe Stunde Lesezeit, das war das gemessene Nutzer-Feedback zur
+ * vorigen Fassung. `caseStudies` steht in der Reihenfolge der stärksten
+ * Belege zuerst (MFC, Salati, MenuCloud), also sind es genau diese drei, die
+ * ausführlich bleiben. Analog zu `Writing.tsx`: `slice` vorn, ein Umschalter
+ * für den Rest statt einer zweiten Seite, weil es für Projekte anders als für
+ * Artikel keine Übersichtsseite gibt.
+ */
+const AUSFUEHRLICH = 3;
+
 export function CaseStudies() {
   const { work, caseStudies, werkbank } = useContent();
+  const ausfuehrlich = caseStudies.slice(0, AUSFUEHRLICH);
+  const weitere = caseStudies.slice(AUSFUEHRLICH);
 
   return (
     <section
@@ -103,14 +132,219 @@ export function CaseStudies() {
         />
 
         <div className="mt-20 flex flex-col gap-24 sm:gap-36">
-          {caseStudies.map((study) => (
+          {ausfuehrlich.map((study) => (
             <CaseStudyPanel key={study.id} study={study} />
           ))}
         </div>
 
+        {/* NOURI und Dartile tragen je eine Rechen-Vorführung. Steht ihre
+            Fallstudie nicht unter den ausführlichen, bleibt die Vorführung
+            trotzdem ohne Klick erreichbar, siehe Begründung an
+            `WeitereVorfuehrungen`. */}
+        <WeitereVorfuehrungen
+          fehlend={["nouri", "dartile"].filter(
+            (id) => !ausfuehrlich.some((s) => s.id === id),
+          )}
+        />
+
+        {weitere.length > 0 && <WeitereProjekte studies={weitere} />}
+
         {werkbank.items.length > 0 && <Werkbank />}
       </div>
     </section>
+  );
+}
+
+/**
+ * Die zwei Vorführungen, deren Fallstudie eingeklappt sein kann.
+ *
+ * Der Vorspann verspricht „Drei von über zehn Systemen in Produktion rechnen
+ * hier im Browser mit: Gebetszeiten, Tagesbilanz und Checkout-Tafel
+ * ausprobieren", und `check:demo` prüft das nach: Es rechnet dieselben
+ * Aufgaben unabhängig nach und sucht die Vorführungen auf der ausgelieferten
+ * Seite. Gebetszeiten stehen weiterhin in der Salati-Fallstudie, die zu den
+ * drei ausführlichen zählt. Tagesbilanz (NOURI) und Checkout-Tafel (Dartile)
+ * gehören zu Fallstudien, die jetzt hinter dem Umschalter stehen können.
+ * Ohne diese eigene Stelle wäre das Versprechen aus dem Vorspann falsch,
+ * sobald jemand die Liste nicht aufklappt.
+ */
+function WeitereVorfuehrungen({ fehlend }: { fehlend: readonly string[] }) {
+  const inhalt = useContent();
+  if (fehlend.length === 0) return null;
+
+  return (
+    <div className="mt-24 sm:mt-36">
+      <h3 className="text-eyebrow mb-8">{inhalt.work.demosTitle}</h3>
+      <div className="flex flex-col gap-16">
+        {fehlend.includes("nouri") ? (
+          <Reveal>
+            <MacroDemo inhalt={inhalt} />
+          </Reveal>
+        ) : null}
+        {fehlend.includes("dartile") ? (
+          <Reveal delay={0.05}>
+            <CheckoutDemo inhalt={inhalt} />
+          </Reveal>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+const WEITERE_LISTE_ID = "weitere-projekte-liste";
+
+/**
+ * Ob der Seitenanker beim Laden auf eines der übergebenen Sprungziele zeigt,
+ * und wenn ja, auf welches. Derselbe `useSyncExternalStore`-Griff wie in
+ * `useMediaQuery.ts`: Der Serverwert ist "", nur der Browser kennt den Anker.
+ */
+function useMatchingHash(ids: readonly string[]) {
+  const subscribe = useCallback((melde: () => void) => {
+    window.addEventListener("hashchange", melde);
+    return () => window.removeEventListener("hashchange", melde);
+  }, []);
+
+  const holen = useCallback(() => {
+    const ziel = window.location.hash.replace("#", "");
+    return ids.includes(ziel) ? ziel : "";
+  }, [ids]);
+
+  const serverHolen = useCallback(() => "", []);
+
+  return useSyncExternalStore(subscribe, holen, serverHolen);
+}
+
+/**
+ * Die restlichen Projekte, kompakt und eingeklappt.
+ *
+ * Eine Karte je Projekt statt einer vollen Tafel: Name, Anriss, Status und
+ * der eine Verweis, der am ehesten zählt. Bewusst client-seitig ein- und
+ * ausblendbar statt auf eine zweite Seite zu verweisen, weil es für Projekte
+ * anders als für Artikel keine Übersichtsseite gibt, die eine zweite Adresse
+ * rechtfertigen würde.
+ */
+function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
+  const { work } = useContent();
+  const [manuellOffen, setManuellOffen] = useState(false);
+
+  /* Die 91 Weiterleitungen zeigen auf genau diese Karten.
+   *
+   * `vercel.json` leitet `/wohnungsjaeger`, `/bitdojo` und sieben weitere
+   * Namen auf `/#case-<id>`. Diese Adressen entstehen nicht durch Klicken auf
+   * der Seite, sondern durch Tippen: `check:links` prüft, dass jedes Ziel im
+   * gebauten Baum ein Element mit dieser Kennung findet. Ein eingeklapptes
+   * Ziel wäre für einen getippten Verweis wieder eine Leerstelle, genau das,
+   * was die Weiterleitungen verhindern sollen.
+   *
+   * `useSyncExternalStore` statt `useState`/`useEffect`, aus demselben Grund
+   * wie in `useMediaQuery`: Der Serverwert ist ausdrücklich "", das Fenster
+   * kennt nur der Browser, und ein Effekt, der hier direkt `setState` ruft,
+   * verstößt gegen `react-hooks/set-state-in-effect`. */
+  const passenderAnker = useMatchingHash(
+    studies.map((study) => `case-${study.id}`),
+  );
+  const offen = manuellOffen || passenderAnker !== "";
+
+  // Der native Sprung beim Laden traf ein noch verstecktes Ziel und lief ins
+  // Leere. Sobald die Liste aufklappt, steht die Karte im Layout und kann
+  // angefahren werden. Kein `setState` hier, nur ein DOM-Aufruf.
+  useEffect(() => {
+    if (!passenderAnker) return;
+    requestAnimationFrame(() => {
+      document.getElementById(passenderAnker)?.scrollIntoView({ block: "start" });
+    });
+  }, [passenderAnker]);
+
+  return (
+    <div className="mt-24 border-t border-line pt-12 sm:mt-36">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h3 className="text-eyebrow">{work.more.title}</h3>
+        <button
+          type="button"
+          aria-expanded={offen}
+          aria-controls={WEITERE_LISTE_ID}
+          onClick={() => setManuellOffen((v) => !v)}
+          /* `no-print`: Ein Umschalter tut auf Papier nichts, `check:print`
+             hält das offen. Die eingeklappten Projekte bleiben auf dem
+             Ausdruck ungedruckt, wie zuvor am Bildschirm ohne Klick. */
+          className="no-print group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+        >
+          {offen ? work.more.hide : work.more.show}
+          {offen ? (
+            <ArrowUp className="size-3.5" aria-hidden />
+          ) : (
+            <ArrowDown
+              className="size-3.5 transition-transform duration-300 group-hover:translate-y-0.5"
+              aria-hidden
+            />
+          )}
+        </button>
+      </div>
+
+      <ul
+        id={WEITERE_LISTE_ID}
+        className={cn(
+          "mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3",
+          !offen && "hidden",
+        )}
+      >
+        {studies.map((study, i) => {
+          const link = study.links.find((l) => l.href);
+          const inhalt = (
+            <>
+              <h3
+                id={`weiter-${study.id}`}
+                className="flex items-center justify-between gap-2 font-mono text-sm font-normal text-ink"
+              >
+                {study.name}
+                {link ? (
+                  <ArrowUpRight
+                    className="size-3.5 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
+                    aria-hidden
+                  />
+                ) : null}
+              </h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-ink-dim text-pretty">
+                {study.tagline}
+              </p>
+              <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
+                {study.statusLabel}
+              </span>
+            </>
+          );
+
+          return (
+            <Reveal as="li" key={study.id} delay={i * 0.04}>
+              {/* `article`, nicht `li`: `check:schema` und `check:landmarks`
+                  suchen jede Fallstudie über `article[id^='case-']` mit genau
+                  einer Überschrift der Ebene 3, dasselbe Muster wie an der
+                  vollen Tafel. Der Anker bleibt damit derselbe, ob eine
+                  Fallstudie ausführlich steht oder hier kompakt. */}
+              <article
+                id={`case-${study.id}`}
+                className="h-full scroll-mt-24"
+              >
+                {link ? (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-labelledby={`weiter-${study.id}`}
+                    className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
+                  >
+                    {inhalt}
+                  </a>
+                ) : (
+                  <div className="flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5">
+                    {inhalt}
+                  </div>
+                )}
+              </article>
+            </Reveal>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
@@ -417,31 +651,19 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
           Steht hinter der harten Stelle und vor den Reitern: Wer bis hierher
           gelesen hat, weiß, worum es geht, und die Reiter darunter sind der
-          Beleg dazu. */}
+          Beleg dazu.
+
+          NOURI und Dartile tragen dieselbe Sorte Vorführung, ihre Fallstudien
+          stehen aber nicht mehr zwingend hier: Seit dem Umbau auf drei
+          ausführliche Fallstudien plus einen Umschalter für den Rest rendert
+          `CaseStudies()` diese beiden Vorführungen gesondert, siehe
+          `WeitereVorfuehrungen` unten. Nur so bleiben sie ohne Klick
+          erreichbar, unabhängig davon, ob ihre Fallstudie gerade ausführlich
+          oder eingeklappt ist. */}
       {study.id === "salati" ? (
         <Reveal delay={0.05}>
           <div className="mt-12">
             <PrayerTimesDemo inhalt={inhalt} />
-          </div>
-        </Reveal>
-      ) : null}
-
-      {study.id === "nouri" ? (
-        <Reveal delay={0.05}>
-          <div className="mt-12">
-            <MacroDemo inhalt={inhalt} />
-          </div>
-        </Reveal>
-      ) : null}
-
-      {/* Die dritte Vorführung, und die einzige, deren Rechenkern öffentlich
-          liegt: Sie lädt `darts-checkout` von npm statt eine Kopie aus dem
-          Repo. Damit ist sie die einzige Stelle der Seite, an der ein Leser
-          nicht nur nachlesen, sondern nachinstallieren kann. */}
-      {study.id === "dartile" ? (
-        <Reveal delay={0.05}>
-          <div className="mt-12">
-            <CheckoutDemo inhalt={inhalt} />
           </div>
         </Reveal>
       ) : null}

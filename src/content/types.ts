@@ -240,6 +240,29 @@ export type Content = {
       hardPart: string;
       readOn: string;
     };
+    /**
+     * Die eingeklappten Projekte hinter den drei ausführlichen Fallstudien.
+     *
+     * Dreizehn volle Fallstudien auf einmal sind eine halbe Stunde Lesezeit,
+     * siehe die Startseite vor dieser Änderung. Drei stehen ausführlich, der
+     * Rest kompakt hinter einem Umschalter, analog zu `Writing.tsx`.
+     */
+    more: {
+      title: string;
+      show: string;
+      hide: string;
+    };
+    /**
+     * Überschrift über den zwei Vorführungen, deren Fallstudie eingeklappt ist.
+     *
+     * NOURI und Dartile tragen je eine Rechen-Vorführung (Tagesbilanz,
+     * Checkout-Tafel), die der Vorspann ausdrücklich verspricht: „Drei von
+     * über zehn Systemen ... rechnen hier im Browser mit". Beide Fallstudien
+     * stehen jetzt hinter dem Umschalter, die Vorführungen bleiben trotzdem
+     * ohne Klick erreichbar, sonst hielte die Seite ihr eigenes Versprechen
+     * nicht mehr ein.
+     */
+    demosTitle: string;
   };
 
   caseStudies: readonly CaseStudy[];

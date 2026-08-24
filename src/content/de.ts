@@ -65,8 +65,8 @@ export const de: Content = {
   },
 
   nav: [
-    { label: "Produkte", href: "#produkte" },
     { label: "Über mich", href: "#about" },
+    { label: "Produkte", href: "#produkte" },
     { label: "Arbeitsweise", href: "#workflow" },
     { label: "Skills", href: "#skills" },
     { label: "Artikel", href: "#writing" },
@@ -132,6 +132,12 @@ export const de: Content = {
       hardPart: "Die harte Stelle",
       readOn: "Ausführlich nachzulesen",
     },
+    more: {
+      title: "Weitere Projekte",
+      show: "Alle Projekte ansehen",
+      hide: "Weniger anzeigen",
+    },
+    demosTitle: "Zwei weitere Vorführungen im Browser",
   },
 
   caseStudies,
