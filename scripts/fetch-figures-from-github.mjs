@@ -46,6 +46,15 @@ const REPOS = [
   "DomenicMoran/dartile",
   "DomenicMoran/lexipulse",
   "DomenicMoran/portfolio",
+  // Seit dem 24.08.2026 auf der Seite: die sechs jüngsten Systeme, alle
+  // privat unter dem persönlichen Konto. Dieselbe Behandlung wie BitDojo und
+  // Dartile: `MenuCloud-Berlin` ist dort jetzt Mitarbeiter mit Leserecht.
+  "DomenicMoran/aegis",
+  "DomenicMoran/aether",
+  "DomenicMoran/synapse",
+  "DomenicMoran/vesper",
+  "DomenicMoran/vortex",
+  "DomenicMoran/mfc",
   // Private Lernprojekte zählen bewusst nicht mit: Die Zahl auf der Seite soll
   // das abdecken, wovon die Seite handelt. Nebenbei wird sie dadurch
   // vollständig über GitHub nachvollziehbar, statt lokale Commits
