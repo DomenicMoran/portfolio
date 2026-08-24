@@ -159,16 +159,17 @@ export const en: Content = {
   },
 
   hero: {
-    /* Same rationale as the German original: the brand leads, the hire pitch
-       moved down. */
-    eyebrow: "Moran Software · Berlin",
+    /* Same rationale as the German original: this is a personal application
+       page, not a company site. The person leads; "Moran Software" is
+       mentioned only as a side note, not the headline brand. */
+    eyebrow: "Domenic Moran · Berlin",
     headline: [
       { text: "Finished", accent: true },
       { text: "products," },
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `Moran Software is the brand behind more than ten systems in production, built in ${buildTime}: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog – €49.99 one-time, no subscription.`,
+    lede: `I've built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog – €49.99 one-time, no subscription.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
     tryIt: {
@@ -195,9 +196,9 @@ export const en: Content = {
 
   produkte: {
     eyebrow: "Products",
-    title: "Moran Software",
+    title: "My products",
     lede:
-      "Autonomous apps and micro-SaaS from Berlin. Every system runs in production, all built and operated by one person – from the first line to the store review.",
+      "Autonomous apps and micro-SaaS from Berlin, which I run under the brand Moran Software. Every system runs in production, all built and operated by one person – from the first line to the store review.",
     mfc: {
       name: "MFC – Moran Fleet Control",
       beschreibung:

@@ -341,13 +341,11 @@ export const about = {
 /* ========================================================================== */
 
 export const hero = {
-  /* Die Marke steht vorn, nicht die Person. Vorher las der erste Bildschirm
-     wie ein Bewerbungsanschreiben: „Berlin · verfügbar", „Ich liefere …",
-     „Für Recruiter". Für den, der etwas kaufen will, war das die falsche
-     erste Seite. Die Marke ist belegt: Sie trägt die Social-Konten
-     („Moran Software", Bio „Autonome Apps & Micro-SaaS aus Berlin") und
-     verlinkt auf genau diese Seite. */
-  eyebrow: "Moran Software · Berlin",
+  /* Die Person steht vorn, nicht die Marke. Diese Seite ist eine persönliche
+     Bewerbungsseite für Recruiter, keine Firmen-Website. „Moran Software"
+     ist die Dachmarke, unter der die Apps laufen, wird hier aber nur als
+     Randnotiz erwähnt, nicht als Haupt-Eyebrow. */
+  eyebrow: "Domenic Moran · Berlin",
   // Wort für Wort gerendert; `accent` schaltet auf die Serifenschrift um.
   headline: [
     { text: "Fertige", accent: true },
@@ -355,12 +353,12 @@ export const hero = {
     { text: "keine" },
     { text: "Prototypen.", accent: true },
   ] as { text: string; accent?: boolean }[],
-  /* Produkt-Einstieg statt Bewerbung: Die Marke, die Systeme und der
+  /* Ich-Perspektive statt Marken-Pitch: Die Person, die Systeme und der
      Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
      Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Moran Software ist die Marke hinter über zehn Systemen in Produktion, entstanden in ${bauzeit}: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
+  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
   tryIt: {
@@ -383,7 +381,7 @@ export const hero = {
 } as const;
 
 /* ========================================================================== */
-/* Produkte: die Marke „Moran Software" mit dem Kaufpfad                      */
+/* Produkte: eigene Systeme mit dem Kaufpfad                                  */
 /* ========================================================================== */
 
 /*
@@ -395,9 +393,9 @@ export const hero = {
 */
 export const produkte = {
   eyebrow: "Produkte",
-  title: "Moran Software",
+  title: "Eigene Produkte",
   lede:
-    "Autonome Apps und Micro-SaaS aus Berlin. Jedes System läuft in Produktion, alle allein gebaut und betrieben – von der ersten Zeile bis zum Store-Review.",
+    "Autonome Apps und Micro-SaaS aus Berlin, die ich unter der Marke Moran Software betreibe. Jedes System läuft in Produktion, alle allein gebaut und betrieben – von der ersten Zeile bis zum Store-Review.",
   mfc: {
     name: "MFC – Moran Fleet Control",
     beschreibung:

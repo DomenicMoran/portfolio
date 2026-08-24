@@ -4,7 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Content } from "@/content/types";
 
 /**
- * Der Produkt-Einstieg: die Marke „Moran Software" mit dem Kaufpfad.
+ * Der Produkt-Einstieg: eigene Systeme mit dem Kaufpfad.
  *
  * Steht direkt hinter dem Kopf, vor den Fallstudien. Der Kaufweg ist MFC —
  * das einzige Produkt mit Kaufknopf — plus die vier Pro-Apps, deren Landings
