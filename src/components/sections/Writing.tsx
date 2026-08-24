@@ -38,15 +38,19 @@ export function Writing() {
           lede={chrome.home.lede}
         />
 
-        {/* Zwei Spalten vor drei.
+        {/* Eine Spalte vor drei, keine Zwischenstufe mit zwei.
 
-            Bei 768 px standen hier drei Karten nebeneinander, jede 176 px
-            breit: rund 24 Zeichen je Zeile, und die Titel gingen auf vier
-            Zeilen. Dieselbe Beobachtung wie im Recruiter-Bereich, wo drei
-            Karten neben dem Faktenblatt auf 27 Zeichen fielen. Zwei Spalten
-            geben der Karte auf dieser Breite rund 340 px; drei erst ab
-            1024 px. */}
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            Drei Vorschaukarten und ein Zweierraster vertragen sich nicht: Bei
+            640-1023 px stand hier zwangsläufig 2 oben, 1 unten allein, ein
+            Rest, der wie ein Fehler aussieht. Die frühere Zwischenstufe mit
+            zwei Spalten löste ein anderes Problem — bei 768 px waren drei
+            176-px-Karten zu schmal, rund 24 Zeichen je Zeile, Titel auf vier
+            Zeilen umgebrochen, dieselbe Beobachtung wie im Recruiter-Bereich.
+            Ohne Zwischenstufe bleibt die Karte bis 1024 px einspaltig und
+            damit so breit wie der Inhalt, das Schmal-Problem entfällt von
+            selbst. Ab 1024 px stehen alle drei Karten in einer Reihe, die
+            Kartenzahl füllt die Spaltenzahl genau, kein Rest. */}
+        <ul className="mt-14 grid gap-4 lg:grid-cols-3">
           {artikel.map((a, i) => (
             <Reveal as="li" key={a.slug} delay={i * 0.06}>
               {/* Wie in der Artikelübersicht: Der Name des Verweises ist der
