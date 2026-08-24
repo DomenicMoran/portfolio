@@ -116,6 +116,18 @@ async function einAnlauf(aufSeite, mitWerkzeug) {
     });
     const ax = nodes.find((n) => n.role?.value === "heading");
     if (!ax) continue;
+    /* Eine eingeklappte Überschrift ist für niemanden da, weder für ein Auge
+       noch für ein Vorleseprogramm, und der Vergleich unten prüft genau die
+       Übereinstimmung zwischen beiden.
+       `ax.ignored` mit dem Grund `notRendered` heißt: der Baum selbst weiß,
+       dass hier nichts anzusagen ist, weil `display: none` an einem Vorfahren
+       liegt, etwa der eingeklappten Liste hinter „Weitere Projekte ansehen".
+       `innerText` kennt diesen Zustand nicht zuverlässig: Gemessen an genau
+       dieser Karte lieferte es weiterhin den Text der versteckten Karte, im
+       Baum stand daneben zu Recht die leere Zeichenkette. Ein Fund wäre hier
+       das Gegenteil dessen, was die Regel eigentlich sucht: eine Überschrift,
+       die niemand sieht und niemand hört, ist konsistent, nicht widersprüchlich. */
+    if (ax.ignored) continue;
     const sichtbar = glatt(
       await aufSeite.evaluate(
         (nr) => document.querySelectorAll("h1, h2, h3, h4")[nr].innerText,
