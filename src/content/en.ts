@@ -1336,22 +1336,6 @@ export const en: Content = {
           label: "Start · paste a shop link",
           variant: "phone",
         },
-        {
-          src: "/shots/vortex/aufnahme-02-pruefung.webp",
-          alt: "The result of a check: the score with verdict at the top, the checked features with reasoning below, and the price comparison to the original.",
-          width: 1170,
-          height: 2340,
-          label: "Assessment · with reasoning",
-          variant: "phone",
-        },
-        {
-          src: "/shots/vortex/aufnahme-03-so-funktioniert-es.webp",
-          alt: "The explanation “How it works”: paste a link, check the features, see the original price – three steps, all on the device.",
-          width: 1170,
-          height: 2340,
-          label: "How it works · three steps",
-          variant: "phone",
-        },
       ],
     },
     {

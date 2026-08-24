@@ -1683,22 +1683,6 @@ export const caseStudies: CaseStudy[] = [
         label: "Start · Shop-Link einfügen",
         variant: "phone",
       },
-      {
-        src: "/shots/vortex/aufnahme-02-pruefung.webp",
-        alt: "Das Ergebnis einer Prüfung: oben die Punktzahl mit Urteil, darunter die geprüften Merkmale mit Begründung und der Preisvergleich zum Original.",
-        width: 1170,
-        height: 2340,
-        label: "Bewertung · mit Begründung",
-        variant: "phone",
-      },
-      {
-        src: "/shots/vortex/aufnahme-03-so-funktioniert-es.webp",
-        alt: "Die Erklärung „So funktioniert es“: Shop-Link einfügen, Merkmale prüfen, Originalpreis sehen – in drei Schritten, alles auf dem Gerät.",
-        width: 1170,
-        height: 2340,
-        label: "So funktioniert es · drei Schritte",
-        variant: "phone",
-      },
     ],
   },
   {
