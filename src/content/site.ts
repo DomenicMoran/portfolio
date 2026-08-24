@@ -230,7 +230,7 @@ export const about = {
       period: "seit 03/2018",
       title: "Hauptberuflich im öffentlichen Dienst",
       org: "Öffentlicher Dienst, Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst – der Job, neben dem alle über zehn Systeme entstanden sind. ",
+      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem alle über zehn Systeme entstanden sind. ",
       current: true,
     },
   ],
@@ -389,7 +389,7 @@ export const hero = {
      Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog – 49,99 € einmalig, kein Abo.`,
+  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog: 49,99 € einmalig, kein Abo.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
   tryIt: {
@@ -426,18 +426,18 @@ export const produkte = {
   eyebrow: "Produkte",
   title: "Eigene Produkte",
   lede:
-    "Autonome Apps und Micro-SaaS aus Berlin, die ich unter der Marke Moran Software betreibe. Jedes System läuft in Produktion, alle allein gebaut und betrieben – von der ersten Zeile bis zum Store-Review.",
+    "Autonome Apps und Micro-SaaS aus Berlin, die ich unter der Marke Moran Software betreibe. Jedes System läuft in Produktion, alle allein gebaut und betrieben, von der ersten Zeile bis zum Store-Review.",
   mfc: {
     name: "MFC – Moran Fleet Control",
     beschreibung:
-      "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche – lokal, ohne Abo.",
+      "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche, lokal, ohne Abo.",
     preis: "49,99 € einmalig, kein Abo",
     kaufen: "MFC kaufen",
     href: "https://mfc.domenicmoran.de",
   },
   proAppsTitel: "Pro-Apps",
   proAppsLede:
-    "Vier Apps, in beiden Läden zur Prüfung eingereicht – jede mit eigener Landing.",
+    "Vier Apps, in beiden Läden zur Prüfung eingereicht, jede mit eigener Landing.",
   proApps: [
     {
       name: "Aegis",
@@ -488,7 +488,7 @@ export const caseStudies: CaseStudy[] = [
     index: "00",
     name: "Moran Fleet Control",
     tagline:
-      "Die eine Anwendung für den Builder-Alltag: LLM-Chat, Agenten, Werkzeuge, Backlog – lokal, ohne Abo",
+      "Die eine Anwendung für den Builder-Alltag: LLM-Chat, Agenten, Werkzeuge, Backlog, lokal, ohne Abo",
     year: "2026",
     role: "Alleiniger Entwickler · Produkt, Code, Verkauf, Recht",
     statusLabel: "Live mit Kaufknopf",
@@ -496,10 +496,10 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Der Arbeitsalltag eines Builders ist auf zehn Werkzeuge verteilt: Terminal für Agenten, Tabs für Modelle, Tabellen für Backlog, Ordner für Projekte. Jeder Wechsel kostet Kontext, und jede Cloud-Schicht, die mitfährt, kostet Vertrauen und Geld.",
     solution:
-      "Eine Desktop-Anwendung (Windows, macOS, Linux) plus Web-Fassung: Multi-LLM-Router mit sechs Anbietern, Agenten über die lokale Claude-CLI – Berechtigungen, MCP, Skills und Memory werden unverändert übernommen –, elf Micro-SaaS-Werkzeuge, Projektbrowser mit Git-Status, Backlog aller Projekte, Marketing-Pipeline mit harten Rate-Limits und ein Vault, der AES-256-verschlüsselt im OS-Keyring liegt. 49,99 Euro einmalig, kein Abo.",
+      "Eine Desktop-Anwendung (Windows, macOS, Linux) plus Web-Fassung: Multi-LLM-Router mit sechs Anbietern, Agenten über die lokale Claude-CLI (Berechtigungen, MCP, Skills und Memory werden unverändert übernommen), elf Micro-SaaS-Werkzeuge, Projektbrowser mit Git-Status, Backlog aller Projekte, Marketing-Pipeline mit harten Rate-Limits und ein Vault, der AES-256-verschlüsselt im OS-Keyring liegt. 49,99 Euro einmalig, kein Abo.",
     hardPart: {
       title: "Claude Code übernehmen, ohne es zu duplizieren",
-      body: "Wer vom Terminal wechselt, will nichts neu einrichten. Statt Berechtigungen, MCP-Server und Skills nachzubauen, startet MFC die lokale Claude-CLI als Agenten-Backend – die bestehende Einrichtung gilt unverändert weiter. Der Stream aus 204 Ereignissen je Sitzung wird in der Oberfläche gerendert, mit Abbruch und Live-Protokoll. Was ohne Schlüssel nicht geht, sagt die Oberfläche ehrlich – Simulationen sind als solche markiert.",
+      body: "Wer vom Terminal wechselt, will nichts neu einrichten. Statt Berechtigungen, MCP-Server und Skills nachzubauen, startet MFC die lokale Claude-CLI als Agenten-Backend. Die bestehende Einrichtung gilt unverändert weiter. Der Stream aus 204 Ereignissen je Sitzung wird in der Oberfläche gerendert, mit Abbruch und Live-Protokoll. Was ohne Schlüssel nicht geht, sagt die Oberfläche ehrlich: Simulationen sind als solche markiert.",
     },
     highlights: [
       "Claude-Code-Übernahme: Berechtigungen, MCP, Skills und Memory werden gelesen und unverändert genutzt",
@@ -1633,10 +1633,10 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Dropshipping-Shops verkaufen billige Ware mit großem Aufschlag, und der Käufer kann den Unterschied nicht sehen: dieselbe Ware, dasselbe Foto, ein anderer Preis. Bewertungen sind gekauft, Siegel austauschbar, und niemand hat die Zeit, jede Seite gegen ihre Quellen zu prüfen.",
     solution:
-      "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät – kein geprüfter Shop-Aufruf verlässt es.",
+      "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät, kein geprüfter Shop-Aufruf verlässt es.",
     hardPart: {
       title: "Eine ehrliche Bewertung darf kein Urteil über ein Unternehmen sein",
-      body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100 – allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
+      body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100, allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
     },
     highlights: [
       "36 Merkmale, jedes mit Beleg im Ergebnis, bewertet in Log-Odds statt als Punktesumme",
@@ -1789,12 +1789,12 @@ export const caseStudies: CaseStudy[] = [
     nochNichtAusgeliefert: true,
     accent: "acid",
     problem:
-      "Bewerbungen liegen in Ordnern, Vorhaben in Tabellen, Kontakte im Telefon – nichts davon zusammen. Und wer ein lokales Sprachmodell nutzen will, bedient es über eine Kommandozeile statt über sein Brett.",
+      "Bewerbungen liegen in Ordnern, Vorhaben in Tabellen, Kontakte im Telefon, nichts davon zusammen. Und wer ein lokales Sprachmodell nutzen will, bedient es über eine Kommandozeile statt über sein Brett.",
     solution:
-      "Ein Kanban-Brett, das den Rechner nicht verlässt: Bewerbungen, Vorhaben und Kontakte in einer verschlüsselten Ablage, Karten per Ziehen und Ablegen. Für das Zusammenfassen und Bewerten spricht die App mit einem Sprachmodell, das der Nutzer selbst betreibt – Ollama oder LM Studio, beide lokal.",
+      "Ein Kanban-Brett, das den Rechner nicht verlässt: Bewerbungen, Vorhaben und Kontakte in einer verschlüsselten Ablage, Karten per Ziehen und Ablegen. Für das Zusammenfassen und Bewerten spricht die App mit einem Sprachmodell, das der Nutzer selbst betreibt, Ollama oder LM Studio, beide lokal.",
     hardPart: {
       title: "Ein Sprachmodell ansprechen, ohne eines mitzubringen",
-      body: "Vesper lädt kein Modell nach. Es spricht über eine Brücke mit Ollama oder LM Studio, die der Nutzer selbst installiert hat – das hält die App klein und die Daten auf dem Rechner, verlangt aber, dass die App mit beiden Schnittstellen umgehen kann und ehrlich sagt, wenn keiner der beiden läuft.",
+      body: "Vesper lädt kein Modell nach. Es spricht über eine Brücke mit Ollama oder LM Studio, die der Nutzer selbst installiert hat. Das hält die App klein und die Daten auf dem Rechner, verlangt aber, dass die App mit beiden Schnittstellen umgehen kann und ehrlich sagt, wenn keiner der beiden läuft.",
     },
     highlights: [
       "Kanban-Brett mit Ziehen und Ablegen, Zustand und Ablage verschlüsselt auf dem Gerät",
@@ -1869,14 +1869,14 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "Wer sich fragt, was er letzten Dienstag gemacht hat, durchsucht Kalender, Fotos und Chat-Verläufe einzeln. Ein Gedächtnis, das alles zusammenführt, verlangt normalerweise, den ganzen Tag in eine Cloud hochzuladen.",
     solution:
-      "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar – ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
+      "Aether hält Kontext, Sprachnotizen und Gedanken zusammen und macht sie durchsuchbar, ausgewertet auf dem Gerät. Erfassungsquellen wie Standort oder Kalender sind einzeln abschaltbar und standardmäßig aus; eine Sprachnotiz über sich selbst ist möglich, ein Mitschnitt anderer nicht.",
     hardPart: {
       title: "Die Grenze, die ein Gerät nicht überschreiten darf",
-      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich – § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
+      body: "Eine App, die den eigenen Tag erfasst, steht immer an der Grenze zur Aufzeichnung Dritter. Aether erfasst im Hintergrund standardmäßig nichts, jede Quelle ist einzeln abschaltbar, und ein Mitschnitt fremder Gespräche ist bewusst nicht möglich. § 201 StGB ist kein Formfehler, sondern eine Grenze, die der Ladentext nicht einmal andeuten darf.",
     },
     highlights: [
       "Durchsuchbare Notizen mit Rückblick; der Kern hat 239 Tests bei 96 % Abdeckung",
-      "Vier Erfassungsquellen – Standort, Sprachnotiz, Foto-Metadaten, Kalender – einzeln abschaltbar, standardmäßig aus",
+      "Vier Erfassungsquellen (Standort, Sprachnotiz, Foto-Metadaten, Kalender), einzeln abschaltbar, standardmäßig aus",
       "SQLCipher-Ablage, Volltextsuche, Datensicherung und Pro-Schranke",
     ],
     stack: [
