@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { Shot } from "@/content/types";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
+import { useHorizontalScrollWheel } from "@/lib/useHorizontalScrollWheel";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
 
@@ -92,6 +93,8 @@ export function ShotCarousel({
       el.removeEventListener("scroll", planen);
     };
   }, [shots.length]);
+
+  useHorizontalScrollWheel(spur);
 
   const springe = (richtung: -1 | 1) => {
     const el = spur.current;

@@ -1,6 +1,7 @@
 import type { Block } from "@/content/articles";
 import { RichText } from "@/components/ui/InlineCode";
 import { CopyCode } from "@/components/ui/CopyCode";
+import { HorizontalScrollBox } from "@/components/ui/HorizontalScrollBox";
 import { alsSprungmarke } from "@/lib/slug";
 
 /**
@@ -196,7 +197,8 @@ export function Prose({
                   done={kopieren.done}
                   failed={kopieren.failed}
                 />
-                <pre
+                <HorizontalScrollBox
+                  as="pre"
                   tabIndex={0}
                   role="region"
                   aria-label={block.caption ?? codeLabel}
@@ -207,7 +209,7 @@ export function Prose({
                   >
                     {block.code}
                   </code>
-                </pre>
+                </HorizontalScrollBox>
                 {block.caption ? (
                   <figcaption className="mt-2.5 text-xs leading-relaxed text-ink-faint">
                     {block.caption}
@@ -247,7 +249,8 @@ export function Prose({
                     Heute passt die eine Tabelle in beide Breiten, aber eine
                     Spalte mehr, und die rechte Haelfte waere ohne Maus nicht
                     erreichbar, lautlos, weil nichts danach aussieht. */}
-                <div
+                <HorizontalScrollBox
+                  as="div"
                   tabIndex={0}
                   role="region"
                   aria-label={block.caption ?? tabelleLabel}
@@ -306,7 +309,7 @@ export function Prose({
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </HorizontalScrollBox>
                 {block.caption ? (
                   <figcaption
                     id={`tabelle-${i}`}

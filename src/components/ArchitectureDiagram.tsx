@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import { architekturText } from "@/content/architecture-en";
 import { useContent } from "@/content/ContentProvider";
 import { ease, viewportOnce } from "@/lib/motion";
+import { useHorizontalScrollWheel } from "@/lib/useHorizontalScrollWheel";
 import { cn } from "@/lib/utils";
 
 /* ==========================================================================
@@ -1184,6 +1186,9 @@ export function ArchitectureDiagram({
 }) {
   const { lang } = useContent();
   const diagram = ARCHITECTURES[name];
+  const kasten = useRef<HTMLDivElement>(null);
+  useHorizontalScrollWheel(kasten);
+
   if (!diagram) return null;
 
   /* Die Geometrie ist in beiden Sprachen dieselbe, nur die Worte nicht.
@@ -1209,6 +1214,7 @@ export function ArchitectureDiagram({
           heran. Der Name ist der Diagrammtitel, sonst wird der Bereich nur
           als "Bereich" angesagt. */}
       <div
+        ref={kasten}
         tabIndex={0}
         role="region"
         aria-label={t(diagram.title)}
