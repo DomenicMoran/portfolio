@@ -188,7 +188,15 @@ for (const route of [...mitBildern]) {
    beiden Felder vierzig Zeilen auseinanderliegen.
 
    Gemessen wird an der ausgelieferten Seite und in beiden Sprachfassungen:
-   Der Kasten, der den Satz trägt, darf kein `img` enthalten. */
+   Der Kasten, der den Satz trägt, darf kein `img` enthalten.
+
+   Seit „drei Fallstudien ausführlich, der Rest eingeklappt" (24.08.2026)
+   steht WohnungsJäger nicht mehr unter den ersten drei und damit hinter dem
+   Umschalter „Alle Projekte ansehen": Die Liste trägt bis zum Klick die
+   Tailwind-Klasse `hidden`, und `innerText` liefert für einen
+   `display: none`-Teilbaum nichts, egal was im Quelltext steht. Ohne den
+   Klick hier wäre der Lauf blind für genau die Fallstudie, für die die Regel
+   geschrieben wurde. */
 {
   const HINWEIS = /bewusst kein Bild|deliberately no image/i;
   let leerstellen = 0;
@@ -200,6 +208,8 @@ for (const route of [...mitBildern]) {
       await seite.close();
       continue;
     }
+    const umschalter = seite.locator('[aria-controls="weitere-projekte-liste"]');
+    if (await umschalter.count()) await umschalter.click();
     await seite.evaluate(async () => {
       const hoehe = document.documentElement.scrollHeight;
       for (let y = 0; y < hoehe; y += 700) {

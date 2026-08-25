@@ -307,6 +307,16 @@ function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
               <p className="mt-2.5 text-sm leading-relaxed text-ink-dim text-pretty">
                 {study.tagline}
               </p>
+              {/* Die begründete Leerstelle gilt auch eingeklappt.
+                  `keinScreenshot` stand bislang nur in der vollen Tafel:
+                  Rutschte ein Projekt hinter den Umschalter, verschwand der
+                  Satz von der ausgelieferten Seite, obwohl der Grund für das
+                  fehlende Bild derselbe bleibt. */}
+              {study.keinScreenshot ? (
+                <p className="mt-2.5 text-xs leading-relaxed text-ink-faint text-pretty">
+                  {study.keinScreenshot}
+                </p>
+              ) : null}
               <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
                 {study.statusLabel}
               </span>
