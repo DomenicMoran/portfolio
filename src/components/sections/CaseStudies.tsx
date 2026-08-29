@@ -512,7 +512,16 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
   };
 
   return (
-    <article id={`case-${study.id}`} className="scroll-mt-28">
+    /* `data-tafel="voll"`: `check-panels.mjs` verlangt von jeder vollen
+       Tafel Reiter mit Inhalt. Die kompakte Karte in `WeitereProjekte`
+       trägt dieselbe `id={`case-${study.id}`}` (derselbe Anker für
+       `check:links` und die 91 Weiterleitungen, siehe dort), aber nie
+       Reiter, das ist Absicht: eine Karte mit Name, Anriss und Status statt
+       vier Reitern. Ohne dieses Merkmal traf `article[id^='case-']` beide
+       Fassungen gleichermaßen. Gefunden am 29.08.2026 an `check:panels`:
+       20 Funde, exakt die zehn Studien, die seit dem Umschalter eingeklappt
+       stehen können, auf beiden Sprachfassungen. */
+    <article id={`case-${study.id}`} data-tafel="voll" className="scroll-mt-28">
       {/* Kopf */}
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">

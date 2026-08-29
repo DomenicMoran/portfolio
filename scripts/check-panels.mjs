@@ -63,7 +63,15 @@ for (const pfad of SEITEN) {
   });
   await seite.waitForTimeout(700);
 
-  const studien = await seite.$$("article[id^='case-']");
+  /* `[data-tafel='voll']` statt `article[id^='case-']`: Seit dem Umschalter
+     in `WeitereProjekte` tragen auch die eingeklappten, reiterlosen Karten
+     dieselbe `id="case-<id>"` (derselbe Sprunganker für `check:links`), aber
+     absichtlich keine Reiter, nur Name, Anriss und Status. Ein Selektor über
+     die `id` allein verlangte von jeder dieser Karten Reiter, die sie nie
+     hatte. Gefunden am 29.08.2026: 20 Funde auf einen Schlag, exakt die
+     zehn Studien, die gerade eingeklappt stehen, auf beiden
+     Sprachfassungen. */
+  const studien = await seite.$$("article[data-tafel='voll']");
   if (studien.length === 0) funde.push(`${pfad}: keine Fallstudie gefunden`);
 
   for (const studie of studien) {
