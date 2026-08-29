@@ -163,7 +163,7 @@ export const about = {
        Absatz zu erhöhen, ohne den Beleg (Verweis + Status) in der jeweiligen
        Fallstudie nachzuziehen, würde genau die Lücke reproduzieren, die
        dieser Absatz vermeiden soll. */
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung bei Apple oder Google Play (Stand 24.08.2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung bei Apple oder Google Play (Stand 24. August 2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -2301,7 +2301,7 @@ export const recruiter = {
          vom 23.08.2026, 20:46 Uhr — zusammen zehn Apps mit mindestens einer
          offenen Prüfung. Details und Einzelquellen stehen beim Werdegang,
          nicht zweimal. */
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung (Stand 24.08.2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu zehn öffentliche Store-Einträge über beide Läden und zehn weitere Apps mit einer offenen Store-Prüfung (Stand 24. August 2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

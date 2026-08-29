@@ -169,7 +169,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `I've built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog, €49.99 one-time, no subscription.`,
+    lede: `I’ve built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog, €49.99 one-time, no subscription.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
     tryIt: {
