@@ -259,6 +259,19 @@ function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
     <div className="mt-24 border-t border-line pt-12 sm:mt-36">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h3 className="text-eyebrow">{work.more.title}</h3>
+        {/* Ohne JavaScript bleibt die Liste dauerhaft eingeklappt: `offen`
+            hängt an `manuellOffen` (React-State, ohne Skript unerreichbar)
+            und an `passenderAnker`, der über `useSyncExternalStore` erst
+            nach der Hydration einen Wert bekommt, ohne Skript bleibt er "".
+            Der Knopf schweigt also auf jeden Klick, derselbe Fall wie der
+            Druckknopf in `PrintButton.tsx` und die Reiterleiste oben in
+            dieser Datei: Wer ohne Skript liest, verliert nichts, was er
+            vorher hatte, er sieht nur nicht mehr aus, als könne er es holen.
+            Gefunden am 29.08.2026 an `check:a11y`: „Alle Projekte ansehen"
+            stand sichtbar, ohne Wirkung. */}
+        <noscript>
+          <style>{`.weitere-schalter{display:none}`}</style>
+        </noscript>
         <button
           type="button"
           aria-expanded={offen}
@@ -267,7 +280,7 @@ function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
           /* `no-print`: Ein Umschalter tut auf Papier nichts, `check:print`
              hält das offen. Die eingeklappten Projekte bleiben auf dem
              Ausdruck ungedruckt, wie zuvor am Bildschirm ohne Klick. */
-          className="no-print group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+          className="no-print weitere-schalter group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
         >
           {offen ? work.more.hide : work.more.show}
           {offen ? (

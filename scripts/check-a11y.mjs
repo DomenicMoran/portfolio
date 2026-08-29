@@ -398,8 +398,19 @@ const ohneSkript = [];
      Reiterleiste: Der Reiter sagt „Architektur" und verspricht damit einen
      Wechsel, den es ohne Skript nicht gibt. Diese Knöpfe sagen „Doppel-Aus",
      „Master-Aus", „Straight", und das sind die drei Regeln des Spiels. Wer sie
-     ausblendet, nimmt eine Auskunft weg, statt ein falsches Versprechen. */
-  const VORFUEHRUNG = "#case-salati, #case-nouri, #case-dartile";
+     ausblendet, nimmt eine Auskunft weg, statt ein falsches Versprechen.
+
+     Über `[data-demo]` statt über die Anker der Fallstudie: Tagesbilanz
+     (NOURI) und Checkout-Tafel (Dartile) stehen nur, solange ihre Fallstudie
+     unter den drei ausführlichen ist, hinter `#case-nouri`/`#case-dartile`.
+     Rutscht das Projekt hinter den Umschalter, rendert `WeitereVorfuehrungen`
+     dieselbe Vorführung freistehend ohne diesen Anker, und jeder ihrer Knöpfe
+     zählte dann als tot. Gefunden am 25.08.2026 am CI-Lauf: 17 Knöpfe der
+     Tagesbilanz auf „/", weil MFC, Salati und MenuCloud die drei
+     ausführlichen sind und NOURI seither hinter dem Umschalter steht. Jede
+     der drei Vorführungen trägt ihr `data-demo`-Attribut unabhängig davon, wo
+     sie steht, das Merkmal bleibt also treffsicher. */
+  const VORFUEHRUNG = "[data-demo]";
 
   const geprueftePfade = ["/", "/onepager", "/artikel"];
   for (const pfad of geprueftePfade) {
