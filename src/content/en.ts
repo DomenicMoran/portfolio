@@ -775,7 +775,7 @@ export const en: Content = {
         "Nutrition and training platform: web app, mobile app, one shared catalogue",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, iOS in review",
+      statusLabel: "Live on Google Play, rejected at Apple",
       accent: "violet",
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
@@ -896,7 +896,7 @@ export const en: Content = {
         "German-language learning platform with exactly one lesson library",
       year: "2026",
       role: "Sole developer · content, code, stores, compliance",
-      statusLabel: "Web live, apps in review",
+      statusLabel: "Live on Google Play, iOS in review",
       accent: "acid",
       problem:
         "Anyone who wants to get into software engineering in German finds translated English courses or video series without an exam. And nearly every platform writes the same term anew for every course. Half a year later two explanations of the same word sit side by side, they contradict each other, and neither is identifiable as the wrong one.",
@@ -948,6 +948,11 @@ export const en: Content = {
       ],
       links: [
         { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.bitdojo.app",
+          kind: "store",
+        },
       ],
       architecture: "bitdojo",
       shots: [
@@ -999,7 +1004,7 @@ export const en: Content = {
       tagline: "A darts counter that records every single dart",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, apps in review",
+      statusLabel: "Live on Google Play, iOS in review",
       accent: "cyan",
       problem:
         "Darts counters store the total of a visit. From a total you cannot draw a hit map, cannot compute a doubles rate, and cannot say whether someone missed the 20 high or low. Yet those are exactly the numbers that make someone keep a counting app at all.",
@@ -1050,6 +1055,11 @@ export const en: Content = {
       ],
       links: [
         { label: "dartile.de", href: "https://dartile.de", kind: "live" },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.dartile.app",
+          kind: "store",
+        },
       ],
       architecture: "dartile",
       articles: ["eighteen-routes-over-the-bull"],
@@ -1104,12 +1114,12 @@ export const en: Content = {
         "A complete reader for EPUB, PDF and web articles: word stream or running text",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Live on Google Play, iOS in review",
       accent: "violet",
       problem:
         "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
       solution:
-        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, FB2, PDF, TXT, Markdown, HTML and from a web address. Anyone who dislikes the word stream reads the same text as running text instead, with four bundled faces, paging with page numbers, full-text search, highlights in five colours with notes, and reading aids from bionic through a reading ruler to six colour filters. The reading position is the same in both. Since 17 August 2026 the import keeps the original file, and a toolbox sits on top of it: highlight, draw, text fields, notes, forms, sign, reorder pages. In the web version that is live; in the app it arrives with 1.1, because 1.0 is in review in both stores and a description that outruns the reviewed package would be false to buyers.",
+        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, FB2, PDF, TXT, Markdown, HTML and from a web address. Anyone who dislikes the word stream reads the same text as running text instead, with four bundled faces, paging with page numbers, full-text search, highlights in five colours with notes, and reading aids from bionic through a reading ruler to six colour filters. The reading position is the same in both. Since 17 August 2026 the import keeps the original file, and a toolbox sits on top of it: highlight, draw, text fields, notes, forms, sign, reorder pages. In the web version that is live; in the app it arrives with 1.1, which is still under Apple review, and a description that outruns the reviewed package would be false to buyers.",
       hardPart: {
         title: "The same pace for every word is the mistake",
         body: "Flat RSVP gives a three-letter article the same time budget as a sentence boundary, and that is exactly where comprehension collapses. Here the factors compose: a word core longer than eight characters times 1.25, sentence end times 1.75, clause end times 1.75, paragraph end times 2.0, digits times 1.4, a core of three characters or fewer times 0.9. Abbreviations and ordinals are excluded from the sentence rule so that “e.g.” and “1.” do not stall the stream. On top of that a warm-up: after every resume the first words run at 40 per cent of the target pace, because dropping straight into 900 words per minute from a standstill is the single most common reason for reading nothing at all. And the clock consumes an absolute timestamp rather than frame deltas, so a dropped frame cannot make the stream drift.",
@@ -1154,6 +1164,11 @@ export const en: Content = {
           href: "https://github.com/DomenicMoran/lexipulse",
           kind: "code",
         },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
+          kind: "store",
+        },
       ],
       architecture: "lexipulse",
       shots: [
@@ -1197,7 +1212,7 @@ export const en: Content = {
         "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Rejected at Apple, removed from Google Play",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1286,7 +1301,7 @@ export const en: Content = {
         "Spots dropshipping and shows the original price, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Live on Google Play, rejected at Apple",
       nochNichtAusgeliefert: true,
       accent: "cyan",
       problem:
@@ -1331,6 +1346,11 @@ export const en: Content = {
           href: "https://vortex.domenicmoran.de",
           kind: "live",
         },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.vortexapp.app",
+          kind: "store",
+        },
       ],
       architecture: "",
       shots: [
@@ -1352,7 +1372,7 @@ export const en: Content = {
         "PDFs, photos and notes become flashcards, repeated on the SM-2 schedule, entirely offline",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Live on Google Play, rejected at Apple",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1397,6 +1417,11 @@ export const en: Content = {
           href: "https://synapse.domenicmoran.de",
           kind: "live",
         },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.synapseapp.app",
+          kind: "store",
+        },
       ],
       architecture: "",
       shots: [
@@ -1434,7 +1459,7 @@ export const en: Content = {
         "Applications, projects and contacts on a local board, with a language model on your own machine",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Live on Google Play, rejected at Apple",
       nochNichtAusgeliefert: true,
       accent: "acid",
       problem:
@@ -1475,6 +1500,11 @@ export const en: Content = {
           href: "https://vesper.domenicmoran.de",
           kind: "live",
         },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.vesperapp.app",
+          kind: "store",
+        },
       ],
       architecture: "",
       shots: [
@@ -1512,7 +1542,7 @@ export const en: Content = {
         "Your own day as a searchable memory: context, voice notes and thoughts, processed locally",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Web live, both stores in review",
+      statusLabel: "Live on Google Play, iOS submission with open issues",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1554,6 +1584,11 @@ export const en: Content = {
           label: "aether.domenicmoran.de",
           href: "https://aether.domenicmoran.de",
           kind: "live",
+        },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.aetherapp.app",
+          kind: "store",
         },
       ],
       architecture: "",
@@ -1604,30 +1639,36 @@ export const en: Content = {
          "eight ... at Google Play" stood here until 24.08.2026 and was
          already stale by then: BitDojo, Dartile and LexiPulse cleared
          Google Play review on 23.08. between 10:19 and 20:46, well before
-         anyone recounted the tile.
+         anyone recounted the tile. What stood here on 24.08.2026, "ten
+         public listings, ten more apps in review", was itself stale by
+         30.08.2026: that paragraph named the follow-up work explicitly,
+         and BitDojo, Dartile and LexiPulse were still missing their Play
+         link in the matching case study.
 
-         Re-checked on 24.08.2026, on two different footings: at Apple via a
-         real live call (`GET /v1/apps` + `.../appStoreVersions`, signed
-         with the team key H73GL4Q2AQ) ten versions sit at
-         WAITING_FOR_REVIEW — Aegis, Aether, Synapse, Vesper, Vortex,
-         BitDojo, Dartile, LexiPulse, NOURI, MFC Companion. At Google Play
-         the Publisher API only reads through a write (`edits.insert`
-         first); rather than risk a write against someone else's live
-         listings, this uses a read-only console check from 23.08.2026,
-         20:46 instead: five of those ten are still in review there (Aegis,
-         Aether, Synapse, Vesper, Vortex), the other five are already live
-         on Google Play.
+         Re-checked on 30.08.2026, both stores through real calls instead of
+         a console read: at Apple via `GET /v1/apps` + `.../appStoreVersions`
+         (team key H73GL4Q2AQ), four versions are live (`READY_FOR_SALE`):
+         Salati on version 1.50.0 while 1.51.0 is already in review, plus
+         Salati TV, MenuCloud and MenuCloud Discovery. Four more apps are
+         waiting on an Apple review: Salati (update 1.51.0), BitDojo, Dartile
+         and LexiPulse, the last three on their first release. Aether has a
+         submission from 22.08.2026, but `/v1/reviewSubmissions` reports
+         `UNRESOLVED_ISSUES`: not yet in the actual review queue, so it does
+         not count as "in review" here. Six versions sit at `REJECTED`: MFC
+         Companion, Aegis, NOURI, Vesper, Synapse, Vortex.
 
-         Combined: ten apps with at least one open store review right now.
+         At Google Play, all 14 package names were fetched individually over
+         real HTTP (`curl`, `hl=de`), not read from the console: that exact
+         difference had produced a wrong number the day before, eleven
+         instead of seventeen. 13 of 14 answer with 200 and a page title that
+         matches the app, checked against `itemprop="name"`. Only
+         `de.aegisapp.app` answers with 404 and the title "Not found": Google
+         removed the listing for a policy violation.
 
-         Deliberately left out of this change: the "Store listings live"
-         tile (6 Play, 4 App Store) and the individual case studies'
-         status labels still only count case studies with a real, checked
-         store link — BitDojo, Dartile and LexiPulse are still missing
-         their fresh Play link. Raising a number in a paragraph without
-         also adding the link and status in the matching case study would
-         recreate exactly the gap this paragraph exists to avoid. */
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, ten public store listings across both stores and ten more apps with an open store review at Apple or Google Play (as of 24 August 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+         13 Play plus four Apple listings make 17 public store references,
+         now each linked and checked in its own case study, not just
+         claimed. */
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, 17 public store listings across both stores (13 on Google Play, four on the App Store) and four apps with an open Apple review, three of them live on Google Play only so far (as of 30 August 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1638,11 +1679,11 @@ export const en: Content = {
         note: "alongside a full-time job",
       },
       { value: "10+", label: "systems in production", note: "all built alone" },
-      // Siehe `site.ts`: am 23.08.2026 je Laden einzeln nachgezählt.
+      // Siehe `site.ts`: am 30.08.2026 je Laden einzeln nachgezählt.
       {
-        value: "10",
+        value: "17",
         label: "store listings live",
-        note: "6 Play, 4 App Store",
+        note: "13 Play, 4 App Store",
       },
       {
         value: "2022",
@@ -2098,12 +2139,12 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        /* Same figure as the bio paragraph, same evidence: on 24.08.2026 ten
-           versions sit at Apple in WAITING_FOR_REVIEW (a real API call) plus
-           five at Google Play per a console check from 23.08.2026, 20:46 —
-           together ten apps with at least one open review. Sources live
+        /* Same figure as the bio paragraph, same evidence: on 30.08.2026 four
+           versions are live at Apple (`READY_FOR_SALE`), 13 package names
+           live on Google Play (a real HTTP call per package), 17 public
+           listings, plus four apps with an open Apple review. Sources live
            with the bio paragraph, not duplicated here. */
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus ten public store listings across both stores and ten more apps with an open store review right now (as of 24 August 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 17 public store listings across both stores and four more apps with an open Apple review right now (as of 30 August 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
