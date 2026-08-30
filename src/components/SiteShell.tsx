@@ -7,6 +7,18 @@ import { Cursor } from "@/components/ui/Cursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
+/* Ein Versuch, die ⌘K-Palette per `next/dynamic({ ssr: false })` nachzuladen,
+   stand hier: Sie rendert geschlossen ohnehin nichts und ist ohne
+   JavaScript noch nie erreichbar gewesen, derselbe Fall wie
+   `ArchitectureDiagram` in `CaseStudies.tsx`. Nach dem Ausrollen stieg der
+   live gemessene LCP über mehrere Läufe von 2,6–2,9 s auf 3,1–3,7 s, aber
+   dieselbe Messumgebung zeigte zu dem Zeitpunkt auch bei unveränderten
+   Seiten (`/artikel`, `/onepager`) und bei 84 % system­weiter CPU-Last aus
+   fremden, nicht mit diesem Bau zusammenhängenden Prozessen erhöhte Werte.
+   Ursache damit nicht sauber trennbar; der Umbau ist ohne belastbaren Beleg
+   für einen Nutzen und deshalb zurückgenommen. Die Palette bleibt ein
+   statischer Import. */
+
 /**
  * Hält den wenigen Zustand, der die ganze Seite betrifft (Befehlspalette offen)
  * und hängt die globalen Interaktionsebenen ein. Weil er hier liegt, bleibt

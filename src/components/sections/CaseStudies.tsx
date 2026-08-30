@@ -27,10 +27,37 @@ import dynamic from "next/dynamic";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
-import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
-import { MacroDemo } from "@/components/demo/Macros";
-import { CheckoutDemo } from "@/components/demo/Checkout";
 import type { CaseStudy } from "@/content/types";
+
+/* Alle drei Vorführungen kommen jetzt nach, keine sitzt mehr im ersten Bündel.
+ *
+ * Alle drei sitzen ohne Reiter und ohne Klick im Baum, siehe Begründung an
+ * `WeitereVorfuehrungen` unten. Gemessen an der ausgelieferten Startseite auf
+ * einem vierfach gedrosselten Telefon trug allein diese Datei mitsamt `adhan`
+ * und `darts-checkout` einen Großteil des ersten, alles blockierenden
+ * Bündels: first paint fiel exakt auf `domInteractive`, obwohl der Absatz
+ * unter der Überschrift serverseitig längst im HTML stand.
+ *
+ * Ein erster Versuch, dafür den ganzen Abschnitt `CaseStudies` samt sechs
+ * weiterer Sektionen auf einmal nachzuladen, ließ den INP-Wert reißen: 408
+ * statt der erlaubten 200 ms bei einem `pointerdown` auf einem der drei
+ * Regler, sechs Sekunden nach dem Laden unter dieser Drosselung noch nicht
+ * hydriert. Mit `CaseStudies` selbst statisch (Reiter und Kartenrahmen
+ * bleiben sofort bedienbar) und nur den drei Vorführungen einzeln
+ * nachgeladen, maß `check:vitals` dagegen 104 ms, deutlich im Budget: Drei
+ * kleinere, unabhängige Ecken sind schneller aufgeholt als eine große. `ssr:
+ * true` (Vorgabe) bleibt für alle drei: derselbe Text steht ohne JavaScript
+ * weiterhin da. */
+const PrayerTimesDemo = dynamic(() =>
+  import("@/components/demo/PrayerTimes").then((m) => m.PrayerTimesDemo),
+);
+const MacroDemo = dynamic(() =>
+  import("@/components/demo/Macros").then((m) => m.MacroDemo),
+);
+const CheckoutDemo = dynamic(() =>
+  import("@/components/demo/Checkout").then((m) => m.CheckoutDemo),
+);
+
 /* Das Architekturdiagramm kommt erst, wenn jemand den Reiter öffnet.
 
    Es ist mit Abstand das größte Bauteil dieser Seite und liegt in einem
