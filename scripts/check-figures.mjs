@@ -808,12 +808,13 @@ if (existsSync(join(NOURI, "supabase", "migrations"))) {
 /**
  * Eine GitHub-Abfrage, notfalls mit einem zweiten angemeldeten Konto.
  *
- * Salati liegt unter `MenuCloud-Berlin` und ist privat. Auf diesem Rechner
- * sind zwei Konten angemeldet, aktiv ist `DomenicMoran`, und das darf dort
- * nicht lesen. Die beiden Salati-Prüfungen wurden deshalb seit Tagen
- * stillschweigend übersprungen, während die Seite weiter „64 ausgelieferte
- * Versionen" und „14 Sprachen" behauptete: zwei Zahlen ohne Prüfung, und die
- * Meldung „nicht lesbar" las niemand als Mangel.
+ * Salati liegt seit dem Umzug unter `DomenicMoran` und ist privat, aber im
+ * aktiven Konto lesbar. Der zweite Zugang bleibt als Rückfalllösung stehen,
+ * für den Fall, dass ein Repo einmal wieder unter dem anderen Konto liegt —
+ * zuvor lag Salati bei `MenuCloud-Berlin`, und die beiden Salati-Prüfungen
+ * wurden deshalb seit Tagen stillschweigend übersprungen, während die Seite
+ * weiter „64 ausgelieferte Versionen" und „14 Sprachen" behauptete: zwei
+ * Zahlen ohne Prüfung, und die Meldung „nicht lesbar" las niemand als Mangel.
  *
  * Das aktive Konto wird nicht umgestellt: `gh auth switch` verändert den
  * Rechner des Lesers, und ein Prüflauf hat dort nichts zu ändern. Stattdessen
@@ -894,7 +895,7 @@ function ghKonten() {
   try {
     const roh = ghApi([
       "api",
-      "repos/MenuCloud-Berlin/salatibox/git/trees/main?recursive=1",
+      "repos/DomenicMoran/salatibox/git/trees/main?recursive=1",
       "-q",
       ".tree[].path",
     ]);
@@ -1004,7 +1005,7 @@ function ghKonten() {
   try {
     const roh = ghApi([
       "api",
-      `repos/MenuCloud-Berlin/salatibox/contents/${pfad}`,
+      `repos/DomenicMoran/salatibox/contents/${pfad}`,
       "-q",
       ".content",
     ]);

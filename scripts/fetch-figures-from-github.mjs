@@ -32,12 +32,12 @@ const ZIEL = "src/content/verified.json";
  * über die API, damit es auch läuft, wenn niemand am Rechner sitzt.
  */
 const REPOS = [
-  // Die Produktivsysteme liegen unter der Organisation, nicht unter dem
-  // persönlichen Konto, und heißen dort anders als die Ordner auf der Platte.
-  // Die Namen stammen deshalb aus der API und nicht aus einer Annahme.
-  "MenuCloud-Berlin/MenuCloud-app",
-  "MenuCloud-Berlin/salatibox",
-  "MenuCloud-Berlin/NOURI",
+  // Seit dem Umzug liegen auch die Produktivsysteme unter DomenicMoran; sie
+  // heißen dort weiterhin anders als die Ordner auf der Platte. Die Namen
+  // stammen deshalb aus der API und nicht aus einer Annahme.
+  "DomenicMoran/MenuCloud-app",
+  "DomenicMoran/salatibox",
+  "DomenicMoran/NOURI",
   // Seit dem 16.08.2026 auf der Seite, also auch in der Zahl. Wer ein System
   // als Fallstudie zeigt und seine Commits nicht mitzählt, führt zwei
   // Wahrheiten: die Seite spricht von sieben Systemen, die Zahl darunter
@@ -186,7 +186,7 @@ console.log(`  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repo
 const salati = je.find((e) => e.repo.endsWith("/salatibox"));
 
 /* Die beiden Dateizahlen der MenuCloud-Fallstudie. */
-const menucloud = await dateienIn("MenuCloud-Berlin/MenuCloud-app", {
+const menucloud = await dateienIn("DomenicMoran/MenuCloud-app", {
   apiRouten: /^src\/app\/api\/.*\/route\.ts$/,
   migrationen: /^supabase\/migrations\/.*\.sql$/,
 });
