@@ -162,7 +162,8 @@ export const about = {
        siebzehn. 13 von 14 antworten mit 200 und einem Seitentitel, der zur
        App passt, gegengeprüft am `itemprop="name"`. Nur `de.aegisapp.app`
        antwortet mit 404 und dem Titel „Nicht gefunden": Google hat den
-       Eintrag wegen eines Richtlinienverstoßes entfernt.
+       Eintrag am 26.08.2026 wegen eines nicht reagierenden Bedienelements
+       entfernt.
 
        13 Play- plus vier Apple-Einträge ergeben 17 öffentliche Store-Verweise,
        jetzt alle einzeln in ihrer Fallstudie verlinkt und geprüft, nicht nur
@@ -1602,7 +1603,8 @@ export const caseStudies: CaseStudy[] = [
        Am 30.08.2026 nachgezogen, sachlich: Über die App-Store-Connect-API
        steht Fassung 1.0 auf `REJECTED`. Bei Google Play antwortet
        `de.aegisapp.app` inzwischen mit 404 und dem Titel „Nicht gefunden";
-       Google hat den Eintrag wegen eines Richtlinienverstoßes entfernt. Ein
+       Google hat den Eintrag am 26.08.2026 wegen eines nicht reagierenden
+       Bedienelements entfernt. Ein
        Knopf „im Store ansehen" bleibt deshalb weiterhin aus. */
     statusLabel: "Bei Apple abgelehnt, bei Google Play entfernt",
     nochNichtAusgeliefert: true,
