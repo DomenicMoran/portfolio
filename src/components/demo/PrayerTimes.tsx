@@ -310,7 +310,23 @@ export function PrayerTimesDemo({ inhalt }: { inhalt: Content }) {
           p.highLatitudeRule = nachRegel[r];
 
           const tage: Tag[] = [];
+          /* Ohne diese Marke blockiert die Rechnung den Hauptthread am
+             Stück: gemessen 22.644 ms für vier Regeln über 365 Tage, ohne
+             jede Drosselung. Eine Taste, die in diesem Fenster gedrückt
+             wird, wartet auf das Ende der ganzen Rechnung, nicht auf die
+             nächste Bildwiederholung; `check:vitals` maß dafür 29 bis
+             35 Sekunden INP auf einem vierfach gedrosselten Telefon, wo
+             das Budget bei 200 ms liegt. Alle 8 Millisekunden, der
+             Richtwert für "yield to main", gibt die Schleife den Thread
+             ab, damit ein wartendes Tastatur- oder Zeigerereignis
+             dazwischen laufen kann. */
+          let letzterYield = performance.now();
           for (let i = 0; i < TAGE; i++) {
+            if (performance.now() - letzterYield > 8) {
+              await new Promise((r) => setTimeout(r, 0));
+              if (abgebrochen) return;
+              letzterYield = performance.now();
+            }
             const zeiten = new adhan.PrayerTimes(
               koordinaten,
               /* Mitternacht in der Browserzone, und das mit Absicht:
