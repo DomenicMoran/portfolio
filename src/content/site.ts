@@ -167,8 +167,22 @@ export const about = {
 
        13 Play- plus vier Apple-Einträge ergeben 17 öffentliche Store-Verweise,
        jetzt alle einzeln in ihrer Fallstudie verlinkt und geprüft, nicht nur
-       behauptet. */
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, 17 öffentliche Store-Einträge über beide Läden (13 bei Google Play, vier bei Apple) und vier Apps mit einer offenen Store-Prüfung bei Apple, davon drei bislang nur bei Google Play live (Stand 30. August 2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+       behauptet.
+
+       Am 06.09.2026 nachgezogen, wieder über echte Aufrufe: LexiPulse
+       antwortet über die öffentliche iTunes-Lookup-API jetzt mit einem
+       Treffer, Fassung 1.1 seit dem 01.09.2026 freigegeben, macht fünf
+       Apple-Einträge statt vier. `de.aegisapp.app` antwortet bei Google Play
+       wieder mit 200 (Titel „Aegis – Belege, Garantie, EÜR"): Der Eintrag war
+       am 26.08.2026 entfernt worden und ist seither erneut freigegeben, macht
+       14 statt 13 Play-Einträge. 14 Play- plus fünf Apple-Einträge ergeben 19.
+       Nach Rückmeldung des Kontoinhabers sind acht weitere Apps (BitDojo,
+       Dartile, NOURI, Aegis, Synapse, Vesper, Vortex, Aether) am 05./06.09.2026
+       bei Apple eingereicht beziehungsweise nach einer Ablehnung erneut
+       eingereicht worden; die öffentliche Lookup-API liefert für alle acht
+       weiterhin null Treffer, sie sind also noch nicht live. Alle acht sind
+       zugleich bei Google Play live, selbst geprüft per `curl`. */
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und acht Apps mit einer offenen Store-Prüfung bei Apple, alle acht bereits bei Google Play live (Stand 6. September 2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -196,8 +210,14 @@ export const about = {
        standen aber in keiner Fallstudie verlinkt. Mit den sieben neuen
        Play-Verweisen (dazu Aether) stehen jetzt 13 Play- und weiter vier
        App-Store-Einträge in den Fallstudien, macht 17. Aegis bleibt ohne
-       Play-Verweis: `de.aegisapp.app` antwortet mit 404. */
-    { value: "17", label: "Store-Einträge live", note: "13 Play, 4 App Store" },
+       Play-Verweis: `de.aegisapp.app` antwortet mit 404.
+
+       Am 06.09.2026 zweimal nachgezogen, beide Male selbst geprüft:
+       `de.aegisapp.app` antwortet wieder mit 200 (der Play-Eintrag ist erneut
+       freigegeben), macht 14 Play-Einträge. LexiPulse antwortet über die
+       öffentliche iTunes-Lookup-API jetzt mit einem Treffer (Fassung 1.1,
+       seit 01.09.2026), macht 5 App-Store-Einträge. 14 plus 5 macht 19. */
+    { value: "19", label: "Store-Einträge live", note: "14 Play, 5 App Store" },
     {
       value: "2022",
       label: "Autodidakt seit",
@@ -1055,8 +1075,17 @@ export const caseStudies: CaseStudy[] = [
 
        Am 30.08.2026 über die App-Store-Connect-API nachgezogen: Fassung 1.1.9
        steht auf `REJECTED`, nicht mehr „in Prüfung". Play bleibt unverändert
-       live, `app.nouri.mobile` antwortet weiter mit 200. */
-    statusLabel: "Live bei Google Play, bei Apple abgelehnt",
+       live, `app.nouri.mobile` antwortet weiter mit 200.
+
+       Am 06.09.2026 selbst nachgesehen: `app.nouri.mobile` antwortet bei
+       Google Play weiter mit 200 und dem Titel „NOURI – Essen & Training"
+       (Abruf über `curl`). Bei Apple liefert die öffentliche
+       iTunes-Lookup-API (`itunes.apple.com/lookup?bundleId=app.nouri.mobile`)
+       weiterhin null Treffer, die Fassung ist also nicht live. Nach
+       Rückmeldung des Kontoinhabers wurde sie am 05./06.09.2026 erneut zur
+       Prüfung eingereicht; der Warteschlangen-Status selbst liegt in der
+       App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "violet",
     problem:
       "Ernährungs-Apps sind entweder Tracker ohne Planung oder Planer ohne echte Datenbasis. Und fast alle behandeln Fehler als Kosmetik: Wenn der Server nicht erreichbar ist, zeigen sie „gespeichert“ an und verlieren die Eingabe.",
@@ -1473,13 +1502,20 @@ export const caseStudies: CaseStudy[] = [
        Am 30.08.2026 nachgezogen: `de.lexipulse.app` ist seit dem 23.08.2026
        bei Google Play freigegeben, `curl` gegen die Ladenseite antwortet mit
        200 und dem Titel „LexiPulse. PDF & E-Book". Bei Apple wartet
-       inzwischen Fassung 1.1 auf `WAITING_FOR_REVIEW`. */
-    statusLabel: "Live bei Google Play, iOS in Prüfung",
+       inzwischen Fassung 1.1 auf `WAITING_FOR_REVIEW`.
+
+       Am 06.09.2026 selbst über die öffentliche iTunes-Lookup-API geprüft
+       (`itunes.apple.com/lookup?bundleId=de.lexipulse.app`): Fassung 1.1
+       ist seit dem 01.09.2026 freigegeben, Kennung 6801979644, Preis 4,99 €.
+       Play bleibt unverändert live. LexiPulse ist damit die erste App aus
+       der Gruppe der zuletzt wartenden oder abgelehnten Fassungen, die bei
+       Apple durch ist. */
+    statusLabel: "Live in beiden Läden",
     accent: "violet",
     problem:
       "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
     solution:
-      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, FB2, PDF, TXT, Markdown, HTML und aus einer Web-Adresse. Wer den Wortstrom nicht mag, liest denselben Text im Fließtext weiter, mit vier mitgelieferten Schriften, Blättern samt Seitenzahl, Volltextsuche, Markierungen in fünf Farben mit Notizen und Lesehilfen von Bionic über ein Leselineal bis zu sechs Farbfiltern. Die Leseposition ist in beiden Fassungen dieselbe. Seit dem 17. August 2026 behält der Import die Originaldatei, und über ihr liegt ein Werkzeugkasten: markieren, zeichnen, Textfelder, Notizen, Formulare, unterschreiben, Seiten ordnen. In der Web-Fassung ist das live; in der App kommt es mit 1.1, das bei Apple noch geprüft wird, und eine Beschreibung, die Funktionen des geprüften Pakets überholt, wäre gegenüber Käufern falsch.",
+      "Ein Reader, der beides löst und dabei das Gerät nicht verlässt. Der Fixpunkt sitzt arithmetisch statt ungefähr: translateX((Zielspalte − Erkennungspunkt)ch) auf einer Festbreitenschrift. Die Bereinigung erkennt Kopf- und Fußzeilen, Seitenzahlen, Inhaltsverzeichnis-Punktlinien und Tabellenzeilen und setzt getrennte Wörter wieder zusammen, bevor ein einziges Wort den Player erreicht. Import aus EPUB, FB2, PDF, TXT, Markdown, HTML und aus einer Web-Adresse. Wer den Wortstrom nicht mag, liest denselben Text im Fließtext weiter, mit vier mitgelieferten Schriften, Blättern samt Seitenzahl, Volltextsuche, Markierungen in fünf Farben mit Notizen und Lesehilfen von Bionic über ein Leselineal bis zu sechs Farbfiltern. Die Leseposition ist in beiden Fassungen dieselbe. Seit dem 17. August 2026 behält der Import die Originaldatei, und über ihr liegt ein Werkzeugkasten: markieren, zeichnen, Textfelder, Notizen, Formulare, unterschreiben, Seiten ordnen. In der Web-Fassung ist das seither live; in der App kommt es mit Fassung 1.1, seit dem 1. September 2026 bei Apple freigegeben und weiterhin bei Google Play verfügbar.",
     hardPart: {
       title: "Gleiches Tempo für jedes Wort ist der Fehler",
       body: "Flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende, und genau daran bricht das Verstehen weg. Hier multiplizieren sich Faktoren: Wortkern über acht Zeichen mal 1,25, Satzende mal 1,75, Teilsatzende mal 1,75, Absatzende mal 2,0, Ziffern mal 1,4, Kern bis drei Zeichen mal 0,9. Abkürzungen und Ordnungszahlen sind von der Satzregel ausgenommen, damit „z. B.“ und „1.“ den Strom nicht anhalten. Dazu ein Anlauf: Nach jedem Fortsetzen laufen die ersten Wörter auf 40 Prozent des Zieltempos an, weil der Sprung aus dem Stand auf 900 Wörter je Minute der häufigste Grund ist, überhaupt nichts zu lesen. Und die Uhr rechnet mit einem absoluten Zeitstempel statt mit Bildabständen, damit ein ausgefallenes Bild den Strom nicht verschiebt.",
@@ -1538,6 +1574,13 @@ export const caseStudies: CaseStudy[] = [
       {
         label: "Google Play",
         href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
+        kind: "store",
+      },
+      /* Über die öffentliche iTunes-Lookup-API bestätigt am 06.09.2026:
+         Fassung 1.1, freigegeben seit dem 01.09.2026, Kennung 6801979644. */
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/de/app/lexipulse-pdf-e-book/id6801979644",
         kind: "store",
       },
     ],
@@ -1605,8 +1648,18 @@ export const caseStudies: CaseStudy[] = [
        `de.aegisapp.app` inzwischen mit 404 und dem Titel „Nicht gefunden";
        Google hat den Eintrag am 26.08.2026 wegen eines nicht reagierenden
        Bedienelements entfernt. Ein
-       Knopf „im Store ansehen" bleibt deshalb weiterhin aus. */
-    statusLabel: "Bei Apple abgelehnt, bei Google Play entfernt",
+       Knopf „im Store ansehen" bleibt deshalb weiterhin aus.
+
+       Am 06.09.2026 selbst nachgesehen: `de.aegisapp.app` antwortet bei
+       Google Play wieder mit 200 und dem Titel „Aegis – Belege, Garantie,
+       EÜR" (Abruf über `curl`), der Eintrag ist also erneut freigegeben.
+       Der Knopf „im Store ansehen" kommt deshalb zurück. Bei Apple liefert
+       die öffentliche iTunes-Lookup-API weiterhin null Treffer für
+       `de.aegisapp.app`. Nach Rückmeldung des Kontoinhabers wurde die
+       Fassung am 05./06.09.2026 nach der Ablehnung erneut zur Prüfung
+       eingereicht; der Warteschlangen-Status selbst liegt in der
+       App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1658,6 +1711,11 @@ export const caseStudies: CaseStudy[] = [
         href: "https://aegis.domenicmoran.de",
         kind: "live",
       },
+      {
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=de.aegisapp.app",
+        kind: "store",
+      },
     ],
     architecture: "aegis",
     shots: [
@@ -1698,8 +1756,16 @@ export const caseStudies: CaseStudy[] = [
     /* Am 30.08.2026 nachgezogen: Über die App-Store-Connect-API steht
        Fassung 1.0 auf `REJECTED`. Bei Google Play antwortet `de.vortexapp.app`
        mit 200 und dem Titel „Vortex. Shop-Check": freigegeben seit dem
-       23.08.2026, hier bislang nicht verlinkt. */
-    statusLabel: "Live bei Google Play, bei Apple abgelehnt",
+       23.08.2026, hier bislang nicht verlinkt.
+
+       Am 06.09.2026 selbst nachgesehen: `de.vortexapp.app` antwortet bei
+       Google Play weiter mit 200 und dem Titel „Vortex – Shop-Check". Bei
+       Apple liefert die öffentliche iTunes-Lookup-API weiterhin null
+       Treffer. Nach Rückmeldung des Kontoinhabers wurde die Fassung am
+       05./06.09.2026 nach der Ablehnung erneut zur Prüfung eingereicht; der
+       Warteschlangen-Status selbst liegt in der App-Store-Connect-Konsole,
+       auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "cyan",
     problem:
@@ -1774,8 +1840,16 @@ export const caseStudies: CaseStudy[] = [
        Fassung 1.0 auf `REJECTED`. Bei Google Play antwortet
        `de.synapseapp.app` mit 200 und dem Titel „Synapse. Karteikarten
        lernen": freigegeben seit dem 23.08.2026, hier bislang nicht
-       verlinkt. */
-    statusLabel: "Live bei Google Play, bei Apple abgelehnt",
+       verlinkt.
+
+       Am 06.09.2026 selbst nachgesehen: `de.synapseapp.app` antwortet bei
+       Google Play weiter mit 200 und dem Titel „Synapse – Karteikarten
+       lernen". Bei Apple liefert die öffentliche iTunes-Lookup-API
+       weiterhin null Treffer. Nach Rückmeldung des Kontoinhabers wurde die
+       Fassung am 05./06.09.2026 nach der Ablehnung erneut zur Prüfung
+       eingereicht; der Warteschlangen-Status selbst liegt in der
+       App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -1875,8 +1949,16 @@ export const caseStudies: CaseStudy[] = [
     /* Am 30.08.2026 nachgezogen: Über die App-Store-Connect-API steht
        Fassung 1.0 auf `REJECTED`. Bei Google Play antwortet `de.vesperapp.app`
        mit 200 und dem Titel „Vesper. Bewerbungen & Jobs": freigegeben seit
-       dem 23.08.2026, hier bislang nicht verlinkt. */
-    statusLabel: "Live bei Google Play, bei Apple abgelehnt",
+       dem 23.08.2026, hier bislang nicht verlinkt.
+
+       Am 06.09.2026 selbst nachgesehen: `de.vesperapp.app` antwortet bei
+       Google Play weiter mit 200 und dem Titel „Vesper – Bewerbungen &
+       Jobs". Bei Apple liefert die öffentliche iTunes-Lookup-API weiterhin
+       null Treffer. Nach Rückmeldung des Kontoinhabers wurde die Fassung
+       am 05./06.09.2026 nach der Ablehnung erneut zur Prüfung eingereicht;
+       der Warteschlangen-Status selbst liegt in der
+       App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "acid",
     problem:
@@ -1964,8 +2046,17 @@ export const caseStudies: CaseStudy[] = [
        in der eigentlichen Prüfschlange. Bei Google Play antwortet
        `de.aetherapp.app` mit 200 und dem Titel „Aether. Dein
        Tagesgedächtnis": freigegeben seit dem 23.08.2026, hier bislang nicht
-       verlinkt. */
-    statusLabel: "Live bei Google Play, iOS-Einreichung mit offenen Punkten",
+       verlinkt.
+
+       Am 06.09.2026 selbst nachgesehen: `de.aetherapp.app` antwortet bei
+       Google Play weiter mit 200 und dem Titel „Aether – Tagesverlauf &
+       Suche". Bei Apple liefert die öffentliche iTunes-Lookup-API weiterhin
+       null Treffer. Nach Rückmeldung des Kontoinhabers wurden die offenen
+       Punkte der Einreichung vom 22.08. behoben und die Fassung am
+       05./06.09.2026 erneut zur Prüfung eingereicht; der
+       Warteschlangen-Status selbst liegt in der App-Store-Connect-Konsole,
+       auf die dieser Lauf keinen Zugriff hat. */
+    statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
     accent: "violet",
     problem:
@@ -2403,12 +2494,13 @@ export const recruiter = {
     {
       title: "Ich kenne den Weg durch die Stores",
       /* Dieselbe Zahl wie im Werdegang oben, aus demselben Beleg: Am
-         30.08.2026 vier Fassungen live bei Apple (`READY_FOR_SALE`), 13
-         Paketnamen live bei Google Play (echter HTTP-Abruf je Paket), macht
-         17 öffentliche Einträge, dazu vier Apps mit einer offenen
+         06.09.2026 fünf Fassungen live bei Apple (LexiPulse über die
+         öffentliche iTunes-Lookup-API bestätigt), 14 Paketnamen live bei
+         Google Play (echter HTTP-Abruf je Paket, Aegis wieder freigegeben),
+         macht 19 öffentliche Einträge, dazu acht Apps mit einer offenen
          Apple-Prüfung. Details und Einzelquellen stehen beim Werdegang,
          nicht zweimal. */
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu 17 öffentliche Store-Einträge über beide Läden und vier weitere Apps mit einer offenen Store-Prüfung bei Apple (Stand 30. August 2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu 19 öffentliche Store-Einträge über beide Läden und acht weitere Apps mit einer offenen Store-Prüfung bei Apple (Stand 6. September 2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

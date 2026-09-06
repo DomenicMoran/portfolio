@@ -775,7 +775,7 @@ export const en: Content = {
         "Nutrition and training platform: web app, mobile app, one shared catalogue",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, rejected at Apple",
+      statusLabel: "Live on Google Play, iOS in review",
       accent: "violet",
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
@@ -1114,12 +1114,12 @@ export const en: Content = {
         "A complete reader for EPUB, PDF and web articles: word stream or running text",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, iOS in review",
+      statusLabel: "Live in both stores",
       accent: "violet",
       problem:
         "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
       solution:
-        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, FB2, PDF, TXT, Markdown, HTML and from a web address. Anyone who dislikes the word stream reads the same text as running text instead, with four bundled faces, paging with page numbers, full-text search, highlights in five colours with notes, and reading aids from bionic through a reading ruler to six colour filters. The reading position is the same in both. Since 17 August 2026 the import keeps the original file, and a toolbox sits on top of it: highlight, draw, text fields, notes, forms, sign, reorder pages. In the web version that is live; in the app it arrives with 1.1, which is still under Apple review, and a description that outruns the reviewed package would be false to buyers.",
+        "A reader that solves both without the document leaving the device. The pivot is arithmetic rather than approximate: translateX((focusColumn − orp)ch) on a monospace face. The cleanup detects running heads, footers, page numbers, table-of-contents dot leaders and table rows, and rejoins split words, before a single word reaches the player. Import from EPUB, FB2, PDF, TXT, Markdown, HTML and from a web address. Anyone who dislikes the word stream reads the same text as running text instead, with four bundled faces, paging with page numbers, full-text search, highlights in five colours with notes, and reading aids from bionic through a reading ruler to six colour filters. The reading position is the same in both. Since 17 August 2026 the import keeps the original file, and a toolbox sits on top of it: highlight, draw, text fields, notes, forms, sign, reorder pages. In the web version that has been live ever since; in the app it arrives with version 1.1, live on the App Store since 1 September 2026 and still available on Google Play.",
       hardPart: {
         title: "The same pace for every word is the mistake",
         body: "Flat RSVP gives a three-letter article the same time budget as a sentence boundary, and that is exactly where comprehension collapses. Here the factors compose: a word core longer than eight characters times 1.25, sentence end times 1.75, clause end times 1.75, paragraph end times 2.0, digits times 1.4, a core of three characters or fewer times 0.9. Abbreviations and ordinals are excluded from the sentence rule so that “e.g.” and “1.” do not stall the stream. On top of that a warm-up: after every resume the first words run at 40 per cent of the target pace, because dropping straight into 900 words per minute from a standstill is the single most common reason for reading nothing at all. And the clock consumes an absolute timestamp rather than frame deltas, so a dropped frame cannot make the stream drift.",
@@ -1169,6 +1169,11 @@ export const en: Content = {
           href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
           kind: "store",
         },
+        {
+          label: "App Store",
+          href: "https://apps.apple.com/de/app/lexipulse-pdf-e-book/id6801979644",
+          kind: "store",
+        },
       ],
       architecture: "lexipulse",
       shots: [
@@ -1212,7 +1217,7 @@ export const en: Content = {
         "Receipts, deadlines and the cash-basis accounts of a sole trader, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Rejected at Apple, removed from Google Play",
+      statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1264,6 +1269,11 @@ export const en: Content = {
           href: "https://aegis.domenicmoran.de",
           kind: "live",
         },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=de.aegisapp.app",
+          kind: "store",
+        },
       ],
       architecture: "aegis",
       shots: [
@@ -1301,7 +1311,7 @@ export const en: Content = {
         "Spots dropshipping and shows the original price, computed on the device",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, rejected at Apple",
+      statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
       accent: "cyan",
       problem:
@@ -1372,7 +1382,7 @@ export const en: Content = {
         "PDFs, photos and notes become flashcards, repeated on the SM-2 schedule, entirely offline",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, rejected at Apple",
+      statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1459,7 +1469,7 @@ export const en: Content = {
         "Applications, projects and contacts on a local board, with a language model on your own machine",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, rejected at Apple",
+      statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
       accent: "acid",
       problem:
@@ -1542,7 +1552,7 @@ export const en: Content = {
         "Your own day as a searchable memory: context, voice notes and thoughts, processed locally",
       year: "2026",
       role: "Sole developer",
-      statusLabel: "Live on Google Play, iOS submission with open issues",
+      statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
       accent: "violet",
       problem:
@@ -1668,7 +1678,7 @@ export const en: Content = {
          13 Play plus four Apple listings make 17 public store references,
          now each linked and checked in its own case study, not just
          claimed. */
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, 17 public store listings across both stores (13 on Google Play, four on the App Store) and four apps with an open Apple review, three of them live on Google Play only so far (as of 30 August 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, 19 public store listings across both stores (14 on Google Play, five on the App Store) and eight apps with an open Apple review, all eight already live on Google Play (as of 6 September 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1681,9 +1691,9 @@ export const en: Content = {
       { value: "10+", label: "systems in production", note: "all built alone" },
       // Siehe `site.ts`: am 30.08.2026 je Laden einzeln nachgezählt.
       {
-        value: "17",
+        value: "19",
         label: "store listings live",
-        note: "13 Play, 4 App Store",
+        note: "14 Play, 5 App Store",
       },
       {
         value: "2022",
@@ -2139,12 +2149,13 @@ export const en: Content = {
       },
       {
         title: "I know the way through the app stores",
-        /* Same figure as the bio paragraph, same evidence: on 30.08.2026 four
-           versions are live at Apple (`READY_FOR_SALE`), 13 package names
-           live on Google Play (a real HTTP call per package), 17 public
-           listings, plus four apps with an open Apple review. Sources live
-           with the bio paragraph, not duplicated here. */
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 17 public store listings across both stores and four more apps with an open Apple review right now (as of 30 August 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        /* Same figure as the bio paragraph, same evidence: on 06.09.2026 five
+           versions are live at Apple (LexiPulse confirmed via the public
+           iTunes lookup API), 14 package names live on Google Play (a real
+           HTTP call per package, Aegis relisted), 19 public listings, plus
+           eight apps with an open Apple review. Sources live with the bio
+           paragraph, not duplicated here. */
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 19 public store listings across both stores and eight more apps with an open Apple review right now (as of 6 September 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
