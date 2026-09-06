@@ -272,9 +272,9 @@ Zustand beim Wechsel eines Props wird **während des Renderns** angepasst
 (`if (open !== wasOpen) { … }`), nicht in einem `useEffect`. Die
 `react-hooks/set-state-in-effect`-Regel ist scharf und hat recht.
 
-## Die 91 Weiterleitungen
+## Die 96 Weiterleitungen
 
-`vercel.json` ist mit 534 Zeilen die längste Datei ohne Prosa, und JSON lässt
+`vercel.json` ist mit 560 Zeilen die längste Datei ohne Prosa, und JSON lässt
 keinen Kommentar zu. Deshalb steht hier, was dort steht und warum.
 
 Jede Regel kommt aus derselben Beobachtung: Adressen entstehen nicht nur durch
@@ -284,7 +284,12 @@ tippt `/privacy`. Wer den deutschen Pfad `/artikel` kennt, schreibt `/en/article
 statt `/en/articles`. Keiner dieser Fälle taucht in einem Verweis auf, und keiner
 fällt ohne Messung auf.
 
-Sieben Gruppen, gemessen am 16.08.2026:
+Sieben Gruppen, gemessen am 16.08.2026. Die Tabelle summiert sich auf 91 und ist
+damit der Stand jenes Tages; die fünf jüngeren Regeln sind seither einzeln
+dazugekommen, zuletzt `/produkte` und `/products` am 06.09.2026, weil die
+Beschriftung „Produkte“ in der Kopfleiste als einzige keine eigene Adresse
+hatte. Wer die Gruppen neu zählt, zählt sie bitte ganz und schreibt das Datum
+dazu — eine halb nachgezogene Tabelle ist schlechter als eine offen veraltete.
 
 | Gruppe | Anzahl | Beispiel |
 | --- | --- | --- |

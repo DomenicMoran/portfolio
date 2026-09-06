@@ -183,7 +183,7 @@ const ARCHITEKTUR_EN: Record<string, string> = {
   "im Browser": "in the browser",
   "auf dem Telefon": "on the phone",
   "Art. 20 DSGVO": "Art. 20 GDPR",
-  "63 Workflows · Watchdogs": "63 workflows · watchdogs",
+  "105 Workflows · Watchdogs": "105 workflows · watchdogs",
   "Alerts nach Slack": "Alerts to Slack",
   "+ SES-Fallback": "+ SES fallback",
   "DNS · Edge · WAF": "DNS · edge · WAF",

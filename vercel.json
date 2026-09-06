@@ -146,6 +146,16 @@
       "permanent": true
     },
     {
+      "source": "/produkte",
+      "destination": "/#produkte",
+      "permanent": true
+    },
+    {
+      "source": "/products",
+      "destination": "/en#produkte",
+      "permanent": true
+    },
+    {
       "source": "/recruiter",
       "destination": "/#hire",
       "permanent": true

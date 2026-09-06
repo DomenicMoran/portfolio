@@ -548,7 +548,7 @@ export const caseStudies: CaseStudy[] = [
         group: "Desktop",
         items: [
           "Tauri 1 (Rust)",
-          "Next.js 14",
+          "Next.js 15",
           "WebView2 / WebKitGTK",
           "TypeScript",
         ],
@@ -832,9 +832,9 @@ export const caseStudies: CaseStudy[] = [
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
-    /** Eigener Block, weil 63 Workflows keine Fußnote sind. */
+    /** Eigener Block, weil 105 Workflows keine Fußnote sind. */
     automation: {
-      title: "63 Workflows, die den Betrieb tragen",
+      title: "105 Workflows, die den Betrieb tragen",
       lede: "Der Teil des Systems, der ohne mich weiterläuft. Alle Workflows sind versioniert und im Repository nachvollziehbar, nicht in einer Oberfläche zusammengeklickt und dann vergessen.",
       groups: [
         {

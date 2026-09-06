@@ -3084,9 +3084,21 @@ const BRAUCHT_KIND = {
      der Treffer „nf". Ein Prüfwerkzeug, das an einem Umlaut scheitert und dabei
      wie ein Inhaltsfehler aussieht, ist die teuerste Sorte Fehlalarm: Man sucht
      ihn im Text. */
-  const satz = quelle.match(
-    /(\p{L}+) Apps im Play Store und (\p{L}+) davon auch im App Store/u,
-  );
+  /* Am 06.09.2026 nachgeschärft statt den Text zurückgebogen. Der Satz im
+     Werdegang nennt die Zahlen seit dem 30.08.2026 in Klammern hinter der
+     Summe, weil aus „vier Apps" inzwischen 14 Play- und fünf App-Store-
+     Einträge geworden sind; ein Zahlwort dafür gibt es in der Tabelle unten
+     gar nicht. Der Lauf meldete deshalb „Satz steht nicht mehr in der
+     erwarteten Form" und prüfte gar nichts mehr — ein stummer Prüflauf ist
+     schlimmer als ein lauter. Beide Schreibweisen sind jetzt erlaubt, Ziffern
+     wie Zahlwörter. */
+  const satz =
+    quelle.match(
+      /\((\p{L}+|\d+) bei Google Play, (\p{L}+|\d+) bei Apple\)/u,
+    ) ??
+    quelle.match(
+      /(\p{L}+|\d+) Apps im Play Store und (\p{L}+|\d+) davon auch im App Store/u,
+    );
 
   if (!satz) {
     abweichungen++;
@@ -3095,8 +3107,10 @@ const BRAUCHT_KIND = {
         "erwarteten Form, ohne ihn prüft dieser Lauf nichts.",
     );
   } else {
-    const behauptetPlay = ZAHLWORT[satz[1].toLowerCase()];
-    const behauptetApple = ZAHLWORT[satz[2].toLowerCase()];
+    const alsZahl = (wort) =>
+      /^\d+$/.test(wort) ? Number(wort) : ZAHLWORT[wort.toLowerCase()];
+    const behauptetPlay = alsZahl(satz[1]);
+    const behauptetApple = alsZahl(satz[2]);
     const funde = [];
     if (behauptetPlay !== beiPlay)
       funde.push(
@@ -5901,6 +5915,26 @@ const ANGABEN = [
     text: "Node.js 22",
     datei: "../../KIWohnung/README.md",
     text_muster: /Node\.js (\d+)\+/,
+    stellen: 1,
+  },
+  /* Am 06.09.2026 nachgetragen. Beide standen im Stapel der Desktop-Anwendung,
+     ohne dass irgendetwas sie gegen das Repo hielt, und die zweite war falsch:
+     Auf der Seite stand „Next.js 14“, `MFC/web/package.json` nennt 15. Gefunden
+     hat das nicht der Blick auf den Text, sondern die Gegenprobe dieses Laufs
+     — „steht auf der Seite, wird aber nirgends geprüft“. Genau dafür ist sie da.
+
+     Tauri wird gegen `Cargo.toml` geprüft und nicht gegen eine package.json:
+     Die Desktop-Schale ist Rust, die Abhängigkeit steht dort. */
+  {
+    text: "Tauri 1 (Rust)",
+    datei: "../../MFC/src-tauri/Cargo.toml",
+    text_muster: /^tauri = \{ version = "(\d+(?:\.\d+)*)"/m,
+    stellen: 1,
+  },
+  {
+    text: "Next.js 15",
+    datei: "../../MFC/web/package.json",
+    paket: "next",
     stellen: 1,
   },
 ];

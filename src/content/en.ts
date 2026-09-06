@@ -296,7 +296,7 @@ export const en: Content = {
           group: "Desktop",
           items: [
             "Tauri 1 (Rust)",
-            "Next.js 14",
+            "Next.js 15",
             "WebView2 / WebKitGTK",
             "TypeScript",
           ],
@@ -557,7 +557,7 @@ export const en: Content = {
         "iOS and Android apps for owners and service staff",
       ],
       automation: {
-        title: "63 workflows that keep the business running",
+        title: "105 workflows that keep the business running",
         lede: "The part of the system that runs without me. Every workflow is versioned and traceable in the repository, not clicked together in a dashboard and then forgotten.",
         groups: [
           {
