@@ -500,7 +500,14 @@ for (const datei of [
           `  ~   ${name}, gemessen ${wirklich}, über 25 % mehr. Grenze anheben.`,
         );
         hinweise++;
-        abweichungen++;
+        /* Kein `abweichungen++`. Am 06.09.2026 stand hier beides, und der Lauf
+           war deshalb rot, ohne dass die Zusammenfassung sagen konnte warum:
+           Sie sammelt Zeilen mit `!!` und `!=`, diese hier trägt `~`. Drei
+           Hinweise zählten still mit, der Bericht meldete „(keine Fundzeile im
+           Bericht)". Genau das, wovor die Erklärung über `hinweise` warnt: Eine
+           Untergrenze, die zu bescheiden geworden ist, sagt nichts Falsches —
+           die Seite bleibt wahr, sie verkauft sich nur unter Wert. Das gehört
+           in die Hinweise und nicht ins Rot. */
       } else {
         zeilen.push(`  ok  ${name.padEnd(42)} gemessen ${wirklich}`);
       }
