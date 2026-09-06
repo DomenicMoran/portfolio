@@ -26,6 +26,11 @@ export function useHorizontalScrollWheel(ref: RefObject<HTMLElement | null>) {
     const el = ref.current;
     if (!el) return;
 
+    /* Derselbe Ausschluss wie in Nav.tsx und CommandPalette.tsx: Ohne ihn
+       verarbeitet Lenis Radbewegungen über diesem Kasten selbst und reicht
+       sie an die Seite weiter, bevor der Handler unten sie sieht. */
+    el.setAttribute("data-lenis-prevent", "");
+
     const radweiter = (event: WheelEvent) => {
       if (event.deltaX !== 0) return;
       event.preventDefault();
