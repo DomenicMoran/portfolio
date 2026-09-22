@@ -59,7 +59,12 @@ const ERLAUBTE_METHODEN = new Set(["GET", "HEAD", "OPTIONS"]);
  * Statuscode hängt nicht an der Methode.
  */
 export function proxy(request: NextRequest) {
-  if (!ERLAUBTE_METHODEN.has(request.method)) {
+  // The signed ISR endpoint is intentionally the sole write-like HTTP route.
+  // It authenticates independently in its route handler; blocking it here
+  // would make local Supabase upserts stay stale for the whole ISR window.
+  const istSignierteRevalidierung =
+    request.method === "POST" && request.nextUrl.pathname === "/api/revalidate";
+  if (!ERLAUBTE_METHODEN.has(request.method) && !istSignierteRevalidierung) {
     return new NextResponse(null, {
       status: 405,
       headers: { allow: [...ERLAUBTE_METHODEN].join(", ") },

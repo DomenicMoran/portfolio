@@ -61,7 +61,8 @@
     "check:shots": "node scripts/check-shots.mjs",
     "check:schema": "node scripts/check-structured-data.mjs",
     "check:palette": "node scripts/check-palette.mjs",
-    "check:copy": "node scripts/check-hardcoded-copy.mjs"
+    "check:copy": "node scripts/check-hardcoded-copy.mjs",
+    "generate:pitch": "tsx scripts/generate-pitch.ts"
   },
   "dependencies": {
     "adhan": "^4.4.4",
@@ -83,16 +84,18 @@
     "axe-core": "^4.12.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
-    "lighthouse": "^12.8.2",
+    "lighthouse": "12.8.2",
     "marked": "^18.0.7",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.62.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5",
     "vitest": "^4.1.10"
   },
   "overrides": {
+    "js-yaml": "^4.3.2",
     "sharp": "^0.35.3",
     "postcss": "^8.5.25"
   }

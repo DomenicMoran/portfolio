@@ -219,12 +219,31 @@ if (!angezeigt.includes(STAND)) {
    das keine stille Absprache zwischen zwei Dateien bleibt, muss die Erklärung
    die Ausnahme selbst benennen: Wer den Absatz umformuliert und den Satz dabei
    verliert, behauptet wieder etwas, das der Bau nicht hält. */
-if (!/Ausnahme ist die Fehlerseite/.test(text)) {
+if (
+  !/Fehlerseite/.test(text) ||
+  !/vorab erzeugt/.test(text) ||
+  !/zusammengesetzt/.test(text)
+) {
   console.error(
     `Die Datenschutzerklärung benennt die Fehlerseite nicht mehr als Ausnahme ` +
-      `von „vorab erzeugt". Sie ist die einzige Seite, die bei der Anfrage ` +
-      `zusammengesetzt wird, entweder steht das im Text, oder die Ausnahme ` +
-      `gehört aus diesem Lauf heraus.`,
+      `von „vorab erzeugt". Sie wird bei der Anfrage zusammengesetzt; steht ` +
+      `das nicht im Text, behauptet die Erklärung wieder etwas, das der Bau ` +
+      `nicht hält.`,
+  );
+  process.exit(1);
+}
+if (!/\/for\//.test(text)) {
+  console.error(
+    `Die Datenschutzerklärung benennt die personalisierten /for-Seiten nicht ` +
+      `als ISR-Ausnahme. Steht das nicht im Text, behauptet sie wieder etwas, ` +
+      `das der Bau nicht hält.`,
+  );
+  process.exit(1);
+}
+if (!/\/api\/revalidate/.test(text)) {
+  console.error(
+    `Die Datenschutzerklärung benennt den signierten POST /api/revalidate nicht. ` +
+      `Ohne diesen Satz fehlt die Ausnahme zum sonstigen Verbot schreibender Endpunkte.`,
   );
   process.exit(1);
 }
@@ -510,6 +529,9 @@ if (gerechnet !== TEXT_PRUEFSUMME) {
    während die Erklärung „sämtliche Seiten“ behauptete, eine Zeile, die man
    einmal einträgt und dann vergisst. Sie steht jetzt auch im Text der
    Erklärung, und der Block darunter hält sie dort fest. */
+const istBenannteIsrAusnahme = (pfad) =>
+  pfad === "/_not-found" ||
+  (pfad.includes("/for/") && pfad.includes("[company-slug]"));
 const AUSNAHMEN = new Set(["/_not-found"]);
 
 /* Dieselbe Zusage steht auch im README, und dort stand sie falsch.
@@ -535,12 +557,22 @@ const AUSNAHMEN = new Set(["/_not-found"]);
     );
     process.exit(1);
   }
-  if (AUSNAHMEN.size && !/Ausnahme ist die Fehlerseite/.test(readme)) {
+  if (
+    AUSNAHMEN.size &&
+    (!/Fehlerseite/.test(readme) || !/vorab erzeugt/.test(readme))
+  ) {
     console.error(
       `README.md benennt die Fehlerseite nicht als Ausnahme von „vorab ` +
         `erzeugt". Die Datenschutzerklärung tut es, der Bau gibt ihr recht. ` +
         `Zwei Dokumente derselben Seite dürfen nicht Verschiedenes über ` +
         `dieselbe Tatsache sagen.`,
+    );
+    process.exit(1);
+  }
+  if (AUSNAHMEN.size && !/\/for\//.test(readme)) {
+    console.error(
+      `README.md benennt die /for-ISR-Seiten nicht. Die Datenschutzerklärung ` +
+        `tut es; beide Dokumente müssen dieselben Ausnahmen nennen.`,
     );
     process.exit(1);
   }
@@ -562,7 +594,8 @@ try {
     readFileSync(join(".next", "app-path-routes-manifest.json"), "utf8"),
   );
   for (const pfad of new Set(Object.values(app))) {
-    if (AUSNAHMEN.has(pfad)) continue;
+    if (AUSNAHMEN.has(pfad) || istBenannteIsrAusnahme(pfad)) continue;
+    if (pfad === "/api/revalidate") continue;
     // Route Handler stehen nicht im Prerender-Manifest, sie liefern Dateien.
     if (
       /\/(feed\.xml|llms\.txt|humans\.txt|security\.txt|robots\.txt|sitemap\.xml)$/.test(
@@ -581,14 +614,17 @@ try {
 const schreibend = [];
 for (const datei of dateienUnter(join("src", "app"))) {
   if (!/route\.ts$/.test(datei)) continue;
+  const norm = datei.replace(/\\/g, "/");
+  if (norm.includes("src/app/api/revalidate/route.ts")) continue;
   const treffer = SCHREIBENDE.exec(readFileSync(datei, "utf8"));
   if (treffer) schreibend.push(`${datei} nimmt ${treffer[1]} entgegen`);
 }
 
 if (dynamische.length || schreibend.length) {
   console.error(
-    "Die Datenschutzerklärung sagt, dass alle Seiten vorab erzeugt werden " +
-      "und kein Endpunkt Eingaben entgegennimmt. Der Bau sagt etwas anderes:\n",
+    "Die Datenschutzerklärung sagt, dass das Portfolio vorab erzeugt wird " +
+      "mit benannten Ausnahmen und nur signiertem /api/revalidate schreibend. " +
+      "Der Bau sagt etwas anderes:\n",
   );
   for (const p of dynamische)
     console.error(`  ${p} wird auf Anfrage gerendert`);
@@ -909,9 +945,9 @@ if (!process.exitCode) {
        Wer in einem CI-Protokoll nur die letzte Zeile liest, hielt die
        Rechtsseiten für kaum geprüft. Die Einzelbefunde stehen darüber. */
     `Die Rechtsseiten halten, was sie zusagen: ${text.split(" ").length} Wörter, ` +
-      `Stand ${STAND}, Prüfsumme passend. Alle Seiten mit Inhalt vorab erzeugt, ` +
-      `die Fehlerseite als benannte Ausnahme, kein Endpunkt nimmt Eingaben ` +
-      `entgegen, dazu die sieben Punkte darüber.`,
+      `Stand ${STAND}, Prüfsumme passend. Portfolio vorab erzeugt mit benannten ` +
+      `ISR-Ausnahmen, nur signiertes /api/revalidate schreibend, dazu die sieben ` +
+      `Punkte darüber.`,
   );
 }
 

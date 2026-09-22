@@ -17,7 +17,7 @@
  * Wer den Text ändert, ändert beide Zeilen mit. Der Lauf sagt, welche
  * Prüfsumme hineingehört.
  */
-export const STAND = "23. August 2026";
+export const STAND = "22. September 2026";
 
 /** sha256 über den sichtbaren Text von `/datenschutz`, ohne den Abschnitt „Stand“. */
 /* Am 23.08.2026 neu datiert, und diesmal zu Recht.
@@ -31,4 +31,4 @@ export const STAND = "23. August 2026";
  * Mitgewandert, aber ohne Bedeutung für den Inhalt: Zwischen Kürzel und
  * Ziffer steht in den Rechtsverweisen jetzt ein geschütztes Leerzeichen
  * (U+00A0), damit „Art. 6“ am Zeilenende nicht auseinanderfällt. */
-export const TEXT_PRUEFSUMME = "f8f1ce016a86050d";
+export const TEXT_PRUEFSUMME = "1ae7293ce49a24e0";

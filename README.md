@@ -32,25 +32,36 @@ an dem man nicht drumherum kam.
 
 | Bereich | Wahl | Warum |
 |---|---|---|
-| Framework | Next.js 16, App Router | Jede Seite mit Inhalt wird vorab erzeugt; kein Serverprozess, kein Endpunkt |
+| Framework | Next.js 16, App Router | Portfolio vorab erzeugt; `/for/*` per ISR; signiertes `/api/revalidate` |
 | Sprache | TypeScript, strict | 0 Fehler ist Merge-Gate, nicht Zielvorgabe |
 | Styling | Tailwind v4 | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config |
 | Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
 | Scrolling | Lenis | Wird bei Reduced-Motion **gar nicht erst geladen** |
 | Icons | lucide-react | Brand-Marken als eigenes Inline-SVG (v1 hat sie entfernt) |
-| Drittanbieter | keine | Außer dem Hosting lädt diese Seite nichts von fremden Servern |
+| Drittanbieter | minimal | Portfolio ohne Fremd-Skripte; `/for/*` kann Logos per HTTPS laden; Supabase nur für diese Seiten |
 
 ## Architektur-Entscheidungen
 
-**Jede Seite mit Inhalt ist statisch.** Sie alle entstehen zur Build-Zeit und
-liegen danach als fertige Dateien am CDN-Rand. Es gibt keinen Endpunkt, der
-Eingaben entgegennimmt, keine Datenbank und keinen Serverprozess. Eine Seite,
-die keine Laufzeit braucht, kann auch nicht zur Laufzeit ausfallen.
+**Das Portfolio ist vorab erzeugt; Ausnahmen sind benannt.** Die meisten Seiten
+mit Inhalt entstehen zur Build-Zeit und liegen danach als fertige Dateien am
+CDN-Rand. Ausnahmen: Die Fehlerseite wird bei der Anfrage zusammengesetzt,
+weil sie in der Sprache antworten soll, unter der jemand gekommen ist.
+Personalisierte Bewerbungsseiten unter `/for/[slug]` werden serverseitig etwa
+stündlich neu erzeugt (ISR) und lesen öffentliche Zeilen aus Supabase
+(`targeted_companies`); unbekannte Slugs zeigen die normale Startseite. Ein
+signierter POST `/api/revalidate` invalidiert den Cache nach dem lokalen
+Pitch-CLI-Upsert. Kein Kontaktformular, kein Besucher-Upload. Die
+Datenschutzerklärung nennt dieselben Ausnahmen; wer hier etwas ändert, zieht
+sie dort nach.
 
-Einzige Ausnahme ist die Fehlerseite. Sie wird bei der Anfrage zusammengesetzt,
-weil sie in der Sprache antworten soll, unter der jemand gekommen ist, und
-diese Sprache erst die Adresse verrät. Die Datenschutzerklärung nennt dieselbe
-Ausnahme; wer hier etwas ändert, zieht sie dort nach.
+Lokal erzeugst du eine Firmenseite mit:
+
+```bash
+npm run generate:pitch -- <url> [--contact "Name"] [--company "Company"]
+```
+
+(Dafür brauchst du die Variablen aus `.env.example`; sie gehören nicht ins
+Repo und nicht auf Vercel außer `NEXT_PUBLIC_SUPABASE_*` und `REVALIDATE_SECRET`.)
 
 Der Kontakt läuft deshalb über eine Mailadresse statt über ein Formular. Ein
 Formular hätte einen Versanddienst als Auftragsverarbeiter gebraucht, den die
@@ -261,6 +272,7 @@ scripts/
 ├─ fetch-figures-from-github.mjs  zählt Commits über die GitHub-API
 │
 │  Erzeugen statt prüfen:
+├─ generate-pitch.ts              Firmenseite unter /for/* aus URL (lokal, mit Supabase-Upsert)
 ├─ build-favicon.mjs              erzeugt favicon.ico aus derselben Form wie die Marke
 ├─ build-linkedin-images.mjs      Titelbild und Im-Fokus-Kachel aus denselben Zahlen wie die Seite
 ├─ build-onepager-pdf.mjs         druckt beide Kurzprofile auf je eine A4-Seite
@@ -286,7 +298,7 @@ ausgeliefert wird und nicht erst nach der Hydration erscheint.
 
 - Keine Cookies, kein Analytics, kein Consent-Banner: es gibt nichts einzuwilligen
 - Schriften werden selbst gehostet; beim Seitenaufruf entsteht keine Verbindung zu Google
-- Keine Eingabeverarbeitung: Es existiert kein Endpunkt, an den etwas gesendet wird
+- Keine Besucher-Eingaben: kein Formular; nur signiertes `/api/revalidate` für Cache nach dem Pitch-CLI
 - Vollständiger Header-Satz in [`vercel.json`](vercel.json): HSTS mit Preload,
   CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`,
   `Permissions-Policy`, `X-DNS-Prefetch-Control`
@@ -302,15 +314,15 @@ Seite. Um die ohne `'unsafe-inline'` zuzulassen, bräuchte es Nonces: die
 entstehen erst zur Anfragezeit und zwingen damit **jede** Route in dynamisches
 Rendering. Für eine Seite, deren wichtigste Metrik LCP ist, tauscht man damit
 messbare Ladezeit gegen eine Absicherung, die hier wenig bringt: Die Seite hat
-keine Nutzereingaben, die gerendert werden, keine Drittanbieter-Skripte und
-keine Datenbank.
+keine Besucher-Eingaben, die gerendert werden, keine Drittanbieter-Skripte auf
+dem Portfolio; `/for/*` liest öffentliche Supabase-Zeilen und darf Logos per HTTPS laden.
 
 Was die Policy stattdessen tatsächlich absichert und was hier zählt:
 `default-src 'self'`, `connect-src 'self'` (kein Datenabfluss), `object-src
 'none'`, `base-uri 'self'` (kein Base-Tag-Hijacking), `frame-ancestors 'none'`
 (kein Clickjacking) und `form-action 'self'`.
 
-`img-src` erlaubt `'self'` und `data:`, nicht mehr `blob:`. Gemessen an den
+`img-src` erlaubt `'self'`, `data:` und `https:` (Firmenlogos auf `/for/*`), nicht mehr `blob:`. Gemessen an den
 zwanzig gebauten Seiten trägt kein einziger der 26 Bildknoten eine
 `blob:`-Adresse; die einzige Fundstelle im Bündel ist eine Hülle um
 `URL.createObjectURL` aus einem Polyfill. Eine Erlaubnis, die niemand braucht,
@@ -322,9 +334,11 @@ Nonces und dynamisches Rendering.
 
 ## Deployment
 
-Auf Vercel importieren und deployen. Es gibt keine Umgebungsvariablen zu setzen:
-Die Seite hat keine Secrets, weil sie keinen Dienst anspricht. Jede Route wird
-vorab erzeugt und vom CDN-Rand ausgeliefert.
+Auf Vercel importieren und deployen. Für `/for/*` in Production:
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `REVALIDATE_SECRET`.
+Das Pitch-CLI (`generate:pitch`) läuft lokal mit Service-Role und OpenAI-Keys
+aus `.env.local`, nicht auf dem Server. Portfolio-Routen bleiben vorab erzeugt;
+`/for/*` und die Fehlerseite sind die benannten Laufzeit-Ausnahmen.
 
 ## Lizenz
 

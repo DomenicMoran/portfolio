@@ -31,17 +31,18 @@ export function Marquee({
       aria-hidden
     >
       <div
-        className="flex shrink-0 animate-marquee items-center gap-10 pr-10"
+        className="marquee-track flex shrink-0 animate-marquee"
         style={{ ["--marquee-duration" as string]: `${duration}s` }}
       >
-        {[...items, ...items].map((item, i) => (
-          <span
-            key={`${item}-${i}`}
-            className="flex shrink-0 items-center gap-10 font-mono text-xs tracking-[0.2em] text-ink-faint uppercase"
-          >
-            {item}
-            <span className="size-1 rounded-full bg-line" />
-          </span>
+        {[0, 1].map((copy) => (
+          <div key={copy} className="marquee-group flex shrink-0 items-center gap-10 pr-10" aria-hidden={copy === 1}>
+            {items.map((item) => (
+              <span key={`${item}-${copy}`} className="flex shrink-0 items-center gap-10 font-mono text-xs tracking-[0.2em] text-ink-faint uppercase">
+                {item}
+                <span className="size-1 rounded-full bg-line" />
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </div>

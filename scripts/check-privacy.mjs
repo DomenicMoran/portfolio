@@ -80,7 +80,7 @@ const ctx = await browser.newContext({
 });
 const seite = await ctx.newPage();
 
-const funde = new Map();
+const funde = new Map();
 let regelbewegungen = 0;
 /* Was die Seite auf dem Gerät ablegt. Cookies, localStorage, sessionStorage. */
 const speicher = new Set();
@@ -284,9 +284,11 @@ if (!vorgegebeneBasis) {
   /* Muster mit `[slug]` stehen im Routen-Verzeichnis, ihre fertigen Seiten im
      Vorab-Verzeichnis. Gemeint sind hier die Ausgaben, also zählt, ob es zu
      einem Muster überhaupt vorab erzeugte Seiten gibt. */
-  const AUSNAHMEN = ["/_not-found"];
+  const istBenannteIsrAusnahme = (route) =>
+    route === "/_not-found" ||
+    (route.includes("/for/") && route.includes("[company-slug]"));
   for (const route of routen) {
-    if (AUSNAHMEN.includes(route)) continue;
+    if (istBenannteIsrAusnahme(route)) continue;
     if (route.includes("[__metadata_id__]")) continue;
     const sauber = route.replace(/\/$/, "") || "/";
     if (vorab.has(sauber) || vorab.has(route)) continue;
@@ -350,12 +352,14 @@ if (!vorgegebeneBasis) {
       const pfad = join(ordner, eintrag.name);
       if (eintrag.isDirectory()) suchen(pfad);
       else if (/^route\.(ts|tsx|js|mjs)$/.test(eintrag.name)) {
+        const norm = pfad.replace(/\\/g, "/");
+        if (norm.includes("src/app/api/revalidate/route.")) continue;
         const quelle = readFileSync(pfad, "utf8");
         for (const verb of VERBEN) {
           if (new RegExp(`export\\s+(async\\s+)?(function|const)\\s+${verb}\\b`).test(quelle)) {
             zusagen.push(
-              `${pfad} nimmt ${verb} entgegen. Die Erklärung sagt, es gebe ` +
-                `keinen Endpunkt, der Eingaben annimmt.`,
+              `${pfad} nimmt ${verb} entgegen. Die Erklärung erlaubt nur den ` +
+                `signierten POST /api/revalidate.`,
             );
           }
         }
@@ -382,6 +386,7 @@ console.log(
     `alle Anfragen gingen an ${eigenerHost}.` +
     (vorgegebeneBasis
       ? ""
-      : `\nUnd was die Erklärung sonst behauptet, stimmt: alles vorab erzeugt ` +
-        `außer der Fehlerseite, kein Formular, kein Endpunkt für Eingaben.`),
+      : `\nUnd was die Erklärung sonst behauptet, stimmt: Portfolio vorab erzeugt ` +
+        `mit den benannten ISR-Ausnahmen, kein Formular, kein weiterer ` +
+        `schreibender Endpunkt außer signiertem /api/revalidate.`),
 );

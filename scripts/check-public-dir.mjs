@@ -239,6 +239,7 @@ const ERLAUBT_GROSS = new Set([
 const grosse = [];
 /** Was in der Wurzel des Repositorys stehen darf. Der Rest fällt auf. */
 const ERLAUBT_IN_DER_WURZEL = new Set([
+  ".env.example",
   ".gitignore",
   "AGENTS.md",
   "CLAUDE.md",

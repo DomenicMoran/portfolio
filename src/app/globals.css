@@ -515,6 +515,19 @@ textarea:-webkit-autofill {
   animation: marquee-x var(--marquee-duration, 40s) linear infinite;
 }
 
+/* Die zweite, identische Gruppe schließt die Endlosschleife. Bei reduzierter
+   Bewegung bleibt nur die erste sichtbar: dadurch keine überdruckten Begriffe
+   und trotzdem eine vollständige, ruhige Technologiezeile. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    transform: none !important;
+  }
+
+  .marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+}
+
 /* Hero-Headline: bewusst CSS statt Framer Motion.
    Die Wörter starten unter ihrer Maske. Als JS-Animation werden sie erst nach
    der Hydration sichtbar, und genau darauf wartet dann auch der Largest

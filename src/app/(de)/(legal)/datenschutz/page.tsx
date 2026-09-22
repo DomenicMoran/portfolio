@@ -39,9 +39,11 @@ export const metadata: Metadata = {
 };
 
 /**
- * Beschreibt exakt, was diese Seite technisch tut, und das ist bewusst wenig:
- * keine Cookies, kein Zählpixel, keine Schriften von fremden Servern, keine
- * Datenbank, kein Endpunkt, der Eingaben entgegennimmt.
+ * Beschreibt exakt, was diese Seite technisch tut: keine Cookies, kein
+ * Zählpixel, keine Schriften von fremden Servern auf dem Portfolio, kein
+ * Kontaktformular. Ausnahmen stehen im Abschnitt „Keine weiteren
+ * Datenempfänger“ (Fehlerseite, `/for/*` mit Supabase, signiertes
+ * `/api/revalidate`).
  *
  * Käme je ein Dienst dazu, der Daten verarbeitet, eine Analyse, ein
  * Formular, eine Einbindung, gehört ein eigener Abschnitt hierher und der
@@ -164,17 +166,28 @@ export default function Datenschutz() {
         </Section>
 
         <Section title="Keine weiteren Datenempfänger">
-          Außer dem Hosting gibt es keinen Auftragsverarbeiter. Diese Website
-          lädt keine Skripte, Schriften, Karten, Videos oder Analysedienste von
-          fremden Servern nach, weder beim Aufruf noch bei einer Interaktion.
-          Alle Seiten mit Inhalt werden vorab erzeugt und als fertige Dateien
-          ausgeliefert. Einzige Ausnahme ist die Fehlerseite: Sie wird bei der
-          Anfrage zusammengesetzt, um in der Sprache zu antworten, unter der du
-          gekommen bist. Vor jeder Auslieferung läuft beim Hoster eine kleine
-          Funktion: Sie liest den angefragten Pfad, setzt daraus die Sprache
-          der Fehlerseite und weist Anfragen ab, die Daten senden wollen. Sie
-          speichert nichts und gibt nichts weiter. Es gibt keinen Endpunkt, der
-          Eingaben entgegennimmt.
+          Außer dem Hosting gibt es für den übrigen Portfolio-Inhalt keinen
+          weiteren Auftragsverarbeiter. Die meisten Seiten mit Inhalt werden
+          vorab erzeugt und als fertige Dateien ausgeliefert. Die Fehlerseite
+          ist eine Ausnahme: Sie wird bei der Anfrage zusammengesetzt, um in
+          der Sprache zu antworten, unter der du gekommen bist. Personalisierte
+          Seiten unter
+          `/for/[slug]` werden serverseitig etwa stündlich neu erzeugt (ISR) und
+          lesen dabei ausschließlich öffentliche Zeilen aus der Supabase-Tabelle
+          `targeted_companies`; Besucher können dort nichts eintragen oder
+          ändern. Supabase Inc. ist dafür Auftragsverarbeiter, nur für diese
+          Funktion. Diese Website lädt keine Skripte, Schriften, Karten, Videos
+          oder Analysedienste von fremden Servern nach, weder beim Aufruf noch
+          bei einer Interaktion, außer auf den `/for/*`-Seiten können Firmenlogos
+          und Favicons als Bilder von externen HTTPS-Adressen geladen werden
+          (Content-Security-Policy `img-src`). Vor jeder Auslieferung läuft beim
+          Hoster eine kleine Funktion: Sie liest den angefragten Pfad, setzt
+          daraus die Sprache der Fehlerseite und weist die meisten Anfragen ab,
+          die Daten senden wollen. Sie speichert nichts und gibt nichts weiter.
+          Ein signierter POST-Endpunkt `/api/revalidate` existiert ausschließlich
+          zur Cache-Invalidierung nach dem lokalen Pitch-CLI-Upsert; er ist per
+          Geheimnis im Header geschützt, kein Kontaktformular und für Besucher
+          ohne dieses Geheimnis nicht sinnvoll nutzbar.
         </Section>
 
         <Section title="Deine Rechte">

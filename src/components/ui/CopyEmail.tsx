@@ -31,11 +31,13 @@ export function CopyEmail({
   label,
   done,
   failed,
+  className,
 }: {
   email: string;
   label: string;
   done: string;
   failed: string;
+  className?: string;
 }) {
   const [stand, setStand] = useState<"ruhe" | "kopiert" | "fehler">("ruhe");
   const uhr = useRef<number | null>(null);
@@ -74,7 +76,7 @@ export function CopyEmail({
         // Bedienelemente, steht auf dem Ausdruck der Startseite keine
         // Kontaktadresse mehr. `check:print` liest das Merkmal aus.
         data-druckbar=""
-        className="group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+        className={className ?? "group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"}
       >
         {stand === "kopiert" ? (
           <Check className="size-3.5 text-acid" aria-hidden />
