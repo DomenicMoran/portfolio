@@ -286,6 +286,7 @@ if (!vorgegebeneBasis) {
      einem Muster überhaupt vorab erzeugte Seiten gibt. */
   const istBenannteIsrAusnahme = (route) =>
     route === "/_not-found" ||
+    route === "/api/revalidate" ||
     (route.includes("/for/") && route.includes("[company-slug]"));
   for (const route of routen) {
     if (istBenannteIsrAusnahme(route)) continue;
@@ -297,8 +298,8 @@ if (!vorgegebeneBasis) {
       if ([...vorab].some((r) => r.startsWith(vorne))) continue;
     }
     zusagen.push(
-      `${route} kommt nicht fertig aus dem Bau. Die Erklärung nennt als ` +
-        `einzige Ausnahme die Fehlerseite.`,
+      `${route} kommt nicht fertig aus dem Bau. Die Erklärung nennt benannte ` +
+        `ISR-Ausnahmen (Fehlerseite, /for/*, signiertes /api/revalidate).`,
     );
   }
 
