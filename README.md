@@ -108,13 +108,15 @@ npx eslint .       # Lint
 npm test           # die reine Rechenlogik, ohne Browser
 ```
 
-Nach dem Bau laufen 36 Prüfungen, die den Bau nicht ersetzen. 23 davon
+Nach dem Bau laufen 37 Prüfungen, die den Bau nicht ersetzen. 23 davon
 öffnen einen Browser und messen an der gebauten Seite statt am Quelltext;
-`check:headers` misst an der Auslieferung, weil `vercel.json` vom Bau gar nicht
-gelesen wird, und läuft deshalb auf Pull Requests nicht mit. Derselbe Workflow
-führt sie bei jedem Push aus:
+`check:for` hält `/for/*` im Bau fest und prüft live auf main, dass die
+Outreach-Route nicht wieder verschwindet. `check:headers` misst an der
+Auslieferung, weil `vercel.json` vom Bau gar nicht gelesen wird, und läuft
+deshalb auf Pull Requests nicht mit. Derselbe Workflow führt sie bei jedem Push aus:
 
 ```bash
+npm run check:for       # /for/[company-slug] im Bau (live auf main in der CI)
 npm run check:a11y      # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:privacy   # keine Seite baut eine Verbindung nach außen auf
 npm run check:links     # kein Anker und keine interne Adresse zeigt ins Leere
@@ -241,6 +243,7 @@ scripts/
 │
 │  An Dateien gemessen:
 ├─ check-docs.mjs                 die Zahlen in README.md und AGENTS.md stimmen noch
+├─ check-for-routes.mjs           /for/* im Bau und optional live gegen domenicmoran.de
 ├─ check-exports.mjs              jede Ausfuhr aus src/ hat einen Abnehmer
 ├─ check-hardcoded-copy.mjs       keine Beschriftung steht fest in einer Komponente
 ├─ check-legal-date.mjs           das Datum der Datenschutzerklärung passt zu ihrem Text

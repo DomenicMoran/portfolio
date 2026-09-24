@@ -1,7 +1,11 @@
 <!-- BEGIN:nextjs-agent-rules -->
+
 # This is NOT the Next.js you know
 
-This version has breaking changes: APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
 <!-- END:nextjs-agent-rules -->
 
 ---
@@ -28,6 +32,23 @@ Nur so stimmt `<html lang>` je Fassung, ohne die deutschen URLs unter ein
 `/de`-Präfix zu schieben. Der Preis: `app/layout.tsx` gibt es nicht, und eine
 globale 404 kann Next dadurch nicht komponieren. Dafür ist
 `app/global-not-found.tsx` da, das sein eigenes Dokument mitbringt.
+
+## Auslieferung (Vercel und /for/*)
+
+Das Vercel-Projekt heißt exakt **`domenicmoran-live-portfolio`** (früher
+`domenicmoran`; Domains `domenicmoran.de` und `www`). Es nicht löschen und nicht
+durch ein zweites Projekt ersetzen. Der Name mit `live-portfolio` ist Absicht:
+am 23.09.2026 wurde versehentlich mit Test-Müll verwechselt; `portfolio-targeted-deploy-verified`
+war orphan CLI-Junk und bleibt gelöscht.
+
+Deploys laufen aus diesem Ordner über die Verknüpfung in `.vercel/project.json`
+→ `domenicmoran-live-portfolio`, mit `npx vercel --prod --yes`. Keine verwaisten
+CLI-Projekte für diese Site anlegen: Die Domain gehört nur an dieses Projekt,
+und ein Deploy ohne `/for` auf main hat `/for/*` schon einmal live entfernt.
+
+Die Route `src/app/for/[company-slug]/` gehört auf **main** und bleibt im Bau.
+`npm run check:for` prüft Manifest und Quelldatei nach jedem Build; auf main
+zusätzlich live (`CHECK_FOR_LIVE=1`).
 
 ## Benennung: englisch außen, deutsch innen
 
@@ -361,6 +382,7 @@ npx tsc --noEmit      # 0 Fehler
 npx eslint .          # 0 Errors
 npm test              # die reine Rechenlogik, ohne Browser
 npm run build         # grün
+npm run check:for     # /for/[company-slug] im Bau (und live auf main in der CI)
 npm run check:a11y    # jede gebaute Seite gegen WCAG 2.2 AA, zwei Breiten
 npm run check:privacy # keine Seite baut eine Verbindung nach außen auf
 npm run check:links   # kein Anker und keine interne Adresse zeigt ins Leere

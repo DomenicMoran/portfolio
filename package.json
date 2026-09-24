@@ -40,6 +40,7 @@
     "check:legal": "node scripts/check-legal-date.mjs",
     "check:exports": "node scripts/check-exports.mjs",
     "check:docs": "node scripts/check-docs.mjs",
+    "check:for": "node scripts/check-for-routes.mjs",
     "build:linkedin": "node scripts/build-linkedin-images.mjs",
     "build:shots": "node scripts/build-shots.mjs",
     "capture:shots": "node scripts/capture-shots.mjs",

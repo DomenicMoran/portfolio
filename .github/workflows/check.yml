@@ -103,6 +103,12 @@ jobs:
       - name: Bau
         run: npm run build
 
+      # /for/* lebt nur, wenn die Route im Bau steht. Ein Deploy von main ohne
+      # src/app/for/ hat die Live-Adresse schon einmal auf 404 gelegt, obwohl
+      # der Bau grün war — weil ein anderes Vercel-Projekt die Domain trug.
+      - name: Outreach-Routen /for/*
+        run: npm run check:for
+
       # Lesezeit vor dem Browser, weil sie ihn nicht braucht: reine Zählung
       # gegen die angegebene Minutenzahl je Artikel.
       - name: Lesezeiten
@@ -177,6 +183,12 @@ jobs:
       - name: Schutz-Kopfzeilen der Auslieferung
         if: github.event_name != 'pull_request'
         run: npm run check:headers
+
+      # Gleicher Grund wie bei den Kopfzeilen: misst die Live-Auslieferung, nicht
+      # den Zweig. /for/* war schon einmal weg, obwohl ein CLI-Deploy sie noch kannte.
+      - name: Outreach-Routen live
+        if: github.event_name != 'pull_request'
+        run: CHECK_FOR_LIVE=1 npm run check:for
 
       # Der Ausdruck ist ein eigener Auslieferungsweg, den sonst niemand
       # ansieht: Die Startseite kam einmal als 15 fast leere Seiten aus dem
