@@ -19,7 +19,6 @@ type Props = { company: TargetedCompany; mailto: string };
 export function TargetedLanding({ company, mailto }: Props) {
   const officialLogoUrl = company.logo_url ?? (company.company_url ? `https://www.google.com/s2/favicons?sz=256&domain_url=${encodeURIComponent(company.company_url)}` : null);
   const contextParts = company.pain_point_summary.split(";").map((part) => part.trim()).filter(Boolean);
-  const contextLabel = targetedPageCopy.contextLabel;
   // Every page should offer more than one meaningful way to inspect the work.
   // The first card remains the hand-picked, company-specific reference from the CRM.
   // The second card is deliberately labelled as the broader portfolio, never as a direct match.
@@ -74,7 +73,7 @@ export function TargetedLanding({ company, mailto }: Props) {
               <p style={{ animationDelay: "0.22s" }} className="animate-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim sm:text-xl">
                 {targetedPageCopy.heroPerspective}
               </p>
-              <p style={{ animationDelay: "0.28s" }} className="animate-fade-rise mt-4 max-w-xl font-mono text-[11px] tracking-[0.1em] text-ink-faint uppercase">{contextLabel}: {company.pain_point_summary}</p>
+              {/* Produktkontext steht nur einmal sichtbar, in der Perspektive-Sektion (2026-10-14). */}
               <div style={{ animationDelay: "0.32s" }} className="animate-fade-rise mt-9 flex flex-wrap items-center gap-3">
                 <Magnetic><a href="#work" className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink hover:text-void">{targetedPageCopy.workAction} <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden /></a></Magnetic>
                 <Magnetic><a href={mailto} className="group inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 font-medium text-ink transition-colors hover:border-ink-faint hover:bg-surface">{targetedPageCopy.contactAction} <Mail className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden /></a></Magnetic>
@@ -141,7 +140,7 @@ export function TargetedLanding({ company, mailto }: Props) {
 
       <section className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-24 sm:grid-cols-[0.8fr_1.2fr] sm:py-32" aria-labelledby="opportunity-heading">
         <Reveal><p className="text-eyebrow">{targetedPageCopy.challengeKicker}</p><p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-faint">{targetedPageCopy.challengeContext}</p><div className="mt-6 flex size-12 items-center justify-center rounded-2xl bg-violet/15 text-violet"><Check className="size-6" aria-hidden /></div></Reveal>
-        <Reveal delay={0.08}><h2 id="opportunity-heading" className="text-title text-balance"><RevealWords text={targetedPageCopy.challengeHeading} /></h2><p className="mt-6 text-xl leading-relaxed text-ink-dim">{company.pain_point_summary}</p><div className="mt-7 grid gap-3 sm:grid-cols-2">{contextParts.map((part, index) => <div key={part} className="lit rounded-2xl border border-line bg-surface/70 p-4"><span className="font-mono text-[10px] tracking-[0.14em] text-acid uppercase">0{index + 1} / {targetedPageCopy.observationLabel}</span><p className="mt-2 text-sm leading-relaxed text-ink-dim">{part}</p></div>)}</div><p className="mt-6 leading-relaxed text-ink-faint">{targetedPageCopy.challengeBody}</p></Reveal>
+        <Reveal delay={0.08}><h2 id="opportunity-heading" className="text-title text-balance"><RevealWords text={targetedPageCopy.challengeHeading} /></h2>{contextParts.length > 1 ? <div className="mt-7 grid gap-3 sm:grid-cols-2">{contextParts.map((part, index) => <div key={part} className="lit rounded-2xl border border-line bg-surface/70 p-4"><span className="font-mono text-[10px] tracking-[0.14em] text-acid uppercase">0{index + 1} / {targetedPageCopy.observationLabel}</span><p className="mt-2 text-sm leading-relaxed text-ink-dim">{part}</p></div>)}</div> : <p className="mt-6 text-xl leading-relaxed text-ink-dim">{company.pain_point_summary}</p>}<p className="mt-6 leading-relaxed text-ink-faint">{targetedPageCopy.challengeBody}</p></Reveal>
       </section>
 
       <section id="contact" className="relative overflow-hidden px-6 pb-24 sm:pb-32" aria-labelledby="contact-heading">

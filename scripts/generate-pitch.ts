@@ -113,6 +113,13 @@ function assertPitchQuality(lead: Lead) {
     }
   }
 
+  const negativeContext = /herausforderung|problem|\bl(ö|oe)s(t|en|ung)\b|adressier|schmerzpunkt|pain point/i;
+  if (negativeContext.test(lead.painPointSummary)) {
+    throw new Error("Product context frames a problem; it must describe the product positively.");
+  }
+  const sentences = lead.painPointSummary.split(/(?<=[.!?])\s+/).map((x) => x.trim().toLowerCase()).filter(Boolean);
+  if (new Set(sentences).size !== sentences.length) throw new Error("Product context repeats a sentence.");
+
   if (lead.linkedin.length > 280) {
     throw new Error(`Generated LinkedIn pitch is ${lead.linkedin.length} characters.`);
   }
@@ -219,7 +226,8 @@ async function main() {
     `Page text: ${pageText}`,
     "Return companyName, founderName, techStack, painPointSummary, matchedProjects, linkedin and email.",
     "matchedProjects must be an array of 1–3 project names chosen only from MenuCloud Berlin, Salati, WohnungsJäger, NOURI.",
-    "Name one concrete execution issue. The email must include https://domenicmoran.de and the exact date 01.02.2027.",
+    "painPointSummary is shown on the landing page: 1-2 short German sentences, positive, saying what the product does and what makes it attractive to work on (like 'Mich reizt an X, dass ...' but without that phrase). Never frame a problem, challenge or gap; never use the words Herausforderung, Problem, löst, adressiert, Schmerzpunkt. No generic marketing phrases.",
+    "Name one concrete product feature. The email must include https://domenicmoran.de and the exact date 01.02.2027.",
   ]
     .filter(Boolean)
     .join("\n\n");

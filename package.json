@@ -63,7 +63,8 @@
     "check:schema": "node scripts/check-structured-data.mjs",
     "check:palette": "node scripts/check-palette.mjs",
     "check:copy": "node scripts/check-hardcoded-copy.mjs",
-    "generate:pitch": "tsx scripts/generate-pitch.ts"
+    "generate:pitch": "tsx scripts/generate-pitch.ts",
+    "set:pitch-context": "tsx scripts/set-pitch-context.ts"
   },
   "dependencies": {
     "adhan": "^4.4.4",
