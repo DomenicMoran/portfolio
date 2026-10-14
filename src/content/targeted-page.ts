@@ -79,7 +79,7 @@ export const targetedPageCopy = {
 } as const;
 
 /** Texte, die den Leser direkt ansprechen, je Anrede. Neue direkte Ansprache NUR hier ergänzen. */
-export const targetedAnredeCopy = {
+const targetedAnredeCopy = {
   sie: {
     scrollPrompt: "Weiter zur Perspektive",
     stackIntro: "Das ist mein Baukasten, keine Behauptung über Ihren internen Stack. Klicken Sie einen Schwerpunkt an und sehen Sie, wofür ich ihn in echter Produktarbeit nutze.",
