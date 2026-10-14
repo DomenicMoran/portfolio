@@ -1,3 +1,7 @@
+/** Anrede der /for-Seite. Default "sie"; "du" nur bei Firmen, die öffentlich duzen (2026-10-14). */
+export type TargetedAnrede = "sie" | "du";
+
+/** Anredeneutrale Texte. Alles, was den Leser direkt anspricht, steht in targetedAnredeCopy. */
 export const targetedPageCopy = {
   eyebrow: "Persönliche Produktperspektive",
   titleSuffix: " | Domenic Moran",
@@ -18,7 +22,6 @@ export const targetedPageCopy = {
     contact: "Kontakt",
   },
   contextLabel: "Öffentlicher Produktkontext",
-  scrollPrompt: "Scroll für die Perspektive",
   technologyLabel: "Technologie-Schwerpunkte",
   heroFacts: [
     { label: "Arbeitsweise", value: "Produkt bis Betrieb" },
@@ -29,7 +32,6 @@ export const targetedPageCopy = {
   stackLabel: "Werkzeuge, mit denen ich Verantwortung übernehme",
   ogAlt: "Persönliche Product-Engineering-Seite",
   stackHeading: "Erst die Produktfrage. Dann der passende technische Weg.",
-  stackIntro: "Das ist mein Baukasten, keine Behauptung über euren internen Stack. Klick einen Schwerpunkt an und sieh, wofür ich ihn in echter Produktarbeit nutze.",
   overlap: "Kernfokus",
   adjacent: "Ergänzender Baustein",
   directDelivery: "Darin arbeite ich täglich. So kann ich vom Interface über Daten und APIs bis zum Deployment Verantwortung übernehmen, ohne Übergabe zwischen Schichten.",
@@ -46,7 +48,6 @@ export const targetedPageCopy = {
     portfolio: "Portfolio mit Live-Demos",
   },
   workKicker: "Belege statt Behauptungen",
-  workHeading: "Arbeit, an der du meine Art zu bauen beurteilen kannst.",
   projectLabel: "Live-Projekt öffnen",
   fallbackProject: {
     name: "Weitere Produktarbeit",
@@ -76,3 +77,21 @@ export const targetedPageCopy = {
   copyEmail: { label: "E-Mail-Adresse kopieren", done: "Adresse kopiert", failed: "Kopieren nicht möglich" },
   skills: ["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Tailwind CSS", "Vercel", "KI-Workflows"],
 } as const;
+
+/** Texte, die den Leser direkt ansprechen, je Anrede. Neue direkte Ansprache NUR hier ergänzen. */
+export const targetedAnredeCopy = {
+  sie: {
+    scrollPrompt: "Weiter zur Perspektive",
+    stackIntro: "Das ist mein Baukasten, keine Behauptung über Ihren internen Stack. Klicken Sie einen Schwerpunkt an und sehen Sie, wofür ich ihn in echter Produktarbeit nutze.",
+    workHeading: "Arbeit, an der Sie meine Art zu bauen beurteilen können.",
+  },
+  du: {
+    scrollPrompt: "Scroll für die Perspektive",
+    stackIntro: "Das ist mein Baukasten, keine Behauptung über euren internen Stack. Klick einen Schwerpunkt an und sieh, wofür ich ihn in echter Produktarbeit nutze.",
+    workHeading: "Arbeit, an der du meine Art zu bauen beurteilen kannst.",
+  },
+} as const satisfies Record<TargetedAnrede, Record<string, string>>;
+
+export function getTargetedPageCopy(anrede: TargetedAnrede) {
+  return { ...targetedPageCopy, ...targetedAnredeCopy[anrede] };
+}

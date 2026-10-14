@@ -1,3 +1,5 @@
+import type { TargetedAnrede } from "@/content/targeted-page";
+
 type MatchedProject = {
   name: string;
   description: string;
@@ -16,7 +18,21 @@ export type TargetedCompany = {
   logo_url: string | null;
   company_url: string | null;
   created_at: string;
+  /** Spalte aus supabase/targeted_companies_anrede.sql; fehlt sie noch, greift resolveAnrede. */
+  anrede?: TargetedAnrede | null;
 };
+
+/** Seiten vor der Sie-Regel (alle Mails bis CEO-261 gingen in du-Form raus) bleiben du, bis die Spalte gesetzt ist. */
+const LEGACY_DU_BEFORE = Date.parse("2026-10-14T16:00:00Z");
+/** Neue Firmen, die öffentlich duzen, solange die anrede-Spalte noch nicht migriert ist. Quelle steht im duSource des Payloads. */
+const DU_SLUGS = new Set(["omul"]);
+
+export function resolveAnrede(company: Pick<TargetedCompany, "slug" | "created_at" | "anrede">): TargetedAnrede {
+  if (company.anrede === "sie" || company.anrede === "du") return company.anrede;
+  if (DU_SLUGS.has(company.slug)) return "du";
+  const created = Date.parse(company.created_at);
+  return Number.isFinite(created) && created < LEGACY_DU_BEFORE ? "du" : "sie";
+}
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

@@ -11,12 +11,13 @@ import { Magnetic } from "@/components/ui/Magnetic";
 import { Marquee } from "@/components/ui/Marquee";
 import { CopyEmail } from "@/components/ui/CopyEmail";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { targetedPageCopy } from "@/content/targeted-page";
-import type { TargetedCompany } from "@/lib/targeted-companies";
+import { getTargetedPageCopy } from "@/content/targeted-page";
+import { resolveAnrede, type TargetedCompany } from "@/lib/targeted-companies";
 
 type Props = { company: TargetedCompany; mailto: string };
 
 export function TargetedLanding({ company, mailto }: Props) {
+  const targetedPageCopy = getTargetedPageCopy(resolveAnrede(company));
   const officialLogoUrl = company.logo_url ?? (company.company_url ? `https://www.google.com/s2/favicons?sz=256&domain_url=${encodeURIComponent(company.company_url)}` : null);
   const contextParts = company.pain_point_summary.split(";").map((part) => part.trim()).filter(Boolean);
   // Every page should offer more than one meaningful way to inspect the work.

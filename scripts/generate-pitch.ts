@@ -184,6 +184,9 @@ async function main() {
   const inputUrl = input.toString();
   const verifiedContact = option("--contact");
   const verifiedCompany = option("--company");
+  // Anrede kommt aus dem Mail-Build (outreach-build-payload.py: du nur mit --du-source). Default sie.
+  const anrede = (option("--anrede") ?? "sie").toLowerCase();
+  if (anrede !== "sie" && anrede !== "du") throw new Error("--anrede must be sie or du.");
 
   for (const name of ["OPENAI_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) {
     if (!process.env[name]) throw new Error(`${name} is required.`);
@@ -227,6 +230,7 @@ async function main() {
     "Return companyName, founderName, techStack, painPointSummary, matchedProjects, linkedin and email.",
     "matchedProjects must be an array of 1–3 project names chosen only from MenuCloud Berlin, Salati, WohnungsJäger, NOURI.",
     "painPointSummary is shown on the landing page: 1-2 short German sentences, positive, saying what the product does and what makes it attractive to work on (like 'Mich reizt an X, dass ...' but without that phrase). Never frame a problem, challenge or gap; never use the words Herausforderung, Problem, löst, adressiert, Schmerzpunkt. No generic marketing phrases.",
+    "painPointSummary must not address the reader directly (no du/dein/euch/euer, no Sie/Ihr); describe the product in the third person.",
     "Name one concrete product feature. The email must include https://domenicmoran.de and the exact date 01.02.2027.",
   ]
     .filter(Boolean)
@@ -277,6 +281,9 @@ async function main() {
     assertPitchQuality(lead);
   }
   if (!lead) throw lastError;
+  if (/\b(du|dich|dir|dein\w*|euch|euer|eure\w*)\b/i.test(lead.painPointSummary)) {
+    throw new Error("painPointSummary addresses the reader directly; rerun.");
+  }
 
   const slug = (lead.companyName || basename(input.pathname) || "company")
     .toLowerCase()
@@ -299,17 +306,26 @@ async function main() {
     pain_point_summary: lead.painPointSummary,
     matched_projects: uniqueProjects,
     company_url: inputUrl,
+    anrede,
   };
   const database = `${process.env.SUPABASE_URL!.replace(/\/$/, "")}/rest/v1/targeted_companies?on_conflict=slug`;
-  const saved = await fetch(database, {
+  const save = (body: Record<string, unknown>) => fetch(database, {
     method: "POST",
     headers: {
       apikey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
       "content-type": "application/json",
       Prefer: "resolution=merge-duplicates,return=representation",
     },
-    body: JSON.stringify(row),
+    body: JSON.stringify(body),
   });
+  let saved = await save(row);
+  if (!saved.ok && /anrede/.test(await saved.clone().text())) {
+    // Spalte noch nicht migriert (supabase/targeted_companies_anrede.sql): Seite nutzt dann resolveAnrede.
+    console.warn(`anrede column missing; saved without it (page falls back to resolveAnrede, wanted: ${anrede}).`);
+    const { anrede: _omit, ...rest } = row;
+    void _omit;
+    saved = await save(rest);
+  }
   if (!saved.ok) throw new Error(`Supabase save failed: ${saved.status} ${await saved.text()}`);
 
   const siteUrl = process.env.SITE_URL ?? "https://domenicmoran.de";
