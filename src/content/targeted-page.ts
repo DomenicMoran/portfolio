@@ -1,13 +1,23 @@
 /** Anrede der /for-Seite. Default "sie"; "du" nur bei Firmen, die öffentlich duzen (2026-10-14). */
 export type TargetedAnrede = "sie" | "du";
 
+/**
+ * Eintritt auf den /for-Seiten und in den Pitch-Vorlagen.
+ * Kein Kalenderdatum: der volle Satz im Fließtext, die Kurzform wo der Platz knapp ist.
+ */
+export const targetedAvailability = {
+  full: "Eintritt frühestens 3 Monate nach Vertragsunterschrift, früher nach Absprache möglich",
+  short: "Verfügbar 3 Monate nach Vertragsunterschrift",
+  english: "Available 3 months after signing, earlier by arrangement",
+} as const;
+
 /** Anredeneutrale Texte. Alles, was den Leser direkt anspricht, steht in targetedAnredeCopy. */
 export const targetedPageCopy = {
   eyebrow: "Persönliche Produktperspektive",
   titleSuffix: " | Domenic Moran",
   fallbackTitle: "Domenic Moran | AI Product Engineer",
   fallbackDescription: "Portfolio von Domenic Moran, Product Engineer aus Berlin.",
-  availability: "Vollzeit verfügbar ab 1. Februar 2027",
+  availability: targetedAvailability.short,
   heroBeforeName: "Hallo",
   heroAfterName: "ich habe mir",
   heroEnd: "angesehen.",
@@ -26,7 +36,7 @@ export const targetedPageCopy = {
   heroFacts: [
     { label: "Arbeitsweise", value: "Produkt bis Betrieb" },
     { label: "Ort", value: "Berlin · Remote" },
-    { label: "Verfügbar", value: "ab 01.02.2027" },
+    { label: "Verfügbar", value: "3 Monate nach Vertragsunterschrift" },
   ],
   stackKicker: "Mein Engineering-Baukasten",
   stackLabel: "Werkzeuge, mit denen ich Verantwortung übernehme",
@@ -65,14 +75,14 @@ export const targetedPageCopy = {
   challengeBody: "Der Blick hier kommt ausschließlich von außen. Im Gespräch würde ich erst verstehen, was gerade wirklich zählt, und dann den kleinsten Schritt mit spürbarer Wirkung schärfen.",
   contactKicker: "Das nächste Gespräch",
   contactHeading: "Lust auf ein konkretes Produktgespräch?",
-  contactBody: "Ab 1. Februar 2027 suche ich eine Vollzeitrolle als Product Engineer. Statt allgemeiner CV-Stichpunkte zeige ich lieber Arbeit, höre zu und spreche über eine konkrete Aufgabe.",
+  contactBody: `${targetedAvailability.full}. Ich suche eine Vollzeitrolle als Product Engineer. Statt allgemeiner CV-Stichpunkte zeige ich lieber Arbeit, höre zu und spreche über eine konkrete Aufgabe.`,
   contactAction: "Gespräch starten",
   portfolioAction: "Ganzes Portfolio ansehen",
   workAction: "Arbeitsproben ansehen",
   contactCards: [
     { title: "20 Minuten, konkret", body: "Kein Recruiting-Smalltalk, sondern ein echter Produktflow." },
     { title: "Von Idee bis Betrieb", body: "Frontend, APIs, Daten und Release-Verantwortung aus einer Hand." },
-    { title: "Start ab 01.02.2027", body: "Vollzeit, Berlin oder remote mit echtem Produktfokus." },
+    { title: targetedAvailability.short, body: "Früher nach Absprache möglich. Vollzeit, Berlin oder remote mit echtem Produktfokus." },
   ],
   copyEmail: { label: "E-Mail-Adresse kopieren", done: "Adresse kopiert", failed: "Kopieren nicht möglich" },
   skills: ["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Tailwind CSS", "Vercel", "KI-Workflows"],

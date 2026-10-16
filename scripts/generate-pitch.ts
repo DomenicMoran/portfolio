@@ -2,6 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { basename } from "node:path";
 import { loadEnvConfig } from "@next/env";
+import { targetedAvailability } from "../src/content/targeted-page";
 
 loadEnvConfig(process.cwd());
 
@@ -129,8 +130,14 @@ function assertPitchQuality(lead: Lead) {
   if (!lead.email.includes("https://domenicmoran.de")) {
     throw new Error("Generated email does not link to the live portfolio.");
   }
-  if (!lead.email.includes("01.02.2027")) {
-    throw new Error("Generated email does not state the full-time start date.");
+  if (!lead.email.includes(targetedAvailability.full)) {
+    throw new Error("Generated email does not state the availability.");
+  }
+  if (!lead.linkedin.includes(targetedAvailability.short) && !lead.linkedin.includes(targetedAvailability.full)) {
+    throw new Error("Generated LinkedIn pitch does not state the availability.");
+  }
+  if (/01\.02\.2027|1\. Februar 2027|Februar 2027/.test(`${lead.email}\n${lead.linkedin}`)) {
+    throw new Error("Generated pitch still states a fixed start date.");
   }
 }
 
@@ -144,10 +151,10 @@ function makeFallbackPitch(lead: Lead): Lead {
   const sourceObservation = lead.painPointSummary.replace(/\s+/g, " ").split(/[.!?]/)[0].trim();
   const productSurface = lead.techStack.slice(0, 3).join(", ") || "Produktlogik und Datenflüsse";
   const linkedInPrefix = `${firstName}, bei ${lead.companyName}: `;
-  const linkedInSuffix = " Ich baue solche Flows mit Next.js und TypeScript. Ab 01.02.2027 Vollzeit als Product Engineer — 20 Minuten zu einem Release?";
+  const linkedInSuffix = ` Ich baue solche Flows mit Next.js und TypeScript. ${targetedAvailability.short} — 20 Minuten zu einem Release?`;
   const issue = clipAtWordBoundary(sourceObservation || productSurface, 280 - linkedInPrefix.length - linkedInSuffix.length - 1);
   const linkedin = `${linkedInPrefix}${issue}.${linkedInSuffix}`;
-  const email = `${firstName},\n\nbei ${lead.companyName} müssen ${productSurface} im Produkt verlässlich zusammenlaufen. Ich baue solche Flows mit Next.js, TypeScript, Node.js und PostgreSQL/Supabase — von UX bis Betrieb. Live-Demos: https://domenicmoran.de. Ab 01.02.2027 suche ich eine Vollzeitrolle als Product Engineer. Passt ein 20-Minuten-Call zu einem konkreten ersten Release?`;
+  const email = `${firstName},\n\nbei ${lead.companyName} müssen ${productSurface} im Produkt verlässlich zusammenlaufen. Ich baue solche Flows mit Next.js, TypeScript, Node.js und PostgreSQL/Supabase — von UX bis Betrieb. Live-Demos: https://domenicmoran.de. ${targetedAvailability.full}. Ich suche eine Vollzeitrolle als Product Engineer. Passt ein 20-Minuten-Call zu einem konkreten ersten Release?`;
 
   return { ...lead, linkedin, email };
 }
@@ -213,7 +220,7 @@ async function main() {
   const system = [
     "You write direct, credible German outreach for Domenic Moran, Berlin AI-Native Product Engineer.",
     "Skills: Next.js, React, TypeScript, Node.js, PostgreSQL/Supabase, Tailwind, Vercel and AI workflows.",
-    "He seeks a full-time Product Engineer role starting 01.02.2027.",
+    `He seeks a full-time Product Engineer role. ${targetedAvailability.english}.`,
     "Output every value and both pitches in idiomatic German. Never invent a person, stack, customer, metric or product claim.",
     "No corporate filler, formal salutation, empty praise, sign-off or generic connection request.",
     "Start with a concrete observation and end with a precise product-conversation CTA.",
@@ -231,7 +238,9 @@ async function main() {
     "matchedProjects must be an array of 1–3 project names chosen only from MenuCloud Berlin, Salati, WohnungsJäger, NOURI.",
     "painPointSummary is shown on the landing page: 1-2 short German sentences, positive, saying what the product does and what makes it attractive to work on (like 'Mich reizt an X, dass ...' but without that phrase). Never frame a problem, challenge or gap; never use the words Herausforderung, Problem, löst, adressiert, Schmerzpunkt. No generic marketing phrases.",
     "painPointSummary must not address the reader directly (no du/dein/euch/euer, no Sie/Ihr); describe the product in the third person.",
-    "Name one concrete product feature. The email must include https://domenicmoran.de and the exact date 01.02.2027.",
+    `Name one concrete product feature. The email must include https://domenicmoran.de and this exact sentence: ${targetedAvailability.full}.`,
+    `The LinkedIn note must include this exact phrase: ${targetedAvailability.short}.`,
+    `Do not mention a calendar start date.`,
   ]
     .filter(Boolean)
     .join("\n\n");
