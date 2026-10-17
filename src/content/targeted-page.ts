@@ -67,6 +67,8 @@ export const targetedPageCopy = {
   projectDescriptions: {
     "MenuCloud Berlin": "Mandantenfähige SaaS für Betrieb, Zahlungen und Datenflüsse, von Produktidee bis Betrieb umgesetzt.",
     NOURI: "Produkt-App mit einem klaren täglichen Ablauf, über Web und Mobile konsequent aus einer Hand entwickelt.",
+    Salati: "Mobile App im Live-Betrieb mit verlässlicher Auslieferung und Plattform-Integration.",
+    "WohnungsJäger": "KI-gestützter Produkt-Workflow für eine vertrauenswürdige Nutzerreise im Consumer-Bereich.",
   },
   challengeKicker: "Ein guter Gesprächseinstieg",
   challengeContext: "Öffentlicher Produktkontext, bewusst ohne Annahmen über interne Prioritäten.",

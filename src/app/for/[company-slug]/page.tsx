@@ -19,6 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function TargetedCompanyPage({ params }: Props) {
  const company=await getTargetedCompany((await params)["company-slug"]); if(!company)return <SitePage content={de}/>;
  const mailto=mailAdresse(site.email, `Product Engineering bei ${company.company_name}`);
- return <TargetedLanding company={company} mailto={mailto} />;
+ // Der Override ersetzt die Karte. Dieselbe Fassung muss in den Props stehen,
+ // sonst bleibt der englische Supabase-Satz im RSC-Payload und damit im HTML.
+ const descriptions=targetedPageCopy.projectDescriptions;
+ const withCopy={...company, matched_projects: company.matched_projects.map((project)=>({...project, description: descriptions[project.name as keyof typeof descriptions] ?? project.description}))};
+ return <TargetedLanding company={withCopy} mailto={mailto} />;
 }
 

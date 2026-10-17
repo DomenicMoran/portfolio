@@ -32,13 +32,13 @@ const portfolioProjects: Record<string, Project> = {
   },
   Salati: {
     name: "Salati",
-    description: "Production mobile app with reliable delivery and platform integration.",
+    description: "Mobile App im Live-Betrieb mit verlässlicher Auslieferung und Plattform-Integration.",
     url: "https://domenicmoran.de/#case-salati",
     tags: ["React Native", "Mobile", "Operations"],
   },
   "WohnungsJäger": {
     name: "WohnungsJäger",
-    description: "AI-assisted product workflow for a high-trust consumer journey.",
+    description: "KI-gestützter Produkt-Workflow für eine vertrauenswürdige Nutzerreise im Consumer-Bereich.",
     url: "https://domenicmoran.de/#case-kiwohnung",
     tags: ["AI workflow", "Product UX"],
   },
