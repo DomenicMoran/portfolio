@@ -205,7 +205,20 @@ async function main() {
   if (!sourceResponse.ok) throw new Error(`Could not fetch ${inputUrl}: ${sourceResponse.status}`);
 
   const html = await sourceResponse.text();
-  const pageText = html
+  const jsonLdText = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
+    .map((match) => match[1].replace(/\s+/g, " ").trim())
+    .join(" ");
+  const metaText = [
+    html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1],
+    html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)?.[1],
+    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']description["']/i)?.[1],
+    html.match(/<meta[^>]+property=["']og:description["'][^>]+content=["']([^"']+)["']/i)?.[1],
+    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:description["']/i)?.[1],
+  ]
+    .filter((value): value is string => Boolean(value?.trim()))
+    .join(" ");
+  const pageText = [html, jsonLdText, metaText]
+    .join(" ")
     .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
