@@ -25,7 +25,7 @@ export type TargetedCompany = {
 /** Seiten vor der Sie-Regel (alle Mails bis CEO-261 gingen in du-Form raus) bleiben du, bis die Spalte gesetzt ist. */
 const LEGACY_DU_BEFORE = Date.parse("2026-10-14T16:00:00Z");
 /** Neue Firmen, die Ã¶ffentlich duzen, solange die anrede-Spalte noch nicht migriert ist. Quelle steht im duSource des Payloads. */
-const DU_SLUGS = new Set(["omul", "allverto", "campai", "klardaten"]);
+const DU_SLUGS = new Set(["omul", "allverto", "campai", "klardaten", "arbeitsschutz24"]);
 
 export function resolveAnrede(company: Pick<TargetedCompany, "slug" | "created_at" | "anrede">): TargetedAnrede {
   if (company.anrede === "sie" || company.anrede === "du") return company.anrede;
