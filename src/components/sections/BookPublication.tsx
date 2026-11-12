@@ -94,8 +94,9 @@ export function BookPublication() {
               <Image
                 src={book.coverSrc}
                 alt={book.coverAlt}
-                width={200}
-                height={300}
+                width={1200}
+                height={1800}
+                sizes="(max-width: 1024px) 220px, 220px"
                 className="h-auto w-full rounded-lg border border-line shadow-lg"
               />
             </div>

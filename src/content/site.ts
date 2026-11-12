@@ -412,16 +412,16 @@ export const hero = {
   eyebrow: "Domenic Moran · Berlin",
   // Wort für Wort gerendert; `accent` schaltet auf die Serifenschrift um.
   headline: [
-    { text: "Fertige", accent: true },
+    { text: "Fünf", accent: true },
+    { text: "fertige" },
     { text: "Produkte," },
-    { text: "keine" },
-    { text: "Prototypen.", accent: true },
+    { text: "gekennzeichnete", accent: true },
+    { text: "Prototypen." },
   ] as { text: string; accent?: boolean }[],
   /* Ich-Perspektive statt Marken-Pitch: Die Person, die Systeme und der
-     Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
-     Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
-     belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
-     bleibt im Abschnitt „Über mich" weiter unten. */
+     Kaufweg. Fünf ausgelieferte Produkte; alles andere trägt das
+     Prototyp-Badge. Der persönliche Werdegang bleibt im Abschnitt „Über
+     mich" weiter unten. */
   lede: `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "Fallstudien", href: "#work" },
@@ -500,7 +500,7 @@ export const produkte = {
   prototypTitel: "Prototypen & weitere",
   prototypBadge: "Prototyp",
   prototypLede:
-    "Experimente und frühe Systeme — darunter MFC mit Kaufknopf und vier Pro-Apps in Store-Prüfung.",
+    "Experimente und frühe Systeme — darunter MFC mit Kaufknopf, Pro-Apps in Store-Prüfung sowie weitere Werkstücke.",
   mfc: {
     name: "MFC – Moran Fleet Control",
     beschreibung:
@@ -536,6 +536,29 @@ export const produkte = {
       beschreibung:
         "Der eigene Tag als durchsuchbares Gedächtnis, lokal verarbeitet",
       href: "https://aether.domenicmoran.de",
+    },
+  ],
+  weiterePrototypenTitel: "Weitere Prototypen",
+  weiterePrototypenLede:
+    "Weitere Werkstücke mit eigener Landing — klar als Prototyp gekennzeichnet.",
+  weiterePrototypen: [
+    {
+      name: "WohnungsJäger",
+      beschreibung:
+        "Autonomer Agent, der den Berliner Wohnungsmarkt schneller liest als ein Mensch",
+      href: "#case-wohnungsjaeger",
+    },
+    {
+      name: "BitDojo",
+      beschreibung:
+        "Deutschsprachige Lernplattform mit genau einer Lektionsbibliothek",
+      href: "https://bitdojo.de",
+    },
+    {
+      name: "Vortex",
+      beschreibung:
+        "Erkennt Dropshipping und zeigt den Originalpreis, gerechnet auf dem Gerät",
+      href: "https://vortex.domenicmoran.de",
     },
   ],
   uebersicht: { label: "Zur vollständigen Produkt-Übersicht", href: "#work" },

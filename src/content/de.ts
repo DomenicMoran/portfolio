@@ -237,7 +237,7 @@ export const de: Content = {
           note: `${salatiTage} Tage geteilt durch ${SALATI_VERSIONEN} Versionen`,
         },
       ],
-      note: `Zahlen für Salati, gezählt am ${datumLang(verified.date)} in der Changelog-Datei der App. Parallel dazu liefen drei weitere Systeme in Produktion.`,
+      note: `Zahlen für Salati, gezählt am ${datumLang(verified.date)} in der Changelog-Datei der App. Weitere Systeme liefen parallel als Prototypen, nicht als fertige Produkte.`,
     },
   },
 

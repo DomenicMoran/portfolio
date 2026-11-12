@@ -123,6 +123,41 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
               </li>
             ))}
           </ul>
+
+          <h4 className="text-eyebrow mt-12">
+            {produkte.weiterePrototypenTitel}
+          </h4>
+          <p className="mt-3 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            {produkte.weiterePrototypenLede}
+          </p>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {produkte.weiterePrototypen.map((app) => {
+              const external = app.href.startsWith("http");
+              return (
+              <li key={app.name}>
+                <a
+                  href={app.href}
+                  {...(external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
+                >
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-sm text-ink">
+                      {app.name}
+                    </span>
+                    <span className="rounded border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-ink-dim">
+                      {produkte.prototypBadge}
+                    </span>
+                  </span>
+                  <span className="mt-2.5 block text-sm leading-relaxed text-ink-dim text-pretty">
+                    {app.beschreibung}
+                  </span>
+                </a>
+              </li>
+            );
+            })}
+          </ul>
         </Reveal>
 
         <Reveal className="mt-12">

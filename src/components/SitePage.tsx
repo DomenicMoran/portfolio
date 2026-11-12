@@ -132,19 +132,20 @@ export function SitePage({ content }: { content: Content }) {
        an denen, die in beiden Stores liegen, falsch für Salati und
        MenuCloud und damit genau die Sorte Angabe, die eine Maschine
        übernimmt und weiterreicht. */
-    subjectOf: content.caseStudies.map((study) => ({
-      "@type": "SoftwareApplication",
-      name: study.name,
-      description: study.tagline,
-      /* Ein Store-Verweis heißt: Es gibt eine App. Mehr wird hier nicht
-         behauptet, `operatingSystem` stand einen Bau lang mit drin und war
-         unvollständig, weil je Fallstudie nur einer der beiden Stores
-         verlinkt ist, obwohl Salati und MenuCloud in beiden liegen. Eine
-         halbe Angabe wird von einer Maschine als ganze weitergereicht. */
-      applicationCategory: study.links.some((l) => l.kind === "store" && l.href)
-        ? "MobileApplication"
-        : "WebApplication",
-    })),
+    /* Nur die fünf fertigen Produkte hier gleichrangig. Prototypen gehören
+       nicht in subjectOf — sonst lesen Maschinen sie als ausgeliefert. */
+    subjectOf: content.caseStudies
+      .filter((study) => !study.prototyp)
+      .map((study) => ({
+        "@type": "SoftwareApplication",
+        name: study.name,
+        description: study.tagline,
+        applicationCategory: study.links.some(
+          (l) => l.kind === "store" && l.href,
+        )
+          ? "MobileApplication"
+          : "WebApplication",
+      })),
   };
 
   /* Die Seite nennt sich selbst, nicht nur ihren Gegenstand.

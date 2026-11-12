@@ -16,6 +16,10 @@ export const bookPublication = {
   pricePrint: "8,99 €",
   priceEbook: "2,99 €",
   cover: "/books/wie-ich-nach-26-jahren-frieden-fand-cover-front.webp",
+  coverPng: "/books/wie-ich-nach-26-jahren-frieden-fand-cover-front.png",
+  coverWidth: 1200,
+  coverHeight: 1800,
+  ogImage: "/books/wie-ich-nach-26-jahren-frieden-fand-og.webp",
   coverWrap: "/books/wie-ich-nach-26-jahren-frieden-fand-cover.webp",
   links: {
     bodPrint:

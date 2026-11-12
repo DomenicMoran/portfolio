@@ -234,6 +234,13 @@ export type Content = {
     proAppsTitel: string;
     proAppsLede: string;
     proApps: readonly { name: string; beschreibung: string; href: string }[];
+    weiterePrototypenTitel: string;
+    weiterePrototypenLede: string;
+    weiterePrototypen: readonly {
+      name: string;
+      beschreibung: string;
+      href: string;
+    }[];
     uebersicht: { label: string; href: string };
   };
 

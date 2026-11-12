@@ -167,10 +167,11 @@ export const en: Content = {
        mentioned only as a side note, not the headline brand. */
     eyebrow: "Domenic Moran · Berlin",
     headline: [
-      { text: "Finished", accent: true },
+      { text: "Five", accent: true },
+      { text: "shipped" },
       { text: "products," },
-      { text: "not" },
-      { text: "prototypes.", accent: true },
+      { text: "labeled", accent: true },
+      { text: "prototypes." },
     ],
     lede: `Since ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
@@ -242,7 +243,7 @@ export const en: Content = {
     prototypTitel: "Prototypes & more",
     prototypBadge: "Prototype",
     prototypLede:
-      "Experiments and early systems — including MFC with a buy button and four pro apps in store review.",
+      "Experiments and early systems — including MFC with a buy button, pro apps in store review, and further workshop pieces.",
     mfc: {
       name: "MFC – Moran Fleet Control",
       beschreibung:
@@ -254,6 +255,29 @@ export const en: Content = {
     proAppsTitel: "Pro apps",
     proAppsLede:
       "Four apps, submitted for review in both stores, each with its own landing.",
+    weiterePrototypenTitel: "More prototypes",
+    weiterePrototypenLede:
+      "Further workshop pieces with their own landings — clearly labeled as prototypes.",
+    weiterePrototypen: [
+      {
+        name: "WohnungsJäger",
+        beschreibung:
+          "Autonomous agent that reads Berlin’s rental market faster than a human",
+        href: "#case-wohnungsjaeger",
+      },
+      {
+        name: "BitDojo",
+        beschreibung:
+          "German-language learning platform with a single lesson library",
+        href: "https://bitdojo.de",
+      },
+      {
+        name: "Vortex",
+        beschreibung:
+          "Flags dropshipping and shows the original price, computed on-device",
+        href: "https://vortex.domenicmoran.de",
+      },
+    ],
     proApps: [
       {
         name: "Aegis",
@@ -1720,7 +1744,7 @@ export const en: Content = {
         ...(bookPublication.links.ebook
           ? { ebook: bookPublication.links.ebook }
           : {}),
-        authorPage: bookPublication.authorPage,
+        authorPage: `${bookPublication.authorPage}/en`,
       },
     },
   },
@@ -2061,7 +2085,7 @@ export const en: Content = {
           note: `${salatiDays} days divided by ${SALATI_VERSIONS} versions`,
         },
       ],
-      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app’s changelog file. Three further systems were in production alongside it.`,
+      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app’s changelog file. Further systems ran alongside it as prototypes, not as finished products.`,
     },
   },
 
