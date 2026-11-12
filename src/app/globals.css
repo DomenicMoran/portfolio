@@ -885,6 +885,7 @@ textarea:-webkit-autofill {
        sieben stand das Blatt bei 0,88 auf 103 % der Seite und kippte auf zwei
        Seiten. 0,83 ergibt wieder eine, mit rund 97 % Ausnutzung (deutsche
        Fassung) und 6,2 pt kleinster Schrift. */
-    zoom: 0.83;
+    /* 2026-11-12 Audit: fünf Fertige + Prototypen-Block → bei 0,83 knapp 103 %. */
+    zoom: 0.80;
   }
 }
