@@ -94,9 +94,9 @@ export function BookPublication() {
               <Image
                 src={book.coverSrc}
                 alt={book.coverAlt}
-                width={440}
-                height={660}
-                className="w-full rounded-lg border border-line shadow-lg"
+                width={200}
+                height={300}
+                className="h-auto w-full rounded-lg border border-line shadow-lg"
               />
             </div>
 
@@ -156,7 +156,14 @@ function BookFacts({
         <Fact label={labels.format} value={book.formatLine} />
         <Fact label={labels.published} value={book.publishedLabel} />
         <Fact label={labels.printPrice} value={book.pricePrint} />
-        <Fact label={labels.ebookPrice} value={book.priceEbook} />
+        <Fact
+          label={labels.ebookPrice}
+          value={
+            book.links.ebook
+              ? book.priceEbook
+              : `${book.priceEbook} (${labels.ebookSoon})`
+          }
+        />
       </dl>
     </article>
   );
