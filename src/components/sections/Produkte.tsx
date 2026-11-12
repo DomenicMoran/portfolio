@@ -4,19 +4,12 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Content } from "@/content/types";
 
 /**
- * Der Produkt-Einstieg: eigene Systeme mit dem Kaufpfad.
+ * Der Produkt-Einstieg: die fünf fertigen Systeme zuerst, Prototypen kompakt.
  *
- * Steht direkt hinter dem Kopf, vor den Fallstudien. Der Kaufweg ist MFC —
- * das einzige Produkt mit Kaufknopf — plus die vier Pro-Apps, deren Landings
- * live sind. Der Verweis unten führt zur vollständigen Übersicht, den
- * Fallstudien, damit hier keine zweite Beschreibung derselben Produkte
- * entsteht. Die Person und der Bewerbungsweg stehen weiter unten.
- *
- * Bewusst eine Server Component: Der Inhalt steht im RSC-Baum und braucht
- * keinen eigenen JavaScript-Block. `check:bundle` misst die Startseite gegen
- * ein hartes Budget, und eine Client-Komponente hätte sie darüber gehoben.
- * Die Bewegung kommt weiterhin aus `Reveal`, das die anderen Sektionen ohnehin
- * laden.
+ * Steht nach Über-mich und Publikation, vor den Fallstudien. Der frühere
+ * Schwerpunkt auf MFC als einzigem Kaufknopf widersprach der Reihenfolge in
+ * `case-study-order.ts`: MenuCloud, Salati, NOURI, LexiPulse und Dartile sind
+ * die ausgelieferten Produkte, MFC und der Rest stehen als Prototypen.
  */
 export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
   return (
@@ -33,16 +26,57 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
           lede={produkte.lede}
         />
 
-        {/* MFC: das Produkt mit Kaufknopf, breit und mit Preis. */}
         <Reveal className="mt-14">
-          <div className="rounded-2xl border border-acid/30 bg-acid/10 p-7 sm:p-9">
+          <h3 className="text-eyebrow">{produkte.fertigTitel}</h3>
+          <ul className="mt-6 flex flex-col gap-4">
+            {produkte.fertig.map((produkt) => (
+              <li key={produkt.name}>
+                <a
+                  href={produkt.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lit group flex flex-col gap-3 rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+                >
+                  <div className="min-w-0">
+                    <h4 className="text-title text-ink">{produkt.name}</h4>
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-dim text-pretty sm:text-base">
+                      {produkt.beschreibung}
+                    </p>
+                  </div>
+                  <span className="inline-flex shrink-0 items-center gap-2 font-mono text-xs text-ink-dim transition-colors group-hover:text-acid">
+                    Live ansehen
+                    <ArrowUpRight
+                      className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      aria-hidden
+                    />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal className="mt-20 border-t border-line pt-12">
+          <h3 className="text-eyebrow">{produkte.prototypTitel}</h3>
+          <p className="mt-3 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            {produkte.prototypLede}
+          </p>
+
+          <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-7 sm:p-9">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div className="min-w-0">
-                <h3 className="text-title text-ink">{produkte.mfc.name}</h3>
-                <p className="mt-3 max-w-2xl leading-relaxed text-ink-dim text-pretty">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h4 className="font-mono text-sm text-ink">
+                    {produkte.mfc.name}
+                  </h4>
+                  <span className="rounded border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-ink-dim">
+                    {produkte.prototypBadge}
+                  </span>
+                </div>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim text-pretty">
                   {produkte.mfc.beschreibung}
                 </p>
-                <p className="mt-4 font-mono text-sm text-acid">
+                <p className="mt-4 font-mono text-sm text-ink-faint">
                   {produkte.mfc.preis}
                 </p>
               </div>
@@ -50,21 +84,18 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
                 href={produkte.mfc.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
+                className="group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
               >
                 {produkte.mfc.kaufen}
                 <ArrowUpRight
-                  className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden
                 />
               </a>
             </div>
           </div>
-        </Reveal>
 
-        {/* Die vier Pro-Apps, je mit eigener Landing. */}
-        <Reveal className="mt-14">
-          <h3 className="text-eyebrow">{produkte.proAppsTitel}</h3>
+          <h4 className="text-eyebrow mt-12">{produkte.proAppsTitel}</h4>
           <p className="mt-3 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
             {produkte.proAppsLede}
           </p>
@@ -81,10 +112,9 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
                     <span className="font-mono text-sm text-ink">
                       {app.name}
                     </span>
-                    <ArrowUpRight
-                      className="size-3.5 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
-                      aria-hidden
-                    />
+                    <span className="rounded border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-ink-dim">
+                      {produkte.prototypBadge}
+                    </span>
                   </span>
                   <span className="mt-2.5 block text-sm leading-relaxed text-ink-dim text-pretty">
                     {app.beschreibung}
@@ -95,7 +125,6 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
           </ul>
         </Reveal>
 
-        {/* Der Weg in die vollständige Übersicht. */}
         <Reveal className="mt-12">
           <a
             href={produkte.uebersicht.href}

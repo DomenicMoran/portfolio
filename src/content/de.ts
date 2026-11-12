@@ -2,6 +2,8 @@ import { datumLang } from "@/lib/date-format";
 import type { Content } from "./types";
 import verified from "./verified.json";
 import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
+import { bookPublication } from "./book-publication";
+import { bereiteFallstudienVor } from "@/lib/case-study-order";
 import {
   about as aboutDe,
   caseStudies,
@@ -66,6 +68,7 @@ export const de: Content = {
 
   nav: [
     { label: "Über mich", href: "#about" },
+    { label: "Publikation", href: "#publikation" },
     { label: "Produkte", href: "#produkte" },
     { label: "Arbeitsweise", href: "#workflow" },
     { label: "Skills", href: "#skills" },
@@ -133,14 +136,62 @@ export const de: Content = {
       readOn: "Ausführlich nachzulesen",
     },
     more: {
-      title: "Weitere Projekte",
+      title: "Weitere Projekte / Prototypen",
       show: "Alle Projekte ansehen",
       hide: "Weniger anzeigen",
     },
     demosTitle: "Zwei weitere Vorführungen im Browser",
+    prototypBadge: "Prototyp",
   },
 
-  caseStudies,
+  caseStudies: bereiteFallstudienVor(caseStudies),
+
+  publikation: {
+    eyebrow: "Publikation",
+    title: "Buch",
+    lede: "Selbstverlegt über BoD, Taschenbuch und E-Book.",
+    labels: {
+      author: "Autor",
+      isbn: "ISBN",
+      publisher: "Verlag",
+      format: "Format",
+      published: "Erscheinung",
+      printPrice: "Taschenbuch",
+      ebookPrice: "E-Book",
+      bod: "Bei BoD kaufen",
+      amazon: "Bei Amazon",
+      ebook: "E-Book bei BoD",
+      authorSite: "Autorenseite",
+    },
+    book: {
+      title: bookPublication.title,
+      author: bookPublication.author,
+      isbn: bookPublication.isbn,
+      publisher: bookPublication.publisher,
+      format: bookPublication.format,
+      formatLine: `${bookPublication.format}, ${bookPublication.pages} Seiten`,
+      pages: bookPublication.pages,
+      published: bookPublication.published,
+      publishedLabel: "11. November 2026",
+      pricePrint: bookPublication.pricePrint,
+      priceEbook: bookPublication.priceEbook,
+      coverSrc: bookPublication.cover,
+      coverAlt: `Cover: ${bookPublication.title}`,
+      summary: bookPublication.summaryDe,
+      links: {
+        ...(bookPublication.links.bodPrint
+          ? { bodPrint: bookPublication.links.bodPrint }
+          : {}),
+        ...(bookPublication.links.amazonPrint
+          ? { amazonPrint: bookPublication.links.amazonPrint }
+          : {}),
+        ...(bookPublication.links.ebook
+          ? { ebook: bookPublication.links.ebook }
+          : {}),
+        authorPage: bookPublication.authorPage,
+      },
+    },
+  },
 
   werkbank: werkbankDe,
 

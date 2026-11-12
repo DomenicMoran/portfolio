@@ -137,12 +137,14 @@ type TabId = (typeof TAB_IDS)[number];
  * für den Rest statt einer zweiten Seite, weil es für Projekte anders als für
  * Artikel keine Übersichtsseite gibt.
  */
-const AUSFUEHRLICH = 3;
+const AUSFUEHRLICH = 5;
 
 export function CaseStudies() {
   const { work, caseStudies, werkbank } = useContent();
-  const ausfuehrlich = caseStudies.slice(0, AUSFUEHRLICH);
-  const weitere = caseStudies.slice(AUSFUEHRLICH);
+  const ausfuehrlich = caseStudies
+    .filter((s) => !s.prototyp)
+    .slice(0, AUSFUEHRLICH);
+  const weitere = caseStudies.filter((s) => s.prototyp);
 
   return (
     <section
@@ -357,7 +359,12 @@ function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
                   {study.keinScreenshot}
                 </p>
               ) : null}
-              <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
+              <span className="mt-auto flex flex-wrap items-center gap-2 pt-4 font-mono text-[10px] text-ink-faint">
+                {study.prototyp ? (
+                  <span className="rounded border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-ink-dim">
+                    {work.prototypBadge}
+                  </span>
+                ) : null}
                 {study.statusLabel}
               </span>
             </>

@@ -8,6 +8,8 @@ import {
   monateZwischen,
 } from "@/lib/duration";
 import type { Content } from "./types";
+import { bookPublication } from "./book-publication";
+import { bereiteFallstudienVor } from "@/lib/case-study-order";
 
 /**
  * Angaben, die auf dem Kurzprofil und im Faktenblatt stehen.
@@ -112,6 +114,7 @@ export const en: Content = {
 
   nav: [
     { label: "About", href: "#about" },
+    { label: "Publication", href: "#publikation" },
     { label: "Products", href: "#produkte" },
     { label: "How I work", href: "#workflow" },
     { label: "Skills", href: "#skills" },
@@ -169,9 +172,9 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `I’ve built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform with exams and certificates, an autonomous agent. Available to buy: MFC, the desktop application for chat, agents, tools and backlog, €49.99 one-time, no subscription.`,
+    lede: `I’ve built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software. The five shipped products are MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
-    ctaSecondary: { label: "Buy MFC", href: "https://mfc.domenicmoran.de" },
+    ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
       before:
         "Three of the more than ten production systems run right here in the browser:",
@@ -198,7 +201,48 @@ export const en: Content = {
     eyebrow: "Products",
     title: "My products",
     lede:
-      "Autonomous apps and micro-SaaS from Berlin, which I run under the brand Moran Software. Every system runs in production, all built and operated by one person, from the first line to the store review.",
+      "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
+    fertigTitel: "In production",
+    fertig: [
+      {
+        name: "MenuCloud Berlin",
+        beschreibung:
+          "Multi-tenant SaaS for restaurants with fiscal signing and Stripe Connect",
+        href: "https://menucloud-berlin.de",
+        detailHref: "#case-menucloud",
+      },
+      {
+        name: "Salati",
+        beschreibung:
+          "Prayer and Quran app for DACH, offline-capable, in both stores",
+        href: "https://www.salati.pro",
+        detailHref: "#case-salati",
+      },
+      {
+        name: "NOURI",
+        beschreibung:
+          "Fitness and nutrition platform with web app, mobile app and catalog",
+        href: "https://www.nouri-fitness.de",
+        detailHref: "#case-nouri",
+      },
+      {
+        name: "LexiPulse",
+        beschreibung:
+          "Reader for EPUB, PDF and web articles with RSVP and flow text",
+        href: "https://lexipulse.de",
+        detailHref: "#case-lexipulse",
+      },
+      {
+        name: "Dartile",
+        beschreibung: "Dart counter that records every dart individually",
+        href: "https://dartile.de",
+        detailHref: "#case-dartile",
+      },
+    ],
+    prototypTitel: "Prototypes & more",
+    prototypBadge: "Prototype",
+    prototypLede:
+      "Experiments and early systems — including MFC with a buy button and four pro apps in store review.",
     mfc: {
       name: "MFC – Moran Fleet Control",
       beschreibung:
@@ -256,14 +300,15 @@ export const en: Content = {
       readOn: "Written up in full",
     },
     more: {
-      title: "More projects",
+      title: "More projects / prototypes",
       show: "See all projects",
       hide: "Show less",
     },
     demosTitle: "Two more demos in the browser",
+    prototypBadge: "Prototype",
   },
 
-  caseStudies: [
+  caseStudies: bereiteFallstudienVor([
     {
       id: "mfc",
       index: "00",
@@ -1629,7 +1674,54 @@ export const en: Content = {
         },
       ],
     },
-  ],
+  ]),
+
+  publikation: {
+    eyebrow: "Publication",
+    title: "Book",
+    lede: "Self-published through BoD, paperback and e-book.",
+    labels: {
+      author: "Author",
+      isbn: "ISBN",
+      publisher: "Publisher",
+      format: "Format",
+      published: "Published",
+      printPrice: "Paperback",
+      ebookPrice: "E-book",
+      bod: "Buy at BoD",
+      amazon: "Buy at Amazon",
+      ebook: "E-book at BoD",
+      authorSite: "Author page",
+    },
+    book: {
+      title: bookPublication.title,
+      author: bookPublication.author,
+      isbn: bookPublication.isbn,
+      publisher: bookPublication.publisher,
+      format: "Paperback",
+      formatLine: `Paperback, ${bookPublication.pages} pages`,
+      pages: bookPublication.pages,
+      published: bookPublication.published,
+      publishedLabel: "11 November 2026",
+      pricePrint: bookPublication.pricePrint,
+      priceEbook: bookPublication.priceEbook,
+      coverSrc: bookPublication.cover,
+      coverAlt: `Cover: ${bookPublication.title}`,
+      summary: bookPublication.summaryEn,
+      links: {
+        ...(bookPublication.links.bodPrint
+          ? { bodPrint: bookPublication.links.bodPrint }
+          : {}),
+        ...(bookPublication.links.amazonPrint
+          ? { amazonPrint: bookPublication.links.amazonPrint }
+          : {}),
+        ...(bookPublication.links.ebook
+          ? { ebook: bookPublication.links.ebook }
+          : {}),
+        authorPage: bookPublication.authorPage,
+      },
+    },
+  },
 
   werkbank: {
     title: "What is being built",

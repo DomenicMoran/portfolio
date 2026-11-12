@@ -422,9 +422,9 @@ export const hero = {
      Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform mit Prüfung und Zertifikat, ein autonomer Agent. Zum Kaufen gibt es MFC, die Desktop-Anwendung für Chat, Agenten, Werkzeuge und Backlog: 49,99 € einmalig, kein Abo.`,
+  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe. Im Vordergrund stehen die fünf ausgelieferten Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
-  ctaSecondary: { label: "MFC kaufen", href: "https://mfc.domenicmoran.de" },
+  ctaSecondary: { label: "Fallstudien", href: "#work" },
   tryIt: {
     before:
       "Drei von über zehn Systemen in Produktion rechnen hier im Browser mit:",
@@ -459,7 +459,48 @@ export const produkte = {
   eyebrow: "Produkte",
   title: "Eigene Produkte",
   lede:
-    "Autonome Apps und Micro-SaaS aus Berlin, die ich unter der Marke Moran Software betreibe. Jedes System läuft in Produktion, alle allein gebaut und betrieben, von der ersten Zeile bis zum Store-Review.",
+    "Fünf Systeme sind fertig ausgeliefert, der Rest ist Prototyp oder Werkstück. Alles unter Moran Software, allein gebaut und betrieben.",
+  fertigTitel: "In Produktion",
+  fertig: [
+    {
+      name: "MenuCloud Berlin",
+      beschreibung:
+        "Multi-Tenant-SaaS für Gastronomie mit KassenSichV und Stripe Connect",
+      href: "https://menucloud-berlin.de",
+      detailHref: "#case-menucloud",
+    },
+    {
+      name: "Salati",
+      beschreibung:
+        "Gebets- und Koran-App für den DACH-Raum, offline-fähig, in beiden Stores",
+      href: "https://www.salati.pro",
+      detailHref: "#case-salati",
+    },
+    {
+      name: "NOURI",
+      beschreibung:
+        "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und Katalog",
+      href: "https://www.nouri-fitness.de",
+      detailHref: "#case-nouri",
+    },
+    {
+      name: "LexiPulse",
+      beschreibung:
+        "Reader für EPUB, PDF und Web-Artikel mit Wortstrom und Fließtext",
+      href: "https://lexipulse.de",
+      detailHref: "#case-lexipulse",
+    },
+    {
+      name: "Dartile",
+      beschreibung: "Dart-Counter, der jeden Pfeil einzeln aufnimmt",
+      href: "https://dartile.de",
+      detailHref: "#case-dartile",
+    },
+  ],
+  prototypTitel: "Prototypen & weitere",
+  prototypBadge: "Prototyp",
+  prototypLede:
+    "Experimente und frühe Systeme — darunter MFC mit Kaufknopf und vier Pro-Apps in Store-Prüfung.",
   mfc: {
     name: "MFC – Moran Fleet Control",
     beschreibung:

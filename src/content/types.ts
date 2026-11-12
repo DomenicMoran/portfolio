@@ -66,6 +66,8 @@ export type CaseStudy = {
    * weiterscrollen und dann raten, welcher Artikel zu welchem System gehört.
    */
   articles?: readonly string[];
+  /** Gesetzt in `bereiteFallstudienVor`: alles außer den fünf fertigen Produkten. */
+  prototyp?: boolean;
 };
 
 export type Content = {
@@ -211,6 +213,17 @@ export type Content = {
     eyebrow: string;
     title: string;
     lede: string;
+    fertigTitel: string;
+    /** Die fünf ausgelieferten Systeme, Reihenfolge verbindlich. */
+    fertig: readonly {
+      name: string;
+      beschreibung: string;
+      href: string;
+      detailHref: string;
+    }[];
+    prototypTitel: string;
+    prototypBadge: string;
+    prototypLede: string;
     mfc: {
       name: string;
       beschreibung: string;
@@ -263,9 +276,51 @@ export type Content = {
      * nicht mehr ein.
      */
     demosTitle: string;
+    prototypBadge: string;
   };
 
   caseStudies: readonly CaseStudy[];
+
+  publikation: {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    labels: {
+      author: string;
+      isbn: string;
+      publisher: string;
+      format: string;
+      published: string;
+      printPrice: string;
+      ebookPrice: string;
+      bod: string;
+      amazon: string;
+      ebook: string;
+      authorSite: string;
+    };
+    book: {
+      title: string;
+      author: string;
+      isbn: string;
+      publisher: string;
+      format: string;
+      formatLine: string;
+      pages: number;
+      published: string;
+      publishedLabel: string;
+      pricePrint: string;
+      priceEbook: string;
+      coverSrc: string;
+      coverAlt: string;
+      summary: string;
+      links: {
+        bodPrint?: string;
+        amazonPrint?: string;
+        ebook?: string;
+        authorPage?: string;
+      };
+    };
+  };
 
   /**
    * Was gerade entsteht und noch keine Fallstudie trägt.

@@ -9,6 +9,7 @@ import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 import { Produkte } from "@/components/sections/Produkte";
 import { CaseStudies } from "@/components/sections/CaseStudies";
+import { BookPublication } from "@/components/sections/BookPublication";
 
 /**
  * Sieben Abschnitte, die unterhalb der Falz liegen und keinen Regler tragen,
@@ -196,6 +197,7 @@ export function SitePage({ content }: { content: Content }) {
             in der Branche orientieren: kurzer Vorspann, dann die Person, erst
             danach die ausgewählte Arbeit im Detail. */}
         <About />
+        <BookPublication />
         <Produkte produkte={content.produkte} />
         <CaseStudies />
         <AiWorkflow />
