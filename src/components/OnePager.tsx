@@ -94,7 +94,7 @@ export function OnePager({
   inhalt: Content;
   sprache: "de" | "en";
 }) {
-  const { about, caseStudies, skills, site, onepager } = inhalt;
+  const { about, caseStudies, skills, site, onepager, work } = inhalt;
   /* Das englische Blatt zeigt und verlinkt `domenicmoran.de/en`. */
   const heimatAdresse = sprache === "de" ? site.url : `${site.url}/en`;
   // Die ersten vier je Bereich. Die Reihenfolge in der Inhaltsdatei ist
@@ -180,7 +180,11 @@ export function OnePager({
                      Dort steht das Porträt unter „Vier Jahre gelernt“, und
                      wer nicht sieht, erfährt sonst nirgends, dass dort ein
                      Foto ist und wen es zeigt. */
-                  alt=""
+                  alt={
+                    sprache === "de"
+                      ? `Porträt von ${site.name}`
+                      : `Portrait of ${site.name}`
+                  }
                   width={110}
                   height={110}
                   /* 256 px für 110 CSS-Pixel, und das ist kein Versehen.
@@ -457,6 +461,33 @@ export function OnePager({
                 ))}
             </div>
           </section>
+
+          {caseStudies.some((study) => study.prototyp) ? (
+            <section className="mt-6 print:mt-3">
+              <h2 className="mb-2 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
+                {onepager.prototypen}
+              </h2>
+              <ul className="flex flex-col gap-2 text-[13px] leading-snug text-[#25252e]">
+                {caseStudies
+                  .filter((study) => study.prototyp)
+                  .map((study) => (
+                    <li key={study.id} className="break-inside-avoid">
+                      <span className="mr-2 rounded border border-[#d4d4dc] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide text-[#5a5a66]">
+                        {work.prototypBadge}
+                      </span>
+                      <strong className="font-semibold text-[#101014]">
+                        {study.name}
+                      </strong>
+                      <span className="text-[#5a5a66]">
+                        {" "}
+                        · {study.statusLabel}
+                      </span>
+                      <span className="text-[#3a3a44]"> — {study.tagline}</span>
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          ) : null}
 
           {/* Schwerpunkte und Werdegang nebeneinander. Beide sind kompakte Listen;
             untereinander kosten sie die zweite Seite, nebeneinander passen sie. */}
