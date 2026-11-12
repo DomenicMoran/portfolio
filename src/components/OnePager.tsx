@@ -336,7 +336,7 @@ export function OnePager({
                 findet es auf der Seite; sie hat keine Seitenhöhe. */}
             <div className="flex flex-col gap-5 print:gap-2">
               {caseStudies
-                .filter((study) => !study.nochNichtAusgeliefert)
+                .filter((study) => !study.prototyp && !study.nochNichtAusgeliefert)
                 .map((study) => (
                   <div key={study.id} className="break-inside-avoid">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
