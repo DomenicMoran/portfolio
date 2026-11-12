@@ -55,6 +55,9 @@ _srv.log
 _dep.log
 
 
+# Audit-Screenshots bleiben lokal; Markdown und Skripte versioniert.
+audit/**/*.png
+
 # Arbeitsbäume und Sitzungsdaten von Agenten gehören nicht ins Repo.
 .claude/
 
