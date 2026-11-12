@@ -260,6 +260,7 @@ export type Content = {
      * siehe die Startseite vor dieser Änderung. Drei stehen ausführlich, der
      * Rest kompakt hinter einem Umschalter, analog zu `Writing.tsx`.
      */
+    weitereProjekteTitle: string;
     more: {
       title: string;
       show: string;
@@ -296,6 +297,7 @@ export type Content = {
       bod: string;
       amazon: string;
       ebook: string;
+      ebookSoon: string;
       authorSite: string;
     };
     book: {
@@ -673,6 +675,7 @@ export type Content = {
     /** Der Absatz unter dem Namen. `{commits}` wird durch die Untergrenze ersetzt. */
     positioning: string;
     projects: string;
+    prototypen: string;
     focus: string;
     path: string;
     /** Ein Satz unter dem Werdegang. */

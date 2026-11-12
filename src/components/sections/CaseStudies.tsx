@@ -137,13 +137,14 @@ type TabId = (typeof TAB_IDS)[number];
  * für den Rest statt einer zweiten Seite, weil es für Projekte anders als für
  * Artikel keine Übersichtsseite gibt.
  */
-const AUSFUEHRLICH = 5;
+/** Volle Tafeln für MenuCloud und Salati; die drei übrigen Fertigen darunter. */
+const AUSFUEHRLICH_KERN = 2;
 
 export function CaseStudies() {
   const { work, caseStudies, werkbank } = useContent();
-  const ausfuehrlich = caseStudies
-    .filter((s) => !s.prototyp)
-    .slice(0, AUSFUEHRLICH);
+  const fertig = caseStudies.filter((s) => !s.prototyp);
+  const ausfuehrlichKern = fertig.slice(0, AUSFUEHRLICH_KERN);
+  const weitereFertig = fertig.slice(AUSFUEHRLICH_KERN);
   const weitere = caseStudies.filter((s) => s.prototyp);
 
   return (
@@ -161,10 +162,21 @@ export function CaseStudies() {
         />
 
         <div className="mt-20 flex flex-col gap-24 sm:gap-36">
-          {ausfuehrlich.map((study) => (
+          {ausfuehrlichKern.map((study) => (
             <CaseStudyPanel key={study.id} study={study} />
           ))}
         </div>
+
+        {weitereFertig.length > 0 ? (
+          <div className="mt-24 sm:mt-36">
+            <h3 className="text-eyebrow">{work.weitereProjekteTitle}</h3>
+            <div className="mt-20 flex flex-col gap-24 sm:gap-36">
+              {weitereFertig.map((study) => (
+                <CaseStudyPanel key={study.id} study={study} />
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         {/* NOURI und Dartile tragen je eine Rechen-Vorführung. Steht ihre
             Fallstudie nicht unter den ausführlichen, bleibt die Vorführung
@@ -172,7 +184,7 @@ export function CaseStudies() {
             `WeitereVorfuehrungen`. */}
         <WeitereVorfuehrungen
           fehlend={["nouri", "dartile"].filter(
-            (id) => !ausfuehrlich.some((s) => s.id === id),
+            (id) => !fertig.some((s) => s.id === id),
           )}
         />
 
@@ -560,9 +572,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-6">
           <div className="flex items-baseline gap-5">
-            <span className={cn("font-mono text-sm", accent.text)}>
-              {study.index}
-            </span>
+            {study.index ? (
+              <span className={cn("font-mono text-sm", accent.text)}>
+                {study.index}
+              </span>
+            ) : null}
             <h3 className="text-title text-ink">{study.name}</h3>
           </div>
           <div className="flex items-center gap-3">
