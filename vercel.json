@@ -76,6 +76,12 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.domenicmoran.de" }],
+      "destination": "https://domenicmoran.de/:path*",
+      "permanent": true
+    },
+    {
       "source": "/cv",
       "destination": "/onepager",
       "permanent": true
