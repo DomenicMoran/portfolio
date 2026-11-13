@@ -15,7 +15,7 @@ export const bookPublication = {
   published: "2026-11-11",
   pricePrint: "8,99 €",
   priceEbook: "2,99 €",
-  cover: "/books/wie-ich-nach-26-jahren-frieden-fand-cover.webp",
+  cover: "/books/wie-ich-nach-26-jahren-frieden-fand-cover-front.webp",
   links: {
     bodPrint:
       "https://buchshop.bod.de/wie-ich-nach-26-jahren-frieden-fand-domenic-moran-9783696754297",
