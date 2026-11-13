@@ -26,5 +26,5 @@ export const bookPublication = {
     "Persönlicher Bericht über meinen Weg zum Islam: von der Suche nach Frieden bis zur Shahada am 18. Oktober 2025. Selbstverlegt über BoD.",
   summaryEn:
     "A personal account of my path to Islam: from searching for peace to taking the shahada on 18 October 2025. Self-published through BoD.",
-  authorPage: "https://author.domenicmoran.de",
+  authorPage: "https://autor.domenicmoran.de",
 } as const;
