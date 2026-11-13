@@ -187,8 +187,8 @@ export function CaseStudies() {
 /**
  * Die zwei Vorführungen, deren Fallstudie eingeklappt sein kann.
  *
- * Der Vorspann verspricht „Drei von über zehn Systemen in Produktion rechnen
- * hier im Browser mit: Gebetszeiten, Tagesbilanz und Checkout-Tafel
+ * Der Vorspann verspricht „Drei ausgelieferte Systeme rechnen hier im Browser mit:
+ * Gebetszeiten, Tagesbilanz und Checkout-Tafel
  * ausprobieren", und `check:demo` prüft das nach: Es rechnet dieselben
  * Aufgaben unabhängig nach und sucht die Vorführungen auf der ausgelieferten
  * Seite. Gebetszeiten stehen weiterhin in der Salati-Fallstudie, die zu den

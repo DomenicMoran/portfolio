@@ -57,7 +57,7 @@ export const site = {
   location: "Berlin, Deutschland",
   // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
   ogTagline:
-    "Über zehn Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
+    "Fünf ausgelieferte Produkte unter Moran Software plus Prototypen: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "kontakt@domenicmoran.de",
@@ -106,7 +106,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Über zehn Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
+      "Fünf ausgelieferte Produkte, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform und weitere Prototypen.",
   },
 } as const;
 
@@ -182,7 +182,7 @@ export const about = {
        eingereicht worden; die öffentliche Lookup-API liefert für alle acht
        weiterhin null Treffer, sie sind also noch nicht live. Alle acht sind
        zugleich bei Google Play live, selbst geprüft per `curl`. */
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und acht Apps mit einer offenen Store-Prüfung bei Apple, alle acht bereits bei Google Play live (Stand 6. September 2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: fünf ausgelieferte Produkte in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und weitere Apps in Store-Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -241,14 +241,14 @@ export const about = {
       period: "seit 04/2026",
       title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von über zehn Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      body: "Aufbau und Betrieb von fünf ausgelieferten Produkten als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind über zehn Systeme in Produktion und eine prüfbare Git-Historie.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind fünf ausgelieferte Produkte und eine prüfbare Git-Historie.",
       current: true,
     },
     /* Der Vollzeitjob, auf den die Seite überall verweist, ohne ihn zu nennen.
@@ -263,7 +263,7 @@ export const about = {
       period: "seit 03/2018",
       title: "Hauptberuflich im öffentlichen Dienst",
       org: "Öffentlicher Dienst, Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem alle über zehn Systeme entstanden sind.",
+      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem die fünf Produkte und die Prototypen entstanden sind.",
       current: true,
     },
   ],
@@ -419,15 +419,16 @@ export const hero = {
   ] as { text: string; accent?: boolean }[],
   /* Ich-Perspektive statt Marken-Pitch: Die Person, die Systeme und der
      Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
-     Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
+     Produktivrepo; die fünf ausgelieferten Produkte sind dieselbe Angabe wie
+     überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe. Im Vordergrund stehen die fünf ausgelieferten Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
+  lede: `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "Fallstudien", href: "#work" },
   tryIt: {
     before:
-      "Drei von über zehn Systemen in Produktion rechnen hier im Browser mit:",
+      "Drei ausgelieferte Systeme rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -2516,7 +2517,7 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Über zehn Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Fünf ausgelieferte Produkte, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
       proofLabel: "Die dreizehn Fallstudien",
     },
