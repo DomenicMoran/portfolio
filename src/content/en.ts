@@ -2128,7 +2128,7 @@ export const en: Content = {
           note: `${salatiDays} days divided by ${SALATI_VERSIONS} versions`,
         },
       ],
-      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app’s changelog file. Three further systems were in production alongside it.`,
+      note: `Figures for Salati, counted on ${dateLong(verified.date)} in the app’s changelog file. Alongside it I shipped four further products: MenuCloud, NOURI, LexiPulse and Dartile.`,
     },
   },
 
