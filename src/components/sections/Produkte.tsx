@@ -53,7 +53,7 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
                     </p>
                   </div>
                   <span className="inline-flex shrink-0 items-center gap-2 font-mono text-xs text-ink-dim transition-colors group-hover:text-acid">
-                    Live ansehen
+                    {produkte.liveCta}
                     <ArrowUpRight
                       className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       aria-hidden

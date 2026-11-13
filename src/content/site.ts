@@ -193,7 +193,7 @@ export const about = {
       label: "Commits seit März 2026",
       note: "neben einem Vollzeitjob",
     },
-    { value: "10+", label: "Systeme in Produktion", note: "alle allein gebaut" },
+    { value: "5", label: "ausgelieferte Produkte", note: "alle allein gebaut" },
     /* Am 23.08.2026 je Laden einzeln nachgezählt, nicht fortgeschrieben.
 
        Hier stand „8 — 5 Play, 3 App Store". Beide Teilzahlen waren zu
@@ -458,7 +458,7 @@ export const hero = {
   // Über-mich-Sektion, statt hier eine Zahl zu führen, die morgen stillschweigend
   // falsch wäre.
   proof: [
-    { value: "10+", label: "Systeme in Produktion" },
+    { value: "5", label: "ausgelieferte Produkte" },
     { value: verified.commitsHead, label: "Commits seit März 2026" },
     { value: verified.apiRouten, label: "API-Routen (MenuCloud)" },
     { value: "7.800+", label: "Testfälle (MenuCloud)" },
@@ -482,6 +482,7 @@ export const produkte = {
   lede:
     "Fünf Systeme sind fertig ausgeliefert, der Rest ist Prototyp oder Werkstück. Alles unter Moran Software, allein gebaut und betrieben.",
   fertigTitel: "In Produktion",
+  liveCta: "Live ansehen",
   fertig: [
     {
       name: "MenuCloud Berlin",
