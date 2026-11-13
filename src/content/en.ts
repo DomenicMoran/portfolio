@@ -184,7 +184,7 @@ export const en: Content = {
     },
 
     proof: [
-      { value: "10+", label: "systems in production" },
+      { value: "5", label: "shipped products" },
       {
         value: verified.commitsHead.replace(".", ","),
         label: "commits since March 2026",
@@ -1825,7 +1825,7 @@ export const en: Content = {
         label: "commits since March 2026",
         note: "alongside a full-time job",
       },
-      { value: "10+", label: "systems in production", note: "all built alone" },
+      { value: "5", label: "shipped products", note: "all built alone" },
       // Siehe `site.ts`: am 30.08.2026 je Laden einzeln nachgezählt.
       {
         value: "19",
