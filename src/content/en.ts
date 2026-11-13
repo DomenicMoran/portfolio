@@ -172,7 +172,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `Since ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
+    lede: `For the past ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
