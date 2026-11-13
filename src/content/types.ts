@@ -15,6 +15,12 @@ export type Shot = {
   variant?: "browser" | "phone" | "screen";
 };
 
+export type DisclosureCopy = {
+  teaser: string;
+  expand: string;
+  hide: string;
+};
+
 export type CaseStudy = {
   id: string;
   index: string;
@@ -68,6 +74,8 @@ export type CaseStudy = {
   articles?: readonly string[];
   /** Gesetzt in `bereiteFallstudienVor`: alles außer den fünf fertigen Produkten. */
   prototyp?: boolean;
+  /** Teaser und Knopftext für die eingeklappte Fallstudie auf der Startseite. */
+  disclosure?: DisclosureCopy;
 };
 
 export type Content = {
@@ -235,6 +243,7 @@ export type Content = {
     proAppsLede: string;
     proApps: readonly { name: string; beschreibung: string; href: string }[];
     uebersicht: { label: string; href: string };
+    disclosure: DisclosureCopy;
   };
 
   work: {
@@ -277,6 +286,9 @@ export type Content = {
      */
     demosTitle: string;
     prototypBadge: string;
+    disclosure: {
+      hide: string;
+    };
   };
 
   caseStudies: readonly CaseStudy[];
@@ -299,6 +311,7 @@ export type Content = {
       ebookSoon: string;
       authorSite: string;
     };
+    disclosure: DisclosureCopy;
     book: {
       title: string;
       author: string;
@@ -395,6 +408,11 @@ export type Content = {
         items: readonly { name: string; href?: string; date?: string }[];
       }[];
     };
+    disclosure: {
+      bio: DisclosureCopy;
+      certificates: DisclosureCopy;
+      openSource: DisclosureCopy;
+    };
   };
 
   workflow: {
@@ -411,6 +429,9 @@ export type Content = {
       label: string;
       note: string;
       lines: readonly { kind: string; text: string }[];
+    };
+    disclosure: {
+      principleHide: string;
     };
     speed: {
       eyebrow: string;
@@ -433,6 +454,7 @@ export type Content = {
     eyebrow: string;
     title: string;
     lede: string;
+    disclosure: DisclosureCopy;
     domains: readonly {
       id: string;
       title: string;

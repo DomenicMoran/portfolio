@@ -398,6 +398,26 @@ export const about = {
       },
     ],
   },
+  disclosure: {
+    bio: {
+      teaser:
+        "Autodidakt seit 2022 — die Messzahlen, Arbeitsweise und der Rest der Geschichte dahinter.",
+      expand: "Mehr über Werdegang und Zahlen",
+      hide: "Weniger anzeigen",
+    },
+    certificates: {
+      teaser:
+        "Zehn Zertifikate mit Prüflinks bei Meta über Coursera, LearnQuest und Udemy.",
+      expand: "Zertifikate anzeigen",
+      hide: "Zertifikate ausblenden",
+    },
+    openSource: {
+      teaser:
+        "Sechs öffentliche Pakete — von Whisper-Headern bis zur Checkout-Tafel aus Dartile.",
+      expand: "Open-Source-Pakete anzeigen",
+      hide: "Pakete ausblenden",
+    },
+  },
 } as const;
 
 /* ========================================================================== */
@@ -540,6 +560,12 @@ export const produkte = {
     },
   ],
   uebersicht: { label: "Zur vollständigen Produkt-Übersicht", href: "#work" },
+  disclosure: {
+    teaser:
+      "MFC mit Kaufweg und weitere Pro-Apps in den Stores — alles als Prototyp gekennzeichnet.",
+    expand: "Prototypen und Werkstück anzeigen",
+    hide: "Prototypen ausblenden",
+  },
 } as const;
 
 /* ========================================================================== */
@@ -648,6 +674,12 @@ export const caseStudies: CaseStudy[] = [
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
     statusLabel: "Live in beiden Stores",
     accent: "acid",
+    disclosure: {
+      teaser:
+        "Die KI läuft offline — und ein kleineres Whisper-Modell schlug das größere.",
+      expand: "So ist Salati entstanden →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
     solution:
@@ -849,6 +881,12 @@ export const caseStudies: CaseStudy[] = [
     role: "Gründer & alleiniger Entwickler",
     statusLabel: "Live in Produktion",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte.",
+      expand: "Was die KassenSichV-Dokumentation auslässt →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
     solution:
@@ -1129,6 +1167,12 @@ export const caseStudies: CaseStudy[] = [
        App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Die erste Prüfung fand Ausreißer bis 30,5 Prozent — heute liegt die größte Abweichung bei 2,07.",
+      expand: "Wie NOURI jede Kalorie nachrechnet →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Ernährungs-Apps sind entweder Tracker ohne Planung oder Planer ohne echte Datenbasis. Und fast alle behandeln Fehler als Kosmetik: Wenn der Server nicht erreichbar ist, zeigen sie „gespeichert“ an und verlieren die Eingabe.",
     solution:
@@ -1408,6 +1452,12 @@ export const caseStudies: CaseStudy[] = [
        `WAITING_FOR_REVIEW`. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "cyan",
+    disclosure: {
+      teaser:
+        "Mit der Handykamera liegt die Erkennung im Feld bei rund 95 Prozent — deshalb schlägt sie vor und behauptet nicht.",
+      expand: "Warum die Kamera nicht das letzte Wort hat →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Zähl-Apps für Dart speichern die Summe einer Aufnahme. Aus einer Summe lässt sich kein Trefferbild zeichnen, keine Doppelquote rechnen und nicht sagen, ob jemand die 20 oben oder unten verfehlt. Genau diese Zahlen sind aber der Grund, warum jemand eine Zähl-App überhaupt behält.",
     solution:
@@ -1554,6 +1604,12 @@ export const caseStudies: CaseStudy[] = [
        Apple durch ist. */
     statusLabel: "Live in beiden Läden",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Gleiches Tempo für jedes Wort ist der Fehler: flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende.",
+      expand: "Warum der Wortstrom so getaktet ist →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
     solution:
@@ -2318,6 +2374,9 @@ export const workflow = {
         text: "Widget aktualisiert im Hintergrund · Commit bce08f5e",
       },
     ],
+  },
+  disclosure: {
+    principleHide: "Weniger anzeigen",
   },
 } as const;
 

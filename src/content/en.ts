@@ -281,6 +281,12 @@ export const en: Content = {
       },
     ],
     uebersicht: { label: "See the full product overview", href: "#work" },
+    disclosure: {
+      teaser:
+        "MFC with a buy path and more pro apps in the stores — all marked as prototypes.",
+      expand: "Show prototypes and workshop",
+      hide: "Hide prototypes",
+    },
   },
 
   work: {
@@ -306,6 +312,9 @@ export const en: Content = {
     },
     demosTitle: "Two more demos in the browser",
     prototypBadge: "Prototype",
+    disclosure: {
+      hide: "Show less",
+    },
   },
 
   caseStudies: bereiteFallstudienVor([
@@ -400,6 +409,12 @@ export const en: Content = {
       role: "Sole developer · product, code, stores, legal",
       statusLabel: "Live in both stores",
       accent: "acid",
+      disclosure: {
+        teaser:
+          "The AI runs offline — and a smaller Whisper model beat the larger one.",
+        expand: "How Salati came about →",
+        hide: "Show less",
+      },
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
@@ -580,6 +595,12 @@ export const en: Content = {
       role: "Founder & sole developer",
       statusLabel: "Live in production",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu.",
+        expand: "What the cash-register documentation leaves out →",
+        hide: "Show less",
+      },
       problem:
         "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
@@ -822,6 +843,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "The first check found outliers up to 30.5 per cent — today the largest deviation is 2.07.",
+        expand: "How NOURI recomputes every calorie →",
+        hide: "Show less",
+      },
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
       solution:
@@ -1051,6 +1078,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       accent: "cyan",
+      disclosure: {
+        teaser:
+          "With a phone camera, detection lands at around 95 per cent in the field — so it suggests instead of asserting.",
+        expand: "Why the camera is not the last word →",
+        hide: "Show less",
+      },
       problem:
         "Darts counters store the total of a visit. From a total you cannot draw a hit map, cannot compute a doubles rate, and cannot say whether someone missed the 20 high or low. Yet those are exactly the numbers that make someone keep a counting app at all.",
       solution:
@@ -1161,6 +1194,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live in both stores",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "Giving every word the same pace is the mistake: flat RSVP gives a three-letter article the same time budget as a sentence end.",
+        expand: "Why the word stream is timed this way →",
+        hide: "Show less",
+      },
       problem:
         "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
       solution:
@@ -1680,6 +1719,11 @@ export const en: Content = {
     eyebrow: "Publication",
     title: "Book",
     lede: "Self-published through BoD, paperback and e-book.",
+    disclosure: {
+      teaser: `ISBN ${bookPublication.isbn} · Paperback, ${bookPublication.pages} pages`,
+      expand: "Details",
+      hide: "Hide details",
+    },
     labels: {
       author: "Author",
       isbn: "ISBN",
@@ -1947,6 +1991,26 @@ export const en: Content = {
         },
       ],
     },
+    disclosure: {
+      bio: {
+        teaser:
+          "Self-taught since 2022 — the figures, working method and the rest of the story sit behind this.",
+        expand: "More on background and numbers",
+        hide: "Show less",
+      },
+      certificates: {
+        teaser:
+          "Ten certificates with verification links from Meta via Coursera, LearnQuest and Udemy.",
+        expand: "Show certificates",
+        hide: "Hide certificates",
+      },
+      openSource: {
+        teaser:
+          "Six public packages — from Whisper headers to Dartile’s checkout table.",
+        expand: "Show open-source packages",
+        hide: "Hide packages",
+      },
+    },
   },
 
   workflow: {
@@ -2039,6 +2103,9 @@ export const en: Content = {
         },
       ],
     },
+    disclosure: {
+      principleHide: "Show less",
+    },
     speed: {
       eyebrow: "Delivery pace",
       title: "The difference is not that I type faster.",
@@ -2069,6 +2136,12 @@ export const en: Content = {
     title:
       "Broad enough for the whole product, deep enough for the hard parts.",
     lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the evidence it came from.",
+    disclosure: {
+      teaser:
+        "Four areas — each with the system where the capability was earned.",
+      expand: "Show evidence per skill",
+      hide: "Hide lists",
+    },
     domains: [
       {
         id: "frontend",

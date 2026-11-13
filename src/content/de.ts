@@ -142,6 +142,9 @@ export const de: Content = {
     },
     demosTitle: "Zwei weitere Vorführungen im Browser",
     prototypBadge: "Prototyp",
+    disclosure: {
+      hide: "Weniger anzeigen",
+    },
   },
 
   caseStudies: bereiteFallstudienVor(caseStudies),
@@ -150,6 +153,11 @@ export const de: Content = {
     eyebrow: "Publikation",
     title: "Buch",
     lede: "Selbstverlegt über BoD, Taschenbuch und E-Book.",
+    disclosure: {
+      teaser: `ISBN ${bookPublication.isbn} · ${bookPublication.format}, ${bookPublication.pages} Seiten`,
+      expand: "Details",
+      hide: "Details ausblenden",
+    },
     labels: {
       author: "Autor",
       isbn: "ISBN",
@@ -211,6 +219,7 @@ export const de: Content = {
       note: "Nachgestellter Ablauf, keine Live-Sitzung. Ursache, Datei und Änderung stehen in Commit bce08f5e.",
       lines: workflowDe.demo.lines,
     },
+    disclosure: workflowDe.disclosure,
     speed: {
       eyebrow: "Liefertempo",
       title: "Der Unterschied ist nicht, dass ich schneller tippe.",
@@ -245,6 +254,12 @@ export const de: Content = {
     title:
       "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
     lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit der Beleg, an dem sie entstanden ist.",
+    disclosure: {
+      teaser:
+        "Vier Bereiche — je mit dem System, an dem die Fähigkeit entstanden ist.",
+      expand: "Belege je Fähigkeit anzeigen",
+      hide: "Listen ausblenden",
+    },
     domains: skillDomains,
   },
 

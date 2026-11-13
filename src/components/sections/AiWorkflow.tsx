@@ -4,8 +4,11 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
+import type { Content } from "@/content/types";
+import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
 import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -38,36 +41,12 @@ export function AiWorkflow() {
           {/* Die Grundsätze */}
           <ol className="flex flex-col">
             {workflow.principles.map((principle, i) => (
-              <Reveal
-                as="li"
+              <PrincipleRow
                 key={principle.n}
+                principle={principle}
                 delay={i * 0.04}
-                className="group border-t border-line py-8 first:border-t-0 first:pt-0"
-              >
-                <div className="flex gap-5 sm:gap-8">
-                  <span className="shrink-0 pt-1 font-mono text-xs text-ink-faint transition-colors group-hover:text-acid">
-                    {principle.n}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">
-                      {principle.title}
-                    </h3>
-                    <p className="mt-3 leading-relaxed text-ink-dim text-pretty">
-                      {principle.body}
-                    </p>
-                    <ul className="mt-4 flex flex-wrap gap-1.5">
-                      {principle.artifacts.map((artifact) => (
-                        <li
-                          key={artifact}
-                          className="rounded-md border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
-                        >
-                          {artifact}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </Reveal>
+                hideLabel={workflow.disclosure.principleHide}
+              />
             ))}
           </ol>
 
@@ -80,6 +59,75 @@ export function AiWorkflow() {
         </div>
       </div>
     </section>
+  );
+}
+
+function PrincipleRow({
+  principle,
+  delay,
+  hideLabel,
+}: {
+  principle: Content["workflow"]["principles"][number];
+  delay: number;
+  hideLabel: string;
+}) {
+  const { lang } = useContent();
+  const regionId = `workflow-grundsatz-${principle.n}`;
+  const { offen, umschalten } = useDisclosureFlap();
+  const teaserEnd = principle.body.search(/[.!?](\s|$)/);
+  const teaser =
+    teaserEnd === -1
+      ? principle.body
+      : principle.body.slice(0, teaserEnd + 1);
+  const expandLabel =
+    lang === "de"
+      ? `Mehr zu „${principle.title}"`
+      : `More on “${principle.title}"`;
+
+  return (
+    <Reveal
+      as="li"
+      delay={delay}
+      className="group border-t border-line py-8 first:border-t-0 first:pt-0"
+    >
+      <div className="flex gap-5 sm:gap-8">
+        <span className="shrink-0 pt-1 font-mono text-xs text-ink-faint transition-colors group-hover:text-acid">
+          {principle.n}
+        </span>
+        <div className="min-w-0">
+          <h3 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">
+            {principle.title}
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-ink-faint text-pretty">
+            {teaser}
+            {teaser.length < principle.body.length ? "…" : ""}
+          </p>
+          <DisclosureButton
+            offen={offen}
+            expandLabel={expandLabel}
+            hideLabel={hideLabel}
+            ariaControls={regionId}
+            onToggle={umschalten}
+            className="mt-4"
+          />
+          <div id={regionId} className={cn(!offen && "hidden")}>
+            <p className="mt-4 leading-relaxed text-ink-dim text-pretty">
+              {principle.body}
+            </p>
+            <ul className="mt-4 flex flex-wrap gap-1.5">
+              {principle.artifacts.map((artifact) => (
+                <li
+                  key={artifact}
+                  className="rounded-md border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
+                >
+                  {artifact}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Reveal>
   );
 }
 

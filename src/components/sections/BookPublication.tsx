@@ -5,14 +5,20 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
+import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
+import { cn } from "@/lib/utils";
+
+const BUCH_METADATEN_ID = "publikation-metadaten";
 
 export function BookPublication() {
   const content = useContent();
   const { publikation, lang, site } = content;
-  const { book, labels } = publikation;
+  const { book, labels, disclosure } = publikation;
   const { links } = book;
+  const meta = useDisclosureFlap();
 
   const kaufLinks = [
     links.bodPrint
@@ -100,7 +106,13 @@ export function BookPublication() {
               />
             </div>
 
-            <BookFacts book={book} labels={labels} />
+            <BookFacts
+              book={book}
+              labels={labels}
+              disclosure={disclosure}
+              offen={meta.offen}
+              onToggle={meta.umschalten}
+            />
 
             <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap lg:col-span-2">
               {kaufLinks.map((link) => (
@@ -139,9 +151,15 @@ export function BookPublication() {
 function BookFacts({
   book,
   labels,
+  disclosure,
+  offen,
+  onToggle,
 }: {
   book: Content["publikation"]["book"];
   labels: Content["publikation"]["labels"];
+  disclosure: Content["publikation"]["disclosure"];
+  offen: boolean;
+  onToggle: () => void;
 }) {
   return (
     <article className="min-w-0">
@@ -149,7 +167,22 @@ function BookFacts({
       <p className="mt-4 max-w-[65ch] text-sm leading-relaxed text-ink-dim text-pretty">
         {book.summary}
       </p>
-      <dl className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
+      <p className="mt-6 text-sm text-ink-faint">{disclosure.teaser}</p>
+      <DisclosureButton
+        offen={offen}
+        expandLabel={disclosure.expand}
+        hideLabel={disclosure.hide}
+        ariaControls={BUCH_METADATEN_ID}
+        onToggle={onToggle}
+        className="mt-4"
+      />
+      <dl
+        id={BUCH_METADATEN_ID}
+        className={cn(
+          "mt-8 grid gap-3 text-sm sm:grid-cols-2",
+          !offen && "hidden",
+        )}
+      >
         <Fact label={labels.author} value={book.author} />
         <Fact label={labels.isbn} value={book.isbn} />
         <Fact label={labels.publisher} value={book.publisher} />

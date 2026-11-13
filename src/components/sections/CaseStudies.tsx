@@ -6,15 +6,8 @@ import {
   TafelHighlights,
   TafelStack,
 } from "@/components/sections/case-study/Panels";
+import { useState, type KeyboardEvent } from "react";
 import {
-  useCallback,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-  type KeyboardEvent,
-} from "react";
-import {
-  ArrowDown,
   ArrowUp,
   ArrowUpRight,
   Bot,
@@ -94,6 +87,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
+import { DisclosureButton } from "@/components/ui/DisclosureButton";
 
 const ACCENT = {
   acid: {
@@ -223,27 +218,6 @@ function WeitereVorfuehrungen({ fehlend }: { fehlend: readonly string[] }) {
 const WEITERE_LISTE_ID = "weitere-projekte-liste";
 
 /**
- * Ob der Seitenanker beim Laden auf eines der übergebenen Sprungziele zeigt,
- * und wenn ja, auf welches. Derselbe `useSyncExternalStore`-Griff wie in
- * `useMediaQuery.ts`: Der Serverwert ist "", nur der Browser kennt den Anker.
- */
-function useMatchingHash(ids: readonly string[]) {
-  const subscribe = useCallback((melde: () => void) => {
-    window.addEventListener("hashchange", melde);
-    return () => window.removeEventListener("hashchange", melde);
-  }, []);
-
-  const holen = useCallback(() => {
-    const ziel = window.location.hash.replace("#", "");
-    return ids.includes(ziel) ? ziel : "";
-  }, [ids]);
-
-  const serverHolen = useCallback(() => "", []);
-
-  return useSyncExternalStore(subscribe, holen, serverHolen);
-}
-
-/**
  * Die restlichen Projekte, kompakt und eingeklappt.
  *
  * Eine Karte je Projekt statt einer vollen Tafel: Name, Anriss, Status und
@@ -254,35 +228,8 @@ function useMatchingHash(ids: readonly string[]) {
  */
 function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
   const { work } = useContent();
-  const [manuellOffen, setManuellOffen] = useState(false);
-
-  /* Die 91 Weiterleitungen zeigen auf genau diese Karten.
-   *
-   * `vercel.json` leitet `/wohnungsjaeger`, `/bitdojo` und sieben weitere
-   * Namen auf `/#case-<id>`. Diese Adressen entstehen nicht durch Klicken auf
-   * der Seite, sondern durch Tippen: `check:links` prüft, dass jedes Ziel im
-   * gebauten Baum ein Element mit dieser Kennung findet. Ein eingeklapptes
-   * Ziel wäre für einen getippten Verweis wieder eine Leerstelle, genau das,
-   * was die Weiterleitungen verhindern sollen.
-   *
-   * `useSyncExternalStore` statt `useState`/`useEffect`, aus demselben Grund
-   * wie in `useMediaQuery`: Der Serverwert ist ausdrücklich "", das Fenster
-   * kennt nur der Browser, und ein Effekt, der hier direkt `setState` ruft,
-   * verstößt gegen `react-hooks/set-state-in-effect`. */
-  const passenderAnker = useMatchingHash(
-    studies.map((study) => `case-${study.id}`),
-  );
-  const offen = manuellOffen || passenderAnker !== "";
-
-  // Der native Sprung beim Laden traf ein noch verstecktes Ziel und lief ins
-  // Leere. Sobald die Liste aufklappt, steht die Karte im Layout und kann
-  // angefahren werden. Kein `setState` hier, nur ein DOM-Aufruf.
-  useEffect(() => {
-    if (!passenderAnker) return;
-    requestAnimationFrame(() => {
-      document.getElementById(passenderAnker)?.scrollIntoView({ block: "start" });
-    });
-  }, [passenderAnker]);
+  const anker = studies.map((study) => `case-${study.id}`);
+  const { offen, umschalten } = useDisclosureFlap(anker);
 
   return (
     <div className="mt-24 border-t border-line pt-12 sm:mt-36">
@@ -301,26 +248,14 @@ function WeitereProjekte({ studies }: { studies: readonly CaseStudy[] }) {
         <noscript>
           <style>{`.weitere-schalter{display:none}`}</style>
         </noscript>
-        <button
-          type="button"
-          aria-expanded={offen}
-          aria-controls={WEITERE_LISTE_ID}
-          onClick={() => setManuellOffen((v) => !v)}
-          /* `no-print`: Ein Umschalter tut auf Papier nichts, `check:print`
-             hält das offen. Die eingeklappten Projekte bleiben auf dem
-             Ausdruck ungedruckt, wie zuvor am Bildschirm ohne Klick. */
-          className="no-print weitere-schalter group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
-        >
-          {offen ? work.more.hide : work.more.show}
-          {offen ? (
-            <ArrowUp className="size-3.5" aria-hidden />
-          ) : (
-            <ArrowDown
-              className="size-3.5 transition-transform duration-300 group-hover:translate-y-0.5"
-              aria-hidden
-            />
-          )}
-        </button>
+        <DisclosureButton
+          offen={offen}
+          expandLabel={work.more.show}
+          hideLabel={work.more.hide}
+          ariaControls={WEITERE_LISTE_ID}
+          onToggle={umschalten}
+          className="weitere-schalter"
+        />
       </div>
 
       <ul
@@ -513,6 +448,36 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
    * Gewinn. Pos1 und Ende gehören dazu, weil vier Reiter zwar wenige sind,
    * die Tasten aber nichts kosten.
    */
+  const detailRegionId = `${study.id}-fallstudie-detail`;
+  const { offen, umschalten } = useDisclosureFlap([`case-${study.id}`]);
+  const einblendung = study.disclosure;
+  const blendeLabel = einblendung?.hide ?? work.disclosure.hide;
+
+  const linkZeile =
+    visibleLinks.length > 0 ? (
+      <Reveal className="mt-8 flex flex-wrap gap-2">
+        {visibleLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${link.label}: ${study.name}`}
+            className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+          >
+            {link.kind === "code" ? (
+              <GithubIcon className="size-3.5" />
+            ) : null}
+            {link.label}
+            <ArrowUpRight
+              className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </a>
+        ))}
+      </Reveal>
+    ) : null;
+
   const beiTaste = (event: KeyboardEvent<HTMLDivElement>) => {
     const richtung =
       event.key === "ArrowRight" || event.key === "ArrowDown"
@@ -590,6 +555,28 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         <p className="mt-3 font-mono text-xs text-ink-faint">{study.role}</p>
       </Reveal>
 
+      {einblendung ? (
+        <Reveal delay={0.06}>
+          <p className="mt-6 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            {einblendung.teaser}
+          </p>
+          <DisclosureButton
+            offen={offen}
+            expandLabel={einblendung.expand}
+            hideLabel={blendeLabel}
+            ariaControls={detailRegionId}
+            onToggle={umschalten}
+            className="mt-4"
+          />
+        </Reveal>
+      ) : null}
+
+      {linkZeile}
+
+      <div
+        id={detailRegionId}
+        className={cn(einblendung && !offen && "hidden")}
+      >
       {/* Die Bildschirmfotos zuerst: der Beleg vor dem Argument.
           Ab drei Bildern wird daraus eine blätterbare Strecke. Nebeneinander
           gelegt schrumpft bei acht Bildern jedes auf eine Breite, auf der man
@@ -875,8 +862,8 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
         </div>
       </Reveal>
 
-      {/* Metrics + links */}
-      <div className="mt-12 flex flex-wrap items-end justify-between gap-8 border-t border-line pt-8">
+      {/* Metrics */}
+      <div className="mt-12 border-t border-line pt-8">
         <motion.dl
           initial="hidden"
           whileInView="visible"
@@ -913,43 +900,6 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             </motion.div>
           ))}
         </motion.dl>
-
-        {visibleLinks.length > 0 ? (
-          <Reveal className="flex flex-wrap gap-2">
-            {visibleLinks.map((link) => (
-              /* Der Name trägt das Projekt, wo die Beschriftung allein nicht
-                 trägt.
-
-                 Die meisten Beschriftungen nennen ihr Ziel selbst
-                 („salati.pro“, „Status-Page“, „Restaurant-App (Play)“). Zwei
-                 tun das nicht: „Instagram“ steht bei Salati und bei MenuCloud,
-                 „YouTube“ könnte morgen dazukommen. Gemessen an der
-                 ausgelieferten Startseite: zwei Verweise mit dem Namen
-                 „Instagram“, zwei verschiedene Konten.
-
-                 Der sichtbare Text steht vorn, damit er im Namen enthalten
-                 bleibt, sonst sagt jemand per Sprache etwas anderes, als er
-                 liest. */
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${link.label}: ${study.name}`}
-                className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
-              >
-                {link.kind === "code" ? (
-                  <GithubIcon className="size-3.5" />
-                ) : null}
-                {link.label}
-                <ArrowUpRight
-                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  aria-hidden
-                />
-              </a>
-            ))}
-          </Reveal>
-        ) : null}
 
         {/* Der Weg von der Fallstudie in den Artikel.
 
@@ -994,6 +944,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             </div>
           </Reveal>
         ) : null}
+      </div>
       </div>
     </article>
   );

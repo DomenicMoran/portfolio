@@ -3,8 +3,13 @@
 import { Cloud, Cpu, Database, Layout } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
+import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
+import { cn } from "@/lib/utils";
+
+const SKILLS_LISTEN_ID = "skills-listen";
 
 const ICONS = {
   frontend: Layout,
@@ -23,6 +28,7 @@ const ICONS = {
  */
 export function Skills() {
   const { skills } = useContent();
+  const { offen, umschalten } = useDisclosureFlap();
 
   return (
     <section
@@ -38,10 +44,24 @@ export function Skills() {
           lede={skills.lede}
         />
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-2">
+        <Reveal className="mt-10">
+          <p className="max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            {skills.disclosure.teaser}
+          </p>
+          <DisclosureButton
+            offen={offen}
+            expandLabel={skills.disclosure.expand}
+            hideLabel={skills.disclosure.hide}
+            ariaControls={SKILLS_LISTEN_ID}
+            onToggle={umschalten}
+            className="mt-4"
+          />
+        </Reveal>
+
+        <div id={SKILLS_LISTEN_ID} className="mt-16 grid gap-5 lg:grid-cols-2">
           {skills.domains.map((domain, i) => (
             <Reveal key={domain.id} delay={i * 0.06}>
-              <DomainCard domain={domain} />
+              <DomainCard domain={domain} listenOffen={offen} />
             </Reveal>
           ))}
         </div>
@@ -52,8 +72,10 @@ export function Skills() {
 
 function DomainCard({
   domain,
+  listenOffen,
 }: {
   domain: Content["skills"]["domains"][number];
+  listenOffen: boolean;
 }) {
   const Icon = ICONS[domain.id as keyof typeof ICONS] ?? Layout;
 
@@ -73,7 +95,10 @@ function DomainCard({
         </div>
       </div>
 
-      <dl className="mt-8 flex flex-col">
+      <dl
+        className={cn("mt-8 flex flex-col", !listenOffen && "hidden")}
+        aria-hidden={!listenOffen}
+      >
         {domain.skills.map((skill) => (
           <div
             key={skill.name}
