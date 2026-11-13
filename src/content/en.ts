@@ -93,7 +93,7 @@ export const en: Content = {
     role: "AI Product Engineer",
     location: "Berlin, Germany",
     ogTagline:
-      "More than ten systems in production: mobile, SaaS, a learning platform, infrastructure, compliance. All built solo.",
+      "Five shipped products under Moran Software, plus prototypes: mobile, SaaS, learning platform, infrastructure, compliance. All built solo.",
     email: "kontakt@domenicmoran.de",
     mailSubject: "Enquiry via domenicmoran.de",
     availability: {
@@ -108,7 +108,7 @@ export const en: Content = {
     meta: {
       title: "Domenic Moran – AI Product Engineer",
       description:
-        "More than ten systems in production, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, an autonomous agent.",
+        "Five shipped products, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, and further prototypes.",
     },
   },
 
@@ -172,12 +172,12 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `I’ve built more than ten systems in production since ${buildTime}, which I run under the brand Moran Software. The five shipped products are MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
+    lede: `Since ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
       before:
-        "Three of the more than ten production systems run right here in the browser:",
+        "Three shipped systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
@@ -281,12 +281,18 @@ export const en: Content = {
       },
     ],
     uebersicht: { label: "See the full product overview", href: "#work" },
+    disclosure: {
+      teaser:
+        "MFC with a buy path and more pro apps in the stores — all marked as prototypes.",
+      expand: "Show prototypes and workshop",
+      hide: "Hide prototypes",
+    },
   },
 
   work: {
     eyebrow: "Selected work",
-    title: "More than ten systems in production, all built alone.",
-    lede: "No practice projects, no tutorial clones. More than ten systems with real users, real payments or real legal obligations. I owned each one from the first line to the store review.",
+    title: "Five shipped products, plus prototypes.",
+    lede: "No practice projects, no tutorial clones. The five finished systems have real users, payments or store listings; the rest are prototypes. I owned each one from the first line to the store review.",
     tabs: {
       highlights: "What is in it",
       automation: "Automation",
@@ -306,6 +312,9 @@ export const en: Content = {
     },
     demosTitle: "Two more demos in the browser",
     prototypBadge: "Prototype",
+    disclosure: {
+      hide: "Show less",
+    },
   },
 
   caseStudies: bereiteFallstudienVor([
@@ -400,6 +409,12 @@ export const en: Content = {
       role: "Sole developer · product, code, stores, legal",
       statusLabel: "Live in both stores",
       accent: "acid",
+      disclosure: {
+        teaser:
+          "The AI runs offline — and a smaller Whisper model beat the larger one.",
+        expand: "How Salati came about →",
+        hide: "Show less",
+      },
       problem:
         "Existing prayer apps are ad-funded, track aggressively, and treat the Quran reader as an afterthought. Anyone wanting to study in German (tafsir, translation, transliteration, isolated and connected letters) finds nothing coherent. And all of it breaks the moment the network drops.",
       solution:
@@ -580,6 +595,12 @@ export const en: Content = {
       role: "Founder & sole developer",
       statusLabel: "Live in production",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu.",
+        expand: "What the cash-register documentation leaves out →",
+        hide: "Show less",
+      },
       problem:
         "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
@@ -822,6 +843,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "The first check found outliers up to 30.5 per cent — today the largest deviation is 2.07.",
+        expand: "How NOURI recomputes every calorie →",
+        hide: "Show less",
+      },
       problem:
         "Nutrition apps are either trackers without planning or planners without real data. And almost all of them treat errors as cosmetic: when the server is unreachable they display “saved” and lose the entry.",
       solution:
@@ -1051,6 +1078,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       accent: "cyan",
+      disclosure: {
+        teaser:
+          "With a phone camera, detection lands at around 95 per cent in the field — so it suggests instead of asserting.",
+        expand: "Why the camera is not the last word →",
+        hide: "Show less",
+      },
       problem:
         "Darts counters store the total of a visit. From a total you cannot draw a hit map, cannot compute a doubles rate, and cannot say whether someone missed the 20 high or low. Yet those are exactly the numbers that make someone keep a counting app at all.",
       solution:
@@ -1161,6 +1194,12 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live in both stores",
       accent: "violet",
+      disclosure: {
+        teaser:
+          "Giving every word the same pace is the mistake: flat RSVP gives a three-letter article the same time budget as a sentence end.",
+        expand: "Why the word stream is timed this way →",
+        hide: "Show less",
+      },
       problem:
         "RSVP readers show text word by word in one fixed spot. Two things regularly make them useless. The pivot drifts: if the highlighted character does not land in the same screen column every time, the eye has to re-acquire it, and that is exactly the time the method is supposed to save. And PDFs arrive as garbage: running heads repeat on every page, footers carry page numbers, tables come through as space-aligned noise, and words are cut in half at the line break.",
       solution:
@@ -1680,6 +1719,11 @@ export const en: Content = {
     eyebrow: "Publication",
     title: "Book",
     lede: "Self-published through BoD, paperback and e-book.",
+    disclosure: {
+      teaser: `ISBN ${bookPublication.isbn} · Paperback, ${bookPublication.pages} pages`,
+      expand: "Details",
+      hide: "Hide details",
+    },
     labels: {
       author: "Author",
       isbn: "ISBN",
@@ -1691,6 +1735,7 @@ export const en: Content = {
       bod: "Buy at BoD",
       amazon: "Buy at Amazon",
       ebook: "E-book at BoD",
+      ebookSoon: "at BoD, coming soon",
       authorSite: "Author page",
     },
     book: {
@@ -1770,7 +1815,7 @@ export const en: Content = {
          13 Play plus four Apple listings make 17 public store references,
          now each linked and checked in its own case study, not just
          claimed. */
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: more than ten production systems in ${buildTime}, 19 public store listings across both stores (14 on Google Play, five on the App Store) and eight apps with an open Apple review, all eight already live on Google Play (as of 6 September 2026), one of the systems carrying statutory fiscal signing. All of it built alongside a full-time job.`,
+      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: five shipped products in ${buildTime}, 19 public store listings across both stores (14 on Google Play, five on the App Store), one of them carrying statutory fiscal signing, plus further prototypes. All of it built alongside a full-time job.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1809,14 +1854,14 @@ export const en: Content = {
         period: "since April 2026",
         title: "Founder & sole developer",
         org: "MenuCloud, sole proprietorship, Berlin",
-        body: "Building and running more than ten production systems as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
+        body: "Building and running five shipped products as the only developer: product, architecture, delivery, operations and compliance in one pair of hands.",
         current: true,
       },
       {
         period: "since 2022",
         title: "Software engineering, self-taught",
         org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is more than ten systems in production and a git history anyone can check.",
+        body: "No CS degree, no bootcamp. The evidence is five shipped products and a git history anyone can check.",
         current: true,
       },
       // The full-time job the site refers to everywhere without naming it,
@@ -1825,7 +1870,7 @@ export const en: Content = {
         period: "since March 2018",
         title: "Full-time in public service",
         org: "Public sector, Berlin",
-        body: "Full-time role in public service, alongside which more than ten systems were built.",
+        body: "Full-time role in public service, alongside which the five products and prototypes were built.",
         current: true,
       },
     ],
@@ -1946,6 +1991,26 @@ export const en: Content = {
         },
       ],
     },
+    disclosure: {
+      bio: {
+        teaser:
+          "Self-taught since 2022 — the figures, working method and the rest of the story sit behind this.",
+        expand: "More on background and numbers",
+        hide: "Show less",
+      },
+      certificates: {
+        teaser:
+          "Ten certificates with verification links from Meta via Coursera, LearnQuest and Udemy.",
+        expand: "Show certificates",
+        hide: "Hide certificates",
+      },
+      openSource: {
+        teaser:
+          "Six public packages — from Whisper headers to Dartile’s checkout table.",
+        expand: "Show open-source packages",
+        hide: "Hide packages",
+      },
+    },
   },
 
   workflow: {
@@ -2038,6 +2103,9 @@ export const en: Content = {
         },
       ],
     },
+    disclosure: {
+      principleHide: "Show less",
+    },
     speed: {
       eyebrow: "Delivery pace",
       title: "The difference is not that I type faster.",
@@ -2068,6 +2136,12 @@ export const en: Content = {
     title:
       "Broad enough for the whole product, deep enough for the hard parts.",
     lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the evidence it came from.",
+    disclosure: {
+      teaser:
+        "Four areas — each with the system where the capability was earned.",
+      expand: "Show evidence per skill",
+      hide: "Hide lists",
+    },
     domains: [
       {
         id: "frontend",
@@ -2223,7 +2297,7 @@ export const en: Content = {
     strengths: [
       {
         title: "I ship finished, not nearly finished",
-        body: "More than ten systems in production, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
+        body: "Five shipped products, including store reviews, payment processing, GDPR documentation and legal notices. The part most portfolios leave out is exactly the part that takes longest.",
         proof: "#work",
         proofLabel: "The eight case studies",
       },
@@ -2410,11 +2484,11 @@ export const en: Content = {
   onepager: {
     title: "One-pager",
     description:
-      "One-page profile of Domenic Moran, AI product engineer in Berlin: more than ten systems in production, path and contact on a single page.",
+      "One-page profile of Domenic Moran, AI product engineer in Berlin: five shipped products, prototypes, path and contact on a single page.",
     positioning:
-      "AI product engineer with more than ten systems in production, each built " +
-      "alone: apps in both stores, a multi-tenant restaurant SaaS with statutory " +
-      "fiscal signing, a learning platform, an autonomous agent. {commits} commits since March 2026, " +
+      "AI product engineer with five shipped products under Moran Software " +
+      "(MenuCloud, Salati, NOURI, LexiPulse, Dartile) and further prototypes. " +
+      "{commits} commits since March 2026, " +
       "alongside a full-time job. Self-taught in software development since 2022. " +
       "Focus: agent-assisted development with strict verification discipline: " +
       "a green test run is not proof.",
@@ -2423,7 +2497,7 @@ export const en: Content = {
     path: "Path",
     pathNote:
       "Self-taught in software development: no degree, no bootcamp. " +
-      "The evidence is more than ten systems in production.",
+      "The evidence is five shipped products and verifiable case studies.",
     openSource: "Published",
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",

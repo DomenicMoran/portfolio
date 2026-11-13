@@ -121,8 +121,8 @@ export const de: Content = {
 
   work: {
     eyebrow: "Ausgewählte Arbeiten",
-    title: "Über zehn Systeme in Produktion, alle allein gebaut.",
-    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Über zehn Systeme mit echten Nutzern, echten Zahlungen oder echten rechtlichen Verpflichtungen. Verantwortet habe ich jedes von der ersten Zeile bis zum Store-Review.",
+    title: "Fünf ausgelieferte Produkte, weitere Prototypen.",
+    lede: "Kein Übungsprojekt, kein Tutorial-Klon. Die fünf fertigen Systeme haben echte Nutzer, Zahlungen oder Store-Einträge; der Rest ist Prototyp. Verantwortet habe ich jedes von der ersten Zeile bis zum Store-Review.",
     tabs: {
       highlights: "Was drinsteckt",
       automation: "Automatisierung",
@@ -142,6 +142,9 @@ export const de: Content = {
     },
     demosTitle: "Zwei weitere Vorführungen im Browser",
     prototypBadge: "Prototyp",
+    disclosure: {
+      hide: "Weniger anzeigen",
+    },
   },
 
   caseStudies: bereiteFallstudienVor(caseStudies),
@@ -150,6 +153,11 @@ export const de: Content = {
     eyebrow: "Publikation",
     title: "Buch",
     lede: "Selbstverlegt über BoD, Taschenbuch und E-Book.",
+    disclosure: {
+      teaser: `ISBN ${bookPublication.isbn} · ${bookPublication.format}, ${bookPublication.pages} Seiten`,
+      expand: "Details",
+      hide: "Details ausblenden",
+    },
     labels: {
       author: "Autor",
       isbn: "ISBN",
@@ -161,6 +169,7 @@ export const de: Content = {
       bod: "Bei BoD kaufen",
       amazon: "Bei Amazon",
       ebook: "E-Book bei BoD",
+      ebookSoon: "BoD, sobald verfügbar",
       authorSite: "Autorenseite",
     },
     book: {
@@ -210,6 +219,7 @@ export const de: Content = {
       note: "Nachgestellter Ablauf, keine Live-Sitzung. Ursache, Datei und Änderung stehen in Commit bce08f5e.",
       lines: workflowDe.demo.lines,
     },
+    disclosure: workflowDe.disclosure,
     speed: {
       eyebrow: "Liefertempo",
       title: "Der Unterschied ist nicht, dass ich schneller tippe.",
@@ -244,6 +254,12 @@ export const de: Content = {
     title:
       "Breit genug für das ganze Produkt, tief genug für die harten Stellen.",
     lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit der Beleg, an dem sie entstanden ist.",
+    disclosure: {
+      teaser:
+        "Vier Bereiche — je mit dem System, an dem die Fähigkeit entstanden ist.",
+      expand: "Belege je Fähigkeit anzeigen",
+      hide: "Listen ausblenden",
+    },
     domains: skillDomains,
   },
 
@@ -355,11 +371,10 @@ export const de: Content = {
   },
   onepager: {
     title: "Kurzprofil",
-    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: über zehn Systeme in Produktion, Werdegang und Kontakt auf einer Seite.`,
+    description: `Kurzprofil von ${siteDe.name}, ${siteDe.role} aus Berlin: fünf ausgelieferte Produkte, Prototypen und Kontakt auf einer Seite.`,
     positioning:
-      "AI Product Engineer mit über zehn eigenständig gebauten Systemen in " +
-      "Produktion: Apps in beiden Stores, eine mandantenfähige Gastro-SaaS mit " +
-      "gesetzlich vorgeschriebener Fiskalisierung, eine Lernplattform, ein autonomer Agent. " +
+      "AI Product Engineer mit fünf ausgelieferten Produkten unter Moran Software " +
+      "(MenuCloud, Salati, NOURI, LexiPulse, Dartile) und weiteren Prototypen. " +
       "{commits} Commits seit März 2026, neben einem Vollzeitjob. " +
       "Softwareentwicklung autodidaktisch seit 2022. Schwerpunkt: " +
       "agentengestützte Entwicklung mit strikter Verifikationsdisziplin, " +
@@ -369,7 +384,7 @@ export const de: Content = {
     path: "Werdegang",
     pathNote:
       "Softwareentwicklung autodidaktisch, kein Studium, kein Bootcamp. " +
-      "Der Nachweis sind über zehn Systeme in Produktion.",
+      "Der Nachweis sind fünf ausgelieferte Produkte und prüfbare Fallstudien.",
     /* „Open Source" und nicht mehr „Veröffentlicht", und der Grund steht im
        ausgelieferten PDF.
 

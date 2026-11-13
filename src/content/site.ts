@@ -57,7 +57,7 @@ export const site = {
   location: "Berlin, Deutschland",
   // Steht auf der Social-Vorschaukarte, nicht auf der Seite.
   ogTagline:
-    "Über zehn Systeme in Produktion: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
+    "Fünf ausgelieferte Produkte unter Moran Software plus Prototypen: Mobile, SaaS, Lernplattform, Infrastruktur, Compliance. Alle allein gebaut.",
   locale: "de-DE",
 
   email: "kontakt@domenicmoran.de",
@@ -106,7 +106,7 @@ export const site = {
   meta: {
     title: "Domenic Moran – AI Product Engineer",
     description:
-      "Über zehn Systeme in Produktion, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform, ein autonomer Agent.",
+      "Fünf ausgelieferte Produkte, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform und weitere Prototypen.",
   },
 } as const;
 
@@ -182,7 +182,7 @@ export const about = {
        eingereicht worden; die öffentliche Lookup-API liefert für alle acht
        weiterhin null Treffer, sie sind also noch nicht live. Alle acht sind
        zugleich bei Google Play live, selbst geprüft per `curl`. */
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: über zehn Produktionssysteme in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und acht Apps mit einer offenen Store-Prüfung bei Apple, alle acht bereits bei Google Play live (Stand 6. September 2026), eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: fünf ausgelieferte Produkte in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und weitere Apps in Store-Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -241,14 +241,14 @@ export const about = {
       period: "seit 04/2026",
       title: "Gründer & alleiniger Entwickler",
       org: "MenuCloud, Inh. Domenic Moran, Berlin",
-      body: "Aufbau und Betrieb von über zehn Produktionssystemen als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
+      body: "Aufbau und Betrieb von fünf ausgelieferten Produkten als alleiniger Entwickler: Produkt, Architektur, Auslieferung, Betrieb und Recht in einer Hand.",
       current: true,
     },
     {
       period: "seit 2022",
       title: "Softwareentwicklung, autodidaktisch",
       org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind über zehn Systeme in Produktion und eine prüfbare Git-Historie.",
+      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind fünf ausgelieferte Produkte und eine prüfbare Git-Historie.",
       current: true,
     },
     /* Der Vollzeitjob, auf den die Seite überall verweist, ohne ihn zu nennen.
@@ -263,7 +263,7 @@ export const about = {
       period: "seit 03/2018",
       title: "Hauptberuflich im öffentlichen Dienst",
       org: "Öffentlicher Dienst, Berlin",
-      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem alle über zehn Systeme entstanden sind.",
+      body: "Vollzeittätigkeit im öffentlichen Dienst, der Job, neben dem die fünf Produkte und die Prototypen entstanden sind.",
       current: true,
     },
   ],
@@ -398,6 +398,26 @@ export const about = {
       },
     ],
   },
+  disclosure: {
+    bio: {
+      teaser:
+        "Autodidakt seit 2022 — die Messzahlen, Arbeitsweise und der Rest der Geschichte dahinter.",
+      expand: "Mehr über Werdegang und Zahlen",
+      hide: "Weniger anzeigen",
+    },
+    certificates: {
+      teaser:
+        "Zehn Zertifikate mit Prüflinks bei Meta über Coursera, LearnQuest und Udemy.",
+      expand: "Zertifikate anzeigen",
+      hide: "Zertifikate ausblenden",
+    },
+    openSource: {
+      teaser:
+        "Sechs öffentliche Pakete — von Whisper-Headern bis zur Checkout-Tafel aus Dartile.",
+      expand: "Open-Source-Pakete anzeigen",
+      hide: "Pakete ausblenden",
+    },
+  },
 } as const;
 
 /* ========================================================================== */
@@ -419,15 +439,16 @@ export const hero = {
   ] as { text: string; accent?: boolean }[],
   /* Ich-Perspektive statt Marken-Pitch: Die Person, die Systeme und der
      Kaufweg. Die Zahl 49,99 € steht so in der MFC-Fallstudie und im
-     Produktivrepo; „über zehn Systeme" ist dieselbe Angabe wie überall sonst,
+     Produktivrepo; die fünf ausgelieferten Produkte sind dieselbe Angabe wie
+     überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Ich habe seit ${bauzeit} über zehn Systeme in Produktion gebaut, die ich unter der Marke Moran Software betreibe. Im Vordergrund stehen die fünf ausgelieferten Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
+  lede: `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "Fallstudien", href: "#work" },
   tryIt: {
     before:
-      "Drei von über zehn Systemen in Produktion rechnen hier im Browser mit:",
+      "Drei ausgelieferte Systeme rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -539,6 +560,12 @@ export const produkte = {
     },
   ],
   uebersicht: { label: "Zur vollständigen Produkt-Übersicht", href: "#work" },
+  disclosure: {
+    teaser:
+      "MFC mit Kaufweg und weitere Pro-Apps in den Stores — alles als Prototyp gekennzeichnet.",
+    expand: "Prototypen und Werkstück anzeigen",
+    hide: "Prototypen ausblenden",
+  },
 } as const;
 
 /* ========================================================================== */
@@ -647,6 +674,12 @@ export const caseStudies: CaseStudy[] = [
     role: "Alleiniger Entwickler · Produkt, Code, Stores, Recht",
     statusLabel: "Live in beiden Stores",
     accent: "acid",
+    disclosure: {
+      teaser:
+        "Die KI läuft offline — und ein kleineres Whisper-Modell schlug das größere.",
+      expand: "So ist Salati entstanden →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Bestehende Gebets-Apps sind werbefinanziert, tracken aggressiv und behandeln den Koran-Reader als Nebensache. Wer auf Deutsch lernen will (Tafsir, Übersetzung, Umschrift, isolierte und verbundene Buchstaben), findet nichts Zusammenhängendes. Und alles bricht, sobald das Netz weg ist.",
     solution:
@@ -848,6 +881,12 @@ export const caseStudies: CaseStudy[] = [
     role: "Gründer & alleiniger Entwickler",
     statusLabel: "Live in Produktion",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte.",
+      expand: "Was die KassenSichV-Dokumentation auslässt →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
     solution:
@@ -1128,6 +1167,12 @@ export const caseStudies: CaseStudy[] = [
        App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Die erste Prüfung fand Ausreißer bis 30,5 Prozent — heute liegt die größte Abweichung bei 2,07.",
+      expand: "Wie NOURI jede Kalorie nachrechnet →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Ernährungs-Apps sind entweder Tracker ohne Planung oder Planer ohne echte Datenbasis. Und fast alle behandeln Fehler als Kosmetik: Wenn der Server nicht erreichbar ist, zeigen sie „gespeichert“ an und verlieren die Eingabe.",
     solution:
@@ -1407,6 +1452,12 @@ export const caseStudies: CaseStudy[] = [
        `WAITING_FOR_REVIEW`. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     accent: "cyan",
+    disclosure: {
+      teaser:
+        "Mit der Handykamera liegt die Erkennung im Feld bei rund 95 Prozent — deshalb schlägt sie vor und behauptet nicht.",
+      expand: "Warum die Kamera nicht das letzte Wort hat →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "Zähl-Apps für Dart speichern die Summe einer Aufnahme. Aus einer Summe lässt sich kein Trefferbild zeichnen, keine Doppelquote rechnen und nicht sagen, ob jemand die 20 oben oder unten verfehlt. Genau diese Zahlen sind aber der Grund, warum jemand eine Zähl-App überhaupt behält.",
     solution:
@@ -1553,6 +1604,12 @@ export const caseStudies: CaseStudy[] = [
        Apple durch ist. */
     statusLabel: "Live in beiden Läden",
     accent: "violet",
+    disclosure: {
+      teaser:
+        "Gleiches Tempo für jedes Wort ist der Fehler: flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende.",
+      expand: "Warum der Wortstrom so getaktet ist →",
+      hide: "Weniger anzeigen",
+    },
     problem:
       "RSVP-Leser zeigen Text Wort für Wort an einer festen Stelle. Zwei Dinge machen sie regelmäßig unbrauchbar. Der Fixpunkt wandert: Landet der hervorgehobene Buchstabe nicht in derselben Bildschirmspalte, muss das Auge ihn jedes Mal neu suchen, und genau die Zeit sollte das Verfahren sparen. Und PDFs kommen als Müll an: Kopfzeilen wiederholen sich auf jeder Seite, Fußzeilen tragen Seitenzahlen, Tabellen werden zu Leerzeichenrauschen, und am Zeilenende steht ein halbiertes Wort.",
     solution:
@@ -2318,6 +2375,9 @@ export const workflow = {
       },
     ],
   },
+  disclosure: {
+    principleHide: "Weniger anzeigen",
+  },
 } as const;
 
 /* ========================================================================== */
@@ -2516,7 +2576,7 @@ export const recruiter = {
   strengths: [
     {
       title: "Ich liefere fertig, nicht fast fertig",
-      body: "Über zehn Systeme in Produktion, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
+      body: "Fünf ausgelieferte Produkte, inklusive Store-Reviews, Zahlungsabwicklung, DSGVO-Dokumentation und Impressum. Der Teil, den die meisten Portfolios auslassen, ist genau der Teil, der am längsten dauert.",
       proof: "#work",
       proofLabel: "Die dreizehn Fallstudien",
     },

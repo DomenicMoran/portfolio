@@ -42,6 +42,9 @@ describe("case-study-order", () => {
     expect(out.map((s) => s.id)).toEqual(["menucloud", "salati", "mfc", "aether"]);
     expect(out.find((s) => s.id === "mfc")?.prototyp).toBe(true);
     expect(out.find((s) => s.id === "menucloud")?.prototyp).toBe(false);
+    expect(out.find((s) => s.id === "menucloud")?.index).toBe("01");
+    expect(out.find((s) => s.id === "salati")?.index).toBe("02");
+    expect(out.find((s) => s.id === "mfc")?.index).toBe("");
   });
 
   it("istFertigFallstudie", () => {

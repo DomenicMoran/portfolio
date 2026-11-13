@@ -18,7 +18,7 @@ export function istFertigFallstudie(id: string): boolean {
 /**
  * Sortiert Fallstudien: die fünf fertigen zuerst, danach alle übrigen in
  * ihrer bisherigen Reihenfolge. Setzt `prototyp` für alles außer den fünf
- * fertigen Systemen.
+ * fertigen Systemen und `index` auf 01–05 in {@link FERTIG_FALLSTUDIEN}-Reihenfolge.
  */
 export function bereiteFallstudienVor(
   studies: readonly CaseStudy[],
@@ -28,8 +28,17 @@ export function bereiteFallstudienVor(
     (s): s is CaseStudy => Boolean(s),
   );
   const rest = studies.filter((s) => !FERTIG.has(s.id));
-  return [...fertig, ...rest].map((study) => ({
-    ...study,
-    prototyp: !FERTIG.has(study.id),
-  }));
+  return [...fertig, ...rest].map((study) => {
+    const isFertig = FERTIG.has(study.id);
+    const rank = isFertig
+      ? FERTIG_FALLSTUDIEN.indexOf(
+          study.id as (typeof FERTIG_FALLSTUDIEN)[number],
+        ) + 1
+      : 0;
+    return {
+      ...study,
+      prototyp: !isFertig,
+      index: isFertig ? String(rank).padStart(2, "0") : "",
+    };
+  });
 }
