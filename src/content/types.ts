@@ -222,6 +222,8 @@ export type Content = {
     title: string;
     lede: string;
     fertigTitel: string;
+    /** CTA auf den fünf fertigen Produktkarten (DE/EN getrennt). */
+    liveCta: string;
     /** Die fünf ausgelieferten Systeme, Reihenfolge verbindlich. */
     fertig: readonly {
       name: string;

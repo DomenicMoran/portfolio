@@ -482,6 +482,7 @@ export const produkte = {
   lede:
     "Fünf Systeme sind fertig ausgeliefert, der Rest ist Prototyp oder Werkstück. Alles unter Moran Software, allein gebaut und betrieben.",
   fertigTitel: "In Produktion",
+  liveCta: "Live ansehen",
   fertig: [
     {
       name: "MenuCloud Berlin",

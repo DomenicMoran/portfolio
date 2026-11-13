@@ -203,6 +203,7 @@ export const en: Content = {
     lede:
       "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
     fertigTitel: "In production",
+    liveCta: "View live",
     fertig: [
       {
         name: "MenuCloud Berlin",
