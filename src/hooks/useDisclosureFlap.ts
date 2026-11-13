@@ -12,7 +12,7 @@ import {
  * Derselbe `useSyncExternalStore`-Griff wie in `useMediaQuery.ts`: Der
  * Serverwert ist "", nur der Browser kennt den Anker.
  */
-export function useMatchingHash(ids: readonly string[]) {
+function useMatchingHash(ids: readonly string[]) {
   const subscribe = useCallback((melde: () => void) => {
     window.addEventListener("hashchange", melde);
     return () => window.removeEventListener("hashchange", melde);

@@ -15,7 +15,7 @@ export type Shot = {
   variant?: "browser" | "phone" | "screen";
 };
 
-export type DisclosureCopy = {
+type DisclosureCopy = {
   teaser: string;
   expand: string;
   hide: string;
