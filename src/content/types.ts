@@ -296,6 +296,7 @@ export type Content = {
       bod: string;
       amazon: string;
       ebook: string;
+      ebookSoon: string;
       authorSite: string;
     };
     book: {

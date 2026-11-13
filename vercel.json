@@ -146,6 +146,16 @@
       "permanent": true
     },
     {
+      "source": "/buch",
+      "destination": "/#publikation",
+      "permanent": true
+    },
+    {
+      "source": "/autor",
+      "destination": "https://autor.domenicmoran.de",
+      "permanent": true
+    },
+    {
       "source": "/produkte",
       "destination": "/#produkte",
       "permanent": true

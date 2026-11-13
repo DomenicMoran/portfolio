@@ -1691,6 +1691,7 @@ export const en: Content = {
       bod: "Buy at BoD",
       amazon: "Buy at Amazon",
       ebook: "E-book at BoD",
+      ebookSoon: "at BoD, coming soon",
       authorSite: "Author page",
     },
     book: {

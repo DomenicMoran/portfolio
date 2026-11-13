@@ -156,7 +156,14 @@ function BookFacts({
         <Fact label={labels.format} value={book.formatLine} />
         <Fact label={labels.published} value={book.publishedLabel} />
         <Fact label={labels.printPrice} value={book.pricePrint} />
-        <Fact label={labels.ebookPrice} value={book.priceEbook} />
+        <Fact
+          label={labels.ebookPrice}
+          value={
+            book.links.ebook
+              ? book.priceEbook
+              : `${book.priceEbook} (${labels.ebookSoon})`
+          }
+        />
       </dl>
     </article>
   );
