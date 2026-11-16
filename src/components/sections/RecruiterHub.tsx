@@ -69,7 +69,8 @@ export function RecruiterHub() {
                 data-schein
                 className="lit border-line bg-surface/50 flex h-full flex-col rounded-2xl border p-6"
               >
-                {/* Zwei Zeilen Platz, auch wenn der Titel nur eine braucht.
+                {/* Drei Zeilen Platz, auch wenn der Titel nur eine oder zwei
+                    braucht.
 
                     Die Karten einer Reihe sind gleich hoch, ihre Überschriften
                     nicht: „Ich kenne den Weg durch die Stores" passt bei
@@ -78,12 +79,15 @@ export function RecruiterHub() {
                     dadurch 22 px versetzt, gemessen bei 1280 und 1440 px auf
                     Deutsch, bei 768 und 1280 px auf Englisch.
 
-                    `min-h-[2lh]` und nicht `min-h-[3rem]`: Die Einheit `lh`
+                    Seit dem Raster `lg:grid-cols-3` braucht derselbe Titel
+                    „Ich arbeite mit Agenten, ohne die Kontrolle abzugeben"
+                    bei 1024 px drei Zeilen (gemessen 103 gegen 81 px, wieder
+                    22 px Versatz). Deshalb `min-h-[3lh]`. Die Einheit `lh`
                     ist die Zeilenhöhe dieses Elements. Ändert sich Schriftgrad
                     oder `leading`, stimmt der Wert weiter. Erst ab `sm`, weil
                     einspaltig keine Reihe existiert, die etwas ausrichten
                     müsste. */}
-                <h3 className="text-ink text-base leading-snug font-semibold tracking-tight text-balance sm:min-h-[2lh]">
+                <h3 className="text-ink text-base leading-snug font-semibold tracking-tight text-balance sm:min-h-[3lh]">
                   {item.title}
                 </h3>
                 <p className="text-ink-dim mt-3 text-sm leading-relaxed text-pretty">
