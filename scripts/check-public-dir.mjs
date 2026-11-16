@@ -225,6 +225,9 @@ durchgehen(OEFFENTLICH);
    beiden Blätter je rund 200. Wer eine größere Datei braucht, soll das
    entscheiden und nicht versehentlich tun. */
 const GRENZE = 300 * 1024;
+/** Regression-Screenshots (Prompt Redesign); nicht ausliefern, nur Doku im Repo. */
+const ERLAUBT_GROSS_PREFIX = ["docs/redesign/"];
+
 const ERLAUBT_GROSS = new Set([
   "public/domenic-moran-kurzprofil.pdf",
   "public/domenic-moran-one-pager.pdf",
