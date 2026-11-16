@@ -772,7 +772,20 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     await seite.waitForTimeout(600);
     const hoehe = await seite.evaluate(() => {
       const el = document.querySelector(".onepager");
-      return el ? Math.round(el.getBoundingClientRect().height) : null;
+      if (!el) return null;
+      /* \zoom\ auf \.onepager\ (derzeit 0,85) wird je nach Chromium
+         in \getBoundingClientRect\ eingerechnet oder nicht. Auf dem
+         CI-Runner (Linux) kam dadurch 1157 px unskaliert an, während
+         derselbe Druck eine PDF-Seite ergab. Visuelle Höhe verwenden. */
+      const zoomRoh = parseFloat(getComputedStyle(el).zoom);
+      const zoom = Number.isFinite(zoomRoh) && zoomRoh > 0 ? zoomRoh : 1;
+      const rechteck = el.getBoundingClientRect().height;
+      const layout = el.offsetHeight;
+      const visuell =
+        zoom !== 1 && Math.abs(rechteck - layout) < 1
+          ? layout * zoom
+          : rechteck;
+      return Math.round(visuell);
     });
     if (hoehe === null) blattfunde.push(`${pfad}: kein Element mit .onepager`);
     else if (hoehe > BLATTGRENZE) {
