@@ -7,7 +7,6 @@ import { CopyEmail } from "@/components/ui/CopyEmail";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
-import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Spotlight } from "@/components/ui/Spotlight";
@@ -189,30 +188,26 @@ export function RecruiterHub() {
                     Führung schicken will, muss sie von dort erst noch sichern.
                     Drei Stellen verweisen auf dasselbe Blatt; zwei taten es bis
                     heute anders als die dritte. */}
-                <Magnetic>
-                  <a
-                    href={recruiter.cta.pdf.href}
-                    download
-                    className="group bg-acid text-void hover:bg-ink inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-3 text-sm font-medium transition-colors"
-                  >
-                    <FileDown className="size-4" aria-hidden />
-                    {recruiter.cta.pdf.label}
-                  </a>
-                </Magnetic>
+                <a
+                  href={recruiter.cta.pdf.href}
+                  download
+                  className="group bg-acid text-void hover:bg-ink inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-3 text-sm font-medium transition-colors"
+                >
+                  <FileDown className="size-4" aria-hidden />
+                  {recruiter.cta.pdf.label}
+                </a>
 
-                <Magnetic>
-                  <a
-                    href={mailAdresse(
-                      site.email,
-                      site.mailSubject,
-                      contact.checkliste.punkte,
-                    )}
-                    className="group border-line bg-base text-ink hover:border-ink-faint inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-medium transition-colors"
-                  >
-                    <Mail className="size-4" aria-hidden />
-                    {recruiter.cta.mail.label}
-                  </a>
-                </Magnetic>
+                <a
+                  href={mailAdresse(
+                    site.email,
+                    site.mailSubject,
+                    contact.checkliste.punkte,
+                  )}
+                  className="group border-line bg-base text-ink hover:border-ink-faint inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-medium transition-colors"
+                >
+                  <Mail className="size-4" aria-hidden />
+                  {recruiter.cta.mail.label}
+                </a>
 
                 {/* Kein dritter Knopf, sondern ein Verweis: Der Weg zur
                     Kurzfassung ist der PDF-Knopf daneben, dies ist nur seine

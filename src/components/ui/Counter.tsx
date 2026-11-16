@@ -95,17 +95,18 @@ export function Counter({
         setDisplay(endwert);
         return;
       }
-      void import("framer-motion").then(({ animate }) => {
-        controls = animate(0, target, {
-          duration: 1.4,
-          ease: [0.16, 1, 0.3, 1],
-          /* Der Zusatz gehört mit: „100“ ohne das Prozentzeichen ist eine andere
-             Aussage, und er stand während der Animation eine Sekunde lang nicht
-             da. */
-          onUpdate: (latest) =>
-            setDisplay(schreibe(latest, form, lang) + suffix),
-        });
-      });
+      const start = performance.now();
+      const dauer = 1400;
+      let raf = 0;
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / dauer);
+        const eased = 1 - (1 - t) ** 3;
+        const latest = target * eased;
+        setDisplay(schreibe(latest, form, lang) + suffix);
+        if (t < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      controls = { stop: () => cancelAnimationFrame(raf) };
     };
 
     const sofortSetzen = () => {

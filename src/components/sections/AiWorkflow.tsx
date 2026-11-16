@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RotateCcw } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
@@ -9,8 +8,25 @@ import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
-import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+function reducedMotionAbonniert(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function reducedMotionAktiv() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function useReducedMotion() {
+  return useSyncExternalStore(
+    reducedMotionAbonniert,
+    reducedMotionAktiv,
+    () => false,
+  );
+}
 
 export function AiWorkflow() {
   const { workflow } = useContent();
@@ -148,7 +164,7 @@ const LINE_STYLE = {
 function AgentTerminal() {
   const { workflow, a11y } = useContent();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
+  const [inView, setInView] = useState(false);
   const [shown, setShown] = useState(0);
   const [runId, setRunId] = useState(0);
 
@@ -177,6 +193,22 @@ function AgentTerminal() {
    * Der Wiederholen-Knopf bleibt, er ist eine bewusste Handlung.
    */
   const wenigerBewegung = useReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!inView) return;
@@ -263,13 +295,13 @@ function AgentTerminal() {
         {lines.slice(0, sichtbar).map((line, i) => {
           const style = LINE_STYLE[line.kind as keyof typeof LINE_STYLE];
           return (
-            <motion.p
+            <p
               key={`${runId}-${i}`}
               data-reveal=""
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, ease: ease.expo }}
-              className={cn("flex gap-2.5 py-1", style.className)}
+              className={cn(
+                "animate-fade-rise flex gap-2.5 py-1",
+                style.className,
+              )}
             >
               {/* `aria-hidden`, weil das Zeichen ein Aufzählungszeichen ist:
                   › für den Befehl, · für die Notiz, → für das Ergebnis. Ein
@@ -282,7 +314,7 @@ function AgentTerminal() {
                 {style.prefix}
               </span>
               <span className="text-pretty">{line.text}</span>
-            </motion.p>
+            </p>
           );
         })}
 
@@ -324,16 +356,9 @@ export function DeliverySpeed() {
               Angaben mehr und behaupten weniger. */}
           <dl className="mt-10 grid gap-x-8 gap-y-9 sm:grid-cols-3">
             {speed.facts.map((fakt, i) => (
-              <motion.div
+              <Reveal
                 key={fakt.label}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={viewportOnce}
-                transition={{ duration: 0.6, ease: ease.expo, delay: 0.08 * i }}
-                // flex-col-reverse: In der DOM-Reihenfolge steht dt vor dd,
-                // wie ein <dl> es verlangt. Optisch steht die Zahl trotzdem
-                // oben.
-                data-reveal=""
+                delay={0.08 * i}
                 className="flex flex-col-reverse gap-1.5"
               >
                 <dt className="flex flex-col gap-1">
@@ -347,7 +372,7 @@ export function DeliverySpeed() {
                 <dd className="text-acid text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">
                   {fakt.value}
                 </dd>
-              </motion.div>
+              </Reveal>
             ))}
           </dl>
 

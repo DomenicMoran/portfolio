@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useRef } from "react";
 import { architekturText } from "@/content/architecture-en";
 import { useContent } from "@/content/ContentProvider";
-import { ease, viewportOnce } from "@/lib/motion";
 import { useHorizontalScrollWheel } from "@/lib/useHorizontalScrollWheel";
 import { cn } from "@/lib/utils";
 import { ARCHITECTURES } from "./architectures";
@@ -90,14 +88,11 @@ export function ArchitectureDiagram({
             als das Fenster, bei 720 px tat er das auf einem Telefon bereits.
             Mehr Breite kostet also Scrollweg, den es schon gab, und bringt
             dieselbe Schrift wie am Desktop. */}
-        <motion.svg
+        <svg
           viewBox={`0 0 920 ${diagram.height}`}
           className="h-auto w-full min-w-[1150px]"
           role="img"
           aria-label={`${t(diagram.title)}. ${t(diagram.caption)}`}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
         >
           {/* Spurenüberschriften und Trennlinien */}
           {diagram.lanes.map((lane) => (
@@ -121,56 +116,30 @@ export function ArchitectureDiagram({
           ))}
 
           {/* Die Verbinder zeichnen sich selbst */}
-          {diagram.edges.map((edge, i) => {
+          {diagram.edges.map((edge) => {
             const from = byId.get(edge.from);
             const to = byId.get(edge.to);
             if (!from || !to) return null;
 
             return (
-              <motion.path
+              <path
                 key={`${edge.from}-${edge.to}`}
                 d={edgePath(from, to)}
                 fill="none"
                 stroke="#33333f"
                 strokeWidth={1.25}
                 strokeDasharray={edge.dashed ? "4 4" : undefined}
-                variants={{
-                  hidden: { pathLength: 0, opacity: 0 },
-                  visible: {
-                    pathLength: 1,
-                    opacity: 1,
-                    transition: {
-                      duration: 0.7,
-                      ease: ease.expo,
-                      delay: 0.35 + i * 0.04,
-                    },
-                  },
-                }}
               />
             );
           })}
 
           {/* Die Knoten */}
-          {diagram.nodes.map((node, i) => {
+          {diagram.nodes.map((node) => {
             const tone = TONE[node.tone ?? "neutral"];
             const h = node.h ?? NODE_H;
 
             return (
-              <motion.g
-                key={node.id}
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      duration: 0.5,
-                      ease: ease.expo,
-                      delay: i * 0.03,
-                    },
-                  },
-                }}
-              >
+              <g key={node.id}>
                 <rect
                   x={node.x}
                   y={node.y}
@@ -200,10 +169,10 @@ export function ArchitectureDiagram({
                     {node.sub ? t(node.sub) : null}
                   </text>
                 ) : null}
-              </motion.g>
+              </g>
             );
           })}
-        </motion.svg>
+        </svg>
       </div>
 
       {/* Das Diagramm als Text, für die, die es nicht sehen.

@@ -5,7 +5,6 @@ import { mailAdresse } from "@/lib/mailto";
 import { useState } from "react";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
-import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -71,22 +70,20 @@ export function Contact() {
             <div className="flex flex-col gap-8">
               {/* Die Mailadresse ist hier das Hauptelement, nicht eine Fußnote. */}
               <div className="flex flex-wrap items-center gap-3">
-                <Magnetic strength={0.15}>
-                  <a
-                    href={mailAdresse(
-                      site.email,
-                      site.mailSubject,
-                      contact.checkliste.punkte,
-                    )}
-                    className="group text-ink hover:text-acid inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all transition-colors sm:text-4xl"
-                  >
-                    {site.email}
-                    <ArrowUpRight
-                      className="hidden size-7 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:block"
-                      aria-hidden
-                    />
-                  </a>
-                </Magnetic>
+                <a
+                  href={mailAdresse(
+                    site.email,
+                    site.mailSubject,
+                    contact.checkliste.punkte,
+                  )}
+                  className="group text-ink hover:text-acid inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all transition-colors sm:text-4xl"
+                >
+                  {site.email}
+                  <ArrowUpRight
+                    className="hidden size-7 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:block"
+                    aria-hidden
+                  />
+                </a>
 
                 {/* Dieselbe Überlegung wie beim Druck, eine Ebene weiter:
                     Ohne Skript kann der Knopf nicht kopieren, und er trägt

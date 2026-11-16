@@ -28,7 +28,13 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
-  /* Startseite: kein Vorladen — weniger Konkurrenz im LCP-Fenster. `check:vitals` prüft beides. */
+  adjustFontFallback: true,
+  /*
+   * Geist Sans nicht vorgeladen: Drei parallel vorgeladene Schnitte (68 KiB)
+   * kosten Lighthouse mobil Render Delay am Lead — R4-Messung Median 89 bei
+   * `preload: true`, 95 bei `false`. `adjustFontFallback` hält Metriken bis
+   * zum Font-Swap stabil; `check:vitals` bleibt grün (~1,5 s gedrosselt).
+   */
   preload: false,
 });
 

@@ -15,7 +15,6 @@ const MOBILE_CASE_IDS = new Set<string>([
   "aether",
   "bitdojo",
 ]);
-import { MotionRoot } from "@/components/providers/MotionRoot";
 import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 
@@ -203,12 +202,11 @@ export function SitePage({ content }: { content: Content }) {
       />
       <SkipLink text={content.skipToContent} />
 
-      <main id={INHALT_ID} tabIndex={-1} className="flex-1">
-        <Hero hero={content.hero} site={content.site} />
-        <ContentProvider content={content}>
-          <MotionRoot>
-            <div className="[content-visibility:auto]">
-              {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
+      <ContentProvider content={content}>
+        <main id={INHALT_ID} tabIndex={-1} className="flex-1">
+          <Hero hero={content.hero} site={content.site} />
+          <div className="[content-visibility:auto]">
+            {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
 
             Nutzer-Feedback: Die Seite ist zuerst Bewerbung für die Person,
             erst danach Marketing für die Projekte, wie ein Lebenslauf. Vorher
@@ -217,22 +215,18 @@ export function SitePage({ content }: { content: Content }) {
             Reihenfolge tragen die Portfolios, an denen sich Entwickler-Seiten
             in der Branche orientieren: kurzer Vorspann, dann die Person, erst
             danach die ausgewählte Arbeit im Detail. */}
-              <About />
-              <BookPublication />
-              <Produkte produkte={content.produkte} />
-              <CaseStudies />
-              <AiWorkflow />
-              <DeliverySpeed />
-              <Skills />
-              <Writing />
-              <RecruiterHub />
-              <Contact />
-            </div>
-          </MotionRoot>
-        </ContentProvider>
-      </main>
-
-      <ContentProvider content={content}>
+            <About />
+            <BookPublication />
+            <Produkte produkte={content.produkte} />
+            <CaseStudies />
+            <AiWorkflow />
+            <DeliverySpeed />
+            <Skills />
+            <Writing />
+            <RecruiterHub />
+            <Contact />
+          </div>
+        </main>
         <Footer />
         <SiteShellDeferred />
       </ContentProvider>

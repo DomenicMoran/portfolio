@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   TafelAutomation,
   TafelHighlights,
@@ -10,7 +9,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
+import { artikelBasis, artikelTeasersIn } from "@/content/articles/teasers";
 import { useContent } from "@/content/ContentProvider";
 import type { CaseStudy, Content } from "@/content/types";
 import { Counter } from "@/components/ui/Counter";
@@ -18,7 +17,6 @@ import { DeviceFrame } from "@/components/ui/DeviceFrame";
 import { RichText } from "@/components/ui/InlineCode";
 import { ShotCarousel } from "@/components/ui/ShotCarousel";
 import { Reveal } from "@/components/ui/Reveal";
-import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
 import { DisclosureButton } from "@/components/ui/DisclosureButton";
@@ -96,15 +94,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
    * beantwortet „Was drinsteckt", von den drei Fragen die, die ohne Bild
    * auskommt. */
   const [tab, setTab] = useState<TabId>("highlights");
-  /* `MotionConfig reducedMotion="user"` nimmt die Bewegung heraus, nicht die
-     Zeit. Für den Wechsel der Tafeln wird beides gebraucht. */
-  const wenigerBewegung = useReducedMotion();
   const accent = ACCENT[study.accent];
   const visibleLinks = study.links.filter((link) => link.href);
   /* Titel und Adresse kommen aus derselben Liste, aus der die Artikelseite
      baut: Ein hier abgetippter Titel wäre die zweite Stelle, an der er steht. */
-  const artikel = lang === "de" ? artikelDe : artikelEn;
-  const chrome = lang === "de" ? chromeDe : chromeEn;
+  const artikel = artikelTeasersIn(lang);
   const artikelDazu = (study.articles ?? [])
     .map((slug) => artikel.find((a) => a.slug === slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a));
@@ -487,16 +481,6 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                         : "text-ink-dim hover:text-ink",
                     )}
                   >
-                    {selected ? (
-                      <motion.span
-                        layoutId={`tab-${study.id}`}
-                        className={cn(
-                          "absolute inset-0 rounded-full",
-                          accent.bg,
-                        )}
-                        transition={{ duration: 0.35, ease: ease.expo }}
-                      />
-                    ) : null}
                     <Icon className="relative size-3.5" aria-hidden />
                     <span className="relative">{work.tabs[id]}</span>
                   </button>
@@ -516,75 +500,38 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
                 Mit Dauer null ist `wait` sofort durch, und die Reihenfolge
                 bleibt dieselbe. */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={tab}
-                  role="tabpanel"
-                  id={`${study.id}-panel`}
-                  aria-labelledby={`${study.id}-tab-${tab}`}
-                  // Fokussierbar, weil die Tafel Text enthält, der selbst keine
-                  // Station in der Tabulator-Reihenfolge hat. Ohne das springt
-                  // die Tastatur vom Reiter direkt zum nächsten Reiter und
-                  // überspringt genau den Inhalt, den man gerade gewählt hat.
-                  tabIndex={0}
-                  data-reveal=""
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={
-                    wenigerBewegung
-                      ? { duration: 0 }
-                      : { duration: 0.35, ease: ease.expo }
-                  }
-                >
-                  {tab === "highlights" ? (
-                    <TafelHighlights
-                      punkte={study.highlights}
-                      akzent={accent}
-                    />
-                  ) : null}
+              <div
+                role="tabpanel"
+                id={`${study.id}-panel`}
+                aria-labelledby={`${study.id}-tab-${tab}`}
+                tabIndex={0}
+                data-reveal=""
+              >
+                {tab === "highlights" ? (
+                  <TafelHighlights punkte={study.highlights} akzent={accent} />
+                ) : null}
 
-                  {tab === "automation" && study.automation ? (
-                    <TafelAutomation daten={study.automation} akzent={accent} />
-                  ) : null}
+                {tab === "automation" && study.automation ? (
+                  <TafelAutomation daten={study.automation} akzent={accent} />
+                ) : null}
 
-                  {tab === "architecture" && study.architecture ? (
-                    <ArchitectureDiagram name={study.architecture} />
-                  ) : null}
+                {tab === "architecture" && study.architecture ? (
+                  <ArchitectureDiagram name={study.architecture} />
+                ) : null}
 
-                  {tab === "stack" ? (
-                    <TafelStack gruppen={study.stack} />
-                  ) : null}
-                </motion.div>
-              </AnimatePresence>
+                {tab === "stack" ? <TafelStack gruppen={study.stack} /> : null}
+              </div>
             </div>
           </div>
         </Reveal>
 
         {/* Metrics */}
         <div className="border-line mt-12 border-t pt-8">
-          <motion.dl
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            transition={{ staggerChildren: 0.08 }}
-            className="flex flex-wrap gap-x-12 gap-y-6"
-          >
-            {study.metrics.map((metric) => (
-              <motion.div
+          <dl className="flex flex-wrap gap-x-12 gap-y-6">
+            {study.metrics.map((metric, i) => (
+              <Reveal
                 key={metric.label}
-                variants={{
-                  hidden: { opacity: 0, y: 14 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: ease.expo },
-                  },
-                }}
-                // Siehe Hero: Eine <dl> darf nur dt/dd-Paare enthalten, deshalb
-                // steht die Beschriftung im <dt> und die sichtbare Reihenfolge
-                // kommt von flex-col-reverse.
-                data-reveal=""
+                delay={i * 0.04}
                 className="flex flex-col-reverse gap-1"
               >
                 <dt className="text-ink-faint text-xs">{metric.label}</dt>
@@ -596,9 +543,9 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                 >
                   <Counter value={metric.value} />
                 </dd>
-              </motion.div>
+              </Reveal>
             ))}
-          </motion.dl>
+          </dl>
 
           {/* Der Weg von der Fallstudie in den Artikel.
 
@@ -616,7 +563,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
                   {artikelDazu.map((artikel) => (
                     <li key={artikel.slug}>
                       <Link
-                        href={`${chrome.base}/${artikel.slug}`}
+                        href={`${artikelBasis[lang]}/${artikel.slug}`}
                         /* Kein Vorabladen, aus demselben Grund wie im
                          Artikel-Anriss: Diese Verweise stehen unter jeder
                          Fallstudie und zeigen zusammen auf jeden Artikel der

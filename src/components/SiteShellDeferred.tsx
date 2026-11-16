@@ -27,9 +27,9 @@ export function SiteShellDeferred(props: Props) {
         ) => void;
       };
       if (typeof w.requestIdleCallback === "function") {
-        w.requestIdleCallback(work, { timeout: 2500 });
+        w.requestIdleCallback(work, { timeout: 12000 });
       } else {
-        window.setTimeout(work, 400);
+        window.setTimeout(work, 2000);
       }
     };
     const load = () => {
