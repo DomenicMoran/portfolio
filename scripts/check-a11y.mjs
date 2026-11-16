@@ -151,6 +151,16 @@ async function unsichtbarPruefen(seite, pfad) {
       const stil = getComputedStyle(el);
       if (stil.display === "none" || stil.visibility === "hidden") continue;
       if (el.getBoundingClientRect().width === 0) continue;
+      /* `content-visibility: auto` lässt Abschnitte außerhalb des
+         Bilds ungemalt. getComputedStyle liefert dann oft nahezu
+         dieselbe Farbe wie den Untergrund, und der Lauf meldet 1:1,
+         obwohl der Text nach dem Hineinscrollen lesbar ist. */
+      if (
+        typeof el.checkVisibility === "function" &&
+        !el.checkVisibility({ contentVisibilityAuto: true })
+      ) {
+        continue;
+      }
       // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das greift
       // die Regel „nichts unsichtbar ohne JavaScript" weiter unten.
       let deckung = 1;
@@ -934,12 +944,13 @@ const ANSAGEFUNDE = [];
     }
   });
   await seite.waitForTimeout(600);
+  await seite
+    .waitForSelector('[data-demo="tagesbilanz"]', { timeout: 15_000 })
+    .catch(() => {});
 
   /* Die Tagesbilanz: eine Ansage mit Zahl, sobald ein Gericht abgewählt ist. */
   const bilanz = await seite.evaluate(() => {
-    const kachel = [...document.querySelectorAll("div.lit")].find((k) =>
-      k.querySelector("[aria-pressed]"),
-    );
+    const kachel = document.querySelector('[data-demo="tagesbilanz"]');
     if (!kachel) return "Kachel nicht gefunden";
     const st = kachel.querySelector('[role="status"]');
     return st ? st.textContent.trim() : "keine Region";

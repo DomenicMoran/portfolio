@@ -37,11 +37,11 @@ export function CaseStudies() {
           ))}
         </div>
 
-        <WeitereVorfuehrungen
-          fehlend={["nouri", "dartile"].filter(
-            (id) => !ausfuehrlich.some((s) => s.id === id),
-          )}
-        />
+        {/* Immer sichtbar, auch wenn NOURI und Dartile unter den
+            ausführlichen Fallstudien stehen. Sonst verschwinden die
+            Vorführungen hinter der Offenlegung, und wer nicht klickt,
+            findet keine Tagesbilanz und keine Checkout-Tafel. */}
+        <WeitereVorfuehrungen fehlend={["nouri", "dartile"]} />
 
         {weitere.length > 0 && <WeitereProjekte studies={weitere} />}
 
