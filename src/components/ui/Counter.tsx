@@ -1,6 +1,5 @@
 "use client";
 
-import { animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useContent } from "@/content/ContentProvider";
 import { schreibe, zerlege } from "@/lib/number-format";
@@ -77,7 +76,7 @@ export function Counter({
      */
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let controls: ReturnType<typeof animate> | null = null;
+    let controls: { stop: () => void } | null = null;
     let done = false;
     /**
      * Was schon beim Ankommen im Bild steht, zählt nicht hoch.
@@ -96,13 +95,16 @@ export function Counter({
         setDisplay(endwert);
         return;
       }
-      controls = animate(0, target, {
-        duration: 1.4,
-        ease: [0.16, 1, 0.3, 1],
-        /* Der Zusatz gehört mit: „100“ ohne das Prozentzeichen ist eine andere
-           Aussage, und er stand während der Animation eine Sekunde lang nicht
-           da. */
-        onUpdate: (latest) => setDisplay(schreibe(latest, form, lang) + suffix),
+      void import("framer-motion").then(({ animate }) => {
+        controls = animate(0, target, {
+          duration: 1.4,
+          ease: [0.16, 1, 0.3, 1],
+          /* Der Zusatz gehört mit: „100“ ohne das Prozentzeichen ist eine andere
+             Aussage, und er stand während der Animation eine Sekunde lang nicht
+             da. */
+          onUpdate: (latest) =>
+            setDisplay(schreibe(latest, form, lang) + suffix),
+        });
       });
     };
 

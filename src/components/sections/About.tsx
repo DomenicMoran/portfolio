@@ -1,16 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
-import { Counter } from "@/components/ui/Counter";
 import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
-import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+const AboutBioDetail = dynamic(
+  () =>
+    import("@/components/sections/AboutBioDetail").then((m) => m.AboutBioDetail),
+  { ssr: false, loading: () => null },
+);
 
 /**
  * Der Abschnitt zur Person.
@@ -29,6 +34,57 @@ function jahrMonat(iso: string) {
   return `${monat}/${jahr}`;
 }
 
+/** Portrait erst in Sicht — sonst verdrängt es den Hero-Lead als LCP unter Lighthouse Mobile. */
+function AboutPortrait({
+  src,
+  alt,
+}: {
+  src: string;
+  alt: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [sichtbar, setSichtbar] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setSichtbar(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "80px 0px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="w-[13.75rem] max-w-[60vw] shrink-0 overflow-hidden rounded-2xl"
+    >
+      {sichtbar ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={220}
+          height={220}
+          sizes="(max-width: 640px) 60vw, 220px"
+          className="w-[13.75rem] max-w-[60vw] shrink-0 rounded-2xl object-cover"
+        />
+      ) : (
+        <div
+          className="bg-surface/80 aspect-square w-full rounded-2xl"
+          aria-hidden="true"
+        />
+      )}
+    </div>
+  );
+}
+
 const BIO_REGION = "about-bio-detail";
 const ZERTIFIKATE_REGION = "about-zertifikate-detail";
 const OSS_REGION = "about-oss-detail";
@@ -38,7 +94,6 @@ export function About() {
   const bio = useDisclosureFlap();
   const zertifikate = useDisclosureFlap();
   const oss = useDisclosureFlap();
-
   return (
     <section
       id="about"
@@ -61,14 +116,7 @@ export function About() {
             {about.portrait ? (
               <Reveal>
                 <div className="mb-2 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
-                  <Image
-                    src={about.portrait}
-                    alt={site.name}
-                    width={220}
-                    height={220}
-                    sizes="(max-width: 640px) 60vw, 220px"
-                    className="w-[13.75rem] max-w-[60vw] shrink-0 rounded-2xl object-cover"
-                  />
+                  <AboutPortrait src={about.portrait} alt={site.name} />
                   <p className="text-ink text-lg leading-relaxed text-pretty sm:text-xl">
                     {about.paragraphs[0]}
                   </p>
@@ -98,57 +146,10 @@ export function About() {
 
             <div
               id={BIO_REGION}
+              hidden={!bio.offen}
               className={cn("flex flex-col gap-6", !bio.offen && "hidden")}
             >
-              {about.paragraphs.slice(1).map((paragraph, i) => (
-                <Reveal key={paragraph} delay={i * 0.06}>
-                  <p className="text-ink-dim leading-relaxed text-pretty">
-                    {paragraph}
-                  </p>
-                </Reveal>
-              ))}
-
-              <motion.dl
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                transition={{ staggerChildren: 0.08, delayChildren: 0.15 }}
-                className="border-line mt-2 grid grid-cols-2 gap-x-6 gap-y-8 border-t pt-8 sm:grid-cols-4"
-              >
-                {about.stats.map((stat) => (
-                  <motion.div
-                    key={stat.label}
-                    variants={{
-                      hidden: { opacity: 0, y: 14 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.6, ease: ease.expo },
-                      },
-                    }}
-                    data-reveal=""
-                    className="flex flex-col-reverse gap-1"
-                  >
-                    <dt className="flex flex-col gap-0.5">
-                      <span className="text-ink text-xs leading-snug">
-                        {stat.label}
-                      </span>
-                      <span className="text-ink-faint text-[11px] leading-snug">
-                        {stat.note}
-                      </span>
-                    </dt>
-                    <dd className="text-acid text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
-                      <Counter value={stat.value} />
-                    </dd>
-                  </motion.div>
-                ))}
-              </motion.dl>
-
-              <Reveal delay={0.1}>
-                <p className="text-ink-faint max-w-[62ch] text-xs leading-relaxed text-pretty">
-                  {about.statsHinweis}
-                </p>
-              </Reveal>
+              {bio.offen ? <AboutBioDetail about={about} /> : null}
             </div>
           </div>
 

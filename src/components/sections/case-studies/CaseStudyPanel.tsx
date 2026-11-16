@@ -6,13 +6,13 @@ import {
   TafelHighlights,
   TafelStack,
 } from "@/components/sections/case-study/Panels";
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
-import type { CaseStudy } from "@/content/types";
+import type { CaseStudy, Content } from "@/content/types";
 import { Counter } from "@/components/ui/Counter";
 import { DeviceFrame } from "@/components/ui/DeviceFrame";
 import { RichText } from "@/components/ui/InlineCode";
@@ -22,8 +22,14 @@ import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
 import { DisclosureButton } from "@/components/ui/DisclosureButton";
-import { PrayerTimesDemo } from "@/components/demo/PrayerTimes";
 import { ACCENT, TAB_ICONS, TAB_IDS, type TabId } from "./shared";
+
+const PrayerTimesDemo = dynamic(
+  () => import("@/components/demo/PrayerTimes").then((m) => m.PrayerTimesDemo),
+  {
+    loading: () => <div className="min-h-[22rem]" aria-hidden="true" />,
+  },
+);
 
 const ArchitectureDiagram = dynamic(
   () =>
@@ -34,6 +40,38 @@ const ArchitectureDiagram = dynamic(
     loading: () => <div className="min-h-[420px]" aria-hidden="true" />,
   },
 );
+
+/** Salati-Gebetszeiten erst laden, wenn die Fallstudie in Sicht kommt — `adhan` ist sonst ~2,5 s Bootup auf der Startseite. */
+function SalatiPrayerDemoMount({ inhalt }: { inhalt: Content }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [bereit, setBereit] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setBereit(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "120px 0px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="mt-12">
+      {bereit ? (
+        <PrayerTimesDemo inhalt={inhalt} />
+      ) : (
+        <div className="min-h-[22rem]" aria-hidden="true" />
+      )}
+    </div>
+  );
+}
 
 function CaseStudyPanel({ study }: { study: CaseStudy }) {
   const inhalt = useContent();
@@ -370,9 +408,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           oder eingeklappt ist. */}
         {study.id === "salati" ? (
           <Reveal delay={0.05}>
-            <div className="mt-12">
-              <PrayerTimesDemo inhalt={inhalt} />
-            </div>
+            <SalatiPrayerDemoMount inhalt={inhalt} />
           </Reveal>
         ) : null}
 

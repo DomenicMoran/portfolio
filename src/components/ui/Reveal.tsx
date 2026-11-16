@@ -1,9 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Fragment, type ReactNode } from "react";
-import { ease, viewportOnce } from "@/lib/motion";
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { cn } from "@/lib/utils";
+
+function reducedMotionAbonniert(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function reducedMotionAktiv() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 type RevealProps = {
   children: ReactNode;
@@ -16,52 +31,67 @@ type RevealProps = {
   id?: string;
 };
 
+function useRevealInView() {
+  const ref = useRef<HTMLElement>(null);
+  const [sichtbar, setSichtbar] = useState(false);
+  const reduced = useSyncExternalStore(
+    reducedMotionAbonniert,
+    reducedMotionAktiv,
+    () => false,
+  );
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduced) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setSichtbar(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [reduced]);
+
+  return { ref, sichtbar, reduced };
+}
+
 /**
- * Die Einblendung für den Alltag. Eine Komponente, damit die Zeiten zwischen
- * den Abschnitten nie auseinanderlaufen.
+ * Einblenden beim Sichtbarwerden — CSS und IntersectionObserver statt Framer.
+ *
+ * Unterhalb der Falz bleibt der Eindruck gleich, aber der Parser zieht kein
+ * `framer-motion` mehr in die Startseiten-Chunks, die nur Reveal nutzen.
  */
 export function Reveal({
   children,
   className,
   delay = 0,
-  y = 28,
   as = "div",
   id,
 }: RevealProps) {
-  const Component = motion[as];
+  const { ref, sichtbar, reduced } = useRevealInView();
+  const animiere = !reduced && sichtbar;
+  const Tag = as;
 
   return (
-    <Component
+    <Tag
+      ref={ref as never}
       id={id}
-      className={cn(className)}
-      /* Das Merkmal ist der Griff für den Rückfall ohne JavaScript. Siehe die
-         `noscript`-Regel in RootDocument. */
+      className={cn(className, animiere && "animate-fade-rise")}
+      style={animiere ? { animationDelay: `${delay}s` } : undefined}
       data-reveal=""
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={viewportOnce}
-      transition={{ duration: 0.85, ease: ease.expo, delay }}
     >
       {children}
-    </Component>
+    </Tag>
   );
 }
 
 /**
- * Zerlegt einen Text in Wörter und schiebt jedes hinter seiner eigenen Maske
- * hervor. Für Abschnittsüberschriften: In kleinen Graden wirkt der Effekt
- * nicht.
- *
- * `css` schaltet dieselbe Bewegung auf eine reine CSS-Animation um. Der
- * Unterschied ist der Startzeitpunkt: Die JS-Variante beginnt, wenn der
- * Abschnitt ins Bild kommt, und ist bis zur Hydration unsichtbar. Für eine
- * Überschrift über der Falz ist genau das teuer, weil sie damit das
- * LCP-Element ist und erst nach der Hydration erscheint. Gemessen auf der
- * Artikelübersicht: 4,1 s als JS-Animation.
- *
- * Unterhalb der Falz bleibt die JS-Variante richtig, weil die Bewegung dort
- * erst beim Hineinscrollen laufen soll und nicht schon vorher abgelaufen sein
- * darf.
+ * Wort-für-Wort-Einblendung per CSS-Maske. Die `css`-Variante startet sofort;
+ * die Standardvariante wartet auf Sichtbarkeit wie `Reveal`.
  */
 export function RevealWords({
   text,
@@ -77,60 +107,36 @@ export function RevealWords({
   css?: boolean;
 }) {
   const words = text.split(" ");
-
-  if (css) {
-    return (
-      <span className={cn("inline", className)}>
-        {words.map((word, i) => (
-          <Fragment key={`${word}-${i}`}>
-            <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.2em] align-bottom">
-              <span
-                className={cn("animate-word-rise inline-block", wordClassName)}
-                style={{ animationDelay: `${delay + 0.06 + i * 0.045}s` }}
-              >
-                {word}
-              </span>
-            </span>
-            {i < words.length - 1 ? " " : null}
-          </Fragment>
-        ))}
-      </span>
-    );
-  }
+  const { ref, sichtbar, reduced } = useRevealInView();
+  const animiere = css || (!reduced && sichtbar);
 
   return (
-    <motion.span
+    <span
+      ref={ref as React.RefObject<HTMLSpanElement>}
       className={cn("inline", className)}
       data-reveal=""
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      transition={{ delayChildren: delay, staggerChildren: 0.05 }}
     >
       {words.map((word, i) => (
-        // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken, nicht
-        // in einer: Innerhalb eines inline-block mit overflow:hidden wird es
-        // zusammengefaltet, und die Wörter kleben aneinander. Außerhalb trennt
-        // es sichtbar und hält die Überschrift für Screenreader und zum
-        // Kopieren lesbar.
         <Fragment key={`${word}-${i}`}>
           <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.2em] align-bottom">
-            <motion.span
-              className={cn("inline-block", wordClassName)}
-              variants={{
-                hidden: { y: "110%" },
-                visible: {
-                  y: "0%",
-                  transition: { duration: 0.9, ease: ease.expo },
-                },
-              }}
+            <span
+              className={cn(
+                "inline-block",
+                animiere && "animate-word-rise",
+                wordClassName,
+              )}
+              style={
+                animiere
+                  ? { animationDelay: `${delay + 0.06 + i * 0.045}s` }
+                  : undefined
+              }
             >
               {word}
-            </motion.span>
+            </span>
           </span>
           {i < words.length - 1 ? " " : null}
         </Fragment>
       ))}
-    </motion.span>
+    </span>
   );
 }

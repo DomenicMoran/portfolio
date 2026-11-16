@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ComponentType } from "react";
 import { createPortal } from "react-dom";
+
 type Props = {
   otherHref?: string;
   hashBase?: string;
@@ -16,6 +17,7 @@ export function SiteShellDeferred(props: Props) {
   const [Shell, setShell] = useState<ComponentType<Props> | null>(null);
   const [Wow, setWow] = useState<ComponentType | null>(null);
   const [wowSlot, setWowSlot] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
     const idle = (work: () => void) => {
       const w = window as typeof window & {

@@ -16,10 +16,10 @@ const MOBILE_CASE_IDS = new Set<string>([
   "bitdojo",
 ]);
 import { MotionRoot } from "@/components/providers/MotionRoot";
-import { Footer } from "@/components/Footer";
 import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
 
+import { Footer } from "@/components/Footer";
 import { SiteShellDeferred } from "@/components/SiteShellDeferred";
 const Produkte = dynamic(() =>
   import("@/components/sections/Produkte").then((m) => m.Produkte),
@@ -207,6 +207,7 @@ export function SitePage({ content }: { content: Content }) {
         <Hero hero={content.hero} site={content.site} />
         <ContentProvider content={content}>
           <MotionRoot>
+            <div className="[content-visibility:auto]">
             {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
 
             Nutzer-Feedback: Die Seite ist zuerst Bewerbung für die Person,
@@ -226,6 +227,7 @@ export function SitePage({ content }: { content: Content }) {
             <Writing />
             <RecruiterHub />
             <Contact />
+            </div>
           </MotionRoot>
         </ContentProvider>
       </main>

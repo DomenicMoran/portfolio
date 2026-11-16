@@ -28,6 +28,8 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
+  /* Startseite: kein Vorladen — weniger Konkurrenz im LCP-Fenster. `check:vitals` prüft beides. */
+  preload: false,
 });
 
 /**
