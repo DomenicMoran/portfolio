@@ -256,8 +256,13 @@ for (const breite of BREITEN) {
       `data-demo-fertig` setzt die Kachel selbst, sobald gerechnet ist. Fehlt
       sie auf einer Seite, wartet niemand.
     */
+    /* Nur die Gebetszeiten setzen `data-demo-fertig`. Die Tagesbilanz
+       und die Checkout-Tafel haben ebenfalls Regler, rechnen aber
+       ohne dieses Merkmal; auf sie zu warten liefe in die Frist. */
     if (
-      await seite.locator("[data-demo-fertig], .lit input[type=range]").count()
+      await seite
+        .locator('[data-demo="gebetszeiten"], [data-demo-fertig]')
+        .count()
     ) {
       await seite
         .waitForSelector("[data-demo-fertig]", { timeout: 15_000 })
