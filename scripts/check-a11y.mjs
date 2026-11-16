@@ -497,18 +497,12 @@ const RENDER_MS = 200;
 const ANIMATION_MS = 350;
 const wartefunde = [];
 
-/** Wie lange die zweite Tafel je Reiterleiste braucht, in einer Einstellung. */
-async function tafelzeiten(reducedMotion) {
-  const kontext = await browser.newContext({
-    viewport: { width: 1440, height: 1000 },
-    reducedMotion,
-  });
-  const seite = await kontext.newPage();
-  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
-
-  const zeiten = new Map();
-  /* Eingeklappte Fallstudien öffnen: Die Reiterleisten liegen sonst in
-     einem `hidden`-Block, und `scrollIntoViewIfNeeded` bricht ab. */
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten `hidden`, und Klicks oder
+ * `scrollIntoViewIfNeeded` laufen in eine Zeitüberschreitung.
+ */
+async function oeffneFallstudien(seite) {
   for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
     if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
     const ziel = await knopf.getAttribute("aria-controls");
@@ -519,6 +513,19 @@ async function tafelzeiten(reducedMotion) {
     if (hatReiter === 0) continue;
     await knopf.click();
   }
+}
+
+/** Wie lange die zweite Tafel je Reiterleiste braucht, in einer Einstellung. */
+async function tafelzeiten(reducedMotion) {
+  const kontext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    reducedMotion,
+  });
+  const seite = await kontext.newPage();
+  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+
+  const zeiten = new Map();
+  await oeffneFallstudien(seite);
   for (const liste of await seite.locator("[role=tablist]").all()) {
     const name = (await liste.getAttribute("aria-label")) ?? "?";
     const reiter = await liste.locator("[role=tab]").all();
@@ -821,9 +828,12 @@ const diagrammfunde = [];
   }
   await seite.waitForTimeout(300);
 
+  await oeffneFallstudien(seite);
   for (const reiter of await seite.locator('[id$="-tab-architecture"]').all()) {
+    if (!(await reiter.isVisible())) continue;
     const kennung = (await reiter.getAttribute("id")) ?? "?";
     const fall = kennung.replace("-tab-architecture", "");
+    await reiter.scrollIntoViewIfNeeded();
     await reiter.click();
     await seite.waitForTimeout(350);
 
