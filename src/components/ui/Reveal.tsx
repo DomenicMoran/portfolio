@@ -83,7 +83,7 @@ export function RevealWords({
       <span className={cn("inline", className)}>
         {words.map((word, i) => (
           <Fragment key={`${word}-${i}`}>
-            <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.15em] align-bottom">
+            <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.2em] align-bottom">
               <span
                 className={cn("animate-word-rise inline-block", wordClassName)}
                 style={{ animationDelay: `${delay + 0.06 + i * 0.045}s` }}
@@ -114,7 +114,7 @@ export function RevealWords({
         // es sichtbar und hält die Überschrift für Screenreader und zum
         // Kopieren lesbar.
         <Fragment key={`${word}-${i}`}>
-          <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.15em] align-bottom">
+          <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.2em] align-bottom">
             <motion.span
               className={cn("inline-block", wordClassName)}
               variants={{

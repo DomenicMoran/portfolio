@@ -56,11 +56,11 @@ export function Cursor() {
       className="no-print pointer-events-none fixed inset-0 z-[10000]"
     >
       <motion.div
-        className="absolute size-1.5 rounded-full bg-acid"
+        className="bg-acid absolute size-1.5 rounded-full"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
-        className="absolute rounded-full border border-acid/50"
+        className="border-acid/50 absolute rounded-full border"
         style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         animate={{
           width: hovering ? 46 : 26,

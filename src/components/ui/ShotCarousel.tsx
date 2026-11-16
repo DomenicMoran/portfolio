@@ -125,7 +125,7 @@ export function ShotCarousel({
           // Die Bildlaufleiste ist hier Rauschen: Die Position steht als
           // Punktreihe darunter, und gescrollt wird ohnehin mit Wischen,
           // Rad oder Tasten.
-          "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         )}
       >
         {shots.map((shot) => (
@@ -154,7 +154,7 @@ export function ShotCarousel({
             onClick={() => springe(-1)}
             disabled={aktiv === 0}
             aria-label={hinweis.zurueck}
-            className="grid size-9 place-items-center rounded-full border border-line text-ink-dim transition-colors hover:border-ink-faint hover:text-ink disabled:pointer-events-none disabled:opacity-35"
+            className="border-line text-ink-dim hover:border-ink-faint hover:text-ink grid size-9 place-items-center rounded-full border transition-colors disabled:pointer-events-none disabled:opacity-35"
           >
             <ArrowLeft className="size-4" aria-hidden />
           </button>
@@ -163,7 +163,7 @@ export function ShotCarousel({
             onClick={() => springe(1)}
             disabled={aktiv === shots.length - 1}
             aria-label={hinweis.vor}
-            className="grid size-9 place-items-center rounded-full border border-line text-ink-dim transition-colors hover:border-ink-faint hover:text-ink disabled:pointer-events-none disabled:opacity-35"
+            className="border-line text-ink-dim hover:border-ink-faint hover:text-ink grid size-9 place-items-center rounded-full border transition-colors disabled:pointer-events-none disabled:opacity-35"
           >
             <ArrowRight className="size-4" aria-hidden />
           </button>
@@ -178,7 +178,7 @@ export function ShotCarousel({
               key={shot.src}
               className={cn(
                 "h-1 rounded-full transition-all duration-300",
-                i === aktiv ? "w-6 bg-acid" : "w-1.5 bg-line",
+                i === aktiv ? "bg-acid w-6" : "bg-line w-1.5",
               )}
             />
           ))}
@@ -195,7 +195,7 @@ export function ShotCarousel({
             Warnung, und darf den laufenden Satz nicht unterbrechen. */}
         <span
           aria-live="polite"
-          className="ml-auto font-mono text-[11px] text-ink-faint tabular-nums"
+          className="text-ink-faint ml-auto font-mono text-[11px] tabular-nums"
         >
           {aktiv + 1} {hinweis.von} {shots.length}
         </span>

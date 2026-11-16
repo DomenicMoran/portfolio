@@ -27,8 +27,19 @@ import { QUELLEN, quellstand } from "./lib/onepager-source-state.mjs";
 
 /** Welches gebaute Blatt zu welcher PDF gehört. */
 const SEITEN = {
-  "public/domenic-moran-kurzprofil.pdf": join(".next", "server", "app", "onepager.html"),
-  "public/domenic-moran-one-pager.pdf": join(".next", "server", "app", "en", "onepager.html"),
+  "public/domenic-moran-kurzprofil.pdf": join(
+    ".next",
+    "server",
+    "app",
+    "onepager.html",
+  ),
+  "public/domenic-moran-one-pager.pdf": join(
+    ".next",
+    "server",
+    "app",
+    "en",
+    "onepager.html",
+  ),
 };
 
 const BLAETTER = [
@@ -121,7 +132,9 @@ for (const pfad of BLAETTER) {
     {
       const roh = readFileSync(pfad);
       const teile = [roh];
-      for (const treffer of roh.toString("latin1").matchAll(new RegExp("stream\r?\n", "g"))) {
+      for (const treffer of roh
+        .toString("latin1")
+        .matchAll(new RegExp("stream\r?\n", "g"))) {
         const von = treffer.index + treffer[0].length;
         const bis = roh.indexOf("endstream", von, "latin1");
         if (bis < 0) continue;
@@ -186,7 +199,8 @@ for (const pfad of BLAETTER) {
     if (liste?.asArray) {
       for (const eintrag of liste.asArray()) {
         const anmerkung = doc.context.lookup(eintrag);
-        const aktion = anmerkung?.get && doc.context.lookup(anmerkung.get(PDFName.of("A")));
+        const aktion =
+          anmerkung?.get && doc.context.lookup(anmerkung.get(PDFName.of("A")));
         const uri = aktion?.get && aktion.get(PDFName.of("URI"));
         if (uri) ziele.push(String(uri).replace(/^\(|\)$/g, ""));
       }
@@ -357,16 +371,18 @@ for (const pfad of BLAETTER) {
    Gelesen wird das gebaute HTML, nicht die Komponente: Was ausgeliefert wird,
    entscheidet. */
 const VERWEISE = {
-  [join(".next", "server", "app", "onepager.html")]: "public/domenic-moran-kurzprofil.pdf",
-  [join(".next", "server", "app", "en", "onepager.html")]: "public/domenic-moran-one-pager.pdf",
+  [join(".next", "server", "app", "onepager.html")]:
+    "public/domenic-moran-kurzprofil.pdf",
+  [join(".next", "server", "app", "en", "onepager.html")]:
+    "public/domenic-moran-one-pager.pdf",
 };
 
 for (const [blatt, datei] of Object.entries(VERWEISE)) {
   if (!existsSync(blatt)) continue;
   const html = readFileSync(blatt, "utf8");
-  const treffer = [...html.matchAll(/<a[^>]*href="([^"]+\.pdf)"[^>]*download/g)].map(
-    (t) => t[1],
-  );
+  const treffer = [
+    ...html.matchAll(/<a[^>]*href="([^"]+\.pdf)"[^>]*download/g),
+  ].map((t) => t[1]);
 
   if (treffer.length === 0) {
     funde.push(`${blatt}: kein Verweis mit download auf ein PDF`);
@@ -411,7 +427,9 @@ for (const [blatt, datei] of Object.entries(VERWEISE)) {
       const ende = daten.indexOf("endstream", anfang);
       if (ende < 0) break;
       try {
-        teile.push(inflateSync(daten.subarray(anfang, ende)).toString("latin1"));
+        teile.push(
+          inflateSync(daten.subarray(anfang, ende)).toString("latin1"),
+        );
       } catch {
         /* kein Deflate-Strom */
       }

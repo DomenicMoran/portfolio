@@ -34,7 +34,9 @@ let basis = vorgegebeneBasis;
 if (!basis) ({ basis, beenden } = await starteServer());
 
 const browser = await chromium.launch();
-const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+const seite = await browser.newPage({
+  viewport: { width: 1440, height: 1000 },
+});
 
 const funde = [];
 let sprachvergleich = 0;
@@ -57,7 +59,11 @@ await seite.waitForTimeout(900);
  */
 const daten = await seite.evaluate(() => {
   const demo = [...document.querySelectorAll("section, div")]
-    .filter((e) => /kcal/.test(e.innerText || "") && e.querySelectorAll("button").length > 3)
+    .filter(
+      (e) =>
+        /kcal/.test(e.innerText || "") &&
+        e.querySelectorAll("button").length > 3,
+    )
     .sort((a, b) => a.innerText.length - b.innerText.length)[0];
   if (!demo) return null;
 
@@ -180,14 +186,16 @@ for (const ziel of ZIELE) {
     continue;
   }
 
-  const zahlen = [...ergebnis.ansage.matchAll(/([\d.,]+)\s*(kcal|g)/g)].map((m) =>
-    Number(m[1].replace(/[.,]/g, "")),
+  const zahlen = [...ergebnis.ansage.matchAll(/([\d.,]+)\s*(kcal|g)/g)].map(
+    (m) => Number(m[1].replace(/[.,]/g, "")),
   );
   const [kcal, eiweiss] = zahlen;
   const erwartet = optimum(ziel);
 
   if (!erwartet) {
-    funde.push(`Ziel ${ziel}: unabhängig gerechnet gibt es keine gültige Auswahl`);
+    funde.push(
+      `Ziel ${ziel}: unabhängig gerechnet gibt es keine gültige Auswahl`,
+    );
   } else if (kcal !== erwartet.kcal || eiweiss !== erwartet.eiweiss) {
     funde.push(
       `Ziel ${ziel}: die Demo sagt ${kcal} kcal und ${eiweiss} g Eiweiß, ` +
@@ -219,7 +227,12 @@ for (const ziel of ZIELE) {
    Demo schreibt dann „nicht berechnet", und das ist die richtige Antwort:
    eine erfundene Uhrzeit wäre die falsche. */
 const ORTE = ["Berlin", "Istanbul", "Kairo", "Tromsø"];
-const VERFAHREN = ["wie in der App", "winkelbasiert", "Siebtel der Nacht", "Mitte der Nacht"];
+const VERFAHREN = [
+  "wie in der App",
+  "winkelbasiert",
+  "Siebtel der Nacht",
+  "Mitte der Nacht",
+];
 /** Jahresanfang, Frühling, Sonnwende, Herbst, Dezember. */
 const TAGE = [0, 80, 172, 264, 355];
 
@@ -248,7 +261,8 @@ for (const ort of ORTE) {
             return Boolean(knopf);
           };
           if (!waehlen(ort)) return { fehler: `Ort „${ort}" fehlt` };
-          if (!waehlen(verfahren)) return { fehler: `Verfahren „${verfahren}" fehlt` };
+          if (!waehlen(verfahren))
+            return { fehler: `Verfahren „${verfahren}" fehlt` };
           await new Promise((r) => setTimeout(r, 250));
 
           const regler = demo.querySelector('input[type="range"]');
@@ -352,7 +366,8 @@ for (const verfahren of VERFAHREN) {
         return Boolean(knopf);
       };
       if (!waehlen("Tromsø")) return { fehler: "Ort „Tromsø“ fehlt" };
-      if (!waehlen(verfahren)) return { fehler: `Verfahren „${verfahren}" fehlt` };
+      if (!waehlen(verfahren))
+        return { fehler: `Verfahren „${verfahren}" fehlt` };
       await new Promise((r) => setTimeout(r, 250));
 
       const regler = demo.querySelector('input[type="range"]');
@@ -435,7 +450,9 @@ console.log(
   const zeile = /adhan [^"]*schafiitisch/.exec(notiz)?.[0] ?? "";
 
   if (!zeile) {
-    funde.push("Die Quellenangabe der Gebetszeiten-Kachel ist nicht zu finden.");
+    funde.push(
+      "Die Quellenangabe der Gebetszeiten-Kachel ist nicht zu finden.",
+    );
   } else {
     const genannt = /adhan ([\d.]+)/.exec(zeile)?.[1];
     const eingebaut = JSON.parse(
@@ -452,7 +469,10 @@ console.log(
     const kachel = readFileSync("src/components/demo/PrayerTimes.tsx", "utf8");
     /* Methode 13 ist Diyanet, und `adhan` nennt sie `Turkey()`.
        Schule 0 ist die schafiitische, in `adhan` `Madhab.Shafi`. */
-    if (/Methode 13/.test(zeile) && !/CalculationMethod\.Turkey\(\)/.test(kachel)) {
+    if (
+      /Methode 13/.test(zeile) &&
+      !/CalculationMethod\.Turkey\(\)/.test(kachel)
+    ) {
       funde.push(
         "Die Kachel nennt Methode 13 (Diyanet), rechnet aber nicht mit " +
           "CalculationMethod.Turkey().",
@@ -488,7 +508,9 @@ console.log(
    einem Komma". Zweimal dieselbe Prüfung wäre eine zu viel. */
 {
   const auslesen = async (route) => {
-    const blatt = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+    const blatt = await browser.newPage({
+      viewport: { width: 1440, height: 1200 },
+    });
     await blatt.goto(`${basis}${route}`, { waitUntil: "networkidle" });
     await blatt.evaluate(async () => {
       for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
@@ -499,7 +521,11 @@ console.log(
     await blatt.waitForTimeout(700);
     const stand = await blatt.evaluate(() => {
       const demo = [...document.querySelectorAll("section, div")]
-        .filter((e) => /kcal/.test(e.innerText || "") && e.querySelectorAll("button").length > 3)
+        .filter(
+          (e) =>
+            /kcal/.test(e.innerText || "") &&
+            e.querySelectorAll("button").length > 3,
+        )
         .sort((a, b) => a.innerText.length - b.innerText.length)[0];
       if (!demo) return null;
       return {
@@ -516,7 +542,9 @@ console.log(
   const [deutsch, englisch] = [await auslesen("/"), await auslesen("/en")];
 
   if (!deutsch || !englisch) {
-    funde.push("Die Tagesbilanz ist auf einer der beiden Fassungen nicht zu finden.");
+    funde.push(
+      "Die Tagesbilanz ist auf einer der beiden Fassungen nicht zu finden.",
+    );
   } else {
     if (deutsch.gewaehlt !== englisch.gewaehlt) {
       funde.push(

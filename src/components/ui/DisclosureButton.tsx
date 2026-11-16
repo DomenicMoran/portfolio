@@ -31,28 +31,28 @@ export function DisclosureButton({
   };
 
   return (
-  <>
-    <noscript>
-      <style>{`.offenlegungs-schalter{display:none}`}</style>
-    </noscript>
-    <button
-      type="button"
-      aria-expanded={offen}
-      aria-controls={ariaControls}
-      onClick={onToggle}
-      onKeyDown={beiTaste}
-      className={cn(SCHALTER, "offenlegungs-schalter", className)}
-    >
-      {offen ? hideLabel : expandLabel}
-      {offen ? (
-        <ArrowUp className="size-3.5" aria-hidden />
-      ) : (
-        <ArrowDown
-          className="size-3.5 transition-transform duration-300 group-hover:translate-y-0.5"
-          aria-hidden
-        />
-      )}
-    </button>
-  </>
+    <>
+      <noscript>
+        <style>{`.offenlegungs-schalter{display:none}`}</style>
+      </noscript>
+      <button
+        type="button"
+        aria-expanded={offen}
+        aria-controls={ariaControls}
+        onClick={onToggle}
+        onKeyDown={beiTaste}
+        className={cn(SCHALTER, "offenlegungs-schalter", className)}
+      >
+        {offen ? hideLabel : expandLabel}
+        {offen ? (
+          <ArrowUp className="size-3.5" aria-hidden />
+        ) : (
+          <ArrowDown
+            className="size-3.5 transition-transform duration-300 group-hover:translate-y-0.5"
+            aria-hidden
+          />
+        )}
+      </button>
+    </>
   );
 }

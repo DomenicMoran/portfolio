@@ -63,8 +63,8 @@ for (const breite of BREITEN) {
      Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie:
      die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
      standen. */
-  const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
-  if (!antwort || antwort.status() !== erwartet) continue;
+    const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
+    if (!antwort || antwort.status() !== erwartet) continue;
 
     // Einmal durchscrollen: Die Überschriften unterhalb der Falz erscheinen
     // erst dabei, und vorher haben sie keine gemessene Größe.
@@ -134,7 +134,11 @@ for (const breite of BREITEN) {
     // fährt und was `getAnimations` deshalb nicht kennt.
     await seite.waitForTimeout(1400);
 
-    const { raus: funde, unruhig, geklebt } = await seite.evaluate(() => {
+    const {
+      raus: funde,
+      unruhig,
+      geklebt,
+    } = await seite.evaluate(() => {
       const messer = document.createElement("canvas").getContext("2d");
       const raus = [];
       const unruhig = [];
@@ -170,7 +174,11 @@ for (const breite of BREITEN) {
           const abstand = b.r.left - a.r.right;
           if (abstand < groesse * 0.08) {
             geklebt.push({
-              woerter: `${(a.m.textContent ?? "").trim()} ${(b.m.textContent ?? "").trim()}`.slice(0, 30),
+              woerter:
+                `${(a.m.textContent ?? "").trim()} ${(b.m.textContent ?? "").trim()}`.slice(
+                  0,
+                  30,
+                ),
               abstand: Math.round(abstand * 10) / 10,
               groesse: Math.round(groesse),
             });

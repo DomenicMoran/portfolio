@@ -2765,7 +2765,7 @@ const BRAUCHT_KIND = {
    vor: Ein Bild darf auch Zahlen nennen, die nirgends sonst stehen.
    ------------------------------------------------------------------------ */
 {
-  const datei = "src/components/ArchitectureDiagram.tsx";
+  const datei = "src/components/architecture-diagram/ArchitectureDiagram.tsx";
   if (!existsSync(datei)) {
     zeilen.push(`  --  ${datei} nicht vorhanden, Bildzahlen übersprungen`);
   } else {
@@ -3100,9 +3100,7 @@ const BRAUCHT_KIND = {
      schlimmer als ein lauter. Beide Schreibweisen sind jetzt erlaubt, Ziffern
      wie Zahlwörter. */
   const satz =
-    quelle.match(
-      /\((\p{L}+|\d+) bei Google Play, (\p{L}+|\d+) bei Apple\)/u,
-    ) ??
+    quelle.match(/\((\p{L}+|\d+) bei Google Play, (\p{L}+|\d+) bei Apple\)/u) ??
     quelle.match(
       /(\p{L}+|\d+) Apps im Play Store und (\p{L}+|\d+) davon auch im App Store/u,
     );
@@ -3671,7 +3669,8 @@ const BRAUCHT_KIND = {
           for (const name of readdirSync(ordner)) {
             const pfad = join(ordner, name);
             if (statSync(pfad).isDirectory()) raus.push(...sammle(pfad));
-            else if (name.endsWith(".ts")) raus.push(readFileSync(pfad, "utf8"));
+            else if (name.endsWith(".ts"))
+              raus.push(readFileSync(pfad, "utf8"));
           }
           return raus;
         })(webRouten).join("\n")
@@ -3679,7 +3678,10 @@ const BRAUCHT_KIND = {
 
     const WEB_WEGE = [
       ["Trockenlauf ohne Zugang", /nicht eingerichtet|nicht konfiguriert/],
-      ["503 bei nicht erreichbarer Datenbank", /ServiceUnavailable|status:\s*503/],
+      [
+        "503 bei nicht erreichbarer Datenbank",
+        /ServiceUnavailable|status:\s*503/,
+      ],
       ["Postgres-Code am Fehler", /stored\.code|error\.code|\.code\b/],
     ];
     const fehlendWeb = WEB_WEGE.filter(
@@ -4235,9 +4237,7 @@ const BRAUCHT_KIND = {
 
   if (funde.length) {
     abweichungen += funde.length;
-    zeilen.push(
-      `  !!  „Alle allein gebaut", fremde Absender in der Historie:`,
-    );
+    zeilen.push(`  !!  „Alle allein gebaut", fremde Absender in der Historie:`);
     for (const f of funde) zeilen.push(`        ${f}`);
   } else if (geprueft === 0) {
     zeilen.push(

@@ -21,3 +21,17 @@ if ! npm run preflight --silent; then
   echo "Beheben und erneut pushen, oder mit --no-verify umgehen."
   exit 1
 fi
+
+if ! npm run format:check --silent; then
+  echo ""
+  echo "Der Push wurde angehalten: Prettier-Check ist fehlgeschlagen."
+  echo "npm run format ausführen, erneut pushen, oder mit --no-verify umgehen."
+  exit 1
+fi
+
+if ! npx eslint . --max-warnings=0; then
+  echo ""
+  echo "Der Push wurde angehalten: ESLint meldet Fehler oder Warnungen."
+  echo "Beheben und erneut pushen, oder mit --no-verify umgehen."
+  exit 1
+fi

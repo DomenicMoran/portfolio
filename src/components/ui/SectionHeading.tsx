@@ -56,19 +56,19 @@ export function SectionHeading({
           style={{ animationDelay: "0.02s" }}
           className="animate-fade-rise flex items-center gap-3"
         >
-          <span className="size-1.5 rounded-full bg-acid" />
+          <span className="bg-acid size-1.5 rounded-full" />
           <span className="text-eyebrow">{eyebrow}</span>
         </div>
       ) : (
         <Reveal className="flex items-center gap-3" y={12}>
-          <span className="size-1.5 rounded-full bg-acid" />
+          <span className="bg-acid size-1.5 rounded-full" />
           <span className="text-eyebrow">{eyebrow}</span>
         </Reveal>
       )}
 
       <Überschrift
         id={titleId}
-        className="text-headline max-w-4xl text-balance text-ink"
+        className="text-headline text-ink max-w-4xl text-balance"
       >
         <RevealWords text={title} css={css} />
       </Überschrift>
@@ -78,7 +78,7 @@ export function SectionHeading({
           <p
             style={{ animationDelay: "0.4s" }}
             className={cn(
-              "animate-fade-rise max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty",
+              "animate-fade-rise text-ink-dim max-w-2xl text-lg leading-relaxed text-pretty",
               align === "center" && "mx-auto",
             )}
           >
@@ -88,7 +88,7 @@ export function SectionHeading({
           <Reveal delay={0.1}>
             <p
               className={cn(
-                "max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty",
+                "text-ink-dim max-w-2xl text-lg leading-relaxed text-pretty",
                 align === "center" && "mx-auto",
               )}
             >

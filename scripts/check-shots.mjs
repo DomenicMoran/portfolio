@@ -54,13 +54,17 @@ const inhalt = ["src/content/site.ts", "src/content/en.ts"]
 
 /** Jede Aufnahme mit dem Mass, das der Inhalt fuer sie deklariert. */
 const genannt = new Map();
-const muster = /"\/shots\/([^"]+)"[\s\S]{0,600}?width:\s*(\d+),\s*height:\s*(\d+)/g;
+const muster =
+  /"\/shots\/([^"]+)"[\s\S]{0,600}?width:\s*(\d+),\s*height:\s*(\d+)/g;
 for (const [, datei, w, h] of inhalt.matchAll(muster)) {
-  if (!genannt.has(datei)) genannt.set(datei, { breite: Number(w), hoehe: Number(h) });
+  if (!genannt.has(datei))
+    genannt.set(datei, { breite: Number(w), hoehe: Number(h) });
 }
 
 if (!genannt.size) {
-  console.error("Kein einziger Verweis auf /shots/ gefunden. Hat sich die Schreibweise geaendert?");
+  console.error(
+    "Kein einziger Verweis auf /shots/ gefunden. Hat sich die Schreibweise geaendert?",
+  );
   process.exit(1);
 }
 
@@ -71,7 +75,9 @@ const gruppen = new Map();
 for (const [datei, soll] of genannt) {
   const ausgeliefert = join(AUSGELIEFERT, datei);
   if (!existsSync(ausgeliefert)) {
-    befunde.push(`${datei}: die Seite nennt sie, ${ausgeliefert} gibt es nicht`);
+    befunde.push(
+      `${datei}: die Seite nennt sie, ${ausgeliefert} gibt es nicht`,
+    );
     continue;
   }
 
@@ -90,11 +96,16 @@ for (const [datei, soll] of genannt) {
   if (!ORIGINALE_ERREICHBAR) continue;
   const original = join(ORIGINALE, datei.replace(/\.webp$/, ".png"));
   if (!existsSync(original)) {
-    befunde.push(`${datei}: kein Original unter ${original}, neu erzeugen geht damit nicht`);
+    befunde.push(
+      `${datei}: kein Original unter ${original}, neu erzeugen geht damit nicht`,
+    );
     continue;
   }
-  const tage = Math.floor((Date.now() - statSync(original).mtimeMs) / 86_400_000);
-  if (tage > ALTER_TAGE) hinweise.push(`${datei}: Original ist ${tage} Tage alt`);
+  const tage = Math.floor(
+    (Date.now() - statSync(original).mtimeMs) / 86_400_000,
+  );
+  if (tage > ALTER_TAGE)
+    hinweise.push(`${datei}: Original ist ${tage} Tage alt`);
 }
 
 /**
@@ -118,12 +129,14 @@ for (const [gruppe, bilder] of gruppen) {
   const buendel = [];
   for (const b of bilder) {
     const treffer = buendel.find(
-      (x) => Math.abs(b.verhaeltnis - x.mittel) / x.mittel <= VERHAELTNIS_TOLERANZ,
+      (x) =>
+        Math.abs(b.verhaeltnis - x.mittel) / x.mittel <= VERHAELTNIS_TOLERANZ,
     );
     if (treffer) {
       treffer.bilder.push(b);
       treffer.mittel =
-        treffer.bilder.reduce((s, y) => s + y.verhaeltnis, 0) / treffer.bilder.length;
+        treffer.bilder.reduce((s, y) => s + y.verhaeltnis, 0) /
+        treffer.bilder.length;
     } else {
       buendel.push({ mittel: b.verhaeltnis, bilder: [b] });
     }

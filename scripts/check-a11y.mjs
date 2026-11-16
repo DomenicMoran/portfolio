@@ -134,7 +134,8 @@ async function unsichtbarPruefen(seite, pfad) {
         stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
       }
       let unten = [8, 8, 10];
-      for (let i = stapel.length - 1; i >= 0; i--) unten = ueber(stapel[i], unten);
+      for (let i = stapel.length - 1; i >= 0; i--)
+        unten = ueber(stapel[i], unten);
       return unten;
     };
 
@@ -153,7 +154,11 @@ async function unsichtbarPruefen(seite, pfad) {
       // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das greift
       // die Regel „nichts unsichtbar ohne JavaScript" weiter unten.
       let deckung = 1;
-      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+      for (
+        let n = el;
+        n && n !== document.documentElement;
+        n = n.parentElement
+      ) {
         deckung *= parseFloat(getComputedStyle(n).opacity);
       }
       if (deckung < 0.95) continue;
@@ -241,7 +246,9 @@ for (const breite of BREITEN) {
       `data-demo-fertig` setzt die Kachel selbst, sobald gerechnet ist. Fehlt
       sie auf einer Seite, wartet niemand.
     */
-    if (await seite.locator("[data-demo-fertig], .lit input[type=range]").count()) {
+    if (
+      await seite.locator("[data-demo-fertig], .lit input[type=range]").count()
+    ) {
       await seite
         .waitForSelector("[data-demo-fertig]", { timeout: 15_000 })
         .catch(() => {
@@ -380,7 +387,10 @@ const ohneSkript = [];
      Wer einen neuen Knopf einbaut, entscheidet hier: ausblenden oder
      eintragen. Beides ist eine Entscheidung, keine Unterlassung. */
   const ERLAUBT_OHNE_SKRIPT = new Map([
-    ["Befehlspalette öffnen", "führt nur zu Zielen, die auch in der Kopfleiste stehen"],
+    [
+      "Befehlspalette öffnen",
+      "führt nur zu Zielen, die auch in der Kopfleiste stehen",
+    ],
     ["Vorheriges Bild", "die Strecke lässt sich auch schieben"],
     ["Nächstes Bild", "die Strecke lässt sich auch schieben"],
     ["Ablauf erneut abspielen", "die Zeilen stehen ohne Skript vollständig da"],
@@ -656,7 +666,9 @@ const zielfunde = [];
         )
           .trim()
           .slice(0, 30);
-        raus.push(`„${name}“ ${Math.round(r.width)}×${Math.round(r.height)} px`);
+        raus.push(
+          `„${name}“ ${Math.round(r.width)}×${Math.round(r.height)} px`,
+        );
       }
       return [...new Set(raus)];
     }, ZIELGROESSE);
@@ -803,7 +815,9 @@ const diagrammfunde = [];
     await seite.waitForTimeout(350);
 
     const messung = await seite.evaluate((fall) => {
-      const svg = document.getElementById(`${fall}-panel`)?.querySelector("svg");
+      const svg = document
+        .getElementById(`${fall}-panel`)
+        ?.querySelector("svg");
       if (!svg) return null;
       const breite = svg.getBoundingClientRect().width;
       const einheiten = Number(svg.getAttribute("viewBox")?.split(" ")[2] ?? 0);
@@ -897,7 +911,7 @@ const ANSAGEFUNDE = [];
   /* Die Tagesbilanz: eine Ansage mit Zahl, sobald ein Gericht abgewählt ist. */
   const bilanz = await seite.evaluate(() => {
     const kachel = [...document.querySelectorAll("div.lit")].find((k) =>
-      k.querySelector('[aria-pressed]'),
+      k.querySelector("[aria-pressed]"),
     );
     if (!kachel) return "Kachel nicht gefunden";
     const st = kachel.querySelector('[role="status"]');
@@ -975,7 +989,10 @@ const ANSAGEFUNDE = [];
     if (!stand.angesagt) {
       ANSAGEFUNDE.push("Kopierknopf: keine Ansage nach dem Klick");
     }
-    if (!stand.sichtbar.includes(stand.angesagt) && !/check/.test(stand.symbol)) {
+    if (
+      !stand.sichtbar.includes(stand.angesagt) &&
+      !/check/.test(stand.symbol)
+    ) {
       ANSAGEFUNDE.push(
         "Kopierknopf: nichts Sichtbares ändert sich, wer sieht, weiß nicht, " +
           "ob kopiert wurde",
@@ -1016,10 +1033,14 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
 const BILDLAUFFUNDE = [];
 
 {
-  const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const seite = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+  });
 
   for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "networkidle",
+    });
     if (!antwort || antwort.status() !== 200) continue;
 
     await seite.evaluate(async () => {
@@ -1045,7 +1066,8 @@ const BILDLAUFFUNDE = [];
         const name =
           el.getAttribute("aria-label") ??
           (el.getAttribute("aria-labelledby")
-            ? (document.getElementById(el.getAttribute("aria-labelledby"))?.textContent ?? "")
+            ? (document.getElementById(el.getAttribute("aria-labelledby"))
+                ?.textContent ?? "")
             : "");
         const kennung =
           `${el.tagName.toLowerCase()}` +

@@ -31,7 +31,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 /** Attribute, deren Wert ein Mensch liest oder hört. */
-const ATTRIBUTE = /\b(title|aria-label|aria-description|placeholder|alt)="([^"{}]{4,})"/g;
+const ATTRIBUTE =
+  /\b(title|aria-label|aria-description|placeholder|alt)="([^"{}]{4,})"/g;
 
 /** Nur auf Deutsch, mit Absicht, siehe oben. */
 const AUSGENOMMEN = /\(legal\)/;
@@ -85,6 +86,8 @@ if (funde.length > 0) {
 
 console.log(
   `Keine Beschriftung steht fest in einer Komponente: ${gelesen} Dateien gelesen` +
-    (ausgenommen ? `, ${ausgenommen} auf den deutschen Rechtsseiten erlaubt` : "") +
+    (ausgenommen
+      ? `, ${ausgenommen} auf den deutschen Rechtsseiten erlaubt`
+      : "") +
     ".",
 );

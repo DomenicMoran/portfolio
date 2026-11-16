@@ -66,17 +66,19 @@ function kennzahl(anfangDerBeschriftung) {
     throw new Error(
       bezuege.length === 0
         ? `Keine Kennzahl mit Beschriftung "${anfangDerBeschriftung}…" in ` +
-          `site.ts. Das Titelbild wird nicht gebaut, bevor klar ist, welche ` +
-          `Zahl stimmt.`
+            `site.ts. Das Titelbild wird nicht gebaut, bevor klar ist, welche ` +
+            `Zahl stimmt.`
         : `Die Kennzahl "${anfangDerBeschriftung}…" bezieht sich in site.ts ` +
-          `auf ${verschieden.join(", ")} statt ausschliesslich auf ` +
-          `verified.commitsHead. Damit könnten Titelbild und Seite ` +
-          `auseinanderlaufen. Erst klären, welche Zahl gilt, dann bauen.`,
+            `auf ${verschieden.join(", ")} statt ausschliesslich auf ` +
+            `verified.commitsHead. Damit könnten Titelbild und Seite ` +
+            `auseinanderlaufen. Erst klären, welche Zahl gilt, dann bauen.`,
     );
   }
 
   if (!stempel.commitsHead) {
-    throw new Error("verified.json trägt kein Feld commitsHead. Nichts gebaut.");
+    throw new Error(
+      "verified.json trägt kein Feld commitsHead. Nichts gebaut.",
+    );
   }
   return stempel.commitsHead;
 }

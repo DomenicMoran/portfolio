@@ -56,13 +56,18 @@ for (const breite of BREITEN) {
     const konsole = [];
     s.on("pageerror", (e) => konsole.push(String(e).slice(0, 120)));
 
-    await s.goto(`${basis}${seite}`, { waitUntil: "networkidle", timeout: 60_000 });
+    await s.goto(`${basis}${seite}`, {
+      waitUntil: "networkidle",
+      timeout: 60_000,
+    });
     await s.waitForTimeout(1500);
 
     const kacheln = s.locator("[data-demo]");
     const anzahl = await kacheln.count();
     if (!anzahl) {
-      befunde.push(`${seite} bei ${breite}: keine Kachel mit data-demo gefunden`);
+      befunde.push(
+        `${seite} bei ${breite}: keine Kachel mit data-demo gefunden`,
+      );
       await kontext.close();
       continue;
     }
@@ -101,10 +106,15 @@ for (const breite of BREITEN) {
       let einerWirkte = anzKnoepfe === 0;
       for (let j = 0; j < anzKnoepfe; j++) {
         const knopf = knoepfe.nth(j);
-        const beschriftung = (await knopf.innerText()).trim().slice(0, 24) || `Knopf ${j}`;
-        const zeiger = await knopf.evaluate((e) => getComputedStyle(e).pointerEvents);
+        const beschriftung =
+          (await knopf.innerText()).trim().slice(0, 24) || `Knopf ${j}`;
+        const zeiger = await knopf.evaluate(
+          (e) => getComputedStyle(e).pointerEvents,
+        );
         if (zeiger === "none") {
-          befunde.push(`${wo}: „${beschriftung}" hat pointer-events: none, ist also nicht klickbar`);
+          befunde.push(
+            `${wo}: „${beschriftung}" hat pointer-events: none, ist also nicht klickbar`,
+          );
           continue;
         }
         const vorher = await text();
@@ -131,7 +141,8 @@ for (const breite of BREITEN) {
       const anzRegler = await regler.count();
       for (let j = 0; j < anzRegler; j++) {
         const r = regler.nth(j);
-        const beschriftung = (await r.getAttribute("aria-label")) ?? `Regler ${j}`;
+        const beschriftung =
+          (await r.getAttribute("aria-label")) ?? `Regler ${j}`;
 
         /*
          * Der Fokus wird mit der Tabulator-Taste geholt, nicht mit `focus()`.
@@ -147,7 +158,8 @@ for (const breite of BREITEN) {
         const vorTaste = await text();
         await r.evaluate((e) => {
           const vorher = e.previousElementSibling ?? e.parentElement;
-          if (vorher instanceof HTMLElement) vorher.setAttribute("tabindex", "-1");
+          if (vorher instanceof HTMLElement)
+            vorher.setAttribute("tabindex", "-1");
           if (vorher instanceof HTMLElement) vorher.focus();
         });
         let erreicht = false;
@@ -156,7 +168,9 @@ for (const breite of BREITEN) {
           erreicht = await r.evaluate((e) => document.activeElement === e);
         }
         if (!erreicht) {
-          befunde.push(`${wo}: „${beschriftung}" ist mit der Tabulator-Taste nicht erreichbar`);
+          befunde.push(
+            `${wo}: „${beschriftung}" ist mit der Tabulator-Taste nicht erreichbar`,
+          );
         } else {
           const fokusSichtbar = await r.evaluate((e) => {
             const s2 = getComputedStyle(e);
@@ -167,43 +181,63 @@ for (const breite of BREITEN) {
             );
           });
           if (!fokusSichtbar) {
-            befunde.push(`${wo}: „${beschriftung}" zeigt im Tastaturfokus keinen sichtbaren Rahmen`);
+            befunde.push(
+              `${wo}: „${beschriftung}" zeigt im Tastaturfokus keinen sichtbaren Rahmen`,
+            );
           }
         }
         await s.keyboard.press("ArrowRight");
         await s.keyboard.press("ArrowRight");
         await s.waitForTimeout(400);
         if ((await text()) === vorTaste) {
-          befunde.push(`${wo}: „${beschriftung}" reagiert nicht auf die Pfeiltasten`);
+          befunde.push(
+            `${wo}: „${beschriftung}" reagiert nicht auf die Pfeiltasten`,
+          );
         }
         geprueft += 1;
 
         // Klick auf die Schiene
         const kasten = await r.boundingBox();
         const vorKlick = await text();
-        await s.mouse.click(kasten.x + kasten.width * 0.2, kasten.y + kasten.height / 2);
+        await s.mouse.click(
+          kasten.x + kasten.width * 0.2,
+          kasten.y + kasten.height / 2,
+        );
         await s.waitForTimeout(400);
         if ((await text()) === vorKlick) {
-          befunde.push(`${wo}: „${beschriftung}" reagiert nicht auf einen Klick in die Schiene`);
+          befunde.push(
+            `${wo}: „${beschriftung}" reagiert nicht auf einen Klick in die Schiene`,
+          );
         }
         geprueft += 1;
 
         // Ziehen
         const vorZug = await text();
-        await s.mouse.move(kasten.x + kasten.width * 0.2, kasten.y + kasten.height / 2);
+        await s.mouse.move(
+          kasten.x + kasten.width * 0.2,
+          kasten.y + kasten.height / 2,
+        );
         await s.mouse.down();
-        await s.mouse.move(kasten.x + kasten.width * 0.8, kasten.y + kasten.height / 2, { steps: 10 });
+        await s.mouse.move(
+          kasten.x + kasten.width * 0.8,
+          kasten.y + kasten.height / 2,
+          { steps: 10 },
+        );
         await s.mouse.up();
         await s.waitForTimeout(400);
         if ((await text()) === vorZug) {
-          befunde.push(`${wo}: „${beschriftung}" reagiert nicht auf das Ziehen des Knopfes`);
+          befunde.push(
+            `${wo}: „${beschriftung}" reagiert nicht auf das Ziehen des Knopfes`,
+          );
         }
         geprueft += 1;
       }
     }
 
     if (konsole.length) {
-      befunde.push(`${seite} bei ${breite}: ${konsole.length} Ausnahme(n) im Browser: ${konsole[0]}`);
+      befunde.push(
+        `${seite} bei ${breite}: ${konsole.length} Ausnahme(n) im Browser: ${konsole[0]}`,
+      );
     }
     await kontext.close();
   }

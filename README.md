@@ -21,8 +21,8 @@ Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null 
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
 versucht etwas anderes: für jedes der über zehn Systeme in Produktion beantwortet es
-drei Fragen, die ein CTO tatsächlich stellt: *Welches Problem?*, *Welche
-Architektur?*, *Was war der schwierige Teil?*
+drei Fragen, die ein CTO tatsächlich stellt: _Welches Problem?_, _Welche
+Architektur?_, _Was war der schwierige Teil?_
 
 Der Abschnitt **„Die harte Stelle“** ist der Kern jeder Fallstudie. Nicht die
 Feature-Liste unterscheidet Entwickler voneinander, sondern das eine Problem,
@@ -30,15 +30,16 @@ an dem man nicht drumherum kam.
 
 ## Stack
 
-| Bereich | Wahl | Warum |
-|---|---|---|
-| Framework | Next.js 16, App Router | Portfolio vorab erzeugt; `/for/*` per ISR; signiertes `/api/revalidate` |
-| Sprache | TypeScript, strict | 0 Fehler ist Merge-Gate, nicht Zielvorgabe |
-| Styling | Tailwind v4 | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config |
-| Animation | Framer Motion 12 | Deklarativ, respektiert `prefers-reduced-motion` |
-| Scrolling | Lenis | Wird bei Reduced-Motion **gar nicht erst geladen** |
-| Icons | lucide-react | Brand-Marken als eigenes Inline-SVG (v1 hat sie entfernt) |
-| Drittanbieter | minimal | Portfolio ohne Fremd-Skripte; `/for/*` kann Logos per HTTPS laden; Supabase nur für diese Seiten |
+| Bereich       | Wahl                         | Warum                                                                                            |
+| ------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| Framework     | Next.js 16, App Router       | Portfolio vorab erzeugt; `/for/*` per ISR; signiertes `/api/revalidate`                          |
+| Sprache       | TypeScript, strict           | 0 Fehler ist Merge-Gate, nicht Zielvorgabe                                                       |
+| Styling       | Tailwind v4                  | Design-Tokens leben in CSS (`@theme`), nicht in einer JS-Config                                  |
+| Animation     | Framer Motion 12             | Deklarativ, respektiert `prefers-reduced-motion`                                                 |
+| Scrolling     | Lenis                        | Wird bei Reduced-Motion **gar nicht erst geladen**                                               |
+| Icons         | lucide-react                 | Brand-Marken als eigenes Inline-SVG (v1 hat sie entfernt)                                        |
+| Formatierung  | Prettier 3 + Tailwind-Plugin | `npm run format` / `format:check`; CI und `.githooks/pre-push`                                   |
+| Drittanbieter | minimal                      | Portfolio ohne Fremd-Skripte; `/for/*` kann Logos per HTTPS laden; Supabase nur für diese Seiten |
 
 ## Architektur-Entscheidungen
 
@@ -75,10 +76,11 @@ keinerlei Copy. Ein leerer Wert lässt das jeweilige Element verschwinden statt
 einen Platzhalter zu rendern: auf einer Seite, deren Zweck Glaubwürdigkeit ist,
 darf eine unbeantwortete Frage nie als sichtbares „Lorem ipsum“ enden.
 
-**Architekturdiagramme sind Daten, kein Bild.** Die sieben Diagramme in
-[`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx) sind als
-Knoten- und Kantenliste beschrieben und werden zu SVG gerendert: auflösungsfrei,
-im DOM durchsuchbar, mit `aria-label` beschrieben und ohne einen einzigen
+**Architekturdiagramme sind Daten, kein Bild.** Acht Fallstudien-Diagramme leben
+unter [`src/components/architecture-diagram/`](src/components/architecture-diagram/)
+als Knoten- und Kantenlisten (`diagrams/*.ts`) plus Renderer; der Export bleibt
+über [`ArchitectureDiagram.tsx`](src/components/ArchitectureDiagram.tsx).
+Auflösungsfrei, im DOM durchsuchbar, mit `aria-label` und sr-only-Liste, kein
 Bild-Request.
 
 **Bewegung ist optional, nicht dekorativ erzwungen.** Bei
@@ -104,8 +106,10 @@ npm run dev   # http://localhost:3000
 ```bash
 npm run build      # Produktions-Build (Turbopack)
 npx tsc --noEmit   # Typecheck
-npx eslint .       # Lint
+npx eslint . --max-warnings=0   # Lint
+npm run format:check             # Prettier
 npm test           # die reine Rechenlogik, ohne Browser
+npm run format     # Quelltext formatieren (lokal)
 ```
 
 Nach dem Bau laufen 37 Prüfungen, die den Bau nicht ersetzen. 23 davon
@@ -183,6 +187,40 @@ ist, würde abgeschaltet statt gelesen.
 
 Voraussetzung: Node.js ≥ 20.9.
 
+## Design-Tokens
+
+Tailwind v4: Tokens in [`src/app/globals.css`](src/app/globals.css) via `@theme`
+(`--color-void`, `--color-acid`, `--color-ink`, …). Komponenten nutzen
+semantische Klassen (`bg-base`, `text-ink-dim`, `border-line`), keine
+parallele JS-Palette.
+
+## Performance
+
+- **LCP:** Text über der Falz ohne Einblendung; `check:vitals` misst LCP/CLS/INP
+  auf gedrosseltem Telefon.
+- **Hero Signal Field:** [`SignalField.tsx`](src/components/hero/SignalField.tsx)
+  — Canvas 2D mit DPR-Cap, pausiert bei `prefers-reduced-motion` und Tab-Hidden;
+  einzige bewusste Canvas-Ausnahme im Portfolio (AGENTS.md: kein Canvas sonst).
+- **Demos:** `adhan`, Architekturdiagramm und schwere Demos per `dynamic()` /
+  Reiter — nicht im ersten Bündel.
+
+## Barrierefreiheit
+
+- WCAG 2.2 AA: `check:a11y` auf jeder Route, zwei Viewport-Breiten.
+- `prefers-reduced-motion`: Lenis und Custom-Cursor werden nicht gemountet;
+  `MotionProvider` setzt `reducedMotion="user"`.
+- Landmarken, Fokus (`check:focus`), Kontrast dort wo axe „incomplete“ meldet
+  (`check:contrast`).
+
+## Lighthouse (gemessen)
+
+| Datum      | Kontext                    | Median Performance | Anmerkung                                                                              |
+| ---------- | -------------------------- | ------------------ | -------------------------------------------------------------------------------------- |
+| 2026-11-16 | Startseite DE, sim. Mobile | _TBD_              | Median aus drei kalten Läufen folgt in CI; Platzhalter bis erster grüner Workflow-Lauf |
+
+Barrierefreiheit und Best Practices werden weiterhin über `check:lighthouse` und
+die Browser-Prüfsuite abgesichert, nicht nur über einen Einzelwert.
+
 ## Projektstruktur
 
 ```
@@ -212,7 +250,8 @@ src/
 │  │                         DeviceFrame · ShotCarousel · SectionHeading · …
 │  ├─ article/               ArticleIndex · ArticlePage · Prose
 │  ├─ providers/             MotionProvider · SmoothScroll
-│  ├─ ArchitectureDiagram.tsx
+│  ├─ architecture-diagram/   Diagramm-Daten + Renderer
+│  ├─ ArchitectureDiagram.tsx  Re-Export der Diagramm-Komponente
 │  ├─ RootDocument.tsx       das <html>-Gerüst, das sich beide Layouts teilen
 │  ├─ SitePage.tsx           die Sektionsfolge, beide Sprachen rendern dieselbe
 │  ├─ OnePager.tsx           das A4-Blatt, beide Sprachen rendern dasselbe
@@ -282,6 +321,7 @@ scripts/
 ├─ build-portrait.mjs             erzeugt alle drei Porträt-Fassungen aus einem Original
 ├─ build-shots.mjs                erzeugt public/shots/*.webp aus den Originalen daneben
 ├─ capture-shots.mjs              nimmt die fünf Website-Aufnahmen neu auf, an gemessenen Kanten
+├─ capture-redesign-baseline.mjs  volle Seiten-Screenshots für Redesign-Vorher/Nachher (lokal)
 ├─ check-shots.mjs                hält jede Aufnahme gegen das Maß, das der Inhalt nennt
 ├─ check-interaction.mjs          betätigt jedes Bedienelement der Vorführungen
 ├─ trim-shots.mjs                 schneidet den fremden Streifen am oberen Rand weg

@@ -19,7 +19,7 @@ export function RichText({ text }: { text: string }) {
         i % 2 === 1 ? (
           <code
             key={i}
-            className="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[0.85em] text-acid"
+            className="border-line bg-surface text-acid rounded border px-1.5 py-0.5 font-mono text-[0.85em]"
           >
             {teil}
           </code>

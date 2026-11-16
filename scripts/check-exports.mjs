@@ -34,7 +34,10 @@ function dateien(ordner) {
   for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
     const pfad = join(ordner, eintrag.name);
     if (eintrag.isDirectory()) gefunden.push(...dateien(pfad));
-    else if (/\.(ts|tsx|mjs)$/.test(eintrag.name) && !eintrag.name.endsWith(".d.ts")) {
+    else if (
+      /\.(ts|tsx|mjs)$/.test(eintrag.name) &&
+      !eintrag.name.endsWith(".d.ts")
+    ) {
       gefunden.push(pfad);
     }
   }
@@ -54,11 +57,15 @@ for (const [pfad, inhalt] of quellen) {
   if (pfad.startsWith("src/app/")) continue;
   if (pfad.endsWith(".test.ts") || pfad.endsWith(".test.tsx")) continue;
 
-  for (const treffer of inhalt.matchAll(/^export (?:const|function|type|interface|class) (\w+)/gm)) {
+  for (const treffer of inhalt.matchAll(
+    /^export (?:const|function|type|interface|class) (\w+)/gm,
+  )) {
     const name = treffer[1];
     geprueft++;
     const muster = new RegExp(`\\b${name}\\b`);
-    const abnehmer = [...quellen].some(([q, t]) => q !== pfad && muster.test(t));
+    const abnehmer = [...quellen].some(
+      ([q, t]) => q !== pfad && muster.test(t),
+    );
     if (!abnehmer) funde.push(`${pfad}: ${name}`);
   }
 }
@@ -74,4 +81,6 @@ if (funde.length > 0) {
   process.exit(1);
 }
 
-console.log(`Jede Ausfuhr hat einen Abnehmer: ${geprueft} Ausfuhren aus src/ geprüft.`);
+console.log(
+  `Jede Ausfuhr hat einen Abnehmer: ${geprueft} Ausfuhren aus src/ geprüft.`,
+);

@@ -132,8 +132,18 @@ Jede Lesezeit stimmt mit dem Wortbestand: ${befunde.length} Artikel gezählt, ` 
    kam auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt, die Grenzen
    eines Objektliterals sind mit einem Regex nicht zuverlässig zu finden. */
 const ZAHLWORT = {
-  de: { 1: "einer Minute", 2: "zwei Minuten", 3: "drei Minuten", 4: "vier Minuten" },
-  en: { 1: "one minute", 2: "two minutes", 3: "three minutes", 4: "four minutes" },
+  de: {
+    1: "einer Minute",
+    2: "zwei Minuten",
+    3: "drei Minuten",
+    4: "vier Minuten",
+  },
+  en: {
+    1: "one minute",
+    2: "two minutes",
+    3: "three minutes",
+    4: "four minutes",
+  },
 };
 
 const bereiche = [
@@ -150,7 +160,7 @@ function abschnitt(html) {
   let tiefe = 0;
   const muster = /<section\b|<\/section>/g;
   muster.lastIndex = von;
-  for (let t; (t = muster.exec(html)); ) {
+  for (let t; (t = muster.exec(html));) {
     tiefe += t[0] === "</section>" ? -1 : 1;
     if (tiefe === 0) return html.slice(von, t.index);
   }
@@ -177,10 +187,16 @@ for (const { sprache, datei } of bereiche) {
   const woerter = text.split(/\s+/).filter(Boolean).length;
   const minuten = Math.max(1, Math.round(woerter / WOERTER_JE_MINUTE));
   const erwartet = ZAHLWORT[sprache][minuten];
-  const titel = /<h2[^>]*>([\s\S]*?)<\/h2>/.exec(block)?.[1].replace(/<[^>]+>/g, "").trim() ?? "";
+  const titel =
+    /<h2[^>]*>([\s\S]*?)<\/h2>/
+      .exec(block)?.[1]
+      .replace(/<[^>]+>/g, "")
+      .trim() ?? "";
 
   if (!erwartet) {
-    zeitfunde.push(`${datei}: ${woerter} Wörter sind ${minuten} Minuten, dafür fehlt das Zahlwort`);
+    zeitfunde.push(
+      `${datei}: ${woerter} Wörter sind ${minuten} Minuten, dafür fehlt das Zahlwort`,
+    );
   } else if (!titel.includes(erwartet)) {
     zeitfunde.push(
       `${datei}: „${titel}“ bei ${woerter} Wörtern, gerechnet sind das ${erwartet}`,
@@ -189,7 +205,9 @@ for (const { sprache, datei } of bereiche) {
 }
 
 if (zeitfunde.length && !setzen) {
-  console.error(`\n${zeitfunde.length} Zeitangabe stimmt nicht mit dem Text darunter:`);
+  console.error(
+    `\n${zeitfunde.length} Zeitangabe stimmt nicht mit dem Text darunter:`,
+  );
   for (const f of zeitfunde) console.error(`  ${f}`);
   process.exit(1);
 }

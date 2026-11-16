@@ -35,7 +35,7 @@ export default function LegalLayout({
              den die wenigsten tun. Beim Zeigen mit der Maus lädt Next
              weiterhin vor, der Rückweg bleibt also gleich schnell. */
           prefetch={false}
-          className="text-eyebrow -my-2 w-fit py-2 transition-colors hover:text-ink-dim"
+          className="text-eyebrow hover:text-ink-dim -my-2 w-fit py-2 transition-colors"
         >
           ← {site.name}
         </Link>

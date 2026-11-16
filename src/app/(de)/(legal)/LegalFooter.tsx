@@ -35,7 +35,7 @@ export function Rechtsfuss({ hier }: { hier: "impressum" | "datenschutz" }) {
   ] as const;
 
   return (
-    <footer className="mt-16 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-6 font-mono text-[11px] text-ink-faint">
+    <footer className="border-line text-ink-faint mt-16 flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-6 font-mono text-[11px]">
       <span>
         © {new Date().getFullYear()} {site.name}
       </span>
@@ -51,7 +51,7 @@ export function Rechtsfuss({ hier }: { hier: "impressum" | "datenschutz" }) {
              Rechtsseite ist genauso still, und wer sie braucht, klickt. */
           prefetch={false}
           aria-current={seite.schluessel === hier ? "page" : undefined}
-          className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+          className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
         >
           {seite.text}
         </Link>

@@ -66,7 +66,8 @@ function routeImBau() {
   }
 
   return [...kandidaten].some(
-    (r) => r === ERWARTETE_ROUTE || r.replace(/\/page$/, "") === ERWARTETE_ROUTE,
+    (r) =>
+      r === ERWARTETE_ROUTE || r.replace(/\/page$/, "") === ERWARTETE_ROUTE,
   );
 }
 

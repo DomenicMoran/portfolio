@@ -21,7 +21,10 @@ export function useMediaQuery(query: string) {
     [query],
   );
 
-  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+  const getSnapshot = useCallback(
+    () => window.matchMedia(query).matches,
+    [query],
+  );
 
   // Auf dem Server trifft nichts zu: Gerätefähigkeiten kennt nur der Browser.
   const getServerSnapshot = useCallback(() => false, []);

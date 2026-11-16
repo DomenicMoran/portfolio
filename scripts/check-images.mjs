@@ -168,7 +168,9 @@ for (const route of [...mitBildern]) {
     ),
   );
   if (kb > BILDBUDGET_KB)
-    schwer.push(`${route}: ${kb} kB Bilder vor der ersten Bewegung, erlaubt ${BILDBUDGET_KB}`);
+    schwer.push(
+      `${route}: ${kb} kB Bilder vor der ersten Bewegung, erlaubt ${BILDBUDGET_KB}`,
+    );
   await seite.close();
 }
 
@@ -202,13 +204,19 @@ for (const route of [...mitBildern]) {
   let leerstellen = 0;
 
   for (const route of ["/", "/en"]) {
-    const seite = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-    const antwort = await seite.goto(`${basis}${route}`, { waitUntil: "networkidle" });
+    const seite = await browser.newPage({
+      viewport: { width: 1440, height: 1000 },
+    });
+    const antwort = await seite.goto(`${basis}${route}`, {
+      waitUntil: "networkidle",
+    });
     if (antwort?.status() !== 200) {
       await seite.close();
       continue;
     }
-    const umschalter = seite.locator('[aria-controls="weitere-projekte-liste"]');
+    const umschalter = seite.locator(
+      '[aria-controls="weitere-projekte-liste"]',
+    );
     if (await umschalter.count()) await umschalter.click();
     await seite.evaluate(async () => {
       const hoehe = document.documentElement.scrollHeight;

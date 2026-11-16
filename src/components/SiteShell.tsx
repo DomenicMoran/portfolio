@@ -102,7 +102,10 @@ export function SiteShell({
        Zeitgeber. */
     const gleichNachher = (arbeit: () => void) => {
       const w = window as typeof window & {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
+        requestIdleCallback?: (
+          cb: () => void,
+          opts?: { timeout: number },
+        ) => void;
       };
       if (typeof w.requestIdleCallback === "function") {
         w.requestIdleCallback(arbeit, { timeout: 2000 });

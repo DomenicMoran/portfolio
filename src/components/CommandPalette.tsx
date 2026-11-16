@@ -344,7 +344,7 @@ export function CommandPalette({
              Gemessen an der gebauten Seite lief der Hintergrund trotz Sperre
              von 0 auf 736 px. */
           data-lenis-prevent
-          className="fixed inset-0 z-[9999] flex items-start justify-center bg-void/80 px-4 pt-[12vh] backdrop-blur-sm"
+          className="bg-void/80 fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-[12vh] backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
@@ -356,10 +356,10 @@ export function CommandPalette({
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.3, ease: ease.expo }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl shadow-black/60"
+            className="border-line bg-surface w-full max-w-xl overflow-hidden rounded-2xl border shadow-2xl shadow-black/60"
           >
-            <div className="flex items-center gap-3 border-b border-line px-4">
-              <Search className="size-4 shrink-0 text-ink-faint" aria-hidden />
+            <div className="border-line flex items-center gap-3 border-b px-4">
+              <Search className="text-ink-faint size-4 shrink-0" aria-hidden />
               <input
                 ref={inputRef}
                 value={query}
@@ -368,7 +368,7 @@ export function CommandPalette({
                   setActive(0);
                 }}
                 placeholder={palette.placeholder}
-                className="w-full bg-transparent py-4 text-sm text-ink outline-none placeholder:text-ink-faint"
+                className="text-ink placeholder:text-ink-faint w-full bg-transparent py-4 text-sm outline-none"
                 aria-label={palette.searchLabel}
                 /*
                   Ohne diese vier Angaben blättert man blind.
@@ -387,7 +387,7 @@ export function CommandPalette({
                   results[active] ? eintragId(active) : undefined
                 }
               />
-              <kbd className="hidden shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-ink-faint sm:block">
+              <kbd className="border-line text-ink-faint hidden shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] sm:block">
                 ESC
               </kbd>
             </div>
@@ -413,7 +413,7 @@ export function CommandPalette({
               className="max-h-[52vh] overflow-y-auto p-2"
             >
               {results.length === 0 ? (
-                <li className="px-3 py-8 text-center text-sm text-ink-faint">
+                <li className="text-ink-faint px-3 py-8 text-center text-sm">
                   {palette.empty}
                 </li>
               ) : (
@@ -442,10 +442,10 @@ export function CommandPalette({
                         aria-hidden
                       />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm text-ink">
+                        <span className="text-ink block truncate text-sm">
                           {action.label}
                         </span>
-                        <span className="block truncate text-xs text-ink-faint">
+                        <span className="text-ink-faint block truncate text-xs">
                           {action.hint}
                         </span>
                       </span>

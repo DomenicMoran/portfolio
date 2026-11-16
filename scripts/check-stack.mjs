@@ -225,13 +225,19 @@ function imQuelltext(repo, begriff) {
       return false;
     }
     for (const eintrag of eintraege) {
-      if (eintrag.name === "node_modules" || eintrag.name.startsWith(".")) continue;
+      if (eintrag.name === "node_modules" || eintrag.name.startsWith("."))
+        continue;
       const pfad = join(ordner, eintrag.name);
       if (eintrag.isDirectory()) {
         if (durchsuchen(pfad, tiefe + 1)) return true;
-      } else if (/\.(ts|tsx|js|jsx|mjs|json|md|ya?ml|toml|sql|kt|swift)$/.test(eintrag.name)) {
+      } else if (
+        /\.(ts|tsx|js|jsx|mjs|json|md|ya?ml|toml|sql|kt|swift)$/.test(
+          eintrag.name,
+        )
+      ) {
         try {
-          if (readFileSync(pfad, "utf8").toLowerCase().includes(gesucht)) return true;
+          if (readFileSync(pfad, "utf8").toLowerCase().includes(gesucht))
+            return true;
         } catch {
           /* Unlesbare Datei ist kein Treffer und kein Fehler. */
         }
@@ -264,13 +270,17 @@ for (const [id, repo] of Object.entries(REPOS)) {
   const sammle = (ordner, tiefe = 0) => {
     if (tiefe > 3) return;
     for (const eintrag of readdirSync(ordner, { withFileTypes: true })) {
-      if (eintrag.name === "node_modules" || eintrag.name.startsWith(".")) continue;
+      if (eintrag.name === "node_modules" || eintrag.name.startsWith("."))
+        continue;
       const pfad = join(ordner, eintrag.name);
       if (eintrag.isDirectory()) sammle(pfad, tiefe + 1);
       else if (eintrag.name === "package.json") {
         try {
           const d = JSON.parse(readFileSync(pfad, "utf8"));
-          for (const name of Object.keys({ ...d.dependencies, ...d.devDependencies })) {
+          for (const name of Object.keys({
+            ...d.dependencies,
+            ...d.devDependencies,
+          })) {
             pakete.add(name.toLowerCase());
           }
         } catch {
@@ -304,7 +314,11 @@ for (const [id, repo] of Object.entries(REPOS)) {
       const paket = ALS_PAKET[eintrag].toLowerCase();
       const passt = (p) => {
         const ohneRaum = p.replace(/^@/, "").replace(/\//g, "-");
-        return p === paket || ohneRaum === paket || ohneRaum.split("-").includes(paket);
+        return (
+          p === paket ||
+          ohneRaum === paket ||
+          ohneRaum.split("-").includes(paket)
+        );
       };
       if (![...pakete].some(passt)) {
         funde.push(
@@ -318,7 +332,9 @@ for (const [id, repo] of Object.entries(REPOS)) {
        die Tabelle jede Schreibweise einzeln führen: „pnpm Workspaces" stand
        dort längst, „pnpm 10 Workspaces" lief trotzdem ins Leere. */
     const begriffe = (
-      ANDERS_IM_CODE[eintrag] ? [ANDERS_IM_CODE[eintrag]] : suchbegriffe(eintrag)
+      ANDERS_IM_CODE[eintrag]
+        ? [ANDERS_IM_CODE[eintrag]]
+        : suchbegriffe(eintrag)
     ).map((b) => ANDERS_IM_CODE[b] ?? b);
 
     const treffer = begriffe.every((begriff) => {
@@ -340,12 +356,17 @@ for (const [id, repo] of Object.entries(REPOS)) {
       return imQuelltext(repo, begriff);
     });
 
-    if (!treffer) funde.push(`${id}: „${eintrag}" ist in ${repo.split("/").pop()} nicht zu finden`);
+    if (!treffer)
+      funde.push(
+        `${id}: „${eintrag}" ist in ${repo.split("/").pop()} nicht zu finden`,
+      );
   }
 }
 
 if (funde.length > 0) {
-  console.error(`${funde.length} genannte Technik ohne Entsprechung im Repo:\n`);
+  console.error(
+    `${funde.length} genannte Technik ohne Entsprechung im Repo:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   console.error(
     `\nEntweder ist die Angabe veraltet, oder sie heißt im Code anders. ` +

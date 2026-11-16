@@ -72,9 +72,9 @@ export function Writing() {
                    offen. */
                 prefetch={false}
                 aria-labelledby={`schrift-${a.slug}`}
-                className="group lit flex h-full flex-col rounded-2xl border border-line bg-surface/40 p-6 transition-colors hover:border-acid/40"
+                className="group lit border-line bg-surface/40 hover:border-acid/40 flex h-full flex-col rounded-2xl border p-6 transition-colors"
               >
-                <span className="font-mono text-[11px] text-ink-faint">
+                <span className="text-ink-faint font-mono text-[11px]">
                   {chrome.readingTime(a.minutes)}
                 </span>
 
@@ -94,16 +94,16 @@ export function Writing() {
                     Luft, was niemand als Fehler sieht. */}
                 <h3
                   id={`schrift-${a.slug}`}
-                  className="mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[3lh]"
+                  className="text-ink mt-3 flex items-start gap-2 text-base leading-snug font-semibold tracking-tight text-balance sm:min-h-[3lh]"
                 >
                   {a.title}
                   <ArrowUpRight
-                    className="mt-0.5 size-3.5 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
+                    className="text-ink-faint group-hover:text-acid mt-0.5 size-3.5 shrink-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     aria-hidden
                   />
                 </h3>
 
-                <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">
+                <p className="text-ink-dim mt-3 text-sm leading-relaxed text-pretty">
                   {a.dek}
                 </p>
 
@@ -114,7 +114,7 @@ export function Writing() {
                   {a.tags.slice(0, 2).map((tag) => (
                     <li
                       key={tag}
-                      className="rounded-md border border-line bg-base/60 px-2 py-0.5 font-mono text-[10px] text-ink-faint"
+                      className="border-line bg-base/60 text-ink-faint rounded-md border px-2 py-0.5 font-mono text-[10px]"
                     >
                       {tag}
                     </li>
@@ -132,7 +132,7 @@ export function Writing() {
                eine Ebene tiefer, und niemand hat sie angefordert, bevor er
                den Knopf gelesen hat. `check:vitals` hält die Menge offen. */
             prefetch={false}
-            className="group mt-8 inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+            className="group border-line text-ink-dim hover:border-ink-faint hover:text-ink mt-8 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm transition-colors"
           >
             {chrome.home.cta}
             <ArrowRight

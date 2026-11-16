@@ -28,7 +28,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
-  ...vorschaukarten({ titel: kartenTitel("Impressum"), lang: "de", pfad: "/impressum" }),
+  ...vorschaukarten({
+    titel: kartenTitel("Impressum"),
+    lang: "de",
+    pfad: "/impressum",
+  }),
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.
@@ -51,15 +55,15 @@ export default function Impressum() {
   return (
     <>
       <main>
-        <h1 className="text-title mb-10 text-ink">Impressum</h1>
+        <h1 className="text-title text-ink mb-10">Impressum</h1>
 
         <EnglishNote />
 
         <section className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold text-ink">
+          <h2 className="text-ink mb-3 text-lg font-semibold">
             Angaben gemäß § 5 DDG
           </h2>
-          <address className="text-sm leading-relaxed text-ink-dim not-italic">
+          <address className="text-ink-dim text-sm leading-relaxed not-italic">
             {ANBIETER}
             {ANSCHRIFT.map((zeile) => (
               <span key={zeile}>
@@ -71,12 +75,12 @@ export default function Impressum() {
         </section>
 
         <section className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold text-ink">Kontakt</h2>
-          <p className="text-sm leading-relaxed text-ink-dim">
+          <h2 className="text-ink mb-3 text-lg font-semibold">Kontakt</h2>
+          <p className="text-ink-dim text-sm leading-relaxed">
             E-Mail:{" "}
             <a
               href={mailAdresse(site.email, site.mailSubject)}
-              className="-my-1 py-1 text-acid underline underline-offset-4"
+              className="text-acid -my-1 py-1 underline underline-offset-4"
             >
               {site.email}
             </a>
@@ -90,28 +94,27 @@ export default function Impressum() {
         Einstufung ist abschließend vom Steuerberater zu bestätigen.
       */}
         <section className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold text-ink">
-            Umsatzsteuer
-          </h2>
-          <p className="text-sm leading-relaxed text-ink-dim">
-            Kleinunternehmer nach § 19 UStG – es wird keine Umsatzsteuer berechnet.
+          <h2 className="text-ink mb-3 text-lg font-semibold">Umsatzsteuer</h2>
+          <p className="text-ink-dim text-sm leading-relaxed">
+            Kleinunternehmer nach § 19 UStG – es wird keine Umsatzsteuer
+            berechnet.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold text-ink">
+          <h2 className="text-ink mb-3 text-lg font-semibold">
             Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
           </h2>
-          <p className="text-sm leading-relaxed text-ink-dim">
+          <p className="text-ink-dim text-sm leading-relaxed">
             {site.name}, Anschrift wie oben.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold text-ink">
+          <h2 className="text-ink mb-3 text-lg font-semibold">
             Streitschlichtung
           </h2>
-          <p className="text-sm leading-relaxed text-ink-dim">
+          <p className="text-ink-dim text-sm leading-relaxed">
             Ich bin nicht bereit und nicht verpflichtet, an
             Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
             teilzunehmen.
@@ -119,10 +122,10 @@ export default function Impressum() {
         </section>
 
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-ink">
+          <h2 className="text-ink mb-3 text-lg font-semibold">
             Haftung für Links
           </h2>
-          <p className="text-sm leading-relaxed text-ink-dim">
+          <p className="text-ink-dim text-sm leading-relaxed">
             Diese Seite verlinkt auf externe Websites, auf deren Inhalte ich
             keinen Einfluss habe. Für diese fremden Inhalte ist stets der
             jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung

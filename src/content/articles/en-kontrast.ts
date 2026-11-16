@@ -55,7 +55,8 @@ export const kontrastEn: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "check-contrast.mjs: the worst value comes from the background, not from the letter.",
+      caption:
+        "check-contrast.mjs: the worst value comes from the background, not from the letter.",
       code: `// First question: is there text? That is what covered pixels are for.
 for (const pixel of pixelsInBox) {
   if (coverage[pixel] >= threshold) corePixels++;

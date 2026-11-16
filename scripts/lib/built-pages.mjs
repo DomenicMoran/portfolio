@@ -36,7 +36,9 @@ import { join } from "node:path";
  * der Lauf mit dem Befehl ab, der ihn wieder gültig macht.
  */
 export function pruefeBaustand() {
-  const bauStempel = statSync(".next/BUILD_ID", { throwIfNoEntry: false })?.mtimeMs;
+  const bauStempel = statSync(".next/BUILD_ID", {
+    throwIfNoEntry: false,
+  })?.mtimeMs;
   if (!bauStempel)
     throw new Error("Kein gebauter Stand vorhanden. Erst `npm run build`.");
 
@@ -74,8 +76,12 @@ export function gebauteSeiten(bauOrdner = join(".next", "server", "app")) {
       const pfad = join(ordner, eintrag.name);
       if (eintrag.isDirectory()) suchen(pfad);
       else if (eintrag.name.endsWith(".html")) {
-        const route = pfad.slice(bauOrdner.length).replace(/\\/g, "/").replace(/\.html$/, "");
-        if (!route.split("/").pop().startsWith("_")) pfade.push(route === "/index" ? "/" : route);
+        const route = pfad
+          .slice(bauOrdner.length)
+          .replace(/\\/g, "/")
+          .replace(/\.html$/, "");
+        if (!route.split("/").pop().startsWith("_"))
+          pfade.push(route === "/index" ? "/" : route);
       }
     }
   };

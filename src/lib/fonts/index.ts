@@ -17,7 +17,9 @@ import { join } from "node:path";
  *
  * Geist steht unter der SIL Open Font License 1.1, der Text liegt daneben.
  */
-const halbfett = readFileSync(join(process.cwd(), "src/lib/fonts/Geist-SemiBold.ttf"));
+const halbfett = readFileSync(
+  join(process.cwd(), "src/lib/fonts/Geist-SemiBold.ttf"),
+);
 
 /**
  * Für `ImageResponse`. Der reguläre Schnitt bleibt der eingebaute, er heißt
@@ -47,5 +49,10 @@ const halbfett = readFileSync(join(process.cwd(), "src/lib/fonts/Geist-SemiBold.
  * einem Doppelpunkt ist das der falsche Tausch.
  */
 export const ogSchriften = [
-  { name: "Geist", data: halbfett, weight: 600 as const, style: "normal" as const },
+  {
+    name: "Geist",
+    data: halbfett,
+    weight: 600 as const,
+    style: "normal" as const,
+  },
 ];

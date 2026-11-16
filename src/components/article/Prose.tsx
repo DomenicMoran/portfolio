@@ -59,7 +59,7 @@ export function Prose({
               <div key={i} className="group relative mt-14 mb-5">
                 <h2
                   id={alsSprungmarke(block.text)}
-                  className="max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-ink text-balance sm:text-3xl"
+                  className="text-ink max-w-[24ch] scroll-mt-28 text-2xl leading-tight font-semibold tracking-tight text-balance sm:text-3xl"
                 >
                   {block.text}
                 </h2>
@@ -97,7 +97,7 @@ export function Prose({
                 <a
                   href={`#${alsSprungmarke(block.text)}`}
                   aria-label={`${sprungmarkeLabel}: ${block.text}`}
-                  className="absolute top-[0.225rem] -left-7 hidden text-[0.93rem] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.28rem] sm:text-[1.16rem] lg:block"
+                  className="text-ink-faint absolute top-[0.225rem] -left-7 hidden text-[0.93rem] opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.28rem] sm:text-[1.16rem] lg:block"
                 >
                   <span aria-hidden>#</span>
                 </a>
@@ -124,14 +124,14 @@ export function Prose({
               <div key={i} className="group relative mt-10 mb-4">
                 <h3
                   id={alsSprungmarke(block.text)}
-                  className="max-w-[30ch] scroll-mt-28 text-lg font-semibold tracking-tight text-ink text-balance sm:text-xl"
+                  className="text-ink max-w-[30ch] scroll-mt-28 text-lg font-semibold tracking-tight text-balance sm:text-xl"
                 >
                   {block.text}
                 </h3>
                 <a
                   href={`#${alsSprungmarke(block.text)}`}
                   aria-label={`${sprungmarkeLabel}: ${block.text}`}
-                  className="absolute top-[0.12rem] -left-7 hidden text-[0.8rem] text-ink-faint opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.16rem] sm:text-[0.9rem] lg:block"
+                  className="text-ink-faint absolute top-[0.12rem] -left-7 hidden text-[0.8rem] opacity-0 transition-opacity select-none group-hover:opacity-100 focus-visible:opacity-100 sm:top-[0.16rem] sm:text-[0.9rem] lg:block"
                 >
                   <span aria-hidden>#</span>
                 </a>
@@ -142,7 +142,7 @@ export function Prose({
             return (
               <p
                 key={i}
-                className="mb-5 text-[1.0625rem] leading-[1.75] text-ink-dim text-pretty"
+                className="text-ink-dim mb-5 text-[1.0625rem] leading-[1.75] text-pretty"
               >
                 <RichText text={block.text} />
               </p>
@@ -155,14 +155,14 @@ export function Prose({
                 {block.items.map((item, j) => (
                   <li
                     key={j}
-                    className="flex gap-3.5 text-[1.0625rem] leading-[1.7] text-ink-dim text-pretty"
+                    className="text-ink-dim flex gap-3.5 text-[1.0625rem] leading-[1.7] text-pretty"
                   >
                     <span
                       aria-hidden
                       className={
                         block.ordered
-                          ? "mt-px shrink-0 font-mono text-sm text-acid tabular-nums"
-                          : "mt-[0.7em] size-1.5 shrink-0 rounded-full bg-acid/70"
+                          ? "text-acid mt-px shrink-0 font-mono text-sm tabular-nums"
+                          : "bg-acid/70 mt-[0.7em] size-1.5 shrink-0 rounded-full"
                       }
                     >
                       {block.ordered ? String(j + 1).padStart(2, "0") : null}
@@ -202,16 +202,16 @@ export function Prose({
                   tabIndex={0}
                   role="region"
                   aria-label={block.caption ?? codeLabel}
-                  className="lit scroll-hint overflow-x-auto rounded-xl border border-line bg-base p-5 text-[13px] leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
+                  className="lit scroll-hint border-line bg-base focus-visible:outline-acid overflow-x-auto rounded-xl border p-5 text-[13px] leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   <code
-                    className={`language-${block.lang} font-mono text-ink-dim`}
+                    className={`language-${block.lang} text-ink-dim font-mono`}
                   >
                     {block.code}
                   </code>
                 </HorizontalScrollBox>
                 {block.caption ? (
-                  <figcaption className="mt-2.5 text-xs leading-relaxed text-ink-faint">
+                  <figcaption className="text-ink-faint mt-2.5 text-xs leading-relaxed">
                     {block.caption}
                   </figcaption>
                 ) : null}
@@ -231,12 +231,12 @@ export function Prose({
               <aside
                 key={i}
                 aria-labelledby={`merk-${i}`}
-                className="mt-2 mb-7 rounded-xl border border-acid/25 bg-acid/[0.05] p-5 sm:p-6"
+                className="border-acid/25 bg-acid/[0.05] mt-2 mb-7 rounded-xl border p-5 sm:p-6"
               >
                 <p id={`merk-${i}`} className="text-eyebrow mb-2.5">
                   {block.title}
                 </p>
-                <p className="text-[0.95rem] leading-[1.7] text-ink-dim text-pretty">
+                <p className="text-ink-dim text-[0.95rem] leading-[1.7] text-pretty">
                   <RichText text={block.text} />
                 </p>
               </aside>
@@ -254,7 +254,7 @@ export function Prose({
                   tabIndex={0}
                   role="region"
                   aria-label={block.caption ?? tabelleLabel}
-                  className="overflow-x-auto rounded-xl border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acid"
+                  className="border-line focus-visible:outline-acid overflow-x-auto rounded-xl border focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {/* Die Tabelle trägt ihren eigenen Namen, nicht nur ihr
                       Rahmen.
@@ -275,12 +275,12 @@ export function Prose({
                     className="w-full border-collapse text-left text-sm"
                   >
                     <thead>
-                      <tr className="border-b border-line bg-surface/60">
+                      <tr className="border-line bg-surface/60 border-b">
                         {block.head.map((h) => (
                           <th
                             key={h}
                             scope="col"
-                            className="px-4 py-3 font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase"
+                            className="text-ink-faint px-4 py-3 font-mono text-[10px] tracking-[0.14em] uppercase"
                           >
                             {h}
                           </th>
@@ -291,15 +291,15 @@ export function Prose({
                       {block.rows.map((row, r) => (
                         <tr
                           key={r}
-                          className="border-b border-line last:border-b-0"
+                          className="border-line border-b last:border-b-0"
                         >
                           {row.map((cell, c) => (
                             <td
                               key={c}
                               className={
                                 c === 0
-                                  ? "px-4 py-3 font-mono text-[12px] text-ink"
-                                  : "px-4 py-3 text-ink-dim"
+                                  ? "text-ink px-4 py-3 font-mono text-[12px]"
+                                  : "text-ink-dim px-4 py-3"
                               }
                             >
                               <RichText text={cell} />
@@ -313,7 +313,7 @@ export function Prose({
                 {block.caption ? (
                   <figcaption
                     id={`tabelle-${i}`}
-                    className="mt-2.5 text-xs leading-relaxed text-ink-faint"
+                    className="text-ink-faint mt-2.5 text-xs leading-relaxed"
                   >
                     {block.caption}
                   </figcaption>

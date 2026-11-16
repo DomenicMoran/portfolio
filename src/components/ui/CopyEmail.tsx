@@ -76,10 +76,13 @@ export function CopyEmail({
         // Bedienelemente, steht auf dem Ausdruck der Startseite keine
         // Kontaktadresse mehr. `check:print` liest das Merkmal aus.
         data-druckbar=""
-        className={className ?? "group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"}
+        className={
+          className ??
+          "group border-line bg-base/60 text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
+        }
       >
         {stand === "kopiert" ? (
-          <Check className="size-3.5 text-acid" aria-hidden />
+          <Check className="text-acid size-3.5" aria-hidden />
         ) : (
           <Copy className="size-3.5" aria-hidden />
         )}

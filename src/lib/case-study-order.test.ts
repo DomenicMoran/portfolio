@@ -39,7 +39,12 @@ describe("case-study-order", () => {
   it("sortiert fertige zuerst und markiert Prototypen", () => {
     const input = ["mfc", "salati", "menucloud", "aether"].map(stub);
     const out = bereiteFallstudienVor(input);
-    expect(out.map((s) => s.id)).toEqual(["menucloud", "salati", "mfc", "aether"]);
+    expect(out.map((s) => s.id)).toEqual([
+      "menucloud",
+      "salati",
+      "mfc",
+      "aether",
+    ]);
     expect(out.find((s) => s.id === "mfc")?.prototyp).toBe(true);
     expect(out.find((s) => s.id === "menucloud")?.prototyp).toBe(false);
     expect(out.find((s) => s.id === "menucloud")?.index).toBe("01");

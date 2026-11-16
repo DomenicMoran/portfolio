@@ -223,9 +223,7 @@ for (const route of gebauteSeiten()) {
     const amerikanisch = [];
     for (const [wort, britisch] of AMERIKANISCH) {
       const muster = new RegExp(`\\b${wort}\\b`, "gi");
-      const treffer = [
-        ...new Set([...text.matchAll(muster)].map((m) => m[0])),
-      ];
+      const treffer = [...new Set([...text.matchAll(muster)].map((m) => m[0]))];
       for (const t of treffer) amerikanisch.push(`${t} → ${britisch}`);
     }
     if (amerikanisch.length > 0) {
@@ -281,7 +279,9 @@ for (const route of gebauteSeiten()) {
     .replace(/<pre[\s\S]*?<\/pre>/g, " ")
     .replace(/<[^>]+>/g, " ");
   const ziffernDatum = [
-    ...new Set([...ohneCode.matchAll(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g)].map((m) => m[0])),
+    ...new Set(
+      [...ohneCode.matchAll(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g)].map((m) => m[0]),
+    ),
   ];
   if (sprache === "de" && ziffernDatum.length > 0) {
     funde.push(

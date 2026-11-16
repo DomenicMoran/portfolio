@@ -85,7 +85,8 @@ const gepruefteSeiten = [...pfade];
 */
 gepruefteSeiten.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
 
-if (gepruefteSeiten.length === 0) throw new Error("Der Bau enthält keine Seiten.");
+if (gepruefteSeiten.length === 0)
+  throw new Error("Der Bau enthält keine Seiten.");
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({
@@ -130,7 +131,9 @@ async function messen() {
         return [d[0], d[1], d[2], d[3] / 255];
       };
       const ueber = (vorne, hinten) =>
-        [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3])).concat(1);
+        [0, 1, 2]
+          .map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3]))
+          .concat(1);
       const helligkeit = ([r, g, b]) => {
         const f = (x) => {
           x /= 255;
@@ -146,7 +149,8 @@ async function messen() {
           stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
         }
         let ergebnis = [255, 255, 255, 1]; // Papier
-        for (let i = stapel.length - 1; i >= 0; i--) ergebnis = ueber(stapel[i], ergebnis);
+        for (let i = stapel.length - 1; i >= 0; i--)
+          ergebnis = ueber(stapel[i], ergebnis);
         return ergebnis;
       };
       const kontrast = (a, b) =>
@@ -162,7 +166,11 @@ async function messen() {
       // mitgemessen wurde und nicht die Seite.
       const geerbteDeckkraft = (el) => {
         let wert = 1;
-        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        for (
+          let n = el;
+          n && n !== document.documentElement;
+          n = n.parentElement
+        ) {
           wert *= parseFloat(getComputedStyle(n).opacity);
         }
         return wert;
@@ -184,7 +192,11 @@ async function messen() {
          Die Rechnung war trotzdem falsch, und sie stimmt jetzt. */
       const geerbterZoom = (el) => {
         let wert = 1;
-        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        for (
+          let n = el;
+          n && n !== document.documentElement;
+          n = n.parentElement
+        ) {
           const z = parseFloat(getComputedStyle(n).zoom);
           if (Number.isFinite(z) && z > 0) wert *= z;
         }
@@ -204,7 +216,9 @@ async function messen() {
         elf Produktaufnahmen fehlten im PDF der Startseite.
       */
       const ungeladen = [...document.querySelectorAll("img")]
-        .filter((b) => getComputedStyle(b).display !== "none" && b.naturalWidth === 0)
+        .filter(
+          (b) => getComputedStyle(b).display !== "none" && b.naturalWidth === 0,
+        )
         .map((b) => ({
           alt: (b.getAttribute("alt") || "(ohne Alternativtext)").slice(0, 45),
           laden: b.loading,
@@ -251,7 +265,10 @@ async function messen() {
         // Waagerecht abgeschnitten: Der Kasten hält mehr, als er zeigt, und
         // auf Papier gibt es keine Bewegung, die den Rest holen könnte.
         // Zwei Pixel Toleranz gegen Rundung bei gebrochenen Breiten.
-        if (stil.overflowX !== "visible" && el.scrollWidth > el.clientWidth + 2) {
+        if (
+          stil.overflowX !== "visible" &&
+          el.scrollWidth > el.clientWidth + 2
+        ) {
           abgeschnitten.push({
             marke: el.tagName.toLowerCase(),
             klasse: (el.className?.toString?.() || "").slice(0, 60),
@@ -270,7 +287,10 @@ async function messen() {
         if (vorne[3] === 0) continue;
         vorne[3] *= deckkraft;
         const hinten = untergrund(el);
-        const wert = kontrast(helligkeit(ueber(vorne, hinten)), helligkeit(hinten));
+        const wert = kontrast(
+          helligkeit(ueber(vorne, hinten)),
+          helligkeit(hinten),
+        );
 
         const px = parseFloat(stil.fontSize) * geerbterZoom(el);
         const fett = parseInt(stil.fontWeight, 10) >= 700;
@@ -335,10 +355,13 @@ async function messen() {
         Alles andere gehört mit `no-print` ausgeblendet. Wer ein neues
         Bedienelement einbaut, entscheidet hier bewusst, statt es zu vergessen.
       */
-      const toteKnoepfe = [...document.querySelectorAll('button, [role="button"]')]
+      const toteKnoepfe = [
+        ...document.querySelectorAll('button, [role="button"]'),
+      ]
         .filter((el) => {
           const stil = getComputedStyle(el);
-          if (stil.display === "none" || stil.visibility === "hidden") return false;
+          if (stil.display === "none" || stil.visibility === "hidden")
+            return false;
           if (el.getBoundingClientRect().width === 0) return false;
           if (el.getAttribute("role") === "tab") return false;
           return !el.closest("[data-druckbar]");
@@ -350,7 +373,14 @@ async function messen() {
           klasse: String(el.className).slice(0, 50),
         }));
 
-      return { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe };
+      return {
+        schwach,
+        winzig,
+        abgeschnitten,
+        festgeheftet,
+        ungeladen,
+        toteKnoepfe,
+      };
     },
     { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
   );
@@ -382,7 +412,11 @@ function textEinsammeln() {
     // als fehlendes Wort, ein Gebilde aus drei Abschnitten, das es nirgends
     // gibt.
     const unsichtbar = (el) => {
-      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+      for (
+        let n = el;
+        n && n !== document.documentElement;
+        n = n.parentElement
+      ) {
         if (n.classList?.contains("no-print")) return true;
         const s = getComputedStyle(n);
         if (s.display === "none" || s.visibility === "hidden") return true;
@@ -391,7 +425,10 @@ function textEinsammeln() {
       return false;
     };
 
-    const laeufer = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const laeufer = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+    );
     const stuecke = [];
     for (let n = laeufer.nextNode(); n; n = laeufer.nextNode()) {
       const t = n.textContent.trim();
@@ -410,9 +447,13 @@ for (const pfad of gepruefteSeiten) {
   // irgendetwas ausliefert, wo nichts sein sollte.
   const erwartet =
     pfad === UNBEKANNTE_ADRESSE || pfad === UNBEKANNTE_ADRESSE_EN ? 404 : 200;
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "domcontentloaded",
+  });
   if (!antwort || antwort.status() !== erwartet) {
-    console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`);
+    console.log(
+      `  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`,
+    );
     fehler++;
     continue;
   }
@@ -486,8 +527,14 @@ for (const pfad of gepruefteSeiten) {
     }
   });
   await seite.waitForTimeout(50);
-  const { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe } =
-    await messen();
+  const {
+    schwach,
+    winzig,
+    abgeschnitten,
+    festgeheftet,
+    ungeladen,
+    toteKnoepfe,
+  } = await messen();
   const textImDruck = await textEinsammeln();
   await seite.emulateMedia({ media: "screen" });
 
@@ -510,7 +557,8 @@ for (const pfad of gepruefteSeiten) {
   const fehlend = [];
   for (const [wort, anzahl] of amBildschirm) {
     const da = imDruck.get(wort) ?? 0;
-    if (da < anzahl) fehlend.push(anzahl - da > 1 ? `${wort} (${anzahl - da}×)` : wort);
+    if (da < anzahl)
+      fehlend.push(anzahl - da > 1 ? `${wort} (${anzahl - da}×)` : wort);
   }
 
   if (
@@ -545,8 +593,8 @@ for (const pfad of gepruefteSeiten) {
   }
   for (const s of toteKnoepfe) {
     console.log(
-      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}"), `
-        + `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
+      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}"), ` +
+        `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
     );
   }
   for (const s of festgeheftet) {
@@ -595,7 +643,9 @@ for (const pfad of ["/", "/en"]) {
   const gruppen = await seite.evaluate(() =>
     [...document.querySelectorAll('[role="tablist"]')].map((tl) => ({
       name: tl.getAttribute("aria-label"),
-      reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) => t.textContent.trim()),
+      reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) =>
+        t.textContent.trim(),
+      ),
     })),
   );
 
@@ -685,7 +735,9 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     viewport: { width: PAPIERBREITE, height: PAPIERHOEHE },
   });
   await seite.emulateMedia({ media: "print" });
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (antwort?.status() === 200) {
     await seite.waitForTimeout(600);
     const hoehe = await seite.evaluate(() => {
@@ -699,7 +751,9 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
           `Gedruckt wären das zwei Seiten.`,
       );
     } else {
-      console.log(`  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`);
+      console.log(
+        `  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`,
+      );
     }
 
     /* Und die Zusage selbst, nicht nur ihr Stellvertreter.
@@ -755,7 +809,9 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
       };
     });
     await mitZaehler.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
-    const knopf = mitZaehler.locator("button").filter({ hasText: /Drucken|Print/ });
+    const knopf = mitZaehler
+      .locator("button")
+      .filter({ hasText: /Drucken|Print/ });
     if ((await knopf.count()) === 0) {
       blattfunde.push(`${pfad}: kein Knopf, der den Druckdialog öffnet`);
     } else {

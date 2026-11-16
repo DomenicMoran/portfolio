@@ -26,7 +26,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
   /* Auch eine Seite mit `noindex` bekommt eine Karte, sobald jemand ihre
      Adresse teilt. Ohne eigene Angabe trug sie den Titel der Startseite. */
-  ...vorschaukarten({ titel: kartenTitel("Datenschutz"), lang: "de", pfad: "/datenschutz" }),
+  ...vorschaukarten({
+    titel: kartenTitel("Datenschutz"),
+    lang: "de",
+    pfad: "/datenschutz",
+  }),
   // Ohne eigenen Eintrag erbt diese Seite den Canonical des
   // Wurzel-Layouts, und der zeigt auf die Startseite: Die Rechtsseite
   // erklärt sich damit selbst zum Duplikat einer ganz anderen Seite.
@@ -67,7 +71,7 @@ export default function Datenschutz() {
   return (
     <>
       <main>
-        <h1 className="text-title mb-10 text-ink">Datenschutzerklärung</h1>
+        <h1 className="text-title text-ink mb-10">Datenschutzerklärung</h1>
 
         <EnglishNote />
 
@@ -83,7 +87,7 @@ export default function Datenschutz() {
              24 px aus WCAG 2.5.8. Das Impressum nebenan hatte den Ausgleich
              schon, diese Stelle nicht, dieselbe Regel, zwei Fassungen.
              Optisch ändert sich nichts. */
-            className="-my-1 py-1 text-acid underline underline-offset-4"
+            className="text-acid -my-1 py-1 underline underline-offset-4"
           >
             {site.email}
           </a>
@@ -120,9 +124,9 @@ export default function Datenschutz() {
           Zeitpunkt, aufgerufene Ressource, User-Agent, Referrer).
           Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO, also das berechtigte
           Interesse am sicheren und stabilen Betrieb. Der Hoster hält diese
-          Protokolle einen Tag lang vor und löscht sie danach automatisch;
-          eine eigene Speicherung, Auswertung oder Weitergabe findet nicht
-          statt. Vercel ist nach dem EU-US-Datenschutzrahmen zertifiziert; die
+          Protokolle einen Tag lang vor und löscht sie danach automatisch; eine
+          eigene Speicherung, Auswertung oder Weitergabe findet nicht statt.
+          Vercel ist nach dem EU-US-Datenschutzrahmen zertifiziert; die
           Übermittlung in die USA stützt sich damit auf den
           Angemessenheitsbeschluss der Europäischen Kommission vom 10. Juli 2023
           und ergänzend auf die EU-Standardvertragsklauseln.
@@ -169,25 +173,25 @@ export default function Datenschutz() {
           Außer dem Hosting gibt es für den übrigen Portfolio-Inhalt keinen
           weiteren Auftragsverarbeiter. Die meisten Seiten mit Inhalt werden
           vorab erzeugt und als fertige Dateien ausgeliefert. Die Fehlerseite
-          ist eine Ausnahme: Sie wird bei der Anfrage zusammengesetzt, um in
-          der Sprache zu antworten, unter der du gekommen bist. Personalisierte
-          Seiten unter
-          `/for/[slug]` werden serverseitig etwa stündlich neu erzeugt (ISR) und
-          lesen dabei ausschließlich öffentliche Zeilen aus der Supabase-Tabelle
-          `targeted_companies`; Besucher können dort nichts eintragen oder
-          ändern. Supabase Inc. ist dafür Auftragsverarbeiter, nur für diese
-          Funktion. Diese Website lädt keine Skripte, Schriften, Karten, Videos
-          oder Analysedienste von fremden Servern nach, weder beim Aufruf noch
-          bei einer Interaktion, außer auf den `/for/*`-Seiten können Firmenlogos
-          und Favicons als Bilder von externen HTTPS-Adressen geladen werden
-          (Content-Security-Policy `img-src`). Vor jeder Auslieferung läuft beim
-          Hoster eine kleine Funktion: Sie liest den angefragten Pfad, setzt
-          daraus die Sprache der Fehlerseite und weist die meisten Anfragen ab,
-          die Daten senden wollen. Sie speichert nichts und gibt nichts weiter.
-          Ein signierter POST-Endpunkt `/api/revalidate` existiert ausschließlich
-          zur Cache-Invalidierung nach dem lokalen Pitch-CLI-Upsert; er ist per
-          Geheimnis im Header geschützt, kein Kontaktformular und für Besucher
-          ohne dieses Geheimnis nicht sinnvoll nutzbar.
+          ist eine Ausnahme: Sie wird bei der Anfrage zusammengesetzt, um in der
+          Sprache zu antworten, unter der du gekommen bist. Personalisierte
+          Seiten unter `/for/[slug]` werden serverseitig etwa stündlich neu
+          erzeugt (ISR) und lesen dabei ausschließlich öffentliche Zeilen aus
+          der Supabase-Tabelle `targeted_companies`; Besucher können dort nichts
+          eintragen oder ändern. Supabase Inc. ist dafür Auftragsverarbeiter,
+          nur für diese Funktion. Diese Website lädt keine Skripte, Schriften,
+          Karten, Videos oder Analysedienste von fremden Servern nach, weder
+          beim Aufruf noch bei einer Interaktion, außer auf den `/for/*`-Seiten
+          können Firmenlogos und Favicons als Bilder von externen HTTPS-Adressen
+          geladen werden (Content-Security-Policy `img-src`). Vor jeder
+          Auslieferung läuft beim Hoster eine kleine Funktion: Sie liest den
+          angefragten Pfad, setzt daraus die Sprache der Fehlerseite und weist
+          die meisten Anfragen ab, die Daten senden wollen. Sie speichert nichts
+          und gibt nichts weiter. Ein signierter POST-Endpunkt `/api/revalidate`
+          existiert ausschließlich zur Cache-Invalidierung nach dem lokalen
+          Pitch-CLI-Upsert; er ist per Geheimnis im Header geschützt, kein
+          Kontaktformular und für Besucher ohne dieses Geheimnis nicht sinnvoll
+          nutzbar.
         </Section>
 
         <Section title="Deine Rechte">
@@ -238,8 +242,8 @@ function Section({
 }) {
   return (
     <section className="mb-10">
-      <h2 className="mb-3 text-lg font-semibold text-ink">{title}</h2>
-      <p className="text-sm leading-relaxed text-ink-dim">{children}</p>
+      <h2 className="text-ink mb-3 text-lg font-semibold">{title}</h2>
+      <p className="text-ink-dim text-sm leading-relaxed">{children}</p>
     </section>
   );
 }

@@ -48,8 +48,12 @@ let gemessen = 0;
 
 for (const pfad of [...gebauteSeiten(), ...FEHLERSEITEN]) {
   for (const breite of [1440, 390]) {
-    const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
-    const antwort = await seite.goto(basis + pfad, { waitUntil: "networkidle" });
+    const seite = await browser.newPage({
+      viewport: { width: breite, height: 900 },
+    });
+    const antwort = await seite.goto(basis + pfad, {
+      waitUntil: "networkidle",
+    });
     const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
     if (!antwort || antwort.status() !== erwartet) {
       await seite.close();
@@ -95,12 +99,14 @@ for (const pfad of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       }
       return {
         abgeschnitten: [...new Set(raus)],
-        waagerecht: document.documentElement.scrollWidth > window.innerWidth + 1,
+        waagerecht:
+          document.documentElement.scrollWidth > window.innerWidth + 1,
       };
     });
 
     for (const a of d.abgeschnitten) funde.push(`${pfad} @ ${breite}: ${a}`);
-    if (d.waagerecht) funde.push(`${pfad} @ ${breite}: Dokument scrollt waagerecht`);
+    if (d.waagerecht)
+      funde.push(`${pfad} @ ${breite}: Dokument scrollt waagerecht`);
     await seite.close();
   }
 }
@@ -109,7 +115,9 @@ await browser.close();
 beenden();
 
 if (funde.length) {
-  console.log(`\n${funde.length} Stelle(n) verlieren Inhalt bei größerem Textabstand:\n`);
+  console.log(
+    `\n${funde.length} Stelle(n) verlieren Inhalt bei größerem Textabstand:\n`,
+  );
   for (const f of funde.slice(0, 20)) console.log("  " + f);
   process.exit(1);
 }

@@ -37,7 +37,8 @@ export function Counter({
   const animatable = target !== null;
   const suffix = form.zusatz;
 
-  const endwert = target !== null ? schreibe(target, form, lang) + suffix : value;
+  const endwert =
+    target !== null ? schreibe(target, form, lang) + suffix : value;
 
   /**
    * Der Endwert steht von Anfang an da, die Animation kommt obendrauf.
@@ -101,8 +102,7 @@ export function Counter({
         /* Der Zusatz gehört mit: „100“ ohne das Prozentzeichen ist eine andere
            Aussage, und er stand während der Animation eine Sekunde lang nicht
            da. */
-        onUpdate: (latest) =>
-          setDisplay(schreibe(latest, form, lang) + suffix),
+        onUpdate: (latest) => setDisplay(schreibe(latest, form, lang) + suffix),
       });
     };
 

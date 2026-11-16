@@ -21,7 +21,11 @@ export function ContentProvider({
   content: Content;
   children: ReactNode;
 }) {
-  return <ContentContext.Provider value={content}>{children}</ContentContext.Provider>;
+  return (
+    <ContentContext.Provider value={content}>
+      {children}
+    </ContentContext.Provider>
+  );
 }
 
 export function useContent(): Content {

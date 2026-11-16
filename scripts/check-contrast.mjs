@@ -218,7 +218,12 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
             bereich.selectNodeContents(knoten);
             for (const r of bereich.getClientRects())
               if (r.width >= 1 && r.height >= 1)
-                zeilen.push({ x: r.x, y: r.y, breite: r.width, hoehe: r.height });
+                zeilen.push({
+                  x: r.x,
+                  y: r.y,
+                  breite: r.width,
+                  hoehe: r.height,
+                });
           }
 
           return {
@@ -228,10 +233,15 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
               (n) => n.nodeType === 3 && n.textContent.trim() !== "",
             ),
             versteckt: el.closest("[aria-hidden='true']") !== null,
-            nurZeichen: /^[·•|/–,,.:;›»→←↑↓+*-]+$/.test((el.textContent || "").trim()),
+            nurZeichen: /^[·•|/–,,.:;›»→←↑↓+*-]+$/.test(
+              (el.textContent || "").trim(),
+            ),
             groesse: parseFloat(stil.fontSize),
             gewicht: parseInt(stil.fontWeight, 10) || 400,
-            text: (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40),
+            text: (el.textContent || "")
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 40),
             kasten: {
               x: kasten.x,
               y: kasten.y,
@@ -301,8 +311,14 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
          bezogen; ein Rechteck außerhalb lehnt Playwright ab. */
       const links = Math.max(0, Math.floor(stelle.kasten.x));
       const oben = Math.max(0, Math.floor(stelle.kasten.y));
-      const rechts = Math.min(breite, Math.ceil(stelle.kasten.x + stelle.kasten.breite));
-      const unten = Math.min(900, Math.ceil(stelle.kasten.y + stelle.kasten.hoehe));
+      const rechts = Math.min(
+        breite,
+        Math.ceil(stelle.kasten.x + stelle.kasten.breite),
+      );
+      const unten = Math.min(
+        900,
+        Math.ceil(stelle.kasten.y + stelle.kasten.hoehe),
+      );
       const ausschnitt = {
         x: links,
         y: oben,
@@ -340,7 +356,9 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         await ort.evaluate((el) => {
           el.style.removeProperty("text-decoration-line");
         });
-        funde.push(`${route} @ ${breite}: ${wahl.slice(0, 70)}, nicht aufnehmbar`);
+        funde.push(
+          `${route} @ ${breite}: ${wahl.slice(0, 70)}, nicht aufnehmbar`,
+        );
         continue;
       }
       await ort.evaluate((el) => {
@@ -361,7 +379,10 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       });
 
       const roh = async (bild) =>
-        await sharp(bild).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+        await sharp(bild)
+          .ensureAlpha()
+          .raw()
+          .toBuffer({ resolveWithObject: true });
       const { data: mit, info } = await roh(mitSchrift);
       const { data: ohne } = await roh(ohneSchrift);
 
@@ -400,7 +421,11 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
         const punktNr = i / info.channels;
         const px = punktNr % info.width;
         const py = Math.floor(punktNr / info.width);
-        if (!zeilen.some((z) => px >= z.x0 && px < z.x1 && py >= z.y0 && py < z.y1))
+        if (
+          !zeilen.some(
+            (z) => px >= z.x0 && px < z.x1 && py >= z.y0 && py < z.y1,
+          )
+        )
           continue;
         const hinten = [ohne[i], ohne[i + 1], ohne[i + 2]];
         const erwartet = [0, 1, 2].map(
@@ -449,7 +474,8 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
       if (hoechsteDeckung >= 0.4)
         for (let i = 0; i < mit.length; i += info.channels) {
           const punktNr = i / info.channels;
-          if (deckungen[punktNr] < schwelle || deckungen[punktNr] === 0) continue;
+          if (deckungen[punktNr] < schwelle || deckungen[punktNr] === 0)
+            continue;
           kernpunkte++;
         }
 
@@ -458,7 +484,11 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
           const punktNr = i / info.channels;
           const px = punktNr % info.width;
           const py = Math.floor(punktNr / info.width);
-          if (!zeilen.some((z) => px >= z.x0 && px < z.x1 && py >= z.y0 && py < z.y1))
+          if (
+            !zeilen.some(
+              (z) => px >= z.x0 && px < z.x1 && py >= z.y0 && py < z.y1,
+            )
+          )
             continue;
           const hinten = [ohne[i], ohne[i + 1], ohne[i + 2]];
           const erwartet = [0, 1, 2].map(
@@ -478,7 +508,8 @@ for (const route of [...gebauteSeiten(), ...FEHLERSEITEN]) {
 
       gemessen++;
       const gross =
-        stelle.groesse >= 24 || (stelle.groesse >= 18.66 && stelle.gewicht >= 700);
+        stelle.groesse >= 24 ||
+        (stelle.groesse >= 18.66 && stelle.gewicht >= 700);
       const soll = gross ? 3 : 4.5;
       if (schlechtester < schwaechster.wert)
         schwaechster = {

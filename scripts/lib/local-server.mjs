@@ -29,9 +29,13 @@ export async function starteServer() {
   const basis = `http://127.0.0.1:${port}`;
 
   const nextBin = createRequire(import.meta.url).resolve("next/dist/bin/next");
-  const server = spawn(process.execPath, [nextBin, "start", "-p", String(port)], {
-    stdio: "ignore",
-  });
+  const server = spawn(
+    process.execPath,
+    [nextBin, "start", "-p", String(port)],
+    {
+      stdio: "ignore",
+    },
+  );
 
   /**
    * Den ganzen Baum beenden, nicht nur den Anfang.
@@ -104,7 +108,9 @@ async function freierPort() {
 async function warteAufAntwort(adresse, versuche = 60) {
   for (let i = 0; i < versuche; i++) {
     try {
-      const antwort = await fetch(adresse, { signal: AbortSignal.timeout(1000) });
+      const antwort = await fetch(adresse, {
+        signal: AbortSignal.timeout(1000),
+      });
       if (antwort.ok) return true;
     } catch {
       // Noch nicht oben. Nächster Versuch.

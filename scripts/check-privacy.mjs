@@ -128,7 +128,6 @@ for (const pfad of pfade) {
       if (/druck|print|schließ|close/.test(name)) continue;
       knopf.click();
     }
-
   });
   /* Und jedes Feld, das kein Knopf ist, über echte Tasten, nicht über das DOM.
 
@@ -275,11 +274,14 @@ if (!vorgegebeneBasis) {
      unter der jemand gekommen ist. */
   const vorab = new Set(
     Object.keys(
-      JSON.parse(readFileSync(join(".next", "prerender-manifest.json"), "utf8")).routes ?? {},
+      JSON.parse(readFileSync(join(".next", "prerender-manifest.json"), "utf8"))
+        .routes ?? {},
     ),
   );
   const routen = Object.values(
-    JSON.parse(readFileSync(join(".next", "app-path-routes-manifest.json"), "utf8")),
+    JSON.parse(
+      readFileSync(join(".next", "app-path-routes-manifest.json"), "utf8"),
+    ),
   );
   /* Muster mit `[slug]` stehen im Routen-Verzeichnis, ihre fertigen Seiten im
      Vorab-Verzeichnis. Gemeint sind hier die Ausgaben, also zählt, ob es zu
@@ -306,11 +308,18 @@ if (!vorgegebeneBasis) {
   /* Ein Formular in einer ausgelieferten Seite. */
   for (const datei of gebauteSeiten()) {
     const html = readFileSync(
-      join(".next", "server", "app", datei === "/" ? "index.html" : `${datei.slice(1)}.html`),
+      join(
+        ".next",
+        "server",
+        "app",
+        datei === "/" ? "index.html" : `${datei.slice(1)}.html`,
+      ),
       "utf8",
     );
     if (/<form[\s>]/i.test(html)) {
-      zusagen.push(`${datei} enthält ein Formular. Die Erklärung sagt, es gebe keines.`);
+      zusagen.push(
+        `${datei} enthält ein Formular. Die Erklärung sagt, es gebe keines.`,
+      );
     }
   }
 
@@ -335,7 +344,12 @@ if (!vorgegebeneBasis) {
    * dieselbe Warnung wie an jedem anderen Tag. */
   for (const datei of gebauteSeiten()) {
     const html = readFileSync(
-      join(".next", "server", "app", datei === "/" ? "index.html" : `${datei.slice(1)}.html`),
+      join(
+        ".next",
+        "server",
+        "app",
+        datei === "/" ? "index.html" : `${datei.slice(1)}.html`,
+      ),
       "utf8",
     );
     for (const treffer of html.matchAll(/content="([^"]*localhost[^"]*)"/g)) {
@@ -357,7 +371,11 @@ if (!vorgegebeneBasis) {
         if (norm.includes("src/app/api/revalidate/route.")) continue;
         const quelle = readFileSync(pfad, "utf8");
         for (const verb of VERBEN) {
-          if (new RegExp(`export\\s+(async\\s+)?(function|const)\\s+${verb}\\b`).test(quelle)) {
+          if (
+            new RegExp(
+              `export\\s+(async\\s+)?(function|const)\\s+${verb}\\b`,
+            ).test(quelle)
+          ) {
             zusagen.push(
               `${pfad} nimmt ${verb} entgegen. Die Erklärung erlaubt nur den ` +
                 `signierten POST /api/revalidate.`,

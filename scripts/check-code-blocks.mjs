@@ -79,7 +79,8 @@ let geprueft = 0;
 const nachSprache = {};
 
 for (const datei of readdirSync(ORDNER).sort()) {
-  if (!datei.endsWith(".ts") || ["types.ts", "index.ts"].includes(datei)) continue;
+  if (!datei.endsWith(".ts") || ["types.ts", "index.ts"].includes(datei))
+    continue;
   const quelle = readFileSync(join(ORDNER, datei), "utf8");
 
   for (const block of bloeckeAus(quelle)) {
@@ -123,7 +124,9 @@ for (const datei of readdirSync(ORDNER).sort()) {
  * weil nicht jedes Zeichen gleich breit setzt.
  */
 const GRENZE = 72;
-for (const datei of readdirSync(ORDNER).filter((f) => /^(de|en)-.*\.ts$/.test(f))) {
+for (const datei of readdirSync(ORDNER).filter((f) =>
+  /^(de|en)-.*\.ts$/.test(f),
+)) {
   const quelle = readFileSync(join(ORDNER, datei), "utf8");
   for (const block of bloeckeAus(quelle)) {
     block.code.split("\n").forEach((zeile, i) => {

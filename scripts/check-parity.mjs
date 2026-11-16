@@ -61,7 +61,6 @@ const artikelpfade = gebauteSeiten().filter((pfad) =>
   /^\/artikel\/[^/]+$/.test(pfad),
 );
 
-
 /**
  * Wie weit die Textmenge zweier Fassungen auseinanderliegen darf.
  *
@@ -80,7 +79,9 @@ const PAARE = [...FESTE_PAARE];
     await leser.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
     const englisch = await leser.evaluate(() => {
       const l = document.querySelector('link[rel="alternate"][hreflang="en"]');
-      return l ? new URL(l.getAttribute("href"), location.origin).pathname : null;
+      return l
+        ? new URL(l.getAttribute("href"), location.origin).pathname
+        : null;
     });
     if (!englisch || !englisch.startsWith("/en/")) {
       throw new Error(`${pfad} nennt keine englische Fassung im Kopf.`);
@@ -93,7 +94,6 @@ const PAARE = [...FESTE_PAARE];
   }
   await leser.close();
 }
-
 
 /** Was ein Leser sieht, in Zahlen. */
 async function zaehle(pfad, mitZahlen = false) {
@@ -148,9 +148,7 @@ async function zaehle(pfad, mitZahlen = false) {
           .filter((z) => z.length > 2)
           .filter((z) => !/^\d{1,2}[.,]\d{1,2}[.,]\d{2,4}$/.test(z))
           .map((z) =>
-            z
-              .replace(/[.,](?=\d{3}\b)/g, "")
-              .replace(/[.,](?=\d{2}\b)/g, "."),
+            z.replace(/[.,](?=\d{3}\b)/g, "").replace(/[.,](?=\d{2}\b)/g, "."),
           ),
       ),
     ]

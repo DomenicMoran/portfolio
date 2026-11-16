@@ -32,7 +32,9 @@ describe("Schriftgewichte der Vorschaubilder", () => {
 
   it.each(ERZEUGER)("%s verlangt nur Gewichte, die es gibt", (pfad) => {
     const quelle = readFileSync(pfad, "utf8");
-    const verlangt = [...quelle.matchAll(/fontWeight:\s*(\d+)/g)].map((m) => Number(m[1]));
+    const verlangt = [...quelle.matchAll(/fontWeight:\s*(\d+)/g)].map((m) =>
+      Number(m[1]),
+    );
 
     /* Ein Erzeuger ohne jedes Gewicht wäre kein Erfolg, sondern ein Zeichen
        dafür, dass der Pfad nicht mehr stimmt. */
@@ -49,6 +51,8 @@ describe("Schriftgewichte der Vorschaubilder", () => {
     /* Die vier Bytes am Anfang sind die Kennung einer TrueType-Datei. Eine
        leere oder halb geladene Datei bringt satori sonst erst zur Bauzeit
        zu Fall, und dann fehlt die Karte ganz. */
-    expect([...halbfett!.data.subarray(0, 4)]).toEqual([0x00, 0x01, 0x00, 0x00]);
+    expect([...halbfett!.data.subarray(0, 4)]).toEqual([
+      0x00, 0x01, 0x00, 0x00,
+    ]);
   });
 });
