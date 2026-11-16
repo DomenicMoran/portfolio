@@ -22,14 +22,14 @@ export type TargetedCompany = {
   anrede?: TargetedAnrede | null;
 };
 
-/** Seiten vor der Sie-Regel (alle Mails bis CEO-261 gingen in du-Form raus) bleiben du, bis die Spalte gesetzt ist. */
+/** Seiten vor der Sie-Regel bleiben du, bis die anrede-Spalte gesetzt ist. Env-Slugs nur serverseitig (targeted-du-slugs.server.ts). */
 const LEGACY_DU_BEFORE = Date.parse("2026-10-14T16:00:00Z");
-/** Neue Firmen, die Ã¶ffentlich duzen, solange die anrede-Spalte noch nicht migriert ist. Quelle steht im duSource des Payloads. */
-const DU_SLUGS = new Set(["omul", "allverto", "campai", "klardaten", "arbeitsschutz24", "alv", "twinwin"]);
 
-export function resolveAnrede(company: Pick<TargetedCompany, "slug" | "created_at" | "anrede">): TargetedAnrede {
-  if (company.anrede === "sie" || company.anrede === "du") return company.anrede;
-  if (DU_SLUGS.has(company.slug)) return "du";
+export function resolveAnrede(
+  company: Pick<TargetedCompany, "slug" | "created_at" | "anrede">,
+): TargetedAnrede {
+  if (company.anrede === "sie" || company.anrede === "du")
+    return company.anrede;
   const created = Date.parse(company.created_at);
   return Number.isFinite(created) && created < LEGACY_DU_BEFORE ? "du" : "sie";
 }
@@ -37,7 +37,9 @@ export function resolveAnrede(company: Pick<TargetedCompany, "slug" | "created_a
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export async function getTargetedCompany(slug: string): Promise<TargetedCompany | null> {
+export async function getTargetedCompany(
+  slug: string,
+): Promise<TargetedCompany | null> {
   if (!supabaseUrl || !supabaseAnonKey) return null;
 
   const url = new URL("/rest/v1/targeted_companies", supabaseUrl);
@@ -47,7 +49,10 @@ export async function getTargetedCompany(slug: string): Promise<TargetedCompany 
 
   try {
     const response = await fetch(url, {
-      headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${supabaseAnonKey}` },
+      headers: {
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`,
+      },
       next: { revalidate: 3600, tags: [`targeted-company:${slug}`] },
     });
     // A personalised page must never turn a temporary CRM/database problem into
