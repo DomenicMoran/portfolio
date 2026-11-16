@@ -773,8 +773,8 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     const hoehe = await seite.evaluate(() => {
       const el = document.querySelector(".onepager");
       if (!el) return null;
-      /* \zoom\ auf \.onepager\ (derzeit 0,85) wird je nach Chromium
-         in \getBoundingClientRect\ eingerechnet oder nicht. Auf dem
+      /* `zoom` auf `.onepager` (derzeit 0,85) wird je nach Chromium
+         in `getBoundingClientRect` eingerechnet oder nicht. Auf dem
          CI-Runner (Linux) kam dadurch 1157 px unskaliert an, während
          derselbe Druck eine PDF-Seite ergab. Visuelle Höhe verwenden. */
       const zoomRoh = parseFloat(getComputedStyle(el).zoom);
@@ -787,17 +787,12 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
           : rechteck;
       return Math.round(visuell);
     });
-    if (hoehe === null) blattfunde.push(`${pfad}: kein Element mit .onepager`);
-    else if (hoehe > BLATTGRENZE) {
-      blattfunde.push(
-        `${pfad}: ${hoehe} px hoch, ${BLATTGRENZE} sind das Blatt. ` +
-          `Gedruckt wären das zwei Seiten.`,
-      );
-    } else {
-      console.log(
-        `  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`,
-      );
-    }
+    /* Die Rechteckhöhe ist eine Näherung und je nach Chromium (Zoom auf
+       `.onepager`) nicht dieselbe Zahl wie der tatsächliche Druck. Auf dem
+       CI-Runner war `/onepager` 1157 px hoch bei 1040 px Grenze, während
+       `page.pdf()` eine Seite lieferte. Maßgeblich ist der Druck, den der
+       Knopf „Drucken / PDF" auslöst. Die Höhe wird weiter ausgegeben,
+       damit ein Annähern an die Grenze sichtbar bleibt. */
 
     /* Und die Zusage selbst, nicht nur ihr Stellvertreter.
 
@@ -822,14 +817,25 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     const seitenzahl = (
       gedruckt.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []
     ).length;
+    if (hoehe === null) {
+      blattfunde.push(`${pfad}: kein Element mit .onepager`);
+    }
     if (seitenzahl !== 1) {
+      const hoeheTeil = hoehe === null ? "" : ` Die Messhöhe war ${hoehe} px.`;
       blattfunde.push(
         `${pfad}: Der Druck aus dem Browser ergibt ${seitenzahl} Seiten. ` +
-          `Der Knopf auf dem Blatt heißt „Drucken / PDF", und das ist, was ` +
-          `dabei herauskommt.`,
+          `Der Knopf auf dem Blatt heißt „Drucken / PDF“, und das ist, was ` +
+          `dabei herauskommt.${hoeheTeil}`,
       );
     } else {
       gedruckteBlaetter++;
+      const hoeheTeil =
+        hoehe === null
+          ? "PDF eine Seite"
+          : hoehe > BLATTGRENZE
+            ? `PDF eine Seite, Messhöhe ${hoehe} px über der ${BLATTGRENZE}-px-Näherung`
+            : `${hoehe} von ${BLATTGRENZE} px`;
+      console.log(`  ok ${pfad} auf einem Blatt (${hoeheTeil})`);
     }
 
     /* Und der Knopf, der den Druck auslöst.
