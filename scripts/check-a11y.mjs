@@ -515,7 +515,7 @@ async function tafelzeiten(reducedMotion) {
     const ziel = await knopf.getAttribute("aria-controls");
     if (!ziel) continue;
     const hatReiter = await seite
-      .locator("#" + CSS.escape(ziel) + " [role=tablist]")
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
       .count();
     if (hatReiter === 0) continue;
     await knopf.click();
