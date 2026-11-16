@@ -509,9 +509,8 @@ async function tafelzeiten(reducedMotion) {
   const zeiten = new Map();
   /* Eingeklappte Fallstudien öffnen: Die Reiterleisten liegen sonst in
      einem `hidden`-Block, und `scrollIntoViewIfNeeded` bricht ab. */
-  for (const knopf of await seite
-    .locator(".offenlegungs-schalter[aria-expanded=false]")
-    .all()) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
     const ziel = await knopf.getAttribute("aria-controls");
     if (!ziel) continue;
     const hatReiter = await seite
