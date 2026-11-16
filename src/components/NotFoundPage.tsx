@@ -74,7 +74,7 @@ export function NotFoundPage({
       <main className="relative flex flex-1 items-center overflow-hidden px-6 py-14 sm:py-20">
         <div aria-hidden className="absolute inset-0 -z-10">
           <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_40%,black,transparent_70%)]" />
-          <div className="glow-orb top-1/4 left-1/2 size-[26rem] -translate-x-1/2 bg-violet/12" />
+          <div className="glow-orb bg-acid/12 top-1/4 left-1/2 size-[26rem] -translate-x-1/2" />
         </div>
 
         <div className="mx-auto w-full max-w-2xl">
@@ -90,10 +90,10 @@ export function NotFoundPage({
             href={base === "" ? "/" : base}
             className="group -my-1 mb-10 inline-flex items-center gap-2.5 py-1"
           >
-            <span className="relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border border-acid/25 transition-colors group-hover:border-acid/60">
+            <span className="border-acid/25 group-hover:border-acid/60 relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border transition-colors">
               <Marke size={28} radius={0} />
             </span>
-            <span className="text-sm font-medium tracking-tight text-ink">
+            <span className="text-ink text-sm font-medium tracking-tight">
               {site.name}
             </span>
           </a>
@@ -104,7 +104,7 @@ export function NotFoundPage({
             {notFound.title}
           </h1>
 
-          <p className="mt-6 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
+          <p className="text-ink-dim mt-6 max-w-[58ch] leading-relaxed text-pretty">
             {notFound.body}
           </p>
 
@@ -127,7 +127,7 @@ export function NotFoundPage({
                      hat, klickt genau einen dieser Wege an. Beim Zeigen mit
                      der Maus lädt Next weiterhin vor. */
                   prefetch={false}
-                  className="inline-flex rounded-full border border-transparent bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
+                  className="bg-acid text-void hover:bg-ink inline-flex rounded-full border border-transparent px-5 py-2.5 text-sm font-medium transition-colors"
                 >
                   {notFound.home}
                 </Link>
@@ -137,7 +137,7 @@ export function NotFoundPage({
                   <Link
                     href={ziel.href}
                     prefetch={false}
-                    className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                    className="border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex rounded-full border px-5 py-2.5 text-sm transition-colors"
                   >
                     {ziel.label}
                   </Link>
@@ -147,7 +147,7 @@ export function NotFoundPage({
           </nav>
 
           {zweitsprache ? (
-            <p lang={zweitsprache.lang} className="mt-8 text-sm text-ink-faint">
+            <p lang={zweitsprache.lang} className="text-ink-faint mt-8 text-sm">
               {zweitsprache.notFound.otherLanguage.text}{" "}
               {/* `hrefLang`, weil dieser Verweis die Sprache wechselt.
 
@@ -160,7 +160,7 @@ export function NotFoundPage({
                 href={zweitsprache.lang === "en" ? "/en" : "/"}
                 prefetch={false}
                 hrefLang={zweitsprache.lang}
-                className="-my-1 py-1 text-acid underline underline-offset-4"
+                className="text-acid -my-1 py-1 underline underline-offset-4"
               >
                 {zweitsprache.notFound.otherLanguage.link}
               </Link>
@@ -183,7 +183,7 @@ export function NotFoundPage({
           darueber, gemessen an der ausgelieferten Seite bei 1440 px. */}
       <footer className="relative px-6 pb-10">
         <div className="mx-auto w-full max-w-2xl">
-          <p className="border-t border-line pt-6 text-sm text-ink-faint">
+          <p className="border-line text-ink-faint border-t pt-6 text-sm">
             {notFound.report}{" "}
             <a
               /* Eigener Betreff, nicht der allgemeine.
@@ -200,7 +200,7 @@ export function NotFoundPage({
                   ? [`${notFound.reportPath}: ${angefragt}`]
                   : undefined,
               )}
-              className="-my-1 py-1 text-acid underline underline-offset-4"
+              className="text-acid -my-1 py-1 underline underline-offset-4"
             >
               {site.email}
             </a>
@@ -227,12 +227,12 @@ export function NotFoundPage({
               Verweise um, mit Geist stehen sie nebeneinander.
 
               `min-h-[2lh]` hält beide Zustände auf derselben Höhe. */}
-          <p className="mt-4 flex min-h-[2lh] flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
+          <p className="text-ink-faint mt-4 flex min-h-[2lh] flex-wrap gap-x-4 gap-y-2 font-mono text-[11px]">
             <Link
               href="/impressum"
               prefetch={false}
               hrefLang="de"
-              className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+              className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
             >
               {content.footer.impressum}
             </Link>
@@ -240,7 +240,7 @@ export function NotFoundPage({
               href="/datenschutz"
               prefetch={false}
               hrefLang="de"
-              className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+              className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
             >
               {content.footer.datenschutz}
             </Link>

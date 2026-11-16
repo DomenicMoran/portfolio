@@ -447,8 +447,7 @@ export const hero = {
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "Fallstudien", href: "#work" },
   tryIt: {
-    before:
-      "Drei ausgelieferte Systeme rechnen hier im Browser mit:",
+    before: "Drei ausgelieferte Systeme rechnen hier im Browser mit:",
     label: "Gebetszeiten, Tagesbilanz und Checkout-Tafel ausprobieren",
     href: "#case-salati",
     after: "ohne eine Anfrage nach außen.",
@@ -479,8 +478,7 @@ export const hero = {
 export const produkte = {
   eyebrow: "Produkte",
   title: "Eigene Produkte",
-  lede:
-    "Fünf Systeme sind fertig ausgeliefert, der Rest ist Prototyp oder Werkstück. Alles unter Moran Software, allein gebaut und betrieben.",
+  lede: "Fünf Systeme sind fertig ausgeliefert, der Rest ist Prototyp oder Werkstück. Alles unter Moran Software, allein gebaut und betrieben.",
   fertigTitel: "In Produktion",
   liveCta: "Live ansehen",
   fertig: [
@@ -639,7 +637,11 @@ export const caseStudies: CaseStudy[] = [
       { value: "3", label: "Desktop-Plattformen" },
     ],
     links: [
-      { label: "mfc.domenicmoran.de", href: "https://mfc.domenicmoran.de", kind: "live" },
+      {
+        label: "mfc.domenicmoran.de",
+        href: "https://mfc.domenicmoran.de",
+        kind: "live",
+      },
       /* Die Begleit-App zu MFC steht öffentlich bei Google Play und war hier
          nirgends verlinkt. Sie fehlte damit auch in der Zählung der
          Store-Einträge, die sich aus genau diesen Verweisen ergibt — die
@@ -881,7 +883,7 @@ export const caseStudies: CaseStudy[] = [
     year: "2026",
     role: "Gründer & alleiniger Entwickler",
     statusLabel: "Live in Produktion",
-    accent: "violet",
+    accent: "acid",
     disclosure: {
       teaser:
         "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte.",
@@ -1096,7 +1098,7 @@ export const caseStudies: CaseStudy[] = [
     year: "2026",
     role: "Alleiniger Entwickler",
     statusLabel: "Im Eigenbetrieb",
-    accent: "cyan",
+    accent: "acid",
     problem:
       "Auf eine Berliner Wohnung kommen dreistellige Bewerberzahlen. Entscheidend ist nicht die beste Bewerbung, sondern die erste, und zwar innerhalb von Minuten nach Inseratsschaltung. Das ist ein Wettlauf, den ein Mensch strukturell nicht gewinnen kann, weil er schläft.",
     solution:
@@ -1167,7 +1169,7 @@ export const caseStudies: CaseStudy[] = [
        Prüfung eingereicht; der Warteschlangen-Status selbst liegt in der
        App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
-    accent: "violet",
+    accent: "acid",
     disclosure: {
       teaser:
         "Die erste Prüfung fand Ausreißer bis 30,5 Prozent — heute liegt die größte Abweichung bei 2,07.",
@@ -1452,7 +1454,7 @@ export const caseStudies: CaseStudy[] = [
        und dem Titel „Dartile". Bei Apple wartet inzwischen Fassung 1.2.0 auf
        `WAITING_FOR_REVIEW`. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
-    accent: "cyan",
+    accent: "acid",
     disclosure: {
       teaser:
         "Mit der Handykamera liegt die Erkennung im Feld bei rund 95 Prozent — deshalb schlägt sie vor und behauptet nicht.",
@@ -1604,7 +1606,7 @@ export const caseStudies: CaseStudy[] = [
        der Gruppe der zuletzt wartenden oder abgelehnten Fassungen, die bei
        Apple durch ist. */
     statusLabel: "Live in beiden Läden",
-    accent: "violet",
+    accent: "acid",
     disclosure: {
       teaser:
         "Gleiches Tempo für jedes Wort ist der Fehler: flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende.",
@@ -1760,7 +1762,7 @@ export const caseStudies: CaseStudy[] = [
        App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
-    accent: "violet",
+    accent: "acid",
     problem:
       "Ein Kleinunternehmer sammelt drei Sorten Papier, die nichts voneinander wissen: Bons für die Einnahmenüberschussrechnung, Rechnungen für die Gewährleistung, Kontoauszüge, die beides bestätigen sollen. Die Fristen daran sind hart und ungleich lang, und die eine, auf die es ankommt, ist nicht die, die jeder kennt. Die Werkzeuge, die diese Arbeit abnehmen, laden dafür jeden Beleg zu einem Anbieter hoch: Kontostände, Einkäufe, Aufenthaltsorte, alles in einer Datei.",
     solution:
@@ -1866,13 +1868,14 @@ export const caseStudies: CaseStudy[] = [
        auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
-    accent: "cyan",
+    accent: "acid",
     problem:
       "Dropshipping-Shops verkaufen billige Ware mit großem Aufschlag, und der Käufer kann den Unterschied nicht sehen: dieselbe Ware, dasselbe Foto, ein anderer Preis. Bewertungen sind gekauft, Siegel austauschbar, und niemand hat die Zeit, jede Seite gegen ihre Quellen zu prüfen.",
     solution:
       "Ein Shop-Link genügt. Vortex liest die Seite, prüft 36 Merkmale mit Beweis und gibt eine Punktzahl mit Begründung. Dazu der Preisvergleich: Was kostet dieselbe Ware bei AliExpress im Original? Die Auswertung läuft auf dem Gerät, kein geprüfter Shop-Aufruf verlässt es.",
     hardPart: {
-      title: "Eine ehrliche Bewertung darf kein Urteil über ein Unternehmen sein",
+      title:
+        "Eine ehrliche Bewertung darf kein Urteil über ein Unternehmen sein",
       body: "Der erste Lauf gegen einen echten US-Hersteller gab 70 von 100, allein wegen fehlendem deutschen Impressum, fehlender USt-IdNr. und fehlendem Rechnungskauf. Das ist keine Ungenauigkeit, sondern eine unhaltbare Behauptung über ein Unternehmen. Die Antwort war Zielmarkt- und Produktseiten-Erkennung und drei verengte Muster; sechs Tests halten den Fall fest. Danach: 4 von 100.",
     },
     highlights: [
@@ -1950,7 +1953,7 @@ export const caseStudies: CaseStudy[] = [
        App-Store-Connect-Konsole, auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
-    accent: "violet",
+    accent: "acid",
     problem:
       "Wer aus einem Lehrbuch, einer Vorlesung oder einem Foto lernen will, tippt Karten ab oder bezahlt einen Dienst, der den Lernstoff in eine Cloud lädt. Der Wiederholungsrhythmus, der über Behalten und Vergessen entscheidet, sitzt dann auf einem Server, den man nicht sieht.",
     solution:
@@ -2157,7 +2160,7 @@ export const caseStudies: CaseStudy[] = [
        auf die dieser Lauf keinen Zugriff hat. */
     statusLabel: "Live bei Google Play, iOS in Prüfung",
     nochNichtAusgeliefert: true,
-    accent: "violet",
+    accent: "acid",
     problem:
       "Wer sich fragt, was er letzten Dienstag gemacht hat, durchsucht Kalender, Fotos und Chat-Verläufe einzeln. Ein Gedächtnis, das alles zusammenführt, verlangt normalerweise, den ganzen Tag in eine Cloud hochzuladen.",
     solution:

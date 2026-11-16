@@ -61,7 +61,12 @@ const BAND = { breite: 169, hoehe: 24 } as const;
 function rechne(rest: number, aus: OutMode) {
   const start = performance.now();
   const alle = checkoutRoutes(rest, 3, aus, 5000);
-  return { rest, aus, alle, dauer: performance.now() - start as number | null };
+  return {
+    rest,
+    aus,
+    alle,
+    dauer: (performance.now() - start) as number | null,
+  };
 }
 
 /**
@@ -122,9 +127,9 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
     darts === 1
       ? "var(--color-acid)"
       : darts === 2
-        ? "var(--color-cyan)"
+        ? "var(--color-acid-dim)"
         : darts === 3
-          ? "var(--color-violet)"
+          ? "var(--color-ink-dim)"
           : "transparent";
 
   return (
@@ -136,14 +141,14 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
          vorgeschlagenen Weg finden, ohne sich an eine Beschriftung zu binden,
          die es in zwei Sprachen gibt. */
       data-demo="checkout"
-      className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
+      className="lit no-print border-line bg-surface/50 rounded-2xl border p-6 sm:p-7"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h4 className="text-base font-semibold tracking-tight text-ink">
+        <h4 className="text-ink text-base font-semibold tracking-tight">
           {demo.title}
         </h4>
         {/* Ohne Dauer bis zur ersten Bedienung, siehe `rechneOhneUhr`. */}
-        <p className="font-mono text-[11px] text-ink-faint">
+        <p className="text-ink-faint font-mono text-[11px]">
           {ergebnis.dauer === null
             ? demo.speedOhneZeit.replace("{n}", String(ergebnis.alle.length))
             : demo.speed
@@ -152,7 +157,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
         </p>
       </div>
 
-      <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+      <p className="text-ink-dim mt-2 max-w-[62ch] text-sm leading-relaxed text-pretty">
         {demo.lede}
       </p>
 
@@ -162,7 +167,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
             <span className="text-eyebrow">{demo.restLabel}</span>
             <span
               aria-hidden
-              className="font-mono text-sm text-ink tabular-nums"
+              className="text-ink font-mono text-sm tabular-nums"
             >
               {rest}
             </span>
@@ -178,7 +183,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
             step={1}
             value={rest}
             onChange={(e) => setRest(Number(e.target.value))}
-            className="mt-2 w-full accent-acid"
+            className="accent-acid mt-2 w-full"
           />
         </label>
 
@@ -192,8 +197,8 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
               onClick={() => setAus(m.id)}
               className={
                 aus === m.id
-                  ? "rounded-full border border-acid/60 bg-acid/10 px-3 py-1.5 font-mono text-[11px] text-acid"
-                  : "rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-dim hover:text-ink"
+                  ? "border-acid/60 bg-acid/10 text-acid rounded-full border px-3 py-1.5 font-mono text-[11px]"
+                  : "border-line text-ink-dim hover:text-ink rounded-full border px-3 py-1.5 font-mono text-[11px]"
               }
             >
               {m.label}
@@ -203,13 +208,13 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
       </div>
 
       {/* Der Weg, groß. Er ist die Antwort, alles andere ist Beleg. */}
-      <div className="mt-6 rounded-xl border border-line bg-base px-5 py-6">
+      <div className="border-line bg-base mt-6 rounded-xl border px-5 py-6">
         {bester ? (
           <>
             <p className="text-eyebrow">{demo.best}</p>
             <p
               data-checkout="weg"
-              className="mt-2 font-mono text-2xl text-ink tabular-nums sm:text-3xl"
+              className="text-ink mt-2 font-mono text-2xl tabular-nums sm:text-3xl"
             >
               {routeNotation(bester)}
             </p>
@@ -217,7 +222,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
         ) : (
           <>
             <p className="text-eyebrow">{demo.best}</p>
-            <p className="mt-2 text-sm leading-relaxed text-ink-dim">
+            <p className="text-ink-dim mt-2 text-sm leading-relaxed">
               {demo.noWay}
             </p>
           </>
@@ -226,12 +231,12 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
 
       {gezeigt.length > 1 ? (
         <>
-          <p className="mt-5 text-eyebrow">{demo.alternatives}</p>
+          <p className="text-eyebrow mt-5">{demo.alternatives}</p>
           <ul className="mt-2 flex flex-wrap gap-2">
             {gezeigt.slice(1).map((weg) => (
               <li
                 key={routeNotation(weg)}
-                className="rounded-lg border border-line px-3 py-1.5 font-mono text-[11px] text-ink-dim tabular-nums"
+                className="border-line text-ink-dim rounded-lg border px-3 py-1.5 font-mono text-[11px] tabular-nums"
               >
                 {routeNotation(weg)}
               </li>
@@ -246,7 +251,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
           der Punktwolke der Tagesrechnung: Ein DOM-Knoten je Wert wäre teurer
           als das Bild wert ist. */}
       <div className="mt-6">
-        <div className="relative overflow-hidden rounded-lg border border-line bg-base">
+        <div className="border-line bg-base relative overflow-hidden rounded-lg border">
           <svg
             viewBox={`0 0 ${BAND.breite} ${BAND.hoehe}`}
             preserveAspectRatio="none"
@@ -282,7 +287,7 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
 
         <div
           aria-hidden
-          className="flex flex-wrap justify-between gap-x-4 pt-1.5 font-mono text-[9px] text-ink-faint"
+          className="text-ink-faint flex flex-wrap justify-between gap-x-4 pt-1.5 font-mono text-[9px]"
         >
           <span>{REST.min}</span>
           <span>
@@ -293,11 +298,11 @@ export function CheckoutDemo({ inhalt }: { inhalt: Content }) {
         </div>
       </div>
 
-      <p className="mt-4 text-xs leading-relaxed text-ink-faint text-pretty">
+      <p className="text-ink-faint mt-4 text-xs leading-relaxed text-pretty">
         {demo.bogey.replace("{liste}", [...BOGEY_NUMBERS].reverse().join(", "))}
       </p>
 
-      <p className="mt-2 text-xs leading-relaxed text-ink-faint text-pretty">
+      <p className="text-ink-faint mt-2 text-xs leading-relaxed text-pretty">
         {demo.note}
       </p>
     </div>

@@ -46,7 +46,7 @@ export function About() {
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="glow-orb animate-float top-0 right-[10%] size-[30rem] bg-violet/10" />
+        <div className="glow-orb animate-float bg-acid/10 top-0 right-[10%] size-[30rem]" />
       </div>
 
       <div className="mx-auto max-w-6xl">
@@ -69,21 +69,21 @@ export function About() {
                     sizes="(max-width: 640px) 60vw, 220px"
                     className="w-[13.75rem] max-w-[60vw] shrink-0 rounded-2xl object-cover"
                   />
-                  <p className="text-lg leading-relaxed text-ink text-pretty sm:text-xl">
+                  <p className="text-ink text-lg leading-relaxed text-pretty sm:text-xl">
                     {about.paragraphs[0]}
                   </p>
                 </div>
               </Reveal>
             ) : (
               <Reveal>
-                <p className="text-lg leading-relaxed text-ink text-pretty sm:text-xl">
+                <p className="text-ink text-lg leading-relaxed text-pretty sm:text-xl">
                   {about.paragraphs[0]}
                 </p>
               </Reveal>
             )}
 
             <Reveal delay={0.04}>
-              <p className="max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+              <p className="text-ink-dim max-w-[62ch] text-sm leading-relaxed text-pretty">
                 {about.disclosure.bio.teaser}
               </p>
               <DisclosureButton
@@ -101,19 +101,19 @@ export function About() {
               className={cn("flex flex-col gap-6", !bio.offen && "hidden")}
             >
               {about.paragraphs.slice(1).map((paragraph, i) => (
-                  <Reveal key={paragraph} delay={i * 0.06}>
-                    <p className="leading-relaxed text-ink-dim text-pretty">
-                      {paragraph}
-                    </p>
-                  </Reveal>
-                ))}
+                <Reveal key={paragraph} delay={i * 0.06}>
+                  <p className="text-ink-dim leading-relaxed text-pretty">
+                    {paragraph}
+                  </p>
+                </Reveal>
+              ))}
 
               <motion.dl
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportOnce}
                 transition={{ staggerChildren: 0.08, delayChildren: 0.15 }}
-                className="mt-2 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
+                className="border-line mt-2 grid grid-cols-2 gap-x-6 gap-y-8 border-t pt-8 sm:grid-cols-4"
               >
                 {about.stats.map((stat) => (
                   <motion.div
@@ -130,14 +130,14 @@ export function About() {
                     className="flex flex-col-reverse gap-1"
                   >
                     <dt className="flex flex-col gap-0.5">
-                      <span className="text-xs leading-snug text-ink">
+                      <span className="text-ink text-xs leading-snug">
                         {stat.label}
                       </span>
-                      <span className="text-[11px] leading-snug text-ink-faint">
+                      <span className="text-ink-faint text-[11px] leading-snug">
                         {stat.note}
                       </span>
                     </dt>
-                    <dd className="text-2xl font-semibold tracking-tight text-acid tabular-nums sm:text-3xl">
+                    <dd className="text-acid text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
                       <Counter value={stat.value} />
                     </dd>
                   </motion.div>
@@ -145,7 +145,7 @@ export function About() {
               </motion.dl>
 
               <Reveal delay={0.1}>
-                <p className="max-w-[62ch] text-xs leading-relaxed text-ink-faint text-pretty">
+                <p className="text-ink-faint max-w-[62ch] text-xs leading-relaxed text-pretty">
                   {about.statsHinweis}
                 </p>
               </Reveal>
@@ -157,7 +157,7 @@ export function About() {
             <ol className="relative flex flex-col">
               <span
                 aria-hidden
-                className="absolute top-1.5 bottom-2 left-[5px] w-px bg-line"
+                className="bg-line absolute top-1.5 bottom-2 left-[5px] w-px"
               />
 
               {about.timeline.map((entry, i) => (
@@ -176,16 +176,16 @@ export function About() {
                         : "border-line bg-base",
                     )}
                   />
-                  <span className="font-mono text-[11px] tracking-wide text-ink-faint">
+                  <span className="text-ink-faint font-mono text-[11px] tracking-wide">
                     {entry.period}
                   </span>
-                  <h4 className="mt-1.5 text-sm font-semibold text-ink">
+                  <h4 className="text-ink mt-1.5 text-sm font-semibold">
                     {entry.title}
                   </h4>
-                  <p className="text-sm text-ink-dim">{entry.org}</p>
+                  <p className="text-ink-dim text-sm">{entry.org}</p>
                   <p
                     className={cn(
-                      "mt-2 text-xs leading-relaxed text-ink-faint text-pretty",
+                      "text-ink-faint mt-2 text-xs leading-relaxed text-pretty",
                       !bio.offen && "hidden",
                     )}
                   >
@@ -195,8 +195,8 @@ export function About() {
               ))}
             </ol>
 
-            <Reveal delay={0.1} className="mt-10 border-t border-line pt-8">
-              <p className="mb-4 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            <Reveal delay={0.1} className="border-line mt-10 border-t pt-8">
+              <p className="text-ink-dim mb-4 max-w-[62ch] text-sm leading-relaxed text-pretty">
                 {about.disclosure.certificates.teaser}
               </p>
               <DisclosureButton
@@ -210,22 +210,24 @@ export function About() {
                 id={ZERTIFIKATE_REGION}
                 className={cn("mt-5", !zertifikate.offen && "hidden")}
               >
-                <h3 className="text-eyebrow mb-5">{about.certificates.label}</h3>
+                <h3 className="text-eyebrow mb-5">
+                  {about.certificates.label}
+                </h3>
                 <div className="flex flex-col gap-5">
                   {about.certificates.groups.map((group) => (
                     <div key={group.issuer}>
-                      <h4 className="mb-2 font-mono text-[11px] tracking-wide text-ink-dim">
+                      <h4 className="text-ink-dim mb-2 font-mono text-[11px] tracking-wide">
                         {group.issuer}
                       </h4>
                       <ul className="flex flex-col gap-1.5">
                         {group.items.map((item) => (
                           <li
                             key={item.name}
-                            className="flex gap-2 text-xs leading-snug text-ink-faint"
+                            className="text-ink-faint flex gap-2 text-xs leading-snug"
                           >
                             <span
                               aria-hidden
-                              className="mt-1.5 size-1 shrink-0 rounded-full bg-acid/60"
+                              className="bg-acid/60 mt-1.5 size-1 shrink-0 rounded-full"
                             />
                             <span>
                               {item.href ? (
@@ -233,7 +235,7 @@ export function About() {
                                   href={item.href}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="-my-1 py-1 underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                                  className="decoration-ink-faint/60 hover:text-ink hover:decoration-acid -my-1 py-1 underline underline-offset-4 transition-colors"
                                 >
                                   {item.name}
                                 </a>
@@ -245,7 +247,7 @@ export function About() {
                                   {" "}
                                   <time
                                     dateTime={item.date}
-                                    className="font-mono text-[10px] whitespace-nowrap text-ink-faint"
+                                    className="text-ink-faint font-mono text-[10px] whitespace-nowrap"
                                   >
                                     {jahrMonat(item.date)}
                                   </time>
@@ -262,14 +264,14 @@ export function About() {
                 {about.certificates.groups.some((g) =>
                   g.items.some((i) => i.href),
                 ) && about.certificates.note ? (
-                  <p className="mt-5 text-[11px] leading-relaxed text-ink-faint">
+                  <p className="text-ink-faint mt-5 text-[11px] leading-relaxed">
                     {about.certificates.note}{" "}
                     {about.certificates.noteHref ? (
                       <a
                         href={about.certificates.noteHref.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="-my-1 py-1 underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                        className="decoration-ink-faint/60 hover:text-ink hover:decoration-acid -my-1 py-1 underline underline-offset-4 transition-colors"
                       >
                         {about.certificates.noteHref.label}
                       </a>
@@ -281,9 +283,9 @@ export function About() {
           </div>
         </div>
 
-        <div className="mt-20 border-t border-line pt-14">
+        <div className="border-line mt-20 border-t pt-14">
           <h3 className="text-eyebrow mb-3">{about.openSource.label}</h3>
-          <p className="mb-4 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+          <p className="text-ink-dim mb-4 max-w-[68ch] text-sm leading-relaxed text-pretty">
             {about.disclosure.openSource.teaser}
           </p>
           <DisclosureButton
@@ -295,7 +297,7 @@ export function About() {
             className="mb-8"
           />
           <div id={OSS_REGION} className={cn(!oss.offen && "hidden")}>
-            <p className="mb-8 max-w-[68ch] text-sm leading-relaxed text-ink-dim text-pretty">
+            <p className="text-ink-dim mb-8 max-w-[68ch] text-sm leading-relaxed text-pretty">
               {about.openSource.lede}
             </p>
 
@@ -307,11 +309,11 @@ export function About() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-labelledby={`paket-${item.name}`}
-                    className="lit group flex h-full flex-col rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
+                    className="lit group border-line bg-surface/40 hover:border-acid/40 flex h-full flex-col rounded-xl border p-5 transition-colors"
                   >
                     <span
                       id={`paket-${item.name}`}
-                      className="flex items-center gap-1.5 font-mono text-sm text-acid"
+                      className="text-acid flex items-center gap-1.5 font-mono text-sm"
                     >
                       {item.name}
                       <ArrowUpRight
@@ -319,10 +321,10 @@ export function About() {
                         aria-hidden
                       />
                     </span>
-                    <span className="mt-2.5 block text-sm leading-relaxed text-ink-dim text-pretty">
+                    <span className="text-ink-dim mt-2.5 block text-sm leading-relaxed text-pretty">
                       {item.body}
                     </span>
-                    <span className="mt-auto block pt-4 font-mono text-[10px] text-ink-faint">
+                    <span className="text-ink-faint mt-auto block pt-4 font-mono text-[10px]">
                       {item.meta}
                     </span>
                   </a>

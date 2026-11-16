@@ -176,8 +176,7 @@ export const en: Content = {
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
-      before:
-        "Three shipped systems run right here in the browser:",
+      before: "Three shipped systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
@@ -200,8 +199,7 @@ export const en: Content = {
   produkte: {
     eyebrow: "Products",
     title: "My products",
-    lede:
-      "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
+    lede: "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
     fertigTitel: "In production",
     liveCta: "View live",
     fertig: [
@@ -270,14 +268,12 @@ export const en: Content = {
       },
       {
         name: "Vesper",
-        beschreibung:
-          "Applications, projects and contacts on a local board",
+        beschreibung: "Applications, projects and contacts on a local board",
         href: "https://vesper.domenicmoran.de",
       },
       {
         name: "Aether",
-        beschreibung:
-          "Your own day as a searchable memory, processed locally",
+        beschreibung: "Your own day as a searchable memory, processed locally",
         href: "https://aether.domenicmoran.de",
       },
     ],
@@ -595,7 +591,7 @@ export const en: Content = {
       year: "2026",
       role: "Founder & sole developer",
       statusLabel: "Live in production",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
           "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu.",
@@ -787,7 +783,7 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "In personal use",
-      accent: "cyan",
+      accent: "acid",
       problem:
         "A Berlin flat draws applicants in the hundreds. What decides it is not the best application but the first, within minutes of the listing going up. That is a race a human structurally cannot win, because humans sleep.",
       solution:
@@ -843,7 +839,7 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
           "The first check found outliers up to 30.5 per cent — today the largest deviation is 2.07.",
@@ -1078,7 +1074,7 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
-      accent: "cyan",
+      accent: "acid",
       disclosure: {
         teaser:
           "With a phone camera, detection lands at around 95 per cent in the field — so it suggests instead of asserting.",
@@ -1194,7 +1190,7 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live in both stores",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
           "Giving every word the same pace is the mistake: flat RSVP gives a three-letter article the same time budget as a sentence end.",
@@ -1304,7 +1300,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "A sole trader collects three kinds of paper that know nothing about each other: till receipts for the cash-basis accounts, invoices for the warranty, bank statements meant to confirm both. The deadlines attached to them are hard and of unequal length, and the one that matters is not the one everybody knows. The tools that take this work off your hands upload every receipt to a provider: balances, purchases, whereabouts, all in one file.",
       solution:
@@ -1398,7 +1394,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "cyan",
+      accent: "acid",
       problem:
         "Dropshipping shops sell cheap goods at a large markup, and the buyer cannot see the difference: same goods, same photo, different price. Reviews are bought, badges interchangeable, and nobody has the time to check every page against its sources.",
       solution:
@@ -1469,7 +1465,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "Whoever wants to learn from a textbook, a lecture or a photo either types cards by hand or pays a service that loads the material into a cloud. The repetition schedule that decides between keeping and forgetting then sits on a server you cannot see.",
       solution:
@@ -1639,7 +1635,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "Whoever wonders what they did last Tuesday searches calendar, photos and chat history one by one. A memory that brings it all together usually means uploading your whole day to a cloud.",
       solution:

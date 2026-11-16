@@ -32,7 +32,13 @@ type OgKarte = {
   tagline: string;
 };
 
-const STACK = ["TypeScript", "React Native", "Next.js", "Postgres", "AI Engineering"];
+const STACK = [
+  "TypeScript",
+  "React Native",
+  "Next.js",
+  "Postgres",
+  "AI Engineering",
+];
 
 /**
  * Das Porträt als Datenadresse.
@@ -55,76 +61,77 @@ const PORTRAET = `data:image/jpeg;base64,${readFileSync(
 
 export function renderOgCard({ name, role, location, tagline }: OgKarte) {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        background: "#08080a",
+        padding: "72px",
+        position: "relative",
+      }}
+    >
+      {/* Der Lichtschein hinter der Karte, oben lime, unten gruen. */}
       <div
         style={{
-          width: "100%",
-          height: "100%",
+          position: "absolute",
+          top: -220,
+          left: -120,
+          width: 720,
+          height: 720,
+          borderRadius: 9999,
+          background:
+            "radial-gradient(circle, rgba(212,255,69,0.22), transparent 65%)",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: "#08080a",
-          padding: "72px",
-          position: "relative",
         }}
-      >
-        {/* Der Lichtschein hinter der Karte, oben violett, unten grün. */}
-        <div
-          style={{
-            position: "absolute",
-            top: -220,
-            left: -120,
-            width: 720,
-            height: 720,
-            borderRadius: 9999,
-            background: "radial-gradient(circle, rgba(124,92,255,0.30), transparent 65%)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: -280,
-            right: -140,
-            width: 700,
-            height: 700,
-            borderRadius: 9999,
-            background: "radial-gradient(circle, rgba(212,255,69,0.18), transparent 65%)",
-            display: "flex",
-          }}
-        />
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: -280,
+          right: -140,
+          width: 700,
+          height: 700,
+          borderRadius: 9999,
+          background:
+            "radial-gradient(circle, rgba(212,255,69,0.18), transparent 65%)",
+          display: "flex",
+        }}
+      />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          {/* Dasselbe Zeichen wie in der Kopfleiste und im Lesezeichen. */}
-          <div style={{ display: "flex" }}>
-            <Marke size={44} radius={10} />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 21,
-              letterSpacing: 4,
-              textTransform: "uppercase",
-              color: "#8a8a95",
-            }}
-          >
-            {location}
-          </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        {/* Dasselbe Zeichen wie in der Kopfleiste und im Lesezeichen. */}
+        <div style={{ display: "flex" }}>
+          <Marke size={44} radius={10} />
         </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 21,
+            letterSpacing: 4,
+            textTransform: "uppercase",
+            color: "#8a8a95",
+          }}
+        >
+          {location}
+        </div>
+      </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
-          {/* Kein `next/image` und kein `alt`: Diese Baumstruktur wird nicht
+      <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
+        {/* Kein `next/image` und kein `alt`: Diese Baumstruktur wird nicht
               als HTML ausgeliefert, sondern von Satori zu einem PNG gerendert.
               Es gibt kein Vorleseprogramm, das ein `alt` lesen könnte, und
               keinen Bildoptimierer, der hier liefe. */}
-          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-          <img
-            src={PORTRAET}
-            width={188}
-            height={188}
-            style={{ borderRadius: 9999, border: "3px solid #23232c" }}
-          />
-          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+        <img
+          src={PORTRAET}
+          width={188}
+          height={188}
+          style={{ borderRadius: 9999, border: "3px solid #23232c" }}
+        />
+        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div
             style={{
               display: "flex",
@@ -159,35 +166,34 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
           >
             {tagline}
           </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 14,
-            borderTop: "1px solid #23232c",
-            paddingTop: 28,
-          }}
-        >
-          {STACK.map((item) => (
-            <div
-              key={item}
-              style={{
-                display: "flex",
-                border: "1px solid #23232c",
-                borderRadius: 8,
-                padding: "9px 16px",
-                fontSize: 19,
-                color: "#8a8a95",
-              }}
-            >
-              {item}
-            </div>
-          ))}
         </div>
       </div>
-    ),
+
+      <div
+        style={{
+          display: "flex",
+          gap: 14,
+          borderTop: "1px solid #23232c",
+          paddingTop: 28,
+        }}
+      >
+        {STACK.map((item) => (
+          <div
+            key={item}
+            style={{
+              display: "flex",
+              border: "1px solid #23232c",
+              borderRadius: 8,
+              padding: "9px 16px",
+              fontSize: 19,
+              color: "#8a8a95",
+            }}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+    </div>,
     { ...ogSize, fonts: ogSchriften },
   );
 }

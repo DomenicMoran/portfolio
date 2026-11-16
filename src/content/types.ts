@@ -29,7 +29,7 @@ export type CaseStudy = {
   year: string;
   role: string;
   statusLabel: string;
-  accent: "acid" | "violet" | "cyan";
+  accent: "acid";
   problem: string;
   solution: string;
   hardPart: { title: string; body: string };
