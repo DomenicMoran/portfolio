@@ -48,7 +48,12 @@ export function Produkte({ produkte }: { produkte: Content["produkte"] }) {
                 >
                   <div className="min-w-0">
                     <h4 className="text-title text-ink">{produkt.name}</h4>
-                    <p className="text-ink-dim mt-2 max-w-2xl text-sm leading-relaxed text-pretty sm:text-base">
+                    {/* `sm:text-[1rem]` und nicht `sm:text-base`: In diesem
+                        Farbsystem setzt `text-base` auch die Farbe
+                        `--color-base`, den Hintergrund. Gemessen an 1440 px
+                        stand die Beschreibung in rgb(11, 11, 14) auf
+                        rgb(12, 12, 15), also 1:1. */}
+                    <p className="text-ink-dim mt-2 max-w-2xl text-sm leading-relaxed text-pretty sm:text-[1rem]">
                       {produkt.beschreibung}
                     </p>
                   </div>
