@@ -15,14 +15,23 @@ const MOBILE_CASE_IDS = new Set<string>([
   "aether",
   "bitdojo",
 ]);
-import { ConsoleGreeting } from "@/components/ConsoleGreeting";
-import { SiteShell } from "@/components/SiteShell";
+import { MotionRoot } from "@/components/providers/MotionRoot";
 import { Footer } from "@/components/Footer";
 import { INHALT_ID, SkipLink } from "@/components/ui/SkipLink";
 import { Hero } from "@/components/sections/Hero";
-import { Produkte } from "@/components/sections/Produkte";
-import { CaseStudies } from "@/components/sections/CaseStudies";
-import { BookPublication } from "@/components/sections/BookPublication";
+
+import { SiteShellDeferred } from "@/components/SiteShellDeferred";
+const Produkte = dynamic(() =>
+  import("@/components/sections/Produkte").then((m) => m.Produkte),
+);
+const CaseStudies = dynamic(() =>
+  import("@/components/sections/CaseStudies").then((m) => m.CaseStudies),
+);
+const BookPublication = dynamic(() =>
+  import("@/components/sections/BookPublication").then(
+    (m) => m.BookPublication,
+  ),
+);
 
 /**
  * Sieben Abschnitte, die unterhalb der Falz liegen und keinen Regler tragen,
@@ -187,20 +196,18 @@ export function SitePage({ content }: { content: Content }) {
   const json = JSON.stringify(schema).replace(/</g, "\\u003c");
 
   return (
-    <ContentProvider content={content}>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: json }}
       />
-      <ConsoleGreeting />
-
       <SkipLink text={content.skipToContent} />
 
-      <SiteShell />
-
       <main id={INHALT_ID} tabIndex={-1} className="flex-1">
-        <Hero />
-        {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
+        <Hero hero={content.hero} site={content.site} />
+        <ContentProvider content={content}>
+          <MotionRoot>
+            {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
 
             Nutzer-Feedback: Die Seite ist zuerst Bewerbung für die Person,
             erst danach Marketing für die Projekte, wie ein Lebenslauf. Vorher
@@ -209,19 +216,24 @@ export function SitePage({ content }: { content: Content }) {
             Reihenfolge tragen die Portfolios, an denen sich Entwickler-Seiten
             in der Branche orientieren: kurzer Vorspann, dann die Person, erst
             danach die ausgewählte Arbeit im Detail. */}
-        <About />
-        <BookPublication />
-        <Produkte produkte={content.produkte} />
-        <CaseStudies />
-        <AiWorkflow />
-        <DeliverySpeed />
-        <Skills />
-        <Writing />
-        <RecruiterHub />
-        <Contact />
+            <About />
+            <BookPublication />
+            <Produkte produkte={content.produkte} />
+            <CaseStudies />
+            <AiWorkflow />
+            <DeliverySpeed />
+            <Skills />
+            <Writing />
+            <RecruiterHub />
+            <Contact />
+          </MotionRoot>
+        </ContentProvider>
       </main>
 
-      <Footer />
-    </ContentProvider>
+      <ContentProvider content={content}>
+        <Footer />
+        <SiteShellDeferred />
+      </ContentProvider>
+    </>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CommandPalette } from "@/components/CommandPalette";
+import type { ComponentType } from "react";
+import { MotionRoot } from "@/components/providers/MotionRoot";
 import { Nav } from "@/components/Nav";
 import { Cursor } from "@/components/ui/Cursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -30,6 +31,11 @@ export function SiteShell({
   hashBase,
 }: { otherHref?: string; hashBase?: string } = {}) {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [nachLcp, setNachLcp] = useState(false);
+  const [Palette, setPalette] = useState<ComponentType<{
+    open: boolean;
+    onClose: () => void;
+  }> | null>(null);
 
   /**
    * Verzögert geladene Bilder nachholen, sobald der Browser Zeit hat.
@@ -55,6 +61,25 @@ export function SiteShell({
    * `requestIdleCallback`, das Safari bis heute nicht kennt, greift ein
    * Zeitgeber.
    */
+  useEffect(() => {
+    const idle = (arbeit: () => void) => {
+      const w = window as typeof window & {
+        requestIdleCallback?: (
+          cb: () => void,
+          opts?: { timeout: number },
+        ) => void;
+      };
+      if (typeof w.requestIdleCallback === "function") {
+        w.requestIdleCallback(arbeit, { timeout: 4000 });
+      } else {
+        window.setTimeout(arbeit, 1200);
+      }
+    };
+    const start = () => idle(() => setNachLcp(true));
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+  }, []);
+
   useEffect(() => {
     const nachladen = () => {
       for (const bild of document.querySelectorAll("img")) {
@@ -126,6 +151,13 @@ export function SiteShell({
   }, []);
 
   useEffect(() => {
+    if (!paletteOpen || Palette) return;
+    void import("@/components/CommandPalette").then((mod) => {
+      setPalette(() => mod.CommandPalette);
+    });
+  }, [paletteOpen, Palette]);
+
+  useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -138,19 +170,18 @@ export function SiteShell({
   }, []);
 
   return (
-    <>
-      <SmoothScroll />
-      <ScrollProgress />
-      <Cursor />
+    <MotionRoot>
+      {nachLcp ? <SmoothScroll /> : null}
+      {nachLcp ? <ScrollProgress /> : null}
+      {nachLcp ? <Cursor /> : null}
       <Nav
         onOpenPalette={() => setPaletteOpen(true)}
         otherHref={otherHref}
         hashBase={hashBase}
       />
-      <CommandPalette
-        open={paletteOpen}
-        onClose={() => setPaletteOpen(false)}
-      />
-    </>
+      {Palette ? (
+        <Palette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      ) : null}
+    </MotionRoot>
   );
 }

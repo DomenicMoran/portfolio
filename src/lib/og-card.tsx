@@ -124,7 +124,7 @@ export function renderOgCard({ name, role, location, tagline }: OgKarte) {
               als HTML ausgeliefert, sondern von Satori zu einem PNG gerendert.
               Es gibt kein Vorleseprogramm, das ein `alt` lesen könnte, und
               keinen Bildoptimierer, der hier liefe. */}
-        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <img
           src={PORTRAET}
           width={188}

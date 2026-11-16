@@ -1,4 +1,3 @@
-import { MotionProvider } from "@/components/providers/MotionProvider";
 import { de } from "@/content/de";
 import { en } from "@/content/en";
 import { schriftKlassen } from "@/lib/web-fonts";
@@ -87,7 +86,7 @@ export function RootDocument({
         <noscript>
           <style>{`[data-reveal],.animate-fade-rise,.animate-word-rise{opacity:1!important;transform:none!important;animation:none!important}`}</style>
         </noscript>
-        <MotionProvider>{children}</MotionProvider>
+        {children}
       </body>
     </html>
   );
