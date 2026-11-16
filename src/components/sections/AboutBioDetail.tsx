@@ -10,7 +10,9 @@ export function AboutBioDetail({ about }: { about: Content["about"] }) {
     <>
       {about.paragraphs.slice(1).map((paragraph, i) => (
         <Reveal key={paragraph} delay={i * 0.06}>
-          <p className="text-ink-dim leading-relaxed text-pretty">{paragraph}</p>
+          <p className="text-ink-dim leading-relaxed text-pretty">
+            {paragraph}
+          </p>
         </Reveal>
       ))}
 
@@ -22,7 +24,9 @@ export function AboutBioDetail({ about }: { about: Content["about"] }) {
             className="flex flex-col-reverse gap-1"
           >
             <dt className="flex flex-col gap-0.5">
-              <span className="text-ink text-xs leading-snug">{stat.label}</span>
+              <span className="text-ink text-xs leading-snug">
+                {stat.label}
+              </span>
               <span className="text-ink-faint text-[11px] leading-snug">
                 {stat.note}
               </span>

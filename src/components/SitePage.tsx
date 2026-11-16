@@ -208,7 +208,7 @@ export function SitePage({ content }: { content: Content }) {
         <ContentProvider content={content}>
           <MotionRoot>
             <div className="[content-visibility:auto]">
-            {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
+              {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
 
             Nutzer-Feedback: Die Seite ist zuerst Bewerbung für die Person,
             erst danach Marketing für die Projekte, wie ein Lebenslauf. Vorher
@@ -217,16 +217,16 @@ export function SitePage({ content }: { content: Content }) {
             Reihenfolge tragen die Portfolios, an denen sich Entwickler-Seiten
             in der Branche orientieren: kurzer Vorspann, dann die Person, erst
             danach die ausgewählte Arbeit im Detail. */}
-            <About />
-            <BookPublication />
-            <Produkte produkte={content.produkte} />
-            <CaseStudies />
-            <AiWorkflow />
-            <DeliverySpeed />
-            <Skills />
-            <Writing />
-            <RecruiterHub />
-            <Contact />
+              <About />
+              <BookPublication />
+              <Produkte produkte={content.produkte} />
+              <CaseStudies />
+              <AiWorkflow />
+              <DeliverySpeed />
+              <Skills />
+              <Writing />
+              <RecruiterHub />
+              <Contact />
             </div>
           </MotionRoot>
         </ContentProvider>

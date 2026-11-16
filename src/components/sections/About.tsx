@@ -13,7 +13,9 @@ import { cn } from "@/lib/utils";
 
 const AboutBioDetail = dynamic(
   () =>
-    import("@/components/sections/AboutBioDetail").then((m) => m.AboutBioDetail),
+    import("@/components/sections/AboutBioDetail").then(
+      (m) => m.AboutBioDetail,
+    ),
   { ssr: false, loading: () => null },
 );
 
@@ -35,13 +37,7 @@ function jahrMonat(iso: string) {
 }
 
 /** Portrait erst in Sicht — sonst verdrängt es den Hero-Lead als LCP unter Lighthouse Mobile. */
-function AboutPortrait({
-  src,
-  alt,
-}: {
-  src: string;
-  alt: string;
-}) {
+function AboutPortrait({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [sichtbar, setSichtbar] = useState(false);
 
