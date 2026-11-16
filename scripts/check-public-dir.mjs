@@ -244,6 +244,8 @@ const grosse = [];
 const ERLAUBT_IN_DER_WURZEL = new Set([
   ".env.example",
   ".gitignore",
+  ".prettierignore",
+  ".prettierrc",
   "AGENTS.md",
   "CLAUDE.md",
   "LICENSE",
@@ -292,7 +294,10 @@ const wurzelfunde = [];
       continue;
     }
     gezaehlt.push(datei);
-    if (groesse > GRENZE && !ERLAUBT_GROSS.has(datei)) {
+    const grossErlaubt =
+      ERLAUBT_GROSS.has(datei) ||
+      ERLAUBT_GROSS_PREFIX.some((prefix) => datei.startsWith(prefix));
+    if (groesse > GRENZE && !grossErlaubt) {
       grosse.push(`${datei}: ${Math.round(groesse / 1024)} KiB`);
     }
   }
