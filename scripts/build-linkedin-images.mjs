@@ -123,8 +123,8 @@ const commits = untergrenze(kennzahl("Commits seit"));
  * Ändert sich die Zählung, wird hier von Hand nachgezogen — LINKEDIN.md ist
  * die Quelle, nicht about.stats.
  */
-const systemeLive = "10+";
-const storeEintraege = "10+";
+const systemeLive = "5";
+const storeEintraege = "19";
 
 const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8">

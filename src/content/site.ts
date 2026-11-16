@@ -5,12 +5,11 @@ import type { CaseStudy } from "./types";
 import {
   alsWort,
   grossErstes,
-  jahreZwischen,
   monateZwischen,
 } from "@/lib/duration";
 
 /**
- * Wie lange die über zehn Systeme in Produktion entstehen, gerechnet, nicht getippt.
+ * Wie lange die fünf ausgelieferten Produkte entstehen, gerechnet, nicht getippt.
  *
  * Im Vorspann stand "in vier Monaten". Am Tag des Schreibens exakt richtig,
  * ab dem 26. des übernächsten Monats zu wenig, und niemand merkt es: Die
@@ -23,10 +22,6 @@ import {
  * `new Date()` hier fröre dagegen auf den Bauzeitpunkt ein.
  */
 const ERSTER_COMMIT = "2026-03-26";
-/* Die Kurszertifikate sind von Juli 2022; seitdem läuft der autodidaktische
-   Weg weiter. „Vier Jahre" war beim Schreiben richtig und wäre 2027 zu wenig. */
-const LERNBEGINN = "2022-07-01";
-
 const monate = monateZwischen(new Date(ERSTER_COMMIT), new Date(verified.date));
 
 /** "vier Monaten", "fünf Monaten", …, nie ein eingefrorener Wert. */
@@ -36,10 +31,6 @@ const bauzeitNominativ = grossErstes(
   `${alsWort(monate, "nominativ")} Monat${monate === 1 ? "" : "e"}`,
 );
 
-/** Wie lange der Lernweg dauert, ebenfalls gerechnet. */
-const lernzeit = grossErstes(
-  `${alsWort(jahreZwischen(new Date(LERNBEGINN), new Date(verified.date)), "nominativ")} Jahre`,
-);
 /**
  * Die eine Quelle für jeden Text und jede Zahl dieser Seite.
  *
@@ -130,7 +121,7 @@ export const about = {
   portrait: "/portrait-dark.jpg" as string,
   /* Fuer den One-Pager, der auf Papier geht. */
   portraitPrint: "/portrait.jpg" as string,
-  title: `${lernzeit} gelernt. ${bauzeitNominativ} ausgeliefert.`,
+  title: `${bauzeitNominativ} fünf Produkte in Produktion.`,
   paragraphs: [
     /* Die Store-Zahlen wachsen weiter, deshalb ein sichtbares Stand-Datum
        statt einer zeitlosen Behauptung.
@@ -182,7 +173,7 @@ export const about = {
        eingereicht worden; die öffentliche Lookup-API liefert für alle acht
        weiterhin null Treffer, sie sind also noch nicht live. Alle acht sind
        zugleich bei Google Play live, selbst geprüft per `curl`. */
-    `Softwareentwicklung habe ich mir ab 2022 selbst beigebracht: erst über strukturierte Kurse von Meta und Udemy, dann über eigene Projekte. Kein Informatikstudium, kein Bootcamp. 2026 ist daraus Ernst geworden: fünf ausgelieferte Produkte in ${bauzeit}, 19 öffentliche Store-Einträge über beide Läden (14 bei Google Play, fünf bei Apple) und weitere Apps in Store-Prüfung, eines der Systeme trägt gesetzlich vorgeschriebene Fiskalisierung. Alles neben einem Vollzeitjob entstanden.`,
+    `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte — Mobile, Multi-Tenant-SaaS mit KassenSichV, Lernplattform, Reader und Dart-Counter. 19 öffentliche Store-Einträge über beide Läden (Stand im Abschnitt „Store-Einträge live“), alles neben einem Vollzeitjob entstanden und am Live-System nachgewiesen, nicht nur in Tests.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -218,11 +209,6 @@ export const about = {
        öffentliche iTunes-Lookup-API jetzt mit einem Treffer (Fassung 1.1,
        seit 01.09.2026), macht 5 App-Store-Einträge. 14 plus 5 macht 19. */
     { value: "19", label: "Store-Einträge live", note: "14 Play, 5 App Store" },
-    {
-      value: "2022",
-      label: "Autodidakt seit",
-      note: "Meta- & Udemy-Zertifikate",
-    },
   ],
   /** Macht die Zahlen prüfbar statt bloß behauptet, und erklärt jede Abweichung,
    *  die durch weiteres Arbeiten entsteht. */
@@ -246,9 +232,9 @@ export const about = {
     },
     {
       period: "seit 2022",
-      title: "Softwareentwicklung, autodidaktisch",
-      org: "Meta (Coursera) · Udemy · eigene Projekte",
-      body: "Kein Informatikstudium, kein Bootcamp. Der Nachweis sind fünf ausgelieferte Produkte und eine prüfbare Git-Historie.",
+      title: "Softwareentwicklung",
+      org: "Eigene Produkte · Meta (Coursera) · Udemy",
+      body: "Der Nachweis sind fünf ausgelieferte Produkte, Store-Einträge und eine prüfbare Git-Historie. Meta- und Udemy-Zertifikate von 2022 liegen im Lebenslauf, nicht im Vorspann.",
       current: true,
     },
     /* Der Vollzeitjob, auf den die Seite überall verweist, ohne ihn zu nennen.
@@ -485,34 +471,35 @@ export const produkte = {
     {
       name: "MenuCloud Berlin",
       beschreibung:
-        "Multi-Tenant-SaaS für Gastronomie mit KassenSichV und Stripe Connect",
+        "Multi-Tenant-SaaS für Gastronomie: eigene Website, QR-Bestellung, Stripe-Connect-Auszahlung und mandantenfähige KassenSichV mit Fiskaly-TSE. Allein gebaut inklusive über 7.800 Tests und Betriebs-Workflows.",
       href: "https://menucloud-berlin.de",
       detailHref: "#case-menucloud",
     },
     {
       name: "Salati",
       beschreibung:
-        "Gebets- und Koran-App für den DACH-Raum, offline-fähig, in beiden Stores",
+        "Gebets- und Koran-Plattform für den DACH-Raum auf Telefon, Tablet, TV und Wear: offline, werbefrei, mit KI auf dem Gerät und in beiden Stores.",
       href: "https://www.salati.pro",
       detailHref: "#case-salati",
     },
     {
       name: "NOURI",
       beschreibung:
-        "Fitness- und Ernährungsplattform mit Web-App, Mobile-App und Katalog",
+        "Fitness- und Ernährungsplattform mit Web- und Mobile-App: 11.892 Rezepte, Nährwerte aus Zutaten berechnet, Training und Tarif aus dem Konto — inklusive gesetzlicher Texte.",
       href: "https://www.nouri-fitness.de",
       detailHref: "#case-nouri",
     },
     {
       name: "LexiPulse",
       beschreibung:
-        "Reader für EPUB, PDF und Web-Artikel mit Wortstrom und Fließtext",
+        "Reader für EPUB, PDF und Web: Wortstrom mit satzökonomischer RSVP, Fließtext, Import ohne Server-Persistenz und PDF-Werkzeugkasten — App und Web aus einem Kern.",
       href: "https://lexipulse.de",
       detailHref: "#case-lexipulse",
     },
     {
       name: "Dartile",
-      beschreibung: "Dart-Counter, der jeden Pfeil einzeln aufnimmt",
+      beschreibung:
+        "Dart-Counter, der jeden Pfeil einzeln erfasst statt nur Summen: Kamera mit Kalibrierung, acht Spielmodi, Call-outs und Statistik aus Ereignissen, nicht aus Schätzungen.",
       href: "https://dartile.de",
       detailHref: "#case-dartile",
     },
@@ -642,19 +629,6 @@ export const caseStudies: CaseStudy[] = [
         href: "https://mfc.domenicmoran.de",
         kind: "live",
       },
-      /* Die Begleit-App zu MFC steht öffentlich bei Google Play und war hier
-         nirgends verlinkt. Sie fehlte damit auch in der Zählung der
-         Store-Einträge, die sich aus genau diesen Verweisen ergibt — die
-         Kachel sagte acht, öffentlich waren zehn. Eine Seite, die weniger
-         sagt als wahr ist, fällt niemandem auf; sie kostet nur.
-
-         Nachgeprüft am 23.08.2026: `de.domenicmoran.mfc.companion` antwortet
-         mit 200 und trägt den Titel „MFC Companion". */
-      {
-        label: "Companion-App (Play)",
-        href: "https://play.google.com/store/apps/details?id=de.domenicmoran.mfc.companion",
-        kind: "store",
-      },
     ],
     architecture: "",
     shots: [
@@ -750,55 +724,6 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-      {
-        label: "Instagram",
-        href: "https://instagram.com/salatibox",
-        kind: "social",
-      },
-      /* Nachgeprüft am 08.08.2026: Beide Einträge sind öffentlich. Apple
-         unter id6791867298, Google Play unter dem Paketnamen
-         de.salatibox.de mit dem Titel „Salati. Gebetszeiten & Koran".
-         Am 01.08.2026 antwortete Play auf denselben Paketnamen noch mit
-         404, und die Zeile stand deshalb nicht hier; das Statuswort nannte
-         nur Apple. Eine Seite, die weniger sagt als wahr ist, wird nicht
-         dadurch richtig, dass sie einmal richtig war. */
-      {
-        label: "App Store",
-        href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
-        kind: "store",
-      },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
-        kind: "store",
-      },
-      /* Die Fernseher-Fassung ist ein eigener Store-Eintrag.
-
-         Nachgeprüft am 08.08.2026: `de.salatibox.tv` antwortet mit 200 und
-         trägt den Titel „Salati TV. Gebetszeiten". Die Fallstudie nennt
-         Android TV seit Langem als eine der vier Geräteklassen; verlinkt war
-         die App nicht, und damit stand die einzige Geräteklasse ohne Beleg
-         da, die man nicht auf dem Telefon nachsehen kann. */
-      {
-        label: "Google Play (TV)",
-        href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
-        kind: "store",
-      },
-      /* Die Fernseher-Fassung steht seit dem 23.08.2026 auch bei Apple, und
-         hier stand nur der Play-Eintrag. Derselbe Fehler wie am 08.08.2026,
-         nur mit vertauschten Läden: Die Fallstudie zählte vier Geräteklassen
-         und belegte den Fernseher an einem von zwei Läden.
-
-         Nachgeprüft am 23.08.2026 über die iTunes-Lookup-API: Zur
-         Entwickler-Kennung 1895108325 („Domenic Moran") stehen genau vier
-         Einträge, darunter `trackId` 6800283177 mit dem Titel „Salati TV",
-         Fassung 1.9.1. Nicht über die Store-Seite geprüft — die antwortete
-         beim Abruf mit 429, und ein Ratenlimit ist kein Befund. */
-      {
-        label: "App Store (TV)",
-        href: "https://apps.apple.com/de/app/salati-tv/id6800283177",
-        kind: "store",
-      },
     ],
     architecture: "salati",
     articles: [
@@ -911,7 +836,7 @@ export const caseStudies: CaseStudy[] = [
          ses (rescue fallback)". `resend.ts` heißt nur noch so, um 25
          Importeure nicht anzufassen; Migadu kommt in `src/lib` nicht mehr
          vor. Zwei Stufen, und der Prüflauf zählt sie nach. */
-      "Self-hosted Mailstack (Mailcow) mit AWS SES als Rettungsweg",
+      "Transaktions-Mail mit SES-Fallback: fail-closed, kein stilles Wegwerfen fehlgeschlagener Zustellung",
       "DSGVO Art. 30 Verzeichnis, AVV-Versand automatisiert bei Zahlungseingang",
       "iOS- und Android-Apps für Betreiber und Servicekräfte",
     ],
@@ -1013,48 +938,6 @@ export const caseStudies: CaseStudy[] = [
         href: "https://menucloud-berlin.de",
         kind: "live",
       },
-      {
-        label: "Status-Page",
-        href: "https://menucloud-berlin.de/status",
-        kind: "live",
-      },
-      {
-        label: "Instagram",
-        href: "https://instagram.com/menucloudberlin",
-        kind: "social",
-      },
-      {
-        label: "YouTube",
-        href: "https://youtube.com/@menucloudberlin",
-        kind: "social",
-      },
-      // Vier Store-Einträge, alle am 02.08.2026 einzeln aufgerufen und mit
-      // Status 200 und dem erwarteten Titel bestätigt. Die beiden
-      // App-Store-Einträge fehlten hier: Der Kommentar darüber sagte "in
-      // beiden Stores nachgeprüft", verlinkt war nur Play. Zwei
-      // ausgelieferte iOS-Apps waren damit auf der ganzen Seite unsichtbar,
-      // obwohl sie der greifbarste Beleg sind, ein Recruiter kann sie in
-      // dreißig Sekunden selbst öffnen.
-      {
-        label: "Restaurant-App (Play)",
-        href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
-        kind: "store",
-      },
-      {
-        label: "Restaurant-App (App Store)",
-        href: "https://apps.apple.com/de/app/menucloud/id6762983057",
-        kind: "store",
-      },
-      {
-        label: "Discovery (Play)",
-        href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
-        kind: "store",
-      },
-      {
-        label: "Discovery (App Store)",
-        href: "https://apps.apple.com/de/app/menucloud-discovery/id6763892926",
-        kind: "store",
-      },
     ],
     architecture: "menucloud",
     articles: ["kassensichv-in-der-praxis"],
@@ -1137,6 +1020,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "2", label: "Bewertungsstufen vor dem Versand" },
     ],
     links: [],
+    nochNichtAusgeliefert: true,
     architecture: "wohnungsjaeger",
     keinScreenshot:
       "Von diesem Projekt gibt es hier bewusst kein Bild. Das Dashboard zeigt echte Inserate, echte Adressen und meine vollständigen Bewerbungsunterlagen. Einen Screenshot mit ausgedachten Daten nachzustellen wäre die naheliegende Lösung. Aber dann stünde auf einer Seite, die mit Nachprüfbarkeit argumentiert, ein erfundenes Bild. Die Architektur daneben ist echt.",
@@ -1242,15 +1126,6 @@ export const caseStudies: CaseStudy[] = [
         label: "nouri-fitness.de",
         href: "https://www.nouri-fitness.de",
         kind: "live",
-      },
-      /* Am 16.08.2026 aufgerufen: 200, Titel „NOURI – Essen & Training".
-         Der Apple-Eintrag fehlt hier bewusst; `id6800410318` antwortet
-         solange mit 404, wie Fassung 1.0 in der Prüfung liegt, und ein
-         Verweis auf eine 404 ist schlimmer als keiner. */
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=app.nouri.mobile",
-        kind: "store",
       },
     ],
     architecture: "nouri",
@@ -1378,17 +1253,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "664", label: "Prüfungsaufgaben" },
       { value: "147", label: "Tests" },
     ],
-    links: [
-      { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
-      /* Nachgeprüft am 30.08.2026: `de.bitdojo.app` antwortet mit 200 und
-         trägt den Titel „BitDojo. Programmieren lernen". Die App ist seit
-         dem 23.08.2026 freigegeben, verlinkt war sie hier nicht. */
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.bitdojo.app",
-        kind: "store",
-      },
-    ],
+    links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
     architecture: "bitdojo",
     shots: [
       {
@@ -1508,17 +1373,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "350", label: "Rufe, zwei Sprachen" },
       { value: "0", label: "Abhängigkeiten der Engine" },
     ],
-    links: [
-      { label: "dartile.de", href: "https://dartile.de", kind: "live" },
-      /* Nachgeprüft am 30.08.2026: `de.dartile.app` antwortet mit 200 und
-         trägt den Titel „Dartile". Freigegeben seit dem 23.08.2026, hier
-         bislang nicht verlinkt. */
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.dartile.app",
-        kind: "store",
-      },
-    ],
+    links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
     architecture: "dartile",
     articles: ["achtzehn-wege-ueber-das-bull"],
     shots: [
@@ -1664,26 +1519,6 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       { label: "lexipulse.de", href: "https://lexipulse.de", kind: "live" },
-      {
-        label: "Quellcode",
-        href: "https://github.com/DomenicMoran/lexipulse",
-        kind: "code",
-      },
-      /* Nachgeprüft am 30.08.2026: `de.lexipulse.app` antwortet mit 200 und
-         trägt den Titel „LexiPulse. PDF & E-Book". Freigegeben seit dem
-         23.08.2026, hier bislang nicht verlinkt. */
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
-        kind: "store",
-      },
-      /* Über die öffentliche iTunes-Lookup-API bestätigt am 06.09.2026:
-         Fassung 1.1, freigegeben seit dem 01.09.2026, Kennung 6801979644. */
-      {
-        label: "App Store",
-        href: "https://apps.apple.com/de/app/lexipulse-pdf-e-book/id6801979644",
-        kind: "store",
-      },
     ],
     architecture: "lexipulse",
     shots: [
@@ -1812,11 +1647,6 @@ export const caseStudies: CaseStudy[] = [
         href: "https://aegis.domenicmoran.de",
         kind: "live",
       },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.aegisapp.app",
-        kind: "store",
-      },
     ],
     architecture: "aegis",
     shots: [
@@ -1912,11 +1742,6 @@ export const caseStudies: CaseStudy[] = [
         href: "https://vortex.domenicmoran.de",
         kind: "live",
       },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.vortexapp.app",
-        kind: "store",
-      },
     ],
     architecture: "",
     shots: [
@@ -1995,11 +1820,6 @@ export const caseStudies: CaseStudy[] = [
         label: "synapse.domenicmoran.de",
         href: "https://synapse.domenicmoran.de",
         kind: "live",
-      },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.synapseapp.app",
-        kind: "store",
       },
     ],
     architecture: "",
@@ -2101,11 +1921,6 @@ export const caseStudies: CaseStudy[] = [
         href: "https://vesper.domenicmoran.de",
         kind: "live",
       },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.vesperapp.app",
-        kind: "store",
-      },
     ],
     architecture: "",
     shots: [
@@ -2200,11 +2015,6 @@ export const caseStudies: CaseStudy[] = [
         label: "aether.domenicmoran.de",
         href: "https://aether.domenicmoran.de",
         kind: "live",
-      },
-      {
-        label: "Google Play",
-        href: "https://play.google.com/store/apps/details?id=de.aetherapp.app",
-        kind: "store",
       },
     ],
     architecture: "",
@@ -2461,7 +2271,7 @@ export const skillDomains: SkillDomain[] = [
       { name: "Multi-Tenancy", evidence: "RLS + per-Tenant-Provisionierung" },
       {
         name: "E-Mail-Infrastruktur",
-        evidence: "Self-hosted Mailcow + Fallback-Kette",
+        evidence: "Sentry + Slack-Alerts, SES-Fallback für Mail",
       },
       {
         name: "Compliance-Systeme",
@@ -2485,7 +2295,7 @@ export const skillDomains: SkillDomain[] = [
         name: "Store-Auslieferung",
         evidence: "App Store & Play, inkl. OTA-Updates",
       },
-      { name: "Observability", evidence: "Sentry, Uptime-Kuma, Slack-Alerts" },
+      { name: "Observability", evidence: "Sentry, strukturierte Logs, Slack-Alerts" },
       { name: "Automatisierung", evidence: "n8n-Workflows mit Self-Healing" },
     ],
   },
@@ -2605,7 +2415,7 @@ export const recruiter = {
          macht 19 öffentliche Einträge, dazu acht Apps mit einer offenen
          Apple-Prüfung. Details und Einzelquellen stehen beim Werdegang,
          nicht zweimal. */
-      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu 19 öffentliche Store-Einträge über beide Läden und acht weitere Apps mit einer offenen Store-Prüfung bei Apple (Stand 6. September 2026). 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind für mich Alltag, nicht Neuland.`,
+      body: `${SALATI_VERSIONEN} ausgelieferte Versionen allein bei Salati, dazu 19 öffentliche Store-Einträge über beide Läden und weitere Prototyp-Apps in Store-Prüfung. 14 Sprachen, vier Geräteklassen vom Telefon bis zum Fernseher. Ablehnungen im Review, Alterseinstufungen, Datenschutzformulare und Signierketten sind Arbeit, nicht Neuland.`,
       proof: "#case-salati",
       proofLabel: "Salati im Detail",
     },

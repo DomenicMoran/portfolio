@@ -13,7 +13,9 @@ export function CaseStudies() {
   const ausfuehrlich = caseStudies
     .filter((s) => !s.prototyp)
     .slice(0, AUSFUEHRLICH);
-  const weitere = caseStudies.filter((s) => s.prototyp);
+  const weitere = caseStudies.filter(
+    (s) => s.prototyp && !s.nochNichtAusgeliefert,
+  );
 
   return (
     <section

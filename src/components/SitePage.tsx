@@ -2,6 +2,19 @@ import dynamic from "next/dynamic";
 import { ContentProvider } from "@/content/ContentProvider";
 import { mailAdresse } from "@/lib/mailto";
 import { SOCIALS, type Content } from "@/content/types";
+import { FERTIG_FALLSTUDIEN } from "@/lib/case-study-order";
+
+/** Fallstudien mit ausgelieferten Mobile-Apps (Store-Links stehen nicht mehr in `links`). */
+const MOBILE_CASE_IDS = new Set<string>([
+  ...FERTIG_FALLSTUDIEN,
+  "mfc",
+  "aegis",
+  "vortex",
+  "synapse",
+  "vesper",
+  "aether",
+  "bitdojo",
+]);
 import { ConsoleGreeting } from "@/components/ConsoleGreeting";
 import { SiteShell } from "@/components/SiteShell";
 import { Footer } from "@/components/Footer";
@@ -141,7 +154,7 @@ export function SitePage({ content }: { content: Content }) {
          unvollständig, weil je Fallstudie nur einer der beiden Stores
          verlinkt ist, obwohl Salati und MenuCloud in beiden liegen. Eine
          halbe Angabe wird von einer Maschine als ganze weitergereicht. */
-      applicationCategory: study.links.some((l) => l.kind === "store" && l.href)
+      applicationCategory: MOBILE_CASE_IDS.has(study.id)
         ? "MobileApplication"
         : "WebApplication",
     })),

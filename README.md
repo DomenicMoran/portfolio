@@ -20,7 +20,7 @@ Dark-Mode-First · Bewegung mit Reduced-Motion-Ausstieg · Null Cookies · Null 
 ## Worum es geht
 
 Die meisten Entwickler-Portfolios sind eine Liste von Technologien. Dieses hier
-versucht etwas anderes: für jedes der über zehn Systeme in Produktion beantwortet es
+versucht etwas anderes: für jedes der fünf ausgelieferten Produkte und die Prototypen beantwortet es
 drei Fragen, die ein CTO tatsächlich stellt: _Welches Problem?_, _Welche
 Architektur?_, _Was war der schwierige Teil?_
 

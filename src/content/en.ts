@@ -4,7 +4,6 @@ import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
 import {
   asWord,
   grossErstes,
-  jahreZwischen,
   monateZwischen,
 } from "@/lib/duration";
 import type { Content } from "./types";
@@ -62,7 +61,7 @@ const SALATI_VERSIONS = SALATI_VERSIONEN;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
- * Wie lange die über zehn Produktionssysteme entstehen, gerechnet.
+ * Wie lange die fünf ausgelieferten Produkte entstehen, gerechnet.
  *
  * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
  * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
@@ -71,16 +70,11 @@ const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
  * beide bereits abgelegt.
  */
 const FIRST_COMMIT = "2026-03-26";
-const LEARNING_START = "2022-07-01";
-
 const months = monateZwischen(new Date(FIRST_COMMIT), new Date(verified.date));
 
 /** "four months", "five months", …, never a frozen value. */
 const buildTime = `${asWord(months)} month${months === 1 ? "" : "s"}`;
 const buildTimeTitle = grossErstes(buildTime);
-const learningYears = grossErstes(
-  `${asWord(jahreZwischen(new Date(LEARNING_START), new Date(verified.date)))} years`,
-);
 
 export const en: Content = {
   lang: "en",
@@ -206,34 +200,35 @@ export const en: Content = {
       {
         name: "MenuCloud Berlin",
         beschreibung:
-          "Multi-tenant SaaS for restaurants with fiscal signing and Stripe Connect",
+          "Multi-tenant SaaS for restaurants: own site, QR ordering, Stripe Connect payouts and multi-tenant cash-register compliance with Fiskaly TSE. Built and operated solo, including 7,800+ tests and ops workflows.",
         href: "https://menucloud-berlin.de",
         detailHref: "#case-menucloud",
       },
       {
         name: "Salati",
         beschreibung:
-          "Prayer and Quran app for DACH, offline-capable, in both stores",
+          "Prayer and Quran platform for German speakers on phone, tablet, TV and wear: offline, ad-free, on-device AI, in both stores.",
         href: "https://www.salati.pro",
         detailHref: "#case-salati",
       },
       {
         name: "NOURI",
         beschreibung:
-          "Fitness and nutrition platform with web app, mobile app and catalog",
+          "Fitness and nutrition platform with web and mobile app: 11,892 recipes, nutrients computed from ingredients, training and plans from the account — including legal copy.",
         href: "https://www.nouri-fitness.de",
         detailHref: "#case-nouri",
       },
       {
         name: "LexiPulse",
         beschreibung:
-          "Reader for EPUB, PDF and web articles with RSVP and flow text",
+          "Reader for EPUB, PDF and the web: RSVP with sentence-aware timing, flow text, import without server retention and a PDF toolbox — app and web from one core.",
         href: "https://lexipulse.de",
         detailHref: "#case-lexipulse",
       },
       {
         name: "Dartile",
-        beschreibung: "Dart counter that records every dart individually",
+        beschreibung:
+          "Dart counter that records every dart, not just totals: calibrated camera, eight game types, call-outs and stats from events, not guesses.",
         href: "https://dartile.de",
         detailHref: "#case-dartile",
       },
@@ -374,13 +369,6 @@ export const en: Content = {
           href: "https://mfc.domenicmoran.de",
           kind: "live",
         },
-        // Siehe `site.ts`: Der Play-Eintrag der Begleit-App ist am
-        // 23.08.2026 mit Status 200 belegt und fehlte in beiden Fassungen.
-        {
-          label: "Companion app (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.domenicmoran.mfc.companion",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -479,39 +467,6 @@ export const en: Content = {
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-        {
-          label: "Instagram",
-          href: "https://instagram.com/salatibox",
-          kind: "social",
-        },
-        // The German page linked the App Store listing, the English one did
-        // not, the same shipped app, invisible to half the readers.
-        {
-          label: "App Store",
-          href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
-          kind: "store",
-        },
-        // Siehe `site.ts`: Der Play-Eintrag ist seit dem 08.08.2026
-        // öffentlich. Beide Fassungen führen ihn, sonst wiederholt sich
-        // genau der Fall aus dem Kommentar darüber.
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
-          kind: "store",
-        },
-        {
-          label: "Google Play (TV)",
-          href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
-          kind: "store",
-        },
-        // Siehe `site.ts`: Der Apple-Eintrag der Fernseher-Fassung ist am
-        // 23.08.2026 über die iTunes-Lookup-API belegt. Beide Fassungen
-        // führen ihn, sonst wiederholt sich der Fall von oben.
-        {
-          label: "App Store (TV)",
-          href: "https://apps.apple.com/de/app/salati-tv/id6800283177",
-          kind: "store",
-        },
       ],
       architecture: "salati",
       articles: [
@@ -615,7 +570,7 @@ export const en: Content = {
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         /* Siehe die Begründung in `site.ts`: seit dem 01.05.2026 zwei Stufen,
            nicht drei. */
-        "Self-hosted mail stack with AWS SES as the rescue path",
+        "Transactional mail with SES fallback: fail-closed, no silently dropped delivery",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
         "iOS and Android apps for owners and service staff",
       ],
@@ -715,44 +670,6 @@ export const en: Content = {
           href: "https://menucloud-berlin.de",
           kind: "live",
         },
-        {
-          label: "Status page",
-          href: "https://menucloud-berlin.de/status",
-          kind: "live",
-        },
-        {
-          label: "Instagram",
-          href: "https://instagram.com/menucloudberlin",
-          kind: "social",
-        },
-        {
-          label: "YouTube",
-          href: "https://youtube.com/@menucloudberlin",
-          kind: "social",
-        },
-        // The English page carried no app links at all, while the German one
-        // carried two of four. All four checked on 2 August 2026: status 200
-        // and the expected title.
-        {
-          label: "Restaurant app (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
-          kind: "store",
-        },
-        {
-          label: "Restaurant app (App Store)",
-          href: "https://apps.apple.com/de/app/menucloud/id6762983057",
-          kind: "store",
-        },
-        {
-          label: "Discovery (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
-          kind: "store",
-        },
-        {
-          label: "Discovery (App Store)",
-          href: "https://apps.apple.com/de/app/menucloud-discovery/id6763892926",
-          kind: "store",
-        },
       ],
       architecture: "menucloud",
       articles: ["german-till-law-in-practice"],
@@ -826,6 +743,7 @@ export const en: Content = {
         { value: "2", label: "review stages before sending" },
       ],
       links: [],
+      nochNichtAusgeliefert: true,
       architecture: "wohnungsjaeger",
       keinScreenshot:
         "There is deliberately no image of this project. The dashboard shows real listings, real addresses and my complete application documents. Staging a screenshot with invented data would have been the obvious fix, and would have put a fabricated image on a page that argues from verifiability. The architecture beside it is real.",
@@ -898,11 +816,6 @@ export const en: Content = {
           label: "nouri-fitness.de",
           href: "https://www.nouri-fitness.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=app.nouri.mobile",
-          kind: "store",
         },
       ],
       architecture: "nouri",
@@ -1015,14 +928,7 @@ export const en: Content = {
         { value: "664", label: "exam questions" },
         { value: "147", label: "tests" },
       ],
-      links: [
-        { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.bitdojo.app",
-          kind: "store",
-        },
-      ],
+      links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
       architecture: "bitdojo",
       shots: [
         {
@@ -1128,14 +1034,7 @@ export const en: Content = {
         { value: "350", label: "call-outs, two languages" },
         { value: "0", label: "dependencies in the engine" },
       ],
-      links: [
-        { label: "dartile.de", href: "https://dartile.de", kind: "live" },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.dartile.app",
-          kind: "store",
-        },
-      ],
+      links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
       architecture: "dartile",
       articles: ["eighteen-routes-over-the-bull"],
       shots: [
@@ -1240,21 +1139,6 @@ export const en: Content = {
       ],
       links: [
         { label: "lexipulse.de", href: "https://lexipulse.de", kind: "live" },
-        {
-          label: "Source code",
-          href: "https://github.com/DomenicMoran/lexipulse",
-          kind: "code",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
-          kind: "store",
-        },
-        {
-          label: "App Store",
-          href: "https://apps.apple.com/de/app/lexipulse-pdf-e-book/id6801979644",
-          kind: "store",
-        },
       ],
       architecture: "lexipulse",
       shots: [
@@ -1350,11 +1234,6 @@ export const en: Content = {
           href: "https://aegis.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.aegisapp.app",
-          kind: "store",
-        },
       ],
       architecture: "aegis",
       shots: [
@@ -1437,11 +1316,6 @@ export const en: Content = {
           href: "https://vortex.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.vortexapp.app",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -1507,11 +1381,6 @@ export const en: Content = {
           label: "synapse.domenicmoran.de",
           href: "https://synapse.domenicmoran.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.synapseapp.app",
-          kind: "store",
         },
       ],
       architecture: "",
@@ -1590,11 +1459,6 @@ export const en: Content = {
           label: "vesper.domenicmoran.de",
           href: "https://vesper.domenicmoran.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.vesperapp.app",
-          kind: "store",
         },
       ],
       architecture: "",
@@ -1676,11 +1540,6 @@ export const en: Content = {
           href: "https://aether.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.aetherapp.app",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -1732,7 +1591,7 @@ export const en: Content = {
       bod: "Buy at BoD",
       amazon: "Buy at Amazon",
       ebook: "E-book at BoD",
-      ebookSoon: "at BoD, coming soon",
+      ebookSoon: "no shop link yet",
       authorSite: "Author page",
     },
     book: {
@@ -1775,7 +1634,7 @@ export const en: Content = {
     eyebrow: "Who I am",
     portrait: "/portrait-dark.jpg",
     portraitPrint: "/portrait.jpg",
-    title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
+    title: `${buildTimeTitle} five products in production.`,
     paragraphs: [
       /* Store counts keep growing, so a visible as-of date instead of a
          timeless claim.
@@ -1812,7 +1671,7 @@ export const en: Content = {
          13 Play plus four Apple listings make 17 public store references,
          now each linked and checked in its own case study, not just
          claimed. */
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: five shipped products in ${buildTime}, 19 public store listings across both stores (14 on Google Play, five on the App Store), one of them carrying statutory fiscal signing, plus further prototypes. All of it built alongside a full-time job.`,
+      `For ${buildTime} I have run five shipped products under Moran Software — mobile, multi-tenant SaaS with cash-register compliance, a learning platform, reader and dart counter. Nineteen public store listings across both stores (see the tile for the count), all built alongside a full-time job and verified on live systems, not only in tests.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1828,11 +1687,6 @@ export const en: Content = {
         value: "19",
         label: "store listings live",
         note: "14 Play, 5 App Store",
-      },
-      {
-        value: "2022",
-        label: "self-taught since",
-        note: "Meta & Udemy certificates",
       },
     ],
     /* `dateLong` und nicht der rohe Wert: Hier stand „Measured on
@@ -1856,9 +1710,9 @@ export const en: Content = {
       },
       {
         period: "since 2022",
-        title: "Software engineering, self-taught",
-        org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is five shipped products and a git history anyone can check.",
+        title: "Software engineering",
+        org: "Own products · Meta (Coursera) · Udemy",
+        body: "The evidence is five shipped products, store listings and a git history anyone can check. Meta and Udemy certificates from 2022 sit in the CV, not in the headline.",
         current: true,
       },
       // The full-time job the site refers to everywhere without naming it,
@@ -2222,7 +2076,7 @@ export const en: Content = {
           },
           {
             name: "Observability",
-            evidence: "Sentry, Uptime Kuma, Slack alerts",
+            evidence: "Sentry, structured logs, Slack alerts",
           },
           { name: "Automation", evidence: "n8n workflows with self-healing" },
         ],
@@ -2318,7 +2172,7 @@ export const en: Content = {
            HTTP call per package, Aegis relisted), 19 public listings, plus
            eight apps with an open Apple review. Sources live with the bio
            paragraph, not duplicated here. */
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 19 public store listings across both stores and eight more apps with an open Apple review right now (as of 6 September 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 19 public store listings across both stores and further prototype apps in store review. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine work, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },

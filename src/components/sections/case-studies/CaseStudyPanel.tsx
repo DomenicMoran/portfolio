@@ -10,7 +10,6 @@ import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { GithubIcon } from "@/components/ui/BrandIcons";
 import { artikelDe, artikelEn, chromeDe, chromeEn } from "@/content/articles";
 import { useContent } from "@/content/ContentProvider";
 import type { CaseStudy } from "@/content/types";
@@ -114,7 +113,7 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
   const linkZeile =
     visibleLinks.length > 0 ? (
-      <Reveal className="mt-8 flex flex-wrap gap-2">
+      <Reveal className="mt-8">
         {visibleLinks.map((link) => (
           <a
             key={link.label}
@@ -122,12 +121,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${link.label}: ${study.name}`}
-            className="group border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
+            className="group text-ink-faint hover:text-acid inline-flex items-center gap-1.5 font-mono text-xs tracking-wide transition-colors"
           >
-            {link.kind === "code" ? <GithubIcon className="size-3.5" /> : null}
             {link.label}
             <ArrowUpRight
-              className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="size-3 opacity-70 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               aria-hidden
             />
           </a>

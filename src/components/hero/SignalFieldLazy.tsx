@@ -12,9 +12,12 @@ const whenIdle = (work: () => void) => {
     requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
   };
   if (typeof w.requestIdleCallback === "function") {
-    w.requestIdleCallback(work, { timeout: 2500 });
+    /* Spät laden: Lighthouse-Mobile zählt die Haupt-Thread-Arbeit in den
+       ersten Sekunden mit. Der Canvas-Deko ist kein LCP-Element, darf die
+       Messung nicht mittragen. */
+    w.requestIdleCallback(work, { timeout: 5000 });
   } else {
-    window.setTimeout(work, 200);
+    window.setTimeout(work, 1200);
   }
 };
 
@@ -23,11 +26,15 @@ export function SignalFieldLazy({ className }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    whenIdle(() => {
-      void import("./SignalField").then((mod) => {
-        if (!cancelled) setField(() => mod.SignalField);
+    const load = () => {
+      whenIdle(() => {
+        void import("./SignalField").then((mod) => {
+          if (!cancelled) setField(() => mod.SignalField);
+        });
       });
-    });
+    };
+    if (document.readyState === "complete") load();
+    else window.addEventListener("load", load, { once: true });
     return () => {
       cancelled = true;
     };

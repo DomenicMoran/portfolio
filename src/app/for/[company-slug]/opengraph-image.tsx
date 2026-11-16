@@ -85,7 +85,7 @@ export default async function Image({
               boxShadow: "0 18px 50px #00000055",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- Satori-Renderer, kein next/image */}
             <img
               src={logoUrl}
               alt={`${name} logo`}

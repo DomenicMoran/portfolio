@@ -93,13 +93,15 @@ export function CommandPalette({
         icon: ArrowRight,
         run: go(item.href),
       })),
-      ...caseStudies.map((study) => ({
-        id: `case-${study.id}`,
-        label: study.name,
-        hint: study.tagline,
-        icon: ArrowRight,
-        run: go(`#case-${study.id}`),
-      })),
+      ...caseStudies
+        .filter((study) => !study.nochNichtAusgeliefert)
+        .map((study) => ({
+          id: `case-${study.id}`,
+          label: study.name,
+          hint: study.tagline,
+          icon: ArrowRight,
+          run: go(`#case-${study.id}`),
+        })),
       ...artikel.map((a) => ({
         id: `artikel-${a.slug}`,
         label: a.title,
