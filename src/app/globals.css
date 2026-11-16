@@ -743,6 +743,43 @@ textarea:-webkit-autofill {
     color-scheme: light;
   }
 
+  /* Tailwind stellt zu den variablen Flächenfarben einen festen Hex-Fallback
+     (`.bg-surface/40 { background-color: #11111666 }`). Der überlebt die
+     Token-Umdefinition oben und ergibt auf weißem Papier einen grauen
+     Untergrund, auf dem die Druckschrift die 4,5:1 nicht mehr hält.
+     Schrift- und Flächenklassen deshalb fest auf die Drucktoken legen. */
+  .text-ink {
+    color: var(--color-ink) !important;
+  }
+  .text-ink-dim {
+    color: var(--color-ink-dim) !important;
+  }
+  .text-ink-faint {
+    color: var(--color-ink-faint) !important;
+  }
+  [class*="bg-surface"],
+  [class*="bg-base"],
+  [class*="bg-void"],
+  [class*="bg-raised"],
+  [class*="bg-ink"] {
+    background-color: var(--color-surface) !important;
+  }
+
+  /* Die Sammelregel oben trifft auch `hover:bg-ink` auf den Akzentknöpfen
+     und würde sie weiß auf weiß drucken (`text-void` wird im Druck ebenfalls
+     weiß). Standardzustand der Knöpfe wiederherstellen. */
+  .bg-acid {
+    background-color: var(--color-acid) !important;
+    color: #ffffff !important;
+  }
+  .bg-ink {
+    background-color: #101014 !important;
+    color: #ffffff !important;
+  }
+  [class*="text-void"] {
+    color: #ffffff !important;
+  }
+
   /* Alles sichtbar, was am Bildschirm auf das Hineinscrollen wartet.
      ---------------------------------------------------------------
      Die Abschnitte blenden sich beim Scrollen ein: Bis dahin stehen sie auf
@@ -764,6 +801,12 @@ textarea:-webkit-autofill {
   *::after {
     opacity: 1 !important;
     transform: none !important;
+    /* Sonst bleibt transition-colors nach dem Wechsel in den Druckmodus
+       noch kurz auf den Bildschirmfarben stehen, und die Prüfung misst
+       einen Zwischenstand: Druckschrift auf noch nicht umgefärbter Fläche,
+       oder schon gebleichte Knöpfe mit alter Schrift. */
+    transition: none !important;
+    animation: none !important;
   }
 
   /* Das Karussell wickelt um, statt seitlich zu verschwinden.

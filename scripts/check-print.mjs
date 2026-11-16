@@ -629,6 +629,24 @@ for (const pfad of gepruefteSeiten) {
    Gemessen wird nur auf den beiden Startseiten: Nur dort stehen Reiter. Für
    jede Tafel dieselbe Messung wie oben, mit dem Reiternamen in der Meldung.
    --------------------------------------------------------------------- */
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten `hidden`, und der Klick auf den nächsten Reiter
+ * läuft in eine Zeitüberschreitung.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
 const reiterfunde = [];
 for (const pfad of ["/", "/en"]) {
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
@@ -639,24 +657,36 @@ for (const pfad of ["/", "/en"]) {
       await new Promise((r) => setTimeout(r, 40));
     }
   });
+  await oeffneFallstudien(seite);
 
   const gruppen = await seite.evaluate(() =>
-    [...document.querySelectorAll('[role="tablist"]')].map((tl) => ({
-      name: tl.getAttribute("aria-label"),
-      reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) =>
-        t.textContent.trim(),
-      ),
-    })),
+    [...document.querySelectorAll('[role="tablist"]')]
+      .filter((tl) => {
+        const stil = getComputedStyle(tl);
+        if (stil.display === "none" || stil.visibility === "hidden") {
+          return false;
+        }
+        const kasten = tl.getBoundingClientRect();
+        return kasten.width > 0 && kasten.height > 0;
+      })
+      .map((tl) => ({
+        name: tl.getAttribute("aria-label"),
+        reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) =>
+          t.textContent.trim(),
+        ),
+      })),
   );
 
   for (const gruppe of gruppen) {
     // Der erste Reiter ist der Auslieferungszustand und oben schon gemessen.
     for (const reiter of gruppe.reiter.slice(1)) {
       await seite.emulateMedia({ media: "screen" });
-      await seite
+      const reiterknopf = seite
         .locator(`[role="tablist"][aria-label="${gruppe.name}"]`)
-        .getByRole("tab", { name: reiter, exact: true })
-        .click();
+        .getByRole("tab", { name: reiter, exact: true });
+      if (!(await reiterknopf.isVisible())) continue;
+      await reiterknopf.scrollIntoViewIfNeeded();
+      await reiterknopf.click();
       /* Kurz warten, bevor gedruckt wird: Die Tafel blendet um, und in der
          Gegenprobe stand deshalb der Name des nächsten Reiters an einem Fund
          der vorigen Tafel. Der Fund war richtig, die Zuordnung nicht. */
