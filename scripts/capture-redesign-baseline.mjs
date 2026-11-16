@@ -10,7 +10,9 @@ import { join } from "node:path";
 const basis = process.argv[2]?.replace(/\/$/, "");
 const ziel = process.argv[3];
 if (!basis || !ziel) {
-  console.error("Aufruf: node scripts/capture-redesign-baseline.mjs <basis-url> <zielordner>");
+  console.error(
+    "Aufruf: node scripts/capture-redesign-baseline.mjs <basis-url> <zielordner>",
+  );
   process.exit(1);
 }
 
@@ -23,8 +25,14 @@ const stamp = new Date()
 const seiten = [
   { slug: "start-de", path: "/" },
   { slug: "start-en", path: "/en" },
-  { slug: "artikel-de", path: "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift" },
-  { slug: "artikel-en", path: "/en/articles/the-dotted-circle-was-not-the-font" },
+  {
+    slug: "artikel-de",
+    path: "/artikel/gestrichelter-kreis-kam-nicht-aus-der-schrift",
+  },
+  {
+    slug: "artikel-en",
+    path: "/en/articles/the-dotted-circle-was-not-the-font",
+  },
   { slug: "impressum", path: "/impressum" },
   { slug: "datenschutz", path: "/datenschutz" },
   { slug: "for-beispiel", path: "/for/placeholder-co" },
@@ -38,7 +46,9 @@ const viewports = [
 await mkdir(ziel, { recursive: true });
 const browser = await chromium.launch();
 for (const vp of viewports) {
-  const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+  const page = await browser.newPage({
+    viewport: { width: vp.width, height: vp.height },
+  });
   for (const s of seiten) {
     const url = `${basis}${s.path}`;
     try {
