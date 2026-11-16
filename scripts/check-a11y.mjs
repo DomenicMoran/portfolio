@@ -507,10 +507,24 @@ async function tafelzeiten(reducedMotion) {
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
 
   const zeiten = new Map();
+  /* Eingeklappte Fallstudien öffnen: Die Reiterleisten liegen sonst in
+     einem `hidden`-Block, und `scrollIntoViewIfNeeded` bricht ab. */
+  for (const knopf of await seite
+    .locator(".offenlegungs-schalter[aria-expanded=false]")
+    .all()) {
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("#" + CSS.escape(ziel) + " [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
   for (const liste of await seite.locator("[role=tablist]").all()) {
     const name = (await liste.getAttribute("aria-label")) ?? "?";
     const reiter = await liste.locator("[role=tab]").all();
     if (reiter.length < 2) continue;
+    if (!(await liste.isVisible())) continue;
 
     await liste.scrollIntoViewIfNeeded();
     const zweiter = reiter[1];

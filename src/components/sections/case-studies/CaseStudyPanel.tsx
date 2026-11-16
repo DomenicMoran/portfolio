@@ -408,10 +408,11 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
           </Reveal>
         ) : null}
 
-        {/* Die Reiter */}
-        <Reveal delay={0.05}>
-          <div className="mt-12">
-            {/* Ohne JavaScript gibt es die Reiterleiste nicht.
+        {/* Die Reiter ohne Reveal: `opacity: 0` bis zum IntersectionObserver
+            ließ `check:a11y` (tafelzeiten) an `scrollIntoViewIfNeeded`
+            scheitern — die Leiste galt als nicht sichtbar. */}
+        <div className="mt-12">
+          {/* Ohne JavaScript gibt es die Reiterleiste nicht.
 
               Im Baum steht immer nur eine Tafel, die gewählte, das ist eine
               bewusste Entscheidung und oben begründet. Ohne Skript lässt sich
@@ -425,73 +426,73 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
               Schalter, die nichts schalten. Wer ohne Skript liest, verliert
               damit nichts, was er vorher hatte, er sieht nur nicht mehr
               aus, als könne er es holen. */}
-            <noscript>
-              <style>{`.tafel-reiter{display:none}`}</style>
-            </noscript>
-            <div
-              role="tablist"
-              aria-label={study.name}
-              onKeyDown={beiTaste}
-              className="tafel-reiter border-line flex flex-wrap gap-1.5 border-b pb-3"
-            >
-              {sichtbareTabs.map((id) => {
-                const Icon = TAB_ICONS[id];
-                const selected = tab === id;
-                return (
-                  <button
-                    key={id}
-                    role="tab"
-                    type="button"
-                    // Ein Reiter ohne Tafel ist ein halbes Muster.
-                    //
-                    // `role="tab"` und `aria-selected` standen hier, aber es gab
-                    // keine `tabpanel` und kein `aria-controls`: gemessen 4
-                    // Tab-Listen, 13 Reiter, null Tafeln. Ein Vorleseprogramm
-                    // meldet dann "Registerkarte, ausgewählt" und kann von dort
-                    // nirgendwohin, weil die Verbindung zum Inhalt fehlt.
-                    id={`${study.id}-tab-${id}`}
-                    // `aria-controls` nur am gewählten Reiter, und die Kennung
-                    // gehört der Tafel, nicht dem Reiter.
-                    //
-                    // Gerendert wird immer nur die gewählte Tafel, AnimatePresence
-                    // tauscht sie aus. An allen dreizehn Reitern gesetzt zeigten
-                    // deshalb neun auf eine Kennung, die es im Dokument nicht
-                    // gibt, gemessen an der ausgelieferten Seite. Ein Verweis
-                    // ins Leere ist schlechter als keiner: Er behauptet ein Ziel.
-                    //
-                    // Die Kennung hieß danach `…-panel-architecture` und wechselte
-                    // beim Umschalten mit. Zwischen dem Klick und dem Ende der
-                    // Blende zeigte sie erneut ins Leere, gemessen am
-                    // 02.08.2026 an der Live-Seite: bei 100 ms unauflösbar, bei
-                    // 250 ms wieder da. Ein Zustand, den die statische Prüfung
-                    // nicht sehen kann, weil er nur zwischen zwei Bildern
-                    // besteht. Eine Tafel je Fallstudie, eine feste Kennung:
-                    // Dann gibt es den Zustand nicht mehr.
-                    aria-controls={selected ? `${study.id}-panel` : undefined}
-                    aria-selected={selected}
-                    tabIndex={selected ? 0 : -1}
-                    onClick={() => setTab(id)}
-                    className={cn(
-                      "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
-                      // Die Farbfläche liegt als absolut positioniertes Geschwister
-                      // darüber (für die Schiebe-Animation). Dieselbe Farbe hier
-                      // zusätzlich als Hintergrund des Knopfes: Sollte das
-                      // Motion-Element je nicht rendern, bliebe sonst dunkler Text
-                      // auf dunklem Grund, unsichtbar statt nur unschön.
-                      selected
-                        ? cn("text-void", accent.bg)
-                        : "text-ink-dim hover:text-ink",
-                    )}
-                  >
-                    <Icon className="relative size-3.5" aria-hidden />
-                    <span className="relative">{work.tabs[id]}</span>
-                  </button>
-                );
-              })}
-            </div>
+          <noscript>
+            <style>{`.tafel-reiter{display:none}`}</style>
+          </noscript>
+          <div
+            role="tablist"
+            aria-label={study.name}
+            onKeyDown={beiTaste}
+            className="tafel-reiter border-line flex flex-wrap gap-1.5 border-b pb-3"
+          >
+            {sichtbareTabs.map((id) => {
+              const Icon = TAB_ICONS[id];
+              const selected = tab === id;
+              return (
+                <button
+                  key={id}
+                  role="tab"
+                  type="button"
+                  // Ein Reiter ohne Tafel ist ein halbes Muster.
+                  //
+                  // `role="tab"` und `aria-selected` standen hier, aber es gab
+                  // keine `tabpanel` und kein `aria-controls`: gemessen 4
+                  // Tab-Listen, 13 Reiter, null Tafeln. Ein Vorleseprogramm
+                  // meldet dann "Registerkarte, ausgewählt" und kann von dort
+                  // nirgendwohin, weil die Verbindung zum Inhalt fehlt.
+                  id={`${study.id}-tab-${id}`}
+                  // `aria-controls` nur am gewählten Reiter, und die Kennung
+                  // gehört der Tafel, nicht dem Reiter.
+                  //
+                  // Gerendert wird immer nur die gewählte Tafel, AnimatePresence
+                  // tauscht sie aus. An allen dreizehn Reitern gesetzt zeigten
+                  // deshalb neun auf eine Kennung, die es im Dokument nicht
+                  // gibt, gemessen an der ausgelieferten Seite. Ein Verweis
+                  // ins Leere ist schlechter als keiner: Er behauptet ein Ziel.
+                  //
+                  // Die Kennung hieß danach `…-panel-architecture` und wechselte
+                  // beim Umschalten mit. Zwischen dem Klick und dem Ende der
+                  // Blende zeigte sie erneut ins Leere, gemessen am
+                  // 02.08.2026 an der Live-Seite: bei 100 ms unauflösbar, bei
+                  // 250 ms wieder da. Ein Zustand, den die statische Prüfung
+                  // nicht sehen kann, weil er nur zwischen zwei Bildern
+                  // besteht. Eine Tafel je Fallstudie, eine feste Kennung:
+                  // Dann gibt es den Zustand nicht mehr.
+                  aria-controls={selected ? `${study.id}-panel` : undefined}
+                  aria-selected={selected}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setTab(id)}
+                  className={cn(
+                    "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors",
+                    // Die Farbfläche liegt als absolut positioniertes Geschwister
+                    // darüber (für die Schiebe-Animation). Dieselbe Farbe hier
+                    // zusätzlich als Hintergrund des Knopfes: Sollte das
+                    // Motion-Element je nicht rendern, bliebe sonst dunkler Text
+                    // auf dunklem Grund, unsichtbar statt nur unschön.
+                    selected
+                      ? cn("text-void", accent.bg)
+                      : "text-ink-dim hover:text-ink",
+                  )}
+                >
+                  <Icon className="relative size-3.5" aria-hidden />
+                  <span className="relative">{work.tabs[id]}</span>
+                </button>
+              );
+            })}
+          </div>
 
-            <div className="pt-8">
-              {/* `mode="wait"` blendet die alte Tafel erst aus und die neue dann
+          <div className="pt-8">
+            {/* `mode="wait"` blendet die alte Tafel erst aus und die neue dann
                 ein. Das sieht ruhiger aus und kostet die Summe beider Zeiten.
 
                 Bei `prefers-reduced-motion` ist genau das falsch: `MotionConfig`
@@ -502,30 +503,29 @@ function CaseStudyPanel({ study }: { study: CaseStudy }) {
 
                 Mit Dauer null ist `wait` sofort durch, und die Reihenfolge
                 bleibt dieselbe. */}
-              <div
-                role="tabpanel"
-                id={`${study.id}-panel`}
-                aria-labelledby={`${study.id}-tab-${tab}`}
-                tabIndex={0}
-                data-reveal=""
-              >
-                {tab === "highlights" ? (
-                  <TafelHighlights punkte={study.highlights} akzent={accent} />
-                ) : null}
+            <div
+              role="tabpanel"
+              id={`${study.id}-panel`}
+              aria-labelledby={`${study.id}-tab-${tab}`}
+              tabIndex={0}
+              data-reveal=""
+            >
+              {tab === "highlights" ? (
+                <TafelHighlights punkte={study.highlights} akzent={accent} />
+              ) : null}
 
-                {tab === "automation" && study.automation ? (
-                  <TafelAutomation daten={study.automation} akzent={accent} />
-                ) : null}
+              {tab === "automation" && study.automation ? (
+                <TafelAutomation daten={study.automation} akzent={accent} />
+              ) : null}
 
-                {tab === "architecture" && study.architecture ? (
-                  <ArchitectureDiagram name={study.architecture} />
-                ) : null}
+              {tab === "architecture" && study.architecture ? (
+                <ArchitectureDiagram name={study.architecture} />
+              ) : null}
 
-                {tab === "stack" ? <TafelStack gruppen={study.stack} /> : null}
-              </div>
+              {tab === "stack" ? <TafelStack gruppen={study.stack} /> : null}
             </div>
           </div>
-        </Reveal>
+        </div>
 
         {/* Metrics */}
         <div className="border-line mt-12 border-t pt-8">
