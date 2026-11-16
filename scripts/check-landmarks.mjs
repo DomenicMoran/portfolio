@@ -109,7 +109,7 @@ async function einAnlauf(aufSeite, mitWerkzeug) {
     selector: "h1, h2, h3, h4",
   });
   const raus = [];
-  for (const [i, nodeId] of nodeIds.entries()) {
+  for (const nodeId of nodeIds) {
     const { node } = await mitWerkzeug.send("DOM.describeNode", { nodeId });
     const { nodes } = await mitWerkzeug.send("Accessibility.queryAXTree", {
       backendNodeId: node.backendNodeId,
@@ -128,12 +128,22 @@ async function einAnlauf(aufSeite, mitWerkzeug) {
        das Gegenteil dessen, was die Regel eigentlich sucht: eine Überschrift,
        die niemand sieht und niemand hört, ist konsistent, nicht widersprüchlich. */
     if (ax.ignored) continue;
-    const sichtbar = glatt(
-      await aufSeite.evaluate(
-        (nr) => document.querySelectorAll("h1, h2, h3, h4")[nr].innerText,
-        i,
-      ),
-    );
+    /* innerText am selben Backend-Node, nicht über den Live-Index von
+       querySelectorAll. Vorführungen mit `ssr: false` hängen ihre
+       Überschriften erst nach der Hydration in den Baum; ein späterer
+       Index zeigt dann auf eine andere Überschrift als der AX-Name
+       (gemessen: „Ein Tag, zusammengestellt“ gegen
+       „WEITERE PROJEKTE / PROTOTYPEN“, in der Fußzeile „SEITE“ gegen
+       „RECHTLICHES“). */
+    const { object } = await mitWerkzeug.send("DOM.resolveNode", {
+      backendNodeId: node.backendNodeId,
+    });
+    const { result } = await mitWerkzeug.send("Runtime.callFunctionOn", {
+      objectId: object.objectId,
+      functionDeclaration: "function() { return this.innerText; }",
+      returnByValue: true,
+    });
+    const sichtbar = glatt(result?.value);
     raus.push({ name: glatt(ax.name?.value), sichtbar });
   }
   return raus;
@@ -153,6 +163,10 @@ for (const pfad of pfade) {
      standen. */
   const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
   if (!antwort || antwort.status() !== erwartet) continue;
+  /* Client-Vorführungen (`ssr: false`) hängen erst nach dem JS-Lauf
+     Überschriften in den Baum. Ohne diese Pause wäre der CDP-Schnappschuss
+     unvollständig, auch wenn der Namensvergleich am selben Node hängt. */
+  await seite.waitForLoadState("networkidle").catch(() => {});
   geprueft++;
 
   const gefunden = await seite.evaluate(() => {
