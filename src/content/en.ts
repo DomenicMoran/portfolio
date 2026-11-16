@@ -22,7 +22,7 @@ const LOCATION = "Berlin · remote in the EU · hybrid";
 
 const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
-const SALARY = "€55–70k, depending on scope";
+const SALARY = "€55-70k, depending on scope";
 
 /**
  * Die englische Fassung.
@@ -96,7 +96,7 @@ export const en: Content = {
       salary: SALARY,
     },
     meta: {
-      title: "Domenic Moran – AI Product Engineer",
+      title: "Domenic Moran, AI Product Engineer",
       description:
         "Five shipped products, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, and further prototypes.",
     },
@@ -162,7 +162,7 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `For the past ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
+    lede: `For the past ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile, with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
@@ -210,14 +210,14 @@ export const en: Content = {
       {
         name: "NOURI",
         beschreibung:
-          "Fitness and nutrition platform with web and mobile app: 11,892 recipes, nutrients computed from ingredients, training and plans from the account — including legal copy.",
+          "Fitness and nutrition platform with web and mobile app: 11,892 recipes, nutrients computed from ingredients, training and plans from the account, including legal copy.",
         href: "https://www.nouri-fitness.de",
         detailHref: "#case-nouri",
       },
       {
         name: "LexiPulse",
         beschreibung:
-          "Reader for EPUB, PDF and the web: RSVP with sentence-aware timing, flow text, import without server retention and a PDF toolbox — app and web from one core.",
+          "Reader for EPUB, PDF and the web: RSVP with sentence-aware timing, flow text, import without server retention and a PDF toolbox: app and web from one core.",
         href: "https://lexipulse.de",
         detailHref: "#case-lexipulse",
       },
@@ -232,9 +232,9 @@ export const en: Content = {
     prototypTitel: "Prototypes & more",
     prototypBadge: "Prototype",
     prototypLede:
-      "Experiments and early systems — including MFC with a buy button and four pro apps in store review.",
+      "Experiments and early systems, including MFC with a buy button and four pro apps in store review.",
     mfc: {
-      name: "MFC – Moran Fleet Control",
+      name: "MFC, Moran Fleet Control",
       beschreibung:
         "Chat, agents, tools and backlog in one interface, local, no subscription.",
       preis: "€49.99 one-time, no subscription",
@@ -271,7 +271,7 @@ export const en: Content = {
     uebersicht: { label: "See the full product overview", href: "#work" },
     disclosure: {
       teaser:
-        "MFC with a buy path and more pro apps in the stores — all marked as prototypes.",
+        "MFC with a buy path and more pro apps in the stores, all marked as prototypes.",
       expand: "Show prototypes and workshop",
       hide: "Hide prototypes",
     },
@@ -392,8 +392,8 @@ export const en: Content = {
       accent: "acid",
       disclosure: {
         teaser:
-          "The AI runs offline — and a smaller Whisper model beat the larger one.",
-        expand: "How Salati came about →",
+          "The AI runs offline, and a smaller Whisper model beat the larger one.",
+        expand: "How Salati came about",
         hide: "Show less",
       },
       problem:
@@ -545,12 +545,12 @@ export const en: Content = {
       accent: "acid",
       disclosure: {
         teaser:
-          "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu.",
-        expand: "What the cash-register documentation leaves out →",
+          "Berlin restaurants hand 15-30% commission to delivery platforms and have no control over their own menu.",
+        expand: "What the cash-register documentation leaves out",
         hide: "Show less",
       },
       problem:
-        "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
+        "Berlin restaurants hand 15-30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
         "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
       hardPart: {
@@ -756,8 +756,8 @@ export const en: Content = {
       accent: "acid",
       disclosure: {
         teaser:
-          "The first check found outliers up to 30.5 per cent — today the largest deviation is 2.07.",
-        expand: "How NOURI recomputes every calorie →",
+          "The first check found outliers up to 30.5 per cent. Today the largest deviation is 2.07.",
+        expand: "How NOURI recomputes every calorie",
         hide: "Show less",
       },
       problem:
@@ -981,8 +981,8 @@ export const en: Content = {
       accent: "acid",
       disclosure: {
         teaser:
-          "With a phone camera, detection lands at around 95 per cent in the field — so it suggests instead of asserting.",
-        expand: "Why the camera is not the last word →",
+          "With a phone camera, detection lands at around 95 per cent in the field, so it suggests instead of asserting.",
+        expand: "Why the camera is not the last word",
         hide: "Show less",
       },
       problem:
@@ -1093,7 +1093,7 @@ export const en: Content = {
       disclosure: {
         teaser:
           "Giving every word the same pace is the mistake: flat RSVP gives a three-letter article the same time budget as a sentence end.",
-        expand: "Why the word stream is timed this way →",
+        expand: "Why the word stream is timed this way",
         hide: "Show less",
       },
       problem:
@@ -1671,7 +1671,7 @@ export const en: Content = {
          13 Play plus four Apple listings make 17 public store references,
          now each linked and checked in its own case study, not just
          claimed. */
-      `For ${buildTime} I have run five shipped products under Moran Software — mobile, multi-tenant SaaS with cash-register compliance, a learning platform, reader and dart counter. Nineteen public store listings across both stores (see the tile for the count), all built alongside a full-time job and verified on live systems, not only in tests.`,
+      `For ${buildTime} I have run five shipped products under Moran Software: mobile, multi-tenant SaaS with cash-register compliance, a learning platform, reader and dart counter. Nineteen public store listings across both stores (see the tile for the count), all built alongside a full-time job and verified on live systems, not only in tests.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1845,7 +1845,7 @@ export const en: Content = {
     disclosure: {
       bio: {
         teaser:
-          "Self-taught since 2022 — the figures, working method and the rest of the story sit behind this.",
+          "Self-taught since 2022: the figures, working method and the rest of the story sit behind this.",
         expand: "More on background and numbers",
         hide: "Show less",
       },
@@ -1857,7 +1857,7 @@ export const en: Content = {
       },
       openSource: {
         teaser:
-          "Six public packages — from Whisper headers to Dartile’s checkout table.",
+          "Six public packages: from Whisper headers to Dartile’s checkout table.",
         expand: "Show open-source packages",
         hide: "Hide packages",
       },
@@ -1989,7 +1989,7 @@ export const en: Content = {
     lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the evidence it came from.",
     disclosure: {
       teaser:
-        "Four areas — each with the system where the capability was earned.",
+        "Four areas, each with the system where the capability was earned.",
       expand: "Show evidence per skill",
       hide: "Hide lists",
     },
@@ -2353,7 +2353,7 @@ export const en: Content = {
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
-    back: "← Back to the site",
+    back: "Back to the site",
     printHint:
       "Save as PDF: in the print dialogue, pick PDF as the destination instead of a printer.",
     printButton: "Print / PDF",

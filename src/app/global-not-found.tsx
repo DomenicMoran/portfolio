@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const englisch = (await headers()).get(SPRACH_KOPFZEILE) === "en";
   const inhalt = englisch ? en : de;
   return {
-    title: `${inhalt.notFound.title} – ${inhalt.site.name}`,
+    title: `${inhalt.notFound.title}, ${inhalt.site.name}`,
     /* `metadataBase`, obwohl diese Seite kein Bild deklariert: Sollte hier je
        eine relative Adresse in den Metadaten stehen, löst sie gegen die
        eigene Adresse auf statt gegen http://localhost:3000.

@@ -9,7 +9,7 @@ export const bookPublication = {
   author: "Domenic Moran",
   isbn: "978-3-6967-5429-7",
   isbnCompact: "9783696754297",
-  publisher: "BoD – Books on Demand",
+  publisher: "BoD (Books on Demand)",
   format: "Taschenbuch",
   pages: 48,
   published: "2026-11-11",

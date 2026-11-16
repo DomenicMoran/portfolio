@@ -637,7 +637,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           className="text-ink-faint flex justify-between pt-1 pl-9 font-mono text-[9px]"
         >
           <span>
-            {demo.field.y} g · {demo.field.x} →
+            {demo.field.y} g · {demo.field.x}
           </span>
           <span>
             {zahl(RAUM.maxKcal)} {demo.units.kcal}

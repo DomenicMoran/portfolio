@@ -329,7 +329,11 @@ const ohneSkript = [];
     javaScriptEnabled: false,
   });
   const seite = await kontext.newPage();
-  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  /* `load` statt `networkidle`: Mit abgeschaltetem JavaScript bleibt in CI
+     gelegentlich eine Anfrage offen, und `networkidle` läuft in die
+     Zeitüberschreitung, obwohl das Dokument schon da ist. Dieser Lauf
+     prüft nur HTML und CSS. */
+  await seite.goto(`${basis}/`, { waitUntil: "load" });
 
   const versteckt = await seite.evaluate(() => {
     const wichtig = [

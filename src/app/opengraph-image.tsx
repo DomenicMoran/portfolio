@@ -1,7 +1,7 @@
 import { site } from "@/content/site";
 import { ogContentType, ogSize, renderOgCard } from "@/lib/og-card";
 
-export const alt = `${site.name} – ${site.role}`;
+export const alt = `${site.name}, ${site.role}`;
 export const size = ogSize;
 export const contentType = ogContentType;
 

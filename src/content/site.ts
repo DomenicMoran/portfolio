@@ -87,11 +87,11 @@ export const site = {
        das Blatt bekommt, müsste danach zurückfragen; genau das soll es
        ersparen. Neu veröffentlicht wird damit nichts, die Spanne steht
        ohnehin öffentlich im Recruiter-Bereich. */
-    salary: "55 – 70 k€, je nach Zuschnitt der Rolle",
+    salary: "55-70 k€, je nach Zuschnitt der Rolle",
   },
 
   meta: {
-    title: "Domenic Moran – AI Product Engineer",
+    title: "Domenic Moran, AI Product Engineer",
     description:
       "Fünf ausgelieferte Produkte, alle allein gebaut: Apps in beiden Stores, eine Multi-Tenant-SaaS mit gesetzlicher Fiskalisierung, eine Lernplattform und weitere Prototypen.",
   },
@@ -169,7 +169,7 @@ export const about = {
        eingereicht worden; die öffentliche Lookup-API liefert für alle acht
        weiterhin null Treffer, sie sind also noch nicht live. Alle acht sind
        zugleich bei Google Play live, selbst geprüft per `curl`. */
-    `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte — Mobile, Multi-Tenant-SaaS mit KassenSichV, Lernplattform, Reader und Dart-Counter. 19 öffentliche Store-Einträge über beide Läden (Stand im Abschnitt „Store-Einträge live“), alles neben einem Vollzeitjob entstanden und am Live-System nachgewiesen, nicht nur in Tests.`,
+    `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: Mobile, Multi-Tenant-SaaS mit KassenSichV, Lernplattform, Reader und Dart-Counter. 19 öffentliche Store-Einträge über beide Läden (Stand im Abschnitt „Store-Einträge live“), alles neben einem Vollzeitjob entstanden und am Live-System nachgewiesen, nicht nur in Tests.`,
     "Was ich dabei gelernt habe und was heute meine Arbeitsweise bestimmt: Ein grüner Testlauf beweist nichts. Ich hatte ein Android-Widget, bei dem alle Tests durchliefen und das auf dem echten Gerät leer blieb. Und ich habe monatelang geglaubt, meine Update-Auslieferung funktioniere, weil das Werkzeug nach jedem Veröffentlichen „Published“ meldete. Angekommen ist bei keinem Nutzer je etwas.",
     "Seitdem gilt in jedem meiner Repositories dieselbe Regel: „Sollte jetzt funktionieren“ ist kein Ergebnis. Jede Änderung wird am Live-System nachgewiesen: durch HTTP-Response, Datenbankabfrage oder Screenshot vom echten Gerät. Das ist der Grund, warum ich mit KI-Agenten schnell liefern kann, ohne dass Qualität zur Behauptung wird.",
   ],
@@ -383,7 +383,7 @@ export const about = {
   disclosure: {
     bio: {
       teaser:
-        "Autodidakt seit 2022 — die Messzahlen, Arbeitsweise und der Rest der Geschichte dahinter.",
+        "Autodidakt seit 2022: die Messzahlen, Arbeitsweise und der Rest der Geschichte dahinter.",
       expand: "Mehr über Werdegang und Zahlen",
       hide: "Weniger anzeigen",
     },
@@ -395,7 +395,7 @@ export const about = {
     },
     openSource: {
       teaser:
-        "Sechs öffentliche Pakete — von Whisper-Headern bis zur Checkout-Tafel aus Dartile.",
+        "Sechs öffentliche Pakete: von Whisper-Headern bis zur Checkout-Tafel aus Dartile.",
       expand: "Open-Source-Pakete anzeigen",
       hide: "Pakete ausblenden",
     },
@@ -425,7 +425,7 @@ export const hero = {
      überall sonst,
      belegt über die 13 Fallstudien dieser Seite. Der persönliche Werdegang
      bleibt im Abschnitt „Über mich" weiter unten. */
-  lede: `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile — mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
+  lede: `Seit ${bauzeit} betreibe ich unter Moran Software fünf ausgelieferte Produkte: MenuCloud, Salati, NOURI, LexiPulse und Dartile, mit echten Nutzern, Zahlungen oder Store-Einträgen. MFC und weitere Experimente sind Prototypen mit eigenem Kaufweg.`,
   ctaPrimary: { label: "Produkte ansehen", href: "#produkte" },
   ctaSecondary: { label: "Fallstudien", href: "#work" },
   tryIt: {
@@ -481,14 +481,14 @@ export const produkte = {
     {
       name: "NOURI",
       beschreibung:
-        "Fitness- und Ernährungsplattform mit Web- und Mobile-App: 11.892 Rezepte, Nährwerte aus Zutaten berechnet, Training und Tarif aus dem Konto — inklusive gesetzlicher Texte.",
+        "Fitness- und Ernährungsplattform mit Web- und Mobile-App: 11.892 Rezepte, Nährwerte aus Zutaten berechnet, Training und Tarif aus dem Konto, inklusive gesetzlicher Texte.",
       href: "https://www.nouri-fitness.de",
       detailHref: "#case-nouri",
     },
     {
       name: "LexiPulse",
       beschreibung:
-        "Reader für EPUB, PDF und Web: Wortstrom mit satzökonomischer RSVP, Fließtext, Import ohne Server-Persistenz und PDF-Werkzeugkasten — App und Web aus einem Kern.",
+        "Reader für EPUB, PDF und Web: Wortstrom mit satzökonomischer RSVP, Fließtext, Import ohne Server-Persistenz und PDF-Werkzeugkasten: App und Web aus einem Kern.",
       href: "https://lexipulse.de",
       detailHref: "#case-lexipulse",
     },
@@ -503,9 +503,9 @@ export const produkte = {
   prototypTitel: "Prototypen & weitere",
   prototypBadge: "Prototyp",
   prototypLede:
-    "Experimente und frühe Systeme — darunter MFC mit Kaufknopf und vier Pro-Apps in Store-Prüfung.",
+    "Experimente und frühe Systeme, darunter MFC mit Kaufknopf und vier Pro-Apps in Store-Prüfung.",
   mfc: {
-    name: "MFC – Moran Fleet Control",
+    name: "MFC, Moran Fleet Control",
     beschreibung:
       "Chat, Agenten, Werkzeuge und Backlog in einer Oberfläche, lokal, ohne Abo.",
     preis: "49,99 € einmalig, kein Abo",
@@ -544,7 +544,7 @@ export const produkte = {
   uebersicht: { label: "Zur vollständigen Produkt-Übersicht", href: "#work" },
   disclosure: {
     teaser:
-      "MFC mit Kaufweg und weitere Pro-Apps in den Stores — alles als Prototyp gekennzeichnet.",
+      "MFC mit Kaufweg und weitere Pro-Apps in den Stores, alles als Prototyp gekennzeichnet.",
     expand: "Prototypen und Werkstück anzeigen",
     hide: "Prototypen ausblenden",
   },
@@ -649,8 +649,8 @@ export const caseStudies: CaseStudy[] = [
     accent: "acid",
     disclosure: {
       teaser:
-        "Die KI läuft offline — und ein kleineres Whisper-Modell schlug das größere.",
-      expand: "So ist Salati entstanden →",
+        "Die KI läuft offline, und ein kleineres Whisper-Modell schlug das größere.",
+      expand: "So ist Salati entstanden",
       hide: "Weniger anzeigen",
     },
     problem:
@@ -807,12 +807,12 @@ export const caseStudies: CaseStudy[] = [
     accent: "acid",
     disclosure: {
       teaser:
-        "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte.",
-      expand: "Was die KassenSichV-Dokumentation auslässt →",
+        "Berliner Restaurants zahlen 15-30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte.",
+      expand: "Was die KassenSichV-Dokumentation auslässt",
       hide: "Weniger anzeigen",
     },
     problem:
-      "Berliner Restaurants zahlen 15–30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
+      "Berliner Restaurants zahlen 15-30 % Provision an Lieferplattformen und haben keine Kontrolle über ihre eigene Speisekarte. Die Alternativen sind entweder Baukästen ohne Kassenanbindung oder Enterprise-Systeme mit vierstelligen Einrichtungskosten. Beide lösen das Problem nicht, das jeder deutsche Gastronom tatsächlich hat: KassenSichV-Konformität.",
     solution:
       "Eine Plattform, die den kompletten Weg abdeckt: Restaurant-Website mit selbst editierbarer Karte, QR-Bestellung mit direkter Auszahlung über Stripe Connect, Reservierungen, Reputationsmanagement. Darunter liegt eine mandantenfähige Cloud-TSE, die jede Transaktion nach § 146a AO signiert und in einer Hash-Kette verankert. Dazu native Apps für Betreiber und Personal.",
     hardPart: {
@@ -1052,8 +1052,8 @@ export const caseStudies: CaseStudy[] = [
     accent: "acid",
     disclosure: {
       teaser:
-        "Die erste Prüfung fand Ausreißer bis 30,5 Prozent — heute liegt die größte Abweichung bei 2,07.",
-      expand: "Wie NOURI jede Kalorie nachrechnet →",
+        "Die erste Prüfung fand Ausreißer bis 30,5 Prozent. Heute liegt die größte Abweichung bei 2,07.",
+      expand: "Wie NOURI jede Kalorie nachrechnet",
       hide: "Weniger anzeigen",
     },
     problem:
@@ -1318,8 +1318,8 @@ export const caseStudies: CaseStudy[] = [
     accent: "acid",
     disclosure: {
       teaser:
-        "Mit der Handykamera liegt die Erkennung im Feld bei rund 95 Prozent — deshalb schlägt sie vor und behauptet nicht.",
-      expand: "Warum die Kamera nicht das letzte Wort hat →",
+        "Mit der Handykamera liegt die Erkennung im Feld bei rund 95 Prozent, deshalb schlägt sie vor und behauptet nicht.",
+      expand: "Warum die Kamera nicht das letzte Wort hat",
       hide: "Weniger anzeigen",
     },
     problem:
@@ -1461,7 +1461,7 @@ export const caseStudies: CaseStudy[] = [
     disclosure: {
       teaser:
         "Gleiches Tempo für jedes Wort ist der Fehler: flaches RSVP gibt einem dreibuchstabigen Artikel dasselbe Zeitbudget wie einem Satzende.",
-      expand: "Warum der Wortstrom so getaktet ist →",
+      expand: "Warum der Wortstrom so getaktet ist",
       hide: "Weniger anzeigen",
     },
     problem:

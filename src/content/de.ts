@@ -256,7 +256,7 @@ export const de: Content = {
     lede: "Hier stehen keine Prozentzahlen. Niemand kann prüfen, ob jemand TypeScript zu 93 Prozent beherrscht. Deshalb steht neben jeder Fähigkeit der Beleg, an dem sie entstanden ist.",
     disclosure: {
       teaser:
-        "Vier Bereiche — je mit dem System, an dem die Fähigkeit entstanden ist.",
+        "Vier Bereiche, je mit dem System, an dem die Fähigkeit entstanden ist.",
       expand: "Belege je Fähigkeit anzeigen",
       hide: "Listen ausblenden",
     },
@@ -400,7 +400,7 @@ export const de: Content = {
     openSourceNote: "alle mit Tests, CI und MIT-Lizenz auf",
     fullCaseStudies: "Vollständige Fallstudien mit Architekturdiagrammen:",
     asOf: "Stand:",
-    back: "← Zurück zur Seite",
+    back: "Zurück zur Seite",
     printHint:
       "Als PDF speichern: im Druckdialog als Ziel PDF wählen statt eines Druckers.",
     printButton: "Drucken / PDF",

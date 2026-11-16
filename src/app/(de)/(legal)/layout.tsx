@@ -37,7 +37,7 @@ export default function LegalLayout({
           prefetch={false}
           className="text-eyebrow hover:text-ink-dim -my-2 w-fit py-2 transition-colors"
         >
-          ← {site.name}
+          {site.name}
         </Link>
       </nav>
 

@@ -312,17 +312,23 @@ for (const route of gebauteSeiten()) {
     );
   }
 
-  /* Der Gedankenstrich, und warum er hier nichts zu suchen hat.
+  /* Typische KI-Schreibzeichen, und warum sie hier nichts zu suchen haben.
 
-     Er ist im Deutschen wie im Englischen richtiges Satzzeichen. Auf einer
-     Bewerbungsseite ist er trotzdem das Falsche: Er ist das deutlichste
-     Erkennungsmerkmal für maschinell geschriebenen Text, und diese Seite
-     argumentiert mit Eigenleistung. Was ein Mensch schreibt. Doppelpunkt,
+     Der Geviertstrich ist im Deutschen wie im Englischen richtiges Satzzeichen.
+     Auf einer Bewerbungsseite ist er trotzdem das Falsche: Er ist das
+     deutlichste Erkennungsmerkmal für maschinell geschriebenen Text, und diese
+     Seite argumentiert mit Eigenleistung. Was ein Mensch schreibt. Doppelpunkt,
      Komma, Punkt, Klammer, sagt dasselbe und weckt keinen Zweifel.
 
-     Gezählt am 03.08.2026 an den ausgelieferten Seiten: elf Stellen. Kommentare
-     im Quelltext bleiben aussen vor, sie stehen auf keiner Seite. */
-  /* Gesucht wird der Geviertstrich, nicht das Komma.
+     Seit dem 16.11.2026 gilt dasselbe für den Halbgeviertstrich, wenn er als
+     Gedankenstrich oder in einer Konstruktion wie „X – Y" steht, und für
+     Pfeile wie → und ⇒. Zahlenbereiche und Bindestriche in Wörtern bleiben
+     mit dem einfachen Bindestrich erlaubt: 2022-2026, 15-30 %.
+
+     Gezählt am 03.08.2026 an den ausgelieferten Seiten: elf Stellen, damals
+     nur der Geviertstrich. Kommentare im Quelltext bleiben aussen vor, sie
+     stehen auf keiner Seite. */
+  /* Gesucht werden diese Zeichen selbst, nicht das Komma.
 
      Hier stand `/,/g`, und damit meldete der Lauf jedes Komma als
      Gedankenstrich: gezählt am 16.08.2026 allein auf der Startseite 420
@@ -333,11 +339,12 @@ for (const route of gebauteSeiten()) {
      Ein Wächter, der immer anschlägt, wird abgeschaltet, und genau das war
      die Wirkung: Die Prüfung stand in der Definition of Done und meldete
      seit Tagen dasselbe, ohne dass jemand die Liste noch las. */
-  const striche = (text.match(/—/g) ?? []).length;
-  if (striche > 0) {
-    const stelle = text.indexOf("—");
+  const KI_ZEICHEN = /[—–→⇒←]/g;
+  const striche = [...text.matchAll(KI_ZEICHEN)];
+  if (striche.length > 0) {
+    const stelle = striche[0].index ?? 0;
     funde.push(
-      `${route}: ${striche}× Gedankenstrich im sichtbaren Text, ` +
+      `${route}: ${striche.length}× typisches KI-Schreibzeichen im sichtbaren Text, ` +
         `„…${text.slice(Math.max(0, stelle - 45), stelle + 35).replace(/\s+/g, " ")}…“`,
     );
   }
@@ -351,8 +358,9 @@ for (const route of gebauteSeiten()) {
      dieser Zeilen kam durch. Genau so einer stand seit heute in den fünf
      Artikelkarten, bis er von Hand auffiel.
 
-     Der Halbgeviertstrich bleibt erlaubt: „Datenschutz – Domenic Moran" ist
-     die übliche Trennung im Titel und kein Stilmittel im Satz. */
+     Früher blieb der Halbgeviertstrich in Titeln erlaubt („Datenschutz –
+     Domenic Moran"). Das ist dieselbe „X – Y"-Konstruktion; Titel trennen
+     mit Komma oder Doppelpunkt. */
   const rohesHtml = readFileSync(datei, "utf8");
   const metafelder = [
     ...rohesHtml.matchAll(/<title>([^<]*)<\/title>/g),
@@ -363,9 +371,10 @@ for (const route of gebauteSeiten()) {
   for (const feld of metafelder) {
     const wert = feld[2] ?? feld[1];
     const name = feld[2] ? feld[1] : "<title>";
-    if (!wert.includes("—")) continue;
+    const metaTreffer = [...wert.matchAll(KI_ZEICHEN)];
+    if (metaTreffer.length === 0) continue;
     funde.push(
-      `${route}: Gedankenstrich in „${name}", „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
+      `${route}: typisches KI-Schreibzeichen in „${name}", „${wert.slice(0, 70)}${wert.length > 70 ? "…" : ""}“`,
     );
   }
 

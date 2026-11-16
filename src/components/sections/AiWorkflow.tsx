@@ -95,8 +95,8 @@ function PrincipleRow({
     teaserEnd === -1 ? principle.body : principle.body.slice(0, teaserEnd + 1);
   const expandLabel =
     lang === "de"
-      ? `Mehr zu „${principle.title}"`
-      : `More on “${principle.title}"`;
+      ? `Mehr zu „${principle.title}“`
+      : `More on “${principle.title}”`;
 
   return (
     <Reveal
@@ -148,7 +148,7 @@ function PrincipleRow({
 const LINE_STYLE = {
   prompt: { prefix: "›", className: "text-ink" },
   think: { prefix: "·", className: "text-ink-faint" },
-  run: { prefix: "→", className: "text-acid" },
+  run: { prefix: ":", className: "text-acid" },
   warn: { prefix: "!", className: "text-acid" },
   ok: { prefix: "✓", className: "text-acid" },
 } as const;
@@ -304,7 +304,7 @@ function AgentTerminal() {
               )}
             >
               {/* `aria-hidden`, weil das Zeichen ein Aufzählungszeichen ist:
-                  › für den Befehl, · für die Notiz, → für das Ergebnis. Ein
+                  › für den Befehl, · für die Notiz, : für das Ergebnis. Ein
                   Vorleseprogramm sagte bisher „größer als" vor jeder
                   Befehlszeile. Sichtbar bleibt es und trägt auf 60 % Deckung
                   2,60:1, als Schmuck ist das die Ausnahme, die die WCAG

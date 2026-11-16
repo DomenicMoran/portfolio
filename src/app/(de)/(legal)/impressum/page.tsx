@@ -96,7 +96,7 @@ export default function Impressum() {
         <section className="mb-10">
           <h2 className="text-ink mb-3 text-lg font-semibold">Umsatzsteuer</h2>
           <p className="text-ink-dim text-sm leading-relaxed">
-            Kleinunternehmer nach § 19 UStG – es wird keine Umsatzsteuer
+            Kleinunternehmer nach § 19 UStG. Es wird keine Umsatzsteuer
             berechnet.
           </p>
         </section>
