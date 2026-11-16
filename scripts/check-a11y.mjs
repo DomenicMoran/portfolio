@@ -107,6 +107,15 @@ const unsichtbar = [];
  */
 async function unsichtbarPruefen(seite, pfad) {
   const funde = await seite.evaluate((grenze) => {
+    /* Sonst bleiben Abschnitte mit `content-visibility: auto` nach dem
+       Zurückscrollen ungemalt, und getComputedStyle liefert nahezu
+       dieselben Werte für Schrift und Untergrund. */
+    for (const el of document.querySelectorAll("*")) {
+      if (getComputedStyle(el).contentVisibility === "auto") {
+        el.style.contentVisibility = "visible";
+      }
+    }
+
     // Farben über einen Canvas auflösen: Der kennt jeden Farbraum, den auch
     // die Stilvorlage benutzen darf, und liefert immer RGBA.
     const flaeche = document.createElement("canvas");
