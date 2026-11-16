@@ -938,7 +938,11 @@ textarea:-webkit-autofill {
        Ein fünftes Mal nachgezogen, am 21.08.2026: Mit acht Projekten statt
        sieben stand das Blatt bei 0,88 auf 103 % der Seite und kippte auf zwei
        Seiten. 0,83 ergibt wieder eine, mit rund 97 % Ausnutzung (deutsche
-       Fassung) und 6,2 pt kleinster Schrift. */
-    zoom: 0.83;
+       Fassung) und 6,2 pt kleinster Schrift.
+
+       Ein sechstes Mal, am 16.11.2026, nach dem Redesign und den
+       aufgefrischten Commit-Zahlen: Bei 0,83 füllte das Blatt nur 89 %.
+       0,85 bleibt eine Seite und kommt über die 90-Prozent-Schwelle. */
+    zoom: 0.85;
   }
 }
