@@ -1,13 +1,13 @@
 "use client";
 
-import { Fragment } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import { TECH_TICKER as techTicker } from "@/content/types";
 import { Counter } from "@/components/ui/Counter";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Marquee } from "@/components/ui/Marquee";
-import { cn } from "@/lib/utils";
+import { HeroHeadline } from "@/components/hero/HeroHeadline";
+import { SignalFieldLazy } from "@/components/hero/SignalFieldLazy";
 
 export function Hero() {
   const { hero, site } = useContent();
@@ -51,14 +51,11 @@ export function Hero() {
           in den nächsten Abschnitt hängen. Sie enthält nur Deko, hier schneidet
           der Beschnitt also nie Text. */}
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        <SignalFieldLazy className="absolute inset-0" />
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_70%)]" />
-        <div className="glow-orb animate-float -top-40 left-[8%] size-[20rem] bg-violet/18 sm:size-[38rem]" />
-        {/* Nur noch ein zweiter Kreis, nicht zwei: Drei gleichzeitig aktive
-            Akzentfarben (violett, cyan, acid) im ersten Sichtbereich lenken
-            vom Kopf ab, statt ihn zu tragen. Acid bleibt die einzige zweite
-            Farbe, dieselbe, die auch Knopf und Auszeichnungswort tragen. */}
+        <div className="glow-orb animate-float bg-acid/12 -top-40 left-[8%] size-[20rem] sm:size-[38rem]" />
         <div
-          className="glow-orb animate-float bottom-[6%] left-[38%] hidden size-[26rem] bg-acid/10 sm:block"
+          className="glow-orb animate-float bg-acid/10 bottom-[6%] left-[38%] hidden size-[26rem] sm:block"
           style={{ animationDelay: "-9s" }}
         />
       </div>
@@ -70,87 +67,23 @@ export function Hero() {
             style={{ animationDelay: "0.05s" }}
             className="animate-fade-rise mb-10 flex flex-wrap items-center gap-3"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 backdrop-blur">
+            <span className="border-line bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 backdrop-blur">
               <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-acid opacity-75" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-acid" />
+                <span className="bg-acid absolute inline-flex size-full animate-ping rounded-full opacity-75" />
+                <span className="bg-acid relative inline-flex size-1.5 rounded-full" />
               </span>
-              <span className="font-mono text-[11px] tracking-[0.14em] text-ink-dim uppercase">
+              <span className="text-ink-dim font-mono text-[11px] tracking-[0.14em] uppercase">
                 {hero.eyebrow}
               </span>
             </span>
-            <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
+            <span className="text-ink-faint font-mono text-[11px] tracking-[0.14em] uppercase">
               {site.role}
             </span>
           </div>
 
-          {/* Überschrift: Jedes Wort steigt aus seiner eigenen Maske auf */}
-          <h1
-            id="top-titel"
-            className="text-display max-w-[18ch] text-balance text-ink"
-          >
-            {hero.headline.map((word, i) => (
-              // Das Leerzeichen ist ein echter Textknoten ZWISCHEN den Masken,
-              // nicht in einer: Innerhalb eines inline-block mit overflow:hidden
-              // wird es zusammengefaltet, und die Wörter kleben aneinander.
-              // Außerhalb trennt es sichtbar und hält die Überschrift für
-              // Screenreader und zum Kopieren lesbar.
-              <Fragment key={i}>
-                {/* Das Polster ist die Maske, nicht Zierde.
+          <HeroHeadline words={hero.headline} />
 
-                  Jedes Wort sitzt in einem inline-block mit overflow:hidden,
-                  aus dem es beim Auftritt hervorkommt. Die untere Kante dieses
-                  Kastens schneidet damit auch die Unterlängen ab.
-
-                  Gemessen bei 1440 px: Schriftgröße 129,6 px, Zeilenbox
-                  114 px (line-height 0,88). Unter der Grundlinie bleiben
-                  dadurch nur 9 px im Kasten. Die Grundschrift trägt 21 px
-                  Tinte unter die Grundlinie, die kursive Auszeichnungsschrift
-                  28 px, das "g" in "fertige" und das "y" in "Prototypen"
-                  endeten flach abgeschnitten.
-
-                  0,2 em Polster deckt 25,9 px ab und damit beide Schriften mit
-                  Reserve. Der gleich große negative Außenabstand nimmt die
-                  zusätzliche Höhe wieder heraus: Der Kasten wird tiefer, die
-                  Zeile bleibt, wo sie war. */}
-                <span className="inline-block overflow-hidden pb-[0.2em] -mb-[0.14em] align-bottom">
-                  <span
-                    className={cn(
-                      "animate-word-rise inline-block",
-                      word.accent && "font-editorial text-acid",
-                    )}
-                    style={{ animationDelay: `${0.05 + i * 0.025}s` }}
-                  >
-                    {word.text}
-                  </span>
-                </span>
-                {i < hero.headline.length - 1 ? " " : null}
-              </Fragment>
-            ))}
-          </h1>
-
-          {/* Alles im Hero läuft als CSS-Animation, nicht über Framer Motion.
-            Als `motion.p` mit `initial opacity 0` war dieser Absatz bis zur
-            Hydration unsichtbar; auf einem gedrosselten Telefon war er damit
-            das LCP-Element und erschien erst nach 4,6 Sekunden. Die
-            Überschrift daneben stand zu dem Zeitpunkt schon seit 1,35
-            Sekunden da.
-
-            Er ist weiterhin das LCP-Element, deshalb ist die Staffelung im
-            ganzen Hero gestaucht: 0,42 s Verzug waren 0,42 s, in denen der
-            wichtigste Satz der Seite nicht dasteht. Die Reihenfolge Marke,
-            Überschrift, Absatz, Knöpfe, Belegleiste bleibt sichtbar, sie
-            läuft nur schneller ab. */}
-          {/* `animate-rise` und nicht `animate-fade-rise`: Dieser Absatz ist
-              das LCP-Element der Startseite, und eine Blende versteckt ihn so
-              lange, wie sie läuft. Gemessen unter der Drosselung des
-              Prüflaufs: 1.624 ms für den Absatz daneben, 2.232 bis 2.496 ms
-              für diesen, bei einem Budget von 2.500 ms. Die Bewegung bleibt,
-              der Text steht ab dem ersten Bild. */}
-          <p
-            style={{ animationDelay: "0.2s" }}
-            className="animate-rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl"
-          >
+          <p className="text-ink-dim mt-8 max-w-2xl text-lg leading-relaxed text-pretty sm:text-xl">
             {hero.lede}
           </p>
 
@@ -164,11 +97,11 @@ export function Hero() {
 
               Eine Zeile und kein dritter Knopf: Zwei Knöpfe führen, ein
               dritter teilt. */}
-          <p className="mt-5 max-w-[52ch] text-sm leading-snug text-ink-faint text-pretty">
+          <p className="text-ink-faint mt-5 max-w-[52ch] text-sm leading-snug text-pretty">
             {hero.tryIt.before}{" "}
             <a
               href={hero.tryIt.href}
-              className="-my-1 py-1 text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+              className="text-ink-dim decoration-ink-faint/60 hover:text-ink hover:decoration-acid -my-1 py-1 underline underline-offset-4 transition-colors"
             >
               {hero.tryIt.label}
             </a>{" "}
@@ -188,7 +121,7 @@ export function Hero() {
                 // "transparent", und der Rahmen wird sichtbar. Ohne ihn verliert
                 // der gefüllte Knopf dort seine Form und liest sich wie
                 // gewöhnlicher Text.
-                className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-6 py-3.5 font-medium text-void transition-colors hover:bg-ink"
+                className="group bg-acid text-void hover:bg-ink inline-flex items-center gap-2 rounded-full border border-transparent px-6 py-3.5 font-medium transition-colors"
               >
                 {hero.ctaPrimary.label}
                 <ArrowDown
@@ -209,7 +142,7 @@ export function Hero() {
                 {...(hero.ctaSecondary.href.startsWith("http")
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="group inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 font-medium text-ink transition-colors hover:border-ink-faint hover:bg-surface"
+                className="group border-line text-ink hover:border-ink-faint hover:bg-surface inline-flex items-center gap-2 rounded-full border px-6 py-3.5 font-medium transition-colors"
               >
                 {hero.ctaSecondary.label}
                 {hero.ctaSecondary.href.startsWith("http") ? (
@@ -230,7 +163,7 @@ export function Hero() {
           {/* Die Belegleiste */}
           <dl
             style={{ animationDelay: "0.4s" }}
-            className="animate-fade-rise mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-4"
+            className="animate-fade-rise border-line mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t pt-8 sm:grid-cols-4"
           >
             {hero.proof.map((item) => (
               // flex-col-reverse: Im Baum bleibt die Reihenfolge dt → dd, die
@@ -238,10 +171,10 @@ export function Hero() {
               // steht trotzdem über ihrer Beschriftung. Ein <span> als
               // Geschwister wäre ungültig, und axe meldet das.
               <div key={item.label} className="flex flex-col-reverse gap-1.5">
-                <dt className="text-xs leading-snug text-ink-faint">
+                <dt className="text-ink-faint text-xs leading-snug">
                   {item.label}
                 </dt>
-                <dd className="text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl">
+                <dd className="text-ink text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">
                   <Counter value={item.value} />
                 </dd>
               </div>
