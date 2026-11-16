@@ -2,11 +2,7 @@ import { datumLang } from "@/lib/date-format";
 import verified from "./verified.json";
 import { SALATI_VERSIONEN } from "./salati";
 import type { CaseStudy } from "./types";
-import {
-  alsWort,
-  grossErstes,
-  monateZwischen,
-} from "@/lib/duration";
+import { alsWort, grossErstes, monateZwischen } from "@/lib/duration";
 
 /**
  * Wie lange die fünf ausgelieferten Produkte entstehen, gerechnet, nicht getippt.
@@ -2295,7 +2291,10 @@ export const skillDomains: SkillDomain[] = [
         name: "Store-Auslieferung",
         evidence: "App Store & Play, inkl. OTA-Updates",
       },
-      { name: "Observability", evidence: "Sentry, strukturierte Logs, Slack-Alerts" },
+      {
+        name: "Observability",
+        evidence: "Sentry, strukturierte Logs, Slack-Alerts",
+      },
       { name: "Automatisierung", evidence: "n8n-Workflows mit Self-Healing" },
     ],
   },

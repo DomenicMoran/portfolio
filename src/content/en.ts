@@ -1,11 +1,7 @@
 import { dateLong } from "@/lib/date-format";
 import verified from "./verified.json";
 import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
-import {
-  asWord,
-  grossErstes,
-  monateZwischen,
-} from "@/lib/duration";
+import { asWord, grossErstes, monateZwischen } from "@/lib/duration";
 import type { Content } from "./types";
 import { bookPublication } from "./book-publication";
 import { bereiteFallstudienVor } from "@/lib/case-study-order";
@@ -928,7 +924,9 @@ export const en: Content = {
         { value: "664", label: "exam questions" },
         { value: "147", label: "tests" },
       ],
-      links: [{ label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" }],
+      links: [
+        { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
+      ],
       architecture: "bitdojo",
       shots: [
         {
@@ -1034,7 +1032,9 @@ export const en: Content = {
         { value: "350", label: "call-outs, two languages" },
         { value: "0", label: "dependencies in the engine" },
       ],
-      links: [{ label: "dartile.de", href: "https://dartile.de", kind: "live" }],
+      links: [
+        { label: "dartile.de", href: "https://dartile.de", kind: "live" },
+      ],
       architecture: "dartile",
       articles: ["eighteen-routes-over-the-bull"],
       shots: [
