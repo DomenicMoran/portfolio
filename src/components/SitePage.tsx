@@ -202,9 +202,18 @@ export function SitePage({ content }: { content: Content }) {
       />
       <SkipLink text={content.skipToContent} />
 
-      <ContentProvider content={content}>
-        <main id={INHALT_ID} tabIndex={-1} className="flex-1">
-          <Hero hero={content.hero} site={content.site} />
+      <main id={INHALT_ID} tabIndex={-1} className="flex-1">
+        {/*
+          Hero steht bewusst außerhalb von ContentProvider: Der Lead ist
+          der LCP-Kandidat. Liegt er unter der Client-Grenze, rechnet die
+          Lighthouse-Simulation (Lantern) den Render Delay bis zur
+          Hydration (~3,1 s, Performance 93 auf der Preview). Mit echtem
+          DevTools-Throttling war derselbe Absatz schon bei 1,95 s
+          (Performance 96). Der Abschnitt braucht den Provider nicht,
+          er bekommt seine Texte als Props.
+        */}
+        <Hero hero={content.hero} site={content.site} />
+        <ContentProvider content={content}>
           <div className="[content-visibility:auto]">
             {/* Über mich direkt nach dem Kopf, vor den Produkten und Fallstudien.
 
@@ -218,7 +227,15 @@ export function SitePage({ content }: { content: Content }) {
             <About />
             <BookPublication />
             <Produkte produkte={content.produkte} />
-            <CaseStudies />
+          </div>
+          {/*
+            Fallstudien bleiben außerhalb von `content-visibility: auto`.
+            Der gemeinsame Wrapper ließ in CI `check:a11y` (tafelzeiten)
+            an `scrollIntoViewIfNeeded` scheitern: Element not visible.
+            Lauf 43890333631, 16.11.2026.
+          */}
+          <CaseStudies />
+          <div className="[content-visibility:auto]">
             <AiWorkflow />
             <DeliverySpeed />
             <Skills />
@@ -226,7 +243,9 @@ export function SitePage({ content }: { content: Content }) {
             <RecruiterHub />
             <Contact />
           </div>
-        </main>
+        </ContentProvider>
+      </main>
+      <ContentProvider content={content}>
         <Footer />
         <SiteShellDeferred />
       </ContentProvider>

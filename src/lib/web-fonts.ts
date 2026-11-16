@@ -27,13 +27,14 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   adjustFontFallback: true,
   /*
-   * Geist Sans nicht vorgeladen: Drei parallel vorgeladene Schnitte (68 KiB)
-   * kosten Lighthouse mobil Render Delay am Lead — R4-Messung Median 89 bei
-   * `preload: true`, 95 bei `false`. `adjustFontFallback` hält Metriken bis
-   * zum Font-Swap stabil; `check:vitals` bleibt grün (~1,5 s gedrosselt).
+   * `optional` statt `swap` für die Schrift des LCP-Leads. Nicht
+   * vorgeladen, damit die Datei nicht mit dem Stylesheet um die Leitung
+   * konkurriert (historisch: drei Schnitte, 68 KiB, Stylesheet erst
+   * nach 1,4 s). `adjustFontFallback` hält die Metriken, wenn die Datei
+   * nicht im kurzen Block-Fenster liegt.
    */
   preload: false,
 });

@@ -25,6 +25,7 @@ import { ACCENT, TAB_ICONS, TAB_IDS, type TabId } from "./shared";
 const PrayerTimesDemo = dynamic(
   () => import("@/components/demo/PrayerTimes").then((m) => m.PrayerTimesDemo),
   {
+    ssr: false,
     loading: () => <div className="min-h-[22rem]" aria-hidden="true" />,
   },
 );
@@ -35,6 +36,7 @@ const ArchitectureDiagram = dynamic(
       (m) => m.ArchitectureDiagram,
     ),
   {
+    ssr: false,
     loading: () => <div className="min-h-[420px]" aria-hidden="true" />,
   },
 );

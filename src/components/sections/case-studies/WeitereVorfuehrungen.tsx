@@ -4,11 +4,13 @@ import { Reveal } from "@/components/ui/Reveal";
 import { useContent } from "@/content/ContentProvider";
 import dynamic from "next/dynamic";
 
-const MacroDemo = dynamic(() =>
-  import("@/components/demo/Macros").then((m) => m.MacroDemo),
+const MacroDemo = dynamic(
+  () => import("@/components/demo/Macros").then((m) => m.MacroDemo),
+  { ssr: false },
 );
-const CheckoutDemo = dynamic(() =>
-  import("@/components/demo/Checkout").then((m) => m.CheckoutDemo),
+const CheckoutDemo = dynamic(
+  () => import("@/components/demo/Checkout").then((m) => m.CheckoutDemo),
+  { ssr: false },
 );
 
 function WeitereVorfuehrungen({ fehlend }: { fehlend: readonly string[] }) {
