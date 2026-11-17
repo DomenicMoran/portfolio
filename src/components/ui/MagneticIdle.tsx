@@ -35,7 +35,9 @@ export function MagneticIdle({
 
   if (!Magnetic) {
     return (
-      <span className={className ? `inline-block ${className}` : "inline-block"}>
+      <span
+        className={className ? `inline-block ${className}` : "inline-block"}
+      >
         {children}
       </span>
     );
