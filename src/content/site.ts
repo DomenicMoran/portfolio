@@ -2517,4 +2517,3 @@ export const navItems = [
   { label: "Für Recruiter", href: "#hire" },
   { label: "Kontakt", href: "#contact" },
 ] as const;
-
