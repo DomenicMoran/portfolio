@@ -1,8 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useContent } from "@/content/ContentProvider";
 import { schreibe, zerlege } from "@/lib/number-format";
+
+type Lang = "de" | "en";
+
+type Props = {
+  value: string;
+  className?: string;
+  /** Wenn gesetzt, braucht der Zaehler den ContentProvider nicht. */
+  lang?: Lang;
+  /**
+   * Beim ersten Besuch hochzaehlen, auch wenn der Wert schon im Bild steht.
+   * Fuer die Belegleiste im Vorspann. Reduced Motion und Druck zeigen den
+   * Endwert.
+   */
+  beimStart?: boolean;
+};
 
 /**
  * Zählt beim Sichtbarwerden hoch.
@@ -11,26 +26,50 @@ import { schreibe, zerlege } from "@/lib/number-format";
  * im führenden Zahlenteil animiert; der Rest bleibt wörtlich stehen. So bleibt
  * die Inhaltsdatei lesbar, statt jeden Wert in {Zahl, Suffix} zu zerlegen.
  */
-export function Counter({
+export function Counter({ value, className, lang, beimStart }: Props) {
+  if (lang) {
+    return (
+      <CounterInner
+        value={value}
+        className={className}
+        lang={lang}
+        beimStart={beimStart}
+      />
+    );
+  }
+  return (
+    <CounterFromContent
+      value={value}
+      className={className}
+      beimStart={beimStart}
+    />
+  );
+}
+
+function CounterFromContent({
   value,
   className,
-}: {
-  value: string;
-  className?: string;
-}) {
+  beimStart,
+}: Omit<Props, "lang">) {
+  const { lang } = useContent();
+  return (
+    <CounterInner
+      value={value}
+      className={className}
+      lang={lang}
+      beimStart={beimStart}
+    />
+  );
+}
+
+function CounterInner({
+  value,
+  className,
+  lang,
+  beimStart = false,
+}: Props & { lang: Lang }) {
   const ref = useRef<HTMLSpanElement>(null);
 
-  /* Die Schreibweise hängt an der Sprache der Seite.
-
-     Sie stand hier fest auf Deutsch: "." gruppiert, "," trennt die
-     Nachkommastelle, ausgegeben mit `toLocaleString("de-DE")`. Auf der
-     englischen Fassung las der Zähler „1,276“ damit als eins Komma zwei sieben
-     sechs. Sichtbar stimmte es trotzdem, weil eine deutsche Dezimalzahl mit
-     drei Nachkommastellen zeichengleich mit einer englischen Tausendergruppe
-     ist, richtig aus dem falschen Grund, und nur solange jede Zahl genau eine
-     Dreiergruppe hat. Die Zerlegung steht jetzt in `lib/number-format.ts` mit
-     Tests daneben; hier bleibt die Bewegung. */
-  const { lang } = useContent();
   const form = zerlege(value, lang);
   const target = form.zahl;
   const animatable = target !== null;
@@ -61,6 +100,24 @@ export function Counter({
    */
   const [display, setDisplay] = useState(endwert);
 
+  /**
+   * Fuer `beimStart` steht der Endwert im HTML (kein Skript sieht die richtige
+   * Zahl). Vor dem ersten Paint setzt das Layout den Zaehler auf null, damit
+   * der Endwert nicht kurz aufblitzt und wieder herunterfällt.
+   */
+  useLayoutEffect(() => {
+    if (!beimStart || !animatable) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("print").matches) return;
+    /* Ohne setState: Sonst warnt der Hooks-Linter, und der Endwert steht
+       trotzdem schon im React-Zustand fuer das ausgelieferte HTML. */
+    if (ref.current) {
+      ref.current.textContent = schreibe(0, form, lang) + suffix;
+    }
+    // form entsteht aus value und lang, beide stehen in den Abhaengigkeiten.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animatable, beimStart, lang, suffix, value]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el || !animatable) return;
@@ -74,24 +131,32 @@ export function Counter({
      * übergangen. Da der Endwert ohnehin von Anfang an dasteht, ist die
      * richtige Antwort schlicht: nichts tun.
      */
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
 
     let controls: { stop: () => void } | null = null;
     let done = false;
-    /**
-     * Was schon beim Ankommen im Bild steht, zählt nicht hoch.
-     *
-     * Sonst spränge die Zahl vom richtigen Wert auf null zurück, nur um
-     * wieder hinaufzulaufen, ein Flackern genau an der Stelle, die Vertrauen
-     * herstellen soll. Die Animation ist für das gedacht, was man beim
-     * Scrollen erreicht.
-     */
-    const gemountet = performance.now();
 
     const starten = () => {
       if (done) return;
       done = true;
-      if (performance.now() - gemountet < 400) {
+      /**
+       * Was schon beim ersten Bild im Vorspann steht, zaehlt nur hoch, wenn
+       * das ausdruecklich gewuenscht ist (`beimStart`). Sonst wuerde die Zahl
+       * vom richtigen Wert auf null zurueckspringen.
+       *
+       * Nachgeladenes unterhalb der Falz darf hochzaehlen, auch wenn der
+       * Beobachter sofort feuert: Die 400-ms-Sperre nach dem Einhängen hat
+       * genau das verhindert, sobald jemand schon weitergescrollt hatte,
+       * bevor der Abschnitt in den Baum kam.
+       */
+      const schonImErstenBild =
+        !beimStart &&
+        window.scrollY < 40 &&
+        el.getBoundingClientRect().top < window.innerHeight &&
+        el.getBoundingClientRect().bottom > 0;
+      if (schonImErstenBild) {
         setDisplay(endwert);
         return;
       }
@@ -166,23 +231,34 @@ export function Counter({
       if (druck.matches) aufEndwert();
     };
 
-    const io = new IntersectionObserver(
-      (beobachtungen) => {
-        for (const e of beobachtungen) if (e.isIntersecting) starten();
-      },
-      { threshold: 0.5 },
-    );
-    io.observe(el);
+    if (beimStart) {
+      starten();
+    } else {
+      const io = new IntersectionObserver(
+        (beobachtungen) => {
+          for (const e of beobachtungen) if (e.isIntersecting) starten();
+        },
+        { threshold: 0.5 },
+      );
+      io.observe(el);
+      pruefeUebersprungen();
+      window.addEventListener("scroll", pruefeUebersprungen, { passive: true });
+      druck.addEventListener("change", beiDruck);
+      window.addEventListener("beforeprint", aufEndwert);
+      beiDruck();
+      return () => {
+        io.disconnect();
+        window.removeEventListener("scroll", pruefeUebersprungen);
+        window.removeEventListener("beforeprint", aufEndwert);
+        druck.removeEventListener("change", beiDruck);
+        controls?.stop();
+      };
+    }
 
-    pruefeUebersprungen();
     beiDruck();
-    window.addEventListener("scroll", pruefeUebersprungen, { passive: true });
     window.addEventListener("beforeprint", aufEndwert);
     druck.addEventListener("change", beiDruck);
-
     return () => {
-      io.disconnect();
-      window.removeEventListener("scroll", pruefeUebersprungen);
       window.removeEventListener("beforeprint", aufEndwert);
       druck.removeEventListener("change", beiDruck);
       controls?.stop();
@@ -192,7 +268,7 @@ export function Counter({
        hier. Mit `form` liefe der Effekt bei jedem Rendern neu an und die
        Animation begänne von vorn. */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animatable, target, endwert, lang, value]);
+  }, [animatable, target, endwert, lang, value, beimStart]);
 
   return (
     <span ref={ref} className={className}>

@@ -143,7 +143,7 @@ export function SitePageShell({
           Hydration. Der Abschnitt braucht den Provider nicht,
           er bekommt seine Texte als Props.
         */}
-        <Hero hero={content.hero} site={content.site} />
+        <Hero hero={content.hero} site={content.site} lang={content.lang} />
         {children}
       </main>
     </>

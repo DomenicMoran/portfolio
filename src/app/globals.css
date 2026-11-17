@@ -673,6 +673,16 @@ textarea:-webkit-autofill {
   animation: caret-blink 1s steps(1) infinite;
 }
 
+/* Reveal bleibt unsichtbar, bis es im Bild ist. Nur wenn JavaScript laeuft
+   und Bewegung erlaubt ist (`data-motion` setzt ein synchrones Skript im
+   Dokumentkopf). Sonst bleiben die Bloecke stehen: ohne Skript, bei weniger
+   Bewegung, und im Druck. Ohne diese Regel haengt Reveal die Einblendung
+   erst an, wenn der Beobachter feuert, und schon gemalter Text verschwindet
+   und kommt wieder, sichtbar als Flackern beim Scrollen. */
+html[data-motion="ok"] [data-reveal]:not([data-inview]) {
+  opacity: 0;
+}
+
 /* Dot grid backdrop, masked to fade out so it never fights with content. */
 @utility dot-grid {
   background-image: radial-gradient(
@@ -711,6 +721,12 @@ textarea:-webkit-autofill {
   @page {
     size: A4;
     margin: 12mm 14mm 10mm;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 
   /* Die Farbtoken für den Druck umdefinieren statt nur Hintergrund und

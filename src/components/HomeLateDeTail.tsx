@@ -10,14 +10,12 @@ import { Contact } from "@/components/sections/Contact";
 export function HomeLateDeTail() {
   return (
     <ContentProviderDe>
-      <div className="[content-visibility:auto]">
-        <AiWorkflow />
-        <DeliverySpeed />
-        <Skills />
-        <Writing />
-        <RecruiterHub />
-        <Contact />
-      </div>
+      <AiWorkflow />
+      <DeliverySpeed />
+      <Skills />
+      <Writing />
+      <RecruiterHub />
+      <Contact />
     </ContentProviderDe>
   );
 }

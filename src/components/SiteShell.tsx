@@ -38,6 +38,17 @@ export function SiteShell({
   }> | null>(null);
 
   /**
+   * Cursor, Fortschritt und Lenis direkt nach dem Einhängen.
+   *
+   * Vorher wartete das auf `load` und einen Leerlauf. Wer dann schon
+   * gescrollt hatte, bekam Lenis mitten in der Bewegung und die Seite zuckte.
+   */
+  useEffect(() => {
+    const t = window.setTimeout(() => setNachLcp(true), 0);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  /**
    * Verzögert geladene Bilder nachholen, sobald der Browser Zeit hat.
    *
    * `next/image` setzt ohne `priority` ein `loading="lazy"`, und das ist am
@@ -61,24 +72,6 @@ export function SiteShell({
    * `requestIdleCallback`, das Safari bis heute nicht kennt, greift ein
    * Zeitgeber.
    */
-  useEffect(() => {
-    const idle = (arbeit: () => void) => {
-      const w = window as typeof window & {
-        requestIdleCallback?: (
-          cb: () => void,
-          opts?: { timeout: number },
-        ) => void;
-      };
-      if (typeof w.requestIdleCallback === "function") {
-        w.requestIdleCallback(arbeit, { timeout: 4000 });
-      } else {
-        window.setTimeout(arbeit, 1200);
-      }
-    };
-    const start = () => idle(() => setNachLcp(true));
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
-  }, []);
 
   useEffect(() => {
     const nachladen = () => {

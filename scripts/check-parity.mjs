@@ -102,6 +102,18 @@ async function zaehle(pfad, mitZahlen = false) {
   });
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
 
+  /* Die Startseite liefert zuerst nur den Vorspann. Der Rest hängt in drei
+     Teilen nach. `networkidle` kann greifen, bevor der letzte Teil im Baum
+     steht: Ein Lauf maß die deutsche Fassung nur bis zu den Fallstudien und
+     die englische vollständig. Gewartet wird auf `#contact`, das im letzten
+     Teil liegt. */
+  if (pfad === "/" || pfad === "/en") {
+    await seite.waitForSelector("#contact", {
+      state: "attached",
+      timeout: 20000,
+    });
+  }
+
   /* Erst durchscrollen: Was auf das Hineinscrollen wartet, hängt sich sonst
      gar nicht ein, und der Vergleich liefe über die halbe Seite. */
   await seite.evaluate(async () => {
