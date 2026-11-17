@@ -13,9 +13,12 @@ export function CaseStudies() {
   const ausfuehrlich = caseStudies
     .filter((s) => !s.prototyp)
     .slice(0, AUSFUEHRLICH);
-  const weitere = caseStudies.filter(
-    (s) => s.prototyp && !s.nochNichtAusgeliefert,
-  );
+  /* `nochNichtAusgeliefert` heißt: kein Live-Verweis, nicht: unsichtbar.
+     Die Typangabe sagt dasselbe, und WohnungsJäger trägt genau deshalb den
+     Satz zur begründeten Leerstelle statt eines erfundenen Bildes. Wer diese
+     Projekte hinter dem Filter verbirgt, nimmt den Satz von der Seite und
+     widerspricht der Zusage, dass ein System ohne Adresse trotzdem steht. */
+  const weitere = caseStudies.filter((s) => s.prototyp);
 
   return (
     <section
