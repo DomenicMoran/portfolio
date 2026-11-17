@@ -49,7 +49,7 @@ function istScrollbereich(el: HTMLElement): boolean {
   return senkrecht || waagerecht;
 }
 
-export function sammleFokussierbare(wurzel: HTMLElement): HTMLElement[] {
+function sammleFokussierbare(wurzel: HTMLElement): HTMLElement[] {
   const funde = new Set<HTMLElement>();
   for (const knoten of wurzel.querySelectorAll(FOKUS_AUSWAHL)) {
     if (knoten instanceof HTMLElement && istSichtbar(knoten)) funde.add(knoten);
