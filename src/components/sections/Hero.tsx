@@ -1,8 +1,10 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import type { Content } from "@/content/types";
+import { TECH_TICKER } from "@/content/types";
 import { HeroHeadline } from "@/components/hero/HeroHeadline";
-import { Magnetic } from "@/components/ui/Magnetic";
+import { MagneticIdle } from "@/components/ui/MagneticIdle";
 import { Counter } from "@/components/ui/Counter";
+import { Marquee } from "@/components/ui/Marquee";
 
 type Props = {
   hero: Content["hero"];
@@ -83,7 +85,7 @@ export function Hero({ hero, site, lang }: Props) {
             style={{ animationDelay: "0.3s" }}
             className="animate-fade-rise mt-8 flex flex-wrap items-center gap-3"
           >
-            <Magnetic>
+            <MagneticIdle>
               <a
                 href={hero.ctaPrimary.href}
                 className="group bg-acid text-void hover:bg-ink inline-flex items-center gap-2 rounded-full border border-transparent px-6 py-3.5 font-medium transition-colors"
@@ -94,8 +96,8 @@ export function Hero({ hero, site, lang }: Props) {
                   aria-hidden
                 />
               </a>
-            </Magnetic>
-            <Magnetic>
+            </MagneticIdle>
+            <MagneticIdle>
               <a
                 href={hero.ctaSecondary.href}
                 {...(secondaryExternal
@@ -116,7 +118,7 @@ export function Hero({ hero, site, lang }: Props) {
                   />
                 )}
               </a>
-            </Magnetic>
+            </MagneticIdle>
           </div>
 
           <dl
@@ -134,6 +136,13 @@ export function Hero({ hero, site, lang }: Props) {
               </div>
             ))}
           </dl>
+
+          <div
+            style={{ animationDelay: "0.85s" }}
+            className="animate-fade-rise mt-14"
+          >
+            <Marquee items={TECH_TICKER} duration={60} />
+          </div>
         </div>
         <div id="hero-wow-slot" className="contents" />
       </div>

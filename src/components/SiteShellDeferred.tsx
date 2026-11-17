@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { whenIdle } from "@/lib/when-idle";
 
 type Props = {
   otherHref?: string;
@@ -13,14 +14,12 @@ type ShellCmp = ComponentType<{ otherHref?: string; hashBase?: string }>;
 type ProviderCmp = ComponentType<{ children: ReactNode }>;
 
 /**
- * Deko und Laufschrift direkt nach dem ersten Paint, Kopfleiste knapp danach.
+ * Vorspann zuerst, Wow nach dem ersten Paint, Kopfleiste im Leerlauf.
  *
- * Vorher warteten beide auf `load` und einen Leerlauf mit bis zu 12 Sekunden
- * Frist. Damit fehlten Technologiezeile, Signal Field und Navigation beim
- * ersten Blick, und Lenis sprang oft erst mitten im Scrollen ein.
- *
- * Die Kopfleiste bleibt einen Tick versetzt, damit ihr Buendel nicht in
- * derselben langen Aufgabe mit den nachgeladenen Abschnitten liegt.
+ * Die Motion-Wiederherstellung zog Nav und Framer nach 200 ms in den Weg
+ * des Lighthouse-Hauptthreads (TBT 1.050 ms). Die Laufschrift steht im
+ * statischen Vorspann, das Signal Field mountet frueh, die Kopfleiste erst
+ * nach `load` und Leerlauf oder sobald jemand tippt oder scrollt.
  */
 export function SiteShellDeferred(props: Props) {
   const [Shell, setShell] = useState<ComponentType<Props> | null>(null);
@@ -29,7 +28,7 @@ export function SiteShellDeferred(props: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    let shellTimer = 0;
+    let shellGestartet = false;
 
     const wrapShell = (
       ShellInner: ShellCmp,
@@ -70,6 +69,8 @@ export function SiteShellDeferred(props: Props) {
     };
 
     const loadShell = async () => {
+      if (shellGestartet || cancelled) return;
+      shellGestartet = true;
       const lang = props.lang;
       const [shellMod, providerMod] = await Promise.all([
         import("@/components/SiteShell"),
@@ -83,14 +84,33 @@ export function SiteShellDeferred(props: Props) {
       setShell(() => wrapShell(shellMod.SiteShell, providerMod, lang));
     };
 
-    void loadWow();
-    shellTimer = window.setTimeout(() => {
+    const startShellDeferred = () => {
+      whenIdle(() => {
+        void loadShell();
+      }, 5000);
+    };
+
+    const shellFrueh = () => {
       void loadShell();
-    }, 200);
+    };
+
+    const ereignisse = ["pointerdown", "wheel", "keydown"] as const;
+    for (const e of ereignisse) {
+      window.addEventListener(e, shellFrueh, { once: true, passive: true });
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        void loadWow();
+      });
+    });
+
+    if (document.readyState === "complete") startShellDeferred();
+    else window.addEventListener("load", startShellDeferred, { once: true });
 
     return () => {
       cancelled = true;
-      window.clearTimeout(shellTimer);
+      for (const e of ereignisse) window.removeEventListener(e, shellFrueh);
     };
   }, [props.lang]);
 
