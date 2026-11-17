@@ -98,7 +98,10 @@ export function BookPublication() {
 
         <Reveal className="mt-14">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,220px)_1fr] lg:items-start">
-            <div className="mx-auto w-full max-w-[220px] lg:mx-0">
+            {/* Der amtliche Titel bleibt Deutsch, auch auf /en. Ohne lang
+                würde ein Vorleseprogramm ihn englisch aussprechen, und
+                check:language fällt bei Titel und Cover-Alt. */}
+            <div className="mx-auto w-full max-w-[220px] lg:mx-0" lang="de">
               <Image
                 src={book.coverSrc}
                 alt={book.coverAlt}
@@ -165,7 +168,7 @@ function BookFacts({
 }) {
   return (
     <article className="min-w-0">
-      <h3 className="text-ink font-serif text-2xl text-balance">
+      <h3 lang="de" className="text-ink font-serif text-2xl text-balance">
         {book.title}
       </h3>
       <p className="text-ink-dim mt-4 max-w-[65ch] text-sm leading-relaxed text-pretty">
