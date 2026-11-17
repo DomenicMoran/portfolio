@@ -33,7 +33,7 @@ export function HeroHeadline({ words }: Props) {
         <span className="-mb-[0.14em] inline-block max-w-full overflow-hidden pb-[0.2em] align-bottom break-words hyphens-auto">
           <span
             className={cn(
-              "animate-word-rise inline-block",
+              "animate-word-rise inline-block max-w-full",
               word.accent && "text-acid",
             )}
             style={{ animationDelay: `${0.05 + (offset + i) * 0.025}s` }}
