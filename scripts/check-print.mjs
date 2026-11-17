@@ -493,6 +493,32 @@ for (const pfad of gepruefteSeiten) {
     window.scrollTo(0, 0);
     await new Promise((r) => setTimeout(r, 500));
   });
+
+  /* Die Belegzahlen im Vorspann zaehlen beim ersten Besuch 1,4 s hoch.
+     Die 500 ms danach reichen nicht, und `getAnimations().finish()` greift
+     nur CSS, nicht den rAF-Zaehler. Ohne diese Wartezeit stünde ein
+     Zwischenwert im Maßstab, der im Ausdruck (dort der Endwert) fehlt. */
+  await seite.evaluate(async () => {
+    const lese = () =>
+      [...document.querySelectorAll("#top dd")]
+        .map((el) => el.textContent)
+        .join("|");
+    let zuletzt = lese();
+    if (!zuletzt) return;
+    const start = performance.now();
+    let ruhig = 0;
+    while (performance.now() - start < 2000) {
+      await new Promise((r) => setTimeout(r, 150));
+      const jetzt = lese();
+      if (jetzt === zuletzt) {
+        ruhig += 1;
+        if (ruhig >= 2) return;
+      } else {
+        ruhig = 0;
+        zuletzt = jetzt;
+      }
+    }
+  });
   const textAmBildschirm = await textEinsammeln();
 
   // Zweiter Durchgang: der schlimmste Fall.
