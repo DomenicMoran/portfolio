@@ -88,6 +88,22 @@ for (const pfad of pfade) {
     continue;
   }
 
+  /* Der sichtbare Umschalter sitzt in der nachgeladenen Leiste. Auf der
+     Startseite steht er nicht im ersten HTML, das nur den Hero-Vorspann
+     ausliefert. Gewartet wird auf den Link selbst, nicht auf eine Pause. */
+  await seite
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll("a")].some((e) =>
+          /^(English|Deutsch)$/i.test((e.textContent || "").trim()),
+        ),
+      undefined,
+      { timeout: 15000 },
+    )
+    .catch(() => {
+      /* Fehlt der Umschalter, sagt die Auswertung unten welche Seite. */
+    });
+
   const daten = await seite.evaluate((eigennamenQuelle) => {
     const eigennamen = new RegExp(eigennamenQuelle);
 
