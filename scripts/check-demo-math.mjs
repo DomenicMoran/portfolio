@@ -210,6 +210,39 @@ for (const ziel of ZIELE) {
   }
 }
 
+/**
+ * Die Gebetszeiten-Kachel steht in der Salati-Fallstudie hinter dem
+ * Offenlegungsschalter. Ohne den Klick ist sie `hidden`, `innerText`
+ * bleibt leer, und der Lauf findet keine Demo. Dieselbe Hilfe wie in
+ * check-print, check-a11y und check-panels: zuerst die Offenlegungen
+ * mit Reiterleiste öffnen, die Kachel in den Blick nehmen und auf die
+ * fertige Rechnung warten. Die Bibliothek lädt erst beim Hineinscrollen.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
+async function warteAufGebetszeiten(seite) {
+  await oeffneFallstudien(seite);
+  await seite.waitForTimeout(200);
+  const anker = seite.locator("#case-salati");
+  if ((await anker.count()) > 0) {
+    await anker.scrollIntoViewIfNeeded();
+  }
+  await seite.waitForSelector('[data-demo="gebetszeiten"][data-demo-fertig]', {
+    timeout: 15_000,
+  });
+}
+
 /* ---------------------------------------------------------------------------
    Die zweite Demo: Gebetszeiten
 
@@ -226,6 +259,8 @@ for (const ziel of ZIELE) {
    gibt es dort keine Dämmerung, in der Polarnacht keinen Sonnenaufgang. Die
    Demo schreibt dann „nicht berechnet", und das ist die richtige Antwort:
    eine erfundene Uhrzeit wäre die falsche. */
+await warteAufGebetszeiten(seite);
+
 const ORTE = ["Berlin", "Istanbul", "Kairo", "Tromsø"];
 const VERFAHREN = [
   "wie in der App",
@@ -466,7 +501,16 @@ console.log(
       );
     }
 
-    const kachel = readFileSync("src/components/demo/PrayerTimes.tsx", "utf8");
+    /* Die Rechnung steht in dem ausgelagerten Modul. Die Barrel-Datei
+       `PrayerTimes.tsx` reicht die Komponente nur durch; wer nur sie liest,
+       findet `Turkey()` und `Madhab.Shafi` nicht, obwohl die Kachel
+       beides benutzt. */
+    const kachel =
+      readFileSync("src/components/demo/PrayerTimes.tsx", "utf8") +
+      readFileSync(
+        "src/components/demo/prayer-times/PrayerTimesDemo.tsx",
+        "utf8",
+      );
     /* Methode 13 ist Diyanet, und `adhan` nennt sie `Turkey()`.
        Schule 0 ist die schafiitische, in `adhan` `Madhab.Shafi`. */
     if (
