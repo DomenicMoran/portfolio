@@ -9,11 +9,9 @@ import { Produkte } from "@/components/sections/Produkte";
 export function HomeLateEnLight() {
   return (
     <ContentProviderEn>
-      <div className="[content-visibility:auto]">
-        <About />
-        <BookPublication />
-        <Produkte produkte={en.produkte} />
-      </div>
+      <About />
+      <BookPublication />
+      <Produkte produkte={en.produkte} />
     </ContentProviderEn>
   );
 }

@@ -25,6 +25,12 @@ export function RootDocument({
       className={`${schriftKlassen} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.setAttribute("data-motion","ok")}catch(e){}',
+          }}
+        />
         {/*
           humans.txt und llms.txt gab es schon, erreichbar waren sie aber nur,
           wenn man die Adresse errät. Zwei Zeilen machen sie auffindbar:

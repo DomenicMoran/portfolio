@@ -7,8 +7,12 @@ import { useEffect } from "react";
  *
  * Bewusst nicht geladen, wenn jemand weniger Bewegung eingestellt hat: Einem
  * Menschen mit Gleichgewichtsempfindlichkeit das Scrollen aus der Hand zu
- * nehmen, ist das Unfreundlichste, was eine „hochwertige" Seite tun kann. Dann
+ * nehmen, ist das Unfreundlichste, was eine Seite tun kann. Dann
  * bleibt das Scrollen des Browsers unangetastet.
+ *
+ * Auch nicht eingehaengt, wenn der Besuch schon nativ gescrollt hat: Lenis
+ * nachtraeglich in eine laufende Bewegung zu setzen, reisst den Ausschnitt
+ * und sieht aus wie ein Flackern.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -31,28 +35,21 @@ export function SmoothScroll() {
     */
     let aufraeumen = () => {};
     let abgebrochen = false;
+    let schonBewegt = window.scrollY > 10;
 
-    const whenIdle = (work: () => void) => {
-      const w = window as typeof window & {
-        requestIdleCallback?: (
-          cb: () => void,
-          opts?: { timeout: number },
-        ) => void;
-      };
-      if (typeof w.requestIdleCallback === "function") {
-        w.requestIdleCallback(work, { timeout: 4000 });
-      } else {
-        window.setTimeout(work, 1200);
-      }
+    const markiereBewegung = () => {
+      schonBewegt = true;
     };
+    window.addEventListener("wheel", markiereBewegung, { passive: true });
+    window.addEventListener("touchmove", markiereBewegung, { passive: true });
 
-    const start = () => whenIdle(() => void loadLenis());
     const loadLenis = async () => {
+      if (abgebrochen || schonBewegt || window.scrollY > 10) return;
       const { default: Lenis } = await import("lenis");
       /* Zwischen Anfrage und Antwort kann die Komponente abgebaut worden
          sein. Ohne diese Abfrage liefe danach eine Animationsschleife auf
          einer Seite weiter, die es nicht mehr gibt. */
-      if (abgebrochen) return;
+      if (abgebrochen || schonBewegt || window.scrollY > 10) return;
       aufraeumen = starte(
         new Lenis({
           duration: 1.1,
@@ -64,11 +61,15 @@ export function SmoothScroll() {
       );
     };
 
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
+    const rahmen = requestAnimationFrame(() => {
+      void loadLenis();
+    });
 
     return () => {
       abgebrochen = true;
+      cancelAnimationFrame(rahmen);
+      window.removeEventListener("wheel", markiereBewegung);
+      window.removeEventListener("touchmove", markiereBewegung);
       aufraeumen();
     };
   }, []);

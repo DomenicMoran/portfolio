@@ -50,7 +50,7 @@ function useRevealInView() {
           obs.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.01, rootMargin: "0px 0px 15% 0px" },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -60,10 +60,16 @@ function useRevealInView() {
 }
 
 /**
- * Einblenden beim Sichtbarwerden — CSS und IntersectionObserver statt Framer.
+ * Einblenden beim Sichtbarwerden: CSS und IntersectionObserver statt Framer.
  *
  * Unterhalb der Falz bleibt der Eindruck gleich, aber der Parser zieht kein
  * `framer-motion` mehr in die Startseiten-Chunks, die nur Reveal nutzen.
+ *
+ * `data-reveal` ohne `data-inview` ist unsichtbar, sobald das Dokument
+ * `data-motion="ok"` traegt. Die Klasse `animate-fade-rise` kommt erst dazu,
+ * wenn der Block im Bild ist. Sonst waere schon gemalter Text erst sichtbar,
+ * wuerde beim Beobachter auf Deckkraft 0 springen und wieder einblenden:
+ * genau das Flackern beim Scrollen.
  */
 export function Reveal({
   children,
@@ -83,6 +89,7 @@ export function Reveal({
       className={cn(className, animiere && "animate-fade-rise")}
       style={animiere ? { animationDelay: `${delay}s` } : undefined}
       data-reveal=""
+      {...(reduced || sichtbar ? { "data-inview": "" } : {})}
     >
       {children}
     </Tag>
@@ -109,12 +116,14 @@ export function RevealWords({
   const words = text.split(" ");
   const { ref, sichtbar, reduced } = useRevealInView();
   const animiere = css || (!reduced && sichtbar);
+  const inview = css || reduced || sichtbar;
 
   return (
     <span
       ref={ref as React.RefObject<HTMLSpanElement>}
       className={cn("inline", className)}
       data-reveal=""
+      {...(inview ? { "data-inview": "" } : {})}
     >
       {words.map((word, i) => (
         <Fragment key={`${word}-${i}`}>

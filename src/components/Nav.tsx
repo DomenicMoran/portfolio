@@ -153,6 +153,7 @@ export function Nav({
            Navigation der ganzen Seite. Siehe die `noscript`-Regel in
            RootDocument. */
         data-reveal=""
+        data-inview=""
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease: ease.expo, delay: 0.9 }}

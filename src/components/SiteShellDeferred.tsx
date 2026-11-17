@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
@@ -9,10 +9,18 @@ type Props = {
   lang?: "de" | "en";
 };
 
+type ShellCmp = ComponentType<{ otherHref?: string; hashBase?: string }>;
+type ProviderCmp = ComponentType<{ children: ReactNode }>;
+
 /**
- * Kopfleiste und globale Interaktion erst im Leerlauf: Der Lead im Vorspann
- * soll unter Lighthouse-Mobile-Drossel nicht hinter Nav- und Framer-Chunks
- * warten müssen.
+ * Deko und Laufschrift direkt nach dem ersten Paint, Kopfleiste knapp danach.
+ *
+ * Vorher warteten beide auf `load` und einen Leerlauf mit bis zu 12 Sekunden
+ * Frist. Damit fehlten Technologiezeile, Signal Field und Navigation beim
+ * ersten Blick, und Lenis sprang oft erst mitten im Scrollen ein.
+ *
+ * Die Kopfleiste bleibt einen Tick versetzt, damit ihr Buendel nicht in
+ * derselben langen Aufgabe mit den nachgeladenen Abschnitten liegt.
  */
 export function SiteShellDeferred(props: Props) {
   const [Shell, setShell] = useState<ComponentType<Props> | null>(null);
@@ -20,59 +28,70 @@ export function SiteShellDeferred(props: Props) {
   const [wowSlot, setWowSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    const idle = (work: () => void) => {
-      const w = window as typeof window & {
-        requestIdleCallback?: (
-          cb: () => void,
-          opts?: { timeout: number },
-        ) => void;
-      };
-      if (typeof w.requestIdleCallback === "function") {
-        w.requestIdleCallback(work, { timeout: 12000 });
-      } else {
-        window.setTimeout(work, 2000);
-      }
+    let cancelled = false;
+    let shellTimer = 0;
+
+    const wrapShell = (
+      ShellInner: ShellCmp,
+      providerMod: unknown,
+      lang: Props["lang"],
+    ) => {
+      const Provider: ProviderCmp | null =
+        lang === "de" &&
+        providerMod &&
+        typeof providerMod === "object" &&
+        "ContentProviderDe" in providerMod
+          ? (providerMod as { ContentProviderDe: ProviderCmp })
+              .ContentProviderDe
+          : lang === "en" &&
+              providerMod &&
+              typeof providerMod === "object" &&
+              "ContentProviderEn" in providerMod
+            ? (providerMod as { ContentProviderEn: ProviderCmp })
+                .ContentProviderEn
+            : null;
+      if (!Provider) return ShellInner;
+      const Wrapped = (shellProps: Props) => (
+        <Provider>
+          <ShellInner
+            otherHref={shellProps.otherHref}
+            hashBase={shellProps.hashBase}
+          />
+        </Provider>
+      );
+      return Wrapped;
     };
-    const load = () => {
-      idle(() => {
-        const lang = props.lang;
-        void Promise.all([
-          import("@/components/SiteShell"),
-          import("@/components/hero/HeroWowMount"),
-          lang === "de"
-            ? import("@/content/ContentProviderDe")
-            : lang === "en"
-              ? import("@/content/ContentProviderEn")
-              : Promise.resolve(null),
-        ]).then(([shellMod, wowMod, providerMod]) => {
-          const Shell = shellMod.SiteShell;
-          const Provider =
-            lang === "de" && providerMod && "ContentProviderDe" in providerMod
-              ? providerMod.ContentProviderDe
-              : lang === "en" &&
-                  providerMod &&
-                  "ContentProviderEn" in providerMod
-                ? providerMod.ContentProviderEn
-                : null;
-          setShell(() =>
-            Provider
-              ? (shellProps: Props) => (
-                  <Provider>
-                    <Shell
-                      otherHref={shellProps.otherHref}
-                      hashBase={shellProps.hashBase}
-                    />
-                  </Provider>
-                )
-              : Shell,
-          );
-          setWow(() => wowMod.HeroWowMount);
-          setWowSlot(document.getElementById("hero-wow-slot"));
-        });
-      });
+
+    const loadWow = async () => {
+      const wowMod = await import("@/components/hero/HeroWowMount");
+      if (cancelled) return;
+      setWow(() => wowMod.HeroWowMount);
+      setWowSlot(document.getElementById("hero-wow-slot"));
     };
-    if (document.readyState === "complete") load();
-    else window.addEventListener("load", load, { once: true });
+
+    const loadShell = async () => {
+      const lang = props.lang;
+      const [shellMod, providerMod] = await Promise.all([
+        import("@/components/SiteShell"),
+        lang === "de"
+          ? import("@/content/ContentProviderDe")
+          : lang === "en"
+            ? import("@/content/ContentProviderEn")
+            : Promise.resolve(null),
+      ]);
+      if (cancelled) return;
+      setShell(() => wrapShell(shellMod.SiteShell, providerMod, lang));
+    };
+
+    void loadWow();
+    shellTimer = window.setTimeout(() => {
+      void loadShell();
+    }, 200);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(shellTimer);
+    };
   }, [props.lang]);
 
   return (
