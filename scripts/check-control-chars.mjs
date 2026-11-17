@@ -83,7 +83,10 @@ for (const pfad of dateien) {
       `${pfad.split("\\").join("/")}:${i + 1} enthält 0x${treffer[0]
         .charCodeAt(0)
         .toString(16)
-        .padStart(2, "0")}, „…${zeile.slice(Math.max(0, stelle - 30), stelle + 20).replace(verboten, "␈")}…“`,
+        .padStart(
+          2,
+          "0",
+        )}, „…${zeile.slice(Math.max(0, stelle - 30), stelle + 20).replace(verboten, "␈")}…“`,
     );
   });
 }

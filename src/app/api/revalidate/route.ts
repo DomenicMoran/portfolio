@@ -12,10 +12,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json().catch(() => null)) as { slug?: unknown } | null;
+  const body = (await request.json().catch(() => null)) as {
+    slug?: unknown;
+  } | null;
   const slug = typeof body?.slug === "string" ? body.slug : "";
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
-    return NextResponse.json({ error: "A valid slug is required." }, { status: 400 });
+    return NextResponse.json(
+      { error: "A valid slug is required." },
+      { status: 400 },
+    );
   }
 
   revalidateTag(`targeted-company:${slug}`, "max");

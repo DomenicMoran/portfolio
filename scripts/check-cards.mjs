@@ -39,7 +39,9 @@ const funde = [];
 let reihen = 0;
 
 for (const breite of BREITEN) {
-  const seite = await browser.newPage({ viewport: { width: breite, height: 1000 } });
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 1000 },
+  });
 
   for (const pfad of pfade) {
     const antwort = await seite.goto(`${basis}${pfad}`, {
@@ -102,7 +104,9 @@ for (const breite of BREITEN) {
             const p = k.querySelector("p");
             return p
               ? {
-                  y: p.getBoundingClientRect().top - k.getBoundingClientRect().top,
+                  y:
+                    p.getBoundingClientRect().top -
+                    k.getBoundingClientRect().top,
                   titel: (k.querySelector("h2,h3,h4")?.textContent ?? "")
                     .trim()
                     .slice(0, 34),

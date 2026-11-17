@@ -5,7 +5,6 @@ import { mailAdresse } from "@/lib/mailto";
 import { useState } from "react";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
-import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -55,7 +54,7 @@ export function Contact() {
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="glow-orb bottom-0 left-1/2 size-[30rem] -translate-x-1/2 bg-acid/8" />
+        <div className="glow-orb bg-acid/8 bottom-0 left-1/2 size-[30rem] -translate-x-1/2" />
       </div>
 
       <div className="mx-auto max-w-6xl">
@@ -71,22 +70,20 @@ export function Contact() {
             <div className="flex flex-col gap-8">
               {/* Die Mailadresse ist hier das Hauptelement, nicht eine Fußnote. */}
               <div className="flex flex-wrap items-center gap-3">
-                <Magnetic strength={0.15}>
-                  <a
-                    href={mailAdresse(
-                      site.email,
-                      site.mailSubject,
-                      contact.checkliste.punkte,
-                    )}
-                    className="group inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all text-ink transition-colors hover:text-acid sm:text-4xl"
-                  >
-                    {site.email}
-                    <ArrowUpRight
-                      className="hidden size-7 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:block"
-                      aria-hidden
-                    />
-                  </a>
-                </Magnetic>
+                <a
+                  href={mailAdresse(
+                    site.email,
+                    site.mailSubject,
+                    contact.checkliste.punkte,
+                  )}
+                  className="group text-ink hover:text-acid inline-flex max-w-full items-center gap-3 text-2xl font-semibold tracking-tight break-all transition-colors sm:text-4xl"
+                >
+                  {site.email}
+                  <ArrowUpRight
+                    className="hidden size-7 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:block"
+                    aria-hidden
+                  />
+                </a>
 
                 {/* Dieselbe Überlegung wie beim Druck, eine Ebene weiter:
                     Ohne Skript kann der Knopf nicht kopieren, und er trägt
@@ -102,11 +99,11 @@ export function Contact() {
                   // `no-print`: Die Adresse steht schon im Verweis darüber,
                   // dieser Knopf trägt nur seine Aufforderung. Auf Papier
                   // bliebe „Adresse kopieren" ohne alles, was darauf antwortet.
-                  className="adresse-kopieren no-print inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-xs text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                  className="adresse-kopieren no-print border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs transition-colors"
                 >
                   {kopiert ? (
                     <>
-                      <Check className="size-3.5 text-acid" aria-hidden />
+                      <Check className="text-acid size-3.5" aria-hidden />
                       {contact.copied}
                     </>
                   ) : (
@@ -118,19 +115,19 @@ export function Contact() {
                 </button>
               </div>
 
-              <p className="max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
+              <p className="text-ink-dim max-w-[58ch] leading-relaxed text-pretty">
                 {contact.hinweis}
               </p>
 
               {profile.length > 0 ? (
-                <div className="flex flex-wrap gap-2 border-t border-line pt-8">
+                <div className="border-line flex flex-wrap gap-2 border-t pt-8">
                   {profile.map((k) => (
                     <a
                       key={k.label}
                       href={k.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                      className="group border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
                     >
                       <k.icon className="size-3.5" />
                       {k.label}
@@ -147,28 +144,28 @@ export function Contact() {
 
           {/* Was in eine erste Mail gehört, spart beiden Seiten eine Runde. */}
           <Reveal delay={0.08}>
-            <div className="lit rounded-2xl border border-line bg-surface/50 p-7">
+            <div className="lit border-line bg-surface/50 rounded-2xl border p-7">
               <h3 className="text-eyebrow mb-5">{contact.checkliste.titel}</h3>
               <ul className="flex flex-col gap-3">
                 {contact.checkliste.punkte.map((p) => (
                   <li
                     key={p}
-                    className="flex gap-2.5 text-sm leading-relaxed text-ink-dim"
+                    className="text-ink-dim flex gap-2.5 text-sm leading-relaxed"
                   >
                     <span
                       aria-hidden
-                      className="mt-1.5 size-1.5 shrink-0 rounded-full bg-acid"
+                      className="bg-acid mt-1.5 size-1.5 shrink-0 rounded-full"
                     />
                     {p}
                   </li>
                 ))}
               </ul>
 
-              <dl className="mt-7 flex flex-col gap-3.5 border-t border-line pt-6">
+              <dl className="border-line mt-7 flex flex-col gap-3.5 border-t pt-6">
                 {contact.fakten.map((f) => (
                   <div key={f.label} className="flex flex-col gap-0.5">
                     <dt className="text-eyebrow">{f.label}</dt>
-                    <dd className="text-sm text-ink-dim">{f.wert}</dd>
+                    <dd className="text-ink-dim text-sm">{f.wert}</dd>
                   </div>
                 ))}
               </dl>

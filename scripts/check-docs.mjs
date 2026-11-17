@@ -217,7 +217,11 @@ const wortlaut = [
 ].join("\n");
 
 /* Hilfsdateien werden importiert, nicht aufgerufen. */
-const HILFSDATEIEN = ["local-server.mjs", "built-pages.mjs", "onepager-source-state.mjs"];
+const HILFSDATEIEN = [
+  "local-server.mjs",
+  "built-pages.mjs",
+  "onepager-source-state.mjs",
+];
 
 const ohneAufruf = vorhanden.filter(
   (d) => !HILFSDATEIEN.includes(d) && !wortlaut.includes(d),
@@ -232,7 +236,9 @@ if (ohneAufruf.length > 0) {
 }
 
 const ciText = readFileSync(join(".github", "workflows", "check.yml"), "utf8");
-const nichtInDerCi = laeufe.filter((lauf) => !ciText.includes(`npm run ${lauf}`));
+const nichtInDerCi = laeufe.filter(
+  (lauf) => !ciText.includes(`npm run ${lauf}`),
+);
 geprueft += laeufe.length;
 if (nichtInDerCi.length > 0) {
   melde(
@@ -322,7 +328,7 @@ for (const [datei, text] of [
    bekommt, nicht gegen das Arbeitsverzeichnis mit seinen Bauordnern. */
 {
   /* `-z` und `core.quotepath=false`, sonst prüft der Lauf sich selbst blind:
-     Git schreibt einen Namen mit Umlaut als `"prÃ¼fung.mjs"`, in
+     Git schreibt einen Namen mit Umlaut als `"prüfung.mjs"`, in
      Anführungszeichen und mit Oktalfolgen, also reines ASCII. Gegengeprüft
      mit einer angelegten Datei `scripts/prüfung-test.mjs`: gemeldet haben
      zwei andere Blöcke, dieser nicht. */

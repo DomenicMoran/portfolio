@@ -7,7 +7,6 @@ import { CopyEmail } from "@/components/ui/CopyEmail";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useContent } from "@/content/ContentProvider";
 import { SOCIALS } from "@/content/types";
-import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Spotlight } from "@/components/ui/Spotlight";
@@ -37,7 +36,7 @@ export function RecruiterHub() {
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="glow-orb animate-float top-1/3 left-1/2 size-[34rem] -translate-x-1/2 bg-acid/8" />
+        <div className="glow-orb animate-float bg-acid/8 top-1/3 left-1/2 size-[34rem] -translate-x-1/2" />
       </div>
 
       <div className="mx-auto max-w-6xl">
@@ -68,9 +67,10 @@ export function RecruiterHub() {
                   bleibt oben. */}
               <div
                 data-schein
-                className="lit flex h-full flex-col rounded-2xl border border-line bg-surface/50 p-6"
+                className="lit border-line bg-surface/50 flex h-full flex-col rounded-2xl border p-6"
               >
-                {/* Zwei Zeilen Platz, auch wenn der Titel nur eine braucht.
+                {/* Drei Zeilen Platz, auch wenn der Titel nur eine oder zwei
+                    braucht.
 
                     Die Karten einer Reihe sind gleich hoch, ihre Überschriften
                     nicht: „Ich kenne den Weg durch die Stores" passt bei
@@ -79,15 +79,18 @@ export function RecruiterHub() {
                     dadurch 22 px versetzt, gemessen bei 1280 und 1440 px auf
                     Deutsch, bei 768 und 1280 px auf Englisch.
 
-                    `min-h-[2lh]` und nicht `min-h-[3rem]`: Die Einheit `lh`
+                    Seit dem Raster `lg:grid-cols-3` braucht derselbe Titel
+                    „Ich arbeite mit Agenten, ohne die Kontrolle abzugeben"
+                    bei 1024 px drei Zeilen (gemessen 103 gegen 81 px, wieder
+                    22 px Versatz). Deshalb `min-h-[3lh]`. Die Einheit `lh`
                     ist die Zeilenhöhe dieses Elements. Ändert sich Schriftgrad
                     oder `leading`, stimmt der Wert weiter. Erst ab `sm`, weil
                     einspaltig keine Reihe existiert, die etwas ausrichten
                     müsste. */}
-                <h3 className="text-base leading-snug font-semibold tracking-tight text-ink text-balance sm:min-h-[2lh]">
+                <h3 className="text-ink text-base leading-snug font-semibold tracking-tight text-balance sm:min-h-[3lh]">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-dim text-pretty">
+                <p className="text-ink-dim mt-3 text-sm leading-relaxed text-pretty">
                   {item.body}
                 </p>
 
@@ -108,7 +111,7 @@ export function RecruiterHub() {
                       href={item.proof}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/beleg mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                      className="group/beleg text-ink-faint hover:text-acid mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] transition-colors"
                     >
                       {item.proofLabel}
                       <ArrowUpRight
@@ -125,7 +128,7 @@ export function RecruiterHub() {
                          für die Artikel spart es Bandbreite. `check:vitals`
                          hält die Menge offen. */
                       prefetch={false}
-                      className="group/beleg mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] text-ink-faint transition-colors hover:text-acid"
+                      className="group/beleg text-ink-faint hover:text-acid mt-auto -mb-1 inline-flex items-center gap-1.5 self-start pt-4 pb-1 font-mono text-[11px] transition-colors"
                     >
                       {item.proofLabel}
                       <ArrowRight
@@ -149,11 +152,11 @@ export function RecruiterHub() {
             `hero.tryIt` und keine zweite Formulierung: Zwei Sätze für
             dieselbe Sache sind die nächste Stelle, an der einer veraltet. */}
         <Reveal>
-          <p className="mt-5 text-sm leading-snug text-ink-faint text-pretty">
+          <p className="text-ink-faint mt-5 text-sm leading-snug text-pretty">
             {hero.tryIt.before}{" "}
             <a
               href={hero.tryIt.href}
-              className="-my-1 py-1 text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+              className="text-ink-dim decoration-ink-faint/60 hover:text-ink hover:decoration-acid -my-1 py-1 underline underline-offset-4 transition-colors"
             >
               {hero.tryIt.label}
             </a>{" "}
@@ -168,11 +171,11 @@ export function RecruiterHub() {
             hat jeder Block die Höhe, die sein Inhalt braucht. */}
         <div className="mt-5 flex flex-col gap-5">
           <Reveal>
-            <dl className="lit grid gap-x-8 gap-y-6 rounded-2xl border border-line bg-surface/50 p-7 sm:grid-cols-2 lg:grid-cols-4">
+            <dl className="lit border-line bg-surface/50 grid gap-x-8 gap-y-6 rounded-2xl border p-7 sm:grid-cols-2 lg:grid-cols-4">
               {recruiter.facts.map((fact) => (
                 <div key={fact.label} className="flex flex-col gap-1">
                   <dt className="text-eyebrow">{fact.label}</dt>
-                  <dd className="text-sm leading-snug text-ink">
+                  <dd className="text-ink text-sm leading-snug">
                     {fact.value}
                   </dd>
                 </div>
@@ -181,7 +184,7 @@ export function RecruiterHub() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <div className="lit flex flex-col gap-6 rounded-2xl border border-acid/25 bg-acid/[0.06] p-7 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div className="lit border-acid/25 bg-acid/[0.06] flex flex-col gap-6 rounded-2xl border p-7 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
               <div className="flex flex-wrap items-center gap-3">
                 {/* `download`, wie auf der One-Pager-Seite: Die Datei gibt es,
                     damit sie weitergereicht wird. Ohne das Attribut öffnet sie
@@ -189,30 +192,26 @@ export function RecruiterHub() {
                     Führung schicken will, muss sie von dort erst noch sichern.
                     Drei Stellen verweisen auf dasselbe Blatt; zwei taten es bis
                     heute anders als die dritte. */}
-                <Magnetic>
-                  <a
-                    href={recruiter.cta.pdf.href}
-                    download
-                    className="group inline-flex items-center gap-2 rounded-full border border-transparent bg-acid px-5 py-3 text-sm font-medium text-void transition-colors hover:bg-ink"
-                  >
-                    <FileDown className="size-4" aria-hidden />
-                    {recruiter.cta.pdf.label}
-                  </a>
-                </Magnetic>
+                <a
+                  href={recruiter.cta.pdf.href}
+                  download
+                  className="group bg-acid text-void hover:bg-ink inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-3 text-sm font-medium transition-colors"
+                >
+                  <FileDown className="size-4" aria-hidden />
+                  {recruiter.cta.pdf.label}
+                </a>
 
-                <Magnetic>
-                  <a
-                    href={mailAdresse(
-                      site.email,
-                      site.mailSubject,
-                      contact.checkliste.punkte,
-                    )}
-                    className="group inline-flex items-center gap-2 rounded-full border border-line bg-base px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-faint"
-                  >
-                    <Mail className="size-4" aria-hidden />
-                    {recruiter.cta.mail.label}
-                  </a>
-                </Magnetic>
+                <a
+                  href={mailAdresse(
+                    site.email,
+                    site.mailSubject,
+                    contact.checkliste.punkte,
+                  )}
+                  className="group border-line bg-base text-ink hover:border-ink-faint inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-medium transition-colors"
+                >
+                  <Mail className="size-4" aria-hidden />
+                  {recruiter.cta.mail.label}
+                </a>
 
                 {/* Kein dritter Knopf, sondern ein Verweis: Der Weg zur
                     Kurzfassung ist der PDF-Knopf daneben, dies ist nur seine
@@ -225,7 +224,7 @@ export function RecruiterHub() {
                      Telefon liest, will genau diese und nicht das PDF. Jetzt
                      `ink-dim` und über den Innenabstand 32 px hoch; die
                      negativen Außenabstände halten die optische Position. */
-                  className="-my-1.5 self-center py-1.5 text-sm text-ink-dim underline decoration-ink-faint/60 underline-offset-4 transition-colors hover:text-ink hover:decoration-acid"
+                  className="text-ink-dim decoration-ink-faint/60 hover:text-ink hover:decoration-acid -my-1.5 self-center py-1.5 text-sm underline underline-offset-4 transition-colors"
                 >
                   {recruiter.cta.web.label}
                 </Link>
@@ -233,7 +232,7 @@ export function RecruiterHub() {
 
               {/* Die Trennlinie wandert mit der Anordnung: waagerecht, solange
                   gestapelt wird, senkrecht, sobald nebeneinander. */}
-              <div className="flex flex-wrap gap-2 border-t border-acid/15 pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+              <div className="border-acid/15 flex flex-wrap gap-2 border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
                 {links.map((link) => (
                   <a
                     key={link.label}
@@ -242,7 +241,7 @@ export function RecruiterHub() {
                       link.href.startsWith("mailto:") ? undefined : "_blank"
                     }
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 rounded-full border border-line bg-base/60 px-4 py-2 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                    className="group border-line bg-base/60 text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
                   >
                     <link.icon className="size-3.5" aria-hidden />
                     {link.label}

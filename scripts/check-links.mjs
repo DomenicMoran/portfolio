@@ -62,6 +62,10 @@ const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const funde = [];
 
+/* Sprungmarken je geladener Seite, nach networkidle. Die Startseite liefert
+   zuerst nur das Hero-Gehäuse; die Abschnitts-IDs hängen erst danach. */
+const ankerJeSeite = new Map();
+
 /* Was die Seite selbst in die Konsole schreibt.
 
    Kein Prüflauf sah bisher hin, und genau dort stand am 09.08.2026 auf beiden
@@ -134,13 +138,18 @@ for (const pfad of pfade) {
     const intern = [
       ...new Set(ziele.filter((h) => h.startsWith("/") && !h.startsWith("//"))),
     ];
+    const ids = [...document.querySelectorAll("[id]")]
+      .map((el) => el.id)
+      .filter(Boolean);
     return {
       ohneZiel,
       intern,
+      ids,
       gesamt: ziele.length,
       bilder: document.querySelectorAll("img").length,
     };
   });
+  ankerJeSeite.set(pfad, new Set(ergebnis.ids));
 
   /*
      Bilder, die nichts zeigen.
@@ -545,8 +554,7 @@ const weiterleitungen =
   JSON.parse(readFileSync("vercel.json", "utf8")).redirects ?? [];
 let ziele = 0;
 
-/* Die Anker der Ziele, aus dem, was oben ohnehin gelesen wurde. */
-const ankerJeSeite = new Map();
+/* Die Anker der Ziele, aus den geladenen Seiten. */
 
 for (const w of weiterleitungen) {
   const [ziel, anker] = w.destination.split("#");
@@ -554,15 +562,26 @@ for (const w of weiterleitungen) {
 
   /* Ein Ziel mit Anker ist zwei Zusagen, und die zweite prüfte niemand.
      `/kontakt` zeigt auf `/#contact`; verschwindet die `id`, landet der
-     Besucher stumm am Seitenanfang und sucht selbst. */
+     Besucher stumm am Seitenanfang und sucht selbst.
+
+     Geprüft wird das geladene Dokument, nicht die erste HTML-Antwort:
+     Die Startseite schickt zuerst nur das Hero-Gehäuse, die Abschnitte
+     mit ihren IDs folgen unmittelbar danach. Genau das sieht, wer der
+     Weiterleitung folgt. */
   if (anker) {
     const seite = ziel || "/";
     if (!ankerJeSeite.has(seite)) {
-      const html = await (await fetch(`${basis}${seite}`)).text();
-      ankerJeSeite.set(
-        seite,
-        new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])),
+      const blatt = await browser.newPage({
+        viewport: { width: 1440, height: 900 },
+      });
+      await blatt.goto(`${basis}${seite}`, { waitUntil: "networkidle" });
+      const ids = await blatt.evaluate(() =>
+        [...document.querySelectorAll("[id]")]
+          .map((el) => el.id)
+          .filter(Boolean),
       );
+      ankerJeSeite.set(seite, new Set(ids));
+      await blatt.close();
     }
     if (!ankerJeSeite.get(seite).has(anker)) {
       funde.push(

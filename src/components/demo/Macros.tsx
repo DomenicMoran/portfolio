@@ -378,21 +378,21 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
        durch, auf dem Blatt stand eine Kachel mit leeren Feldern. Was die
        Aussage trägt, steht in der Fallstudie darüber. */
     <div
-        data-demo="tagesbilanz"
-        className="lit no-print rounded-2xl border border-line bg-surface/50 p-6 sm:p-7"
-      >
+      data-demo="tagesbilanz"
+      className="lit no-print border-line bg-surface/50 rounded-2xl border p-6 sm:p-7"
+    >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         {/* `h4` aus demselben Grund wie in `PrayerTimes`: Die Kachel gehört
             in die Fallstudie und nicht neben sie. */}
-        <h4 className="text-base font-semibold tracking-tight text-ink">
+        <h4 className="text-ink text-base font-semibold tracking-tight">
           {demo.title}
         </h4>
-        <p className="font-mono text-[11px] text-ink-faint">
+        <p className="text-ink-faint font-mono text-[11px]">
           {gewaehlt.length} / {GERICHTE.length}
         </p>
       </div>
 
-      <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+      <p className="text-ink-dim mt-2 max-w-[62ch] text-sm leading-relaxed text-pretty">
         {demo.lede}
       </p>
 
@@ -405,7 +405,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
             <span className="text-eyebrow">{demo.targetLabel}</span>
             <span
               aria-hidden
-              className="font-mono text-sm text-ink tabular-nums"
+              className="text-ink font-mono text-sm tabular-nums"
             >
               {zahl(ziel)} {demo.units.kcal}
             </span>
@@ -440,21 +440,21 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
             Maß aus WCAG 2.5.8. Nötig war das nicht, der Regler steht allein,
             und damit greift die Abstandsausnahme der Norm. Am Finger ist der
             Unterschied trotzdem zu spüren, und es kostet nichts. */
-            className="mt-2 -my-1 w-full py-1 accent-acid"
+            className="accent-acid -my-1 mt-2 w-full py-1"
           />
         </label>
 
         <button
           type="button"
           onClick={zusammenstellen}
-          className="shrink-0 rounded-full border border-acid/40 bg-acid/10 px-4 py-2 text-[13px] font-medium text-ink transition-colors hover:border-acid hover:bg-acid/15"
+          className="border-acid/40 bg-acid/10 text-ink hover:border-acid hover:bg-acid/15 shrink-0 rounded-full border px-4 py-2 text-[13px] font-medium transition-colors"
         >
           {demo.solve}
         </button>
 
         {/* Feste Höhe: Der Text erscheint erst nach dem Lauf und darf die
             Gerichte darunter nicht verschieben. */}
-        <p className="min-h-[1.1rem] font-mono text-[11px] text-ink-faint tabular-nums">
+        <p className="text-ink-faint min-h-[1.1rem] font-mono text-[11px] tabular-nums">
           {lauf
             ? demo.solveNote
                 .replace("{n}", zahl(lauf.geprueft))
@@ -480,8 +480,8 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
               aria-pressed={an}
               className={
                 an
-                  ? "inline-flex items-center gap-2 rounded-full border border-acid/50 bg-acid/10 px-3 py-1.5 text-[12px] text-ink"
-                  : "inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[12px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
+                  ? "border-acid/50 bg-acid/10 text-ink inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px]"
+                  : "border-line text-ink-faint hover:border-ink-faint hover:text-ink-dim inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] transition-colors"
               }
             >
               <span aria-hidden>{g.emoji}</span>
@@ -499,7 +499,9 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
                   Quelltext als Text und nimmt Kommentare mit. Er schrieb die
                   Regel danach weiter ins Stilblatt, obwohl kein Bauteil sie
                   mehr setzt. */}
-              <span className="font-mono text-[10px] text-ink-dim">{g.kcal}</span>
+              <span className="text-ink-dim font-mono text-[10px]">
+                {g.kcal}
+              </span>
             </button>
           );
         })}
@@ -526,8 +528,8 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           [
             ["kcal", summe.kcal, demo.units.kcal, "text-ink-faint"],
             ["p", summe.p, demo.units.protein, "text-acid"],
-            ["k", summe.k, demo.units.carbs, "text-cyan"],
-            ["f", summe.f, demo.units.fat, "text-violet"],
+            ["k", summe.k, demo.units.carbs, "text-acid"],
+            ["f", summe.f, demo.units.fat, "text-ink-dim"],
             ["b", summe.b, demo.units.fiber, "text-ink-faint"],
           ] as const
         ).map(([schluessel, wert, label, farbe]) => (
@@ -543,7 +545,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
             >
               {label}
             </dt>
-            <dd className="mt-1 font-mono text-xl text-ink tabular-nums">
+            <dd className="text-ink mt-1 font-mono text-xl tabular-nums">
               {zahl(wert)}
               {schluessel === "kcal" ? "" : " g"}
             </dd>
@@ -566,7 +568,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           Kein Canvas: Die Konvention dieser Seite verbietet es, und ein SVG
           skaliert ohnehin schärfer. */}
       <div className="mt-6 pb-5 pl-9">
-        <div className="relative h-[150px] overflow-hidden rounded-xl border border-line bg-base">
+        <div className="border-line bg-base relative h-[150px] overflow-hidden rounded-xl border">
           <svg
             viewBox={`0 0 ${RAUM.breite} ${RAUM.hoehe}`}
             preserveAspectRatio="none"
@@ -622,7 +624,7 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
 
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 left-0 flex h-[150px] w-8 flex-col justify-between py-[1px] text-right font-mono text-[9px] text-ink-faint"
+            className="text-ink-faint pointer-events-none absolute top-0 left-0 flex h-[150px] w-8 flex-col justify-between py-[1px] text-right font-mono text-[9px]"
           >
             <span>{RAUM.maxEiweiss}</span>
             <span>0</span>
@@ -632,10 +634,10 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
 
         <div
           aria-hidden
-          className="flex justify-between pt-1 pl-9 font-mono text-[9px] text-ink-faint"
+          className="text-ink-faint flex justify-between pt-1 pl-9 font-mono text-[9px]"
         >
           <span>
-            {demo.field.y} g · {demo.field.x} →
+            {demo.field.y} g · {demo.field.x}
           </span>
           <span>
             {zahl(RAUM.maxKcal)} {demo.units.kcal}
@@ -643,32 +645,32 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
         </div>
       </div>
 
-      <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-ink-faint">
+      <p className="text-ink-faint mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px]">
         <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-acid" />
+          <span className="bg-acid size-1.5 rounded-full" />
           {demo.field.chosen}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-5 bg-ink-faint/60" />
+          <span className="bg-ink-faint/60 h-px w-5" />
           {demo.field.best}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3 w-px bg-acid/60" />
+          <span className="bg-acid/60 h-3 w-px" />
           {demo.field.target}
         </span>
       </p>
 
       {/* Der Balken ist die einzige Grafik: drei Anteile, kein Diagramm. */}
       <div
-        className="mt-1 flex h-1.5 overflow-hidden rounded-full bg-line"
+        className="bg-line mt-1 flex h-1.5 overflow-hidden rounded-full"
         role="img"
         aria-label={`${demo.units.protein} ${anteile.p} %, ${demo.units.carbs} ${anteile.k} %, ${demo.units.fat} ${anteile.f} %`}
       >
         <span className="bg-acid" style={{ width: `${anteile.p}%` }} />
-        <span className="bg-cyan" style={{ width: `${anteile.k}%` }} />
-        <span className="bg-violet" style={{ width: `${anteile.f}%` }} />
+        <span className="bg-acid/80" style={{ width: `${anteile.k}%` }} />
+        <span className="bg-ink-faint/50" style={{ width: `${anteile.f}%` }} />
       </div>
-      <p className="mt-2 font-mono text-[11px] text-ink-faint">
+      <p className="text-ink-faint mt-2 font-mono text-[11px]">
         {demo.units.protein} {anteile.p} % · {demo.units.carbs} {anteile.k} % ·{" "}
         {demo.units.fat} {anteile.f} %
       </p>
@@ -677,13 +679,13 @@ export function MacroDemo({ inhalt }: { inhalt: Content }) {
           das Verfahren nicht füllen konnte, ohne darüber zu gehen. Bei zwölf
           Gerichten mit festen Portionen bleibt fast immer etwas übrig, und
           das zu verschweigen wäre die unehrlichere Darstellung. */}
-      <p className="mt-4 min-h-[1.1rem] font-mono text-[11px] text-ink-faint tabular-nums">
+      <p className="text-ink-faint mt-4 min-h-[1.1rem] font-mono text-[11px] tabular-nums">
         {summe.kcal === 0
           ? demo.noFit
           : demo.below.replace("{n}", zahl(Math.max(0, ziel - summe.kcal)))}
       </p>
 
-      <p className="mt-4 border-t border-line pt-4 font-mono text-[11px] leading-relaxed text-ink-faint">
+      <p className="border-line text-ink-faint mt-4 border-t pt-4 font-mono text-[11px] leading-relaxed">
         {demo.note}
       </p>
     </div>

@@ -361,7 +361,9 @@ for (const blatt of BLAETTER) {
   console.log(
     `${blatt.ziel}: ${kb} KB, ${seitenzahl} Seite(n), ${verweise.length} Verweis(e), ` +
       `Sprache ${spracheOk ? blatt.sprache : "FEHLT"}` +
-      (anteil ? `, ${anteil} % der Seite, kleinste Schrift ${nutzung.punkt} pt` : ""),
+      (anteil
+        ? `, ${anteil} % der Seite, kleinste Schrift ${nutzung.punkt} pt`
+        : ""),
   );
 
   if (anteil !== null && anteil < MINDESTNUTZUNG) {

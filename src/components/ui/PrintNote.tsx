@@ -17,7 +17,7 @@
  */
 export function PrintNote({ text }: { text: string }) {
   return (
-    <p className="print-only mt-10 border-t border-line pt-4 text-center font-mono text-[10px] leading-relaxed text-ink-faint">
+    <p className="print-only border-line text-ink-faint mt-10 border-t pt-4 text-center font-mono text-[10px] leading-relaxed">
       {text}
     </p>
   );

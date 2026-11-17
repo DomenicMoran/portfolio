@@ -45,7 +45,7 @@ export function Skills() {
         />
 
         <Reveal className="mt-10">
-          <p className="max-w-[62ch] text-sm leading-relaxed text-ink-dim text-pretty">
+          <p className="text-ink-dim max-w-[62ch] text-sm leading-relaxed text-pretty">
             {skills.disclosure.teaser}
           </p>
           <DisclosureButton
@@ -80,16 +80,16 @@ function DomainCard({
   const Icon = ICONS[domain.id as keyof typeof ICONS] ?? Layout;
 
   return (
-    <div className="lit group h-full rounded-2xl border border-line bg-surface/40 p-7 transition-colors duration-500 hover:border-ink-faint/40 sm:p-8">
+    <div className="lit group border-line bg-surface/40 hover:border-ink-faint/40 h-full rounded-2xl border p-7 transition-colors duration-500 sm:p-8">
       <div className="flex items-start gap-4">
-        <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-raised text-acid transition-colors duration-500 group-hover:border-acid/40">
+        <span className="border-line bg-raised text-acid group-hover:border-acid/40 grid size-10 shrink-0 place-items-center rounded-xl border transition-colors duration-500">
           <Icon className="size-4.5" aria-hidden />
         </span>
         <div>
-          <h3 className="text-lg font-semibold tracking-tight text-ink">
+          <h3 className="text-ink text-lg font-semibold tracking-tight">
             {domain.title}
           </h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-ink-faint text-pretty">
+          <p className="text-ink-faint mt-1.5 text-sm leading-relaxed text-pretty">
             {domain.summary}
           </p>
         </div>
@@ -102,9 +102,9 @@ function DomainCard({
         {domain.skills.map((skill) => (
           <div
             key={skill.name}
-            className="flex flex-col gap-0.5 border-t border-line py-3 first:border-t-0 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+            className="border-line flex flex-col gap-0.5 border-t py-3 first:border-t-0 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
           >
-            <dt className="text-sm text-ink">{skill.name}</dt>
+            <dt className="text-ink text-sm">{skill.name}</dt>
             {/* `text-balance` verteilt den Beleg auf gleich lange Zeilen.
 
                 Rechtsbündig und zweizeilig sah er vorher aus, als wäre etwas
@@ -118,7 +118,7 @@ function DomainCard({
                 das einzelne Wort am Ende, hier stehen aber ohnehin nie mehr
                 als drei Zeilen, und zwei gleich lange lesen sich neben der
                 linken Spalte ruhiger als eine lange und ein Rest. */}
-            <dd className="font-mono text-[11px] leading-snug text-ink-faint text-balance sm:max-w-[55%] sm:text-right">
+            <dd className="text-ink-faint font-mono text-[11px] leading-snug text-balance sm:max-w-[55%] sm:text-right">
               {skill.evidence}
             </dd>
           </div>

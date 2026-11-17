@@ -81,7 +81,11 @@ export function zerlege(wert: string, sprache: Sprache): Zahlwert {
  * `gruppiert` kommt aus der Quelle und wird nicht geraten: Sonst erschiene die
  * Jahreszahl 2022 als „2.022“.
  */
-export function schreibe(zahl: number, form: Zahlwert, sprache: Sprache): string {
+export function schreibe(
+  zahl: number,
+  form: Zahlwert,
+  sprache: Sprache,
+): string {
   return zahl.toLocaleString(ORTSANGABE[sprache], {
     minimumFractionDigits: form.stellen,
     maximumFractionDigits: form.stellen,

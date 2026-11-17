@@ -26,7 +26,8 @@
  */
 export function monateZwischen(start: Date, stand: Date): number {
   let monate =
-    (stand.getFullYear() - start.getFullYear()) * 12 + (stand.getMonth() - start.getMonth());
+    (stand.getFullYear() - start.getFullYear()) * 12 +
+    (stand.getMonth() - start.getMonth());
   if (stand.getDate() < start.getDate()) monate -= 1;
   return Math.max(1, monate);
 }
@@ -73,7 +74,10 @@ const WOERTER_NOMINATIV = [
  * gegenüber „**ein** Monat ausgeliefert". Ab dreizehn steht die Ziffer da:
  * ausgeschriebene Zahlwörter werden dann länger als die Aussage.
  */
-export function alsWort(n: number, fall: "dativ" | "nominativ" = "dativ"): string {
+export function alsWort(
+  n: number,
+  fall: "dativ" | "nominativ" = "dativ",
+): string {
   const liste = fall === "dativ" ? WOERTER_DATIV : WOERTER_NOMINATIV;
   return liste[n - 1] ?? String(n);
 }

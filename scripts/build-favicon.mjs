@@ -35,7 +35,9 @@ const stamm = quelle.match(/MARKE_STAMM = (\{[^}]+\})/)?.[1];
 const bogen = quelle.match(/MARKE_BOGEN =\s*\n?\s*"([^"]+)"/)?.[1];
 
 if (!grund || !zeichen || !stamm || !bogen) {
-  console.error("src/lib/mark.tsx: Form nicht lesbar. Wurden die Namen geändert?");
+  console.error(
+    "src/lib/mark.tsx: Form nicht lesbar. Wurden die Namen geändert?",
+  );
   process.exit(1);
 }
 
@@ -80,19 +82,31 @@ with Image.open(${JSON.stringify(join("src", "app", "favicon.ico"))}) as fertig:
     print(" ".join(f"{b}x{h}" for b, h in sorted(fertig.info["sizes"])))
 `;
 
-const ergebnis = execFileSync("python", ["-c", skript], { encoding: "utf8" }).trim();
+const ergebnis = execFileSync("python", ["-c", skript], {
+  encoding: "utf8",
+}).trim();
 for (const datei of bilder) unlinkSync(datei);
 
 const groesse = readFileSync(join("src", "app", "favicon.ico")).length;
-console.log(`favicon.ico neu gebaut: ${ergebnis}, ${(groesse / 1024).toFixed(1)} kB.`);
+console.log(
+  `favicon.ico neu gebaut: ${ergebnis}, ${(groesse / 1024).toFixed(1)} kB.`,
+);
 
 /* Der Aufrufer soll wissen, ob die Datei sich geändert hat: Ohne diesen Hinweis
    sieht ein unveränderter Lauf genauso aus wie ein wirksamer. */
 try {
-  const status = execFileSync("git", ["status", "--porcelain", "src/app/favicon.ico"], {
-    encoding: "utf8",
-  }).trim();
-  console.log(status ? "Die Datei hat sich geändert." : "Unverändert gegenüber dem Stand im Repo.");
+  const status = execFileSync(
+    "git",
+    ["status", "--porcelain", "src/app/favicon.ico"],
+    {
+      encoding: "utf8",
+    },
+  ).trim();
+  console.log(
+    status
+      ? "Die Datei hat sich geändert."
+      : "Unverändert gegenüber dem Stand im Repo.",
+  );
 } catch {
   /* Ohne git ist das nur eine fehlende Zusatzangabe. */
 }

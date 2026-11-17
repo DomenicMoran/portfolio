@@ -27,7 +27,16 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
+  adjustFontFallback: true,
+  /*
+   * `optional` statt `swap` für die Schrift des LCP-Leads. Nicht
+   * vorgeladen, damit die Datei nicht mit dem Stylesheet um die Leitung
+   * konkurriert (historisch: drei Schnitte, 68 KiB, Stylesheet erst
+   * nach 1,4 s). `adjustFontFallback` hält die Metriken, wenn die Datei
+   * nicht im kurzen Block-Fenster liegt.
+   */
+  preload: false,
 });
 
 /**
@@ -53,6 +62,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 /**

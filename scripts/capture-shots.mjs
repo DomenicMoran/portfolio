@@ -65,11 +65,41 @@ const ORIGINALE = "../assets/shots";
  * jemanden anluegt.
  */
 const AUFNAHMEN = [
-  { name: "nouri-desktop", adresse: "https://www.nouri-fitness.de/", breite: 1440, hoehe: 762, fenster: 828 },
-  { name: "menucloud-desktop", adresse: "https://menucloud-berlin.de/", breite: 1440, hoehe: 1375, fenster: 1600 },
-  { name: "bitdojo-desktop", adresse: "https://bitdojo.de/", breite: 1440, hoehe: 730, fenster: 1600 },
-  { name: "dartile-desktop", adresse: "https://dartile.de/", breite: 1440, hoehe: 799, fenster: 1600 },
-  { name: "lexipulse-desktop", adresse: "https://lexipulse.de/", breite: 1440, hoehe: 728, fenster: 1600 },
+  {
+    name: "nouri-desktop",
+    adresse: "https://www.nouri-fitness.de/",
+    breite: 1440,
+    hoehe: 762,
+    fenster: 828,
+  },
+  {
+    name: "menucloud-desktop",
+    adresse: "https://menucloud-berlin.de/",
+    breite: 1440,
+    hoehe: 1375,
+    fenster: 1600,
+  },
+  {
+    name: "bitdojo-desktop",
+    adresse: "https://bitdojo.de/",
+    breite: 1440,
+    hoehe: 730,
+    fenster: 1600,
+  },
+  {
+    name: "dartile-desktop",
+    adresse: "https://dartile.de/",
+    breite: 1440,
+    hoehe: 799,
+    fenster: 1600,
+  },
+  {
+    name: "lexipulse-desktop",
+    adresse: "https://lexipulse.de/",
+    breite: 1440,
+    hoehe: 728,
+    fenster: 1600,
+  },
 ];
 
 /**
@@ -91,7 +121,9 @@ const ABLEHNEN = [
 
 async function bannerWegklicken(seite) {
   for (const text of ABLEHNEN) {
-    const knopf = seite.getByRole("button", { name: text, exact: false }).first();
+    const knopf = seite
+      .getByRole("button", { name: text, exact: false })
+      .first();
     if (await knopf.isVisible().catch(() => false)) {
       await knopf.click().catch(() => {});
       await seite.waitForTimeout(600);
@@ -131,9 +163,14 @@ for (const { name, adresse, breite, hoehe, fenster } of liste) {
   const seite = await kontext.newPage();
 
   try {
-    const antwort = await seite.goto(adresse, { waitUntil: "networkidle", timeout: 60_000 });
+    const antwort = await seite.goto(adresse, {
+      waitUntil: "networkidle",
+      timeout: 60_000,
+    });
     if (!antwort || !antwort.ok()) {
-      throw new Error(`${antwort ? antwort.status() : "keine Antwort"} auf ${adresse}`);
+      throw new Error(
+        `${antwort ? antwort.status() : "keine Antwort"} auf ${adresse}`,
+      );
     }
 
     const banner = await bannerWegklicken(seite);
@@ -144,8 +181,13 @@ for (const { name, adresse, breite, hoehe, fenster } of liste) {
     await seite.evaluate(() => window.scrollTo(0, 0));
     await seite.waitForTimeout(400);
 
-    await seite.screenshot({ path: ziel, clip: { x: 0, y: 0, width: breite, height: hoehe } });
-    console.log(`  ok  ${name.padEnd(20)} ${breite} x ${hoehe}${banner ? `  (Banner: ${banner})` : ""}`);
+    await seite.screenshot({
+      path: ziel,
+      clip: { x: 0, y: 0, width: breite, height: hoehe },
+    });
+    console.log(
+      `  ok  ${name.padEnd(20)} ${breite} x ${hoehe}${banner ? `  (Banner: ${banner})` : ""}`,
+    );
   } catch (e) {
     fehler += 1;
     console.error(`  FEHLER ${name}: ${e.message}`);
@@ -157,16 +199,22 @@ for (const { name, adresse, breite, hoehe, fenster } of liste) {
 await browser.close();
 
 if (fehler) {
-  console.error(`\n${fehler} Aufnahme(n) fehlgeschlagen. Nichts anderes wurde angefasst.`);
+  console.error(
+    `\n${fehler} Aufnahme(n) fehlgeschlagen. Nichts anderes wurde angefasst.`,
+  );
   process.exit(1);
 }
 
 console.log(`\n${liste.length} Aufnahme(n) neu in ${ORIGINALE}.`);
-console.log("Jetzt `npm run build:shots`, sonst liegt das neue PNG neben dem alten WebP.");
+console.log(
+  "Jetzt `npm run build:shots`, sonst liegt das neue PNG neben dem alten WebP.",
+);
 
 if (!existsSync(ORIGINALE)) process.exit(1);
 try {
-  execFileSync("git", ["status", "--porcelain", ORIGINALE], { stdio: "ignore" });
+  execFileSync("git", ["status", "--porcelain", ORIGINALE], {
+    stdio: "ignore",
+  });
 } catch {
   // Die Originale liegen ausserhalb des Repos, ein git-Aufruf darf dort
   // scheitern. Der Lauf ist trotzdem fertig.

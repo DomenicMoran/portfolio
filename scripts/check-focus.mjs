@@ -54,16 +54,20 @@ let stationen = 0;
 const browser = await chromium.launch();
 
 for (const breite of BREITEN) {
-  const seite = await browser.newPage({ viewport: { width: breite, height: 800 } });
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 800 },
+  });
 
   for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "networkidle",
+    });
     /* Die Fehlerseite antwortet mit 404, und das ist ihre richtige
      Antwort. Wer hier auf 200 besteht, nimmt sie auf und misst sie nie:
      die Zeile darunter zählte weiter 18 Seiten, obwohl 20 in der Liste
      standen. */
-  const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
-  if (!antwort || antwort.status() !== erwartet) continue;
+    const erwartet = FEHLERSEITEN.includes(pfad) ? 404 : 200;
+    if (!antwort || antwort.status() !== erwartet) continue;
 
     /* Erst messen, wenn nichts mehr fährt.
 
@@ -112,7 +116,11 @@ for (const breite of BREITEN) {
         if (!el || el === document.body) return null;
 
         const r = el.getBoundingClientRect();
-        const name = (el.innerText || el.getAttribute("aria-label") || el.tagName)
+        const name = (
+          el.innerText ||
+          el.getAttribute("aria-label") ||
+          el.tagName
+        )
           .trim()
           .replace(/\s+/g, " ")
           .slice(0, 34);
@@ -120,10 +128,14 @@ for (const breite of BREITEN) {
 
         /* Ein Element ohne Fläche ist der Sprungverweis vor seinem Auftritt
            und Ähnliches: Es hat den Fokus, zeigt aber nichts. */
-        if (r.width < 1 || r.height < 1) return { name, tag, ohneFlaeche: true };
+        if (r.width < 1 || r.height < 1)
+          return { name, tag, ohneFlaeche: true };
 
         const draussen =
-          r.bottom <= 0 || r.top >= innerHeight || r.right <= 0 || r.left >= innerWidth;
+          r.bottom <= 0 ||
+          r.top >= innerHeight ||
+          r.right <= 0 ||
+          r.left >= innerWidth;
 
         /* An fünf Stellen nachsehen: Mitte und die vier Ecken, je zwei Pixel
            nach innen. Sichtbar ist das Element, sobald an einer davon es
@@ -135,7 +147,9 @@ for (const breite of BREITEN) {
           [r.right - 2, r.top + 2],
           [r.left + 2, r.bottom - 2],
           [r.right - 2, r.bottom - 2],
-        ].filter(([x, y]) => x >= 0 && y >= 0 && x < innerWidth && y < innerHeight);
+        ].filter(
+          ([x, y]) => x >= 0 && y >= 0 && x < innerWidth && y < innerHeight,
+        );
 
         let sichtbar = false;
         let davor = null;
@@ -183,7 +197,8 @@ for (const breite of BREITEN) {
              Stationen. */
           verschoben: (() => {
             for (let e = el.parentElement; e; e = e.parentElement) {
-              if (e.scrollLeft > 1) return `${e.tagName.toLowerCase()}#${e.id || "?"} um ${Math.round(e.scrollLeft)} px`;
+              if (e.scrollLeft > 1)
+                return `${e.tagName.toLowerCase()}#${e.id || "?"} um ${Math.round(e.scrollLeft)} px`;
             }
             return null;
           })(),
@@ -208,7 +223,9 @@ for (const breite of BREITEN) {
         );
       }
       if (!stand.markiert) {
-        funde.push(`${pfad} bei ${breite} px: „${stand.name}“ zeigt keinen Fokus`);
+        funde.push(
+          `${pfad} bei ${breite} px: „${stand.name}“ zeigt keinen Fokus`,
+        );
       }
       if (stand.verschoben) {
         funde.push(
@@ -238,8 +255,19 @@ for (const breite of BREITEN) {
    Kasten, bleibt über eine ganze Runde Tabulator darin, Escape schließt, und
    danach steht er wieder auf dem Knopf, der geöffnet hat. */
 const UEBERLAGERER = [
-  { name: "Befehlspalette", breite: 1440, taste: "Control+k", knopf: 'button[aria-label*="efehlspalette"], button[aria-label*="ommand palette"]' },
-  { name: "Telefonmenü", breite: 390, taste: null, knopf: 'button[aria-label*="enü öffnen"], button[aria-label*="pen menu"]' },
+  {
+    name: "Befehlspalette",
+    breite: 1440,
+    taste: "Control+k",
+    knopf:
+      'button[aria-label*="efehlspalette"], button[aria-label*="ommand palette"]',
+  },
+  {
+    name: "Telefonmenü",
+    breite: 390,
+    taste: null,
+    knopf: 'button[aria-label*="enü öffnen"], button[aria-label*="pen menu"]',
+  },
 ];
 
 for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
@@ -248,7 +276,9 @@ for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
      ausgeblendet. Ein verstecktes Element kann den Fokus nicht
      zurückbekommen, der erste Anlauf maß beides bei 390 px und meldete für
      die Palette einen Fehler, den es bei ihrer Bedienbreite nicht gibt. */
-  const seite = await browser.newPage({ viewport: { width: breite, height: 844 } });
+  const seite = await browser.newPage({
+    viewport: { width: breite, height: 844 },
+  });
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
   await seite.waitForTimeout(900);
 
@@ -304,10 +334,16 @@ for (const { name, breite, taste, knopf: auswahl } of UEBERLAGERER) {
   await seite.waitForTimeout(600);
   const nachEscape = await seite.evaluate(() => ({
     offen: Boolean(document.querySelector('[role="dialog"]')),
-    wo: document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName,
+    wo:
+      document.activeElement?.getAttribute("aria-label") ??
+      document.activeElement?.tagName,
   }));
   if (nachEscape.offen) funde.push(`${name}: Escape schließt nicht`);
-  else if (!/efehlspalette|ommand palette|enü öffnen|pen menu/.test(String(nachEscape.wo))) {
+  else if (
+    !/efehlspalette|ommand palette|enü öffnen|pen menu/.test(
+      String(nachEscape.wo),
+    )
+  ) {
     funde.push(
       `${name}: nach dem Schließen steht der Fokus auf „${nachEscape.wo}“ ` +
         `statt auf dem Knopf, der geöffnet hat`,

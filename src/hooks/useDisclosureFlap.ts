@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 /**
  * Ob der Seitenanker beim Laden auf eines der übergebenen Sprungziele zeigt.
@@ -36,7 +31,9 @@ export function useDisclosureFlap(hashTargets?: readonly string[]) {
   useEffect(() => {
     if (!passenderAnker) return;
     requestAnimationFrame(() => {
-      document.getElementById(passenderAnker)?.scrollIntoView({ block: "start" });
+      document
+        .getElementById(passenderAnker)
+        ?.scrollIntoView({ block: "start" });
     });
   }, [passenderAnker]);
 

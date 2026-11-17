@@ -17,6 +17,3 @@ export const ease = {
    Varianten, die nichts tun, sind für den, der die Datei liest, vier Fragen
    ohne Antwort.
 */
-
-/** Überall dieselbe Sichtbereichs-Einstellung, damit die Einblendungen im Takt bleiben. */
-export const viewportOnce = { once: true, amount: 0.25 } as const;

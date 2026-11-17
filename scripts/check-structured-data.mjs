@@ -62,7 +62,9 @@ let bloecke = 0;
 let angaben = 0;
 
 for (const pfad of SEITEN) {
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (!antwort || antwort.status() !== 200) {
     funde.push(`${pfad}: HTTP ${antwort?.status()}`);
     continue;
@@ -78,9 +80,9 @@ for (const pfad of SEITEN) {
   await seite.waitForTimeout(500);
 
   const stand = await seite.evaluate(() => {
-    const roh = [...document.querySelectorAll('script[type="application/ld+json"]')].map(
-      (e) => e.textContent,
-    );
+    const roh = [
+      ...document.querySelectorAll('script[type="application/ld+json"]'),
+    ].map((e) => e.textContent);
     const daten = [];
     const kaputt = [];
     for (const text of roh) {
@@ -163,17 +165,23 @@ for (const pfad of SEITEN) {
     const { jobTitle, email, image, sameAs, subjectOf } = stand.person;
 
     if (jobTitle && !stand.sichtbar.includes(jobTitle)) {
-      funde.push(`${pfad}: jobTitle „${jobTitle}“ steht nirgends sichtbar auf der Seite`);
+      funde.push(
+        `${pfad}: jobTitle „${jobTitle}“ steht nirgends sichtbar auf der Seite`,
+      );
     }
     const adresse = (email ?? "").replace(/^mailto:/, "");
     if (adresse && !stand.sichtbar.includes(adresse)) {
-      funde.push(`${pfad}: die Adresse „${adresse}" steht nirgends sichtbar auf der Seite`);
+      funde.push(
+        `${pfad}: die Adresse „${adresse}" steht nirgends sichtbar auf der Seite`,
+      );
     }
 
     if (image) {
       const bild = await seite.request.get(image).catch(() => null);
       if (!bild || bild.status() !== 200) {
-        funde.push(`${pfad}: image ${image} antwortet mit ${bild?.status() ?? "nichts"}`);
+        funde.push(
+          `${pfad}: image ${image} antwortet mit ${bild?.status() ?? "nichts"}`,
+        );
       }
     }
 

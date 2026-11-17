@@ -83,12 +83,12 @@ export function DeviceFrame({
           className,
         )}
       >
-        <div className="relative rounded-[2rem] border border-line bg-raised p-2 shadow-2xl shadow-black/50">
-          <div className="relative overflow-hidden rounded-[1.5rem] bg-void">
+        <div className="border-line bg-raised relative rounded-[2rem] border p-2 shadow-2xl shadow-black/50">
+          <div className="bg-void relative overflow-hidden rounded-[1.5rem]">
             {/* Die Aussparung am oberen Rand */}
             <span
               aria-hidden
-              className="absolute top-1.5 left-1/2 z-10 h-4 w-16 -translate-x-1/2 rounded-full bg-void"
+              className="bg-void absolute top-1.5 left-1/2 z-10 h-4 w-16 -translate-x-1/2 rounded-full"
             />
             <Image
               src={src}
@@ -102,7 +102,7 @@ export function DeviceFrame({
           </div>
         </div>
         {label ? (
-          <figcaption className="text-center font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+          <figcaption className="text-ink-faint text-center font-mono text-[10px] tracking-[0.14em] uppercase">
             {label}
           </figcaption>
         ) : null}
@@ -115,7 +115,7 @@ export function DeviceFrame({
   if (variant === "screen") {
     return (
       <figure className={cn("flex flex-col gap-2.5", className)}>
-        <div className="overflow-hidden rounded-lg border border-line bg-void shadow-2xl shadow-black/50">
+        <div className="border-line bg-void overflow-hidden rounded-lg border shadow-2xl shadow-black/50">
           <Image
             src={src}
             alt={alt}
@@ -127,7 +127,7 @@ export function DeviceFrame({
           />
         </div>
         {label ? (
-          <figcaption className="text-center font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+          <figcaption className="text-ink-faint text-center font-mono text-[10px] tracking-[0.14em] uppercase">
             {label}
           </figcaption>
         ) : null}
@@ -138,19 +138,19 @@ export function DeviceFrame({
   return (
     <figure
       className={cn(
-        "overflow-hidden rounded-xl border border-line bg-raised shadow-2xl shadow-black/50",
+        "border-line bg-raised overflow-hidden rounded-xl border shadow-2xl shadow-black/50",
         className,
       )}
     >
       {/* Der Fensterrahmen */}
-      <div className="flex items-center gap-2 border-b border-line px-3 py-2.5">
+      <div className="border-line flex items-center gap-2 border-b px-3 py-2.5">
         <span aria-hidden className="flex gap-1.5">
-          <span className="size-2.5 rounded-full bg-line" />
-          <span className="size-2.5 rounded-full bg-line" />
-          <span className="size-2.5 rounded-full bg-line" />
+          <span className="bg-line size-2.5 rounded-full" />
+          <span className="bg-line size-2.5 rounded-full" />
+          <span className="bg-line size-2.5 rounded-full" />
         </span>
         {label ? (
-          <span className="mx-auto truncate rounded-md bg-base px-3 py-0.5 font-mono text-[10px] text-ink-faint">
+          <span className="bg-base text-ink-faint mx-auto truncate rounded-md px-3 py-0.5 font-mono text-[10px]">
             {label}
           </span>
         ) : null}

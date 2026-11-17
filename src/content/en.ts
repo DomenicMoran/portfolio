@@ -1,12 +1,7 @@
 import { dateLong } from "@/lib/date-format";
 import verified from "./verified.json";
 import { SALATI_ERSTER_COMMIT, SALATI_STAND, SALATI_VERSIONEN } from "./salati";
-import {
-  asWord,
-  grossErstes,
-  jahreZwischen,
-  monateZwischen,
-} from "@/lib/duration";
+import { asWord, grossErstes, monateZwischen } from "@/lib/duration";
 import type { Content } from "./types";
 import { bookPublication } from "./book-publication";
 import { bereiteFallstudienVor } from "@/lib/case-study-order";
@@ -27,7 +22,7 @@ const LOCATION = "Berlin · remote in the EU · hybrid";
 
 const ENTRY = "Open to talk now · start within three months";
 const LANGUAGES = "German (native) · English";
-const SALARY = "€55–70k, depending on scope";
+const SALARY = "€55-70k, depending on scope";
 
 /**
  * Die englische Fassung.
@@ -62,7 +57,7 @@ const SALATI_VERSIONS = SALATI_VERSIONEN;
 const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
 
 /**
- * Wie lange die über zehn Produktionssysteme entstehen, gerechnet.
+ * Wie lange die fünf ausgelieferten Produkte entstehen, gerechnet.
  *
  * Im Vorspann stand „built in four months". Am Tag des Schreibens genau
  * richtig, ab dem 26. des übernächsten Monats zu bescheiden, und niemand merkt
@@ -71,16 +66,11 @@ const salatiHoursPerVersion = Math.round((salatiDays * 24) / SALATI_VERSIONS);
  * beide bereits abgelegt.
  */
 const FIRST_COMMIT = "2026-03-26";
-const LEARNING_START = "2022-07-01";
-
 const months = monateZwischen(new Date(FIRST_COMMIT), new Date(verified.date));
 
 /** "four months", "five months", …, never a frozen value. */
 const buildTime = `${asWord(months)} month${months === 1 ? "" : "s"}`;
 const buildTimeTitle = grossErstes(buildTime);
-const learningYears = grossErstes(
-  `${asWord(jahreZwischen(new Date(LEARNING_START), new Date(verified.date)))} years`,
-);
 
 export const en: Content = {
   lang: "en",
@@ -106,7 +96,7 @@ export const en: Content = {
       salary: SALARY,
     },
     meta: {
-      title: "Domenic Moran – AI Product Engineer",
+      title: "Domenic Moran, AI Product Engineer",
       description:
         "Five shipped products, all built solo: apps in both stores, a multi-tenant SaaS with statutory fiscal signing, a learning platform, and further prototypes.",
     },
@@ -172,12 +162,11 @@ export const en: Content = {
       { text: "not" },
       { text: "prototypes.", accent: true },
     ],
-    lede: `For the past ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile — with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
+    lede: `For the past ${buildTime} I have shipped five products under Moran Software: MenuCloud, Salati, NOURI, LexiPulse and Dartile, with real users, payments or store listings. MFC and other experiments are prototypes with their own purchase path.`,
     ctaPrimary: { label: "See the products", href: "#produkte" },
     ctaSecondary: { label: "Case studies", href: "#work" },
     tryIt: {
-      before:
-        "Three shipped systems run right here in the browser:",
+      before: "Three shipped systems run right here in the browser:",
       label: "try the prayer times, the daily macros and the checkout table",
       href: "#case-salati",
       after: "without a single request leaving it.",
@@ -200,42 +189,42 @@ export const en: Content = {
   produkte: {
     eyebrow: "Products",
     title: "My products",
-    lede:
-      "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
+    lede: "Five systems are shipped; the rest are prototypes or workshop pieces. All under Moran Software, built and operated by one person.",
     fertigTitel: "In production",
     liveCta: "View live",
     fertig: [
       {
         name: "MenuCloud Berlin",
         beschreibung:
-          "Multi-tenant SaaS for restaurants with fiscal signing and Stripe Connect",
+          "Multi-tenant SaaS for restaurants: own site, QR ordering, Stripe Connect payouts and multi-tenant cash-register compliance with Fiskaly TSE. Built and operated solo, including 7,800+ tests and ops workflows.",
         href: "https://menucloud-berlin.de",
         detailHref: "#case-menucloud",
       },
       {
         name: "Salati",
         beschreibung:
-          "Prayer and Quran app for DACH, offline-capable, in both stores",
+          "Prayer and Quran platform for German speakers on phone, tablet, TV and wear: offline, ad-free, on-device AI, in both stores.",
         href: "https://www.salati.pro",
         detailHref: "#case-salati",
       },
       {
         name: "NOURI",
         beschreibung:
-          "Fitness and nutrition platform with web app, mobile app and catalog",
+          "Fitness and nutrition platform with web and mobile app: 11,892 recipes, nutrients computed from ingredients, training and plans from the account, including legal copy.",
         href: "https://www.nouri-fitness.de",
         detailHref: "#case-nouri",
       },
       {
         name: "LexiPulse",
         beschreibung:
-          "Reader for EPUB, PDF and web articles with RSVP and flow text",
+          "Reader for EPUB, PDF and the web: RSVP with sentence-aware timing, flow text, import without server retention and a PDF toolbox: app and web from one core.",
         href: "https://lexipulse.de",
         detailHref: "#case-lexipulse",
       },
       {
         name: "Dartile",
-        beschreibung: "Dart counter that records every dart individually",
+        beschreibung:
+          "Dart counter that records every dart, not just totals: calibrated camera, eight game types, call-outs and stats from events, not guesses.",
         href: "https://dartile.de",
         detailHref: "#case-dartile",
       },
@@ -243,9 +232,9 @@ export const en: Content = {
     prototypTitel: "Prototypes & more",
     prototypBadge: "Prototype",
     prototypLede:
-      "Experiments and early systems — including MFC with a buy button and four pro apps in store review.",
+      "Experiments and early systems, including MFC with a buy button and four pro apps in store review.",
     mfc: {
-      name: "MFC – Moran Fleet Control",
+      name: "MFC, Moran Fleet Control",
       beschreibung:
         "Chat, agents, tools and backlog in one interface, local, no subscription.",
       preis: "€49.99 one-time, no subscription",
@@ -270,21 +259,19 @@ export const en: Content = {
       },
       {
         name: "Vesper",
-        beschreibung:
-          "Applications, projects and contacts on a local board",
+        beschreibung: "Applications, projects and contacts on a local board",
         href: "https://vesper.domenicmoran.de",
       },
       {
         name: "Aether",
-        beschreibung:
-          "Your own day as a searchable memory, processed locally",
+        beschreibung: "Your own day as a searchable memory, processed locally",
         href: "https://aether.domenicmoran.de",
       },
     ],
     uebersicht: { label: "See the full product overview", href: "#work" },
     disclosure: {
       teaser:
-        "MFC with a buy path and more pro apps in the stores — all marked as prototypes.",
+        "MFC with a buy path and more pro apps in the stores, all marked as prototypes.",
       expand: "Show prototypes and workshop",
       hide: "Hide prototypes",
     },
@@ -378,13 +365,6 @@ export const en: Content = {
           href: "https://mfc.domenicmoran.de",
           kind: "live",
         },
-        // Siehe `site.ts`: Der Play-Eintrag der Begleit-App ist am
-        // 23.08.2026 mit Status 200 belegt und fehlte in beiden Fassungen.
-        {
-          label: "Companion app (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.domenicmoran.mfc.companion",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -412,8 +392,8 @@ export const en: Content = {
       accent: "acid",
       disclosure: {
         teaser:
-          "The AI runs offline — and a smaller Whisper model beat the larger one.",
-        expand: "How Salati came about →",
+          "The AI runs offline, and a smaller Whisper model beat the larger one.",
+        expand: "How Salati came about",
         hide: "Show less",
       },
       problem:
@@ -483,39 +463,6 @@ export const en: Content = {
       ],
       links: [
         { label: "salati.pro", href: "https://www.salati.pro", kind: "live" },
-        {
-          label: "Instagram",
-          href: "https://instagram.com/salatibox",
-          kind: "social",
-        },
-        // The German page linked the App Store listing, the English one did
-        // not, the same shipped app, invisible to half the readers.
-        {
-          label: "App Store",
-          href: "https://apps.apple.com/de/app/salati-gebetszeiten-koran/id6791867298",
-          kind: "store",
-        },
-        // Siehe `site.ts`: Der Play-Eintrag ist seit dem 08.08.2026
-        // öffentlich. Beide Fassungen führen ihn, sonst wiederholt sich
-        // genau der Fall aus dem Kommentar darüber.
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.salatibox.de",
-          kind: "store",
-        },
-        {
-          label: "Google Play (TV)",
-          href: "https://play.google.com/store/apps/details?id=de.salatibox.tv",
-          kind: "store",
-        },
-        // Siehe `site.ts`: Der Apple-Eintrag der Fernseher-Fassung ist am
-        // 23.08.2026 über die iTunes-Lookup-API belegt. Beide Fassungen
-        // führen ihn, sonst wiederholt sich der Fall von oben.
-        {
-          label: "App Store (TV)",
-          href: "https://apps.apple.com/de/app/salati-tv/id6800283177",
-          kind: "store",
-        },
       ],
       architecture: "salati",
       articles: [
@@ -595,15 +542,15 @@ export const en: Content = {
       year: "2026",
       role: "Founder & sole developer",
       statusLabel: "Live in production",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
-          "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu.",
-        expand: "What the cash-register documentation leaves out →",
+          "Berlin restaurants hand 15-30% commission to delivery platforms and have no control over their own menu.",
+        expand: "What the cash-register documentation leaves out",
         hide: "Show less",
       },
       problem:
-        "Berlin restaurants hand 15–30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
+        "Berlin restaurants hand 15-30% commission to delivery platforms and have no control over their own menu. The alternatives are website builders with no till integration, or enterprise systems with four-figure setup fees. Neither solves the problem every German restaurateur actually has: compliance with the cash-register law.",
       solution:
         "A platform covering the whole path: a restaurant site with a self-editable menu, QR ordering that pays out directly through Stripe Connect, reservations, reputation management. Underneath sits a multi-tenant cloud signing unit that signs every transaction under § 146a AO and anchors it in a hash chain. Plus native apps for owners and staff.",
       hardPart: {
@@ -619,7 +566,7 @@ export const en: Content = {
         "Menu scanner: a PDF or a photo goes in, a structured menu comes out",
         /* Siehe die Begründung in `site.ts`: seit dem 01.05.2026 zwei Stufen,
            nicht drei. */
-        "Self-hosted mail stack with AWS SES as the rescue path",
+        "Transactional mail with SES fallback: fail-closed, no silently dropped delivery",
         "GDPR Art. 30 record, data-processing agreement dispatched automatically on payment",
         "iOS and Android apps for owners and service staff",
       ],
@@ -719,44 +666,6 @@ export const en: Content = {
           href: "https://menucloud-berlin.de",
           kind: "live",
         },
-        {
-          label: "Status page",
-          href: "https://menucloud-berlin.de/status",
-          kind: "live",
-        },
-        {
-          label: "Instagram",
-          href: "https://instagram.com/menucloudberlin",
-          kind: "social",
-        },
-        {
-          label: "YouTube",
-          href: "https://youtube.com/@menucloudberlin",
-          kind: "social",
-        },
-        // The English page carried no app links at all, while the German one
-        // carried two of four. All four checked on 2 August 2026: status 200
-        // and the expected title.
-        {
-          label: "Restaurant app (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.app",
-          kind: "store",
-        },
-        {
-          label: "Restaurant app (App Store)",
-          href: "https://apps.apple.com/de/app/menucloud/id6762983057",
-          kind: "store",
-        },
-        {
-          label: "Discovery (Play)",
-          href: "https://play.google.com/store/apps/details?id=de.menucloudberlin.discovery",
-          kind: "store",
-        },
-        {
-          label: "Discovery (App Store)",
-          href: "https://apps.apple.com/de/app/menucloud-discovery/id6763892926",
-          kind: "store",
-        },
       ],
       architecture: "menucloud",
       articles: ["german-till-law-in-practice"],
@@ -787,7 +696,7 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "In personal use",
-      accent: "cyan",
+      accent: "acid",
       problem:
         "A Berlin flat draws applicants in the hundreds. What decides it is not the best application but the first, within minutes of the listing going up. That is a race a human structurally cannot win, because humans sleep.",
       solution:
@@ -830,6 +739,7 @@ export const en: Content = {
         { value: "2", label: "review stages before sending" },
       ],
       links: [],
+      nochNichtAusgeliefert: true,
       architecture: "wohnungsjaeger",
       keinScreenshot:
         "There is deliberately no image of this project. The dashboard shows real listings, real addresses and my complete application documents. Staging a screenshot with invented data would have been the obvious fix, and would have put a fabricated image on a page that argues from verifiability. The architecture beside it is real.",
@@ -843,11 +753,11 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
-          "The first check found outliers up to 30.5 per cent — today the largest deviation is 2.07.",
-        expand: "How NOURI recomputes every calorie →",
+          "The first check found outliers up to 30.5 per cent. Today the largest deviation is 2.07.",
+        expand: "How NOURI recomputes every calorie",
         hide: "Show less",
       },
       problem:
@@ -902,11 +812,6 @@ export const en: Content = {
           label: "nouri-fitness.de",
           href: "https://www.nouri-fitness.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=app.nouri.mobile",
-          kind: "store",
         },
       ],
       architecture: "nouri",
@@ -1021,11 +926,6 @@ export const en: Content = {
       ],
       links: [
         { label: "bitdojo.de", href: "https://bitdojo.de", kind: "live" },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.bitdojo.app",
-          kind: "store",
-        },
       ],
       architecture: "bitdojo",
       shots: [
@@ -1078,11 +978,11 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
-      accent: "cyan",
+      accent: "acid",
       disclosure: {
         teaser:
-          "With a phone camera, detection lands at around 95 per cent in the field — so it suggests instead of asserting.",
-        expand: "Why the camera is not the last word →",
+          "With a phone camera, detection lands at around 95 per cent in the field, so it suggests instead of asserting.",
+        expand: "Why the camera is not the last word",
         hide: "Show less",
       },
       problem:
@@ -1134,11 +1034,6 @@ export const en: Content = {
       ],
       links: [
         { label: "dartile.de", href: "https://dartile.de", kind: "live" },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.dartile.app",
-          kind: "store",
-        },
       ],
       architecture: "dartile",
       articles: ["eighteen-routes-over-the-bull"],
@@ -1194,11 +1089,11 @@ export const en: Content = {
       year: "2026",
       role: "Sole developer",
       statusLabel: "Live in both stores",
-      accent: "violet",
+      accent: "acid",
       disclosure: {
         teaser:
           "Giving every word the same pace is the mistake: flat RSVP gives a three-letter article the same time budget as a sentence end.",
-        expand: "Why the word stream is timed this way →",
+        expand: "Why the word stream is timed this way",
         hide: "Show less",
       },
       problem:
@@ -1244,21 +1139,6 @@ export const en: Content = {
       ],
       links: [
         { label: "lexipulse.de", href: "https://lexipulse.de", kind: "live" },
-        {
-          label: "Source code",
-          href: "https://github.com/DomenicMoran/lexipulse",
-          kind: "code",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.lexipulse.app",
-          kind: "store",
-        },
-        {
-          label: "App Store",
-          href: "https://apps.apple.com/de/app/lexipulse-pdf-e-book/id6801979644",
-          kind: "store",
-        },
       ],
       architecture: "lexipulse",
       shots: [
@@ -1304,7 +1184,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "A sole trader collects three kinds of paper that know nothing about each other: till receipts for the cash-basis accounts, invoices for the warranty, bank statements meant to confirm both. The deadlines attached to them are hard and of unequal length, and the one that matters is not the one everybody knows. The tools that take this work off your hands upload every receipt to a provider: balances, purchases, whereabouts, all in one file.",
       solution:
@@ -1354,11 +1234,6 @@ export const en: Content = {
           href: "https://aegis.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.aegisapp.app",
-          kind: "store",
-        },
       ],
       architecture: "aegis",
       shots: [
@@ -1398,7 +1273,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "cyan",
+      accent: "acid",
       problem:
         "Dropshipping shops sell cheap goods at a large markup, and the buyer cannot see the difference: same goods, same photo, different price. Reviews are bought, badges interchangeable, and nobody has the time to check every page against its sources.",
       solution:
@@ -1441,11 +1316,6 @@ export const en: Content = {
           href: "https://vortex.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.vortexapp.app",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -1469,7 +1339,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "Whoever wants to learn from a textbook, a lecture or a photo either types cards by hand or pays a service that loads the material into a cloud. The repetition schedule that decides between keeping and forgetting then sits on a server you cannot see.",
       solution:
@@ -1511,11 +1381,6 @@ export const en: Content = {
           label: "synapse.domenicmoran.de",
           href: "https://synapse.domenicmoran.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.synapseapp.app",
-          kind: "store",
         },
       ],
       architecture: "",
@@ -1595,11 +1460,6 @@ export const en: Content = {
           href: "https://vesper.domenicmoran.de",
           kind: "live",
         },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.vesperapp.app",
-          kind: "store",
-        },
       ],
       architecture: "",
       shots: [
@@ -1639,7 +1499,7 @@ export const en: Content = {
       role: "Sole developer",
       statusLabel: "Live on Google Play, iOS in review",
       nochNichtAusgeliefert: true,
-      accent: "violet",
+      accent: "acid",
       problem:
         "Whoever wonders what they did last Tuesday searches calendar, photos and chat history one by one. A memory that brings it all together usually means uploading your whole day to a cloud.",
       solution:
@@ -1679,11 +1539,6 @@ export const en: Content = {
           label: "aether.domenicmoran.de",
           href: "https://aether.domenicmoran.de",
           kind: "live",
-        },
-        {
-          label: "Google Play",
-          href: "https://play.google.com/store/apps/details?id=de.aetherapp.app",
-          kind: "store",
         },
       ],
       architecture: "",
@@ -1736,7 +1591,7 @@ export const en: Content = {
       bod: "Buy at BoD",
       amazon: "Buy at Amazon",
       ebook: "E-book at BoD",
-      ebookSoon: "at BoD, coming soon",
+      ebookSoon: "no shop link yet",
       authorSite: "Author page",
     },
     book: {
@@ -1779,7 +1634,7 @@ export const en: Content = {
     eyebrow: "Who I am",
     portrait: "/portrait-dark.jpg",
     portraitPrint: "/portrait.jpg",
-    title: `${learningYears} learning. ${buildTimeTitle} shipping.`,
+    title: `${buildTimeTitle} five products in production.`,
     paragraphs: [
       /* Store counts keep growing, so a visible as-of date instead of a
          timeless claim.
@@ -1816,7 +1671,7 @@ export const en: Content = {
          13 Play plus four Apple listings make 17 public store references,
          now each linked and checked in its own case study, not just
          claimed. */
-      `I taught myself software engineering from 2022: first through structured courses from Meta and Udemy, then through my own projects. No computer science degree, no bootcamp. In 2026 it turned serious: five shipped products in ${buildTime}, 19 public store listings across both stores (14 on Google Play, five on the App Store), one of them carrying statutory fiscal signing, plus further prototypes. All of it built alongside a full-time job.`,
+      `For ${buildTime} I have run five shipped products under Moran Software: mobile, multi-tenant SaaS with cash-register compliance, a learning platform, reader and dart counter. Nineteen public store listings across both stores (see the tile for the count), all built alongside a full-time job and verified on live systems, not only in tests.`,
       "What I learned doing it now governs how I work: a green test run proves nothing. I had an Android widget whose tests all passed but which rendered empty on a real device. And I spent months believing my update delivery worked, because the tool reported “Published” after every release. Not a single user ever received anything.",
       "Since then the same rule sits in every one of my repositories: “should work now” is not a result. Every change is verified against the live system: by HTTP response, database query, or a screenshot from a real device. That is why I can ship fast with AI agents without quality becoming a claim.",
     ],
@@ -1832,11 +1687,6 @@ export const en: Content = {
         value: "19",
         label: "store listings live",
         note: "14 Play, 5 App Store",
-      },
-      {
-        value: "2022",
-        label: "self-taught since",
-        note: "Meta & Udemy certificates",
       },
     ],
     /* `dateLong` und nicht der rohe Wert: Hier stand „Measured on
@@ -1860,9 +1710,9 @@ export const en: Content = {
       },
       {
         period: "since 2022",
-        title: "Software engineering, self-taught",
-        org: "Meta (Coursera) · Udemy · own projects",
-        body: "No CS degree, no bootcamp. The evidence is five shipped products and a git history anyone can check.",
+        title: "Software engineering",
+        org: "Own products · Meta (Coursera) · Udemy",
+        body: "The evidence is five shipped products, store listings and a git history anyone can check. Meta and Udemy certificates from 2022 sit in the CV, not in the headline.",
         current: true,
       },
       // The full-time job the site refers to everywhere without naming it,
@@ -1995,7 +1845,7 @@ export const en: Content = {
     disclosure: {
       bio: {
         teaser:
-          "Self-taught since 2022 — the figures, working method and the rest of the story sit behind this.",
+          "Self-taught since 2022: the figures, working method and the rest of the story sit behind this.",
         expand: "More on background and numbers",
         hide: "Show less",
       },
@@ -2007,7 +1857,7 @@ export const en: Content = {
       },
       openSource: {
         teaser:
-          "Six public packages — from Whisper headers to Dartile’s checkout table.",
+          "Six public packages: from Whisper headers to Dartile’s checkout table.",
         expand: "Show open-source packages",
         hide: "Hide packages",
       },
@@ -2139,7 +1989,7 @@ export const en: Content = {
     lede: "There are no percentages here. Nobody can check whether someone knows TypeScript to 93 per cent, so next to each capability stands the evidence it came from.",
     disclosure: {
       teaser:
-        "Four areas — each with the system where the capability was earned.",
+        "Four areas, each with the system where the capability was earned.",
       expand: "Show evidence per skill",
       hide: "Hide lists",
     },
@@ -2226,7 +2076,7 @@ export const en: Content = {
           },
           {
             name: "Observability",
-            evidence: "Sentry, Uptime Kuma, Slack alerts",
+            evidence: "Sentry, structured logs, Slack alerts",
           },
           { name: "Automation", evidence: "n8n workflows with self-healing" },
         ],
@@ -2322,7 +2172,7 @@ export const en: Content = {
            HTTP call per package, Aegis relisted), 19 public listings, plus
            eight apps with an open Apple review. Sources live with the bio
            paragraph, not duplicated here. */
-        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 19 public store listings across both stores and eight more apps with an open Apple review right now (as of 6 September 2026). 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine here, not new ground.`,
+        body: `${SALATI_VERSIONS} versions shipped for Salati alone, plus 19 public store listings across both stores and further prototype apps in store review. 14 languages, four device classes from phone to television. Rejections in review, age ratings, privacy forms and signing chains are routine work, not new ground.`,
         proof: "#case-salati",
         proofLabel: "Salati in detail",
       },
@@ -2503,7 +2353,7 @@ export const en: Content = {
     openSourceNote: "all with tests, CI and an MIT licence on",
     fullCaseStudies: "Full case studies with architecture diagrams:",
     asOf: "As of",
-    back: "← Back to the site",
+    back: "Back to the site",
     printHint:
       "Save as PDF: in the print dialogue, pick PDF as the destination instead of a printer.",
     printButton: "Print / PDF",

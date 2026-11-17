@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RotateCcw } from "lucide-react";
 import { useContent } from "@/content/ContentProvider";
 import type { Content } from "@/content/types";
@@ -9,8 +8,25 @@ import { DisclosureButton } from "@/components/ui/DisclosureButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useDisclosureFlap } from "@/hooks/useDisclosureFlap";
-import { ease, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+function reducedMotionAbonniert(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function reducedMotionAktiv() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function useReducedMotion() {
+  return useSyncExternalStore(
+    reducedMotionAbonniert,
+    reducedMotionAktiv,
+    () => false,
+  );
+}
 
 export function AiWorkflow() {
   const { workflow } = useContent();
@@ -22,9 +38,9 @@ export function AiWorkflow() {
       className="relative scroll-mt-24 overflow-hidden px-6 py-28 sm:py-40"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="glow-orb animate-float top-1/4 -left-20 size-[32rem] bg-violet/12" />
+        <div className="glow-orb animate-float bg-acid/10 top-1/4 -left-20 size-[32rem]" />
         <div
-          className="glow-orb animate-float right-0 bottom-0 size-[28rem] bg-cyan/10"
+          className="glow-orb animate-float bg-ink/5 right-0 bottom-0 size-[28rem]"
           style={{ animationDelay: "-7s" }}
         />
       </div>
@@ -76,29 +92,27 @@ function PrincipleRow({
   const { offen, umschalten } = useDisclosureFlap();
   const teaserEnd = principle.body.search(/[.!?](\s|$)/);
   const teaser =
-    teaserEnd === -1
-      ? principle.body
-      : principle.body.slice(0, teaserEnd + 1);
+    teaserEnd === -1 ? principle.body : principle.body.slice(0, teaserEnd + 1);
   const expandLabel =
     lang === "de"
-      ? `Mehr zu „${principle.title}"`
-      : `More on “${principle.title}"`;
+      ? `Mehr zu „${principle.title}“`
+      : `More on “${principle.title}”`;
 
   return (
     <Reveal
       as="li"
       delay={delay}
-      className="group border-t border-line py-8 first:border-t-0 first:pt-0"
+      className="group border-line border-t py-8 first:border-t-0 first:pt-0"
     >
       <div className="flex gap-5 sm:gap-8">
-        <span className="shrink-0 pt-1 font-mono text-xs text-ink-faint transition-colors group-hover:text-acid">
+        <span className="text-ink-faint group-hover:text-acid shrink-0 pt-1 font-mono text-xs transition-colors">
           {principle.n}
         </span>
         <div className="min-w-0">
-          <h3 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">
+          <h3 className="text-ink text-lg font-semibold tracking-tight sm:text-xl">
             {principle.title}
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-ink-faint text-pretty">
+          <p className="text-ink-faint mt-3 text-sm leading-relaxed text-pretty">
             {teaser}
             {teaser.length < principle.body.length ? "…" : ""}
           </p>
@@ -111,14 +125,14 @@ function PrincipleRow({
             className="mt-4"
           />
           <div id={regionId} className={cn(!offen && "hidden")}>
-            <p className="mt-4 leading-relaxed text-ink-dim text-pretty">
+            <p className="text-ink-dim mt-4 leading-relaxed text-pretty">
               {principle.body}
             </p>
             <ul className="mt-4 flex flex-wrap gap-1.5">
               {principle.artifacts.map((artifact) => (
                 <li
                   key={artifact}
-                  className="rounded-md border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
+                  className="border-line bg-surface/60 text-ink-faint rounded-md border px-2.5 py-1 font-mono text-[10px] tracking-wide"
                 >
                   {artifact}
                 </li>
@@ -134,7 +148,7 @@ function PrincipleRow({
 const LINE_STYLE = {
   prompt: { prefix: "›", className: "text-ink" },
   think: { prefix: "·", className: "text-ink-faint" },
-  run: { prefix: "→", className: "text-cyan" },
+  run: { prefix: ":", className: "text-acid" },
   warn: { prefix: "!", className: "text-acid" },
   ok: { prefix: "✓", className: "text-acid" },
 } as const;
@@ -150,7 +164,7 @@ const LINE_STYLE = {
 function AgentTerminal() {
   const { workflow, a11y } = useContent();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
+  const [inView, setInView] = useState(false);
   const [shown, setShown] = useState(0);
   const [runId, setRunId] = useState(0);
 
@@ -179,6 +193,22 @@ function AgentTerminal() {
    * Der Wiederholen-Knopf bleibt, er ist eine bewusste Handlung.
    */
   const wenigerBewegung = useReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!inView) return;
@@ -229,15 +259,15 @@ function AgentTerminal() {
   return (
     <div
       ref={ref}
-      className="lit overflow-hidden rounded-2xl border border-line bg-base"
+      className="lit border-line bg-base overflow-hidden rounded-2xl border"
     >
-      <div className="flex items-center justify-between border-b border-line px-4 py-3">
+      <div className="border-line flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-1.5" aria-hidden>
-          <span className="size-2.5 rounded-full bg-line" />
-          <span className="size-2.5 rounded-full bg-line" />
-          <span className="size-2.5 rounded-full bg-line" />
+          <span className="bg-line size-2.5 rounded-full" />
+          <span className="bg-line size-2.5 rounded-full" />
+          <span className="bg-line size-2.5 rounded-full" />
         </div>
-        <span className="font-mono text-[10px] tracking-[0.14em] text-ink-faint uppercase">
+        <span className="text-ink-faint font-mono text-[10px] tracking-[0.14em] uppercase">
           agent-session
         </span>
         {/* 32px statt 24: 24×24 ist exakt die WCAG-Untergrenze und selbst mit
@@ -245,7 +275,7 @@ function AgentTerminal() {
         <button
           type="button"
           onClick={() => setRunId((n) => n + 1)}
-          className="no-print -mr-1.5 grid size-8 place-items-center rounded-md text-ink-faint transition-colors hover:bg-raised hover:text-ink"
+          className="no-print text-ink-faint hover:bg-raised hover:text-ink -mr-1.5 grid size-8 place-items-center rounded-md transition-colors"
           aria-label={a11y.replay}
         >
           <RotateCcw className="size-3.5" aria-hidden />
@@ -265,16 +295,16 @@ function AgentTerminal() {
         {lines.slice(0, sichtbar).map((line, i) => {
           const style = LINE_STYLE[line.kind as keyof typeof LINE_STYLE];
           return (
-            <motion.p
+            <p
               key={`${runId}-${i}`}
               data-reveal=""
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, ease: ease.expo }}
-              className={cn("flex gap-2.5 py-1", style.className)}
+              className={cn(
+                "animate-fade-rise flex gap-2.5 py-1",
+                style.className,
+              )}
             >
               {/* `aria-hidden`, weil das Zeichen ein Aufzählungszeichen ist:
-                  › für den Befehl, · für die Notiz, → für das Ergebnis. Ein
+                  › für den Befehl, · für die Notiz, : für das Ergebnis. Ein
                   Vorleseprogramm sagte bisher „größer als" vor jeder
                   Befehlszeile. Sichtbar bleibt es und trägt auf 60 % Deckung
                   2,60:1, als Schmuck ist das die Ausnahme, die die WCAG
@@ -284,16 +314,16 @@ function AgentTerminal() {
                 {style.prefix}
               </span>
               <span className="text-pretty">{line.text}</span>
-            </motion.p>
+            </p>
           );
         })}
 
         {sichtbar < lines.length ? (
-          <span className="inline-block h-3.5 w-1.5 animate-caret bg-acid align-middle" />
+          <span className="animate-caret bg-acid inline-block h-3.5 w-1.5 align-middle" />
         ) : null}
       </div>
 
-      <p className="border-t border-line px-4 py-3 text-[11px] leading-relaxed text-ink-faint">
+      <p className="border-line text-ink-faint border-t px-4 py-3 text-[11px] leading-relaxed">
         {workflow.demo.label} {workflow.demo.note}
       </p>
     </div>
@@ -311,12 +341,12 @@ export function DeliverySpeed() {
   return (
     <section className="px-6 pb-28 sm:pb-40">
       <div className="mx-auto max-w-6xl">
-        <div className="lit rounded-3xl border border-line bg-surface/40 p-8 sm:p-12">
+        <div className="lit border-line bg-surface/40 rounded-3xl border p-8 sm:p-12">
           <span className="text-eyebrow">{speed.eyebrow}</span>
-          <h3 className="mt-4 max-w-3xl text-title text-ink text-balance">
+          <h3 className="text-title text-ink mt-4 max-w-3xl text-balance">
             {speed.title}
           </h3>
-          <p className="mt-4 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
+          <p className="text-ink-dim mt-4 max-w-[62ch] leading-relaxed text-pretty">
             {speed.lede}
           </p>
 
@@ -326,36 +356,29 @@ export function DeliverySpeed() {
               Angaben mehr und behaupten weniger. */}
           <dl className="mt-10 grid gap-x-8 gap-y-9 sm:grid-cols-3">
             {speed.facts.map((fakt, i) => (
-              <motion.div
+              <Reveal
                 key={fakt.label}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={viewportOnce}
-                transition={{ duration: 0.6, ease: ease.expo, delay: 0.08 * i }}
-                // flex-col-reverse: In der DOM-Reihenfolge steht dt vor dd,
-                // wie ein <dl> es verlangt. Optisch steht die Zahl trotzdem
-                // oben.
-                data-reveal=""
+                delay={0.08 * i}
                 className="flex flex-col-reverse gap-1.5"
               >
                 <dt className="flex flex-col gap-1">
-                  <span className="text-sm leading-snug text-ink">
+                  <span className="text-ink text-sm leading-snug">
                     {fakt.label}
                   </span>
-                  <span className="text-xs leading-relaxed text-ink-faint text-pretty">
+                  <span className="text-ink-faint text-xs leading-relaxed text-pretty">
                     {fakt.note}
                   </span>
                 </dt>
-                <dd className="text-3xl font-semibold tracking-tight text-acid tabular-nums sm:text-4xl">
+                <dd className="text-acid text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">
                   {fakt.value}
                 </dd>
-              </motion.div>
+              </Reveal>
             ))}
           </dl>
 
           {/* Zeilenmaß in ch: gemessen lief dieser Absatz vorher bei 112
               Zeichen pro Zeile, deutlich jenseits des Lesbaren. */}
-          <p className="mt-8 max-w-[58ch] text-xs leading-relaxed text-ink-faint">
+          <p className="text-ink-faint mt-8 max-w-[58ch] text-xs leading-relaxed">
             {speed.note}
           </p>
         </div>

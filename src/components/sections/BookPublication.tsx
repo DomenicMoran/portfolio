@@ -24,7 +24,9 @@ export function BookPublication() {
     links.bodPrint
       ? { href: links.bodPrint, label: labels.bod, primary: true }
       : null,
-    links.ebook ? { href: links.ebook, label: labels.ebook, primary: false } : null,
+    links.ebook
+      ? { href: links.ebook, label: labels.ebook, primary: false }
+      : null,
     links.amazonPrint
       ? { href: links.amazonPrint, label: labels.amazon, primary: false }
       : null,
@@ -96,13 +98,16 @@ export function BookPublication() {
 
         <Reveal className="mt-14">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,220px)_1fr] lg:items-start">
-            <div className="mx-auto w-full max-w-[220px] lg:mx-0">
+            {/* Der amtliche Titel bleibt Deutsch, auch auf /en. Ohne lang
+                würde ein Vorleseprogramm ihn englisch aussprechen, und
+                check:language fällt bei Titel und Cover-Alt. */}
+            <div className="mx-auto w-full max-w-[220px] lg:mx-0" lang="de">
               <Image
                 src={book.coverSrc}
                 alt={book.coverAlt}
                 width={440}
                 height={660}
-                className="w-full rounded-lg border border-line shadow-lg"
+                className="border-line w-full rounded-lg border shadow-lg"
               />
             </div>
 
@@ -123,8 +128,8 @@ export function BookPublication() {
                   rel="noopener noreferrer"
                   className={
                     link.primary
-                      ? "inline-flex items-center justify-center gap-2 rounded-full border border-acid bg-acid/10 px-6 py-3 text-sm font-medium text-acid transition-colors hover:bg-acid/20"
-                      : "inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3 text-sm text-ink transition-colors hover:border-acid/40 hover:text-acid"
+                      ? "border-acid bg-acid/10 text-acid hover:bg-acid/20 inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-medium transition-colors"
+                      : "border-line text-ink hover:border-acid/40 hover:text-acid inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm transition-colors"
                   }
                 >
                   {link.label}
@@ -134,7 +139,7 @@ export function BookPublication() {
               {links.authorPage ? (
                 <Link
                   href={links.authorPage}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                  className="border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm transition-colors"
                 >
                   {labels.authorSite}
                   <ArrowUpRight className="size-4" aria-hidden />
@@ -163,11 +168,13 @@ function BookFacts({
 }) {
   return (
     <article className="min-w-0">
-      <h3 className="font-serif text-2xl text-ink text-balance">{book.title}</h3>
-      <p className="mt-4 max-w-[65ch] text-sm leading-relaxed text-ink-dim text-pretty">
+      <h3 lang="de" className="text-ink font-serif text-2xl text-balance">
+        {book.title}
+      </h3>
+      <p className="text-ink-dim mt-4 max-w-[65ch] text-sm leading-relaxed text-pretty">
         {book.summary}
       </p>
-      <p className="mt-6 text-sm text-ink-faint">{disclosure.teaser}</p>
+      <p className="text-ink-faint mt-6 text-sm">{disclosure.teaser}</p>
       <DisclosureButton
         offen={offen}
         expandLabel={disclosure.expand}
@@ -205,10 +212,10 @@ function BookFacts({
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="font-mono text-[10px] uppercase tracking-wide text-ink-faint">
+      <dt className="text-ink-faint font-mono text-[10px] tracking-wide uppercase">
         {label}
       </dt>
-      <dd className="mt-1 text-ink">{value}</dd>
+      <dd className="text-ink mt-1">{value}</dd>
     </div>
   );
 }

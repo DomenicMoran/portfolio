@@ -94,8 +94,11 @@ jobs:
       - name: Typen
         run: npx tsc --noEmit
 
+      - name: Formatierung
+        run: npm run format:check
+
       - name: Linter
-        run: npx eslint .
+        run: npx eslint . --max-warnings=0
 
       # Der Bau ist der eigentliche Beleg: Er erzeugt jede Route statisch und
       # scheitert, sobald eine Übersetzung fehlt, weil en.ts gegen denselben

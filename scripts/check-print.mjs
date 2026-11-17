@@ -85,7 +85,8 @@ const gepruefteSeiten = [...pfade];
 */
 gepruefteSeiten.push(UNBEKANNTE_ADRESSE, UNBEKANNTE_ADRESSE_EN);
 
-if (gepruefteSeiten.length === 0) throw new Error("Der Bau enthält keine Seiten.");
+if (gepruefteSeiten.length === 0)
+  throw new Error("Der Bau enthält keine Seiten.");
 
 const browser = await chromium.launch();
 const seite = await browser.newPage({
@@ -130,7 +131,9 @@ async function messen() {
         return [d[0], d[1], d[2], d[3] / 255];
       };
       const ueber = (vorne, hinten) =>
-        [0, 1, 2].map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3])).concat(1);
+        [0, 1, 2]
+          .map((i) => vorne[i] * vorne[3] + hinten[i] * (1 - vorne[3]))
+          .concat(1);
       const helligkeit = ([r, g, b]) => {
         const f = (x) => {
           x /= 255;
@@ -146,7 +149,8 @@ async function messen() {
           stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
         }
         let ergebnis = [255, 255, 255, 1]; // Papier
-        for (let i = stapel.length - 1; i >= 0; i--) ergebnis = ueber(stapel[i], ergebnis);
+        for (let i = stapel.length - 1; i >= 0; i--)
+          ergebnis = ueber(stapel[i], ergebnis);
         return ergebnis;
       };
       const kontrast = (a, b) =>
@@ -162,7 +166,11 @@ async function messen() {
       // mitgemessen wurde und nicht die Seite.
       const geerbteDeckkraft = (el) => {
         let wert = 1;
-        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        for (
+          let n = el;
+          n && n !== document.documentElement;
+          n = n.parentElement
+        ) {
           wert *= parseFloat(getComputedStyle(n).opacity);
         }
         return wert;
@@ -184,7 +192,11 @@ async function messen() {
          Die Rechnung war trotzdem falsch, und sie stimmt jetzt. */
       const geerbterZoom = (el) => {
         let wert = 1;
-        for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        for (
+          let n = el;
+          n && n !== document.documentElement;
+          n = n.parentElement
+        ) {
           const z = parseFloat(getComputedStyle(n).zoom);
           if (Number.isFinite(z) && z > 0) wert *= z;
         }
@@ -204,7 +216,9 @@ async function messen() {
         elf Produktaufnahmen fehlten im PDF der Startseite.
       */
       const ungeladen = [...document.querySelectorAll("img")]
-        .filter((b) => getComputedStyle(b).display !== "none" && b.naturalWidth === 0)
+        .filter(
+          (b) => getComputedStyle(b).display !== "none" && b.naturalWidth === 0,
+        )
         .map((b) => ({
           alt: (b.getAttribute("alt") || "(ohne Alternativtext)").slice(0, 45),
           laden: b.loading,
@@ -251,7 +265,10 @@ async function messen() {
         // Waagerecht abgeschnitten: Der Kasten hält mehr, als er zeigt, und
         // auf Papier gibt es keine Bewegung, die den Rest holen könnte.
         // Zwei Pixel Toleranz gegen Rundung bei gebrochenen Breiten.
-        if (stil.overflowX !== "visible" && el.scrollWidth > el.clientWidth + 2) {
+        if (
+          stil.overflowX !== "visible" &&
+          el.scrollWidth > el.clientWidth + 2
+        ) {
           abgeschnitten.push({
             marke: el.tagName.toLowerCase(),
             klasse: (el.className?.toString?.() || "").slice(0, 60),
@@ -270,7 +287,10 @@ async function messen() {
         if (vorne[3] === 0) continue;
         vorne[3] *= deckkraft;
         const hinten = untergrund(el);
-        const wert = kontrast(helligkeit(ueber(vorne, hinten)), helligkeit(hinten));
+        const wert = kontrast(
+          helligkeit(ueber(vorne, hinten)),
+          helligkeit(hinten),
+        );
 
         const px = parseFloat(stil.fontSize) * geerbterZoom(el);
         const fett = parseInt(stil.fontWeight, 10) >= 700;
@@ -335,10 +355,13 @@ async function messen() {
         Alles andere gehört mit `no-print` ausgeblendet. Wer ein neues
         Bedienelement einbaut, entscheidet hier bewusst, statt es zu vergessen.
       */
-      const toteKnoepfe = [...document.querySelectorAll('button, [role="button"]')]
+      const toteKnoepfe = [
+        ...document.querySelectorAll('button, [role="button"]'),
+      ]
         .filter((el) => {
           const stil = getComputedStyle(el);
-          if (stil.display === "none" || stil.visibility === "hidden") return false;
+          if (stil.display === "none" || stil.visibility === "hidden")
+            return false;
           if (el.getBoundingClientRect().width === 0) return false;
           if (el.getAttribute("role") === "tab") return false;
           return !el.closest("[data-druckbar]");
@@ -350,7 +373,14 @@ async function messen() {
           klasse: String(el.className).slice(0, 50),
         }));
 
-      return { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe };
+      return {
+        schwach,
+        winzig,
+        abgeschnitten,
+        festgeheftet,
+        ungeladen,
+        toteKnoepfe,
+      };
     },
     { grossPx: GROSSER_TEXT_PX, grossFettPx: GROSSER_FETTER_TEXT_PX },
   );
@@ -382,7 +412,11 @@ function textEinsammeln() {
     // als fehlendes Wort, ein Gebilde aus drei Abschnitten, das es nirgends
     // gibt.
     const unsichtbar = (el) => {
-      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+      for (
+        let n = el;
+        n && n !== document.documentElement;
+        n = n.parentElement
+      ) {
         if (n.classList?.contains("no-print")) return true;
         const s = getComputedStyle(n);
         if (s.display === "none" || s.visibility === "hidden") return true;
@@ -391,7 +425,10 @@ function textEinsammeln() {
       return false;
     };
 
-    const laeufer = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const laeufer = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+    );
     const stuecke = [];
     for (let n = laeufer.nextNode(); n; n = laeufer.nextNode()) {
       const t = n.textContent.trim();
@@ -403,6 +440,28 @@ function textEinsammeln() {
   });
 }
 
+/** Nach dem Wechsel auf Druck: Bilder nachladen, die sonst lazy bleiben. */
+async function druckbilderNachladen(seite) {
+  await seite.evaluate(() => {
+    window.dispatchEvent(new Event("beforeprint"));
+    for (const bild of document.querySelectorAll('img[loading="lazy"]')) {
+      bild.loading = "eager";
+    }
+  });
+  await seite
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll("img")]
+          .filter((b) => getComputedStyle(b).display !== "none")
+          .every((b) => b.complete),
+      undefined,
+      { timeout: 15000 },
+    )
+    .catch(() => {
+      /* Ungeladene Bilder meldet die Messung darunter mit Alt-Text. */
+    });
+}
+
 let fehler = 0;
 
 for (const pfad of gepruefteSeiten) {
@@ -410,9 +469,13 @@ for (const pfad of gepruefteSeiten) {
   // irgendetwas ausliefert, wo nichts sein sollte.
   const erwartet =
     pfad === UNBEKANNTE_ADRESSE || pfad === UNBEKANNTE_ADRESSE_EN ? 404 : 200;
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "domcontentloaded",
+  });
   if (!antwort || antwort.status() !== erwartet) {
-    console.log(`  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`);
+    console.log(
+      `  FEHLER ${pfad}: HTTP ${antwort?.status()} statt ${erwartet}`,
+    );
     fehler++;
     continue;
   }
@@ -440,6 +503,7 @@ for (const pfad of gepruefteSeiten) {
   // grün, während der Ausdruck „0“ zeigt.
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
   await seite.emulateMedia({ media: "print" });
+  await druckbilderNachladen(seite);
 
   /* Auf die Hydration warten, nicht auf eine Wartezeit.
    *
@@ -486,8 +550,14 @@ for (const pfad of gepruefteSeiten) {
     }
   });
   await seite.waitForTimeout(50);
-  const { schwach, winzig, abgeschnitten, festgeheftet, ungeladen, toteKnoepfe } =
-    await messen();
+  const {
+    schwach,
+    winzig,
+    abgeschnitten,
+    festgeheftet,
+    ungeladen,
+    toteKnoepfe,
+  } = await messen();
   const textImDruck = await textEinsammeln();
   await seite.emulateMedia({ media: "screen" });
 
@@ -510,7 +580,8 @@ for (const pfad of gepruefteSeiten) {
   const fehlend = [];
   for (const [wort, anzahl] of amBildschirm) {
     const da = imDruck.get(wort) ?? 0;
-    if (da < anzahl) fehlend.push(anzahl - da > 1 ? `${wort} (${anzahl - da}×)` : wort);
+    if (da < anzahl)
+      fehlend.push(anzahl - da > 1 ? `${wort} (${anzahl - da}×)` : wort);
   }
 
   if (
@@ -545,8 +616,8 @@ for (const pfad of gepruefteSeiten) {
   }
   for (const s of toteKnoepfe) {
     console.log(
-      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}"), `
-        + `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
+      `        Bedienelement im Ausdruck, tut auf Papier nichts: „${s.name}“ (class="${s.klasse}"), ` +
+        `entweder no-print ergänzen oder, wenn die Beschriftung selbst die Angabe ist, data-druckbar setzen`,
     );
   }
   for (const s of festgeheftet) {
@@ -581,6 +652,24 @@ for (const pfad of gepruefteSeiten) {
    Gemessen wird nur auf den beiden Startseiten: Nur dort stehen Reiter. Für
    jede Tafel dieselbe Messung wie oben, mit dem Reiternamen in der Meldung.
    --------------------------------------------------------------------- */
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten `hidden`, und der Klick auf den nächsten Reiter
+ * läuft in eine Zeitüberschreitung.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
 const reiterfunde = [];
 for (const pfad of ["/", "/en"]) {
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
@@ -591,27 +680,42 @@ for (const pfad of ["/", "/en"]) {
       await new Promise((r) => setTimeout(r, 40));
     }
   });
+  await oeffneFallstudien(seite);
 
   const gruppen = await seite.evaluate(() =>
-    [...document.querySelectorAll('[role="tablist"]')].map((tl) => ({
-      name: tl.getAttribute("aria-label"),
-      reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) => t.textContent.trim()),
-    })),
+    [...document.querySelectorAll('[role="tablist"]')]
+      .filter((tl) => {
+        const stil = getComputedStyle(tl);
+        if (stil.display === "none" || stil.visibility === "hidden") {
+          return false;
+        }
+        const kasten = tl.getBoundingClientRect();
+        return kasten.width > 0 && kasten.height > 0;
+      })
+      .map((tl) => ({
+        name: tl.getAttribute("aria-label"),
+        reiter: [...tl.querySelectorAll('[role="tab"]')].map((t) =>
+          t.textContent.trim(),
+        ),
+      })),
   );
 
   for (const gruppe of gruppen) {
     // Der erste Reiter ist der Auslieferungszustand und oben schon gemessen.
     for (const reiter of gruppe.reiter.slice(1)) {
       await seite.emulateMedia({ media: "screen" });
-      await seite
+      const reiterknopf = seite
         .locator(`[role="tablist"][aria-label="${gruppe.name}"]`)
-        .getByRole("tab", { name: reiter, exact: true })
-        .click();
+        .getByRole("tab", { name: reiter, exact: true });
+      if (!(await reiterknopf.isVisible())) continue;
+      await reiterknopf.scrollIntoViewIfNeeded();
+      await reiterknopf.click();
       /* Kurz warten, bevor gedruckt wird: Die Tafel blendet um, und in der
          Gegenprobe stand deshalb der Name des nächsten Reiters an einem Fund
          der vorigen Tafel. Der Fund war richtig, die Zuordnung nicht. */
       await seite.waitForTimeout(400);
       await seite.emulateMedia({ media: "print" });
+      await druckbilderNachladen(seite);
       await seite.evaluate(() => {
         for (const bewegung of document.getAnimations()) {
           try {
@@ -685,22 +789,35 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     viewport: { width: PAPIERBREITE, height: PAPIERHOEHE },
   });
   await seite.emulateMedia({ media: "print" });
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (antwort?.status() === 200) {
     await seite.waitForTimeout(600);
+    await druckbilderNachladen(seite);
     const hoehe = await seite.evaluate(() => {
       const el = document.querySelector(".onepager");
-      return el ? Math.round(el.getBoundingClientRect().height) : null;
+      if (!el) return null;
+      /* `zoom` auf `.onepager` (derzeit 0,85) wird je nach Chromium
+         in `getBoundingClientRect` eingerechnet oder nicht. Auf dem
+         CI-Runner (Linux) kam dadurch 1157 px unskaliert an, während
+         derselbe Druck eine PDF-Seite ergab. Visuelle Höhe verwenden. */
+      const zoomRoh = parseFloat(getComputedStyle(el).zoom);
+      const zoom = Number.isFinite(zoomRoh) && zoomRoh > 0 ? zoomRoh : 1;
+      const rechteck = el.getBoundingClientRect().height;
+      const layout = el.offsetHeight;
+      const visuell =
+        zoom !== 1 && Math.abs(rechteck - layout) < 1
+          ? layout * zoom
+          : rechteck;
+      return Math.round(visuell);
     });
-    if (hoehe === null) blattfunde.push(`${pfad}: kein Element mit .onepager`);
-    else if (hoehe > BLATTGRENZE) {
-      blattfunde.push(
-        `${pfad}: ${hoehe} px hoch, ${BLATTGRENZE} sind das Blatt. ` +
-          `Gedruckt wären das zwei Seiten.`,
-      );
-    } else {
-      console.log(`  ok ${pfad} auf einem Blatt (${hoehe} von ${BLATTGRENZE} px)`);
-    }
+    /* Die Rechteckhöhe ist eine Näherung und je nach Chromium (Zoom auf
+       `.onepager`) nicht dieselbe Zahl wie der tatsächliche Druck. Auf dem
+       CI-Runner war `/onepager` 1157 px hoch bei 1040 px Grenze, während
+       `page.pdf()` eine Seite lieferte. Maßgeblich ist der Druck, den der
+       Knopf „Drucken / PDF" auslöst. Die Höhe wird weiter ausgegeben,
+       damit ein Annähern an die Grenze sichtbar bleibt. */
 
     /* Und die Zusage selbst, nicht nur ihr Stellvertreter.
 
@@ -725,14 +842,25 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
     const seitenzahl = (
       gedruckt.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []
     ).length;
+    if (hoehe === null) {
+      blattfunde.push(`${pfad}: kein Element mit .onepager`);
+    }
     if (seitenzahl !== 1) {
+      const hoeheTeil = hoehe === null ? "" : ` Die Messhöhe war ${hoehe} px.`;
       blattfunde.push(
         `${pfad}: Der Druck aus dem Browser ergibt ${seitenzahl} Seiten. ` +
-          `Der Knopf auf dem Blatt heißt „Drucken / PDF", und das ist, was ` +
-          `dabei herauskommt.`,
+          `Der Knopf auf dem Blatt heißt „Drucken / PDF“, und das ist, was ` +
+          `dabei herauskommt.${hoeheTeil}`,
       );
     } else {
       gedruckteBlaetter++;
+      const hoeheTeil =
+        hoehe === null
+          ? "PDF eine Seite"
+          : hoehe > BLATTGRENZE
+            ? `PDF eine Seite, Messhöhe ${hoehe} px über der ${BLATTGRENZE}-px-Näherung`
+            : `${hoehe} von ${BLATTGRENZE} px`;
+      console.log(`  ok ${pfad} auf einem Blatt (${hoeheTeil})`);
     }
 
     /* Und der Knopf, der den Druck auslöst.
@@ -755,7 +883,9 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
       };
     });
     await mitZaehler.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
-    const knopf = mitZaehler.locator("button").filter({ hasText: /Drucken|Print/ });
+    const knopf = mitZaehler
+      .locator("button")
+      .filter({ hasText: /Drucken|Print/ });
     if ((await knopf.count()) === 0) {
       blattfunde.push(`${pfad}: kein Knopf, der den Druckdialog öffnet`);
     } else {

@@ -110,7 +110,9 @@ for (const g of gruppen) {
   if (!gemessen.length) continue;
 
   const max = Math.max(...gemessen.map((m) => m.streifen));
-  const einzeln = gemessen.map((m) => `${m.datei.replace(".png", "")} ${m.streifen}`).join(", ");
+  const einzeln = gemessen
+    .map((m) => `${m.datei.replace(".png", "")} ${m.streifen}`)
+    .join(", ");
   if (max === 0) {
     console.log(`  ${g.name.padEnd(10)} oben sauber (${einzeln})`);
     continue;
@@ -123,7 +125,9 @@ for (const g of gruppen) {
       .png()
       .toBuffer();
     await sharp(puffer).toFile(m.pfad);
-    console.log(`      ${m.datei}  ${m.width} x ${m.height} -> ${m.width} x ${m.height - max}`);
+    console.log(
+      `      ${m.datei}  ${m.width} x ${m.height} -> ${m.width} x ${m.height - max}`,
+    );
     geschnitten += 1;
   }
 }

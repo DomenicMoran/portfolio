@@ -66,10 +66,14 @@ for (const grundschrift of GROESSEN) {
   });
 
   for (const breite of BREITEN) {
-    const seite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+    const seite = await browser.newPage({
+      viewport: { width: breite, height: 900 },
+    });
 
     for (const pfad of pfade) {
-      const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+      const antwort = await seite.goto(`${basis}${pfad}`, {
+        waitUntil: "networkidle",
+      });
       if (!antwort || antwort.status() !== 200) continue;
 
       // Die Abschnitte erscheinen erst beim Hineinscrollen und haben vorher
@@ -114,9 +118,19 @@ for (const grundschrift of GROESSEN) {
              an `body`. Seine Position hängt außerdem am Zeitpunkt der
              Messung, ein Befund daraus wäre je nach Lauf ein anderer. */
           let frei = true;
-          for (let v = el.parentElement; v && v !== document.body; v = v.parentElement) {
-            if (getComputedStyle(v).overflowX !== "visible") { frei = false; break; }
-            if (v.classList.contains("animate-marquee")) { frei = false; break; }
+          for (
+            let v = el.parentElement;
+            v && v !== document.body;
+            v = v.parentElement
+          ) {
+            if (getComputedStyle(v).overflowX !== "visible") {
+              frei = false;
+              break;
+            }
+            if (v.classList.contains("animate-marquee")) {
+              frei = false;
+              break;
+            }
           }
           if (!frei) continue;
 
@@ -135,7 +149,9 @@ for (const grundschrift of GROESSEN) {
       });
 
       for (const t of raus) {
-        funde.push(`${pfad} bei ${grundschrift} px Grundschrift und ${breite} px Breite: ${t}`);
+        funde.push(
+          `${pfad} bei ${grundschrift} px Grundschrift und ${breite} px Breite: ${t}`,
+        );
       }
     }
 
@@ -148,7 +164,9 @@ for (const grundschrift of GROESSEN) {
 beenden();
 
 if (funde.length > 0) {
-  console.error(`${funde.length} Stelle geht bei größerer Grundschrift verloren:\n`);
+  console.error(
+    `${funde.length} Stelle geht bei größerer Grundschrift verloren:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   console.error(
     `\nWas über die rechte Kante ragt, klemmt \`overflow-x: clip\` ab: Es ist` +

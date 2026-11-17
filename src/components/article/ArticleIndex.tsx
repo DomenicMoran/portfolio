@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Rss } from "lucide-react";
-import { ContentProvider } from "@/content/ContentProvider";
+import type { ComponentType, ReactNode } from "react";
 import type { Content } from "@/content/types";
 import type { Article, ArticleChrome } from "@/content/articles";
 import { SiteShell } from "@/components/SiteShell";
@@ -20,10 +20,12 @@ function datum(iso: string, lang: "de" | "en") {
 
 export function ArticleIndex({
   content,
+  Inhalt,
   chrome,
   articles,
 }: {
   content: Content;
+  Inhalt: ComponentType<{ children: ReactNode }>;
   chrome: ArticleChrome;
   articles: readonly Article[];
 }) {
@@ -68,7 +70,7 @@ export function ArticleIndex({
   const json = JSON.stringify(schema).replace(/</g, "\u003c");
 
   return (
-    <ContentProvider content={content}>
+    <Inhalt>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: json }}
@@ -164,7 +166,7 @@ export function ArticleIndex({
                          gemessen alle sechs, 443 kB auf dem Telefon. */
                       prefetch={false}
                       aria-labelledby={`artikel-${article.slug}`}
-                      className="group lit block rounded-2xl border border-line bg-surface/40 p-7 transition-colors hover:border-acid/40 sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
+                      className="group lit border-line bg-surface/40 hover:border-acid/40 block rounded-2xl border p-7 transition-colors sm:p-9 lg:grid lg:grid-cols-[9.5rem_1fr] lg:gap-x-10"
                     >
                       {/* Kopfdaten links, Text rechts, aber erst ab `lg`.
 
@@ -188,7 +190,7 @@ export function ArticleIndex({
                           hinter dem zweiten Punkt um: „31. Juli 2026 · 5 Min.
                           Lesezeit ·" und darunter allein „Salati“. Ein
                           Mittelpunkt am Zeilenende trennt nichts. */}
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-ink-faint lg:flex-col lg:items-start lg:gap-y-2 lg:pt-1">
+                      <div className="text-ink-faint flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] lg:flex-col lg:items-start lg:gap-y-2 lg:pt-1">
                         <time dateTime={article.date}>
                           {datum(article.date, lang)}
                         </time>
@@ -215,16 +217,16 @@ export function ArticleIndex({
                       <div className="min-w-0">
                         <h2
                           id={`artikel-${article.slug}`}
-                          className="mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-ink text-balance sm:text-2xl lg:mt-0"
+                          className="text-ink mt-4 flex items-start gap-3 text-xl leading-snug font-semibold tracking-tight text-balance sm:text-2xl lg:mt-0"
                         >
                           {article.title}
                           <ArrowUpRight
-                            className="mt-1 size-4 shrink-0 text-ink-faint transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acid"
+                            className="text-ink-faint group-hover:text-acid mt-1 size-4 shrink-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             aria-hidden
                           />
                         </h2>
 
-                        <p className="mt-3 max-w-[62ch] leading-relaxed text-ink-dim text-pretty">
+                        <p className="text-ink-dim mt-3 max-w-[62ch] leading-relaxed text-pretty">
                           {article.dek}
                         </p>
 
@@ -232,7 +234,7 @@ export function ArticleIndex({
                           {article.tags.map((tag) => (
                             <li
                               key={tag}
-                              className="rounded-md border border-line bg-base/60 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-faint"
+                              className="border-line bg-base/60 text-ink-faint rounded-md border px-2.5 py-1 font-mono text-[10px] tracking-wide"
                             >
                               {tag}
                             </li>
@@ -254,10 +256,10 @@ export function ArticleIndex({
               wollte, musste in den Quelltext sehen. Eine Zeile unter der
               Liste reicht, dort, wo jemand am Ende der fünf Artikel
               angekommen ist und wissen will, ob noch etwas kommt. */}
-          <p className="mt-10 font-mono text-[11px] text-ink-faint">
+          <p className="text-ink-faint mt-10 font-mono text-[11px]">
             <a
               href={`${chrome.base}/feed.xml`}
-              className="-my-2 inline-flex items-center gap-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+              className="hover:text-ink-dim -my-2 inline-flex items-center gap-2 py-2 underline underline-offset-4 transition-colors"
             >
               <Rss className="size-3.5" aria-hidden />
               {chrome.feed}
@@ -267,6 +269,6 @@ export function ArticleIndex({
       </main>
 
       <Footer otherHref={otherHref} hashBase={heim} />
-    </ContentProvider>
+    </Inhalt>
   );
 }

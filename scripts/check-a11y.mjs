@@ -107,6 +107,15 @@ const unsichtbar = [];
  */
 async function unsichtbarPruefen(seite, pfad) {
   const funde = await seite.evaluate((grenze) => {
+    /* Sonst bleiben Abschnitte mit `content-visibility: auto` nach dem
+       Zurückscrollen ungemalt, und getComputedStyle liefert nahezu
+       dieselben Werte für Schrift und Untergrund. */
+    for (const el of document.querySelectorAll("*")) {
+      if (getComputedStyle(el).contentVisibility === "auto") {
+        el.style.contentVisibility = "visible";
+      }
+    }
+
     // Farben über einen Canvas auflösen: Der kennt jeden Farbraum, den auch
     // die Stilvorlage benutzen darf, und liefert immer RGBA.
     const flaeche = document.createElement("canvas");
@@ -134,7 +143,8 @@ async function unsichtbarPruefen(seite, pfad) {
         stapel.push(zuRgba(getComputedStyle(n).backgroundColor));
       }
       let unten = [8, 8, 10];
-      for (let i = stapel.length - 1; i >= 0; i--) unten = ueber(stapel[i], unten);
+      for (let i = stapel.length - 1; i >= 0; i--)
+        unten = ueber(stapel[i], unten);
       return unten;
     };
 
@@ -150,10 +160,24 @@ async function unsichtbarPruefen(seite, pfad) {
       const stil = getComputedStyle(el);
       if (stil.display === "none" || stil.visibility === "hidden") continue;
       if (el.getBoundingClientRect().width === 0) continue;
+      /* `content-visibility: auto` lässt Abschnitte außerhalb des
+         Bilds ungemalt. getComputedStyle liefert dann oft nahezu
+         dieselbe Farbe wie den Untergrund, und der Lauf meldet 1:1,
+         obwohl der Text nach dem Hineinscrollen lesbar ist. */
+      if (
+        typeof el.checkVisibility === "function" &&
+        !el.checkVisibility({ contentVisibilityAuto: true })
+      ) {
+        continue;
+      }
       // Was durchsichtig ist, ist eine Gestaltung und kein Fehler; das greift
       // die Regel „nichts unsichtbar ohne JavaScript" weiter unten.
       let deckung = 1;
-      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+      for (
+        let n = el;
+        n && n !== document.documentElement;
+        n = n.parentElement
+      ) {
         deckung *= parseFloat(getComputedStyle(n).opacity);
       }
       if (deckung < 0.95) continue;
@@ -241,7 +265,14 @@ for (const breite of BREITEN) {
       `data-demo-fertig` setzt die Kachel selbst, sobald gerechnet ist. Fehlt
       sie auf einer Seite, wartet niemand.
     */
-    if (await seite.locator("[data-demo-fertig], .lit input[type=range]").count()) {
+    /* Nur die Gebetszeiten setzen `data-demo-fertig`. Die Tagesbilanz
+       und die Checkout-Tafel haben ebenfalls Regler, rechnen aber
+       ohne dieses Merkmal; auf sie zu warten liefe in die Frist. */
+    if (
+      await seite
+        .locator('[data-demo="gebetszeiten"], [data-demo-fertig]')
+        .count()
+    ) {
       await seite
         .waitForSelector("[data-demo-fertig]", { timeout: 15_000 })
         .catch(() => {
@@ -322,7 +353,11 @@ const ohneSkript = [];
     javaScriptEnabled: false,
   });
   const seite = await kontext.newPage();
-  await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
+  /* `load` statt `networkidle`: Mit abgeschaltetem JavaScript bleibt in CI
+     gelegentlich eine Anfrage offen, und `networkidle` läuft in die
+     Zeitüberschreitung, obwohl das Dokument schon da ist. Dieser Lauf
+     prüft nur HTML und CSS. */
+  await seite.goto(`${basis}/`, { waitUntil: "load" });
 
   const versteckt = await seite.evaluate(() => {
     const wichtig = [
@@ -380,7 +415,10 @@ const ohneSkript = [];
      Wer einen neuen Knopf einbaut, entscheidet hier: ausblenden oder
      eintragen. Beides ist eine Entscheidung, keine Unterlassung. */
   const ERLAUBT_OHNE_SKRIPT = new Map([
-    ["Befehlspalette öffnen", "führt nur zu Zielen, die auch in der Kopfleiste stehen"],
+    [
+      "Befehlspalette öffnen",
+      "führt nur zu Zielen, die auch in der Kopfleiste stehen",
+    ],
     ["Vorheriges Bild", "die Strecke lässt sich auch schieben"],
     ["Nächstes Bild", "die Strecke lässt sich auch schieben"],
     ["Ablauf erneut abspielen", "die Zeilen stehen ohne Skript vollständig da"],
@@ -487,6 +525,24 @@ const RENDER_MS = 200;
 const ANIMATION_MS = 350;
 const wartefunde = [];
 
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten `hidden`, und Klicks oder
+ * `scrollIntoViewIfNeeded` laufen in eine Zeitüberschreitung.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
 /** Wie lange die zweite Tafel je Reiterleiste braucht, in einer Einstellung. */
 async function tafelzeiten(reducedMotion) {
   const kontext = await browser.newContext({
@@ -497,10 +553,12 @@ async function tafelzeiten(reducedMotion) {
   await seite.goto(`${basis}/`, { waitUntil: "networkidle" });
 
   const zeiten = new Map();
+  await oeffneFallstudien(seite);
   for (const liste of await seite.locator("[role=tablist]").all()) {
     const name = (await liste.getAttribute("aria-label")) ?? "?";
     const reiter = await liste.locator("[role=tab]").all();
     if (reiter.length < 2) continue;
+    if (!(await liste.isVisible())) continue;
 
     await liste.scrollIntoViewIfNeeded();
     const zweiter = reiter[1];
@@ -656,7 +714,9 @@ const zielfunde = [];
         )
           .trim()
           .slice(0, 30);
-        raus.push(`„${name}“ ${Math.round(r.width)}×${Math.round(r.height)} px`);
+        raus.push(
+          `„${name}“ ${Math.round(r.width)}×${Math.round(r.height)} px`,
+        );
       }
       return [...new Set(raus)];
     }, ZIELGROESSE);
@@ -796,14 +856,19 @@ const diagrammfunde = [];
   }
   await seite.waitForTimeout(300);
 
+  await oeffneFallstudien(seite);
   for (const reiter of await seite.locator('[id$="-tab-architecture"]').all()) {
+    if (!(await reiter.isVisible())) continue;
     const kennung = (await reiter.getAttribute("id")) ?? "?";
     const fall = kennung.replace("-tab-architecture", "");
+    await reiter.scrollIntoViewIfNeeded();
     await reiter.click();
     await seite.waitForTimeout(350);
 
     const messung = await seite.evaluate((fall) => {
-      const svg = document.getElementById(`${fall}-panel`)?.querySelector("svg");
+      const svg = document
+        .getElementById(`${fall}-panel`)
+        ?.querySelector("svg");
       if (!svg) return null;
       const breite = svg.getBoundingClientRect().width;
       const einheiten = Number(svg.getAttribute("viewBox")?.split(" ")[2] ?? 0);
@@ -893,12 +958,13 @@ const ANSAGEFUNDE = [];
     }
   });
   await seite.waitForTimeout(600);
+  await seite
+    .waitForSelector('[data-demo="tagesbilanz"]', { timeout: 15_000 })
+    .catch(() => {});
 
   /* Die Tagesbilanz: eine Ansage mit Zahl, sobald ein Gericht abgewählt ist. */
   const bilanz = await seite.evaluate(() => {
-    const kachel = [...document.querySelectorAll("div.lit")].find((k) =>
-      k.querySelector('[aria-pressed]'),
-    );
+    const kachel = document.querySelector('[data-demo="tagesbilanz"]');
     if (!kachel) return "Kachel nicht gefunden";
     const st = kachel.querySelector('[role="status"]');
     return st ? st.textContent.trim() : "keine Region";
@@ -975,7 +1041,10 @@ const ANSAGEFUNDE = [];
     if (!stand.angesagt) {
       ANSAGEFUNDE.push("Kopierknopf: keine Ansage nach dem Klick");
     }
-    if (!stand.sichtbar.includes(stand.angesagt) && !/check/.test(stand.symbol)) {
+    if (
+      !stand.sichtbar.includes(stand.angesagt) &&
+      !/check/.test(stand.symbol)
+    ) {
       ANSAGEFUNDE.push(
         "Kopierknopf: nichts Sichtbares ändert sich, wer sieht, weiß nicht, " +
           "ob kopiert wurde",
@@ -1016,10 +1085,14 @@ ${ANSAGEFUNDE.length} Bereich(e) ändern beim Bedienen ihre Werte, ohne ` +
 const BILDLAUFFUNDE = [];
 
 {
-  const seite = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const seite = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+  });
 
   for (const pfad of pfade) {
-    const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+    const antwort = await seite.goto(`${basis}${pfad}`, {
+      waitUntil: "networkidle",
+    });
     if (!antwort || antwort.status() !== 200) continue;
 
     await seite.evaluate(async () => {
@@ -1045,7 +1118,8 @@ const BILDLAUFFUNDE = [];
         const name =
           el.getAttribute("aria-label") ??
           (el.getAttribute("aria-labelledby")
-            ? (document.getElementById(el.getAttribute("aria-labelledby"))?.textContent ?? "")
+            ? (document.getElementById(el.getAttribute("aria-labelledby"))
+                ?.textContent ?? "")
             : "");
         const kennung =
           `${el.tagName.toLowerCase()}` +

@@ -1,6 +1,4 @@
-import { MotionProvider } from "@/components/providers/MotionProvider";
-import { de } from "@/content/de";
-import { en } from "@/content/en";
+import { dokumentTexte } from "@/content/dokument-texte";
 import { schriftKlassen } from "@/lib/web-fonts";
 
 /**
@@ -56,13 +54,13 @@ export function RootDocument({
           href="/humans.txt"
           type="text/plain"
           hrefLang="de"
-          title={(lang === "de" ? de : en).a11y.humansTitel}
+          title={dokumentTexte[lang].humansTitel}
         />
         <link
           rel="alternate"
           type="text/plain"
           href="/llms.txt"
-          title={(lang === "de" ? de : en).a11y.llmsTitel}
+          title={dokumentTexte[lang].llmsTitel}
         />
         {/*
           Der Rückfall für Browser ohne JavaScript.
@@ -87,7 +85,7 @@ export function RootDocument({
         <noscript>
           <style>{`[data-reveal],.animate-fade-rise,.animate-word-rise{opacity:1!important;transform:none!important;animation:none!important}`}</style>
         </noscript>
-        <MotionProvider>{children}</MotionProvider>
+        {children}
       </body>
     </html>
   );

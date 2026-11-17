@@ -27,12 +27,6 @@
 
   --color-acid: #d4ff45;
   --color-acid-dim: #a8cc2e;
-  /* #7c5cff stand auf den violett getönten Karten (20,16,35) bei 4,28:1 und
-     auf --void bei 4,47:1, beides unter 4,5:1, und getragen hat es die
-     Überschrift „Die harte Stelle" jeder Fallstudie. #8b6dff ist derselbe
-     Farbton eine Stufe heller: 5,08:1 und 5,29:1. */
-  --color-violet: #8b6dff;
-  --color-cyan: #3fd0ff;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
@@ -215,6 +209,52 @@ textarea:-webkit-autofill {
   font-weight: 600;
 }
 
+@utility hero-display {
+  font-size: var(--text-display);
+  line-height: 0.92;
+  font-weight: 600;
+}
+
+.hero-headline-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-ink);
+  transition:
+    color 0.7s var(--ease-out-expo),
+    -webkit-text-stroke-width 0.7s var(--ease-out-expo);
+}
+
+.hero-headline-stroke--filled,
+.hero-headline-stroke:hover {
+  color: var(--color-ink);
+  -webkit-text-stroke-width: 0;
+}
+
+.hero-headline-stroke__accent {
+  -webkit-text-stroke-color: var(--color-acid);
+}
+
+.hero-headline-stroke--filled .hero-headline-stroke__accent,
+.hero-headline-stroke:hover .hero-headline-stroke__accent {
+  color: var(--color-acid);
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .hero-headline-stroke {
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-headline-stroke {
+    color: var(--color-ink);
+    -webkit-text-stroke-width: 0;
+  }
+
+  .hero-headline-stroke__accent {
+    color: var(--color-acid);
+  }
+}
+
 @utility text-headline {
   font-size: var(--text-headline);
   line-height: 0.95;
@@ -379,8 +419,16 @@ textarea:-webkit-autofill {
      auf der Kartenfläche. Ein fest verdrahteter Wert ergäbe dort einen
      sichtbaren Streifen statt eines Deckels. */
   background-image:
-    linear-gradient(to right, var(--deckfarbe, var(--color-base)) 30%, transparent),
-    linear-gradient(to left, var(--deckfarbe, var(--color-base)) 30%, transparent),
+    linear-gradient(
+      to right,
+      var(--deckfarbe, var(--color-base)) 30%,
+      transparent
+    ),
+    linear-gradient(
+      to left,
+      var(--deckfarbe, var(--color-base)) 30%,
+      transparent
+    ),
     /* Der Hinweis ist hell, nicht dunkel.
      *
      * Erster Anlauf mischte ihn aus `--color-void` (#08080a) auf einer Fläche
@@ -395,8 +443,16 @@ textarea:-webkit-autofill {
      * Architekturdiagramms bei 1440 px auf 4,10:1, deutlich unter den 4,5:1
      * aus WCAG 1.4.3. Bei 12 Prozent liegt die schwächste Stelle der ganzen
      * Seite bei 4,80:1, und der Hinweis bleibt sichtbar. */
-    linear-gradient(to right, color-mix(in oklab, var(--color-ink) 12%, transparent), transparent),
-    linear-gradient(to left, color-mix(in oklab, var(--color-ink) 12%, transparent), transparent);
+    linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-ink) 12%, transparent),
+        transparent
+      ),
+    linear-gradient(
+      to left,
+      color-mix(in oklab, var(--color-ink) 12%, transparent),
+      transparent
+    );
   background-position:
     left center,
     right center,
@@ -678,8 +734,6 @@ textarea:-webkit-autofill {
     /* Die Akzentfarbe ist auf Papier nicht lesbar, hier steht ein dunkles Oliv,
        das die Rolle als Akzent behält und auf Weiß trägt. */
     --color-acid: #4f6300;
-    --color-violet: #4a3aa8;
-    --color-cyan: #10627d;
   }
 
   html,
@@ -687,6 +741,43 @@ textarea:-webkit-autofill {
     background: #fff !important;
     color: #101014 !important;
     color-scheme: light;
+  }
+
+  /* Tailwind stellt zu den variablen Flächenfarben einen festen Hex-Fallback
+     (`.bg-surface/40 { background-color: #11111666 }`). Der überlebt die
+     Token-Umdefinition oben und ergibt auf weißem Papier einen grauen
+     Untergrund, auf dem die Druckschrift die 4,5:1 nicht mehr hält.
+     Schrift- und Flächenklassen deshalb fest auf die Drucktoken legen. */
+  .text-ink {
+    color: var(--color-ink) !important;
+  }
+  .text-ink-dim {
+    color: var(--color-ink-dim) !important;
+  }
+  .text-ink-faint {
+    color: var(--color-ink-faint) !important;
+  }
+  [class*="bg-surface"],
+  [class*="bg-base"],
+  [class*="bg-void"],
+  [class*="bg-raised"],
+  [class*="bg-ink"] {
+    background-color: var(--color-surface) !important;
+  }
+
+  /* Die Sammelregel oben trifft auch `hover:bg-ink` auf den Akzentknöpfen
+     und würde sie weiß auf weiß drucken (`text-void` wird im Druck ebenfalls
+     weiß). Standardzustand der Knöpfe wiederherstellen. */
+  .bg-acid {
+    background-color: var(--color-acid) !important;
+    color: #ffffff !important;
+  }
+  .bg-ink {
+    background-color: #101014 !important;
+    color: #ffffff !important;
+  }
+  [class*="text-void"] {
+    color: #ffffff !important;
   }
 
   /* Alles sichtbar, was am Bildschirm auf das Hineinscrollen wartet.
@@ -710,6 +801,12 @@ textarea:-webkit-autofill {
   *::after {
     opacity: 1 !important;
     transform: none !important;
+    /* Sonst bleibt transition-colors nach dem Wechsel in den Druckmodus
+       noch kurz auf den Bildschirmfarben stehen, und die Prüfung misst
+       einen Zwischenstand: Druckschrift auf noch nicht umgefärbter Fläche,
+       oder schon gebleichte Knöpfe mit alter Schrift. */
+    transition: none !important;
+    animation: none !important;
   }
 
   /* Das Karussell wickelt um, statt seitlich zu verschwinden.
@@ -884,7 +981,11 @@ textarea:-webkit-autofill {
        Ein fünftes Mal nachgezogen, am 21.08.2026: Mit acht Projekten statt
        sieben stand das Blatt bei 0,88 auf 103 % der Seite und kippte auf zwei
        Seiten. 0,83 ergibt wieder eine, mit rund 97 % Ausnutzung (deutsche
-       Fassung) und 6,2 pt kleinster Schrift. */
-    zoom: 0.83;
+       Fassung) und 6,2 pt kleinster Schrift.
+
+       Ein sechstes Mal, am 16.11.2026, nach dem Redesign und den
+       aufgefrischten Commit-Zahlen: Bei 0,83 füllte das Blatt nur 89 %.
+       0,85 bleibt eine Seite und kommt über die 90-Prozent-Schwelle. */
+    zoom: 0.85;
   }
 }

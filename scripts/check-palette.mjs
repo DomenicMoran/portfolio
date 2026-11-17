@@ -66,7 +66,9 @@ for (const pfad of ["/", "/en"]) {
 
   /* Der Fokus vor dem Öffnen: Er muss nachher wieder dort stehen. Ohne ein
      Element davor läge er auf `body`, und die Rückkehr wäre nicht prüfbar. */
-  const knopf = await seite.$('button[aria-label*="efehlspalette"], button[aria-label*="ommand palette"]');
+  const knopf = await seite.$(
+    'button[aria-label*="efehlspalette"], button[aria-label*="ommand palette"]',
+  );
   if (!knopf) {
     funde.push(`${pfad}: kein Knopf zur Befehlspalette`);
     continue;
@@ -88,9 +90,12 @@ for (const pfad of ["/", "/en"]) {
   });
 
   if (!offen.dialog) funde.push(`${pfad}: Strg+K öffnet die Palette nicht`);
-  if (!offen.imFeld) funde.push(`${pfad}: nach dem Öffnen steht der Fokus nicht im Suchfeld`);
+  if (!offen.imFeld)
+    funde.push(`${pfad}: nach dem Öffnen steht der Fokus nicht im Suchfeld`);
   if (offen.eintraege < 5) {
-    funde.push(`${pfad}: die Palette bietet nur ${offen.eintraege} Einträge an`);
+    funde.push(
+      `${pfad}: die Palette bietet nur ${offen.eintraege} Einträge an`,
+    );
   }
 
   /* Eine Suche ohne Treffer muss das sichtbar sagen.
@@ -106,13 +111,19 @@ for (const pfad of ["/", "/en"]) {
     const sichtbarerText = [...dialog.querySelectorAll("*")]
       .filter((e) => {
         const r = e.getBoundingClientRect();
-        return r.width > 1 && r.height > 1 && getComputedStyle(e).visibility !== "hidden";
+        return (
+          r.width > 1 &&
+          r.height > 1 &&
+          getComputedStyle(e).visibility !== "hidden"
+        );
       })
       .map((e) => e.textContent.trim())
       .join(" ");
     return {
       treffer: document.querySelectorAll('[role="option"]').length,
-      hatHinweis: /nichts gefunden|nothing found|no results/i.test(sichtbarerText),
+      hatHinweis: /nichts gefunden|nothing found|no results/i.test(
+        sichtbarerText,
+      ),
     };
   });
 
@@ -131,9 +142,12 @@ for (const pfad of ["/", "/en"]) {
   geprueft++;
   const nachEscape = await seite.evaluate(() => ({
     dialog: Boolean(document.querySelector('[role="dialog"]')),
-    fokus: document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName,
+    fokus:
+      document.activeElement?.getAttribute("aria-label") ??
+      document.activeElement?.tagName,
   }));
-  if (nachEscape.dialog) funde.push(`${pfad}: Escape schließt die Palette nicht`);
+  if (nachEscape.dialog)
+    funde.push(`${pfad}: Escape schließt die Palette nicht`);
   if (!/efehlspalette|ommand palette/.test(String(nachEscape.fokus))) {
     funde.push(
       `${pfad}: nach dem Schließen steht der Fokus auf „${nachEscape.fokus}“ ` +
@@ -161,18 +175,26 @@ for (const pfad of ["/", "/en"]) {
       continue;
     }
 
-    const vorher = { adresse: seite.url(), y: await seite.evaluate(() => window.scrollY) };
+    const vorher = {
+      adresse: seite.url(),
+      y: await seite.evaluate(() => window.scrollY),
+    };
     await seite.keyboard.press("Enter");
     await seite.waitForTimeout(1300);
 
-    const nachher = { adresse: seite.url(), y: await seite.evaluate(() => window.scrollY) };
+    const nachher = {
+      adresse: seite.url(),
+      y: await seite.evaluate(() => window.scrollY),
+    };
     const gewechselt = nachher.adresse !== vorher.adresse;
     const gescrollt = nachher.y > vorher.y + 200;
 
     if (!gewechselt && !gescrollt) {
       funde.push(`${pfad}: Auswahl von „${wort}" führt nirgendwohin`);
     } else if (gewechselt && !ziel.test(nachher.adresse)) {
-      funde.push(`${pfad}: „${wort}" führt nach ${nachher.adresse}, erwartet war ${ziel}`);
+      funde.push(
+        `${pfad}: „${wort}" führt nach ${nachher.adresse}, erwartet war ${ziel}`,
+      );
     }
 
     if (gewechselt) {

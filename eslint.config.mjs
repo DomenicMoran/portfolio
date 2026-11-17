@@ -55,6 +55,18 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+
+  /* Satori-OG-Karten: kein next/image, die Baumstruktur wird zu PNG gerendert. */
+  {
+    files: [
+      "src/**/opengraph-image.tsx",
+      "src/**/opengraph-image/route.tsx",
+      "src/lib/og-card.tsx",
+    ],
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

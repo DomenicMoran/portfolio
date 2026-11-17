@@ -258,7 +258,7 @@ export function OnePager({
                 Kante mehr, an der er sich ausrichtet: „Gespräche jederzeit ·
                 Eintritt nach bis zu drei Monaten" endete mit einem einzelnen
                 Wort in der zweiten Zeile, rechts angeschlagen. */}
-            <div className="text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:text-inherit [&_a]:break-all [&_a]:no-underline">
+            <div className="text-left text-sm leading-[26px] text-[#4a4a55] sm:text-right [&_a]:-my-1 [&_a]:inline-block [&_a]:py-1 [&_a]:break-all [&_a]:text-inherit [&_a]:no-underline">
               <p>{site.location}</p>
               <p>
                 <a href={mailAdresse(site.email, site.mailSubject)}>
@@ -474,7 +474,7 @@ export function OnePager({
               Breite; nur dieser letzte Block tat es nicht. Gedruckt bleibt
               es bei zwei Spalten, weil die Druckdarstellung mit 794 px
               ohnehin über `sm` liegt. */}
-          <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 break-inside-avoid sm:grid-cols-2 print:mt-3 print:gap-y-0">
+          <div className="mt-8 grid break-inside-avoid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 print:mt-3 print:gap-y-0">
             <section>
               <h2 className="mb-3 border-b border-[#d4d4dc] pb-1.5 font-mono text-[11px] tracking-[0.16em] uppercase">
                 {onepager.focus}
@@ -604,7 +604,7 @@ export function OnePager({
             Webseite. Die vier Projekte sind die eigentliche Aussage und
             bleiben. */}
 
-          <footer className="mt-9 flex flex-wrap print:mt-3 items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76]">
+          <footer className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#d4d4dc] pt-4 text-[11.5px] text-[#6a6a76] print:mt-3">
             <span>
               {onepager.fullCaseStudies}{" "}
               {/* Die Adresse fuehrt in die Sprache des Blattes.

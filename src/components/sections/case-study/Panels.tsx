@@ -37,7 +37,7 @@ export function TafelHighlights({
             className={cn("mt-1 size-4 shrink-0", akzent.text)}
             aria-hidden
           />
-          <span className="text-sm leading-relaxed text-ink-dim">{punkt}</span>
+          <span className="text-ink-dim text-sm leading-relaxed">{punkt}</span>
         </li>
       ))}
     </ul>
@@ -57,7 +57,7 @@ export function TafelAutomation({
         <h5 className={cn("text-lg font-semibold tracking-tight", akzent.text)}>
           {daten.title}
         </h5>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-dim text-pretty">
+        <p className="text-ink-dim mt-2 max-w-3xl text-sm leading-relaxed text-pretty">
           {daten.lede}
         </p>
       </div>
@@ -75,7 +75,7 @@ export function TafelAutomation({
                       akzent.bg,
                     )}
                   />
-                  <span className="text-sm leading-relaxed text-ink-dim">
+                  <span className="text-ink-dim text-sm leading-relaxed">
                     {punkt}
                   </span>
                 </li>
@@ -98,7 +98,7 @@ export function TafelStack({ gruppen }: { gruppen: CaseStudy["stack"] }) {
             {gruppe.items.map((punkt) => (
               <li
                 key={punkt}
-                className="rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-ink-dim"
+                className="border-line bg-surface text-ink-dim rounded-md border px-2.5 py-1 font-mono text-[11px]"
               >
                 {punkt}
               </li>

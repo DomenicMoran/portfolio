@@ -27,15 +27,12 @@ import { chromium } from "playwright";
 
 const ADRESSE = process.argv[2] ?? "https://domenicmoran.de";
 
-
 /* Die Zahl steht im Inhalt, nicht hier. Ein fest verdrahteter Erwartungswert
    wäre die zweite Stelle, an der sie gepflegt werden müsste. */
 const inhalt = readFileSync("src/content/site.ts", "utf8");
 const treffer = inhalt.match(/Lighthouse (\d+) Barrierefreiheit/);
 if (!treffer) {
-  console.log(
-    "Die Seite nennt keine Lighthouse-Zahl mehr, nichts zu prüfen.",
-  );
+  console.log("Die Seite nennt keine Lighthouse-Zahl mehr, nichts zu prüfen.");
   process.exit(0);
 }
 const behauptet = Number(treffer[1]);
@@ -83,9 +80,7 @@ const daten = JSON.parse(readFileSync(bericht, "utf8"));
 rmSync(ordner, { recursive: true, force: true });
 
 const gemessen = Math.round(daten.categories.accessibility.score * 100);
-const teil = new Set(
-  daten.categories.accessibility.auditRefs.map((r) => r.id),
-);
+const teil = new Set(daten.categories.accessibility.auditRefs.map((r) => r.id));
 const durchgefallen = Object.values(daten.audits).filter(
   (a) => teil.has(a.id) && a.score !== null && a.score < 1,
 );

@@ -21,7 +21,7 @@ import Link from "next/link";
  */
 export function EnglishNote() {
   return (
-    <p lang="en" className="-mt-4 mb-10 text-sm text-ink-faint">
+    <p lang="en" className="text-ink-faint -mt-4 mb-10 text-sm">
       These two pages are German on purpose: they exist to satisfy German law
       and are addressed to German authorities, so a translation would have
       unclear standing.{" "}
@@ -49,7 +49,7 @@ export function EnglishNote() {
            weiterhin vor. */
         prefetch={false}
         hrefLang="en"
-        className="-my-1 py-1 text-acid underline underline-offset-4"
+        className="text-acid -my-1 py-1 underline underline-offset-4"
       >
         Back to the English version
       </Link>

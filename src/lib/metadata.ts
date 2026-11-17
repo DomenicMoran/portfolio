@@ -45,7 +45,7 @@ export function buildMetadata(content: Content, lang: "de" | "en"): Metadata {
     metadataBase: new URL(base),
     title: {
       default: site.meta.title,
-      template: `%s – ${site.name}`,
+      template: `%s, ${site.name}`,
     },
     description: kurzbeschreibung(site.meta.description),
     applicationName: site.name,
@@ -184,7 +184,7 @@ export function feedFuer(lang: "de" | "en") {
  * Dieselbe Form wie die Vorlage, damit Karte und Browsertitel gleich heißen.
  */
 export function kartenTitel(titel: string) {
-  return `${titel} – ${site.name}`;
+  return `${titel}, ${site.name}`;
 }
 
 /**
@@ -280,7 +280,7 @@ function ogBildFuer(lang: "de" | "en") {
       url: lang === "de" ? "/opengraph-image" : "/en/opengraph-image",
       width: 1200,
       height: 630,
-      alt: `${site.name} – ${site.role}`,
+      alt: `${site.name}, ${site.role}`,
     },
   ];
 }

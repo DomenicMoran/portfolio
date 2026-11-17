@@ -3,7 +3,7 @@
 import { schriftKlassen } from "@/lib/web-fonts";
 import { Marke } from "@/lib/mark";
 import { mailAdresse } from "@/lib/mailto";
-import { de } from "@/content/de";
+import { dokumentTexte } from "@/content/dokument-texte";
 import "./globals.css";
 
 /**
@@ -52,6 +52,7 @@ export default function GlobalError({
      in `node_modules/next/dist/docs`, nicht geraten. */
   unstable_retry: () => void;
 }) {
+  const t = dokumentTexte.de;
   return (
     <html lang="de" className={`${schriftKlassen} h-full antialiased`}>
       <body className="grain flex min-h-full flex-col">
@@ -66,11 +67,11 @@ export default function GlobalError({
               href="/"
               className="group -my-1 mb-10 inline-flex items-center gap-2.5 py-1"
             >
-              <span className="relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border border-acid/25 transition-colors group-hover:border-acid/60">
+              <span className="border-acid/25 group-hover:border-acid/60 relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border transition-colors">
                 <Marke size={28} radius={0} />
               </span>
-              <span className="text-sm font-medium tracking-tight text-ink">
-                {de.site.name}
+              <span className="text-ink text-sm font-medium tracking-tight">
+                {t.name}
               </span>
             </a>
 
@@ -80,7 +81,7 @@ export default function GlobalError({
               Da ist etwas zerbrochen.
             </h1>
 
-            <p className="mt-6 max-w-[58ch] leading-relaxed text-ink-dim text-pretty">
+            <p className="text-ink-dim mt-6 max-w-[58ch] leading-relaxed text-pretty">
               Diese Seite konnte nicht dargestellt werden. Ein neuer Versuch
               hilft meistens; wenn nicht, schreib mir kurz, was du aufgerufen
               hast.
@@ -90,24 +91,24 @@ export default function GlobalError({
               <button
                 type="button"
                 onClick={() => unstable_retry()}
-                className="inline-flex rounded-full border border-transparent bg-acid px-5 py-2.5 text-sm font-medium text-void transition-colors hover:bg-ink"
+                className="bg-acid text-void hover:bg-ink inline-flex rounded-full border border-transparent px-5 py-2.5 text-sm font-medium transition-colors"
               >
                 Noch einmal versuchen
               </button>
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
               <a
                 href="/"
-                className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                className="border-line text-ink-dim hover:border-ink-faint hover:text-ink inline-flex rounded-full border px-5 py-2.5 text-sm transition-colors"
               >
                 Zur Startseite
               </a>
             </div>
 
-            <p lang="en" className="mt-8 text-sm text-ink-faint">
+            <p lang="en" className="text-ink-faint mt-8 text-sm">
               Something broke while rendering this page.{" "}
               <a
                 href="/en"
-                className="-my-1 py-1 text-acid underline underline-offset-4"
+                className="text-acid -my-1 py-1 underline underline-offset-4"
               >
                 Home
               </a>
@@ -117,13 +118,13 @@ export default function GlobalError({
 
         <footer className="px-6 pb-10">
           <div className="mx-auto w-full max-w-2xl">
-            <p className="border-t border-line pt-6 text-sm text-ink-faint">
-              {de.notFound.report}{" "}
+            <p className="border-line text-ink-faint border-t pt-6 text-sm">
+              {t.notFoundReport}{" "}
               <a
-                href={mailAdresse(de.site.email, de.site.mailSubject)}
-                className="-my-1 py-1 text-acid underline underline-offset-4"
+                href={mailAdresse(t.email, t.mailSubject)}
+                className="text-acid -my-1 py-1 underline underline-offset-4"
               >
-                {de.site.email}
+                {t.email}
               </a>
             </p>
 
@@ -138,20 +139,20 @@ export default function GlobalError({
                 Harte Verweise wie oben, kein `Link`: Der React-Baum ist hier
                 gerade zerbrochen, ein Routerwechsel würde denselben Baum neu
                 zu betreten versuchen. */}
-            <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] text-ink-faint">
+            <p className="text-ink-faint mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px]">
               <a
                 href="/impressum"
                 hrefLang="de"
-                className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+                className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
               >
-                {de.footer.impressum}
+                {t.impressum}
               </a>
               <a
                 href="/datenschutz"
                 hrefLang="de"
-                className="-my-2 py-2 underline underline-offset-4 transition-colors hover:text-ink-dim"
+                className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
               >
-                {de.footer.datenschutz}
+                {t.datenschutz}
               </a>
             </p>
           </div>

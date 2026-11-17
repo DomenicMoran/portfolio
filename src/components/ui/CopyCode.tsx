@@ -76,10 +76,10 @@ export function CopyCode({
       <button
         type="button"
         onClick={kopieren}
-        className="inline-flex h-8 items-center gap-1.5 rounded-md border border-line bg-surface/60 px-2.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink"
+        className="border-line bg-surface/60 text-ink-faint hover:border-ink-faint hover:text-ink inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 font-mono text-[11px] transition-colors"
       >
         {stand === "kopiert" ? (
-          <Check className="size-3 text-acid" aria-hidden />
+          <Check className="text-acid size-3" aria-hidden />
         ) : (
           <Copy className="size-3" aria-hidden />
         )}

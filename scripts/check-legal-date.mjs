@@ -170,8 +170,18 @@ if (!angezeigt.includes(STAND)) {
    scheitern. */
 {
   const MONATE = [
-    "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember",
+    "Januar",
+    "Februar",
+    "März",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
   ];
   const teile = /^(\d{1,2})\.\s+([A-Za-zä]+)\s+(\d{4})$/.exec(STAND.trim());
   if (!teile) {
@@ -183,7 +193,9 @@ if (!angezeigt.includes(STAND)) {
   }
   const monat = MONATE.indexOf(teile[2]);
   if (monat < 0) {
-    console.error(`Der Monat „${teile[2]}" aus dem Stand ist keiner der zwölf.`);
+    console.error(
+      `Der Monat „${teile[2]}" aus dem Stand ist keiner der zwölf.`,
+    );
     process.exit(1);
   }
   const stand = Date.UTC(Number(teile[3]), monat, Number(teile[1]));
@@ -269,7 +281,9 @@ if (!/\/api\/revalidate/.test(text)) {
     : null;
 
   if (!richtige) {
-    console.log("  --  Keine Adresse in site.ts gefunden, Vergleich übersprungen.");
+    console.log(
+      "  --  Keine Adresse in site.ts gefunden, Vergleich übersprungen.",
+    );
   } else {
     const MUSTER = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
     const fremde = new Map();
@@ -294,7 +308,9 @@ if (!/\/api\/revalidate/.test(text)) {
         `Neben ${richtige} stehen weitere Adressen im Ausgelieferten:` +
           String.fromCharCode(10) +
           String.fromCharCode(10) +
-          [...fremde].map(([a, n]) => `  ${a} (${n}×)`).join(String.fromCharCode(10)) +
+          [...fremde]
+            .map(([a, n]) => `  ${a} (${n}×)`)
+            .join(String.fromCharCode(10)) +
           String.fromCharCode(10) +
           String.fromCharCode(10) +
           `Eine Auskunftsanfrage oder eine Sicherheitsmeldung an die falsche ` +
@@ -327,8 +343,14 @@ if (!/\/api\/revalidate/.test(text)) {
    ist etwas anderes: Er beruht auf § 36 VSBG und gilt weiter. */
 {
   const VERALTET = [
-    [/ec\.europa\.eu\/consumers\/odr/i, "Verweis auf die abgeschaltete ODR-Plattform"],
-    [/Plattform der EU zur Online-Streitbeilegung/i, "Hinweis auf die OS-Plattform"],
+    [
+      /ec\.europa\.eu\/consumers\/odr/i,
+      "Verweis auf die abgeschaltete ODR-Plattform",
+    ],
+    [
+      /Plattform der EU zur Online-Streitbeilegung/i,
+      "Hinweis auf die OS-Plattform",
+    ],
     [/OS-Plattform/i, "Hinweis auf die OS-Plattform"],
   ];
 
@@ -422,7 +444,11 @@ if (!/\/api\/revalidate/.test(text)) {
     for (const blatt of ERLAUBT) {
       const datei = join(bau, blatt);
       if (!existsSync(datei)) continue;
-      if (!/name="robots"[^>]*content="[^"]*noindex/.test(readFileSync(datei, "utf8"))) {
+      if (
+        !/name="robots"[^>]*content="[^"]*noindex/.test(
+          readFileSync(datei, "utf8"),
+        )
+      ) {
         console.error(
           `${blatt} nennt die Privatanschrift, trägt aber kein noindex.`,
         );
@@ -455,7 +481,9 @@ if (!/\/api\/revalidate/.test(text)) {
 {
   const quelle = "src/proxy.ts";
   if (!existsSync(quelle)) {
-    console.log("  --  src/proxy.ts fehlt, Zusage über die Funktion übersprungen.");
+    console.log(
+      "  --  src/proxy.ts fehlt, Zusage über die Funktion übersprungen.",
+    );
   } else if (/Vor jeder Auslieferung läuft beim Hoster/.test(text)) {
     const code = readFileSync(quelle, "utf8")
       /* Kommentare erklären, was der Code nicht tut, sie sind kein Code. */
@@ -749,7 +777,9 @@ const FRISTEN = new Map([
   )?.[1];
 
   if (!genannteFrist) {
-    console.log("  --  Keine Aufbewahrungsfrist im Text, Tarifprüfung entfällt.");
+    console.log(
+      "  --  Keine Aufbewahrungsfrist im Text, Tarifprüfung entfällt.",
+    );
   } else {
     let token = null;
     try {

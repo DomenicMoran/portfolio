@@ -75,13 +75,16 @@ if (!TOKEN) {
 }
 
 async function commitsIn(repo) {
-  const antwort = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=1`, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "User-Agent": "domenicmoran.de-zahlen",
+  const antwort = await fetch(
+    `https://api.github.com/repos/${repo}/commits?per_page=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "domenicmoran.de-zahlen",
+      },
     },
-  });
+  );
 
   // Nicht sofort werfen: Sonst nennt die Meldung nur das erste unerreichbare
   // Repository, und wer das Token einrichtet, gibt ein Recht frei, läuft
@@ -122,7 +125,9 @@ async function dateienIn(repo, treffer) {
     Accept: "application/vnd.github+json",
     "User-Agent": "domenicmoran.de-zahlen",
   };
-  const daten = await fetch(`https://api.github.com/repos/${repo}`, { headers: kopf });
+  const daten = await fetch(`https://api.github.com/repos/${repo}`, {
+    headers: kopf,
+  });
   if (!daten.ok) return { fehler: `HTTP ${daten.status}` };
   const zweig = (await daten.json()).default_branch;
 
@@ -171,7 +176,9 @@ if (fehlend.length) {
 
 const summe = je.reduce((n, e) => n + e.anzahl, 0);
 const heute = new Date().toISOString().slice(0, 10);
-console.log(`  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repositories`);
+console.log(
+  `  ${String(summe).padStart(5)}  zusammen über ${REPOS.length} Repositories`,
+);
 
 /* Die Commits des Salati-Repos einzeln.
 
@@ -224,4 +231,6 @@ if (text === alt) {
 }
 
 writeFileSync(ZIEL, text, "utf8");
-console.log(`\n${ZIEL} aufgefrischt: ${neu.commitsHead} Commits, Stand ${heute}.`);
+console.log(
+  `\n${ZIEL} aufgefrischt: ${neu.commitsHead} Commits, Stand ${heute}.`,
+);

@@ -7,6 +7,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { useScrollSperre } from "@/lib/scroll-lock";
+import { halteFokusImDialog, sperreRestDerSeite } from "@/lib/fokus-im-dialog";
 import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
@@ -99,15 +100,25 @@ export function Nav({
        wurde das erst, als `aria-expanded` den Zustand mitführte; vorher sah
        ein Test nach dem Tastendruck dasselbe wie davor. */
     const beiTaste = (ereignis: KeyboardEvent) => {
+      if (ereignis.key === "Tab" && schublade.current) {
+        halteFokusImDialog(schublade.current, ereignis);
+        return;
+      }
       if (ereignis.key === "Escape") setMenuOpen(false);
     };
 
     document.addEventListener("focusin", zurueckholen);
-    window.addEventListener("keydown", beiTaste);
+    window.addEventListener("keydown", beiTaste, true);
+    const freigeben = schublade.current
+      ? sperreRestDerSeite(schublade.current)
+      : () => {};
     return () => {
       window.clearTimeout(hinein);
       document.removeEventListener("focusin", zurueckholen);
-      window.removeEventListener("keydown", beiTaste);
+      window.removeEventListener("keydown", beiTaste, true);
+      /* Erst die Sperre lösen, dann den Fokus zurückgeben: Sonst bleibt der
+         Auslöser inert und nimmt den Fokus nicht an. */
+      freigeben();
       /* Und beim Schließen dorthin zurück, wo er herkam. Ohne das landet er
          auf `body`, und der Weg durch die Seite beginnt von vorn. */
       ausloeser?.focus();
@@ -170,10 +181,10 @@ export function Nav({
                 Vorher stand hier ein dunkles D auf gruener Flaeche und dort
                 ein gruenes auf dunkler: zwei Marken fuer dieselbe Seite. Die
                 Form kommt jetzt aus einer Datei. */}
-            <span className="relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border border-acid/25 transition-colors group-hover:border-acid/60">
+            <span className="border-acid/25 group-hover:border-acid/60 relative grid size-7 shrink-0 place-items-center overflow-hidden rounded-md border transition-colors">
               <Marke size={28} radius={0} />
             </span>
-            <span className="hidden text-sm font-medium tracking-tight text-ink sm:block">
+            <span className="text-ink hidden text-sm font-medium tracking-tight sm:block">
               {site.name}
             </span>
           </a>
@@ -207,7 +218,7 @@ export function Nav({
                       <motion.span
                         layoutId="nav-aktiv"
                         aria-hidden
-                        className="absolute inset-0 -z-10 rounded-full bg-raised"
+                        className="bg-raised absolute inset-0 -z-10 rounded-full"
                         transition={{ duration: 0.4, ease: ease.expo }}
                       />
                     ) : null}
@@ -231,7 +242,7 @@ export function Nav({
               hrefLang={c.languageSwitch.to}
               lang={c.languageSwitch.to}
               aria-label={c.languageSwitch.aria}
-              className="rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim"
+              className="border-line text-ink-faint hover:border-ink-faint hover:text-ink-dim rounded-full border px-3 py-1.5 font-mono text-[11px] transition-colors"
             >
               {c.languageSwitch.label}
             </Link>
@@ -244,7 +255,7 @@ export function Nav({
               // Menuepunkte brechen dann auf zwei Zeilen und die Leiste wird
               // 70 statt 56 px hoch. Der Tastaturhinweis ist der Teil, der am
               // wenigsten fehlt: Die Tastenkombination funktioniert weiterhin.
-              className="hidden items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] text-ink-faint transition-colors hover:border-ink-faint hover:text-ink-dim xl:flex"
+              className="border-line text-ink-faint hover:border-ink-faint hover:text-ink-dim hidden items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[11px] transition-colors xl:flex"
               aria-label={a11y.commandPalette}
             >
               {/* Das ⌘-Zeichen nur dort, wo die Taste so heißt. Auf allen
@@ -260,7 +271,7 @@ export function Nav({
 
             <a
               href={zuAnker("#contact")}
-              className="hidden rounded-full border border-transparent bg-ink px-4 py-1.5 text-sm font-medium text-void transition-colors hover:bg-acid sm:block"
+              className="bg-ink text-void hover:bg-acid hidden rounded-full border border-transparent px-4 py-1.5 text-sm font-medium transition-colors sm:block"
             >
               {c.navContact}
             </a>
@@ -269,7 +280,7 @@ export function Nav({
               type="button"
               ref={menuKnopf}
               onClick={() => setMenuOpen(true)}
-              className="grid size-9 place-items-center rounded-full border border-line text-ink-dim lg:hidden"
+              className="border-line text-ink-dim grid size-9 place-items-center rounded-full border lg:hidden"
               /* Der Zustand gehört an den Knopf: Ein Vorleseprogramm sagte
                  sonst „Menü öffnen“ und verschwieg, dass es offen ist. */
               aria-expanded={menuOpen}
@@ -302,17 +313,17 @@ export function Nav({
             role="dialog"
             aria-modal="true"
             aria-label={a11y.mainNav}
-            className="fixed inset-0 z-[9995] bg-void/95 backdrop-blur-xl lg:hidden"
+            className="bg-void/95 fixed inset-0 z-[9995] backdrop-blur-xl lg:hidden"
           >
             <div className="flex h-full flex-col p-6">
               <div className="flex items-center justify-between">
                 <Link
                   href={sprachZiel}
-              prefetch={false}
+                  prefetch={false}
                   hrefLang={c.languageSwitch.to}
                   lang={c.languageSwitch.to}
                   aria-label={c.languageSwitch.aria}
-                  className="rounded-full border border-line px-3.5 py-2 font-mono text-[11px] text-ink-faint"
+                  className="border-line text-ink-faint rounded-full border px-3.5 py-2 font-mono text-[11px]"
                 >
                   {c.languageSwitch.label}
                 </Link>
@@ -320,7 +331,7 @@ export function Nav({
                   type="button"
                   ref={schliessKnopf}
                   onClick={() => setMenuOpen(false)}
-                  className="grid size-10 place-items-center rounded-full border border-line text-ink"
+                  className="border-line text-ink grid size-10 place-items-center rounded-full border"
                   aria-label={a11y.closeMenu}
                 >
                   <X className="size-5" aria-hidden />
@@ -346,7 +357,7 @@ export function Nav({
                         href={zuAnker(item.href)}
                         onClick={() => setMenuOpen(false)}
                         aria-current={istAktiv ? "true" : undefined}
-                        className="flex items-center gap-3 border-b border-line py-4 text-3xl font-semibold tracking-tight text-ink"
+                        className="border-line text-ink flex items-center gap-3 border-b py-4 text-3xl font-semibold tracking-tight"
                       >
                         {/* Der Punkt markiert den Abschnitt, in dem der Leser
                             gerade steht, damit das Menü nicht wie eine Liste
@@ -367,7 +378,7 @@ export function Nav({
 
               <a
                 href={mailAdresse(site.email, site.mailSubject)}
-                className="mt-auto rounded-full border border-transparent bg-acid py-4 text-center font-medium text-void"
+                className="bg-acid text-void mt-auto rounded-full border border-transparent py-4 text-center font-medium"
               >
                 {site.email}
               </a>

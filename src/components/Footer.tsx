@@ -55,7 +55,7 @@ export function Footer({
   }[];
 
   return (
-    <footer className="relative overflow-hidden border-t border-line px-6 pt-20 pb-10">
+    <footer className="border-line relative overflow-hidden border-t px-6 pt-20 pb-10">
       <div className="mx-auto max-w-6xl">
         {/* Der Schriftzug als Schlussakkord.
             `whitespace-nowrap` plus kleinerer Maximalwert: Bei 15vw brach der
@@ -64,19 +64,19 @@ export function Footer({
             ausgeblendet. Einzeilig liest sich derselbe Verlauf als Absicht. */}
         <p
           aria-hidden
-          className="mb-14 bg-gradient-to-b from-ink/14 to-transparent bg-clip-text text-[clamp(2rem,9.5vw,8rem)] leading-[0.9] font-semibold tracking-[-0.05em] whitespace-nowrap text-transparent select-none"
+          className="from-ink/14 mb-14 bg-gradient-to-b to-transparent bg-clip-text text-[clamp(2rem,9.5vw,8rem)] leading-[0.9] font-semibold tracking-[-0.05em] whitespace-nowrap text-transparent select-none"
         >
           {site.name}
         </p>
 
-        <div className="grid gap-10 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="border-line grid gap-10 border-t pt-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Wer, wo, wie erreichbar */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-ink">{site.role}</p>
-            <p className="text-sm text-ink-dim">{site.location}</p>
+            <p className="text-ink text-sm">{site.role}</p>
+            <p className="text-ink-dim text-sm">{site.location}</p>
             <a
               href={mailAdresse(site.email, site.mailSubject)}
-              className="-my-1 w-fit py-1 text-sm break-all text-ink-dim transition-colors hover:text-acid"
+              className="text-ink-dim hover:text-acid -my-1 w-fit py-1 text-sm break-all transition-colors"
             >
               {site.email}
             </a>
@@ -93,7 +93,7 @@ export function Footer({
                 <a
                   key={item.href}
                   href={`${hashBase}${item.href}`}
-                  className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                  className="text-ink-dim hover:text-ink w-fit max-w-full py-2 text-sm transition-colors"
                 >
                   {item.label}
                 </a>
@@ -108,7 +108,7 @@ export function Footer({
               <a
                 href={recruiter.cta.pdf.href}
                 download
-                className="group flex w-fit max-w-full items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="group text-ink-dim hover:text-ink flex w-fit max-w-full items-center gap-1.5 py-2 text-sm transition-colors"
               >
                 {footer.onepager}
                 <ArrowUpRight
@@ -122,7 +122,7 @@ export function Footer({
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex w-fit items-center gap-2 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                  className="group text-ink-dim hover:text-ink flex w-fit items-center gap-2 py-2 text-sm transition-colors"
                 >
                   <social.icon className="size-3.5" aria-hidden />
                   {social.label}
@@ -137,7 +137,7 @@ export function Footer({
                 prefetch={false}
                 hrefLang={languageSwitch.to}
                 lang={languageSwitch.to}
-                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="text-ink-dim hover:text-ink w-fit max-w-full py-2 text-sm transition-colors"
               >
                 {languageSwitch.label}
               </Link>
@@ -158,7 +158,7 @@ export function Footer({
                 href="/impressum"
                 prefetch={false}
                 hrefLang="de"
-                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="text-ink-dim hover:text-ink w-fit max-w-full py-2 text-sm transition-colors"
               >
                 {footer.impressum}
               </Link>
@@ -166,7 +166,7 @@ export function Footer({
                 href="/datenschutz"
                 prefetch={false}
                 hrefLang="de"
-                className="w-fit max-w-full py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="text-ink-dim hover:text-ink w-fit max-w-full py-2 text-sm transition-colors"
               >
                 {footer.datenschutz}
               </Link>
@@ -174,7 +174,7 @@ export function Footer({
                 href={footer.sourceHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex w-fit max-w-full items-center gap-1.5 py-2 text-sm text-ink-dim transition-colors hover:text-ink"
+                className="group text-ink-dim hover:text-ink flex w-fit max-w-full items-center gap-1.5 py-2 text-sm transition-colors"
               >
                 {footer.sourceLabel}
                 <ArrowUpRight
@@ -187,15 +187,15 @@ export function Footer({
                 Rechtstexte bleiben deutsch, und das soll ein englischer Leser
                 erfahren, bevor er klickt. */}
             {footer.legalNote ? (
-              <p className="mt-1 max-w-[36ch] text-[11px] leading-relaxed text-ink-faint">
+              <p className="text-ink-faint mt-1 max-w-[36ch] text-[11px] leading-relaxed">
                 {footer.legalNote}
               </p>
             ) : null}
           </div>
         </div>
 
-        <div className="mt-12 border-t border-line pt-6">
-          <p className="font-mono text-[11px] text-ink-faint">
+        <div className="border-line mt-12 border-t pt-6">
+          <p className="text-ink-faint font-mono text-[11px]">
             © {year} {site.name}
           </p>
         </div>

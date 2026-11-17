@@ -32,7 +32,22 @@ export function SmoothScroll() {
     let aufraeumen = () => {};
     let abgebrochen = false;
 
-    void (async () => {
+    const whenIdle = (work: () => void) => {
+      const w = window as typeof window & {
+        requestIdleCallback?: (
+          cb: () => void,
+          opts?: { timeout: number },
+        ) => void;
+      };
+      if (typeof w.requestIdleCallback === "function") {
+        w.requestIdleCallback(work, { timeout: 4000 });
+      } else {
+        window.setTimeout(work, 1200);
+      }
+    };
+
+    const start = () => whenIdle(() => void loadLenis());
+    const loadLenis = async () => {
       const { default: Lenis } = await import("lenis");
       /* Zwischen Anfrage und Antwort kann die Komponente abgebaut worden
          sein. Ohne diese Abfrage liefe danach eine Animationsschleife auf
@@ -47,7 +62,10 @@ export function SmoothScroll() {
           touchMultiplier: 1.6,
         }),
       );
-    })();
+    };
+
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
 
     return () => {
       abgebrochen = true;

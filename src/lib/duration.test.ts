@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { alsWort, asWord, grossErstes, jahreZwischen, monateZwischen } from "./duration";
+import {
+  alsWort,
+  asWord,
+  grossErstes,
+  jahreZwischen,
+  monateZwischen,
+} from "./duration";
 
 /*
    Der teure Fall steht zuerst: der Tag vor und der Tag nach dem Stichtag.
@@ -18,8 +24,12 @@ describe("monateZwischen", () => {
   });
 
   it("rechnet über den Jahreswechsel", () => {
-    expect(monateZwischen(new Date("2026-11-10"), new Date("2027-02-10"))).toBe(3);
-    expect(monateZwischen(new Date("2026-11-10"), new Date("2027-02-09"))).toBe(2);
+    expect(monateZwischen(new Date("2026-11-10"), new Date("2027-02-10"))).toBe(
+      3,
+    );
+    expect(monateZwischen(new Date("2026-11-10"), new Date("2027-02-09"))).toBe(
+      2,
+    );
   });
 
   it("gibt am ersten Tag einen Monat aus statt null", () => {
@@ -33,12 +43,18 @@ describe("monateZwischen", () => {
 
 describe("jahreZwischen", () => {
   it("zählt volle Jahre", () => {
-    expect(jahreZwischen(new Date("2022-07-01"), new Date("2026-06-30"))).toBe(3);
-    expect(jahreZwischen(new Date("2022-07-01"), new Date("2026-07-01"))).toBe(4);
+    expect(jahreZwischen(new Date("2022-07-01"), new Date("2026-06-30"))).toBe(
+      3,
+    );
+    expect(jahreZwischen(new Date("2022-07-01"), new Date("2026-07-01"))).toBe(
+      4,
+    );
   });
 
   it("gibt mindestens ein Jahr aus", () => {
-    expect(jahreZwischen(new Date("2026-07-01"), new Date("2026-07-02"))).toBe(1);
+    expect(jahreZwischen(new Date("2026-07-01"), new Date("2026-07-02"))).toBe(
+      1,
+    );
   });
 });
 

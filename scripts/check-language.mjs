@@ -50,7 +50,10 @@ const NUR_DEUTSCH = ["/impressum", "/datenschutz"];
  * deshalb nur, was für den Leser zählt, die richtige Dokumentsprache, der
  * ausgezeichnete Satz in der anderen Sprache und der Weg dorthin.
  */
-const FEHLERSEITEN = ["/diese-adresse-gibt-es-nicht", "/en/this-address-does-not-exist"];
+const FEHLERSEITEN = [
+  "/diese-adresse-gibt-es-nicht",
+  "/en/this-address-does-not-exist",
+];
 
 /**
  * Eigennamen tragen ihre Umlaute in jede Sprache mit. WCAG 3.1.2 nimmt sie
@@ -75,7 +78,9 @@ const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const stand = new Map();
 
 for (const pfad of pfade) {
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "domcontentloaded" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "domcontentloaded",
+  });
   // Die Fehlerseite antwortet mit 404, und das ist ihr richtiger Status.
   const erwarteterStatus = FEHLERSEITEN.includes(pfad) ? 404 : 200;
   if (!antwort || antwort.status() !== erwarteterStatus) {
@@ -83,11 +88,29 @@ for (const pfad of pfade) {
     continue;
   }
 
+  /* Der sichtbare Umschalter sitzt in der nachgeladenen Leiste. Auf der
+     Startseite steht er nicht im ersten HTML, das nur den Hero-Vorspann
+     ausliefert. Gewartet wird auf den Link selbst, nicht auf eine Pause. */
+  await seite
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll("a")].some((e) =>
+          /^(English|Deutsch)$/i.test((e.textContent || "").trim()),
+        ),
+      undefined,
+      { timeout: 15000 },
+    )
+    .catch(() => {
+      /* Fehlt der Umschalter, sagt die Auswertung unten welche Seite. */
+    });
+
   const daten = await seite.evaluate((eigennamenQuelle) => {
     const eigennamen = new RegExp(eigennamenQuelle);
 
     const alternativen = {};
-    for (const el of document.querySelectorAll('link[rel="alternate"][hreflang]')) {
+    for (const el of document.querySelectorAll(
+      'link[rel="alternate"][hreflang]',
+    )) {
       alternativen[el.getAttribute("hreflang")] = el.getAttribute("href");
     }
 
@@ -141,7 +164,7 @@ for (const pfad of pfade) {
       /\b(Diese|Adresse|gibt|nicht|Weiter|deutschen|Fassung|Seite|Impressum|Datenschutz|über|und|oder|eine|einen|einem|eigene|jeder|jede|jedes|seine|ihre|wurde|wurden|wird|werden|sind|ist|sich|dass|weil|auch|durch|wenn|nach|kein|keine|selbst|schon|noch|immer|mehr|beim|vom|zum|zur|als|aus|bei|mit|von|für|der|den|dem)\b/;
     const deutsch = [];
     const lauf = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    for (let knoten; (knoten = lauf.nextNode()); ) {
+    for (let knoten; (knoten = lauf.nextNode());) {
       const text = knoten.textContent.trim();
       if (!text) continue;
       if (!/[äöüßÄÖÜ]/.test(text) && !DEUTSCHE_WOERTER.test(text)) continue;
@@ -157,11 +180,19 @@ for (const pfad of pfade) {
        deutsche Seite einen englischen Satz trägt; dort steht einer, und zwar
        genau der, der zur englischen Fassung führt. */
     const englischerText = [];
-    const lauf2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    for (let knoten; (knoten = lauf2.nextNode()); ) {
+    const lauf2 = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+    );
+    for (let knoten; (knoten = lauf2.nextNode());) {
       const text = knoten.textContent.trim();
       if (text.length < 12) continue;
-      if (!/\b(does not exist|Continue on the|This page|This address)\b/.test(text)) continue;
+      if (
+        !/\b(does not exist|Continue on the|This page|This address)\b/.test(
+          text,
+        )
+      )
+        continue;
       const el = knoten.parentElement;
       if (!el || !el.offsetParent) continue;
       if (el.closest('[lang="en"]')) continue;
@@ -173,7 +204,9 @@ for (const pfad of pfade) {
        Verweis eine englische Seite an und liefert eine deutsche, und ein
        Vorleseprogramm wechselt die Aussprache nicht. */
     const rechtsverweise = [...document.querySelectorAll("a")]
-      .filter((e) => ["/impressum", "/datenschutz"].includes(e.getAttribute("href")))
+      .filter((e) =>
+        ["/impressum", "/datenschutz"].includes(e.getAttribute("href")),
+      )
       .map((e) => ({
         ziel: e.getAttribute("href"),
         hreflang: e.getAttribute("hreflang"),
@@ -260,7 +293,10 @@ for (const [pfad, daten] of stand) {
     /* Kein hreflang, keine Gegenfassung im Verzeichnis, sie ist `noindex`.
        Was zählt, ist der Weg weiter und der ausgezeichnete Satz dorthin. */
     const zielAndereFassung = englisch ? "/" : "/en";
-    if (!daten.wechsel.some((z) => alsPfad(z) === zielAndereFassung) && !daten.rueckweg) {
+    if (
+      !daten.wechsel.some((z) => alsPfad(z) === zielAndereFassung) &&
+      !daten.rueckweg
+    ) {
       funde.push(`${pfad}: kein Weg zur anderen Sprachfassung`);
     }
     if (englisch && daten.deutsch.length > 0) {
@@ -297,11 +333,15 @@ for (const [pfad, daten] of stand) {
   const standard = daten.alternativen["x-default"];
 
   if (!de || !en) {
-    funde.push(`${pfad}: hreflang unvollständig (de=${de ?? "-"}, en=${en ?? "-"})`);
+    funde.push(
+      `${pfad}: hreflang unvollständig (de=${de ?? "-"}, en=${en ?? "-"})`,
+    );
     continue;
   }
   if (standard !== de) {
-    funde.push(`${pfad}: x-default zeigt auf ${standard ?? "-"}, die deutsche Fassung ist ${de}`);
+    funde.push(
+      `${pfad}: x-default zeigt auf ${standard ?? "-"}, die deutsche Fassung ist ${de}`,
+    );
   }
 
   /* Die eigene Seite muss unter ihrer Sprache stehen, sonst zeigt die
@@ -317,7 +357,10 @@ for (const [pfad, daten] of stand) {
   const gegenstand = stand.get(gegen);
   if (!gegenstand) {
     funde.push(`${pfad}: Gegenfassung ${gegen} gibt es nicht`);
-  } else if (gegenstand.alternativen.de !== de || gegenstand.alternativen.en !== en) {
+  } else if (
+    gegenstand.alternativen.de !== de ||
+    gegenstand.alternativen.en !== en
+  ) {
     funde.push(
       `${pfad} und ${gegen} nennen verschiedene Paare: ` +
         `hier de=${alsPfad(de)}/en=${alsPfad(en)}, dort ` +
@@ -367,7 +410,9 @@ await browser.close();
 beenden();
 
 if (funde.length > 0) {
-  console.error(`${funde.length} Stelle bindet die Sprachfassungen nicht sauber:\n`);
+  console.error(
+    `${funde.length} Stelle bindet die Sprachfassungen nicht sauber:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   process.exit(1);
 }

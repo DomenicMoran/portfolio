@@ -35,6 +35,26 @@ const MINDESTTEXT = 40;
 /** Ein Diagramm braucht Beschriftungen, keine Fläche. */
 const MINDESTTEXTE_IM_DIAGRAMM = 8;
 
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten hidden, und der Klick auf den nächsten Reiter
+ * läuft in eine Zeitüberschreitung. Dieselbe Öffnung steht in
+ * check-print und check-a11y. Gemessen in CI 44070904606: der Lauf
+ * brach nach 30 s an einem unsichtbaren Reiter ab.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
 const vorgegebeneBasis = process.argv[2];
 let beenden = () => {};
 let basis = vorgegebeneBasis;
@@ -48,7 +68,9 @@ let tafeln = 0;
 let strecken = 0;
 
 for (const pfad of SEITEN) {
-  const antwort = await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
+  const antwort = await seite.goto(`${basis}${pfad}`, {
+    waitUntil: "networkidle",
+  });
   if (!antwort || antwort.status() !== 200) {
     funde.push(`${pfad}: HTTP ${antwort?.status()}`);
     continue;
@@ -62,6 +84,7 @@ for (const pfad of SEITEN) {
     }
   });
   await seite.waitForTimeout(700);
+  await oeffneFallstudien(seite);
 
   /* `[data-tafel='voll']` statt `article[id^='case-']`: Seit dem Umschalter
      in `WeitereProjekte` tragen auch die eingeklappten, reiterlosen Karten
@@ -83,6 +106,15 @@ for (const pfad of SEITEN) {
     }
 
     for (const knopf of reiter) {
+      const sichtbar = await knopf.evaluate((el) => {
+        const stil = getComputedStyle(el);
+        if (stil.display === "none" || stil.visibility === "hidden") {
+          return false;
+        }
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      });
+      if (!sichtbar) continue;
       const beschriftung = ((await knopf.textContent()) ?? "").trim();
       await knopf.click();
       await seite.waitForTimeout(500);
@@ -108,32 +140,32 @@ for (const pfad of SEITEN) {
       }
       tafeln++;
 
-      const stand = await studie.evaluate(
-        (el, mindestTexte) => {
-          const tafel = el.querySelector('[role="tabpanel"]');
-          if (!tafel) return { fehlt: true };
-          const text = tafel.innerText.trim();
+      const stand = await studie.evaluate((el, mindestTexte) => {
+        const tafel = el.querySelector('[role="tabpanel"]');
+        if (!tafel) return { fehlt: true };
+        const text = tafel.innerText.trim();
 
-          /* Das größte SVG der Tafel ist das Diagramm, die kleinen sind
+        /* Das größte SVG der Tafel ist das Diagramm, die kleinen sind
              Symbole aus der Icon-Bibliothek, und eines davon ist eine
              Deko-Fläche ohne Beschriftung. Der erste Anlauf nahm das erste
              gefundene und hielt zwei fertige Diagramme für leer. */
-          const svgs = [...tafel.querySelectorAll("svg")]
-            .map((e) => ({ e, r: e.getBoundingClientRect() }))
-            .filter(({ r }) => r.width > 200 && r.height > 120)
-            .sort((a, b) => b.r.width * b.r.height - a.r.width * a.r.height);
+        const svgs = [...tafel.querySelectorAll("svg")]
+          .map((e) => ({ e, r: e.getBoundingClientRect() }))
+          .filter(({ r }) => r.width > 200 && r.height > 120)
+          .sort((a, b) => b.r.width * b.r.height - a.r.width * a.r.height);
 
-          const groesstes = svgs[0];
-          return {
-            text,
-            laenge: text.length,
-            diagramm: groesstes
-              ? {
-                  breite: Math.round(groesstes.r.width),
-                  hoehe: Math.round(groesstes.r.height),
-                  texte: groesstes.e.querySelectorAll("text").length,
-                  reicht: groesstes.e.querySelectorAll("text").length >= mindestTexte,
-                  /* Die Textfassung muss dasselbe sagen wie die Zeichnung.
+        const groesstes = svgs[0];
+        return {
+          text,
+          laenge: text.length,
+          diagramm: groesstes
+            ? {
+                breite: Math.round(groesstes.r.width),
+                hoehe: Math.round(groesstes.r.height),
+                texte: groesstes.e.querySelectorAll("text").length,
+                reicht:
+                  groesstes.e.querySelectorAll("text").length >= mindestTexte,
+                /* Die Textfassung muss dasselbe sagen wie die Zeichnung.
 
                      Das Diagramm trägt `role="img"`, und damit liest ein
                      Screenreader seine Beschriftungen nicht vor, das ist der
@@ -147,29 +179,29 @@ for (const pfad of SEITEN) {
                      blinden Leser eine Architektur, in der dieser Knoten
                      nicht vorkommt. Sichtbar wird das nie, denn beide Fassungen
                      sehen für sich vollständig aus. */
-                  fehlendeInText: (() => {
-                    const liste = groesstes.e
-                      .closest("figure")
-                      ?.querySelector(".sr-only");
-                    if (!liste) return ["(keine sr-only-Fassung)"];
-                    const gesagt = liste.textContent
-                      .replace(/\s+/g, " ")
-                      .toLowerCase();
-                    const fehlen = [];
-                    for (const knoten of groesstes.e.querySelectorAll("text")) {
-                      const wort = knoten.textContent.trim();
-                      if (wort.length < 3) continue;
-                      if (!gesagt.includes(wort.replace(/\s+/g, " ").toLowerCase()))
-                        fehlen.push(wort.slice(0, 34));
-                    }
-                    return fehlen;
-                  })(),
-                }
-              : null,
-          };
-        },
-        MINDESTTEXTE_IM_DIAGRAMM,
-      );
+                fehlendeInText: (() => {
+                  const liste = groesstes.e
+                    .closest("figure")
+                    ?.querySelector(".sr-only");
+                  if (!liste) return ["(keine sr-only-Fassung)"];
+                  const gesagt = liste.textContent
+                    .replace(/\s+/g, " ")
+                    .toLowerCase();
+                  const fehlen = [];
+                  for (const knoten of groesstes.e.querySelectorAll("text")) {
+                    const wort = knoten.textContent.trim();
+                    if (wort.length < 3) continue;
+                    if (
+                      !gesagt.includes(wort.replace(/\s+/g, " ").toLowerCase())
+                    )
+                      fehlen.push(wort.slice(0, 34));
+                  }
+                  return fehlen;
+                })(),
+              }
+            : null,
+        };
+      }, MINDESTTEXTE_IM_DIAGRAMM);
 
       const wo = `${pfad} ${kennung} · „${beschriftung}"`;
       if (stand.fehlt) {
@@ -177,7 +209,9 @@ for (const pfad of SEITEN) {
         continue;
       }
       if (stand.laenge < MINDESTTEXT) {
-        funde.push(`${wo}: nur ${stand.laenge} Zeichen, „${stand.text.slice(0, 30)}“`);
+        funde.push(
+          `${wo}: nur ${stand.laenge} Zeichen, „${stand.text.slice(0, 30)}“`,
+        );
       }
       // Wo ein Diagramm steht, muss es beschriftet sein.
       if (/architek|architec/i.test(beschriftung)) {
@@ -217,7 +251,9 @@ for (const pfad of SEITEN) {
    früher, bei 390 px rückt jeder Druck genau eine weiter. Am Ende muss der
    Zähler die letzte Nummer zeigen und der Knopf abgeschaltet sein. */
 for (const breite of [390, 1440]) {
-  const streckenseite = await browser.newPage({ viewport: { width: breite, height: 900 } });
+  const streckenseite = await browser.newPage({
+    viewport: { width: breite, height: 900 },
+  });
   await streckenseite.goto(`${basis}/`, { waitUntil: "networkidle" });
   await streckenseite.evaluate(async () => {
     for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
@@ -279,7 +315,9 @@ await browser.close();
 beenden();
 
 if (funde.length > 0) {
-  console.error(`${funde.length} Tafel zeigt nicht, was ihr Reiter verspricht:\n`);
+  console.error(
+    `${funde.length} Tafel zeigt nicht, was ihr Reiter verspricht:\n`,
+  );
   for (const f of funde) console.error(`  ${f}`);
   process.exit(1);
 }

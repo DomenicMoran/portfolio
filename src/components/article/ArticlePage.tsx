@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ContentProvider } from "@/content/ContentProvider";
+import type { ComponentType, ReactNode } from "react";
 import type { Content } from "@/content/types";
 import {
   andereSprache,
@@ -26,11 +26,13 @@ function datum(iso: string, lang: "de" | "en") {
 
 export function ArticlePage({
   content,
+  Inhalt,
   chrome,
   article,
   weitere,
 }: {
   content: Content;
+  Inhalt: ComponentType<{ children: ReactNode }>;
   chrome: ArticleChrome;
   article: Article;
   /** Die anderen Artikel derselben Sprache, für den Ausgang am Fuß. */
@@ -136,7 +138,7 @@ export function ArticlePage({
   const json = JSON.stringify([schema, brotkrumen]).replace(/</g, "\\u003c");
 
   return (
-    <ContentProvider content={content}>
+    <Inhalt>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: json }}
@@ -160,7 +162,7 @@ export function ArticlePage({
           <div className="animate-fade-rise">
             <Link
               href={chrome.base}
-              className="group -my-2 mb-8 inline-flex items-center gap-2 py-2 font-mono text-[11px] tracking-wide text-ink-faint transition-colors hover:text-ink-dim"
+              className="group text-ink-faint hover:text-ink-dim -my-2 mb-8 inline-flex items-center gap-2 py-2 font-mono text-[11px] tracking-wide transition-colors"
             >
               <ArrowLeft
                 className="size-3 transition-transform duration-300 group-hover:-translate-x-0.5"
@@ -169,11 +171,11 @@ export function ArticlePage({
               {chrome.backToIndex}
             </Link>
 
-            <h1 className="text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-ink text-balance">
+            <h1 className="text-ink text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-balance">
               {article.title}
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-ink-dim text-pretty sm:text-xl">
+            <p className="text-ink-dim mt-6 text-lg leading-relaxed text-pretty sm:text-xl">
               {article.dek}
             </p>
 
@@ -182,7 +184,7 @@ export function ArticlePage({
                 bleibt allein am Ende stehen. Gemessen bei 320 bis 430 px auf
                 allen zehn Artikelseiten; `npm run check:separators` hält es
                 offen. */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-6 font-mono text-[11px] text-ink-faint">
+            <div className="border-line text-ink-faint mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t pt-6 font-mono text-[11px]">
               <time dateTime={article.date}>{datum(article.date, lang)}</time>
               <span className="flex items-center gap-x-5">
                 <span aria-hidden>·</span>
@@ -213,14 +215,14 @@ export function ArticlePage({
             {system ? (
               <Link
                 href={`${heim}#case-${system.id}`}
-                className="group mt-5 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/40 py-2 pr-4 pl-3.5 text-[13px] transition-colors hover:border-acid/40"
+                className="group border-line bg-surface/40 hover:border-acid/40 mt-5 inline-flex items-center gap-2.5 rounded-full border py-2 pr-4 pl-3.5 text-[13px] transition-colors"
               >
-                <span className="font-mono text-[11px] tracking-wide text-ink-faint">
+                <span className="text-ink-faint font-mono text-[11px] tracking-wide">
                   {chrome.fromSystem}
                 </span>
-                <span className="font-medium text-ink">{system.name}</span>
+                <span className="text-ink font-medium">{system.name}</span>
                 <ArrowRight
-                  className="size-3.5 text-ink-faint transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-acid"
+                  className="text-ink-faint group-hover:text-acid size-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
                   aria-hidden
                 />
               </Link>
@@ -256,7 +258,7 @@ export function ArticlePage({
                 Artikelnavigation darunter. */}
             <section
               aria-label={chrome.evidenceLabel}
-              className="mt-16 rounded-2xl border border-line bg-surface/40 p-6 sm:p-7"
+              className="border-line bg-surface/40 mt-16 rounded-2xl border p-6 sm:p-7"
             >
               <h2 className="text-eyebrow mb-4">{chrome.evidenceLabel}</h2>
               {/* `evidence-list` hängt nur für den Druck daran: Dort steht die
@@ -276,11 +278,11 @@ export function ArticlePage({
                        reicht dafür nicht: Ein Pfad hat keine Wortgrenze. */
                     <li
                       key={text}
-                      className="flex gap-2.5 font-mono text-[12px] leading-relaxed [overflow-wrap:anywhere] text-ink-faint"
+                      className="text-ink-faint flex gap-2.5 font-mono text-[12px] leading-relaxed [overflow-wrap:anywhere]"
                     >
                       <span
                         aria-hidden
-                        className="mt-[0.6em] size-1 shrink-0 rounded-full bg-acid/60"
+                        className="bg-acid/60 mt-[0.6em] size-1 shrink-0 rounded-full"
                       />
                       {typeof item === "string" ? (
                         text
@@ -289,7 +291,7 @@ export function ArticlePage({
                           href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-acid underline decoration-acid/30 underline-offset-4 transition-colors hover:decoration-acid"
+                          className="text-acid decoration-acid/30 hover:decoration-acid underline underline-offset-4 transition-colors"
                         >
                           {text}
                         </a>
@@ -316,7 +318,7 @@ export function ArticlePage({
                   Vorleseprogramme buchstabieren Grossbuchstaben. */}
               <nav
                 aria-label={chrome.allArticles}
-                className="mt-14 border-t border-line pt-10"
+                className="border-line mt-14 border-t pt-10"
               >
                 <h2 className="text-eyebrow mb-6">{chrome.allArticles}</h2>
                 <ul className="flex flex-col gap-3">
@@ -335,18 +337,18 @@ export function ArticlePage({
                            beim Antippen lädt Next weiterhin vor, der Klick
                            bleibt also gleich schnell. */
                         prefetch={false}
-                        className="group flex items-start justify-between gap-6 rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-acid/40"
+                        className="group border-line bg-surface/40 hover:border-acid/40 flex items-start justify-between gap-6 rounded-xl border p-5 transition-colors"
                       >
                         <span>
-                          <span className="block font-semibold tracking-tight text-ink">
+                          <span className="text-ink block font-semibold tracking-tight">
                             {a.title}
                           </span>
-                          <span className="mt-1.5 block max-w-[52ch] text-sm leading-relaxed text-ink-faint text-pretty">
+                          <span className="text-ink-faint mt-1.5 block max-w-[52ch] text-sm leading-relaxed text-pretty">
                             {a.dek}
                           </span>
                         </span>
                         <ArrowRight
-                          className="mt-1 size-4 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-acid"
+                          className="text-ink-faint group-hover:text-acid mt-1 size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
                           aria-hidden
                         />
                       </Link>
@@ -360,6 +362,6 @@ export function ArticlePage({
       </main>
 
       <Footer otherHref={otherHref} hashBase={heim} />
-    </ContentProvider>
+    </Inhalt>
   );
 }

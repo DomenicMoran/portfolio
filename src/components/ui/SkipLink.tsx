@@ -28,7 +28,7 @@ export function SkipLink({ text }: { text: string }) {
   return (
     <a
       href={`#${INHALT_ID}`}
-      className="sr-only focus:not-sr-only focus:fixed focus:top-[5.25rem] focus:left-4 focus:z-[10001] focus:rounded-full focus:bg-acid focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-void focus:shadow-lg focus:shadow-void/40"
+      className="focus:bg-acid focus:text-void focus:shadow-void/40 sr-only focus:not-sr-only focus:fixed focus:top-[5.25rem] focus:left-4 focus:z-[10001] focus:rounded-full focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:shadow-lg"
     >
       {text}
     </a>

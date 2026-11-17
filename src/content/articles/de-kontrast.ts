@@ -59,7 +59,8 @@ export const kontrastDe: Article = {
     {
       kind: "code",
       lang: "ts",
-      caption: "check-contrast.mjs: Der schlechteste Wert kommt aus dem Grund, nicht aus dem Buchstaben.",
+      caption:
+        "check-contrast.mjs: Der schlechteste Wert kommt aus dem Grund, nicht aus dem Buchstaben.",
       code: `// Erste Frage: Steht hier Text? Dafür zählen die gedeckten Punkte.
 for (const punkt of punkteImKasten) {
   if (deckung[punkt] >= schwelle) kernpunkte++;

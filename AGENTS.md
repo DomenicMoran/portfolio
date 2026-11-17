@@ -120,7 +120,9 @@ Ein leerer Wert muss das zugehörige Element **entfernen**, nicht einen
 Platzhalter rendern. Muster:
 
 ```tsx
-{site.socials.linkedin ? <a href={site.socials.linkedin}>…</a> : null}
+{
+  site.socials.linkedin ? <a href={site.socials.linkedin}>…</a> : null;
+}
 ```
 
 Grund: Diese Seite verkauft Glaubwürdigkeit. Ein sichtbares „Lorem ipsum“ oder
@@ -142,11 +144,11 @@ Bibliothek nennt für ihre Bausteine 121 kB (`motion`) gegen 16 kB (`m`) plus
 83 kB (`domMax`) oder 37 kB (`domAnimation`), und danach sieht die Rechnung
 lohnend aus. Am ausgelieferten Bündel der Startseite ist sie es nicht:
 
-| Fassung | Skript gesamt | davon Bewegung |
-|---|---|---|
-| `motion`, wie jetzt | 1.062 kB | 270 kB |
-| `LazyMotion` + `domMax` | 1.079 kB | 287 kB |
-| `LazyMotion` + `domAnimation`, ohne `layoutId` | 1.030 kB | 238 kB |
+| Fassung                                        | Skript gesamt | davon Bewegung |
+| ---------------------------------------------- | ------------- | -------------- |
+| `motion`, wie jetzt                            | 1.062 kB      | 270 kB         |
+| `LazyMotion` + `domMax`                        | 1.079 kB      | 287 kB         |
+| `LazyMotion` + `domAnimation`, ohne `layoutId` | 1.030 kB      | 238 kB         |
 
 Die Lazy-Maschinerie und `m` kosten zusammen mehr, als der kleinere
 Funktionssatz spart. Die dritte Zeile verlangt zusätzlich, die beiden
@@ -312,15 +314,15 @@ Beschriftung „Produkte“ in der Kopfleiste als einzige keine eigene Adresse
 hatte. Wer die Gruppen neu zählt, zählt sie bitte ganz und schreibt das Datum
 dazu — eine halb nachgezogene Tabelle ist schlechter als eine offen veraltete.
 
-| Gruppe | Anzahl | Beispiel |
-| --- | --- | --- |
-| Abschnitt der Startseite | 20 | `/recruiter` → `/#hire` |
-| Artikel in der falschen Sprachfassung | 18 | `/en/artikel/<slug>` → `/en/articles/<slug>` |
-| Name eines Systems | 14 | `/dartile` → `/#case-dartile` |
-| Feed | 12 | `/rss`, `/artikel/feed` → `/artikel/feed.xml` |
-| Rechtsseiten | 10 | `/imprint`, `/privacy` |
-| Kurzprofil | 8 | `/cv`, `/lebenslauf`, `/resume` |
-| Übersichten und Reste | 9 | `/blog` → `/artikel` |
+| Gruppe                                | Anzahl | Beispiel                                      |
+| ------------------------------------- | ------ | --------------------------------------------- |
+| Abschnitt der Startseite              | 20     | `/recruiter` → `/#hire`                       |
+| Artikel in der falschen Sprachfassung | 18     | `/en/artikel/<slug>` → `/en/articles/<slug>`  |
+| Name eines Systems                    | 14     | `/dartile` → `/#case-dartile`                 |
+| Feed                                  | 12     | `/rss`, `/artikel/feed` → `/artikel/feed.xml` |
+| Rechtsseiten                          | 10     | `/imprint`, `/privacy`                        |
+| Kurzprofil                            | 8      | `/cv`, `/lebenslauf`, `/resume`               |
+| Übersichten und Reste                 | 9      | `/blog` → `/artikel`                          |
 
 Die dritte Gruppe kam mit den drei neuen Fallstudien dazu und folgt derselben
 Beobachtung wie die erste: Wer den Namen eines Projekts kennt, tippt ihn. Sieben
