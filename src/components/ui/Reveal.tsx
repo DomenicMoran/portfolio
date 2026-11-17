@@ -118,7 +118,13 @@ export function RevealWords({
     >
       {words.map((word, i) => (
         <Fragment key={`${word}-${i}`}>
-          <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.2em] align-bottom">
+          {/* max-w-full plus Trennung: Ein einzelnes Wort in einem
+              inline-block (etwa „ausgelieferte“) bleibt sonst so breit wie
+              sein Inhalt. Bei 24 px Grundschrift und 320 px Breite ragte
+              genau dieses Wort unter Windows 1 px vor der Kante und in der
+              Linux-CI 54 px darüber. overflow-wrap allein aendert die
+              Mindestbreite eines inline-block nicht. */}
+          <span className="-mb-[0.15em] inline-block max-w-full overflow-hidden pb-[0.2em] align-bottom break-words hyphens-auto">
             <span
               className={cn(
                 "inline-block",

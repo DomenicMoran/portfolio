@@ -66,9 +66,11 @@ export function SectionHeading({
         </Reveal>
       )}
 
+      {/* text-pretty statt text-balance, damit keine kuenstlich lange letzte
+          Zeile entsteht. Lange Komposita in den Wortboxen faengt RevealWords ab. */}
       <Überschrift
         id={titleId}
-        className="text-headline text-ink max-w-4xl text-balance"
+        className="text-headline text-ink max-w-4xl text-pretty break-words"
       >
         <RevealWords text={title} css={css} />
       </Überschrift>
