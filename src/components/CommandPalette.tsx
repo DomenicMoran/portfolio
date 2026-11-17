@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useScrollSperre } from "@/lib/scroll-lock";
+import { halteFokusImDialog, sperreRestDerSeite } from "@/lib/fokus-im-dialog";
 import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -248,6 +249,10 @@ export function CommandPalette({
     if (!open) return;
 
     const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Tab" && dialogRef.current) {
+        halteFokusImDialog(dialogRef.current, event);
+        return;
+      }
       if (event.key === "Escape") {
         onClose();
         return;
@@ -292,10 +297,10 @@ export function CommandPalette({
       inputRef.current?.focus();
     };
 
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
     document.addEventListener("focusin", beiFokus);
     return () => {
-      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("keydown", onKey, true);
       document.removeEventListener("focusin", beiFokus);
     };
   }, [open, results, active, onClose]);
@@ -324,9 +329,13 @@ export function CommandPalette({
 
     // Fokus erst, wenn der Auftritt beginnt, sonst scrollt Safari unter iOS.
     const id = window.setTimeout(() => inputRef.current?.focus(), 60);
+    const freigeben = dialogRef.current
+      ? sperreRestDerSeite(dialogRef.current)
+      : () => {};
 
     return () => {
       window.clearTimeout(id);
+      freigeben();
       vorher?.focus?.();
     };
   }, [open]);

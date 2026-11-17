@@ -7,6 +7,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { useScrollSperre } from "@/lib/scroll-lock";
+import { halteFokusImDialog, sperreRestDerSeite } from "@/lib/fokus-im-dialog";
 import { mailAdresse } from "@/lib/mailto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, X, Command } from "lucide-react";
@@ -99,15 +100,25 @@ export function Nav({
        wurde das erst, als `aria-expanded` den Zustand mitführte; vorher sah
        ein Test nach dem Tastendruck dasselbe wie davor. */
     const beiTaste = (ereignis: KeyboardEvent) => {
+      if (ereignis.key === "Tab" && schublade.current) {
+        halteFokusImDialog(schublade.current, ereignis);
+        return;
+      }
       if (ereignis.key === "Escape") setMenuOpen(false);
     };
 
     document.addEventListener("focusin", zurueckholen);
-    window.addEventListener("keydown", beiTaste);
+    window.addEventListener("keydown", beiTaste, true);
+    const freigeben = schublade.current
+      ? sperreRestDerSeite(schublade.current)
+      : () => {};
     return () => {
       window.clearTimeout(hinein);
       document.removeEventListener("focusin", zurueckholen);
-      window.removeEventListener("keydown", beiTaste);
+      window.removeEventListener("keydown", beiTaste, true);
+      /* Erst die Sperre lösen, dann den Fokus zurückgeben: Sonst bleibt der
+         Auslöser inert und nimmt den Fokus nicht an. */
+      freigeben();
       /* Und beim Schließen dorthin zurück, wo er herkam. Ohne das landet er
          auf `body`, und der Weg durch die Seite beginnt von vorn. */
       ausloeser?.focus();
