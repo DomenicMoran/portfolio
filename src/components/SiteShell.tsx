@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ComponentType } from "react";
+import { whenIdle } from "@/lib/when-idle";
 import { MotionRoot } from "@/components/providers/MotionRoot";
 import { Nav } from "@/components/Nav";
 import { Cursor } from "@/components/ui/Cursor";
@@ -38,14 +39,19 @@ export function SiteShell({
   }> | null>(null);
 
   /**
-   * Cursor, Fortschritt und Lenis direkt nach dem Einhängen.
+   * Cursor, Fortschritt und Lenis im Leerlauf nach dem Einhängen.
    *
-   * Vorher wartete das auf `load` und einen Leerlauf. Wer dann schon
-   * gescrollt hatte, bekam Lenis mitten in der Bewegung und die Seite zuckte.
+   * Sofortiges Mounten trieb Lighthouse-TBT hoch, waehrend Lenis ohnehin
+   * nicht startet, wenn schon gescrollt wurde.
    */
   useEffect(() => {
-    const t = window.setTimeout(() => setNachLcp(true), 0);
-    return () => window.clearTimeout(t);
+    let abgebrochen = false;
+    whenIdle(() => {
+      if (!abgebrochen) setNachLcp(true);
+    }, 2500);
+    return () => {
+      abgebrochen = true;
+    };
   }, []);
 
   /**

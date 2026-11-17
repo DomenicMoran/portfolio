@@ -2517,26 +2517,3 @@ export const navItems = [
   { label: "Für Recruiter", href: "#hire" },
   { label: "Kontakt", href: "#contact" },
 ] as const;
-
-/** Die Laufschrift im Kopfbereich. Nach Rhythmus geordnet, nicht nach Gewicht. */
-export const techTicker = [
-  "TypeScript",
-  "React",
-  "Next.js",
-  "React Native",
-  "Expo",
-  "Postgres",
-  "Supabase",
-  "Stripe",
-  "Node.js",
-  "Fastify",
-  "Playwright",
-  "Docker",
-  "Cloudflare",
-  "Hetzner",
-  "n8n",
-  "Whisper",
-  "Tailwind",
-  "Turborepo",
-  "Vitest",
-];
