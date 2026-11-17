@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelDe, chromeDe } from "@/content/articles";
 import { de } from "@/content/de";
+import { ContentProviderDe } from "@/content/ContentProviderDe";
 import {
   feedFuer,
   kurzbeschreibung,
@@ -39,5 +40,12 @@ export const metadata: Metadata = {
 };
 
 export default function ArtikelUebersicht() {
-  return <ArticleIndex content={de} chrome={chromeDe} articles={artikelDe} />;
+  return (
+    <ArticleIndex
+      content={de}
+      Inhalt={ContentProviderDe}
+      chrome={chromeDe}
+      articles={artikelDe}
+    />
+  );
 }

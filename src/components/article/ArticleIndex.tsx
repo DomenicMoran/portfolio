@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Rss } from "lucide-react";
-import { ContentProvider } from "@/content/ContentProvider";
+import type { ComponentType, ReactNode } from "react";
 import type { Content } from "@/content/types";
 import type { Article, ArticleChrome } from "@/content/articles";
 import { SiteShell } from "@/components/SiteShell";
@@ -20,10 +20,12 @@ function datum(iso: string, lang: "de" | "en") {
 
 export function ArticleIndex({
   content,
+  Inhalt,
   chrome,
   articles,
 }: {
   content: Content;
+  Inhalt: ComponentType<{ children: ReactNode }>;
   chrome: ArticleChrome;
   articles: readonly Article[];
 }) {
@@ -68,7 +70,7 @@ export function ArticleIndex({
   const json = JSON.stringify(schema).replace(/</g, "\u003c");
 
   return (
-    <ContentProvider content={content}>
+    <Inhalt>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: json }}
@@ -267,6 +269,6 @@ export function ArticleIndex({
       </main>
 
       <Footer otherHref={otherHref} hashBase={heim} />
-    </ContentProvider>
+    </Inhalt>
   );
 }

@@ -7,6 +7,7 @@ import { getTargetedCompany } from "@/lib/targeted-companies";
 import { resolveAnredeOnServer } from "@/lib/targeted-du-slugs.server";
 import { site } from "@/content/site";
 import { mailAdresse } from "@/lib/mailto";
+import { ContentProviderDe } from "@/content/ContentProviderDe";
 export const revalidate = 3600;
 export const dynamicParams = true;
 export async function generateStaticParams() {
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function TargetedCompanyPage({ params }: Props) {
   const company = await getTargetedCompany((await params)["company-slug"]);
-  if (!company) return <SitePage content={de} />;
+  if (!company) return <SitePage content={de} Inhalt={ContentProviderDe} />;
   const mailto = mailAdresse(
     site.email,
     `Product Engineering bei ${company.company_name}`,

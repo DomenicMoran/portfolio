@@ -3,7 +3,7 @@
 import { schriftKlassen } from "@/lib/web-fonts";
 import { Marke } from "@/lib/mark";
 import { mailAdresse } from "@/lib/mailto";
-import { de } from "@/content/de";
+import { dokumentTexte } from "@/content/dokument-texte";
 import "./globals.css";
 
 /**
@@ -52,6 +52,7 @@ export default function GlobalError({
      in `node_modules/next/dist/docs`, nicht geraten. */
   unstable_retry: () => void;
 }) {
+  const t = dokumentTexte.de;
   return (
     <html lang="de" className={`${schriftKlassen} h-full antialiased`}>
       <body className="grain flex min-h-full flex-col">
@@ -70,7 +71,7 @@ export default function GlobalError({
                 <Marke size={28} radius={0} />
               </span>
               <span className="text-ink text-sm font-medium tracking-tight">
-                {de.site.name}
+                {t.name}
               </span>
             </a>
 
@@ -118,12 +119,12 @@ export default function GlobalError({
         <footer className="px-6 pb-10">
           <div className="mx-auto w-full max-w-2xl">
             <p className="border-line text-ink-faint border-t pt-6 text-sm">
-              {de.notFound.report}{" "}
+              {t.notFoundReport}{" "}
               <a
-                href={mailAdresse(de.site.email, de.site.mailSubject)}
+                href={mailAdresse(t.email, t.mailSubject)}
                 className="text-acid -my-1 py-1 underline underline-offset-4"
               >
-                {de.site.email}
+                {t.email}
               </a>
             </p>
 
@@ -144,14 +145,14 @@ export default function GlobalError({
                 hrefLang="de"
                 className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
               >
-                {de.footer.impressum}
+                {t.impressum}
               </a>
               <a
                 href="/datenschutz"
                 hrefLang="de"
                 className="hover:text-ink-dim -my-2 py-2 underline underline-offset-4 transition-colors"
               >
-                {de.footer.datenschutz}
+                {t.datenschutz}
               </a>
             </p>
           </div>

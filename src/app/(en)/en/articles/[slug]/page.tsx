@@ -9,6 +9,7 @@ import {
 } from "@/content/articles";
 import { en } from "@/content/en";
 import { feedFuer, kurzbeschreibung, vorschaukarten } from "@/lib/metadata";
+import { ContentProviderEn } from "@/content/ContentProviderEn";
 
 export const dynamicParams = false;
 
@@ -78,6 +79,7 @@ export default async function ArticleRoute({
 
   return (
     <ArticlePage
+      Inhalt={ContentProviderEn}
       content={en}
       chrome={chromeEn}
       article={article}

@@ -9,6 +9,7 @@ import {
 } from "@/content/articles";
 import { de } from "@/content/de";
 import { feedFuer, kurzbeschreibung, vorschaukarten } from "@/lib/metadata";
+import { ContentProviderDe } from "@/content/ContentProviderDe";
 
 /**
  * Alle Artikel sind zur Bauzeit bekannt, also werden alle vorgerendert.
@@ -85,6 +86,7 @@ export default async function ArtikelSeite({
 
   return (
     <ArticlePage
+      Inhalt={ContentProviderDe}
       content={de}
       chrome={chromeDe}
       article={artikel}

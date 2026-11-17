@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArticleIndex } from "@/components/article/ArticleIndex";
 import { artikelEn, chromeEn } from "@/content/articles";
 import { en } from "@/content/en";
+import { ContentProviderEn } from "@/content/ContentProviderEn";
 import {
   feedFuer,
   kurzbeschreibung,
@@ -27,5 +28,12 @@ export const metadata: Metadata = {
 };
 
 export default function ArticlesIndex() {
-  return <ArticleIndex content={en} chrome={chromeEn} articles={artikelEn} />;
+  return (
+    <ArticleIndex
+      content={en}
+      Inhalt={ContentProviderEn}
+      chrome={chromeEn}
+      articles={artikelEn}
+    />
+  );
 }

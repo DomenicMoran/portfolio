@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ContentProvider } from "@/content/ContentProvider";
+import type { ComponentType, ReactNode } from "react";
 import type { Content } from "@/content/types";
 import {
   andereSprache,
@@ -26,11 +26,13 @@ function datum(iso: string, lang: "de" | "en") {
 
 export function ArticlePage({
   content,
+  Inhalt,
   chrome,
   article,
   weitere,
 }: {
   content: Content;
+  Inhalt: ComponentType<{ children: ReactNode }>;
   chrome: ArticleChrome;
   article: Article;
   /** Die anderen Artikel derselben Sprache, für den Ausgang am Fuß. */
@@ -136,7 +138,7 @@ export function ArticlePage({
   const json = JSON.stringify([schema, brotkrumen]).replace(/</g, "\\u003c");
 
   return (
-    <ContentProvider content={content}>
+    <Inhalt>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: json }}
@@ -360,6 +362,6 @@ export function ArticlePage({
       </main>
 
       <Footer otherHref={otherHref} hashBase={heim} />
-    </ContentProvider>
+    </Inhalt>
   );
 }

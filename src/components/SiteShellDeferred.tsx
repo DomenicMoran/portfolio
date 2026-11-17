@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 type Props = {
   otherHref?: string;
   hashBase?: string;
+  lang?: "de" | "en";
 };
 
 /**
@@ -34,11 +35,37 @@ export function SiteShellDeferred(props: Props) {
     };
     const load = () => {
       idle(() => {
+        const lang = props.lang;
         void Promise.all([
           import("@/components/SiteShell"),
           import("@/components/hero/HeroWowMount"),
-        ]).then(([shellMod, wowMod]) => {
-          setShell(() => shellMod.SiteShell);
+          lang === "de"
+            ? import("@/content/ContentProviderDe")
+            : lang === "en"
+              ? import("@/content/ContentProviderEn")
+              : Promise.resolve(null),
+        ]).then(([shellMod, wowMod, providerMod]) => {
+          const Shell = shellMod.SiteShell;
+          const Provider =
+            lang === "de" && providerMod && "ContentProviderDe" in providerMod
+              ? providerMod.ContentProviderDe
+              : lang === "en" &&
+                  providerMod &&
+                  "ContentProviderEn" in providerMod
+                ? providerMod.ContentProviderEn
+                : null;
+          setShell(() =>
+            Provider
+              ? (shellProps: Props) => (
+                  <Provider>
+                    <Shell
+                      otherHref={shellProps.otherHref}
+                      hashBase={shellProps.hashBase}
+                    />
+                  </Provider>
+                )
+              : Shell,
+          );
           setWow(() => wowMod.HeroWowMount);
           setWowSlot(document.getElementById("hero-wow-slot"));
         });
@@ -46,7 +73,7 @@ export function SiteShellDeferred(props: Props) {
     };
     if (document.readyState === "complete") load();
     else window.addEventListener("load", load, { once: true });
-  }, []);
+  }, [props.lang]);
 
   return (
     <>
