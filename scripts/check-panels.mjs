@@ -35,6 +35,26 @@ const MINDESTTEXT = 40;
 /** Ein Diagramm braucht Beschriftungen, keine Fläche. */
 const MINDESTTEXTE_IM_DIAGRAMM = 8;
 
+/**
+ * Öffnet eingeklappte Fallstudien, in denen eine Reiterleiste liegt.
+ * Sonst sind die Leisten hidden, und der Klick auf den nächsten Reiter
+ * läuft in eine Zeitüberschreitung. Dieselbe Öffnung steht in
+ * check-print und check-a11y. Gemessen in CI 44070904606: der Lauf
+ * brach nach 30 s an einem unsichtbaren Reiter ab.
+ */
+async function oeffneFallstudien(seite) {
+  for (const knopf of await seite.locator(".offenlegungs-schalter").all()) {
+    if ((await knopf.getAttribute("aria-expanded")) !== "false") continue;
+    const ziel = await knopf.getAttribute("aria-controls");
+    if (!ziel) continue;
+    const hatReiter = await seite
+      .locator("[id=" + JSON.stringify(ziel) + "] [role=tablist]")
+      .count();
+    if (hatReiter === 0) continue;
+    await knopf.click();
+  }
+}
+
 const vorgegebeneBasis = process.argv[2];
 let beenden = () => {};
 let basis = vorgegebeneBasis;
@@ -64,6 +84,7 @@ for (const pfad of SEITEN) {
     }
   });
   await seite.waitForTimeout(700);
+  await oeffneFallstudien(seite);
 
   /* `[data-tafel='voll']` statt `article[id^='case-']`: Seit dem Umschalter
      in `WeitereProjekte` tragen auch die eingeklappten, reiterlosen Karten
@@ -85,6 +106,15 @@ for (const pfad of SEITEN) {
     }
 
     for (const knopf of reiter) {
+      const sichtbar = await knopf.evaluate((el) => {
+        const stil = getComputedStyle(el);
+        if (stil.display === "none" || stil.visibility === "hidden") {
+          return false;
+        }
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      });
+      if (!sichtbar) continue;
       const beschriftung = ((await knopf.textContent()) ?? "").trim();
       await knopf.click();
       await seite.waitForTimeout(500);
