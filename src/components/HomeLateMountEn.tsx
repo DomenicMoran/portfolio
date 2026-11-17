@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ComponentType } from "react";
+import { PreparePrintImages } from "@/components/PreparePrintImages";
 
 type Part = "sections" | "footer";
 
@@ -45,6 +46,7 @@ export function HomeLateMountEn({ part }: { part: Part }) {
 
   return (
     <>
+      <PreparePrintImages />
       {Light ? <Light /> : null}
       {Cases ? <Cases /> : null}
       {Tail ? <Tail /> : null}

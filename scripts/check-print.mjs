@@ -440,6 +440,28 @@ function textEinsammeln() {
   });
 }
 
+/** Nach dem Wechsel auf Druck: Bilder nachladen, die sonst lazy bleiben. */
+async function druckbilderNachladen(seite) {
+  await seite.evaluate(() => {
+    window.dispatchEvent(new Event("beforeprint"));
+    for (const bild of document.querySelectorAll('img[loading="lazy"]')) {
+      bild.loading = "eager";
+    }
+  });
+  await seite
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll("img")]
+          .filter((b) => getComputedStyle(b).display !== "none")
+          .every((b) => b.complete),
+      undefined,
+      { timeout: 15000 },
+    )
+    .catch(() => {
+      /* Ungeladene Bilder meldet die Messung darunter mit Alt-Text. */
+    });
+}
+
 let fehler = 0;
 
 for (const pfad of gepruefteSeiten) {
@@ -481,6 +503,7 @@ for (const pfad of gepruefteSeiten) {
   // grün, während der Ausdruck „0“ zeigt.
   await seite.goto(`${basis}${pfad}`, { waitUntil: "networkidle" });
   await seite.emulateMedia({ media: "print" });
+  await druckbilderNachladen(seite);
 
   /* Auf die Hydration warten, nicht auf eine Wartezeit.
    *
@@ -692,6 +715,7 @@ for (const pfad of ["/", "/en"]) {
          der vorigen Tafel. Der Fund war richtig, die Zuordnung nicht. */
       await seite.waitForTimeout(400);
       await seite.emulateMedia({ media: "print" });
+      await druckbilderNachladen(seite);
       await seite.evaluate(() => {
         for (const bewegung of document.getAnimations()) {
           try {
@@ -770,6 +794,7 @@ for (const pfad of ["/onepager", "/en/onepager"]) {
   });
   if (antwort?.status() === 200) {
     await seite.waitForTimeout(600);
+    await druckbilderNachladen(seite);
     const hoehe = await seite.evaluate(() => {
       const el = document.querySelector(".onepager");
       if (!el) return null;
