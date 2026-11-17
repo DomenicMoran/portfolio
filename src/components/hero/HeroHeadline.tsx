@@ -30,7 +30,7 @@ export function HeroHeadline({ words }: Props) {
             aus dem es beim Auftritt hervorkommt. Die untere Kante dieses
             Kastens schneidet damit auch die Unterlaengen ab. 0,2 em Polster
             und ein negativer Aussenabstand halten die Zeile an ihrem Ort. */}
-        <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.2em] align-bottom">
+        <span className="-mb-[0.14em] inline-block max-w-full overflow-hidden pb-[0.2em] align-bottom break-words hyphens-auto">
           <span
             className={cn(
               "animate-word-rise inline-block",
@@ -50,7 +50,7 @@ export function HeroHeadline({ words }: Props) {
       id="top-titel"
       className="hero-display text-ink max-w-[18ch] tracking-[-0.03em] text-balance uppercase"
     >
-      <span className="block leading-[0.92]">{renderLine(line1, 0)}</span>
+      <span className="block leading-[0.92]">{renderLine(line1, 0)}</span>{" "}
       <span className="mt-1 block leading-[0.92]">
         {renderLine(line2, line1.length)}
       </span>
