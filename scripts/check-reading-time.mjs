@@ -16,8 +16,19 @@
  *   node scripts/check-reading-time.mjs --setzen  Werte korrigieren
  */
 
-import { existsSync, readFileSync, writeFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  unlinkSync,
+} from "node:fs";
+import { dirname, join } from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+const REPO = dirname(dirname(fileURLToPath(import.meta.url)));
 
 const ORDNER = "src/content/articles";
 const WOERTER_JE_MINUTE = 180;
@@ -126,11 +137,15 @@ Jede Lesezeit stimmt mit dem Wortbestand: ${befunde.length} Artikel gezählt, ` 
    Das ist die unglücklichste Stelle für eine ungeprüfte Zahl: Zwei Absätze
    darunter steht "Ich weise nach, statt zu behaupten".
 
-   Gezählt wird aus der gebauten Seite und nicht aus `site.ts`: Der Bereich
-   ist dort durch `id="hire"` eindeutig begrenzt und enthält genau das, was
-   der Leser sieht. Der erste Anlauf schnitt den Block aus dem Quelltext und
-   kam auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt, die Grenzen
-   eines Objektliterals sind mit einem Regex nicht zuverlässig zu finden. */
+   Gezählt wird der Baum, den der Leser sieht, nicht ein Ausschnitt aus
+   `site.ts`. Der erste Anlauf schnitt den Block aus dem Quelltext und kam
+   auf 109 Wörter, wo die ausgelieferte Seite 339 zeigt, die Grenzen eines
+   Objektliterals sind mit einem Regex nicht zuverlässig zu finden.
+
+   Die Startseite liefert zuerst nur das Hero-Gehäuse; der Recruiter-Bereich
+   hängt erst danach im Client. Steht `id="hire"` deshalb nicht in der
+   gebauten HTML, rendert dieser Lauf RecruiterHub als statisches Markup.
+   Das ist derselbe Komponentenbaum, nur ohne den Umweg über die Schale. */
 const ZAHLWORT = {
   de: {
     1: "einer Minute",
@@ -167,13 +182,61 @@ function abschnitt(html) {
   return null;
 }
 
+/** RecruiterHub als statisches Markup, derselbe Baum wie auf der Seite. */
+function hireAusKomponente(sprache) {
+  const anbieter = sprache === "en" ? "ContentProviderEn" : "ContentProviderDe";
+  const quell = `import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { RecruiterHub } from "@/components/sections/RecruiterHub";
+import { ${anbieter} } from "@/content/${anbieter}";
+process.stdout.write(
+  renderToStaticMarkup(
+    createElement(${anbieter}, null, createElement(RecruiterHub)),
+  ),
+);
+`;
+  const ordner = join(REPO, ".next");
+  mkdirSync(ordner, { recursive: true });
+  const datei = join(ordner, `portfolio-hire-${sprache}.tsx`);
+  writeFileSync(datei, quell, "utf8");
+  try {
+    const tsx = join(REPO, "node_modules", "tsx", "dist", "cli.mjs");
+    const lauf = spawnSync(process.execPath, [tsx, datei], {
+      cwd: REPO,
+      encoding: "utf8",
+    });
+    if (lauf.status !== 0) {
+      const meldung = (
+        lauf.stderr ||
+        lauf.stdout ||
+        lauf.error?.message ||
+        `tsx beendet mit ${lauf.status}`
+      ).trim();
+      throw new Error(meldung);
+    }
+    return lauf.stdout;
+  } finally {
+    try {
+      unlinkSync(datei);
+    } catch {
+      /* Die Hilfsdatei darf fehlen, der Lauf ist dann schon vorbei. */
+    }
+  }
+}
+
 const zeitfunde = [];
 for (const { sprache, datei } of bereiche) {
-  if (!existsSync(datei)) {
-    zeitfunde.push(`${datei} fehlt, erst npm run build`);
-    continue;
+  let block = existsSync(datei) ? abschnitt(readFileSync(datei, "utf8")) : null;
+  if (!block) {
+    try {
+      block = abschnitt(hireAusKomponente(sprache));
+    } catch (fehler) {
+      zeitfunde.push(
+        `${datei}: Recruiter-Bereich nicht gerendert (${fehler instanceof Error ? fehler.message : fehler})`,
+      );
+      continue;
+    }
   }
-  const block = abschnitt(readFileSync(datei, "utf8"));
   if (!block) {
     zeitfunde.push(`${datei}: kein Abschnitt mit id="hire"`);
     continue;
